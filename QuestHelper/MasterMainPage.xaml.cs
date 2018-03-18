@@ -27,11 +27,12 @@ namespace QuestHelper
         {
             MenuItems = new ObservableCollection<MainPageMenuItem>(new[]
             {
-                    
-                new MainPageMenuItem { Id = 1, Title = "меню 1", TargetType = typeof(MapOverviewPage)},
-
-                new MainPageMenuItem { Id = 0, Title = "меню 2", TargetType = typeof(QuestHelperPage)}
-                    
+                new MainPageMenuItem { Id = 0, Title = "Карта", TargetType = typeof(MapOverviewPage)},
+                new MainPageMenuItem { Id = 1, Title = "Маршруты", TargetType = typeof(MapOverviewPage)},
+                new MainPageMenuItem { Id = 2, Title = "Новый маршрут", TargetType = typeof(MapOverviewPage)},
+                new MainPageMenuItem { Id = 3, Title = "Что интересного вокруг", TargetType = typeof(MapOverviewPage)},
+                new MainPageMenuItem { Id = 4, Title = "Профиль", TargetType = typeof(MapOverviewPage)},
+                new MainPageMenuItem { Id = 5, Title = "О нас", TargetType = typeof(MapOverviewPage)},
                 });
         }
 
