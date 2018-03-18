@@ -9,6 +9,7 @@ using Android.Widget;
 using Android.OS;
 
 
+
 namespace QuestHelper.Droid
 {
     [Activity(Label = "QuestHelper.Droid", Icon = "@drawable/icon", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
@@ -22,7 +23,7 @@ namespace QuestHelper.Droid
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
-            //Xamarin.FormsMaps.Init(this, bundle);
+            Xamarin.FormsMaps.Init(this, bundle);
             LoadApplication(new App());
         }
     }
