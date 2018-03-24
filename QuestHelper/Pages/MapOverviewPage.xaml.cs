@@ -19,8 +19,8 @@ namespace QuestHelper
         async void centerMap()
         {
             var locator = CrossGeolocator.Current;
-            var currentPosition = await locator.GetPositionAsync(TimeSpan.FromSeconds(10));
-            MapOverview.MoveToRegion(MapSpan.FromCenterAndRadius(new Xamarin.Forms.Maps.Position(currentPosition.Latitude,currentPosition.Longitude), Distance.FromKilometers(1)));
+            //var currentPosition = await locator.GetPositionAsync(TimeSpan.FromSeconds(10));
+            //MapOverview.MoveToRegion(MapSpan.FromCenterAndRadius(new Xamarin.Forms.Maps.Position(currentPosition.Latitude,currentPosition.Longitude), Distance.FromKilometers(1)));
             /*var position1 = new Position(position.Latitude, position.Longitude); // Latitude, Longitude
             var pin = new Pin
             {
