@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:QuestHelper.ViewModel;assembly=QuestHelper"
+             x:Class="QuestHelper.View.RoutesPage">
+    <ContentPage.BindingContext>
+        <viewmodel:RoutesViewModel />
+    </ContentPage.BindingContext>
+    <ContentView ControlTemplate="{StaticResource NavigationButtons}">
+        <Label Text="Routes list" HorizontalOptions="Center" />
+    </ContentView>
+</ContentPage>
