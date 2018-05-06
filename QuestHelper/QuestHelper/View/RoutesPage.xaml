@@ -6,7 +6,7 @@
     <ContentPage.BindingContext>
         <viewmodel:RoutesViewModel />
     </ContentPage.BindingContext>
-    <ContentView ControlTemplate="{StaticResource NavigationButtons}">
+    <ContentPage.Content>
         <Label Text="Routes list" HorizontalOptions="Center" />
-    </ContentView>
+    </ContentPage.Content>
 </ContentPage>

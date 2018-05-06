@@ -6,10 +6,9 @@
     <ContentPage.BindingContext>
         <viewmodel:NewRouteViewModel />
     </ContentPage.BindingContext>
-
-    <ContentView ControlTemplate="{StaticResource NavigationButtons}">
+    <ContentPage.Content>
         <Button Text="New route">
-            
+
         </Button>
-    </ContentView>
+    </ContentPage.Content>
 </ContentPage>

@@ -7,12 +7,12 @@
     <ContentPage.BindingContext>
         <viewmodel:MapOverviewPageViewModel />
     </ContentPage.BindingContext>
-    
-    <ContentView ControlTemplate="{StaticResource NavigationButtons}">
+
+    <ContentPage.Content>
         <maps:Map
                 x:Name="MapOverview"
                 IsShowingUser="true"
                 MapType="Street" 
                 />
-    </ContentView>
+    </ContentPage.Content>
 </ContentPage>

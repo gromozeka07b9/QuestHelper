@@ -31,7 +31,7 @@ namespace QuestHelper.View
 
         private void ContentPage_Appearing(object sender, EventArgs e)
         {
-            //centerMap();
+            centerMap();
         }
     }
 }
