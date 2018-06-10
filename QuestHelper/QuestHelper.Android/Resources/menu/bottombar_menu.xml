@@ -13,15 +13,7 @@
       android:icon="@drawable/adjust"
       android:title="Новый" />
   <item
-      android:id="@+id/bottomBarRoutesPage"
-      android:icon="@drawable/nearme"
-      android:title="Вокруг" />
-  <item
       android:id="@+id/bottomBarAccountPage"
       android:icon="@drawable/account"
       android:title="Профиль" />
-  <item
-      android:id="@+id/bottomBarAboutPage"
-      android:icon="@drawable/earth"
-      android:title="О нас" />
 </menu>
