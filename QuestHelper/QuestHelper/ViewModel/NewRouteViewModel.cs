@@ -1,5 +1,6 @@
 ﻿using Plugin.Geolocator;
 using QuestHelper.View;
+using Realms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,22 +31,36 @@ namespace QuestHelper.ViewModel
             SplashStartScreenIsVisible = true;
             RouteScreenIsVisible = false;
             _pointsOfNewRoute = new List<string>();
-            _pointsOfNewRoute.Add("Царь-пушка");
+            /*_pointsOfNewRoute.Add("Царь-пушка");
             _pointsOfNewRoute.Add("Оружейная палата");
             _pointsOfNewRoute.Add("ЦУМ");
             _pointsOfNewRoute.Add("Мавзолей Ленина");
             _pointsOfNewRoute.Add("Спасская башня");
             _pointsOfNewRoute.Add("Сенатская башня");
-            _pointsOfNewRoute.Add("Храм Василия Блаженного");
+            realm.Add("Храм Василия Блаженного");*/
+            var realm = Realm.GetInstance();
+            var points = realm.All<Model.DB.RoutePoint>();
+            foreach(var item in points)
+            {
+                _pointsOfNewRoute.Add($"name:{item.Name} latitude:{item.Latitude} longitude: {item.Longitude}");
+            }
         }
         async void addNewRoutePoint()
         {
+            var realm = Realm.GetInstance();
             var locator = CrossGeolocator.Current;
             var currentPosition = await locator.GetPositionAsync(TimeSpan.FromSeconds(10));
             var cache = _pointsOfNewRoute;
             _pointsOfNewRoute = new List<string>();
             _pointsOfNewRoute.AddRange(cache);
             _pointsOfNewRoute.Add("Широта:" + currentPosition.Latitude + " Долгота:" + currentPosition.Longitude);
+
+            realm.Write(()=>
+                {
+                    realm.Add(new Model.DB.RoutePoint() { Name="test_" + DateTime.Now, Latitude= currentPosition.Latitude , Longitude = currentPosition.Longitude });
+                }
+            );
+
             PropertyChanged(this, new PropertyChangedEventArgs("PointsOfNewRoute"));
         }
         void stopRecordRoute()

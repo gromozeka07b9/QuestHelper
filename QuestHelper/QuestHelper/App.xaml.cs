@@ -1,4 +1,5 @@
 ﻿using QuestHelper.View;
+using Realms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +17,16 @@ namespace QuestHelper
 
             MainPage = new View.MainPage();
             //MainPage = new TabbedMainPage();
-		}
+            var realm = Realm.GetInstance();
+            /*realm.RemoveAll();
+            realm.Write(() =>
+            {
+                realm.Add(new Model.DB.Route() { Name = "test" });
+            }
+            );*/
+        }
 
-		protected override void OnStart ()
+        protected override void OnStart ()
 		{
         }
 
