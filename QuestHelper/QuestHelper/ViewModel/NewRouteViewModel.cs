@@ -11,7 +11,7 @@ using Xamarin.Forms.Xaml;
 
 namespace QuestHelper.ViewModel
 {
-    class NewRouteViewModel : INotifyPropertyChanged
+    public class NewRouteViewModel : INotifyPropertyChanged
     {
         private bool _splashStartScreenIsVisible;
         private bool _routeScreenIsVisible;
@@ -47,7 +47,7 @@ namespace QuestHelper.ViewModel
         }
         async void addNewRoutePoint()
         {
-            var realm = Realm.GetInstance();
+            /*var realm = Realm.GetInstance();
             var locator = CrossGeolocator.Current;
             var currentPosition = await locator.GetPositionAsync(TimeSpan.FromSeconds(10));
             var cache = _pointsOfNewRoute;
@@ -61,7 +61,8 @@ namespace QuestHelper.ViewModel
                 }
             );
 
-            PropertyChanged(this, new PropertyChangedEventArgs("PointsOfNewRoute"));
+            PropertyChanged(this, new PropertyChangedEventArgs("PointsOfNewRoute"));*/
+            await Navigation.PushAsync(new RoutePointPage());
         }
         void stopRecordRoute()
         {

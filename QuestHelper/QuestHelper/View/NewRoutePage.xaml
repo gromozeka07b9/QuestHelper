@@ -3,9 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:QuestHelper.ViewModel;assembly=QuestHelper"
              x:Class="QuestHelper.View.NewRoutePage">
-    <ContentPage.BindingContext>
-        <viewmodel:NewRouteViewModel />
-    </ContentPage.BindingContext>
     <ContentPage.Content>
         <Grid>
             <Grid.ColumnDefinitions>

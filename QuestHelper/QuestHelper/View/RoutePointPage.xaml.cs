@@ -1,5 +1,4 @@
-﻿using QuestHelper.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,13 +10,16 @@ using Xamarin.Forms.Xaml;
 namespace QuestHelper.View
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class NewRoutePage : ContentPage
+	public partial class RoutePointPage : ContentPage
 	{
-		public NewRoutePage ()
+		public RoutePointPage ()
 		{
+			InitializeComponent ();
+		}
 
-            InitializeComponent ();
-            BindingContext = new NewRouteViewModel() { Navigation = this.Navigation };
+        private void ToolbarItem_Clicked(object sender, EventArgs e)
+        {
+
         }
     }
 }

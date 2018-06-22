@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="QuestHelper.View.RoutePointPage">
+    <ContentPage.Content>
+        <TableView Intent="Form">
+            <TableRoot>
+                <TableSection Title="Ваше местоположение:">
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="2323423.43,2323221.55" />
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
+                <TableSection Title="Название точки:">
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Кремль" />
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
+                <TableSection Title="Фотографии:">
+                    <ImageCell ImageSource="icon.png" Text="example" />
+                    <ImageCell ImageSource="icon.png" Text="example" />
+                    <ImageCell ImageSource="icon.png" Text="example" />
+                </TableSection>
+                <TableSection Title="Описание:">
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal">
+                            <Editor Text="пример" />
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
+            </TableRoot>
+        </TableView>
+        <!--Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Row="0" Orientation="Vertical">
+                <Label Text="Ваши координаты:"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+            </StackLayout>
+            <StackLayout Grid.Row="1" Orientation="Vertical">
+                <Label Text="Название точки:"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+            </StackLayout>
+            <StackLayout Grid.Row="2" Orientation="Vertical">
+                <Label Text="Фотографии:"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+            </StackLayout>
+            <StackLayout Grid.Row="4" Orientation="Vertical">
+                <Label Text="Описание:"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+            </StackLayout>
+        </-->
+    </ContentPage.Content>
+</ContentPage>
