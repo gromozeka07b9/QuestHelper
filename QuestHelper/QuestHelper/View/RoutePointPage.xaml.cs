@@ -17,9 +17,5 @@ namespace QuestHelper.View
 			InitializeComponent ();
 		}
 
-        private void ToolbarItem_Clicked(object sender, EventArgs e)
-        {
-
-        }
     }
 }

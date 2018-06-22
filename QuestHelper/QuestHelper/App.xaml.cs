@@ -16,14 +16,6 @@ namespace QuestHelper
 			InitializeComponent();
 
             MainPage = new View.MainPage();
-            //MainPage = new TabbedMainPage();
-            var realm = Realm.GetInstance();
-            /*realm.RemoveAll();
-            realm.Write(() =>
-            {
-                realm.Add(new Model.DB.Route() { Name = "test" });
-            }
-            );*/
         }
 
         protected override void OnStart ()

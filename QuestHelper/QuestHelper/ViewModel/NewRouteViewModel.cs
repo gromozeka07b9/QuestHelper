@@ -1,4 +1,6 @@
 ﻿using Plugin.Geolocator;
+using QuestHelper.Managers;
+using QuestHelper.Model.DB;
 using QuestHelper.View;
 using Realms;
 using System;
@@ -16,6 +18,7 @@ namespace QuestHelper.ViewModel
         private bool _splashStartScreenIsVisible;
         private bool _routeScreenIsVisible;
         private List<string> _pointsOfNewRoute;
+        private RoutePointManager _routePointManager = new RoutePointManager();
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -30,6 +33,7 @@ namespace QuestHelper.ViewModel
             StopRecordRouteCommand = new Command(stopRecordRoute);
             SplashStartScreenIsVisible = true;
             RouteScreenIsVisible = false;
+            IEnumerable<RoutePoint> points = _routePointManager.GetPointsByRoute();
             _pointsOfNewRoute = new List<string>();
             /*_pointsOfNewRoute.Add("Царь-пушка");
             _pointsOfNewRoute.Add("Оружейная палата");
@@ -38,8 +42,8 @@ namespace QuestHelper.ViewModel
             _pointsOfNewRoute.Add("Спасская башня");
             _pointsOfNewRoute.Add("Сенатская башня");
             realm.Add("Храм Василия Блаженного");*/
-            var realm = Realm.GetInstance();
-            var points = realm.All<Model.DB.RoutePoint>();
+            //var realm = Realm.GetInstance();
+            //var points = realm.All<Model.DB.RoutePoint>();
             foreach(var item in points)
             {
                 _pointsOfNewRoute.Add($"name:{item.Name} latitude:{item.Latitude} longitude: {item.Longitude}");
@@ -62,7 +66,8 @@ namespace QuestHelper.ViewModel
             );
 
             PropertyChanged(this, new PropertyChangedEventArgs("PointsOfNewRoute"));*/
-            await Navigation.PushAsync(new RoutePointPage());
+            var routePointPage = new RoutePointPage();
+            await Navigation.PushAsync(routePointPage);
         }
         void stopRecordRoute()
         {
