@@ -7,6 +7,14 @@
         <viewmodel:RoutesViewModel />
     </ContentPage.BindingContext>
     <ContentPage.Content>
-        <Label Text="Routes list" HorizontalOptions="Center" />
+        <ListView ItemsSource="{Binding RoutesObj}" x:Name="RoutesListView" >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Label Text="{Binding RouteId}"/>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </ContentPage.Content>
 </ContentPage>

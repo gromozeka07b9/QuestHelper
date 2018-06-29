@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuestHelper.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ namespace QuestHelper.View
 		public RoutesPage ()
 		{
 			InitializeComponent ();
-		}
-	}
+            BindingContext = new RoutesViewModel() { Navigation = this.Navigation };
+        }
+    }
 }

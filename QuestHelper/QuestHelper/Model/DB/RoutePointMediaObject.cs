@@ -10,5 +10,6 @@ namespace QuestHelper.Model.DB
         [PrimaryKey]
         public string RoutePointMediaObjectId { get; set; } = Guid.NewGuid().ToString();
         public string FileName { get; set; }
+        public RoutePoint Point { get; set; }
     }
 }

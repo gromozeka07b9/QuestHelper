@@ -18,6 +18,7 @@ namespace QuestHelper.ViewModel
         private bool _splashStartScreenIsVisible;
         private bool _routeScreenIsVisible;
         private List<string> _pointsOfNewRoute;
+        private Route _route;
         private RoutePointManager _routePointManager = new RoutePointManager();
 
         public INavigation Navigation { get; set; }
@@ -33,6 +34,7 @@ namespace QuestHelper.ViewModel
             StopRecordRouteCommand = new Command(stopRecordRoute);
             SplashStartScreenIsVisible = true;
             RouteScreenIsVisible = false;
+            _route = new Route();
             IEnumerable<RoutePoint> points = _routePointManager.GetPointsByRoute();
             _pointsOfNewRoute = new List<string>();
             /*_pointsOfNewRoute.Add("Царь-пушка");
@@ -66,7 +68,7 @@ namespace QuestHelper.ViewModel
             );
 
             PropertyChanged(this, new PropertyChangedEventArgs("PointsOfNewRoute"));*/
-            var routePointPage = new RoutePointPage();
+            var routePointPage = new RoutePointPage(_route);
             await Navigation.PushAsync(routePointPage);
         }
         void stopRecordRoute()

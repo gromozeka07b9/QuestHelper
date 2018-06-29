@@ -1,4 +1,5 @@
-﻿using QuestHelper.ViewModel;
+﻿using QuestHelper.Model.DB;
+using QuestHelper.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace QuestHelper.View
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class RoutePointPage : ContentPage
 	{
-		public RoutePointPage ()
+		public RoutePointPage (Route route)
 		{
 			InitializeComponent ();
             BindingContext = new RoutePointViewModel() { Navigation = this.Navigation };

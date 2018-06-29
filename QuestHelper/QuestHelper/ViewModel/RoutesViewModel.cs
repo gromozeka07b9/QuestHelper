@@ -1,4 +1,6 @@
-﻿using System;
+﻿using QuestHelper.Managers;
+using QuestHelper.Model.DB;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
@@ -10,6 +12,8 @@ namespace QuestHelper.ViewModel
 {
     class RoutesViewModel : INotifyPropertyChanged
     {
+        private List<string> _routes;
+        private IEnumerable<Route> _routesObj;
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand MapOverviewCommand { get; private set; }
@@ -17,6 +21,7 @@ namespace QuestHelper.ViewModel
         public ICommand NewRouteCommand { get; private set; }
         public ICommand AroundMeCommand { get; private set; }
         public ICommand MyProfileCommand { get; private set; }
+        public ICommand EditRouteCommand { get; private set; }
 
         public RoutesViewModel()
         {
@@ -25,6 +30,21 @@ namespace QuestHelper.ViewModel
             NewRouteCommand = new Command(newRouteShow);
             AroundMeCommand = new Command(aroundMeShow);
             MyProfileCommand = new Command(myProfileShow);
+            //EditRouteCommand = new Command(editRoute);
+            EditRouteCommand = new Command(editRoute);
+
+            RouteManager manager = new RouteManager();
+
+            _routesObj = manager.GetRoutes();
+            _routes = new List<string>();
+            foreach (var item in _routesObj)
+            {
+                _routes.Add(item.RouteId);
+            }
+        }
+
+        async void editRoute()
+        {
         }
 
         async void mapOverviewShow()
@@ -49,6 +69,42 @@ namespace QuestHelper.ViewModel
         async void myProfileShow()
         {
 
+        }
+        public List<string> Routes
+        {
+            set
+            {
+                if (_routes != value)
+                {
+                    _routes = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("Routes"));
+                    }
+                }
+            }
+            get
+            {
+                return _routes;
+            }
+        }
+        public IEnumerable<Route> RoutesObj
+        {
+            set
+            {
+                if (_routesObj != value)
+                {
+                    _routesObj = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("RoutesObj"));
+                    }
+                }
+            }
+            get
+            {
+                return _routesObj;
+            }
         }
     }
 }

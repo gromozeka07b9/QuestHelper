@@ -6,16 +6,16 @@ using Realms;
 
 namespace QuestHelper.Managers
 {
-    public class RoutePointManager
+    public class RouteManager
     {
         Realm _realmInstance;
-        public RoutePointManager()
+        public RouteManager()
         {
             _realmInstance = Realm.GetInstance();
         }
-        internal IEnumerable<RoutePoint> GetPointsByRoute()
+        internal IEnumerable<Route> GetRoutes()
         {
-            var points = _realmInstance.All<Model.DB.RoutePoint>();
+            var points = _realmInstance.All<Model.DB.Route>();
             /*foreach (var item in points)
             {
                 _pointsOfNewRoute.Add($"name:{item.Name} latitude:{item.Latitude} longitude: {item.Longitude}");

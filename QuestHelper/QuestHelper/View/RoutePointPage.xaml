@@ -2,6 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="QuestHelper.View.RoutePointPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem NavigationPage.HasNavigationBar="True" Command="{Binding SaveCommand}" Text="V" ></ToolbarItem>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <TableView Intent="Form" HasUnevenRows="True">
             <TableRoot>
