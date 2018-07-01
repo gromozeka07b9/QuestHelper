@@ -57,12 +57,14 @@
     <PackageReference Include="Xam.Plugin.Geolocator">
       <Version>4.5.0.6</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="3.0.0.561731" />
     <PackageReference Include="Xamarin.Android.Support.Design" Version="27.0.2.1" />
     <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="27.0.2.1" />
     <PackageReference Include="Xamarin.Android.Support.v4" Version="27.0.2.1" />
     <PackageReference Include="Xamarin.Android.Support.v7.CardView" Version="27.0.2.1" />
     <PackageReference Include="Xamarin.Android.Support.v7.MediaRouter" Version="27.0.2.1" />
+    <PackageReference Include="Xamarin.Forms">
+      <Version>3.1.0.583944</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -92,7 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\QuestHelper\QuestHelper.csproj">
-      <Project>{2EAAFEB5-2D52-4BDC-A8D4-B1FFF831B1C7}</Project>
+      <Project>{1EE8FBA7-5DF5-4F1D-BB77-0F2C2C220828}</Project>
       <Name>QuestHelper</Name>
     </ProjectReference>
   </ItemGroup>
