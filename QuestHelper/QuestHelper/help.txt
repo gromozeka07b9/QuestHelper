@@ -1,3 +1,7 @@
 ﻿https://www.c-sharpcorner.com/article/realm-mobile-database-with-xamarin-forms-step-by-step-guide/
 https://habr.com/company/microsoft/blog/320338/
 https://forums.xamarin.com/discussion/106280/listview-selecteditem
+https://www.c-sharpcorner.com/article/practical-guide-for-listview-cells-in-xamarin-forms/
+
+pull to refresh
+https://forums.xamarin.com/discussion/35451/xamarin-forms-1-4-0-released

@@ -7,12 +7,10 @@
         <viewmodel:RoutesViewModel />
     </ContentPage.BindingContext>
     <ContentPage.Content>
-        <ListView ItemsSource="{Binding RoutesObj}" x:Name="RoutesListView" >
-            <ListView.ItemTemplate>
+        <ListView ItemsSource="{Binding Routes}" x:Name="RoutesListView" SelectedItem="{Binding SelectedRouteItem,Mode=OneWayToSource}">
+                <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
-                        <Label Text="{Binding RouteId}"/>
-                    </ViewCell>
+                    <TextCell Text="{Binding RouteId}" Detail="{Binding Name}"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

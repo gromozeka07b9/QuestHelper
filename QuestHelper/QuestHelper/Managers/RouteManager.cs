@@ -11,7 +11,8 @@ namespace QuestHelper.Managers
         Realm _realmInstance;
         public RouteManager()
         {
-            _realmInstance = Realm.GetInstance();
+            //_realmInstance = Realm.GetInstance();
+            _realmInstance = RealmAppInstance.GetAppInstance();
         }
         internal IEnumerable<Route> GetRoutes()
         {

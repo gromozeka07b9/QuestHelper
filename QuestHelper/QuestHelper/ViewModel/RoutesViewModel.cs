@@ -1,5 +1,6 @@
 ﻿using QuestHelper.Managers;
 using QuestHelper.Model.DB;
+using QuestHelper.View;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,8 +13,9 @@ namespace QuestHelper.ViewModel
 {
     class RoutesViewModel : INotifyPropertyChanged
     {
-        private List<string> _routes;
-        private IEnumerable<Route> _routesObj;
+        private string _routeId;
+        private IEnumerable<Route> _routes;
+        private Route _routeItem;
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand MapOverviewCommand { get; private set; }
@@ -31,19 +33,18 @@ namespace QuestHelper.ViewModel
             AroundMeCommand = new Command(aroundMeShow);
             MyProfileCommand = new Command(myProfileShow);
             //EditRouteCommand = new Command(editRoute);
-            EditRouteCommand = new Command(editRoute);
+            EditRouteCommand = new Command<string>(editRoute);
 
             RouteManager manager = new RouteManager();
 
-            _routesObj = manager.GetRoutes();
-            _routes = new List<string>();
-            foreach (var item in _routesObj)
+            _routes = manager.GetRoutes();
+            /*foreach (var item in _routesObj)
             {
-                _routes.Add(item.RouteId);
-            }
+                item.Name = "test";
+            }*/
         }
 
-        async void editRoute()
+        async void editRoute(string routeId)
         {
         }
 
@@ -70,7 +71,37 @@ namespace QuestHelper.ViewModel
         {
 
         }
-        public List<string> Routes
+        public string RouteId
+        {
+            set
+            {
+                if (_routeId != value)
+                {
+                    _routeId = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("RouteId"));
+                    }
+                }
+            }
+            get
+            {
+                return _routeId;
+            }
+        }
+        public Route SelectedRouteItem
+        {
+            set
+            {
+                if (_routeItem != value)
+                {
+                    _routeItem = value;
+                    Navigation.PushAsync(new EditRoutePage(value));
+
+                }
+            }
+        }
+        public IEnumerable<Route> Routes
         {
             set
             {
@@ -86,24 +117,6 @@ namespace QuestHelper.ViewModel
             get
             {
                 return _routes;
-            }
-        }
-        public IEnumerable<Route> RoutesObj
-        {
-            set
-            {
-                if (_routesObj != value)
-                {
-                    _routesObj = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("RoutesObj"));
-                    }
-                }
-            }
-            get
-            {
-                return _routesObj;
             }
         }
     }
