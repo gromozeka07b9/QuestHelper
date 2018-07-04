@@ -18,7 +18,7 @@ namespace QuestHelper.ViewModel
         private bool _splashStartScreenIsVisible;
         private bool _routeScreenIsVisible;
         private IEnumerable<RoutePoint> _pointsOfRoute;
-        private Route _routeItem;
+        private Route _route;
         private RoutePointManager _routePointManager = new RoutePointManager();
 
         public INavigation Navigation { get; set; }
@@ -27,18 +27,19 @@ namespace QuestHelper.ViewModel
         public ICommand AddNewRoutePointCommand { get; private set; }
         public ICommand StopRecordRouteCommand { get; private set; }
 
-        public EditRouteViewModel(Route routeItem)
+        public EditRouteViewModel(Route route)
         {
             StartNewRouteCommand = new Command(startNewRoute);
             AddNewRoutePointCommand = new Command(addNewRoutePoint);
             StopRecordRouteCommand = new Command(stopRecordRoute);
-            _routeItem = routeItem;
-            if (!string.IsNullOrEmpty(routeItem.Name))
+            _route = route;
+            if (!string.IsNullOrEmpty(_route.Name))
             {
                 showDetailRouteData();
             }
             else
             {
+                _route.Name = "Неизвестный маршрут";
                 showNewRouteData();
             }
         }
@@ -60,19 +61,19 @@ namespace QuestHelper.ViewModel
         {
             SplashStartScreenIsVisible = false;
             RouteScreenIsVisible = !SplashStartScreenIsVisible;
-            _pointsOfRoute = _routePointManager.GetPointsByRoute(_routeItem);
+            _pointsOfRoute = _routePointManager.GetPointsByRoute(_route);
         }
 
         async void addNewRoutePoint()
         {
-            var route = new Route();
+            /*var route = new Route();
             route.Name = "new";
             var point = new RoutePoint();
             point.Name = "test1";
             point.Longitude = 1;
             point.Latitude = 2;
             point.MainRoute = route;
-            _routePointManager.Save(point, route);
+            _routePointManager.Save(point, route);*/
             /*var realm = Realm.GetInstance();
             realm.Write(() =>
             {
@@ -94,7 +95,7 @@ namespace QuestHelper.ViewModel
             );
 
             PropertyChanged(this, new PropertyChangedEventArgs("PointsOfNewRoute"));*/
-            var routePointPage = new RoutePointPage(_routeItem);
+            var routePointPage = new RoutePointPage(_route);
             await Navigation.PushAsync(routePointPage);
         }
         void stopRecordRoute()

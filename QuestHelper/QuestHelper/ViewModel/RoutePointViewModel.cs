@@ -22,16 +22,16 @@ namespace QuestHelper.ViewModel
         public ICommand SaveCommand { get; private set; }
 
         RoutePoint _point = new RoutePoint();
-        Route _route = new Route();
+        Route _route;
         string _currentPositionString = string.Empty;
 
-        public RoutePointViewModel()
+        public RoutePointViewModel(Route route)
         {
+            _route = route;
             SaveCommand = new Command(saveRoutePoint);
             UpdateCommand = new Command(updateRoutePoint);
             DeleteCommand = new Command(deleteRoutePoint);
             fillCurrentPositionAsync();
-            //currentPosition.
         }
 
         private async void fillCurrentPositionAsync()

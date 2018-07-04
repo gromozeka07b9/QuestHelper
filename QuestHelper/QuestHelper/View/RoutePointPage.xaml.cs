@@ -17,7 +17,7 @@ namespace QuestHelper.View
 		public RoutePointPage (Route route)
 		{
 			InitializeComponent ();
-            BindingContext = new RoutePointViewModel() { Navigation = this.Navigation };
+            BindingContext = new RoutePointViewModel(route) { Navigation = this.Navigation };
         }
 
     }

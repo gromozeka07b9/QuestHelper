@@ -17,5 +17,18 @@ namespace QuestHelper.Model.DB
         public string Description { get; set; }
         public Route MainRoute { get; set; }
         public IList<RoutePointMediaObject> MediaObjects { get; }
+
+        public string CoordinatesByText
+        {
+            get
+            {
+                string coordsText = "Not defined";
+                if ((Latitude > 0) && (Longitude > 0))
+                {
+                    coordsText = $"{Latitude},{Longitude}";
+                }
+                return coordsText;
+            }
+            }
     }
 }
