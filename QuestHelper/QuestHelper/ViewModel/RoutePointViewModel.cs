@@ -17,21 +17,21 @@ namespace QuestHelper.ViewModel
     {
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
-        public ICommand UpdateCommand { get; private set; }
         public ICommand DeleteCommand { get; private set; }
         public ICommand SaveCommand { get; private set; }
 
-        RoutePoint _point = new RoutePoint();
+        RoutePoint _point;
         Route _route;
         string _currentPositionString = string.Empty;
 
-        public RoutePointViewModel(Route route)
+        public RoutePointViewModel(Route route, RoutePoint routePoint)
         {
             _route = route;
+            _point = routePoint;
             SaveCommand = new Command(saveRoutePoint);
-            UpdateCommand = new Command(updateRoutePoint);
             DeleteCommand = new Command(deleteRoutePoint);
-            fillCurrentPositionAsync();
+            if((_point.Latitude == 0)&&(_point.Longitude==0))
+                fillCurrentPositionAsync();
         }
 
         private async void fillCurrentPositionAsync()
@@ -41,23 +41,22 @@ namespace QuestHelper.ViewModel
             _point.Latitude = position.Latitude;
             _point.Longitude = position.Longitude;
             Coordinates = _point.Latitude + "," + _point.Longitude;
-            //Coordinates = _currentPositionString;
         }
 
         void saveRoutePoint()
         {
-            RoutePointManager manager = new RoutePointManager();
-            _point.MainRoute = _route;
-            if (!manager.Save(_point, _route))
+            if(_point.MainRoute == null)
             {
-                //куда-то ошибку надо фиксировать
-            };
+                _point.MainRoute = _route;
+                RoutePointManager manager = new RoutePointManager();
+                if (!manager.Add(_point, _route))
+                {
+                    //куда-то ошибку надо фиксировать
+                };
+            }
             Navigation.PopAsync();
         }
 
-        async void updateRoutePoint()
-        {
-        }
         async void deleteRoutePoint()
         {
 
@@ -84,7 +83,11 @@ namespace QuestHelper.ViewModel
             {
                 if (_point.Name != value)
                 {
-                    _point.Name = value;
+                    var realm = RoutePointManager.GetRealmInstance();
+                    realm.Write(() =>
+                    {
+                        _point.Name = value;
+                    });
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
                 }
             }
@@ -93,13 +96,18 @@ namespace QuestHelper.ViewModel
                 return _point.Name;
             }
         }
+
         public string Description
         {
             set
             {
                 if (_point.Description != value)
                 {
-                    _point.Description = value;
+                    var realm = RoutePointManager.GetRealmInstance();
+                    realm.Write(() =>
+                    {
+                        _point.Description = value;
+                    });
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Description"));
                 }
             }

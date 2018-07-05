@@ -14,11 +14,10 @@ namespace QuestHelper.View
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class RoutePointPage : ContentPage
 	{
-		public RoutePointPage (Route route)
+		public RoutePointPage (Route route, RoutePoint routePoint)
 		{
 			InitializeComponent ();
-            BindingContext = new RoutePointViewModel(route) { Navigation = this.Navigation };
+            BindingContext = new RoutePointViewModel(route, routePoint) { Navigation = this.Navigation };
         }
-
     }
 }

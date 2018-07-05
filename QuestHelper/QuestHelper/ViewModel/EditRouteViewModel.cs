@@ -6,6 +6,7 @@ using Realms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -19,6 +20,7 @@ namespace QuestHelper.ViewModel
         private bool _routeScreenIsVisible;
         private IEnumerable<RoutePoint> _pointsOfRoute;
         private Route _route;
+        private RoutePoint _point;
         private RoutePointManager _routePointManager = new RoutePointManager();
 
         public INavigation Navigation { get; set; }
@@ -48,54 +50,26 @@ namespace QuestHelper.ViewModel
         {
             SplashStartScreenIsVisible = true;
             RouteScreenIsVisible = !SplashStartScreenIsVisible;
-            /*_route = new Route();
-            IEnumerable<RoutePoint> points = _routePointManager.GetPointsByRoute();
-            _pointsOfNewRoute = new List<string>();
-            foreach (var item in points)
-            {
-                _pointsOfNewRoute.Add($"name:{item.Name} latitude:{item.Latitude} longitude: {item.Longitude}");
-            }*/
         }
 
         private void showDetailRouteData()
         {
             SplashStartScreenIsVisible = false;
             RouteScreenIsVisible = !SplashStartScreenIsVisible;
-            _pointsOfRoute = _routePointManager.GetPointsByRoute(_route);
+            var _points = _routePointManager.GetPointsByRoute(_route);//.ToList().Add(new RoutePoint() { });
+            var newItemCollection = new List<RoutePoint>();
+            newItemCollection.Add(new RoutePoint());
+            _pointsOfRoute = _points.Concat(newItemCollection);
         }
+
+        /*private void addPossibleNewPoint(IEnumerable<RoutePoint> pointsOfRoute)
+        {
+            pointsOfRoute.ToList().Add(new RoutePoint() { });
+        }*/
 
         async void addNewRoutePoint()
         {
-            /*var route = new Route();
-            route.Name = "new";
-            var point = new RoutePoint();
-            point.Name = "test1";
-            point.Longitude = 1;
-            point.Latitude = 2;
-            point.MainRoute = route;
-            _routePointManager.Save(point, route);*/
-            /*var realm = Realm.GetInstance();
-            realm.Write(() =>
-            {
-                realm.Add(point);
-            }
-            );*/
-            /*var realm = Realm.GetInstance();
-            var locator = CrossGeolocator.Current;
-            var currentPosition = await locator.GetPositionAsync(TimeSpan.FromSeconds(10));
-            var cache = _pointsOfNewRoute;
-            _pointsOfNewRoute = new List<string>();
-            _pointsOfNewRoute.AddRange(cache);
-            _pointsOfNewRoute.Add("Широта:" + currentPosition.Latitude + " Долгота:" + currentPosition.Longitude);
-
-            realm.Write(()=>
-                {
-                    realm.Add(new Model.DB.RoutePoint() { Name="test_" + DateTime.Now, Latitude= currentPosition.Latitude , Longitude = currentPosition.Longitude });
-                }
-            );
-
-            PropertyChanged(this, new PropertyChangedEventArgs("PointsOfNewRoute"));*/
-            var routePointPage = new RoutePointPage(_route);
+            var routePointPage = new RoutePointPage(_route, new RoutePoint());
             await Navigation.PushAsync(routePointPage);
         }
         void stopRecordRoute()
@@ -109,6 +83,19 @@ namespace QuestHelper.ViewModel
             SplashStartScreenIsVisible = false;
             RouteScreenIsVisible = !SplashStartScreenIsVisible;
         }
+        public RoutePoint SelectedRoutePointItem
+        {
+            set
+            {
+                if (_point != value)
+                {
+                    _point = value;
+                    Navigation.PushAsync(new RoutePointPage(_route, value));
+
+                }
+            }
+        }
+
         public bool SplashStartScreenIsVisible
         {
             set

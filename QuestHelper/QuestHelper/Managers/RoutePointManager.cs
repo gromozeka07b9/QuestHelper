@@ -12,20 +12,18 @@ namespace QuestHelper.Managers
         Realm _realmInstance;
         public RoutePointManager()
         {
-            //_realmInstance = Realm.GetInstance();
             _realmInstance = RealmAppInstance.GetAppInstance();
+        }
+        internal static Realm GetRealmInstance()
+        {
+            return RealmAppInstance.GetAppInstance();
         }
         internal IEnumerable<RoutePoint> GetPointsByRoute(Route routeItem)
         {
-            var points = _realmInstance.All<Model.DB.RoutePoint>().Where(point=>point.MainRoute==routeItem);
-            /*foreach (var item in points)
-            {
-                _pointsOfNewRoute.Add($"name:{item.Name} latitude:{item.Latitude} longitude: {item.Longitude}");
-            }*/
-            return points;
+            return _realmInstance.All<Model.DB.RoutePoint>().Where(point => point.MainRoute == routeItem);
         }
-
-        internal bool Save(RoutePoint point, Route route)
+        
+        internal bool Add(RoutePoint point, Route route)
         {
             bool result = false;
             try
@@ -33,6 +31,8 @@ namespace QuestHelper.Managers
                 _realmInstance.Write(() =>
                 {
                     _realmInstance.Add(route);
+                    point.IsNew = false;
+                    point.CreateDate = DateTime.Now;
                     _realmInstance.Add(point);
                 }
                 );
