@@ -3,27 +3,27 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="QuestHelper.View.RoutePointPage" BackgroundColor="#292a2c">
     <ContentPage.ToolbarItems>
-        <ToolbarItem NavigationPage.HasNavigationBar="True" Command="{Binding SaveCommand}" Text="V" ></ToolbarItem>
+        <ToolbarItem NavigationPage.HasNavigationBar="True" Command="{Binding SaveCommand}" Icon="plus.png"></ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout Orientation="Vertical">
-            <Image Source="test.jpg"></Image>
-            <StackLayout Orientation="Horizontal">
+            <Image Source="emptyimg.jpg"></Image>
+            <StackLayout Orientation="Horizontal" Padding="5">
                 <Image Source="place.png" WidthRequest="32" HeightRequest="32"></Image>
-                <Label Text="{Binding Coordinates}" TextColor="AliceBlue" FontSize="12" />
+                <Label Text="{Binding Coordinates}" Margin="5" FontSize="15" TextColor="AliceBlue" VerticalTextAlignment="Center"/>
             </StackLayout>
-            <StackLayout Orientation="Horizontal">
+            <StackLayout Orientation="Horizontal" Padding="5">
                 <Image Source="domain.png" WidthRequest="32" HeightRequest="32"></Image>
-                <Label Text="{Binding Address}" TextColor="AliceBlue"  FontSize="12" />
+                <Label Text="{Binding Address}" Margin="5" TextColor="AliceBlue"  FontSize="15" VerticalTextAlignment="Center"/>
             </StackLayout>
-            <StackLayout Orientation="Horizontal">
+            <StackLayout Orientation="Horizontal" Padding="5">
                 <Image Source="text.png" WidthRequest="32" HeightRequest="32"></Image>
-                <Entry Placeholder="Название" Text="{Binding Name}" TextColor="AliceBlue"  FontSize="12" Keyboard="Keyboard.Default">
+                <Entry Placeholder="Название" Margin="5" Text="{Binding Name}" HorizontalOptions="FillAndExpand" TextColor="AliceBlue"  FontSize="15" Keyboard="Keyboard.Default">
                 </Entry>
             </StackLayout>
-            <StackLayout Orientation="Horizontal">
+            <StackLayout Orientation="Horizontal" Padding="5">
                 <Image Source="help_outline.png" WidthRequest="32" HeightRequest="32"></Image>
-                <Editor Text="{Binding Description}" TextColor="AliceBlue"  HorizontalOptions="FillAndExpand"></Editor>
+                <Editor Text="{Binding Description}" TextColor="AliceBlue" HorizontalOptions="FillAndExpand"></Editor>
             </StackLayout>
         </StackLayout>
         <!--TableView Intent="Form" HasUnevenRows="True">

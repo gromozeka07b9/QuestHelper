@@ -46,6 +46,7 @@ namespace QuestHelper.Droid
             LoadApplication(new App());
             _bottomBar = BottomBar.Attach(this, bundle);
             _bottomBar.SetItems(Resource.Menu.bottombar_menu);
+            _bottomBar.MapColorForTab(1, "#FF9800");
             _bottomBar.SetOnTabClickListener(this);
             _bottomBar.UseDarkTheme();
         }

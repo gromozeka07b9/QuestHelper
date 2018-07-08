@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
   <item
       android:id="@+id/bottomBarOverviewPage"
-      android:icon="@drawable/earth"
+      android:icon="@drawable/map"
       android:title="Карта" />
   <item
       android:id="@+id/bottomBarRoutesPage"
@@ -10,10 +10,10 @@
       android:title="Маршруты" />
   <item
       android:id="@+id/bottomBarNewRoutePage"
-      android:icon="@drawable/adjust"
+      android:icon="@drawable/plus"
       android:title="Новый" />
   <item
       android:id="@+id/bottomBarAccountPage"
-      android:icon="@drawable/account"
+      android:icon="@drawable/triple"
       android:title="Профиль" />
 </menu>

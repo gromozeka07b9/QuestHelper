@@ -5,6 +5,7 @@ using QuestHelper.View;
 using Realms;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,7 @@ namespace QuestHelper.ViewModel
     {
         private bool _splashStartScreenIsVisible;
         private bool _routeScreenIsVisible;
-        private IEnumerable<RoutePoint> _pointsOfRoute;
+        private ObservableCollection<RoutePoint> _pointsOfRoute = new ObservableCollection<RoutePoint>();
         private Route _route;
         private RoutePoint _point;
         private RoutePointManager _routePointManager = new RoutePointManager();
@@ -27,12 +28,19 @@ namespace QuestHelper.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand ShowNewRouteDialogCommand { get; private set; }
         public ICommand AddNewRoutePointCommand { get; private set; }
+        public ICommand StartDialogCommand { get; private set; }
 
         public RouteViewModel(Route route)
         {
             ShowNewRouteDialogCommand = new Command(showNewRouteData);
             AddNewRoutePointCommand = new Command(addNewRoutePoint);
+            StartDialogCommand = new Command(startDialog);
             _route = route;
+            startDialog();
+        }
+
+        private void startDialog()
+        {
             if (!string.IsNullOrEmpty(_route.Name))
             {
                 showRouteData();
@@ -54,16 +62,22 @@ namespace QuestHelper.ViewModel
         {
             SplashStartScreenIsVisible = false;
             RouteScreenIsVisible = !SplashStartScreenIsVisible;
-            var _points = _routePointManager.GetPointsByRoute(_route);
+            /*var _points = _routePointManager.GetPointsByRoute(_route);
             var newItemCollection = new List<RoutePoint>();
             newItemCollection.Add(new RoutePoint());
-            _pointsOfRoute = _points.Concat(newItemCollection);
+            _pointsOfRoute = _points.Concat(newItemCollection);*/
+            PointsOfRoute.Clear();
+            foreach(var item in _routePointManager.GetPointsByRoute(_route))
+            {
+                PointsOfRoute.Add(item);
+            }
+            PointsOfRoute.Add(new RoutePoint());
         }
         void showNewRouteData()
         {
             SplashStartScreenIsVisible = false;
             RouteScreenIsVisible = !SplashStartScreenIsVisible;
-            PointsOfRoute = new List<RoutePoint>() { new RoutePoint() };
+            PointsOfRoute = new ObservableCollection<RoutePoint>() { new RoutePoint() };
         }
 
         async void addNewRoutePoint()
@@ -79,8 +93,7 @@ namespace QuestHelper.ViewModel
                 if (_point != value)
                 {
                     _point = value;
-                    Navigation.PushAsync(new RoutePointPage(_route, value));
-
+                    Navigation.PushAsync(new RoutePointPage(_route, value));                
                 }
             }
         }
@@ -121,7 +134,7 @@ namespace QuestHelper.ViewModel
                 return _routeScreenIsVisible;
             }
         }
-        public IEnumerable<RoutePoint> PointsOfRoute
+        public ObservableCollection<RoutePoint> PointsOfRoute
         {
             set
             {

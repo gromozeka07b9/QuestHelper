@@ -5,39 +5,34 @@
         <ListView x:Name="MenuItemsListView"
               SeparatorVisibility="None"
               HasUnevenRows="true"
-              ItemsSource="{Binding MenuItems}" BackgroundColor="#263238">
+              ItemsSource="{Binding MenuItems}" BackgroundColor="#292a2c">
       <ListView.Header>
-        <Grid BackgroundColor="White">
+          <Grid BackgroundColor="#292a2c">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="30"/>
           </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="150"/>
                 <RowDefinition Height="10"/>
                 <RowDefinition Height="10"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-                    <Image Grid.Column="1" Grid.Row="0" Source="aerologo.png" Margin="20" HorizontalOptions="Fill" VerticalOptions="Fill">
-                        <!--Image.GestureRecognizers>
-                            <TapGestureRecognizer
-                                    Tapped="OnLogoTapped"
-                                    NumberOfTapsRequired="1" />
-                        </Image.GestureRecognizers-->
-                    </Image>
-                </Grid>
+                <Image Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="3" Source="test.jpg" Margin="0" HorizontalOptions="Fill" VerticalOptions="Start">
+                </Image>
+            </Grid>
       </ListView.Header>
       <ListView.ItemTemplate>
         <DataTemplate>
           <ViewCell>
-            <StackLayout Padding="15,10" HorizontalOptions="FillAndExpand" Orientation="Horizontal" BackgroundColor="#263238">
-                            <Image Source="{Binding IconName}" VerticalOptions="Start" WidthRequest="32" Margin="0,0,10,0"/>
-                            <Label VerticalOptions="FillAndExpand" 
-                    VerticalTextAlignment="Center" 
-                    Text="{Binding Title}" 
-                    TextColor="#ECEFF1"
-                    FontSize="21"/>
+            <StackLayout Padding="15,10" HorizontalOptions="FillAndExpand" Orientation="Horizontal" BackgroundColor="#292a2c">
+            <Image Source="{Binding IconName}" VerticalOptions="Start" WidthRequest="32" Margin="0,0,10,0"/>
+            <Label VerticalOptions="FillAndExpand" 
+                VerticalTextAlignment="Center" 
+                Text="{Binding Title}" 
+                TextColor="#ECEFF1"
+                FontSize="15"/>
             </StackLayout>
           </ViewCell>
         </DataTemplate>
