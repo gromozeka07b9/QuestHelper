@@ -12,19 +12,19 @@ using Xamarin.Forms.Xaml;
 namespace QuestHelper.View
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class EditRoutePage : ContentPage
+	public partial class RoutePage : ContentPage
 	{
-		public EditRoutePage()
+		public RoutePage()
 		{
 
             InitializeComponent ();
-            BindingContext = new EditRouteViewModel(new Route()) { Navigation = this.Navigation };
+            BindingContext = new RouteViewModel(new Route()) { Navigation = this.Navigation };
         }
-        public EditRoutePage(Route routeItem)
+        public RoutePage(Route routeItem)
         {
 
             InitializeComponent();
-            BindingContext = new EditRouteViewModel(routeItem) { Navigation = this.Navigation };
+            BindingContext = new RouteViewModel(routeItem) { Navigation = this.Navigation };
         }
     }
 }

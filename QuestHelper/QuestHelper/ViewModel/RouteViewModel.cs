@@ -14,7 +14,7 @@ using Xamarin.Forms.Xaml;
 
 namespace QuestHelper.ViewModel
 {
-    public class EditRouteViewModel : INotifyPropertyChanged
+    public class RouteViewModel : INotifyPropertyChanged
     {
         private bool _splashStartScreenIsVisible;
         private bool _routeScreenIsVisible;
@@ -25,64 +25,53 @@ namespace QuestHelper.ViewModel
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
-        public ICommand StartNewRouteCommand { get; private set; }
+        public ICommand ShowNewRouteDialogCommand { get; private set; }
         public ICommand AddNewRoutePointCommand { get; private set; }
-        public ICommand StopRecordRouteCommand { get; private set; }
 
-        public EditRouteViewModel(Route route)
+        public RouteViewModel(Route route)
         {
-            StartNewRouteCommand = new Command(startNewRoute);
+            ShowNewRouteDialogCommand = new Command(showNewRouteData);
             AddNewRoutePointCommand = new Command(addNewRoutePoint);
-            StopRecordRouteCommand = new Command(stopRecordRoute);
             _route = route;
             if (!string.IsNullOrEmpty(_route.Name))
             {
-                showDetailRouteData();
+                showRouteData();
             }
             else
             {
                 _route.Name = "Неизвестный маршрут";
-                showNewRouteData();
+                showNewRouteWarningDialog();
             }
         }
 
-        private void showNewRouteData()
+        private void showNewRouteWarningDialog()
         {
             SplashStartScreenIsVisible = true;
             RouteScreenIsVisible = !SplashStartScreenIsVisible;
         }
 
-        private void showDetailRouteData()
+        private void showRouteData()
         {
             SplashStartScreenIsVisible = false;
             RouteScreenIsVisible = !SplashStartScreenIsVisible;
-            var _points = _routePointManager.GetPointsByRoute(_route);//.ToList().Add(new RoutePoint() { });
+            var _points = _routePointManager.GetPointsByRoute(_route);
             var newItemCollection = new List<RoutePoint>();
             newItemCollection.Add(new RoutePoint());
             _pointsOfRoute = _points.Concat(newItemCollection);
         }
-
-        /*private void addPossibleNewPoint(IEnumerable<RoutePoint> pointsOfRoute)
+        void showNewRouteData()
         {
-            pointsOfRoute.ToList().Add(new RoutePoint() { });
-        }*/
+            SplashStartScreenIsVisible = false;
+            RouteScreenIsVisible = !SplashStartScreenIsVisible;
+            PointsOfRoute = new List<RoutePoint>() { new RoutePoint() };
+        }
 
         async void addNewRoutePoint()
         {
             var routePointPage = new RoutePointPage(_route, new RoutePoint());
             await Navigation.PushAsync(routePointPage);
         }
-        void stopRecordRoute()
-        {
-            _pointsOfRoute = new List<RoutePoint>();
-            PropertyChanged(this, new PropertyChangedEventArgs("PointsOfNewRoute"));
-        }
 
-        void startNewRoute()
-        {
-            SplashStartScreenIsVisible = false;
-            RouteScreenIsVisible = !SplashStartScreenIsVisible;
-        }
         public RoutePoint SelectedRoutePointItem
         {
             set

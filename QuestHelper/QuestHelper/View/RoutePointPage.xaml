@@ -1,12 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="QuestHelper.View.RoutePointPage">
+             x:Class="QuestHelper.View.RoutePointPage" BackgroundColor="#292a2c">
     <ContentPage.ToolbarItems>
         <ToolbarItem NavigationPage.HasNavigationBar="True" Command="{Binding SaveCommand}" Text="V" ></ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <TableView Intent="Form" HasUnevenRows="True">
+        <StackLayout Orientation="Vertical">
+            <Image Source="test.jpg"></Image>
+            <StackLayout Orientation="Horizontal">
+                <Image Source="place.png" WidthRequest="32" HeightRequest="32"></Image>
+                <Label Text="{Binding Coordinates}" TextColor="AliceBlue" FontSize="12" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Image Source="domain.png" WidthRequest="32" HeightRequest="32"></Image>
+                <Label Text="{Binding Address}" TextColor="AliceBlue"  FontSize="12" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Image Source="text.png" WidthRequest="32" HeightRequest="32"></Image>
+                <Entry Placeholder="Название" Text="{Binding Name}" TextColor="AliceBlue"  FontSize="12" Keyboard="Keyboard.Default">
+                </Entry>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Image Source="help_outline.png" WidthRequest="32" HeightRequest="32"></Image>
+                <Editor Text="{Binding Description}" TextColor="AliceBlue"  HorizontalOptions="FillAndExpand"></Editor>
+            </StackLayout>
+        </StackLayout>
+        <!--TableView Intent="Form" HasUnevenRows="True">
             <TableRoot>
                 <TableSection Title="Параметры данной точки:">
                     <ViewCell>
@@ -26,6 +46,6 @@
                     </ViewCell>
                 </TableSection>
             </TableRoot>
-        </TableView>
+        </-->
     </ContentPage.Content>
 </ContentPage>

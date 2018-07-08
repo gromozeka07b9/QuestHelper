@@ -51,7 +51,7 @@ namespace QuestHelper.ViewModel
                 if (_routeItem != value)
                 {
                     _routeItem = value;
-                    Navigation.PushAsync(new EditRoutePage(value));
+                    Navigation.PushAsync(new RoutePage(value));
 
                 }
             }

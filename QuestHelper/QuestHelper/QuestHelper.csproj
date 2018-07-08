@@ -18,8 +18,8 @@
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="View\MainPage.xaml.cs">
       <DependentUpon>*.xaml</DependentUpon>
     </Compile>
-    <Compile Update="View\EditRoutePage.xaml.cs">
-      <DependentUpon>EditRoutePage.xaml</DependentUpon>
+    <Compile Update="View\RoutePage.xaml.cs">
+      <DependentUpon>RoutePage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -33,7 +33,7 @@
     <EmbeddedResource Update="View\MasterMainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="View\EditRoutePage.xaml">
+    <EmbeddedResource Update="View\RoutePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="View\RoutePointPage.xaml">

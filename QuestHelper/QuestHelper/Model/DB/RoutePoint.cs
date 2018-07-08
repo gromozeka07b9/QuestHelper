@@ -14,6 +14,7 @@ namespace QuestHelper.Model.DB
         public DateTimeOffset UpdateDate { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        public string Address { get; set; }
         public string Description { get; set; }
         public bool IsNew { get; set; } = true;
         public Route MainRoute { get; set; }
@@ -30,6 +31,6 @@ namespace QuestHelper.Model.DB
                 }
                 return coordsText;
             }
-            }
+        }
     }
 }

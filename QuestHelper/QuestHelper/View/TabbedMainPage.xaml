@@ -5,7 +5,7 @@
              x:Class="QuestHelper.View.TabbedMainPage" >
     <View:MapOverviewPage/>
     <View:RoutesPage />
-    <View:EditRoutePage />
+    <View:RoutePage />
     <View:AroundMePage />
     <View:UserProfilePage />
     <View:AboutPage />
