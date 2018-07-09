@@ -46,8 +46,8 @@
                                     </StackLayout>
                                     <StackLayout Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsNew}">
                                         <StackLayout Orientation="Horizontal">
-                                            <Image Source="plus.png"></Image>
-                                            <Label Text="Нажмите чтобы добавить новую точку" TextColor="White" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="18"></Label>
+                                            <!--Image Source="plus.png"></-->
+                                            <Label Text="Нажмите чтобы добавить новую точку" TextColor="White" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="18" Margin="10"></Label>
                                         </StackLayout>
                                     </StackLayout>
                                 </Grid>

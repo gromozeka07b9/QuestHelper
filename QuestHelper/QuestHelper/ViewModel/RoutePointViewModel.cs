@@ -1,5 +1,6 @@
 ﻿using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
+using Plugin.Media;
 using QuestHelper.Managers;
 using QuestHelper.Model.DB;
 using System;
@@ -20,10 +21,12 @@ namespace QuestHelper.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand DeleteCommand { get; private set; }
         public ICommand SaveCommand { get; private set; }
+        public ICommand TakePhotoCommand { get; private set; }
 
         RoutePoint _point;
         Route _route;
         string _currentPositionString = string.Empty;
+        string _imageFilePath = string.Empty;
 
         public RoutePointViewModel(Route route, RoutePoint routePoint)
         {
@@ -31,9 +34,35 @@ namespace QuestHelper.ViewModel
             _point = routePoint;
             SaveCommand = new Command(saveRoutePoint);
             DeleteCommand = new Command(deleteRoutePoint);
-            if((_point.Latitude == 0)&&(_point.Longitude==0))
+            TakePhotoCommand = new Command(takePhoto);
+            if ((_point.Latitude == 0)&&(_point.Longitude==0))
                 fillCurrentPositionAsync();
             Coordinates = Latitude + "," + Longitude;
+        }
+
+        private async void takePhoto(object obj)
+        {
+
+            await CrossMedia.Current.Initialize();
+
+            if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+            {
+                //DisplayAlert("No Camera", ":( No camera available.", "OK");
+                return;
+            }
+            var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+            {
+                Directory = "Photos",
+                Name = "img.jpg"
+            });
+            /// storage / emulated / 0 / Android / data / com.sd.QuestHelper / files / Pictures / Sample / test_2.jpg
+            //_imageFilePath = file.AlbumPath;
+            ImagePath = file.AlbumPath;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImageSource"));
+            if (file == null)
+            {
+                return;
+            }
         }
 
         private async void fillCurrentPositionAsync()
@@ -82,6 +111,13 @@ namespace QuestHelper.ViewModel
 
         }
 
+        public ImageSource ImageSource
+        {
+            get
+            {
+                return StreamImageSource.FromFile(ImagePath);
+            }
+        }
         public double Latitude
         {
             set
@@ -155,6 +191,32 @@ namespace QuestHelper.ViewModel
             get
             {
                 return _point.Name;
+            }
+        }
+        public string ImagePath
+        {
+            set
+            {
+                if (_imageFilePath != value)
+                {
+                    var realm = RoutePointManager.GetRealmInstance();
+                    realm.Write(() =>
+                    {
+                        _point.MediaObjects.Clear();
+                        _point.MediaObjects.Add(new RoutePointMediaObject() { FileName = value, Point = _point});
+                        _point.UpdateDate = DateTime.Now;
+                    });
+                    _imageFilePath = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagePath"));
+                }
+            }
+            get
+            {
+                if(_point.MediaObjects.Count > 0)
+                {
+                    _imageFilePath = _point.MediaObjects[0].FileName;
+                }
+                return _imageFilePath;
             }
         }
 
