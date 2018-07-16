@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -33,7 +34,7 @@ namespace QuestHelper.ViewModel
         public RouteViewModel(Route route)
         {
             ShowNewRouteDialogCommand = new Command(showNewRouteData);
-            AddNewRoutePointCommand = new Command(addNewRoutePoint);
+            AddNewRoutePointCommand = new Command(addNewRoutePointAsync);
             StartDialogCommand = new Command(startDialog);
             _route = route;
             startDialog();
@@ -66,12 +67,16 @@ namespace QuestHelper.ViewModel
             var newItemCollection = new List<RoutePoint>();
             newItemCollection.Add(new RoutePoint());
             _pointsOfRoute = _points.Concat(newItemCollection);*/
-            PointsOfRoute.Clear();
+            var points = _routePointManager.GetPointsByRoute(_route);
+            if (points.Count() == 0)
+                PointsOfRoute = new ObservableCollection<RoutePoint>();
+            else PointsOfRoute = new ObservableCollection<RoutePoint>(points);
+            /*PointsOfRoute.Clear();
             foreach(var item in _routePointManager.GetPointsByRoute(_route))
             {
                 PointsOfRoute.Add(item);
             }
-            PointsOfRoute.Add(new RoutePoint());
+            PointsOfRoute.Add(new RoutePoint());*/
         }
         void showNewRouteData()
         {
@@ -80,10 +85,10 @@ namespace QuestHelper.ViewModel
             PointsOfRoute = new ObservableCollection<RoutePoint>() { new RoutePoint() };
         }
 
-        async void addNewRoutePoint()
+        async void addNewRoutePointAsync()
         {
             var routePointPage = new RoutePointPage(_route, new RoutePoint());
-            await Navigation.PushAsync(routePointPage);
+            await Navigation.PushAsync(routePointPage, true);
         }
 
         public RoutePoint SelectedRoutePointItem
@@ -92,8 +97,9 @@ namespace QuestHelper.ViewModel
             {
                 if (_point != value)
                 {
-                    _point = value;
-                    Navigation.PushAsync(new RoutePointPage(_route, value));                
+                    Navigation.PushAsync(new RoutePointPage(_route, value));
+                    _point = null;
+                    PropertyChanged(this, new PropertyChangedEventArgs("SelectedRoutePointItem"));
                 }
             }
         }

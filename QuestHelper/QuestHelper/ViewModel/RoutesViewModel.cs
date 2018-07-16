@@ -52,7 +52,8 @@ namespace QuestHelper.ViewModel
                 {
                     _routeItem = value;
                     Navigation.PushAsync(new RoutePage(value));
-
+                    _routeItem = null;
+                    PropertyChanged(this, new PropertyChangedEventArgs("SelectedRouteItem"));
                 }
             }
         }

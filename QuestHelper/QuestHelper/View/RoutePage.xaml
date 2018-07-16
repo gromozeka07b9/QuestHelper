@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:QuestHelper.ViewModel;assembly=QuestHelper"
              xmlns:local="clr-namespace:QuestHelper.View.Converters"
-             x:Class="QuestHelper.View.RoutePage" BackgroundColor="#292a2c">
+             x:Class="QuestHelper.View.RoutePage" BackgroundColor="#292a2c" Appearing="ContentPage_Appearing">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:NegativeBoolConverter  x:Key="inverter" />
@@ -26,7 +26,7 @@
                 </Button>
             </StackLayout>
             <StackLayout Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Orientation="Vertical" IsVisible="{Binding RouteScreenIsVisible}">
-                <ListView Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="2" RowHeight="80" ItemsSource="{Binding PointsOfRoute}" SelectedItem="{Binding SelectedRoutePointItem,Mode=OneWayToSource}" IsPullToRefreshEnabled="True" RefreshCommand="{Binding StartDialogCommand}">
+                <ListView Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="2" RowHeight="80" ItemsSource="{Binding PointsOfRoute}" SelectedItem="{Binding SelectedRoutePointItem,Mode=TwoWay}" IsPullToRefreshEnabled="False" RefreshCommand="{Binding StartDialogCommand}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
@@ -44,17 +44,17 @@
                                         <Label Text="{Binding CoordinatesByText}" TextColor="White" FontSize="10" HorizontalOptions="Start"></Label>
                                         <Label Text="{Binding CreateDate.LocalDateTime}" TextColor="White" FontSize="10" HorizontalOptions="Start"></Label>
                                     </StackLayout>
-                                    <StackLayout Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsNew}">
-                                        <StackLayout Orientation="Horizontal">
-                                            <!--Image Source="plus.png"></-->
-                                            <Label Text="Нажмите чтобы добавить новую точку" TextColor="White" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="18" Margin="10"></Label>
-                                        </StackLayout>
-                                    </StackLayout>
                                 </Grid>
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+                <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                    <StackLayout Orientation="Horizontal" Padding="2">
+                        <!--Image Source="plus.png"></-->
+                        <Button Text="Новая точка" Command="{Binding AddNewRoutePointCommand}" HorizontalOptions="FillAndExpand" TextColor="White" FontSize="18" Margin="10"></Button>
+                    </StackLayout>
+                </StackLayout>
             </StackLayout>
         </Grid>
     </ContentPage.Content>

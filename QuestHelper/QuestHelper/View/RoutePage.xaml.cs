@@ -11,20 +11,26 @@ using Xamarin.Forms.Xaml;
 
 namespace QuestHelper.View
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class RoutePage : ContentPage
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class RoutePage : ContentPage
 	{
-		public RoutePage()
+        RouteViewModel vm;
+        public RoutePage()
 		{
-
             InitializeComponent ();
-            BindingContext = new RouteViewModel(new Route()) { Navigation = this.Navigation };
+            vm = new RouteViewModel(new Route()) { Navigation = this.Navigation };
+            BindingContext = vm;
         }
         public RoutePage(Route routeItem)
         {
 
             InitializeComponent();
-            BindingContext = new RouteViewModel(routeItem) { Navigation = this.Navigation };
+            vm = new RouteViewModel(routeItem) { Navigation = this.Navigation };
+            BindingContext = vm;
+        }
+
+        private void ContentPage_Appearing(object sender, EventArgs e)
+        {
         }
     }
 }

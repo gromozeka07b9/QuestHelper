@@ -20,8 +20,8 @@ namespace QuestHelper.Managers
         }
         internal IEnumerable<RoutePoint> GetPointsByRoute(Route routeItem)
         {
-            //return _realmInstance.All<Model.DB.RoutePoint>().Where(point => point.MainRoute == routeItem).OrderBy(point=>point.UpdateDate).ThenByDescending(point=>point.UpdateDate);
-            return _realmInstance.All<Model.DB.RoutePoint>().Where(point => point.MainRoute == routeItem).OrderBy(point => point.CreateDate);
+            var collection = _realmInstance.All<Model.DB.RoutePoint>().Where(point => point.MainRoute == routeItem).OrderBy(point => point.CreateDate);
+            return collection;
         }
 
         internal bool Add(RoutePoint point, Route route)

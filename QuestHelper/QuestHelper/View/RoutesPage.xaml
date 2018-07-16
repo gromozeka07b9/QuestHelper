@@ -7,7 +7,7 @@
         <viewmodel:RoutesViewModel />
     </ContentPage.BindingContext>
     <ContentPage.Content>
-        <ListView ItemsSource="{Binding Routes}" x:Name="RoutesListView" RowHeight="96"  SelectedItem="{Binding SelectedRouteItem,Mode=OneWayToSource}">
+        <ListView ItemsSource="{Binding Routes}" x:Name="RoutesListView" RowHeight="96"  SelectedItem="{Binding SelectedRouteItem,Mode=TwoWay}">
                 <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
