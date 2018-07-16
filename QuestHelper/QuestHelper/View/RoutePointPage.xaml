@@ -7,9 +7,11 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout Orientation="Vertical">
-            <!--Image Source="emptyimg.jpg"></-->
-            <Image Source="{Binding ImageSource}" WidthRequest="400" HeightRequest="200" Aspect="AspectFit"></Image>
-            <Button Text="photo" Command="{Binding TakePhotoCommand}"></Button>
+            <Image Source="{Binding ImageSource}" WidthRequest="400" HeightRequest="200" Aspect="AspectFit">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding TakePhotoCommand}" />
+                </Image.GestureRecognizers>
+            </Image>
             <StackLayout Orientation="Horizontal" Padding="5">
                 <Image Source="place.png" WidthRequest="32" HeightRequest="32"></Image>
                 <Label Text="{Binding Coordinates}" Margin="5" FontSize="15" TextColor="AliceBlue" VerticalTextAlignment="Center"/>

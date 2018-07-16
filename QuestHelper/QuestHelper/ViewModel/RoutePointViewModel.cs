@@ -215,6 +215,9 @@ namespace QuestHelper.ViewModel
                 if(_point.MediaObjects.Count > 0)
                 {
                     _imageFilePath = _point.MediaObjects[0].FileName;
+                } else
+                {
+                    _imageFilePath = "emptyimg.png";
                 }
                 return _imageFilePath;
             }

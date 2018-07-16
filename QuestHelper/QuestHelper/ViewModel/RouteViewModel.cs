@@ -24,6 +24,8 @@ namespace QuestHelper.ViewModel
         private Route _route;
         private RoutePoint _point;
         private RoutePointManager _routePointManager = new RoutePointManager();
+        private bool _listIsRefreshing;
+        private bool _noPointWarningIsVisible;
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -51,6 +53,7 @@ namespace QuestHelper.ViewModel
                 _route.Name = "Неизвестный маршрут";
                 showNewRouteWarningDialog();
             }
+            ListIsRefreshing = false;
         }
 
         private void showNewRouteWarningDialog()
@@ -69,14 +72,14 @@ namespace QuestHelper.ViewModel
             _pointsOfRoute = _points.Concat(newItemCollection);*/
             var points = _routePointManager.GetPointsByRoute(_route);
             if (points.Count() == 0)
-                PointsOfRoute = new ObservableCollection<RoutePoint>();
-            else PointsOfRoute = new ObservableCollection<RoutePoint>(points);
-            /*PointsOfRoute.Clear();
-            foreach(var item in _routePointManager.GetPointsByRoute(_route))
             {
-                PointsOfRoute.Add(item);
+                PointsOfRoute = new ObservableCollection<RoutePoint>();
             }
-            PointsOfRoute.Add(new RoutePoint());*/
+            else
+            {
+                PointsOfRoute = new ObservableCollection<RoutePoint>(points);
+            }
+            NoPointWarningIsVisible = PointsOfRoute.Count == 0;
         }
         void showNewRouteData()
         {
@@ -104,6 +107,42 @@ namespace QuestHelper.ViewModel
             }
         }
 
+        public bool ListIsRefreshing
+        {
+            set
+            {
+                if (_listIsRefreshing != value)
+                {
+                    _listIsRefreshing = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("ListIsRefreshing"));
+                    }
+                }
+            }
+            get
+            {
+                return _listIsRefreshing;
+            }
+        }
+        public bool NoPointWarningIsVisible
+        {
+            set
+            {
+                if (_noPointWarningIsVisible != value)
+                {
+                    _noPointWarningIsVisible = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("NoPointWarningIsVisible"));
+                    }
+                }
+            }
+            get
+            {
+                return _noPointWarningIsVisible;
+            }
+        }
         public bool SplashStartScreenIsVisible
         {
             set

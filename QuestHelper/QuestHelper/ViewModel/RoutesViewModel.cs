@@ -4,6 +4,7 @@ using QuestHelper.View;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -16,6 +17,8 @@ namespace QuestHelper.ViewModel
         private string _routeId;
         private IEnumerable<Route> _routes;
         private Route _routeItem;
+        private bool _noRoutesWarningIsVisible;
+
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -24,8 +27,27 @@ namespace QuestHelper.ViewModel
             RouteManager manager = new RouteManager();
 
             _routes = manager.GetRoutes();
+            NoRoutesWarningIsVisible = _routes.Count() == 0;
         }
 
+        public bool NoRoutesWarningIsVisible
+        {
+            set
+            {
+                if (_noRoutesWarningIsVisible != value)
+                {
+                    _noRoutesWarningIsVisible = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("NoRoutesWarningIsVisible"));
+                    }
+                }
+            }
+            get
+            {
+                return _noRoutesWarningIsVisible;
+            }
+        }
         public string RouteId
         {
             set

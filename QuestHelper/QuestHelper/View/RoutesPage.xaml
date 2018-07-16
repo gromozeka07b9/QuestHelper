@@ -7,30 +7,50 @@
         <viewmodel:RoutesViewModel />
     </ContentPage.BindingContext>
     <ContentPage.Content>
-        <ListView ItemsSource="{Binding Routes}" x:Name="RoutesListView" RowHeight="96"  SelectedItem="{Binding SelectedRouteItem,Mode=TwoWay}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Row="1" Grid.Column="1" Orientation="Vertical" IsVisible="{Binding NoRoutesWarningIsVisible}" HorizontalOptions="Center">
+                <Image Source="baseline.png" Aspect="AspectFit" HorizontalOptions="Center">
+                    <Image.GestureRecognizers>
+                        <!--TapGestureRecognizer Command="{Binding TakePhotoCommand}" /-->
+                    </Image.GestureRecognizers>
+                </Image>
+                <Label Text="Нажмите '+' для добавления маршрута." TextColor="White" FontSize="10" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" ></Label>
+            </StackLayout>
+            <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" ItemsSource="{Binding Routes}" x:Name="RoutesListView" RowHeight="96"  SelectedItem="{Binding SelectedRouteItem,Mode=TwoWay}">
                 <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Grid Margin="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="4*" />
-                                <ColumnDefinition Width="1*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Image Grid.Column="0" Source="icon.png"></Image>
-                            <StackLayout Grid.Column="1" Orientation="Vertical" HorizontalOptions="FillAndExpand">
-                                <Label Text="{Binding Name}" TextColor="White" FontSize="10" FontAttributes="Bold" HorizontalOptions="Start"></Label>
-                                <Label Text="пешеходный маршрут" TextColor="White" FontSize="8" HorizontalOptions="Start"></Label>
-                                <Label Text="{Binding CreateDate.LocalDateTime}" TextColor="White" FontSize="8" HorizontalOptions="Start"></Label>
-                            </StackLayout>
-                            <Image Grid.Column="2" Source="account.png" HorizontalOptions="End"></Image>
-                        </Grid>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Margin="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="4*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Image Grid.Column="0" Source="icon.png"></Image>
+                                <StackLayout Grid.Column="1" Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                                    <Label Text="{Binding Name}" TextColor="White" FontSize="10" FontAttributes="Bold" HorizontalOptions="Start"></Label>
+                                    <Label Text="пешеходный маршрут" TextColor="White" FontSize="8" HorizontalOptions="Start"></Label>
+                                    <Label Text="{Binding CreateDate.LocalDateTime}" TextColor="White" FontSize="8" HorizontalOptions="Start"></Label>
+                                </StackLayout>
+                                <Image Grid.Column="2" Source="star.png" HorizontalOptions="End"></Image>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
