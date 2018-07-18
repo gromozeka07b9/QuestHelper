@@ -35,14 +35,14 @@ namespace QuestHelper.ViewModel
 
         public RouteViewModel(Route route)
         {
+            _route = route;
             ShowNewRouteDialogCommand = new Command(showNewRouteData);
             AddNewRoutePointCommand = new Command(addNewRoutePointAsync);
             StartDialogCommand = new Command(startDialog);
-            _route = route;
-            startDialog();
+            //startDialog();
         }
 
-        private void startDialog()
+        public void startDialog()
         {
             if (!string.IsNullOrEmpty(_route.Name))
             {
