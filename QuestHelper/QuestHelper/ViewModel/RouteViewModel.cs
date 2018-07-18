@@ -39,7 +39,6 @@ namespace QuestHelper.ViewModel
             ShowNewRouteDialogCommand = new Command(showNewRouteData);
             AddNewRoutePointCommand = new Command(addNewRoutePointAsync);
             StartDialogCommand = new Command(startDialog);
-            //startDialog();
         }
 
         public void startDialog()
@@ -66,10 +65,6 @@ namespace QuestHelper.ViewModel
         {
             SplashStartScreenIsVisible = false;
             RouteScreenIsVisible = !SplashStartScreenIsVisible;
-            /*var _points = _routePointManager.GetPointsByRoute(_route);
-            var newItemCollection = new List<RoutePoint>();
-            newItemCollection.Add(new RoutePoint());
-            _pointsOfRoute = _points.Concat(newItemCollection);*/
             var points = _routePointManager.GetPointsByRoute(_route);
             if (points.Count() == 0)
             {

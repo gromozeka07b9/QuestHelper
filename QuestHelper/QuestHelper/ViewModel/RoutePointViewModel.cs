@@ -1,6 +1,7 @@
 ﻿using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
 using Plugin.Media;
+using Plugin.Media.Abstractions;
 using QuestHelper.Managers;
 using QuestHelper.Model.DB;
 using System;

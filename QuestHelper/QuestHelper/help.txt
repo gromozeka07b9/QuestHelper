@@ -16,3 +16,6 @@ https://redpillxamarin.com/category/tutorial/200-series/
 
 best practices
 https://blog.rsuter.com/recommendations-best-practices-implementing-mvvm-xaml-net-applications/
+
+resize
+https://forums.xamarin.com/discussion/67531/how-to-resize-image-file-on-xamarin-forms-writeablebitmap-package-cant-be-added
