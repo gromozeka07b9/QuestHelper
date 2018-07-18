@@ -5989,8 +5989,8 @@ namespace QuestHelper.Droid
 			// aapt resource value: 0x7f0d0170
 			public const int Animation_Design_BottomSheetDialog = 2131558768;
 			
-			// aapt resource value: 0x7f0d0193
-			public const int AppCompatDialogStyle = 2131558803;
+			// aapt resource value: 0x7f0d0194
+			public const int AppCompatDialogStyle = 2131558804;
 			
 			// aapt resource value: 0x7f0d0190
 			public const int BB_BottomBarBadge_Text = 2131558800;
@@ -6495,6 +6495,9 @@ namespace QuestHelper.Droid
 			
 			// aapt resource value: 0x7f0d0192
 			public const int MainTheme_Base = 2131558802;
+			
+			// aapt resource value: 0x7f0d0193
+			public const int MainTheme_Splash = 2131558803;
 			
 			// aapt resource value: 0x7f0d002d
 			public const int Platform_AppCompat = 2131558445;

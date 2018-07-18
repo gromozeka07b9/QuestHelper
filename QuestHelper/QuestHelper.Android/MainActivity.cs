@@ -10,10 +10,12 @@ using BottomNavigationBar;
 using QuestHelper;
 using Xamarin.Forms;
 using QuestHelper.Model;
+using System.Threading.Tasks;
+using Android.Content;
 
 namespace QuestHelper.Droid
 {
-    [Activity(Label = "QuestHelper", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "QuestHelper", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = false, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity, BottomNavigationBar.Listeners.IOnTabClickListener
     {
         private BottomBar _bottomBar;
@@ -45,6 +47,9 @@ namespace QuestHelper.Droid
             Xamarin.FormsMaps.Init(this, bundle);
             LoadApplication(new App());
             _bottomBar = BottomBar.Attach(this, bundle);
+            _bottomBar.UseFixedMode();
+            _bottomBar.SetFixedInactiveIconColor("#888888");
+            _bottomBar.SetActiveTabColor("#ffffff");
             _bottomBar.SetItems(Resource.Menu.bottombar_menu);
             _bottomBar.MapColorForTab(1, "#FF9800");
             _bottomBar.SetOnTabClickListener(this);

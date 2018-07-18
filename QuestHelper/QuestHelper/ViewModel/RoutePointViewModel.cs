@@ -7,11 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace QuestHelper.ViewModel
 {
@@ -57,11 +55,10 @@ namespace QuestHelper.ViewModel
             });
             /// storage / emulated / 0 / Android / data / com.sd.QuestHelper / files / Pictures / Sample / test_2.jpg
             //_imageFilePath = file.AlbumPath;
-            ImagePath = file.AlbumPath;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImageSource"));
-            if (file == null)
+            if(file != null)
             {
-                return;
+                ImagePath = file.AlbumPath;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImageSource"));
             }
         }
 
