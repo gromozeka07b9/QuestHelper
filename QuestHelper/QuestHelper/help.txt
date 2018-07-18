@@ -19,3 +19,6 @@ https://blog.rsuter.com/recommendations-best-practices-implementing-mvvm-xaml-ne
 
 resize
 https://forums.xamarin.com/discussion/67531/how-to-resize-image-file-on-xamarin-forms-writeablebitmap-package-cant-be-added
+
+polyline
+https://github.com/xamarin/xamarin-forms-samples/blob/master/CustomRenderers/Map/Polyline/MapOverlay/MapPageCS.cs
