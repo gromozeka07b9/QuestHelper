@@ -8,6 +8,7 @@ using QuestHelper.Model.DB;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -30,7 +31,6 @@ namespace QuestHelper.ViewModel
             "Бета",
             "Гамма",
             "Сигма",
-            "НЛО",
             "Земля",
             "Марс",
             "Венера",
@@ -39,13 +39,46 @@ namespace QuestHelper.ViewModel
             "Плутон",
             "Нептун",
             "Юпитер",
-            "Уран"
+            "Уран",
+            "Земля Альфа",
+            "Земля Бета",
+            "Земля Гамма",
+            "Земля Сигма",
+            "Марс Альфа",
+            "Марс Бета",
+            "Марс Гамма",
+            "Марс Сигма",
+            "Венера Альфа",
+            "Венера Бета",
+            "Венера Гамма",
+            "Венера Сигма",
+            "Сатурн Альфа",
+            "Сатурн Бета",
+            "Сатурн Гамма",
+            "Сатурн Сигма",
+            "Юпитер Альфа",
+            "Юпитер Бета",
+            "Юпитер Гамма",
+            "Юпитер Сигма",
+            "Меркурий Альфа",
+            "Меркурий Бета",
+            "Меркурий Гамма",
+            "Меркурий Сигма",
+            "НЛО здесь",
+            "Место посадки НЛО",
+            "Место наблюдения НЛО",
+            "Место крушения НЛО",
+            "Лагерь инопланетян",
+            "База инопланетян",
+            "База Дарта Вейдера",
+            "База Принцессы Леи"
         };
 
         RoutePoint _point;
         Route _route;
         string _currentPositionString = string.Empty;
         string _imageFilePath = string.Empty;
+        byte[] _imagePreview;
 
         public RoutePointViewModel(Route route, RoutePoint routePoint)
         {
@@ -64,22 +97,37 @@ namespace QuestHelper.ViewModel
 
             await CrossMedia.Current.Initialize();
 
-            if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+            if (CrossMedia.Current.IsCameraAvailable && CrossMedia.Current.IsTakePhotoSupported)
             {
-                //DisplayAlert("No Camera", ":( No camera available.", "OK");
-                return;
+                var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+                {
+                    PhotoSize = PhotoSize.Full,
+                    Location = new Location() { Latitude = _point.Latitude, Longitude = _point.Longitude, Timestamp = DateTime.Now },
+                    Directory = "Photos",
+                    Name = "img.jpg"
+                });
+                if (file != null)
+                {
+                    createPreview(file);
+                    ImagePath = file.AlbumPath;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImageSource"));
+                    file.Dispose();
+                }
             }
-            var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+        }
+
+        private void createPreview(MediaFile file)
+        {
+            var mediaService = DependencyService.Get<IMediaService>();
+            using (var stream = file.GetStream())
             {
-                Directory = "Photos",
-                Name = "img.jpg"
-            });
-            /// storage / emulated / 0 / Android / data / com.sd.QuestHelper / files / Pictures / Sample / test_2.jpg
-            //_imageFilePath = file.AlbumPath;
-            if(file != null)
-            {
-                ImagePath = file.AlbumPath;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImageSource"));
+                byte[] byteArrayOriginal = new byte[stream.Length];
+                int resultRead = stream.Read(byteArrayOriginal, 0, byteArrayOriginal.Length);
+                if (resultRead > 0)
+                {
+                    ImagePreviewManager previewManager = new ImagePreviewManager();
+                    _imagePreview = previewManager.GetPreviewImage(mediaService, byteArrayOriginal, 128, 128);
+                }
             }
         }
 
@@ -121,9 +169,7 @@ namespace QuestHelper.ViewModel
                 RoutePointManager manager = new RoutePointManager();
                 if (!manager.Add(_point, _route))
                 {
-                    //куда-то ошибку надо фиксировать
-                    var properties = new Dictionary<string, string> { { "Screen", "RoutePoint" }, { "Action", "SaveRoutePoint" } };
-                    Crashes.TrackError(new Exception("Error while adding new point"), properties);
+                    Crashes.TrackError(new Exception("Error while adding new point"), new Dictionary<string, string> { { "Screen", "RoutePoint" }, { "Action", "SaveRoutePoint" } });
                 };
             }
             Navigation.PopAsync();
@@ -226,7 +272,7 @@ namespace QuestHelper.ViewModel
                     realm.Write(() =>
                     {
                         _point.MediaObjects.Clear();
-                        _point.MediaObjects.Add(new RoutePointMediaObject() { FileName = value, Point = _point});
+                        _point.MediaObjects.Add(new RoutePointMediaObject() { FileName = value, Point = _point, PreviewImage = _imagePreview });
                         _point.UpdateDate = DateTime.Now;
                     });
                     _imageFilePath = value;

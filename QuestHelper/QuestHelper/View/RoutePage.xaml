@@ -46,7 +46,7 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition></RowDefinition>
                                     </Grid.RowDefinitions>
-                                    <Image Grid.Column="0" Source="icon.png" IsVisible="{Binding IsNew, Converter={StaticResource inverter}}"></Image>
+                                    <Image Grid.Column="0" Source="{Binding ImagePreview}" IsVisible="{Binding IsNew, Converter={StaticResource inverter}}"></Image>
                                     <StackLayout Grid.Column="1" Orientation="Vertical" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsNew, Converter={StaticResource inverter}}">
                                         <Label Text="{Binding Name}" TextColor="White" FontSize="10" FontAttributes="Bold" HorizontalOptions="Start" ></Label>
                                         <Label Text="{Binding CoordinatesByText}" TextColor="White" FontSize="10" HorizontalOptions="Start">

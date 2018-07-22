@@ -1,7 +1,9 @@
 ﻿using Realms;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using Xamarin.Forms;
 
 namespace QuestHelper.Model.DB
 {
@@ -30,6 +32,22 @@ namespace QuestHelper.Model.DB
                     coordsText = $"{Latitude},{Longitude}";
                 }
                 return coordsText;
+            }
+        }
+        public ImageSource ImagePreview
+        {
+            get
+            {
+                if (MediaObjects.Count > 0)
+                {
+                    //фуфу, убрать это из модели!
+                    var stream = new MemoryStream(MediaObjects[0].PreviewImage);
+                    return ImageSource.FromStream(() => stream);
+                }
+                else
+                {
+                    return StreamImageSource.FromFile("star.png");
+                }
             }
         }
     }

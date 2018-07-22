@@ -37,7 +37,7 @@ namespace QuestHelper.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(bundle);
-
+            
             //_bottomBar.MapColorForTab(0, ContextCompat.GetColor(this, Resource.Color.colorAccent));
             //_bottomBar.MapColorForTab(1, "#FF5D4037");
             //_bottomBar.MapColorForTab(2, "#7B1FA2");
