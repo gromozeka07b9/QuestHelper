@@ -23,13 +23,28 @@ namespace QuestHelper.ViewModel
         IEnumerable<RoutePoint> _pointsForOverview;
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
-        public ICommand StartDialogCommand { get; private set; }
+        //public ICommand StartDialogCommand { get; private set; }
+        public ICommand OpenPointPropertiesCommand { get; private set; }
 
         public MapOverviewViewModel()
         {
-            //StartDialogCommand = new Command(startDialog);
+            OpenPointPropertiesCommand = new Command(openPointPropertiesCommand);
             _routePointManager = new RoutePointManager();
             _routeManager = new RouteManager();
+        }
+
+        internal void openPointPropertiesCommand()
+        {
+
+        }
+        internal async void OpenPointPropertiesAsync(double latitude, double longitude)
+        {
+            RoutePoint point = _routePointManager.GetPointByCoordinates(latitude, longitude);
+            if(point.MainRoute != null)
+            {
+                var routePointPage = new RoutePointPage(point.MainRoute, point);
+                await Navigation.PushAsync(routePointPage, true);
+            }
         }
 
         internal IEnumerable<RoutePoint> GetPointsForOverview()
@@ -46,19 +61,20 @@ namespace QuestHelper.ViewModel
             }
             return resultPoints;
         }
+
         /*public void startDialog()
-        {
-            if (!string.IsNullOrEmpty(_route.Name))
-            {
-                showRouteData();
-            }
-            else
-            {
-                _route.Name = "Неизвестный маршрут";
-                showNewRouteWarningDialog();
-            }
-            ListIsRefreshing = false;
-        }*/
+{
+   if (!string.IsNullOrEmpty(_route.Name))
+   {
+       showRouteData();
+   }
+   else
+   {
+       _route.Name = "Неизвестный маршрут";
+       showNewRouteWarningDialog();
+   }
+   ListIsRefreshing = false;
+}*/
 
 
         /*public bool ListIsRefreshing

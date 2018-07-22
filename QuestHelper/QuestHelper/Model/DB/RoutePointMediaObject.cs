@@ -10,6 +10,7 @@ namespace QuestHelper.Model.DB
         [PrimaryKey]
         public string RoutePointMediaObjectId { get; set; } = Guid.NewGuid().ToString();
         public string FileName { get; set; }
+        public byte[] PreviewImage { get; set; } //Не может быть больше 16мб, ограничение Realm
         public RoutePoint Point { get; set; }
     }
 }

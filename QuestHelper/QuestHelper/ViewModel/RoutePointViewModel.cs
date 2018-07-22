@@ -1,4 +1,5 @@
-﻿using Plugin.Geolocator;
+﻿using Microsoft.AppCenter.Crashes;
+using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
@@ -21,6 +22,25 @@ namespace QuestHelper.ViewModel
         public ICommand DeleteCommand { get; private set; }
         public ICommand SaveCommand { get; private set; }
         public ICommand TakePhotoCommand { get; private set; }
+
+        private static Random _rnd = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
+        private List<string> _pointNames = new List<string>()
+        {
+            "Альфа",
+            "Бета",
+            "Гамма",
+            "Сигма",
+            "НЛО",
+            "Земля",
+            "Марс",
+            "Венера",
+            "Сатурн",
+            "Меркурий",
+            "Плутон",
+            "Нептун",
+            "Юпитер",
+            "Уран"
+        };
 
         RoutePoint _point;
         Route _route;
@@ -71,7 +91,9 @@ namespace QuestHelper.ViewModel
             Longitude = position.Longitude;
             Coordinates = Latitude + "," + Longitude;
             Address = await getPositionAddress(locator, position);
-            Name = Address;
+
+            int index = _rnd.Next(0, _pointNames.Count() - 1);
+            Name = _pointNames[index];
         }
 
         private async Task<string> getPositionAddress(IGeolocator locator, Position position)
@@ -83,9 +105,10 @@ namespace QuestHelper.ViewModel
                 var addressItem = addresses.FirstOrDefault();
                 address = $"{addressItem.SubThoroughfare}, {addressItem.Thoroughfare}, {addressItem.Locality}, {addressItem.CountryName}";
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                //лог
+                var properties = new Dictionary<string, string> { { "Screen", "RoutePoint" }, { "Action", "GetPositionAddress" } };
+                Crashes.TrackError(exception, properties);
             }
             return address;
         }
@@ -99,6 +122,8 @@ namespace QuestHelper.ViewModel
                 if (!manager.Add(_point, _route))
                 {
                     //куда-то ошибку надо фиксировать
+                    var properties = new Dictionary<string, string> { { "Screen", "RoutePoint" }, { "Action", "SaveRoutePoint" } };
+                    Crashes.TrackError(new Exception("Error while adding new point"), properties);
                 };
             }
             Navigation.PopAsync();

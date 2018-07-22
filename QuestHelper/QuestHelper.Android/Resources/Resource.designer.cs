@@ -4894,11 +4894,11 @@ namespace QuestHelper.Droid
 			// aapt resource value: 0x7f0c00cb
 			public const int bottomBarNewRoutePage = 2131493067;
 			
-			// aapt resource value: 0x7f0c00c9
-			public const int bottomBarOverviewPage = 2131493065;
-			
 			// aapt resource value: 0x7f0c00ca
-			public const int bottomBarRoutesPage = 2131493066;
+			public const int bottomBarOverviewPage = 2131493066;
+			
+			// aapt resource value: 0x7f0c00c9
+			public const int bottomBarRoutesPage = 2131493065;
 			
 			// aapt resource value: 0x7f0c0055
 			public const int buttonPanel = 2131492949;

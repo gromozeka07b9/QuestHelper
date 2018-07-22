@@ -18,7 +18,6 @@ namespace QuestHelper.View
             MessagingCenter.Subscribe<PageNavigationMessage>(this, string.Empty, (sender) => {
                 navigateToPage(sender);
             });
-
         }
 
         private void navigateToPage(PageNavigationMessage msg)

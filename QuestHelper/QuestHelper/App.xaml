@@ -18,12 +18,12 @@
                     </Grid.RowDefinitions>
                     <ContentPresenter Grid.Row="0"></ContentPresenter>
                     <StackLayout Grid.Row="1" Orientation="Horizontal" Padding="0" HorizontalOptions="Center">
-                        <Image Source="earth.png" Style="{StaticResource NavigationButton}">
+                        <Image Source="list.png" Style="{StaticResource NavigationButton}">
                             <Image.GestureRecognizers>
                                 <TapGestureRecognizer Command="{TemplateBinding Parent.BindingContext.MapOverviewCommand}"></TapGestureRecognizer>
                             </Image.GestureRecognizers>
                         </Image>
-                        <Image Source="list.png" Style="{StaticResource NavigationButton}">
+                        <Image Source="earth.png" Style="{StaticResource NavigationButton}">
                             <Image.GestureRecognizers>
                                 <TapGestureRecognizer Command="{TemplateBinding Parent.BindingContext.MapOverviewCommand}"></TapGestureRecognizer>
                             </Image.GestureRecognizers>

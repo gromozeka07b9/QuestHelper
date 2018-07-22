@@ -23,6 +23,11 @@ namespace QuestHelper.Managers
             var collection = _realmInstance.All<Model.DB.RoutePoint>().Where(point => point.MainRoute == routeItem).OrderByDescending(point => point.CreateDate);
             return collection;
         }
+        internal RoutePoint GetPointByCoordinates(double latitude, double longitude)
+        {
+            var collection = _realmInstance.All<Model.DB.RoutePoint>().Where(point => point.Latitude == latitude && point.Longitude == longitude);
+            return collection.FirstOrDefault();
+        }
 
         internal bool Add(RoutePoint point, Route route)
         {
@@ -46,5 +51,6 @@ namespace QuestHelper.Managers
             }
             return result;
         }
+
     }
 }

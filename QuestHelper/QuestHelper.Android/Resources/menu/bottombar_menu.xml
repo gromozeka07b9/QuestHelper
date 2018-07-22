@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
   <item
-      android:id="@+id/bottomBarOverviewPage"
-      android:icon="@drawable/map"
-      android:title="Карта" />
-  <item
       android:id="@+id/bottomBarRoutesPage"
       android:icon="@drawable/list"
       android:title="Маршруты" />
+  <item
+      android:id="@+id/bottomBarOverviewPage"
+      android:icon="@drawable/map"
+      android:title="На карте" />
   <item
       android:id="@+id/bottomBarNewRoutePage"
       android:icon="@drawable/plus"
@@ -15,5 +15,5 @@
   <item
       android:id="@+id/bottomBarAccountPage"
       android:icon="@drawable/triple"
-      android:title="Профиль" />
+      android:title="Рядом" />
 </menu>
