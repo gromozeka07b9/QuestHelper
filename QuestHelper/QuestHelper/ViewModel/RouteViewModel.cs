@@ -66,7 +66,7 @@ namespace QuestHelper.ViewModel
             SplashStartScreenIsVisible = false;
             RouteScreenIsVisible = !SplashStartScreenIsVisible;
             var points = _routePointManager.GetPointsByRoute(_route);
-            if (points.Count() == 0)
+            if (!points.Any())
             {
                 PointsOfRoute = new ObservableCollection<RoutePoint>();
             }

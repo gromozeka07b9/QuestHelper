@@ -16,7 +16,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="6*" />
+                <RowDefinition Height="5*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackLayout Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Orientation="Vertical" IsVisible="{Binding SplashStartScreenIsVisible}">
@@ -58,13 +58,20 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                <!--StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
                     <StackLayout Orientation="Horizontal" Padding="2">
-                        <!--Image Source="plus.png"></-->
+                        <Image Source="plus.png"></>
                         <Button Text="Добавить место" Command="{Binding AddNewRoutePointCommand}" HorizontalOptions="FillAndExpand" TextColor="White" FontSize="18" Margin="0"></Button>
                     </StackLayout>
-                </StackLayout>
+                </-->
             </StackLayout>
+            <AbsoluteLayout Grid.Row="1" Grid.Column="1" IsVisible="{Binding RouteScreenIsVisible}">
+                <Image Source="additem.png" AbsoluteLayout.LayoutBounds="0.9,0.1,0.35, 1." AbsoluteLayout.LayoutFlags="All">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding AddNewRoutePointCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
+            </AbsoluteLayout>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

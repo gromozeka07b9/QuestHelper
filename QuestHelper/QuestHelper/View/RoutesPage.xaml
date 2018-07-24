@@ -11,12 +11,12 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="3*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="100" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="100" />
             </Grid.RowDefinitions>
             <StackLayout Grid.Row="1" Grid.Column="1" Orientation="Vertical" IsVisible="{Binding NoRoutesWarningIsVisible}" HorizontalOptions="Center">
                 <Image Source="baseline.png" Aspect="AspectFit" HorizontalOptions="Center">
@@ -51,6 +51,13 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <AbsoluteLayout Grid.Row="2" Grid.Column="2">
+                <Image Source="additem.png" AbsoluteLayout.LayoutBounds=".6,.0,0.6, 1." AbsoluteLayout.LayoutFlags="All">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding AddNewRouteCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
+            </AbsoluteLayout>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

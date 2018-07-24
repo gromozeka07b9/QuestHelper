@@ -42,7 +42,16 @@ namespace QuestHelper.Model.DB
                 {
                     //фуфу, убрать это из модели!
                     var stream = new MemoryStream(MediaObjects[0].PreviewImage);
-                    return ImageSource.FromStream(() => stream);
+                    ImageSource src;
+                    try
+                    {
+                        src = ImageSource.FromStream(() => stream);
+                    }
+                    catch(Exception exception)
+                    {
+                        src = StreamImageSource.FromFile("star.png");
+                    }
+                    return src;
                 }
                 else
                 {

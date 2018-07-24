@@ -21,13 +21,20 @@ namespace QuestHelper.ViewModel
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
+        public ICommand AddNewRouteCommand { get; private set; }
 
         public RoutesViewModel()
         {
+            AddNewRouteCommand = new Command(addNewRouteCommandAsync);
             RouteManager manager = new RouteManager();
 
             _routes = manager.GetRoutes();
             NoRoutesWarningIsVisible = _routes.Count() == 0;
+        }
+
+        async void addNewRouteCommandAsync()
+        {
+            await Navigation.PushAsync(new RoutePage(new Route()));
         }
 
         public bool NoRoutesWarningIsVisible
