@@ -13,6 +13,5 @@ namespace QuestHelper.Server.Models
         public string Name { get; set; }
         public DateTime CreateDate { get; set; }
         public string UserId { get; set; }
-        public User User { get; set; }
     }
 }

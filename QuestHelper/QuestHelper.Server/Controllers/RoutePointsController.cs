@@ -11,19 +11,30 @@ namespace QuestHelper.Server.Controllers
     public class RoutePointsController : Controller
     {
         [HttpGet("{RouteId}")]
-        public IActionResult Get(int RouteId)
+        public IActionResult Get(string RouteId)
         {
             List<RoutePoint> items = new List<RoutePoint>();
             using (var db = new ServerDbContext())
             {
-                items = db.RoutePoint.Where(x=>x.RouteId == RouteId.ToString()).ToList();
+                items = db.RoutePoint.Where(x=>x.RouteId == RouteId).ToList();
             }
             return new ObjectResult(items);
         }
 
         [HttpPost]
-        public void Post([FromBody]string value)
+        public void Post([FromBody]RoutePoint routePointObject)
         {
+            using (var db = new ServerDbContext())
+            {
+                int searchResult = db.RoutePoint.Where(x => x.RoutePointId == routePointObject.RoutePointId).Count();
+                if (searchResult == 0)
+                {
+                    db.RoutePoint.Add(routePointObject);
+                    db.SaveChanges();
+                } else
+                {
+                }
+            }
         }
     }
 }
