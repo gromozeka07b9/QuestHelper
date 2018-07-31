@@ -1,6 +1,7 @@
 ﻿using QuestHelper.Managers;
 using QuestHelper.Model.DB;
 using QuestHelper.View;
+using QuestHelper.WS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,19 +18,33 @@ namespace QuestHelper.ViewModel
         private string _routeId;
         private IEnumerable<Route> _routes;
         private Route _routeItem;
-        private bool _noRoutesWarningIsVisible;
+        private RouteManager _routeManager = new RouteManager();
+        private ApiRequest _api = new ApiRequest("http://questhelperserver.azurewebsites.net");
+        private bool _noRoutesWarningIsVisible = false;
+        private bool _isRefreshing = false;
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand AddNewRouteCommand { get; private set; }
+        public ICommand RefreshListRoutesCommand { get; private set; }
 
         public RoutesViewModel()
         {
             AddNewRouteCommand = new Command(addNewRouteCommandAsync);
-            RouteManager manager = new RouteManager();
+            RefreshListRoutesCommand = new Command(refreshListRoutesCommand);
+            //_routes = _routeManager.GetRoutes();
+            //NoRoutesWarningIsVisible = _routes.Count() == 0;
+            //refreshListRoutesCommand();
+        }
 
-            _routes = manager.GetRoutes();
+        async void refreshListRoutesCommand()
+        {
+            IsRefreshing = true;
+            List<Route> routes = await _api.GetRoutes();
+            _routeManager.UpdateLocalData(routes);
+            Routes = _routeManager.GetRoutes();
             NoRoutesWarningIsVisible = _routes.Count() == 0;
+            IsRefreshing = false;
         }
 
         async void addNewRouteCommandAsync()
@@ -37,6 +52,24 @@ namespace QuestHelper.ViewModel
             await Navigation.PushAsync(new RoutePage(new Route()));
         }
 
+        public bool IsRefreshing
+        {
+            set
+            {
+                if (_isRefreshing != value)
+                {
+                    _isRefreshing = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("IsRefreshing"));
+                    }
+                }
+            }
+            get
+            {
+                return _isRefreshing;
+            }
+        }
         public bool NoRoutesWarningIsVisible
         {
             set

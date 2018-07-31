@@ -7,6 +7,7 @@ namespace QuestHelper.Server
     {
         public DbSet<Route> Route { get; set; }
         public DbSet<RoutePoint> RoutePoint { get; set; }
+        public DbSet<RoutePointMediaObject> RoutePointMediaObject { get; set; }
         public DbSet<User> User { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -13,10 +13,17 @@ namespace QuestHelper.View
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class RoutesPage : ContentPage
 	{
-		public RoutesPage ()
+        RoutesViewModel _vm;
+        public RoutesPage ()
 		{
 			InitializeComponent ();
-            BindingContext = new RoutesViewModel() { Navigation = this.Navigation };
+            _vm = new RoutesViewModel() { Navigation = this.Navigation };
+            BindingContext = _vm;
+        }
+
+        private void ContentPage_Appearing(object sender, EventArgs e)
+        {
+            _vm.RefreshListRoutesCommand.Execute(new object());
         }
     }
 }

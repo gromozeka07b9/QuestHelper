@@ -26,14 +26,15 @@ namespace QuestHelper.Server.Controllers
         {
             using (var db = new ServerDbContext())
             {
-                int searchResult = db.RoutePoint.Where(x => x.RoutePointId == routePointObject.RoutePointId).Count();
-                if (searchResult == 0)
+                var entity = db.RoutePoint.Find(routePointObject.RoutePointId);
+                if (entity == null)
                 {
                     db.RoutePoint.Add(routePointObject);
-                    db.SaveChanges();
                 } else
                 {
+                    db.Entry(entity).CurrentValues.SetValues(routePointObject);
                 }
+                db.SaveChanges();
             }
         }
     }

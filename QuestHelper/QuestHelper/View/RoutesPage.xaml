@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:QuestHelper.ViewModel;assembly=QuestHelper"
-             x:Class="QuestHelper.View.RoutesPage" BackgroundColor="#292a2c">
+             x:Class="QuestHelper.View.RoutesPage" BackgroundColor="#292a2c" Appearing="ContentPage_Appearing">
     <ContentPage.BindingContext>
         <viewmodel:RoutesViewModel />
     </ContentPage.BindingContext>
@@ -26,7 +26,7 @@
                 </Image>
                 <Label Text="У вас пока нет ни одного маршрута. Нажмите 'Новый' для добавления." TextColor="White" FontSize="10" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" ></Label>
             </StackLayout>
-            <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" ItemsSource="{Binding Routes}" x:Name="RoutesListView" RowHeight="96"  SelectedItem="{Binding SelectedRouteItem,Mode=TwoWay}">
+            <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" ItemsSource="{Binding Routes}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshListRoutesCommand}" x:Name="RoutesListView" RowHeight="96"  SelectedItem="{Binding SelectedRouteItem,Mode=TwoWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

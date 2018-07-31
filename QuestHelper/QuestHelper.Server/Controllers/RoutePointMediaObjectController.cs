@@ -10,32 +10,32 @@ using QuestHelper.Server.Models;
 namespace QuestHelper.Server.Controllers
 {
     [Route("api/[controller]")]
-    public class RoutesController : Controller
+    public class RoutePointMediaObjectController : Controller
     {
-        [HttpGet]
-        public IActionResult Get()
+        [HttpGet("{routePointId}")]
+        public IActionResult Get(string routePointId)
         {
-            List<Route> items = new List<Route>();
+            List<RoutePointMediaObject> items = new List<RoutePointMediaObject>();
             using (var db = new ServerDbContext())
             {
-                items = db.Route.ToList();
+                items = db.RoutePointMediaObject.Where(x=>x.RoutePointId == routePointId).ToList();
             }
             return new ObjectResult(items);
         }
 
         [HttpPost]
-        public void Post([FromBody]Route routeObject)
+        public void Post([FromBody]RoutePointMediaObject routeMediaObject)
         {
             using (var db = new ServerDbContext())
             {
-                var entity = db.RoutePoint.Find(routeObject.RouteId);
+                var entity = db.RoutePointMediaObject.Find(routeMediaObject.RoutePointMediaObjectId);
                 if (entity == null)
                 {
-                    db.Route.Add(routeObject);
+                    db.RoutePointMediaObject.Add(routeMediaObject);
                 }
                 else
                 {
-                    db.Entry(entity).CurrentValues.SetValues(routeObject);
+                    db.Entry(entity).CurrentValues.SetValues(routeMediaObject);
                 }
                 db.SaveChanges();
             }

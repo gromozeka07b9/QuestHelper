@@ -5,6 +5,7 @@ using Plugin.Media;
 using Plugin.Media.Abstractions;
 using QuestHelper.Managers;
 using QuestHelper.Model.DB;
+using QuestHelper.WS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,6 +25,7 @@ namespace QuestHelper.ViewModel
         public ICommand SaveCommand { get; private set; }
         public ICommand TakePhotoCommand { get; private set; }
 
+        private ApiRequest _api = new ApiRequest("http://questhelperserver.azurewebsites.net");
         private static Random _rnd = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
         private List<string> _pointNames = new List<string>()
         {
@@ -40,30 +42,6 @@ namespace QuestHelper.ViewModel
             "Нептун",
             "Юпитер",
             "Уран",
-            "Земля Альфа",
-            "Земля Бета",
-            "Земля Гамма",
-            "Земля Сигма",
-            "Марс Альфа",
-            "Марс Бета",
-            "Марс Гамма",
-            "Марс Сигма",
-            "Венера Альфа",
-            "Венера Бета",
-            "Венера Гамма",
-            "Венера Сигма",
-            "Сатурн Альфа",
-            "Сатурн Бета",
-            "Сатурн Гамма",
-            "Сатурн Сигма",
-            "Юпитер Альфа",
-            "Юпитер Бета",
-            "Юпитер Гамма",
-            "Юпитер Сигма",
-            "Меркурий Альфа",
-            "Меркурий Бета",
-            "Меркурий Гамма",
-            "Меркурий Сигма",
             "НЛО здесь",
             "Место посадки НЛО",
             "Место наблюдения НЛО",
@@ -168,18 +146,21 @@ namespace QuestHelper.ViewModel
             return address;
         }
 
-        void saveRoutePoint()
+        async void saveRoutePoint()
         {
             if(_point.MainRoute == null)
             {
                 _point.MainRoute = _route;
                 RoutePointManager manager = new RoutePointManager();
-                if (!manager.Add(_point, _route))
+                if (manager.Add(_point, _route))
+                {
+                    await Navigation.PopAsync();
+                    await _api.AddRoute(_route);
+                } else
                 {
                     Crashes.TrackError(new Exception("Error while adding new point"), new Dictionary<string, string> { { "Screen", "RoutePoint" }, { "Action", "SaveRoutePoint" } });
                 };
             }
-            Navigation.PopAsync();
         }
 
         async void deleteRoutePoint()
