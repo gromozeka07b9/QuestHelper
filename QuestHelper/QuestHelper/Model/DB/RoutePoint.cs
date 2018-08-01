@@ -11,9 +11,10 @@ namespace QuestHelper.Model.DB
     {
         [PrimaryKey]
         public string RoutePointId { get; set; } = Guid.NewGuid().ToString();
+        public string RouteId { get; set; }
         public string Name { get; set; }
-        public DateTimeOffset CreateDate { get; set; }
-        public DateTimeOffset UpdateDate { get; set; }
+        public DateTimeOffset CreateDate { get; set; } = DateTime.Now;
+        public DateTimeOffset UpdateDate { get; set; } = DateTime.Now;
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public string Address { get; set; }

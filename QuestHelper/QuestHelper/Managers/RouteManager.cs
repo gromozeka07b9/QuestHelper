@@ -26,7 +26,7 @@ namespace QuestHelper.Managers
             {
                 _realmInstance.Write(() =>
                 {
-                    _realmInstance.Add(route);
+                    _realmInstance.Add(route, true);
                 }
                 );
                 result = true;

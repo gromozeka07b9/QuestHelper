@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace QuestHelper.WS
 {
-    public interface IApiClient
+    public interface IRoutesApiRequest
     {
         Task<List<Route>> GetRoutes();
+        Task<bool> AddRoute(Route routeObject);
     }
 }

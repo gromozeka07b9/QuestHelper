@@ -36,11 +36,13 @@ namespace QuestHelper.Managers
             {
                 _realmInstance.Write(() =>
                 {
-                    _realmInstance.Add(route);
+                    _realmInstance.Add(route, true);
                     point.IsNew = false;
-                    point.CreateDate = DateTime.Now;
-                    point.UpdateDate = DateTime.Now;
-                    _realmInstance.Add(point);
+                    //point.CreateDate = point.CreateDate;
+                    //point.UpdateDate = point.UpdateDate;
+                    //var routeObject = _realmInstance.All<Model.DB.RoutePoint>().Where(x => x.RouteId == route.RouteId).SingleOrDefault();
+                    point.MainRoute = route;
+                    _realmInstance.Add(point, true);
                 }
                 );
                 result = true;
@@ -52,5 +54,12 @@ namespace QuestHelper.Managers
             return result;
         }
 
+        internal void UpdateLocalData(Route route, List<RoutePoint> points)
+        {
+            foreach (var point in points)
+            {
+                Add(point, route);
+            }
+        }
     }
 }

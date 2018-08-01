@@ -12,12 +12,10 @@ using Newtonsoft.Json.Linq;
 
 namespace QuestHelper.WS
 {
-    public class ApiRequest : IApiClient
+    public class ApiRequest
     {
-        private string _hostUrl = string.Empty;
-        public ApiRequest(string hostUrl)
+        public ApiRequest()
         {
-            _hostUrl = hostUrl;
         }
         /*public async Task<List<int>> GetChangedIDsFromServer(string tableName, DateTime localMaxTimeStamp)
         {
@@ -52,7 +50,7 @@ namespace QuestHelper.WS
             return deserializedValue;
         }*/
 
-        public async Task<List<Route>> GetRoutes()
+        /*public async Task<List<Route>> GetRoutes()
         {
             List<Route> deserializedValue = new List<Route>();
             try
@@ -85,9 +83,9 @@ namespace QuestHelper.WS
             {
             }
             return addResult;
-        }
+        }*/
 
-        private async Task<string> HttpRequestGET(string url)
+        public async Task<string> HttpRequestGET(string url)
         {
             string result = string.Empty;
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(new Uri(url));
@@ -106,7 +104,7 @@ namespace QuestHelper.WS
             }
             return result;
         }
-        private async Task<string> HttpRequestPOST(string url, string parameters)
+        public async Task<string> HttpRequestPOST(string url, string parameters)
         {
             string result = string.Empty;
             var client = new HttpClient();

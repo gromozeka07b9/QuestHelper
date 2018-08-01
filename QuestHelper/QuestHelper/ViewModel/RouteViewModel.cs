@@ -2,6 +2,7 @@
 using QuestHelper.Managers;
 using QuestHelper.Model.DB;
 using QuestHelper.View;
+using QuestHelper.WS;
 using Realms;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,8 @@ namespace QuestHelper.ViewModel
         private RoutePointManager _routePointManager = new RoutePointManager();
         private bool _listIsRefreshing;
         private bool _noPointWarningIsVisible;
+        private RoutePointsApiRequest _routePointsApi = new RoutePointsApiRequest("http://questhelperserver.azurewebsites.net");
+        private bool _isRefreshing;
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -45,7 +48,7 @@ namespace QuestHelper.ViewModel
         {
             if (!string.IsNullOrEmpty(_route.Name))
             {
-                showRouteData();
+                refreshRouteData();
             }
             else
             {
@@ -61,10 +64,13 @@ namespace QuestHelper.ViewModel
             RouteScreenIsVisible = !SplashStartScreenIsVisible;
         }
 
-        private void showRouteData()
+        private async void refreshRouteData()
         {
             SplashStartScreenIsVisible = false;
             RouteScreenIsVisible = !SplashStartScreenIsVisible;
+            IsRefreshing = true;
+            List<RoutePoint> loadedPoints = await _routePointsApi.GetRoutePoints(_route.RouteId);
+            _routePointManager.UpdateLocalData(_route, loadedPoints);
             var points = _routePointManager.GetPointsByRoute(_route);
             if (!points.Any())
             {
@@ -75,6 +81,7 @@ namespace QuestHelper.ViewModel
                 PointsOfRoute = new ObservableCollection<RoutePoint>(points);
             }
             NoPointWarningIsVisible = PointsOfRoute.Count == 0;
+            IsRefreshing = false;
         }
         void showNewRouteData()
         {
@@ -89,6 +96,24 @@ namespace QuestHelper.ViewModel
             await Navigation.PushAsync(routePointPage, true);
         }
 
+        public bool IsRefreshing
+        {
+            set
+            {
+                if (_isRefreshing != value)
+                {
+                    _isRefreshing = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("IsRefreshing"));
+                    }
+                }
+            }
+            get
+            {
+                return _isRefreshing;
+            }
+        }
         public RoutePoint SelectedRoutePointItem
         {
             set

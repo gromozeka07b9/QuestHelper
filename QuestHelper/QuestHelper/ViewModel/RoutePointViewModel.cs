@@ -25,7 +25,8 @@ namespace QuestHelper.ViewModel
         public ICommand SaveCommand { get; private set; }
         public ICommand TakePhotoCommand { get; private set; }
 
-        private ApiRequest _api = new ApiRequest("http://questhelperserver.azurewebsites.net");
+        private RoutesApiRequest _routesApi = new RoutesApiRequest("http://questhelperserver.azurewebsites.net");
+        private RoutePointsApiRequest _routePointsApi = new RoutePointsApiRequest("http://questhelperserver.azurewebsites.net");
         private static Random _rnd = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
         private List<string> _pointNames = new List<string>()
         {
@@ -155,7 +156,8 @@ namespace QuestHelper.ViewModel
                 if (manager.Add(_point, _route))
                 {
                     await Navigation.PopAsync();
-                    await _api.AddRoute(_route);
+                    await _routesApi.AddRoute(_route);
+                    await _routePointsApi.AddRoutePoint(_point);
                 } else
                 {
                     Crashes.TrackError(new Exception("Error while adding new point"), new Dictionary<string, string> { { "Screen", "RoutePoint" }, { "Action", "SaveRoutePoint" } });
