@@ -37,11 +37,11 @@ namespace QuestHelper.ViewModel
         async void refreshListRoutesCommand()
         {
             IsRefreshing = true;
-            List<Route> routes = await _api.GetRoutes();
-            _routeManager.UpdateLocalData(routes);
             Routes = _routeManager.GetRoutes();
             NoRoutesWarningIsVisible = _routes.Count() == 0;
             IsRefreshing = false;
+            List<Route> routes = await _api.GetRoutes();
+            _routeManager.UpdateLocalData(routes);
         }
 
         async void addNewRouteCommandAsync()

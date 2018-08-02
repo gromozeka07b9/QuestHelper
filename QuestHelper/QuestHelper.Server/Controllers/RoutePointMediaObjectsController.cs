@@ -10,7 +10,7 @@ using QuestHelper.Server.Models;
 namespace QuestHelper.Server.Controllers
 {
     [Route("api/[controller]")]
-    public class RoutePointMediaObjectController : Controller
+    public class RoutePointMediaObjectsController : Controller
     {
         [HttpGet("{routePointId}")]
         public IActionResult Get(string routePointId)

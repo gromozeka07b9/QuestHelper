@@ -39,11 +39,10 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <Image Grid.Column="0" Source="icon.png"></Image>
-                                <StackLayout Grid.Column="1" Orientation="Vertical" HorizontalOptions="FillAndExpand">
-                                    <Label Text="{Binding Name}" TextColor="White" FontSize="10" FontAttributes="Bold" HorizontalOptions="Start"></Label>
-                                    <Label Text="Неизвестный маршрут" TextColor="White" FontSize="8" HorizontalOptions="Start"></Label>
-                                    <Label Text="{Binding CreateDate.LocalDateTime}" TextColor="White" FontSize="8" HorizontalOptions="Start"></Label>
+                                <Image Grid.Column="0" Source="earth21.png" VerticalOptions="CenterAndExpand"></Image>
+                                <StackLayout Grid.Column="1" Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                                    <Label Text="{Binding Name}" TextColor="White" FontSize="14" FontAttributes="Bold" HorizontalOptions="Start"></Label>
+                                    <Label Text="{Binding CreateDate.LocalDateTime}" TextColor="White" FontSize="11" HorizontalOptions="Start"></Label>
                                 </StackLayout>
                                 <Image Grid.Column="2" Source="star.png" HorizontalOptions="End"></Image>
                             </Grid>

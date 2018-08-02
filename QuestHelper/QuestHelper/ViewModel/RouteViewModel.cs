@@ -25,9 +25,11 @@ namespace QuestHelper.ViewModel
         private Route _route;
         private RoutePoint _point;
         private RoutePointManager _routePointManager = new RoutePointManager();
+        private RoutePointMediaObjectManager _routePointMediaObjectManager = new RoutePointMediaObjectManager();
         private bool _listIsRefreshing;
         private bool _noPointWarningIsVisible;
         private RoutePointsApiRequest _routePointsApi = new RoutePointsApiRequest("http://questhelperserver.azurewebsites.net");
+        private RoutePointMediaObjectRequest _routePointMediaObjectsApi = new RoutePointMediaObjectRequest("http://questhelperserver.azurewebsites.net");
         private bool _isRefreshing;
 
         public INavigation Navigation { get; set; }
@@ -69,8 +71,6 @@ namespace QuestHelper.ViewModel
             SplashStartScreenIsVisible = false;
             RouteScreenIsVisible = !SplashStartScreenIsVisible;
             IsRefreshing = true;
-            List<RoutePoint> loadedPoints = await _routePointsApi.GetRoutePoints(_route.RouteId);
-            _routePointManager.UpdateLocalData(_route, loadedPoints);
             var points = _routePointManager.GetPointsByRoute(_route);
             if (!points.Any())
             {
@@ -82,6 +82,13 @@ namespace QuestHelper.ViewModel
             }
             NoPointWarningIsVisible = PointsOfRoute.Count == 0;
             IsRefreshing = false;
+            List<RoutePoint> loadedPoints = await _routePointsApi.GetRoutePoints(_route.RouteId);
+            _routePointManager.UpdateLocalData(_route, loadedPoints);
+            foreach(var point in loadedPoints)
+            {
+                List<RoutePointMediaObject> loadedMediaObjects = await _routePointMediaObjectsApi.GetRoutePointMediaObjects(point.RoutePointId);
+                _routePointMediaObjectManager.UpdateLocalData(point, loadedMediaObjects);
+            }
         }
         void showNewRouteData()
         {
@@ -114,6 +121,26 @@ namespace QuestHelper.ViewModel
                 return _isRefreshing;
             }
         }
+        public string Name
+        {
+            set
+            {
+                if (_route.Name != value)
+                {
+                    var realm = RoutePointManager.GetRealmInstance();
+                    realm.Write(() =>
+                    {
+                        _route.Name = value;
+                    });
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
+                }
+            }
+            get
+            {
+                return _route.Name;
+            }
+        }
+
         public RoutePoint SelectedRoutePointItem
         {
             set

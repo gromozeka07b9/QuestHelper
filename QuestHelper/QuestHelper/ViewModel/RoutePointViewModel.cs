@@ -27,6 +27,7 @@ namespace QuestHelper.ViewModel
 
         private RoutesApiRequest _routesApi = new RoutesApiRequest("http://questhelperserver.azurewebsites.net");
         private RoutePointsApiRequest _routePointsApi = new RoutePointsApiRequest("http://questhelperserver.azurewebsites.net");
+        private RoutePointMediaObjectRequest _routePointMediaObjectsApi = new RoutePointMediaObjectRequest("http://questhelperserver.azurewebsites.net");
         private static Random _rnd = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
         private List<string> _pointNames = new List<string>()
         {
@@ -112,7 +113,7 @@ namespace QuestHelper.ViewModel
                 if (resultRead > 0)
                 {
                     ImagePreviewManager previewManager = new ImagePreviewManager();
-                    _imagePreview = previewManager.GetPreviewImage(mediaService, byteArrayOriginal, 128, 128);
+                    _imagePreview = previewManager.GetPreviewImage(mediaService, byteArrayOriginal, 200, 140);
                 }
             }
         }
@@ -158,6 +159,10 @@ namespace QuestHelper.ViewModel
                     await Navigation.PopAsync();
                     await _routesApi.AddRoute(_route);
                     await _routePointsApi.AddRoutePoint(_point);
+                    if(_point.MediaObjects.Count > 0)
+                    {
+                        await _routePointMediaObjectsApi.AddRoutePointMediaObject(_point.MediaObjects[0]);
+                    }
                 } else
                 {
                     Crashes.TrackError(new Exception("Error while adding new point"), new Dictionary<string, string> { { "Screen", "RoutePoint" }, { "Action", "SaveRoutePoint" } });

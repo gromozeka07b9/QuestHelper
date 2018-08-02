@@ -14,7 +14,9 @@
             </Image>
             <StackLayout Orientation="Horizontal" Padding="5">
                 <Image Source="place.png" WidthRequest="32" HeightRequest="32"></Image>
-                <Label Text="{Binding Coordinates}" Margin="5" FontSize="15" TextColor="AliceBlue" VerticalTextAlignment="Center"/>
+                <!--Label Text="{Binding Coordinates}" Margin="5" FontSize="15" TextColor="AliceBlue" VerticalTextAlignment="Center"/-->
+                <Entry Placeholder="Координаты" Text="{Binding Coordinates}" Margin="5" HorizontalOptions="FillAndExpand" TextColor="AliceBlue" FontSize="15" Keyboard="Keyboard.Default">
+                </Entry>
             </StackLayout>
             <StackLayout Orientation="Horizontal" Padding="5">
                 <Image Source="domain.png" WidthRequest="32" HeightRequest="32"></Image>
