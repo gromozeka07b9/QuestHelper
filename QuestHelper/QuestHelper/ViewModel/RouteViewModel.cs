@@ -24,6 +24,7 @@ namespace QuestHelper.ViewModel
         private ObservableCollection<RoutePoint> _pointsOfRoute = new ObservableCollection<RoutePoint>();
         private Route _route;
         private RoutePoint _point;
+        private RouteManager _routeManager = new RouteManager();
         private RoutePointManager _routePointManager = new RoutePointManager();
         private RoutePointMediaObjectManager _routePointMediaObjectManager = new RoutePointMediaObjectManager();
         private bool _listIsRefreshing;
@@ -99,6 +100,8 @@ namespace QuestHelper.ViewModel
 
         async void addNewRoutePointAsync()
         {
+            if(!_route.IsManaged)
+                _routeManager.Add(_route);
             var routePointPage = new RoutePointPage(_route, new RoutePoint());
             await Navigation.PushAsync(routePointPage, true);
         }

@@ -47,8 +47,7 @@ namespace QuestHelper.Droid
         protected override void OnMapReady(Android.Gms.Maps.GoogleMap map)
         {
             base.OnMapReady(map);
-
-            var polylineOptions = new PolylineOptions();
+            /*var polylineOptions = new PolylineOptions();
             polylineOptions.InvokeColor(0x66FF0000);
 
             foreach (var position in routeCoordinates)
@@ -56,7 +55,7 @@ namespace QuestHelper.Droid
                 polylineOptions.Add(new LatLng(position.Latitude, position.Longitude));
             }
 
-            NativeMap.AddPolyline(polylineOptions);
+            NativeMap.AddPolyline(polylineOptions);*/
         }
     }
 }
