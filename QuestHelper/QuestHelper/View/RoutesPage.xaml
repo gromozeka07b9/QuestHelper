@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:QuestHelper.ViewModel;assembly=QuestHelper"
-             x:Class="QuestHelper.View.RoutesPage" BackgroundColor="#292a2c" Appearing="ContentPage_Appearing">
+             x:Class="QuestHelper.View.RoutesPage" Appearing="ContentPage_Appearing">
     <ContentPage.BindingContext>
         <viewmodel:RoutesViewModel />
     </ContentPage.BindingContext>
@@ -11,20 +11,20 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="3*" />
-                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="96" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="100" />
+                <RowDefinition Height="96" />
             </Grid.RowDefinitions>
-            <StackLayout Grid.Row="1" Grid.Column="1" Orientation="Vertical" IsVisible="{Binding NoRoutesWarningIsVisible}" HorizontalOptions="Center">
-                <Image Source="baseline.png" Aspect="AspectFit" HorizontalOptions="Center">
+            <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Vertical" IsVisible="{Binding NoRoutesWarningIsVisible}" HorizontalOptions="CenterAndExpand">
+                <Image Source="smile_dissatisfied.png" Aspect="AspectFit" HorizontalOptions="CenterAndExpand">
                     <Image.GestureRecognizers>
                         <!--TapGestureRecognizer Command="{Binding TakePhotoCommand}" /-->
                     </Image.GestureRecognizers>
                 </Image>
-                <Label Text="У вас пока нет ни одного маршрута. Нажмите 'Новый' для добавления." TextColor="White" FontSize="10" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" ></Label>
+                <Label Text="У вас пока нет ни одного маршрута" Style="{StaticResource StandartTextLabel}" HorizontalOptions="CenterAndExpand" ></Label>
             </StackLayout>
             <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" ItemsSource="{Binding Routes}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshListRoutesCommand}" x:Name="RoutesListView" RowHeight="96"  SelectedItem="{Binding SelectedRouteItem,Mode=TwoWay}">
                 <ListView.ItemTemplate>
@@ -50,13 +50,17 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <AbsoluteLayout Grid.Row="2" Grid.Column="2">
-                <Image Source="additem.png" AbsoluteLayout.LayoutBounds=".6,.0,0.6, 1." AbsoluteLayout.LayoutFlags="All">
+            <!---->
+            <AbsoluteLayout Grid.Row="2" Grid.Column="2" VerticalOptions="Center">
+                <Image Source="additem.png" WidthRequest="96" HeightRequest="96" HorizontalOptions="EndAndExpand" AbsoluteLayout.LayoutBounds=".6,.0,0.6, 1." AbsoluteLayout.LayoutFlags="All">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding AddNewRouteCommand}" />
                     </Image.GestureRecognizers>
                 </Image>
             </AbsoluteLayout>
+            <StackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                <Label Text="Нажмите, чтобы добавить новый:" Style="{StaticResource StandartTextLabel}" HorizontalOptions="EndAndExpand" IsVisible="{Binding NoRoutesWarningIsVisible}" ></Label>
+            </StackLayout>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

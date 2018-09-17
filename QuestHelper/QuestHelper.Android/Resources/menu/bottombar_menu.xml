@@ -9,11 +9,7 @@
       android:icon="@drawable/map"
       android:title="На карте" />
   <item
-      android:id="@+id/bottomBarNewRoutePage"
-      android:icon="@drawable/plus"
-      android:title="Новый" />
-  <item
-      android:id="@+id/bottomBarAccountPage"
+      android:id="@+id/bottomBarAroundMe"
       android:icon="@drawable/triple"
-      android:title="Рядом" />
+      android:title="Вокруг меня" />
 </menu>

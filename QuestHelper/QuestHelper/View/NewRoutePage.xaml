@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:QuestHelper.ViewModel;assembly=QuestHelper"
+             xmlns:local="clr-namespace:QuestHelper.View.Converters"
+             x:Class="QuestHelper.View.NewRoutePage" Appearing="ContentPage_Appearing">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:NegativeBoolConverter  x:Key="inverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="5*" />
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Orientation="Vertical" VerticalOptions="CenterAndExpand" IsVisible="{Binding SplashStartScreenIsVisible}">
+                <Image Source="smile_satisfied.png" Aspect="AspectFit" HorizontalOptions="CenterAndExpand">
+                </Image>
+                <Label Margin="10" HorizontalTextAlignment="Center" Text="Вы создаете свой первый маршрут. Его можно представить в виде фотографий, видео, ваших текстовых заметок, и просто в виде конкретного места, которое вы хотите запомнить." Style="{StaticResource StandartTextLabel}">
+                </Label>
+                <Label Margin="10" HorizontalTextAlignment="Center" Text="После того, как вы создадите маршрут, вы сможете поделиться им через любой удобный вам канал - GoSh!, Telegram, Whatsapp, Facebook, Instagram" Style="{StaticResource StandartTextLabel}">
+                </Label>
+                <Button HorizontalOptions="CenterAndExpand" Image="plus.png" Command="{Binding ShowNewRouteDialogCommand}" Text="Понятно" Style="{StaticResource StandartButton}">
+                </Button>
+            </StackLayout>
+            <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" Padding="5">
+                <Label Text="Название маршрута:" HorizontalOptions="Start" Style="{StaticResource StandartTextLabel}"></Label>
+                <Image Source="text.png" Style="{StaticResource StandartCaptionImage}"></Image>
+                <Entry Placeholder="Хорошее настроение в 13:05, четверг, 11.11.2011" Margin="5" Text="{Binding Name}" HorizontalOptions="FillAndExpand" Style="{StaticResource StandartEntryCaption}" Keyboard="Keyboard.Default">
+                </Entry>
+            </StackLayout>
+            <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="EndAndExpand" Image="plus.png" Command="{Binding ShowNewRouteDialogCommand}" Text="Готово" Style="{StaticResource StandartButton}">
+            </Button>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

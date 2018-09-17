@@ -38,15 +38,18 @@ namespace QuestHelper.ViewModel
         {
             IsRefreshing = true;
             Routes = _routeManager.GetRoutes();
-            NoRoutesWarningIsVisible = _routes.Count() == 0;
+            NoRoutesWarningIsVisible = Routes.Count() == 0;
             IsRefreshing = false;
+#if DEBUG
+#else
             List<Route> routes = await _api.GetRoutes();
             _routeManager.UpdateLocalData(routes);
+#endif
         }
 
         async void addNewRouteCommandAsync()
         {
-            await Navigation.PushAsync(new RoutePage(new Route()));
+            await Navigation.PushAsync(new NewRoutePage(new Route(), !Routes.Any()));
         }
 
         public bool IsRefreshing
@@ -110,7 +113,7 @@ namespace QuestHelper.ViewModel
                 if (_routeItem != value)
                 {
                     _routeItem = value;
-                    Navigation.PushAsync(new RoutePage(value));
+                    Navigation.PushAsync(new RoutePage(value, false));
                     _routeItem = null;
                     PropertyChanged(this, new PropertyChangedEventArgs("SelectedRouteItem"));
                 }

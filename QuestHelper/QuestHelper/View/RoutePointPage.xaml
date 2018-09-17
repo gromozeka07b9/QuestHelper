@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="QuestHelper.View.RoutePointPage" BackgroundColor="#292a2c">
+             x:Class="QuestHelper.View.RoutePointPage">
     <ContentPage.ToolbarItems>
         <ToolbarItem NavigationPage.HasNavigationBar="True" Command="{Binding SaveCommand}" Icon="plus.png"></ToolbarItem>
     </ContentPage.ToolbarItems>

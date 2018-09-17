@@ -38,22 +38,15 @@ namespace QuestHelper.Droid
 
             base.OnCreate(bundle);
             
-            //_bottomBar.MapColorForTab(0, ContextCompat.GetColor(this, Resource.Color.colorAccent));
-            //_bottomBar.MapColorForTab(1, "#FF5D4037");
-            //_bottomBar.MapColorForTab(2, "#7B1FA2");
-            //_bottomBar.MapColorForTab(3, "#FF5252");
-            //_bottomBar.MapColorForTab(4, "#FF9800");
             global::Xamarin.Forms.Forms.Init(this, bundle);
             Xamarin.FormsMaps.Init(this, bundle);
             LoadApplication(new App());
             _bottomBar = BottomBar.Attach(this, bundle);
             _bottomBar.UseFixedMode();
-            _bottomBar.SetFixedInactiveIconColor("#888888");
-            _bottomBar.SetActiveTabColor("#ffffff");
+            _bottomBar.SetFixedInactiveIconColor("#B3B8C2");
+            _bottomBar.SetActiveTabColor("#3A3A9C");
             _bottomBar.SetItems(Resource.Menu.bottombar_menu);
-            _bottomBar.MapColorForTab(1, "#FF9800");
             _bottomBar.SetOnTabClickListener(this);
-            _bottomBar.UseDarkTheme();
         }
 
         protected override void OnSaveInstanceState(Bundle outState)

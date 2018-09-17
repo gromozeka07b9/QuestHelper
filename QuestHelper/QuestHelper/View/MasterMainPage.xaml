@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="QuestHelper.View.MasterMainPage" Title="Quest helper">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="#ffffff">
+        <StackLayout>
         <ListView x:Name="MenuItemsListView"
               SeparatorVisibility="None"
               HasUnevenRows="true"
-              ItemsSource="{Binding MenuItems}" BackgroundColor="#292a2c">
+              ItemsSource="{Binding MenuItems}">
       <ListView.Header>
-          <Grid BackgroundColor="#292a2c">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="30"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="30"/>
-          </Grid.ColumnDefinitions>
+          <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="30"/>
+              </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="150"/>
                 <RowDefinition Height="10"/>
@@ -26,7 +26,7 @@
       <ListView.ItemTemplate>
         <DataTemplate>
           <ViewCell>
-            <StackLayout Padding="15,10" HorizontalOptions="FillAndExpand" Orientation="Horizontal" BackgroundColor="#292a2c">
+            <StackLayout Padding="15,10" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
             <Image Source="{Binding IconName}" VerticalOptions="Start" WidthRequest="32" Margin="0,0,10,0"/>
             <Label VerticalOptions="FillAndExpand" 
                 VerticalTextAlignment="Center" 

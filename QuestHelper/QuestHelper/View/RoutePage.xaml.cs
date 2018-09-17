@@ -18,14 +18,14 @@ namespace QuestHelper.View
         public RoutePage()
 		{
             InitializeComponent ();
-            vm = new RouteViewModel(new Route()) { Navigation = this.Navigation };
+            vm = new RouteViewModel(new Route(), false) { Navigation = this.Navigation };
             BindingContext = vm;
         }
-        public RoutePage(Route routeItem)
+        public RoutePage(Route routeItem, bool isFirstRoute)
         {
 
             InitializeComponent();
-            vm = new RouteViewModel(routeItem) { Navigation = this.Navigation };
+            vm = new RouteViewModel(routeItem, isFirstRoute) { Navigation = this.Navigation };
             BindingContext = vm;
         }
 

@@ -23,6 +23,9 @@ namespace QuestHelper.ViewModel
         private bool _routeScreenIsVisible;
         private ObservableCollection<RoutePoint> _pointsOfRoute = new ObservableCollection<RoutePoint>();
         private Route _route;
+
+        private bool _isFirstRoute;
+
         private RoutePoint _point;
         private RouteManager _routeManager = new RouteManager();
         private RoutePointManager _routePointManager = new RoutePointManager();
@@ -39,9 +42,10 @@ namespace QuestHelper.ViewModel
         public ICommand AddNewRoutePointCommand { get; private set; }
         public ICommand StartDialogCommand { get; private set; }
 
-        public RouteViewModel(Route route)
+        public RouteViewModel(Route route, bool isFirstRoute)
         {
             _route = route;
+            _isFirstRoute = isFirstRoute;
             ShowNewRouteDialogCommand = new Command(showNewRouteData);
             AddNewRoutePointCommand = new Command(addNewRoutePointAsync);
             StartDialogCommand = new Command(startDialog);
@@ -56,7 +60,9 @@ namespace QuestHelper.ViewModel
             else
             {
                 _route.Name = "Неизвестный маршрут";
-                showNewRouteWarningDialog();
+                if (_isFirstRoute)
+                    showNewRouteWarningDialog();
+                else showNewRouteData();
             }
             ListIsRefreshing = false;
         }
