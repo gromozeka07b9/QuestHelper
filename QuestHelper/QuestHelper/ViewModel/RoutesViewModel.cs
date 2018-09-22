@@ -41,6 +41,8 @@ namespace QuestHelper.ViewModel
             NoRoutesWarningIsVisible = Routes.Count() == 0;
             IsRefreshing = false;
 #if DEBUG
+            List<Route> routes = await _api.GetRoutes();
+            _routeManager.UpdateLocalData(routes);
 #else
             List<Route> routes = await _api.GetRoutes();
             _routeManager.UpdateLocalData(routes);

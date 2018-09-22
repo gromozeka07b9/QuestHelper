@@ -16,7 +16,7 @@ using Android.Support.V7.App;
 
 namespace QuestHelper.Droid
 {
-    [Activity(Label = "1Gosh!", Icon = "@drawable/icon", Theme = "@style/MainTheme.Splash", MainLauncher = true, NoHistory = true)]
+    [Activity(Label = "Gosh!", Icon = "@drawable/icon", Theme = "@style/MainTheme.Splash", MainLauncher = true, NoHistory = true)]
     public class SplashActivity : AppCompatActivity
     {
         protected override void OnCreate(Bundle bundle)

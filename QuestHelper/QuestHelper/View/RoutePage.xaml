@@ -19,17 +19,7 @@
                 <RowDefinition Height="5*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <!--StackLayout Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Orientation="Vertical" VerticalOptions="CenterAndExpand" IsVisible="{Binding SplashStartScreenIsVisible}">
-                <Image Source="smile_satisfied.png" Aspect="AspectFit" HorizontalOptions="CenterAndExpand">
-                </Image>
-                <Label Margin="10" HorizontalTextAlignment="Center" Text="Вы создаете свой первый маршрут. Его можно представить в виде фотографий, видео, ваших текстовых заметок, и просто в виде конкретного места, которое вы хотите запомнить." Style="{StaticResource StandartTextLabel}">
-                </Label>
-                <Label Margin="10" HorizontalTextAlignment="Center" Text="После того, как вы создадите маршрут, вы сможете поделиться им через любой удобный вам канал - GoSh!, Telegram, Whatsapp, Facebook, Instagram" Style="{StaticResource StandartTextLabel}">
-                </Label>
-                <Button HorizontalOptions="CenterAndExpand" Image="plus.png" Command="{Binding ShowNewRouteDialogCommand}" Text="Понятно" Style="{StaticResource StandartButton}">
-                </Button>
-            </-->
-            <StackLayout Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Orientation="Vertical" IsVisible="{Binding NoPointWarningIsVisible}">
+            <StackLayout Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Orientation="Vertical" VerticalOptions="CenterAndExpand" IsVisible="{Binding NoPointWarningIsVisible}">
                 <Image Source="baseline.png" Aspect="AspectFit">
                     <Image.GestureRecognizers>
                         <!--TapGestureRecognizer Command="{Binding TakePhotoCommand}" /-->
@@ -57,11 +47,11 @@
                                     </Grid.RowDefinitions>
                                     <Image Grid.Column="0" Source="{Binding ImagePreview}" IsVisible="{Binding IsNew, Converter={StaticResource inverter}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></Image>
                                     <StackLayout Grid.Column="1" Orientation="Vertical" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsNew, Converter={StaticResource inverter}}">
-                                        <Label Text="{Binding Name}" TextColor="White" FontSize="10" FontAttributes="Bold" HorizontalOptions="Start" ></Label>
-                                        <Label Text="{Binding Description}" TextColor="White" FontSize="8" FontAttributes="Bold" HorizontalOptions="Start" ></Label>
-                                        <Label Text="{Binding CoordinatesByText}" TextColor="White" FontSize="10" HorizontalOptions="Start">
+                                        <Label Text="{Binding Name}" Style="{StaticResource StandartTextLabel}" FontAttributes="Bold" HorizontalOptions="Start" ></Label>
+                                        <Label Text="{Binding Description}" Style="{StaticResource StandartTextLabel}" FontAttributes="Bold" HorizontalOptions="Start" ></Label>
+                                        <Label Text="{Binding CoordinatesByText}" Style="{StaticResource StandartTextLabel}" HorizontalOptions="Start">
                                         </Label>
-                                        <Label Text="{Binding CreateDate.LocalDateTime}" TextColor="White" FontSize="10" HorizontalOptions="Start"></Label>
+                                        <Label Text="{Binding CreateDate.LocalDateTime}" Style="{StaticResource StandartTextLabel}" HorizontalOptions="Start"></Label>
                                     </StackLayout>
                                 </Grid>
                             </ViewCell>

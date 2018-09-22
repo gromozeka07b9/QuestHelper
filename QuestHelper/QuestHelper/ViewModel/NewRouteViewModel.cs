@@ -25,8 +25,8 @@ namespace QuestHelper.ViewModel
         private bool _isFirstRoute;
 
         private RouteManager _routeManager = new RouteManager();
-        private RoutePointManager _routePointManager = new RoutePointManager();
-        private RoutePointMediaObjectManager _routePointMediaObjectManager = new RoutePointMediaObjectManager();
+        //private RoutePointManager _routePointManager = new RoutePointManager();
+        //private RoutePointMediaObjectManager _routePointMediaObjectManager = new RoutePointMediaObjectManager();
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -46,7 +46,7 @@ namespace QuestHelper.ViewModel
             if (!_route.IsManaged)
             {
                 _routeManager.Add(_route);
-                Navigation.PushAsync(new RoutePage(_route, false));
+                Navigation.PushAsync(new RouteCreatedPage(_route));
             }
         }
 
