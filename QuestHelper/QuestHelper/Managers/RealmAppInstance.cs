@@ -12,7 +12,14 @@ namespace QuestHelper.Managers
         {
             if(_realmInstance == null)
             {
-                _realmInstance = Realm.GetInstance();
+                try
+                {
+                    _realmInstance = Realm.GetInstance();
+                }
+                catch (Exception)
+                {
+                    //ToDo:логгировать
+                }
             }
             return _realmInstance;
         }
