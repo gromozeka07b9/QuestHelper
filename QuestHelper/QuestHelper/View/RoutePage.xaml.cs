@@ -25,6 +25,7 @@ namespace QuestHelper.View
         {
 
             InitializeComponent();
+            Title = routeItem.Name;
             vm = new RouteViewModel(routeItem, isFirstRoute) { Navigation = this.Navigation };
             BindingContext = vm;
         }
