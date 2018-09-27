@@ -34,23 +34,24 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <Grid Margin="5">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*" />
-                                        <ColumnDefinition Width="3*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="5*"></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <Image Grid.Column="0" Source="{Binding ImagePreview}" IsVisible="{Binding IsNew, Converter={StaticResource inverter}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></Image>
-                                    <StackLayout Grid.Column="1" Orientation="Vertical" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsNew, Converter={StaticResource inverter}}">
-                                        <Label Text="{Binding Name}" Style="{StaticResource StandartTextLabel}" FontAttributes="Bold" HorizontalOptions="Start" ></Label>
-                                        <Label Text="{Binding Description}" Style="{StaticResource StandartTextLabel}" FontAttributes="Bold" HorizontalOptions="Start" ></Label>
-                                        <Label Text="{Binding CoordinatesByText}" Style="{StaticResource StandartTextLabel}" HorizontalOptions="Start">
-                                        </Label>
-                                        <Label Text="{Binding CreateDate.LocalDateTime}" Style="{StaticResource StandartTextLabel}" HorizontalOptions="Start"></Label>
-                                    </StackLayout>
-                                </Grid>
+                                <Frame CornerRadius="15" Padding="0" IsClippedToBounds="False" BackgroundColor="#CAECFF" Margin="10,10,10,0">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="2*"></RowDefinition>
+                                            <RowDefinition Height="2*"></RowDefinition>
+                                            <RowDefinition Height="6*"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Source="{Binding ImagePreview}" IsVisible="{Binding IsNew, Converter={StaticResource inverter}}" HorizontalOptions="StartAndExpand" VerticalOptions="FillAndExpand" Margin="5" ></Image>
+                                        <Label Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Text="{Binding Name}" Style="{StaticResource StandartTextLabel}" FontSize="18" TextColor="White" LineBreakMode="WordWrap" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand" Margin="5"></Label>
+                                        <Label Grid.Column="1" Grid.Row="0" Text="{Binding CreateDate.LocalDateTime}" Style="{StaticResource StandartTextLabel}" FontSize="10" Margin="5" HorizontalOptions="EndAndExpand"></Label>
+                                        <Label Grid.Column="1" Grid.Row="1" Text="{Binding CoordinatesByText}" Style="{StaticResource StandartTextLabel}" FontSize="10" HorizontalOptions="EndAndExpand" Margin="5"/>
+                                        <Label Grid.Column="1" Grid.Row="2" Text="{Binding Description}" LineBreakMode="WordWrap" Style="{StaticResource StandartTextLabel}" FontSize="10" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" Margin="5"/>
+                                    </Grid>
+                                </Frame>
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>

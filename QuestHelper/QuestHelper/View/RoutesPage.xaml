@@ -26,31 +26,32 @@
                 </Image>
                 <Label Text="У вас пока нет ни одного маршрута" Style="{StaticResource StandartTextLabel}" HorizontalOptions="CenterAndExpand" ></Label>
             </StackLayout>
-            <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" ItemsSource="{Binding Routes}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshListRoutesCommand}" x:Name="RoutesListView" RowHeight="96"  SelectedItem="{Binding SelectedRouteItem,Mode=TwoWay}">
+            <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" ItemsSource="{Binding Routes}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshListRoutesCommand}" x:Name="RoutesListView" RowHeight="150"  SelectedItem="{Binding SelectedRouteItem,Mode=TwoWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Grid Margin="5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="2*" />
-                                    <ColumnDefinition Width="4*" />
-                                    <ColumnDefinition Width="1*" />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <Image Grid.Column="0" Source="earth21.png" WidthRequest="96" HeightRequest="96" VerticalOptions="CenterAndExpand"></Image>
-                                <StackLayout Grid.Column="1" Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
-                                    <Label Text="{Binding Name}" Style="{StaticResource StandartTextLabel}" HorizontalOptions="Start"></Label>
-                                    <Label Text="{Binding CreateDate.LocalDateTime}" Style="{StaticResource StandartTextLabel}" HorizontalOptions="Start"></Label>
-                                </StackLayout>
-                                <Image Grid.Column="2" Source="star.png" HorizontalOptions="End"></Image>
-                            </Grid>
+                            <Frame CornerRadius="15" Padding="0" IsClippedToBounds="False" BackgroundColor="#4DA1FF" Margin="10,10,10,0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="2*"/>
+                                        <RowDefinition Height="5*"/>
+                                        <RowDefinition Height="2*"/>
+                                    </Grid.RowDefinitions>
+                                    <Image Grid.Column="0" Grid.Row="0" Source="account.png" WidthRequest="48" HeightRequest="48" Margin="5" HorizontalOptions="StartAndExpand"/>
+                                    <Label Grid.Column="1" Grid.Row="0" Text="{Binding CreateDate.UtcDateTime}" Style="{StaticResource RouteTextLabel}" Margin="5" HorizontalOptions="EndAndExpand"></Label>
+                                    <Image Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Source="mount2.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+                                    <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" Text="{Binding Name}" Style="{StaticResource RouteTextLabel}" FontSize="25" LineBreakMode="WordWrap" Margin="5" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand" VerticalTextAlignment="End"></Label>
+                                    <Image Grid.Column="1" Grid.Row="2" Source="star.png" WidthRequest="48" HeightRequest="48" Margin="5" HorizontalOptions="EndAndExpand"/>
+                                </Grid>
+                            </Frame>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <!---->
             <AbsoluteLayout Grid.Row="2" Grid.Column="2" VerticalOptions="Center">
                 <Image Source="additem.png" WidthRequest="96" HeightRequest="96" HorizontalOptions="EndAndExpand" AbsoluteLayout.LayoutBounds=".6,.0,0.6, 1." AbsoluteLayout.LayoutFlags="All">
                     <Image.GestureRecognizers>
