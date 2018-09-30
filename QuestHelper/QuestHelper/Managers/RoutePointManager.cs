@@ -13,7 +13,13 @@ namespace QuestHelper.Managers
         public RoutePointManager()
         {
             _realmInstance = RealmAppInstance.GetAppInstance();
+            _realmInstance.Error += _realmInstance_Error;
         }
+
+        private void _realmInstance_Error(object sender, ErrorEventArgs e)
+        {
+        }
+
         internal static Realm GetRealmInstance()
         {
             return RealmAppInstance.GetAppInstance();

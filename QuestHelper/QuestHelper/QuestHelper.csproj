@@ -23,6 +23,9 @@
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="View\MainPage.xaml.cs">
       <DependentUpon>*.xaml</DependentUpon>
     </Compile>
+    <Compile Update="View\EditRoutePointDescriptionPage.xaml.cs">
+      <DependentUpon>EditRoutePointDescriptionPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="View\RouteCreatedPage.xaml.cs">
       <DependentUpon>RouteCreatedPage.xaml</DependentUpon>
     </Compile>

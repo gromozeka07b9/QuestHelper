@@ -1,36 +1,57 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="QuestHelper.View.RoutePointPage">
+             xmlns:local="clr-namespace:QuestHelper.View"
+             x:Class="QuestHelper.View.RoutePointPage" Style="{StaticResource ContentPage}" Appearing="ContentPage_Appearing">
     <ContentPage.ToolbarItems>
         <ToolbarItem NavigationPage.HasNavigationBar="True" Command="{Binding SaveCommand}" Icon="plus.png"></ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical">
-            <Image Source="{Binding ImageSource}" WidthRequest="400" HeightRequest="200" Aspect="AspectFit">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="4*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="3*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Image Grid.Row="0" Source="{Binding ImageSource}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" Margin="0">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TakePhotoCommand}" />
                 </Image.GestureRecognizers>
             </Image>
+            <StackLayout Grid.Row="1" Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="10,0,10,5">
+                <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start"></Image>
+                <Entry Placeholder="Название" Margin="0" Text="{Binding Name}" HorizontalOptions="FillAndExpand" Style="{StaticResource RouteTextLabel}" Keyboard="Keyboard.Default">
+                </Entry>
+            </StackLayout>
+            <StackLayout Grid.Row="2" Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="10,0,10,5">
+                <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start"></Image>
+                <Label Text="{Binding Address}" Margin="0" Style="{StaticResource RouteTextLabel}" VerticalTextAlignment="Center"/>
+            </StackLayout>
+            <StackLayout Grid.Row="3" Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="10,0,10,5">
+                <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start"></Image>
+                <Label Text="{Binding Description}" Margin="0" Style="{StaticResource RouteTextLabel}" TextColor="Gray" VerticalTextAlignment="Start">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding EditDescriptionCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+            <local:CustomMap Grid.Row="4" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                x:Name="PointMapOverview"
+                IsShowingUser="true"
+                MapType="Street" 
+                />
+        </Grid>
+        <!--StackLayout Orientation="Vertical">
             <StackLayout Orientation="Horizontal" Padding="5">
                 <Image Source="place.png" WidthRequest="32" HeightRequest="32"></Image>
-                <!--Label Text="{Binding Coordinates}" Margin="5" FontSize="15" TextColor="AliceBlue" VerticalTextAlignment="Center"/-->
                 <Entry Placeholder="Координаты" Text="{Binding Coordinates}" Margin="5" HorizontalOptions="FillAndExpand" Style="{StaticResource StandartEntryCaption}" Keyboard="Keyboard.Default">
                 </Entry>
             </StackLayout>
-            <StackLayout Orientation="Horizontal" Padding="5">
-                <Image Source="domain.png" WidthRequest="32" HeightRequest="32"></Image>
-                <Label Text="{Binding Address}" Margin="5" Style="{StaticResource StandartTextLabel}" VerticalTextAlignment="Center"/>
-            </StackLayout>
-            <StackLayout Orientation="Horizontal" Padding="5">
-                <Image Source="text.png" WidthRequest="32" HeightRequest="32"></Image>
-                <Entry Placeholder="Название" Margin="5" Text="{Binding Name}" HorizontalOptions="FillAndExpand" Style="{StaticResource StandartEntryCaption}" Keyboard="Keyboard.Default">
-                </Entry>
-            </StackLayout>
-            <StackLayout Orientation="Horizontal" Padding="5">
-                <Image Source="help_outline.png" WidthRequest="32" HeightRequest="32"></Image>
-                <Editor Text="{Binding Description}" TextColor="Black" HorizontalOptions="FillAndExpand"></Editor>
-            </StackLayout>
-        </StackLayout>
+        </-->
     </ContentPage.Content>
 </ContentPage>

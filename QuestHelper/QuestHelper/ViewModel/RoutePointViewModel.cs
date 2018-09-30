@@ -5,6 +5,7 @@ using Plugin.Media;
 using Plugin.Media.Abstractions;
 using QuestHelper.Managers;
 using QuestHelper.Model.DB;
+using QuestHelper.View;
 using QuestHelper.WS;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,7 @@ namespace QuestHelper.ViewModel
         public ICommand DeleteCommand { get; private set; }
         public ICommand SaveCommand { get; private set; }
         public ICommand TakePhotoCommand { get; private set; }
+        public ICommand EditDescriptionCommand { get; private set; }
 
         private RoutesApiRequest _routesApi = new RoutesApiRequest("http://questhelperserver.azurewebsites.net");
         private RoutePointsApiRequest _routePointsApi = new RoutePointsApiRequest("http://questhelperserver.azurewebsites.net");
@@ -74,11 +76,16 @@ namespace QuestHelper.ViewModel
             SaveCommand = new Command(saveRoutePoint);
             DeleteCommand = new Command(deleteRoutePoint);
             TakePhotoCommand = new Command(takePhoto);
+            EditDescriptionCommand = new Command(editDescriptionCommand);
             if ((_point.Latitude == 0)&&(_point.Longitude==0))
                 fillCurrentPositionAsync();
             Coordinates = Latitude + "," + Longitude;
         }
 
+        private async void editDescriptionCommand(object obj)
+        {
+            await Navigation.PushAsync(new EditRoutePointDescriptionPage(_point));
+        }
         private async void takePhoto(object obj)
         {
 
@@ -244,11 +251,17 @@ namespace QuestHelper.ViewModel
                 if (_point.Name != value)
                 {
                     var realm = RoutePointManager.GetRealmInstance();
-                    realm.Write(() =>
+                    using (var transaction = realm.BeginWrite())
                     {
                         _point.Name = value;
                         _point.UpdateDate = DateTime.Now;
-                    });
+                        transaction.Commit();
+                    }
+                    /*realm.Write(() =>
+                            {
+                                _point.Name = value;
+                                _point.UpdateDate = DateTime.Now;
+                            });*/
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
                 }
             }
@@ -309,7 +322,7 @@ namespace QuestHelper.ViewModel
         }
         public string Description
         {
-            set
+            /*set
             {
                 if (_point.Description != value)
                 {
@@ -321,10 +334,12 @@ namespace QuestHelper.ViewModel
                     });
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Description"));
                 }
-            }
+            }*/
             get
             {
-                return _point.Description;
+                if (!string.IsNullOrEmpty(_point.Description))
+                    return _point.Description;
+                else return "Описание не указано";
             }
         }
     }

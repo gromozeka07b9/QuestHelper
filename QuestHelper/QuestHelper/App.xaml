@@ -6,7 +6,7 @@
         <ResourceDictionary>
             
             <Style x:Key="ContentPage" TargetType="ContentPage">
-                <Setter Property="BackgroundColor" Value="White"/>
+                <Setter Property="BackgroundColor" Value="#F5F5F5"/>
             </Style>
 
             <Style x:Key="StandartTextLabel" TargetType="Label">
@@ -15,10 +15,14 @@
             </Style>
             
             <Style x:Key="RouteTextLabel" TargetType="Label">
-                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="TextColor" Value="Black"/>
                 <Setter Property="FontSize" Value="12"/>
-                <Setter Property="FontAttributes" Value="Bold" />
             </Style>
+
+            <!--Style x:Key="RouteTextLabelDark" TargetType="Label">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontSize" Value="12"/>
+            </-->
 
             <Style x:Key="StandartButton" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="#3A3A9C"/>
