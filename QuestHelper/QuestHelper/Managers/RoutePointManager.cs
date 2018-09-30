@@ -42,13 +42,13 @@ namespace QuestHelper.Managers
             {
                 _realmInstance.Write(() =>
                 {
-                    _realmInstance.Add(route, true);
+                    _realmInstance.Add(route);
                     point.IsNew = false;
                     //point.CreateDate = point.CreateDate;
                     //point.UpdateDate = point.UpdateDate;
                     //var routeObject = _realmInstance.All<Model.DB.RoutePoint>().Where(x => x.RouteId == route.RouteId).SingleOrDefault();
                     point.MainRoute = route;
-                    _realmInstance.Add(point, true);
+                    _realmInstance.Add(point);
                 }
                 );
                 result = true;
