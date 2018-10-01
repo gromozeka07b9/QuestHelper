@@ -1,5 +1,6 @@
 ﻿using Microsoft.AppCenter.Crashes;
 using Plugin.Geolocator;
+using QuestHelper.View.Geo;
 using QuestHelper.ViewModel;
 using Realms;
 using System;
@@ -23,27 +24,6 @@ namespace QuestHelper.View
 
         }
 
-        void showRoutes()
-        {
-            CustomMap mapOverview = (CustomMap)this.Content;
-            var locator = CrossGeolocator.Current;
-            var routePoints = vm.GetPointsForOverview();
-            foreach(var point in routePoints)
-            {
-                mapOverview.RouteCoordinates.Add(new Position(point.Latitude, point.Longitude));
-                var position1 = new Xamarin.Forms.Maps.Position(point.Latitude, point.Longitude);
-                var pointPin = new Pin
-                {                    
-                    Type = PinType.Place,
-                    Position = position1,
-                    Label = point.Name,
-                    Address = point.Address
-                };
-                pointPin.Clicked += PointPin_Clicked;
-                mapOverview.Pins.Add(pointPin);
-            }
-        }
-
         private void PointPin_Clicked(object sender, EventArgs e)
         {
             var point = (Pin)sender;
@@ -52,39 +32,40 @@ namespace QuestHelper.View
 
         private async void ContentPage_AppearingAsync(object sender, EventArgs e)
         {
-            var centerResult = await centerMapToCurrentPositionAsync(10);
-            if (!centerResult)
+            CustomMapView customMap = new CustomMapView((CustomMap)this.Content, 15);
+            var routePoints = vm.GetPointsForOverview();
+            foreach (var point in routePoints)
             {
-                var answerRetry = await DisplayAlert("Ошибка", "Не удалось определить ваше местоположение. Повторить поиск?", "Да", "Нет");
-                if(answerRetry)
+                customMap.AddPin(point.Latitude, point.Longitude, point.Name, point.Address, PointPin_Clicked);
+            }
+
+            await centerMap(customMap);
+        }
+
+        private async Task centerMap(CustomMapView customMap)
+        {
+            if (await customMap.GetPositionAsync())
+            {
+                if (!customMap.CenterMapToPosition(customMap.CurrentPosition.Latitude, customMap.CurrentPosition.Longitude))
                 {
-                    var retryCenterResult = await centerMapToCurrentPositionAsync(60);
-                    if(!retryCenterResult)
+                    bool answerRetry = await DisplayAlert("Ошибка", customMap.LastError + " Повторить?", "Да", "Нет");
+                    if (answerRetry)
                     {
-                        await DisplayAlert("Ошибка", "Не удалось определить ваше местоположение.", "Ок");
+                        await centerMap(customMap);
                     }
                 }
             }
-            showRoutes();
-        }
-
-        private async Task<bool> centerMapToCurrentPositionAsync(int timeout)
-        {
-            bool result = false;
-            var locator = CrossGeolocator.Current;
-            try
+            else
             {
-                var currentPosition = await locator.GetPositionAsync(TimeSpan.FromSeconds(timeout));
-                CustomMap mapOverview = (CustomMap)this.Content;
-                mapOverview.MoveToRegion(MapSpan.FromCenterAndRadius(new Xamarin.Forms.Maps.Position(currentPosition.Latitude, currentPosition.Longitude), Distance.FromKilometers(1)));
-                result = true;
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    bool answerRetry = await DisplayAlert("Ошибка", customMap.LastError + " Повторить поиск?", "Да", "Нет");
+                    if (answerRetry)
+                    {
+                        await centerMap(customMap);
+                    }
+                });
             }
-            catch (Exception exception)
-            {
-                var properties = new Dictionary<string, string> {{"Screen", "MapOverview"}, {"Action", "CenterToMap"} };
-                Crashes.TrackError(exception, properties);
-            }
-            return result;
         }
     }
 }
