@@ -186,7 +186,13 @@ namespace QuestHelper.ViewModel
         {
             get
             {
-                return StreamImageSource.FromFile(ImagePath);
+                if(File.Exists(ImagePath))
+                {
+                    return StreamImageSource.FromFile(ImagePath);
+                } else
+                {
+                    return StreamImageSource.FromResource("emptyimg.png");
+                }
             }
         }
         public double Latitude
