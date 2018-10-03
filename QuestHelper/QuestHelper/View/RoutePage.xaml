@@ -41,7 +41,7 @@
                                             <RowDefinition Height="3*"></RowDefinition>
                                             <RowDefinition Height="1*"></RowDefinition>
                                         </Grid.RowDefinitions>
-                                        <Image Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="1" Opacity="1" Source="{Binding ImagePreview}" IsVisible="{Binding IsNew, Converter={StaticResource inverter}}" Aspect="AspectFill" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ></Image>
+                                        <Image Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="1" Opacity="1" Source="{Binding ImagePreview}" IsVisible="{Binding IsNew, Converter={StaticResource inverter}}" Aspect="AspectFill" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
 
                                         <Label Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="1" Text="{Binding Name}" Style="{StaticResource RouteTextLabel}" FontSize="15" Margin="10,0,0,0" LineBreakMode="TailTruncation" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Start"></Label>
                                         <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Text="{Binding CreateDate.LocalDateTime}" Style="{StaticResource RouteTextLabel}" TextColor="Gray" Margin="10,0,0,10" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand" VerticalTextAlignment="Center"></Label>

@@ -7,51 +7,62 @@
         <ToolbarItem NavigationPage.HasNavigationBar="True" Command="{Binding SaveCommand}" Icon="plus.png"></ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="3*"></RowDefinition>
-                <RowDefinition Height="2*"></RowDefinition>
-                <RowDefinition Height="2*"></RowDefinition>
-                <RowDefinition Height="2*"></RowDefinition>
-                <RowDefinition Height="3*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Image Grid.Row="0" Source="{Binding ImageSource}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" Margin="0">
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding TakePhotoCommand}" />
-                </Image.GestureRecognizers>
-            </Image>
-            <StackLayout Grid.Row="1" Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="10,0,10,5">
-                <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start"></Image>
-                <Entry Placeholder="Название" Margin="0" Text="{Binding Name}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Style="{StaticResource RouteTextLabel}" Keyboard="Keyboard.Default">
-                </Entry>
-            </StackLayout>
-            <StackLayout Grid.Row="2" Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="10,0,10,5">
-                <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start"></Image>
-                <Label Text="{Binding Address}" Margin="0" Style="{StaticResource RouteTextLabel}" VerticalTextAlignment="Start"/>
-            </StackLayout>
-            <StackLayout Grid.Row="3" Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="10,0,10,5">
-                <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start"></Image>
-                <Label Text="{Binding Description}" Margin="0" Style="{StaticResource RouteTextLabel}" TextColor="Gray" LineBreakMode="WordWrap" VerticalTextAlignment="Start">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding EditDescriptionCommand}" />
-                    </Label.GestureRecognizers>
-                </Label>
-            </StackLayout>
-            <local:CustomMap Grid.Row="4" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
-                x:Name="PointMapOverview"
-                IsShowingUser="true"
-                MapType="Street" 
-                />
-        </Grid>
-        <!--StackLayout Orientation="Vertical">
-            <StackLayout Orientation="Horizontal" Padding="5">
-                <Image Source="place.png" WidthRequest="32" HeightRequest="32"></Image>
-                <Entry Placeholder="Координаты" Text="{Binding Coordinates}" Margin="5" HorizontalOptions="FillAndExpand" Style="{StaticResource StandartEntryCaption}" Keyboard="Keyboard.Default">
-                </Entry>
-            </StackLayout>
-        </-->
+        <ScrollView Orientation="Vertical">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="150"></RowDefinition>
+                    <RowDefinition Height="2*"></RowDefinition>
+                    <RowDefinition Height="2*"></RowDefinition>
+                    <RowDefinition Height="2*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="250"></RowDefinition>
+                </Grid.RowDefinitions>
+                
+                <Image Grid.Row="0" Source="{Binding ImageSource}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" Margin="0">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding TakePhotoCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
+                <!--Image Grid.Row="0" Source="https://www.xamarin.com/content/images/pages/forms/example-app.png" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" Margin="0">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding TakePhotoCommand}" />
+                    </Image.GestureRecognizers>
+                </-->
+                <StackLayout Grid.Row="1" Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="10,0,10,5">
+                    <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start"></Image>
+                    <Editor Margin="0" Text="{Binding Name}" FontSize="12" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand"></Editor>
+                </StackLayout>
+                <StackLayout Grid.Row="2" Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="10,0,10,5">
+                    <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start"></Image>
+                    <Label Text="{Binding Address}" Margin="0" Style="{StaticResource RouteTextLabel}" VerticalTextAlignment="Start"/>
+                </StackLayout>
+                <StackLayout Grid.Row="3" Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="10,0,10,5">
+                    <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start"></Image>
+                    <Label Text="{Binding Description}" Margin="0" Style="{StaticResource RouteTextLabel}" TextColor="Gray" LineBreakMode="WordWrap" VerticalTextAlignment="Start">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding EditDescriptionCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" Grid.Row="4" Padding="1" Margin="10,0,10,5" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start"></Image>
+                    <Label Text="{Binding Coordinates}" Style="{StaticResource RouteTextLabel}" VerticalTextAlignment="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding CopyCoordinatesCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
+                <StackLayout Orientation="Vertical" Grid.Row="5" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <local:CustomMap 
+                    x:Name="PointMapOverview"
+                    IsShowingUser="true"
+                    MapType="Street" 
+                    />
+                </StackLayout>
+            </Grid>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

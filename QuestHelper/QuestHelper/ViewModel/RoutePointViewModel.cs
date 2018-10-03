@@ -26,6 +26,7 @@ namespace QuestHelper.ViewModel
         public ICommand SaveCommand { get; private set; }
         public ICommand TakePhotoCommand { get; private set; }
         public ICommand EditDescriptionCommand { get; private set; }
+        public ICommand CopyCoordinatesCommand { get; private set; }
 
         private RoutesApiRequest _routesApi = new RoutesApiRequest("http://questhelperserver.azurewebsites.net");
         private RoutePointsApiRequest _routePointsApi = new RoutePointsApiRequest("http://questhelperserver.azurewebsites.net");
@@ -77,9 +78,15 @@ namespace QuestHelper.ViewModel
             DeleteCommand = new Command(deleteRoutePoint);
             TakePhotoCommand = new Command(takePhoto);
             EditDescriptionCommand = new Command(editDescriptionCommand);
+            CopyCoordinatesCommand = new Command(copyCoordinatesCommand);
             if ((_point.Latitude == 0)&&(_point.Longitude==0))
                 fillCurrentPositionAsync();
             Coordinates = Latitude + "," + Longitude;
+        }
+
+        private void copyCoordinatesCommand(object obj)
+        {
+            //throw new NotImplementedException();
         }
 
         private async void editDescriptionCommand(object obj)
@@ -98,8 +105,11 @@ namespace QuestHelper.ViewModel
                     PhotoSize = PhotoSize.Full,
                     Location = new Location() { Latitude = _point.Latitude, Longitude = _point.Longitude, Timestamp = DateTime.Now },
                     Directory = "Photos",
-                    Name = "img.jpg"
+                    Name = "img.jpg",
+                    CompressionQuality = 50
                 });
+                //string apath = file.AlbumPath;
+                //string path = file.Path;
                 if (file != null)
                 {
                     createPreview(file);
