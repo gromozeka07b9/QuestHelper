@@ -20,8 +20,8 @@
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="250"></RowDefinition>
                 </Grid.RowDefinitions>
-                
-                <Image Grid.Row="0" Source="{Binding ImageSource}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" Margin="0">
+
+                <Image Grid.Row="0" Source="{Binding ImagePreviewPath}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" Margin="0">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding TakePhotoCommand}" />
                     </Image.GestureRecognizers>

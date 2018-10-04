@@ -64,7 +64,7 @@ namespace QuestHelper.View
 
         private async void ContentPage_AppearingAsync(object sender, EventArgs e)
         {
-            if((_routePoint!=null)&&(_routePoint.Latitude > 0) && (_routePoint.Longitude > 0))
+            if((_routePoint!=null)&&(_routePoint.Latitude > 0) && (_routePoint.Longitude > 0) && (!string.IsNullOrEmpty(_routePoint.Name)))
             {
                 CustomMapView customMap = new CustomMapView((CustomMap)this.PointMapOverview, 15);
                 if(customMap.CenterMapToPosition(_routePoint.Latitude, _routePoint.Longitude))

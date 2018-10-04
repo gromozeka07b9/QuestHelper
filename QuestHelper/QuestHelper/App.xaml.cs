@@ -1,6 +1,7 @@
 ﻿using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using QuestHelper.Managers.Sync;
 using QuestHelper.View;
 using Realms;
 using System;
@@ -25,8 +26,15 @@ namespace QuestHelper
 		{
             AppCenter.Start("android=85c4ccc3-f315-427c-adbd-b928e461bcc8;",
                   typeof(Analytics), typeof(Crashes));
+            var syncFiles = SyncFiles.GetInstance();
+            syncFiles.SetWarningDialogContext(ShowWarning);
+            syncFiles.Start();
         }
 
+        public void ShowWarning(string text)
+        {            
+            MainPage.DisplayAlert("Внимание!", text, "Ok");
+        }
         protected override void OnSleep ()
 		{
 			// Handle when your app sleeps

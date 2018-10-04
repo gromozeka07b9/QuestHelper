@@ -42,6 +42,25 @@ namespace QuestHelper.Managers
             }
             return result;
         }
+        internal bool SetSyncStatus(string Id, bool Status)
+        {
+            bool result = false;
+            try
+            {
+                _realmInstance.Write(() =>
+                {
+                    var mediaObject = _realmInstance.Find<RoutePointMediaObject>(Id);
+                    mediaObject.ServerSynced = Status;
+                }
+                );
+                result = true;
+            }
+            catch (Exception e)
+            {
+                //пишем лог
+            }
+            return result;
+        }
 
         internal void UpdateLocalData(RoutePoint point, List<RoutePointMediaObject> mediaObjects)
         {
@@ -49,6 +68,12 @@ namespace QuestHelper.Managers
             {
                 Add(point, media);
             }
+        }
+
+        internal IEnumerable<RoutePointMediaObject> GetNotSyncedFiles()
+        {
+            var collection = _realmInstance.All<Model.DB.RoutePointMediaObject>();
+            return collection;
         }
     }
 }

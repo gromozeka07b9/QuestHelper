@@ -51,7 +51,7 @@ namespace QuestHelper.Droid
 
             using (MemoryStream ms = new MemoryStream())
             {
-                resizedImage.Compress(Bitmap.CompressFormat.Png, 100, ms);
+                resizedImage.Compress(Bitmap.CompressFormat.Jpeg, 50, ms);
 
                 resizedImage.Recycle();
 

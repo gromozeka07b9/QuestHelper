@@ -4,6 +4,7 @@ using Plugin.Geolocator.Abstractions;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
 using QuestHelper.Managers;
+using QuestHelper.Managers.Sync;
 using QuestHelper.Model.DB;
 using QuestHelper.View;
 using QuestHelper.WS;
@@ -68,6 +69,7 @@ namespace QuestHelper.ViewModel
         Route _route;
         string _currentPositionString = string.Empty;
         string _imageFilePath = string.Empty;
+        string _imagePreviewFilePath = string.Empty;
         byte[] _imagePreview;
 
         public RoutePointViewModel(Route route, RoutePoint routePoint)
@@ -111,24 +113,22 @@ namespace QuestHelper.ViewModel
                     Name = photoName,
                     CompressionQuality = 50
                 });
-                //string apath = file.AlbumPath;
-                //string path = file.Path;
                 if (file != null)
                 {
-                    //createImage(file);
-                    createImagePreview(file, photoNamePreview);
-                    ImagePath = file.AlbumPath;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImageSource"));
-                    AzureBlobRequest azureClient = new AzureBlobRequest();
                     FileInfo info = new FileInfo(file.Path);
-                    azureClient.SendFile(info.DirectoryName, photoName);
-                    azureClient.SendFile(info.DirectoryName, photoNamePreview);
+                    string imgPathToDirectory = info.DirectoryName;
                     file.Dispose();
+                    ImagePreviewManager preview = new ImagePreviewManager();
+                    preview.CreateImagePreview(imgPathToDirectory, info.Name, photoNamePreview);
+                    _imagePreviewFilePath = imgPathToDirectory + "/" + photoNamePreview;
+                    ImagePath = info.FullName;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImageSource"));
+                    SyncFiles.GetInstance().Start();
                 }
             }
         }
 
-        private void createImagePreview(MediaFile originalFile, string previewFileName)
+        /*private void createImagePreview(MediaFile originalFile, string previewFileName)
         {
             var mediaService = DependencyService.Get<IMediaService>();
             using (var stream = originalFile.GetStream())
@@ -143,8 +143,8 @@ namespace QuestHelper.ViewModel
                     File.WriteAllBytes(info.DirectoryName + "/" + previewFileName, imgPreviewByteArray);
                 }
             }
-        }
-        private void createPreview(MediaFile file)
+        }*/
+        /*private void createPreview(MediaFile file)
         {
             var mediaService = DependencyService.Get<IMediaService>();
             using (var stream = file.GetStream())
@@ -157,7 +157,7 @@ namespace QuestHelper.ViewModel
                     _imagePreview = previewManager.GetPreviewImage(mediaService, byteArrayOriginal, 640, 480);
                 }
             }
-        }
+        }*/
 
         private async void fillCurrentPositionAsync()
         {
@@ -321,7 +321,7 @@ namespace QuestHelper.ViewModel
                     realm.Write(() =>
                     {
                         _point.MediaObjects.Clear();
-                        _point.MediaObjects.Add(new RoutePointMediaObject() { FileName = value, Point = _point, PreviewImage = _imagePreview });
+                        _point.MediaObjects.Add(new RoutePointMediaObject() { FileName = value, Point = _point, FileNamePreview = _imagePreviewFilePath });
                         _point.UpdateDate = DateTime.Now;
                     });
                     _imageFilePath = value;
@@ -338,6 +338,29 @@ namespace QuestHelper.ViewModel
                     _imageFilePath = "emptyimg.png";
                 }
                 return _imageFilePath;
+            }
+        }
+        public string ImagePreviewPath
+        {
+            /*set
+            {
+                if (_imagePreviewFilePath != value)
+                {
+                    _imagePreviewFilePath = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagePreviewPath"));
+                }
+            }*/
+            get
+            {
+                if (_point.MediaObjects.Count > 0)
+                {
+                    _imagePreviewFilePath = _point.MediaObjects[0].FileNamePreview;
+                }
+                else
+                {
+                    _imagePreviewFilePath = "emptyimg.png";
+                }
+                return _imagePreviewFilePath;
             }
         }
 
@@ -383,5 +406,6 @@ namespace QuestHelper.ViewModel
                 else return "Описание не указано";
             }
         }
+
     }
 }
