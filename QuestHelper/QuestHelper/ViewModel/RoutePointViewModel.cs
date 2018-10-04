@@ -100,26 +100,50 @@ namespace QuestHelper.ViewModel
 
             if (CrossMedia.Current.IsCameraAvailable && CrossMedia.Current.IsTakePhotoSupported)
             {
+                string fileNameGuid = Guid.NewGuid().ToString();
+                string photoName = $"img_{fileNameGuid}.jpg";
+                string photoNamePreview = $"img_{fileNameGuid}_preview.jpg";
                 var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
                 {
                     PhotoSize = PhotoSize.Full,
                     Location = new Location() { Latitude = _point.Latitude, Longitude = _point.Longitude, Timestamp = DateTime.Now },
                     Directory = "Photos",
-                    Name = "img.jpg",
+                    Name = photoName,
                     CompressionQuality = 50
                 });
                 //string apath = file.AlbumPath;
                 //string path = file.Path;
                 if (file != null)
                 {
-                    createPreview(file);
+                    //createImage(file);
+                    createImagePreview(file, photoNamePreview);
                     ImagePath = file.AlbumPath;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImageSource"));
+                    AzureBlobRequest azureClient = new AzureBlobRequest();
+                    FileInfo info = new FileInfo(file.Path);
+                    azureClient.SendFile(info.DirectoryName, photoName);
+                    azureClient.SendFile(info.DirectoryName, photoNamePreview);
                     file.Dispose();
                 }
             }
         }
 
+        private void createImagePreview(MediaFile originalFile, string previewFileName)
+        {
+            var mediaService = DependencyService.Get<IMediaService>();
+            using (var stream = originalFile.GetStream())
+            {
+                byte[] originalByteArray = new byte[stream.Length];
+                int resultRead = stream.Read(originalByteArray, 0, originalByteArray.Length);
+                if (resultRead > 0)
+                {
+                    ImagePreviewManager previewManager = new ImagePreviewManager();
+                    byte[] imgPreviewByteArray = previewManager.GetPreviewImage(mediaService, originalByteArray, 640, 480);
+                    FileInfo info = new FileInfo(originalFile.Path);
+                    File.WriteAllBytes(info.DirectoryName + "/" + previewFileName, imgPreviewByteArray);
+                }
+            }
+        }
         private void createPreview(MediaFile file)
         {
             var mediaService = DependencyService.Get<IMediaService>();
@@ -130,7 +154,7 @@ namespace QuestHelper.ViewModel
                 if (resultRead > 0)
                 {
                     ImagePreviewManager previewManager = new ImagePreviewManager();
-                    _imagePreview = previewManager.GetPreviewImage(mediaService, byteArrayOriginal, 200, 140);
+                    _imagePreview = previewManager.GetPreviewImage(mediaService, byteArrayOriginal, 640, 480);
                 }
             }
         }
@@ -196,13 +220,14 @@ namespace QuestHelper.ViewModel
         {
             get
             {
-                if(File.Exists(ImagePath))
+                return StreamImageSource.FromResource("emptyimg.png");
+                /*if (File.Exists(ImagePath))
                 {
                     return StreamImageSource.FromFile(ImagePath);
                 } else
                 {
                     return StreamImageSource.FromResource("emptyimg.png");
-                }
+                }*/
             }
         }
         public double Latitude

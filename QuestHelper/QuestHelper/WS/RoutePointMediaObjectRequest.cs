@@ -41,7 +41,8 @@ namespace QuestHelper.WS
                 RoutePointMediaObjectId = routePointMediaObject.RoutePointMediaObjectId,
                 RoutePointId = routePointMediaObject.Point.RoutePointId,
                 FileName = routePointMediaObject.FileName,
-                PreviewImage = routePointMediaObject.PreviewImage
+                PreviewImage = routePointMediaObject.PreviewImage,
+                FileNamePreview = routePointMediaObject.FileNamePreview
             });
             
             try

@@ -39,7 +39,8 @@ namespace QuestHelper.Model.DB
         {
             get
             {
-                if (MediaObjects.Count > 0)
+                return StreamImageSource.FromFile("star.png");
+                /*if (MediaObjects.Count > 0)
                 {
                     //фуфу, убрать это из модели!
                     var stream = new MemoryStream(MediaObjects[0].PreviewImage);
@@ -57,7 +58,7 @@ namespace QuestHelper.Model.DB
                 else
                 {
                     return StreamImageSource.FromFile("star.png");
-                }
+                }*/
             }
         }
     }
