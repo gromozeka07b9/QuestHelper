@@ -39,7 +39,16 @@ namespace QuestHelper.Model.DB
         {
             get
             {
-                return StreamImageSource.FromFile("star.png");
+                ImageSource previewFile;
+                if (MediaObjects.Count > 0)
+                {
+                    previewFile = ImageSource.FromFile(MediaObjects[0].FileNamePreview);
+                    return previewFile;
+                } else
+                {
+                    return ImageSource.FromFile("earth21.png");
+                }
+                //return StreamImageSource.FromFile("star.png");
                 /*if (MediaObjects.Count > 0)
                 {
                     //фуфу, убрать это из модели!

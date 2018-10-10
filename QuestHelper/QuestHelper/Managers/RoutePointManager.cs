@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using QuestHelper.Model.DB;
+using QuestHelper.Model.View;
 using Realms;
 
 namespace QuestHelper.Managers
@@ -27,6 +28,11 @@ namespace QuestHelper.Managers
         internal IEnumerable<RoutePoint> GetPointsByRoute(Route routeItem)
         {
             var collection = _realmInstance.All<Model.DB.RoutePoint>().Where(point => point.MainRoute == routeItem).OrderByDescending(point => point.CreateDate);
+            return collection;
+        }
+        internal IEnumerable<VMRoutePoint> GetVMPointsByRoute(Route routeItem)
+        {
+            var collection = _realmInstance.All<Model.DB.RoutePoint>().Where(point => point.MainRoute == routeItem).OrderByDescending(point => point.CreateDate).Select(o=> new VMRoutePoint(o));
             return collection;
         }
         internal RoutePoint GetPointByCoordinates(double latitude, double longitude)
