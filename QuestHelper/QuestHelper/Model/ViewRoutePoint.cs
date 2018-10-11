@@ -6,13 +6,13 @@ using System.IO;
 using System.Text;
 using Xamarin.Forms;
 
-namespace QuestHelper.Model.View
+namespace QuestHelper.Model
 {
-    public class VMRoutePoint
+    public class ViewRoutePoint1
     {
         private RoutePoint _dBRoutePoint;
         private ImageSource _imagePreview;
-        public VMRoutePoint(RoutePoint dbRoutePoint)
+        public ViewRoutePoint1(RoutePoint dbRoutePoint)
         {
             _dBRoutePoint = dbRoutePoint;
         }

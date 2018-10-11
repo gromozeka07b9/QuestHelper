@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using QuestHelper.LocalDB.Model;
 using Realms;
@@ -44,6 +45,31 @@ namespace QuestHelper.Managers
             {
                 Add(route);
             }
+        }
+
+        internal IEnumerable<Route> GetNotSynced()
+        {
+            return _realmInstance.All<Route>().Where(item => !item.ServerSynced);
+        }
+        public bool SetSyncStatus(string Id, bool Status)
+        {
+            bool result = false;
+            try
+            {
+                _realmInstance.Write(() =>
+                {
+                    var route = _realmInstance.Find<Route>(Id);
+                    route.ServerSynced = Status;
+                    route.ServerSyncedDate = DateTime.Now;
+                }
+                );
+                result = true;
+            }
+            catch (Exception e)
+            {
+                //пишем лог
+            }
+            return result;
         }
     }
 }

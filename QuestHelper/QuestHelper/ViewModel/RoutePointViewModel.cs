@@ -7,7 +7,6 @@ using QuestHelper.Managers;
 using QuestHelper.Managers.Sync;
 using QuestHelper.LocalDB.Model;
 using QuestHelper.View;
-using QuestHelper.WS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,9 +28,6 @@ namespace QuestHelper.ViewModel
         public ICommand EditDescriptionCommand { get; private set; }
         public ICommand CopyCoordinatesCommand { get; private set; }
 
-        private RoutesApiRequest _routesApi = new RoutesApiRequest("http://questhelperserver.azurewebsites.net");
-        private RoutePointsApiRequest _routePointsApi = new RoutePointsApiRequest("http://questhelperserver.azurewebsites.net");
-        private RoutePointMediaObjectRequest _routePointMediaObjectsApi = new RoutePointMediaObjectRequest("http://questhelperserver.azurewebsites.net");
         private static Random _rnd = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
         private List<string> _pointNames = new List<string>()
         {
@@ -128,37 +124,6 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        /*private void createImagePreview(MediaFile originalFile, string previewFileName)
-        {
-            var mediaService = DependencyService.Get<IMediaService>();
-            using (var stream = originalFile.GetStream())
-            {
-                byte[] originalByteArray = new byte[stream.Length];
-                int resultRead = stream.Read(originalByteArray, 0, originalByteArray.Length);
-                if (resultRead > 0)
-                {
-                    ImagePreviewManager previewManager = new ImagePreviewManager();
-                    byte[] imgPreviewByteArray = previewManager.GetPreviewImage(mediaService, originalByteArray, 640, 480);
-                    FileInfo info = new FileInfo(originalFile.Path);
-                    File.WriteAllBytes(info.DirectoryName + "/" + previewFileName, imgPreviewByteArray);
-                }
-            }
-        }*/
-        /*private void createPreview(MediaFile file)
-        {
-            var mediaService = DependencyService.Get<IMediaService>();
-            using (var stream = file.GetStream())
-            {
-                byte[] byteArrayOriginal = new byte[stream.Length];
-                int resultRead = stream.Read(byteArrayOriginal, 0, byteArrayOriginal.Length);
-                if (resultRead > 0)
-                {
-                    ImagePreviewManager previewManager = new ImagePreviewManager();
-                    _imagePreview = previewManager.GetPreviewImage(mediaService, byteArrayOriginal, 640, 480);
-                }
-            }
-        }*/
-
         private async void fillCurrentPositionAsync()
         {
             var locator = CrossGeolocator.Current;
@@ -198,12 +163,13 @@ namespace QuestHelper.ViewModel
                 if (manager.Add(_point, _route))
                 {
                     await Navigation.PopAsync();
-                    await _routesApi.AddRoute(_route);
+                    SyncServer.SyncAll();
+                    /*await _routesApi.AddRoute(_route);
                     await _routePointsApi.AddRoutePoint(_point);
                     if(_point.MediaObjects.Count > 0)
                     {
                         await _routePointMediaObjectsApi.AddRoutePointMediaObject(_point.MediaObjects[0]);
-                    }
+                    }*/
                 } else
                 {
                     Crashes.TrackError(new Exception("Error while adding new point"), new Dictionary<string, string> { { "Screen", "RoutePoint" }, { "Action", "SaveRoutePoint" } });
@@ -289,22 +255,9 @@ namespace QuestHelper.ViewModel
         {
             set
             {
-                if (_point.Name != value)
-                {
-                    var realm = RoutePointManager.GetRealmInstance();
-                    using (var transaction = realm.BeginWrite())
-                    {
-                        _point.Name = value;
-                        _point.UpdateDate = DateTime.Now;
-                        transaction.Commit();
-                    }
-                    /*realm.Write(() =>
-                            {
-                                _point.Name = value;
-                                _point.UpdateDate = DateTime.Now;
-                            });*/
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
-                }
+                RoutePointManager manager = new RoutePointManager();
+                manager.SetName(_point, value);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
             }
             get
             {
@@ -317,50 +270,24 @@ namespace QuestHelper.ViewModel
             {
                 if (_imageFilePath != value)
                 {
-                    var realm = RoutePointManager.GetRealmInstance();
-                    realm.Write(() =>
-                    {
-                        _point.MediaObjects.Clear();
-                        _point.MediaObjects.Add(new RoutePointMediaObject() { FileName = value, Point = _point, FileNamePreview = _imagePreviewFilePath });
-                        _point.UpdateDate = DateTime.Now;
-                    });
+                    RoutePointManager manager = new RoutePointManager();
+                    manager.AddMediaObject(_point, _imagePreviewFilePath, value);
                     _imageFilePath = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagePath"));
                 }
             }
             get
             {
-                if(_point.MediaObjects.Count > 0)
-                {
-                    _imageFilePath = _point.MediaObjects[0].FileName;
-                } else
-                {
-                    _imageFilePath = "emptyimg.png";
-                }
-                return _imageFilePath;
+                RoutePointManager manager = new RoutePointManager();
+                return manager.GetDefaultImageFilename(_point);
             }
         }
         public string ImagePreviewPath
         {
-            /*set
-            {
-                if (_imagePreviewFilePath != value)
-                {
-                    _imagePreviewFilePath = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagePreviewPath"));
-                }
-            }*/
             get
             {
-                if (_point.MediaObjects.Count > 0)
-                {
-                    _imagePreviewFilePath = _point.MediaObjects[0].FileNamePreview;
-                }
-                else
-                {
-                    _imagePreviewFilePath = "emptyimg.png";
-                }
-                return _imagePreviewFilePath;
+                RoutePointManager manager = new RoutePointManager();
+                return manager.GetDefaultImagePreviewFilename(_point);
             }
         }
 
@@ -386,19 +313,6 @@ namespace QuestHelper.ViewModel
         }
         public string Description
         {
-            /*set
-            {
-                if (_point.Description != value)
-                {
-                    var realm = RoutePointManager.GetRealmInstance();
-                    realm.Write(() =>
-                    {
-                        _point.Description = value;
-                        _point.UpdateDate = DateTime.Now;
-                    });
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Description"));
-                }
-            }*/
             get
             {
                 if (!string.IsNullOrEmpty(_point.Description))

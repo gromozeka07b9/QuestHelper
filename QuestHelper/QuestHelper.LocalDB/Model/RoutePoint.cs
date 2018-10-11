@@ -21,6 +21,8 @@ namespace QuestHelper.LocalDB.Model
         public string Description { get; set; }
         public bool IsNew { get; set; } = true;
         public Route MainRoute { get; set; }
+        public bool ServerSynced { get; set; }//Признак того, что точка уже на сервере
+        public DateTime ServerSyncedDate { get; set; }//Дата синхронизации
         public IList<RoutePointMediaObject> MediaObjects { get; }
 
         public string CoordinatesByText

@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace QuestHelper
@@ -24,11 +24,16 @@ namespace QuestHelper
 
         protected override void OnStart ()
 		{
-            AppCenter.Start("android=85c4ccc3-f315-427c-adbd-b928e461bcc8;",
-                  typeof(Analytics), typeof(Crashes));
+            AppCenter.Start("android=85c4ccc3-f315-427c-adbd-b928e461bcc8;", typeof(Analytics), typeof(Crashes));
+
+            var syncPoints = SyncPoints.GetInstance();
+            syncPoints.SetWarningDialogContext(ShowWarning);
+            Task.Run(()=>syncPoints.StartAsync());//deadlock
+            //syncPoints.StartAsync();
+
             var syncFiles = SyncFiles.GetInstance();
             syncFiles.SetWarningDialogContext(ShowWarning);
-            syncFiles.Start();
+            syncFiles.Start();//ToDo:тоже надо асинк
         }
 
         public void ShowWarning(string text)

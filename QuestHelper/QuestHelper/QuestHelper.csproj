@@ -4,12 +4,6 @@
     <TargetFramework>netstandard2.0</TargetFramework>
 	<RunCodeAnalysis>False</RunCodeAnalysis>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Model\DB\Route.cs" />
-    <Compile Remove="Model\DB\RoutePoint.cs" />
-    <Compile Remove="Model\DB\RoutePointMediaObject.cs" />
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AppCenter" Version="1.9.0" />
     <PackageReference Include="Microsoft.AppCenter.Analytics" Version="1.7.0" />
@@ -105,9 +99,5 @@
     <None Update="View\UserProfilePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Model\DB\" />
   </ItemGroup>
 </Project>

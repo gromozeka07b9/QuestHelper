@@ -16,6 +16,11 @@ namespace QuestHelper.Managers.Sync
 
         }
 
+        internal void SetWarningDialogContext(Action<string> showWarning)
+        {
+            _showWarning = showWarning;
+        }
+
         public static SyncFiles GetInstance()
         {
             if (_instance == null) _instance = new SyncFiles();
@@ -46,11 +51,6 @@ namespace QuestHelper.Managers.Sync
                     break;
                 }*/
             }
-        }
-
-        internal void SetWarningDialogContext(Action<string> showWarning)
-        {
-            _showWarning = showWarning;
         }
     }
 }

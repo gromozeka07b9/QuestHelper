@@ -19,7 +19,7 @@ namespace QuestHelper.ViewModel
         private IEnumerable<Route> _routes;
         private Route _routeItem;
         private RouteManager _routeManager = new RouteManager();
-        private RoutesApiRequest _api = new RoutesApiRequest("http://questhelperserver.azurewebsites.net");
+        //private RoutesApiRequest _api = new RoutesApiRequest("http://questhelperserver.azurewebsites.net");
         private bool _noRoutesWarningIsVisible = false;
         private bool _isRefreshing = false;
 
@@ -41,11 +41,11 @@ namespace QuestHelper.ViewModel
             NoRoutesWarningIsVisible = Routes.Count() == 0;
             IsRefreshing = false;
 #if DEBUG
-            List<Route> routes = await _api.GetRoutes();
-            _routeManager.UpdateLocalData(routes);
+            //List<Route> routes = await _api.GetRoutes();
+            //_routeManager.UpdateLocalData(routes);
 #else
-            List<Route> routes = await _api.GetRoutes();
-            _routeManager.UpdateLocalData(routes);
+            //List<Route> routes = await _api.GetRoutes();
+            //_routeManager.UpdateLocalData(routes);
 #endif
         }
 
