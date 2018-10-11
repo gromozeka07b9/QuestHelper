@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using QuestHelper.Model.DB;
+using QuestHelper.LocalDB.Model;
 using Realms;
 
 namespace QuestHelper.Managers
@@ -72,7 +72,7 @@ namespace QuestHelper.Managers
 
         internal IEnumerable<RoutePointMediaObject> GetNotSyncedFiles()
         {
-            var collection = _realmInstance.All<Model.DB.RoutePointMediaObject>();
+            var collection = _realmInstance.All<RoutePointMediaObject>();
             return collection;
         }
     }

@@ -1,6 +1,6 @@
 ﻿using Plugin.Geolocator;
+using QuestHelper.LocalDB.Model;
 using QuestHelper.Managers;
-using QuestHelper.Model.DB;
 using QuestHelper.View;
 using QuestHelper.WS;
 using Realms;

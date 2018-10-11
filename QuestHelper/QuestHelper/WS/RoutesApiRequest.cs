@@ -7,8 +7,8 @@ using System.Net;
 using System.IO;
 using Newtonsoft.Json;
 using System.Net.Http;
-using QuestHelper.Model.DB;
 using Newtonsoft.Json.Linq;
+using QuestHelper.LocalDB.Model;
 
 namespace QuestHelper.WS
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AppCenter.Crashes;
 using Plugin.Geolocator;
-using QuestHelper.Model.DB;
+using QuestHelper.LocalDB.Model;
 using QuestHelper.View.Geo;
 using QuestHelper.ViewModel;
 using System;

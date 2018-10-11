@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using QuestHelper.Model.DB;
+using QuestHelper.LocalDB.Model;
 using Realms;
 
 namespace QuestHelper.Managers
@@ -15,7 +15,7 @@ namespace QuestHelper.Managers
         }
         internal IEnumerable<Route> GetRoutes()
         {
-            var points = _realmInstance.All<Model.DB.Route>();
+            var points = _realmInstance.All<Route>();
             return points;
         }
 

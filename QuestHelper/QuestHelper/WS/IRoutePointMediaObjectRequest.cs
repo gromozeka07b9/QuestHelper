@@ -1,4 +1,4 @@
-﻿using QuestHelper.Model.DB;
+﻿using QuestHelper.LocalDB.Model;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

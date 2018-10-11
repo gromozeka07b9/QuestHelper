@@ -1,4 +1,4 @@
-﻿using QuestHelper.Model.DB;
+﻿using QuestHelper.LocalDB.Model;
 using QuestHelper.ViewModel;
 using System;
 using System.Collections.Generic;

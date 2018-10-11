@@ -1,5 +1,5 @@
 ﻿using QuestHelper.Managers;
-using QuestHelper.Model.DB;
+using QuestHelper.LocalDB.Model;
 using QuestHelper.View;
 using QuestHelper.WS;
 using System;

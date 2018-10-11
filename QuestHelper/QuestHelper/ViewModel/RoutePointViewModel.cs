@@ -5,7 +5,7 @@ using Plugin.Media;
 using Plugin.Media.Abstractions;
 using QuestHelper.Managers;
 using QuestHelper.Managers.Sync;
-using QuestHelper.Model.DB;
+using QuestHelper.LocalDB.Model;
 using QuestHelper.View;
 using QuestHelper.WS;
 using System;
