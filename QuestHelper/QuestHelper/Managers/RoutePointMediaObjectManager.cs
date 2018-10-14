@@ -41,7 +41,7 @@ namespace QuestHelper.Managers
         }
         public IEnumerable<RoutePointMediaObject> GetNotSyncedFiles()
         {
-            return _realmInstance.All<RoutePointMediaObject>();
+            return _realmInstance.All<RoutePointMediaObject>().Where(media=>!media.ServerSynced);
         }
 
         public void UpdateLocalData(RoutePoint point, List<RoutePointMediaObject> mediaObjects)
@@ -71,6 +71,23 @@ namespace QuestHelper.Managers
                 //пишем лог
             }
             return result;
+        }
+
+        internal void Add(RoutePoint point, string imagePreviewFilePath, string imageFilePath)
+        {
+            _realmInstance.Write(() =>
+            {
+                point.MediaObjects.Clear();
+                point.MediaObjects.Add(new RoutePointMediaObject()
+                {
+                    FileName = imageFilePath,
+                    Point = point,
+                    FileNamePreview = imagePreviewFilePath,
+                    RoutePointId = point.RoutePointId,
+                    ServerSynced = false
+                });
+                point.UpdateDate = DateTime.Now;
+            });
         }
 
         internal IEnumerable<RoutePointMediaObject> GetNotSynced()

@@ -34,6 +34,7 @@ namespace QuestHelper.ViewModel
 
         private void openRoutePointDialog()
         {
+            _routeManager.Add(_route);
             Navigation.PushAsync(new RoutePage(_route, false));
         }
 

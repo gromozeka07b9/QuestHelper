@@ -19,7 +19,7 @@ namespace QuestHelper.ViewModel
         private IEnumerable<Route> _routes;
         private Route _routeItem;
         private RouteManager _routeManager = new RouteManager();
-        //private RoutesApiRequest _api = new RoutesApiRequest("http://questhelperserver.azurewebsites.net");
+        private RoutesApiRequest _api = new RoutesApiRequest("http://questhelperserver.azurewebsites.net");
         private bool _noRoutesWarningIsVisible = false;
         private bool _isRefreshing = false;
 

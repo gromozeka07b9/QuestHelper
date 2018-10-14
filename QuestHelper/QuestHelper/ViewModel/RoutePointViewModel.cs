@@ -119,7 +119,7 @@ namespace QuestHelper.ViewModel
                     _imagePreviewFilePath = imgPathToDirectory + "/" + photoNamePreview;
                     ImagePath = info.FullName;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImageSource"));
-                    SyncFiles.GetInstance().Start();
+                    //SyncFiles.GetInstance().Start();
                 }
             }
         }
@@ -270,8 +270,8 @@ namespace QuestHelper.ViewModel
             {
                 if (_imageFilePath != value)
                 {
-                    RoutePointManager manager = new RoutePointManager();
-                    manager.AddMediaObject(_point, _imagePreviewFilePath, value);
+                    RoutePointMediaObjectManager manager = new RoutePointMediaObjectManager();
+                    manager.Add(_point, _imagePreviewFilePath, value);
                     _imageFilePath = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagePath"));
                 }

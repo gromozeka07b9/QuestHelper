@@ -13,6 +13,6 @@ namespace QuestHelper.LocalDB.Model
         public DateTimeOffset CreateDate { get; set; } = DateTime.Now;
         public IList<RoutePoint> Points { get; }
         public bool ServerSynced { get; set; }//Признак того, что маршрут уже на сервере
-        public DateTime ServerSyncedDate { get; set; }//Дата синхронизации
+        public DateTimeOffset ServerSyncedDate { get; set; }//Дата синхронизации
     }
 }

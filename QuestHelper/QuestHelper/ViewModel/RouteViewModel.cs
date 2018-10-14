@@ -89,13 +89,13 @@ namespace QuestHelper.ViewModel
             }
             NoPointWarningIsVisible = PointsOfRoute.Count == 0;
             IsRefreshing = false;
-            List<RoutePoint> loadedPoints = await _routePointsApi.GetRoutePoints(_route.RouteId);
-            _routePointManager.UpdateLocalData(_route, loadedPoints);
-            foreach(var point in loadedPoints)
+            //List<RoutePoint> loadedPoints = await _routePointsApi.GetRoutePoints(_route.RouteId);
+            //_routePointManager.UpdateLocalData(_route, loadedPoints);
+            /*foreach(var point in loadedPoints)
             {
                 List<RoutePointMediaObject> loadedMediaObjects = await _routePointMediaObjectsApi.GetRoutePointMediaObjects(point.RoutePointId);
                 _routePointMediaObjectManager.UpdateLocalData(point, loadedMediaObjects);
-            }
+            }*/
         }
         void showNewRouteData()
         {

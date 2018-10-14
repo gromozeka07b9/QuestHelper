@@ -37,21 +37,23 @@ namespace QuestHelper.WS
         public async Task<bool> AddRoutePointMediaObject(RoutePointMediaObject routePointMediaObject)
         {
             bool addResult = false;
-            JObject jsonObject = JObject.FromObject(new {
-                RoutePointMediaObjectId = routePointMediaObject.RoutePointMediaObjectId,
-                RoutePointId = routePointMediaObject.Point.RoutePointId,
-                FileName = routePointMediaObject.FileName,
-                //PreviewImage = routePointMediaObject.PreviewImage,
-                FileNamePreview = routePointMediaObject.FileNamePreview
-            });
+
             
             try
             {
+                JObject jsonObject = JObject.FromObject(new
+                {
+                    RoutePointMediaObjectId = routePointMediaObject.RoutePointMediaObjectId,
+                    RoutePointId = routePointMediaObject.RoutePointId,
+                    FileName = routePointMediaObject.FileName,
+                    //PreviewImage = routePointMediaObject.PreviewImage,
+                    FileNamePreview = string.IsNullOrEmpty(routePointMediaObject.FileNamePreview)? "": routePointMediaObject.FileNamePreview
+                });
                 ApiRequest api = new ApiRequest();
                 await api.HttpRequestPOST($"{_hostUrl}/api/routepointmediaobjects", jsonObject.ToString());
                 addResult = true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
             }
             return addResult;

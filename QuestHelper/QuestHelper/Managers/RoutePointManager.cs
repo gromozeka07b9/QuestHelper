@@ -42,8 +42,8 @@ namespace QuestHelper.Managers
             {
                 _realmInstance.Write(() =>
                 {
-                    _realmInstance.Add(route);
-                    point.IsNew = false;
+                    //_realmInstance.Add(route);
+                    //point.IsNew = false;
                     point.MainRoute = route;
                     _realmInstance.Add(point);
                 }
@@ -70,12 +70,7 @@ namespace QuestHelper.Managers
             }
         }
 
-        internal void SetSyncStatus(object routeId, bool added)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal void AddMediaObject(RoutePoint point, string imagePreviewFilePath, string imageFilePath)
+        /*internal void AddMediaObject(RoutePoint point, string imagePreviewFilePath, string imageFilePath)
         {
             _realmInstance.Write(() =>
             {
@@ -83,7 +78,7 @@ namespace QuestHelper.Managers
                 point.MediaObjects.Add(new RoutePointMediaObject() { FileName = imageFilePath, Point = point, FileNamePreview = imagePreviewFilePath });
                 point.UpdateDate = DateTime.Now;
             });
-        }
+        }*/
 
         internal string GetDefaultImageFilename(RoutePoint point)
         {

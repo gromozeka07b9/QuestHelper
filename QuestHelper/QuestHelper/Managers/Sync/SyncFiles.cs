@@ -31,25 +31,39 @@ namespace QuestHelper.Managers.Sync
         {
             RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
             var mediaObjects = mediaManager.GetNotSyncedFiles();
-            AzureBlobRequest storage = new AzureBlobRequest();
+            
             foreach (var media in mediaObjects)
             {
-                if((!media.ServerSynced)&&(!string.IsNullOrEmpty(media.FileName)&& (!string.IsNullOrEmpty(media.FileNamePreview))))
+                if((!media.ServerSynced)&&(string.IsNullOrEmpty(media.FileName)))
                 {
-                    FileInfo infoFileOriginal = new FileInfo(media.FileName);
-                    bool result = storage.SendFile(infoFileOriginal.DirectoryName, infoFileOriginal.Name);
-                    if(result)
+                    mediaManager.SetSyncStatus(media.RoutePointMediaObjectId, true);
+                } else
+                {
+                    /*if ((!media.ServerSynced) && (!string.IsNullOrEmpty(media.FileName) && (!string.IsNullOrEmpty(media.FileNamePreview))))
                     {
-                        FileInfo infoFilePreview = new FileInfo(media.FileNamePreview);
-                        result = storage.SendFile(infoFilePreview.DirectoryName, infoFilePreview.Name);
-                        mediaManager.SetSyncStatus(media.RoutePointMediaObjectId, result);
-                    }
+                        UploadMedia(media);
+                    }*/
                 }
+
                 /*if (!result)
                 {
                     _showWarning("Произошла ошибка передачи файлов на сервер. Проверьте подключение к сети и повторите отправку.");
                     break;
                 }*/
+            }
+        }
+
+        public static void UploadMedia(LocalDB.Model.RoutePointMediaObject media)
+        {
+            RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
+            FileInfo infoFileOriginal = new FileInfo(media.FileName);
+            AzureBlobRequest storage = new AzureBlobRequest();
+            bool result = storage.SendFile(infoFileOriginal.DirectoryName, infoFileOriginal.Name);
+            if (result)
+            {
+                FileInfo infoFilePreview = new FileInfo(media.FileNamePreview);
+                result = storage.SendFile(infoFilePreview.DirectoryName, infoFilePreview.Name);
+                mediaManager.SetSyncStatus(media.RoutePointMediaObjectId, result);
             }
         }
     }

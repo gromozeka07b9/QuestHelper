@@ -41,13 +41,14 @@ namespace QuestHelper.Managers.Sync
                     //Пока непонятно что делать если загрузка не проходит
                 }
             }
+
             IEnumerable<RoutePoint> notSyncedPoints = _routePointManager.GetNotSynced();
             foreach (var point in notSyncedPoints)
             {
                 bool added = await _routePointsApi.AddRoutePoint(point);
                 if (added)
                 {
-                    _routePointManager.SetSyncStatus(point.RouteId, added);
+                    _routePointManager.SetSyncStatus(point.RoutePointId, added);
                 }
                 else
                 {
@@ -61,6 +62,7 @@ namespace QuestHelper.Managers.Sync
                 bool added = await _routePointMediaObjectsApi.AddRoutePointMediaObject(media);
                 if (added)
                 {
+                    SyncFiles.UploadMedia(media);
                     _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, added);
                 }
                 else
