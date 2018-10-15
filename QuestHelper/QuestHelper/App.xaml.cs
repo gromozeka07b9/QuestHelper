@@ -26,7 +26,7 @@ namespace QuestHelper
 		{
             AppCenter.Start("android=85c4ccc3-f315-427c-adbd-b928e461bcc8;", typeof(Analytics), typeof(Crashes));
 
-            var syncPoints = SyncPoints.GetInstance();
+            /*var syncPoints = SyncPoints.GetInstance();
             syncPoints.SetWarningDialogContext(ShowWarning);
             Task.Run(()=>syncPoints.StartAsync());//deadlock
             syncPoints.StartAsync();
@@ -34,6 +34,7 @@ namespace QuestHelper
             var syncFiles = SyncFiles.GetInstance();
             syncFiles.SetWarningDialogContext(ShowWarning);
             syncFiles.Start();//ToDo:тоже надо асинк
+            */
         }
 
         public void ShowWarning(string text)

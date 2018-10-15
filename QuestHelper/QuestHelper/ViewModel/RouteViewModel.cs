@@ -32,8 +32,8 @@ namespace QuestHelper.ViewModel
         private RoutePointMediaObjectManager _routePointMediaObjectManager = new RoutePointMediaObjectManager();
         private bool _listIsRefreshing;
         private bool _noPointWarningIsVisible;
-        private RoutePointsApiRequest _routePointsApi = new RoutePointsApiRequest("http://questhelperserver.azurewebsites.net");
-        private RoutePointMediaObjectRequest _routePointMediaObjectsApi = new RoutePointMediaObjectRequest("http://questhelperserver.azurewebsites.net");
+        //private RoutePointsApiRequest _routePointsApi = new RoutePointsApiRequest("http://questhelperserver.azurewebsites.net");
+        //private RoutePointMediaObjectRequest _routePointMediaObjectsApi = new RoutePointMediaObjectRequest("http://questhelperserver.azurewebsites.net");
         private bool _isRefreshing;
 
         public INavigation Navigation { get; set; }
@@ -108,7 +108,7 @@ namespace QuestHelper.ViewModel
         {
             if(!_route.IsManaged)
                 _routeManager.Add(_route);
-            var routePointPage = new RoutePointPage(_route, new RoutePoint());
+            var routePointPage = new RoutePointPage(_route.RouteId, string.Empty);
             await Navigation.PushAsync(routePointPage, true);
         }
 
@@ -156,7 +156,10 @@ namespace QuestHelper.ViewModel
             {
                 if (_point != value)
                 {
-                    Navigation.PushAsync(new RoutePointPage(_route, value));
+                    RoutePoint point = value;
+                    string routePointId = point.RoutePointId;
+                    var page = new RoutePointPage(_route.RouteId, routePointId);
+                    Navigation.PushAsync(page);
                     _point = null;
                     PropertyChanged(this, new PropertyChangedEventArgs("SelectedRoutePointItem"));
                 }

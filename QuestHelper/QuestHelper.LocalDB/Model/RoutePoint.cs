@@ -14,7 +14,7 @@ namespace QuestHelper.LocalDB.Model
         public string RouteId { get; set; }
         public string Name { get; set; }
         public DateTimeOffset CreateDate { get; set; } = DateTime.Now;
-        public DateTimeOffset UpdateDate { get; set; } = DateTime.Now;
+        public DateTimeOffset UpdateDate { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public string Address { get; set; }

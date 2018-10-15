@@ -1,6 +1,7 @@
 ﻿using Microsoft.AppCenter.Crashes;
 using Plugin.Geolocator;
 using QuestHelper.LocalDB.Model;
+using QuestHelper.Managers;
 using QuestHelper.View.Geo;
 using QuestHelper.ViewModel;
 using System;
@@ -23,11 +24,12 @@ namespace QuestHelper.View
         {
             InitializeComponent();
         }
-        public RoutePointPage (Route route, RoutePoint routePoint)
+        public RoutePointPage (string routeId, string routePointId)
 		{
 			InitializeComponent ();
-            _routePoint = routePoint;
-            BindingContext = new RoutePointViewModel(route, routePoint) { Navigation = this.Navigation };
+            RoutePointManager manager = new RoutePointManager();
+            _routePoint = manager.GetPointById(routePointId);
+            BindingContext = new RoutePointViewModel(routeId, routePointId) { Navigation = this.Navigation };
         }
 
         /*private bool centerMapToPositionAsync(double Latitude, double Longitude, int timeout)

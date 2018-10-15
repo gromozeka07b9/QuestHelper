@@ -72,5 +72,10 @@ namespace QuestHelper.Managers
             }
             return result;
         }
+
+        internal Route GetRouteById(string routeId)
+        {
+            return _realmInstance.Find<Route>(routeId);
+        }
     }
 }

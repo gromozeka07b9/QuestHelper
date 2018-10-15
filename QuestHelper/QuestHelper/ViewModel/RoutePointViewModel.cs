@@ -15,6 +15,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using QuestHelper.Model;
 
 namespace QuestHelper.ViewModel
 {
@@ -61,23 +62,25 @@ namespace QuestHelper.ViewModel
             "В тридевятом царстве"
         };
 
-        RoutePoint _point;
-        Route _route;
+        //RoutePoint _point;
+        //Route _route;
+        ViewRoutePoint _vpoint;
         string _currentPositionString = string.Empty;
         string _imageFilePath = string.Empty;
         string _imagePreviewFilePath = string.Empty;
-        byte[] _imagePreview;
+        //byte[] _imagePreview;
 
-        public RoutePointViewModel(Route route, RoutePoint routePoint)
+        public RoutePointViewModel(string routeId, string routePointId)
         {
-            _route = route;
-            _point = routePoint;
+            //_route = route;
+            //_point = routePoint;
+            _vpoint = new ViewRoutePoint(routeId, routePointId);
             SaveCommand = new Command(saveRoutePoint);
             DeleteCommand = new Command(deleteRoutePoint);
             TakePhotoCommand = new Command(takePhoto);
             EditDescriptionCommand = new Command(editDescriptionCommand);
             CopyCoordinatesCommand = new Command(copyCoordinatesCommand);
-            if ((_point.Latitude == 0)&&(_point.Longitude==0))
+            if ((_vpoint.Latitude == 0)&&(_vpoint.Longitude==0))
                 fillCurrentPositionAsync();
             Coordinates = Latitude + "," + Longitude;
         }
@@ -89,7 +92,8 @@ namespace QuestHelper.ViewModel
 
         private async void editDescriptionCommand(object obj)
         {
-            await Navigation.PushAsync(new EditRoutePointDescriptionPage(_point));
+            throw new Exception("commented!");
+            //await Navigation.PushAsync(new EditRoutePointDescriptionPage(_point));
         }
         private async void takePhoto(object obj)
         {
@@ -104,7 +108,7 @@ namespace QuestHelper.ViewModel
                 var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
                 {
                     PhotoSize = PhotoSize.Full,
-                    Location = new Location() { Latitude = _point.Latitude, Longitude = _point.Longitude, Timestamp = DateTime.Now },
+                    Location = new Location() { Latitude = _vpoint.Latitude, Longitude = _vpoint.Longitude, Timestamp = DateTime.Now },
                     Directory = "Photos",
                     Name = photoName,
                     CompressionQuality = 50
@@ -117,8 +121,11 @@ namespace QuestHelper.ViewModel
                     ImagePreviewManager preview = new ImagePreviewManager();
                     preview.CreateImagePreview(imgPathToDirectory, info.Name, photoNamePreview);
                     _imagePreviewFilePath = imgPathToDirectory + "/" + photoNamePreview;
-                    ImagePath = info.FullName;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImageSource"));
+                    //ImagePath = info.FullName;
+                    //_vpoint.AddMedia(info.FullName, _imagePreviewFilePath);
+                    _vpoint.ImagePath = info.FullName;
+                    _vpoint.ImagePreviewPath = _imagePreviewFilePath;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagePreviewPath"));
                     //SyncFiles.GetInstance().Start();
                 }
             }
@@ -131,7 +138,7 @@ namespace QuestHelper.ViewModel
             Latitude = position.Latitude;
             Longitude = position.Longitude;
             Coordinates = Latitude + "," + Longitude;
-            Address = await getPositionAddress(locator, position);
+            _vpoint.Address = await getPositionAddress(locator, position);
 
             int index = _rnd.Next(0, _pointNames.Count() - 1);
             Name = _pointNames[index];
@@ -149,32 +156,34 @@ namespace QuestHelper.ViewModel
             catch (Exception exception)
             {
                 var properties = new Dictionary<string, string> { { "Screen", "RoutePoint" }, { "Action", "GetPositionAddress" } };
-                Crashes.TrackError(exception, properties);
+                Crashes.TrackError(exception, properties);                
             }
             return address;
         }
 
         async void saveRoutePoint()
         {
-            if(_point.MainRoute == null)
+            if(_vpoint.Save())
+            {
+                await Navigation.PopAsync();
+            }
+            else
+            {
+                HandleError.Process("RoutePoint", "SaveRoutePoint", new Exception("Error while adding new point"), true);
+            }
+            /*if (_point.MainRoute == null)
             {
                 _point.MainRoute = _route;
                 RoutePointManager manager = new RoutePointManager();
                 if (manager.Add(_point, _route))
                 {
                     await Navigation.PopAsync();
-                    SyncServer.SyncAll();
-                    /*await _routesApi.AddRoute(_route);
-                    await _routePointsApi.AddRoutePoint(_point);
-                    if(_point.MediaObjects.Count > 0)
-                    {
-                        await _routePointMediaObjectsApi.AddRoutePointMediaObject(_point.MediaObjects[0]);
-                    }*/
                 } else
                 {
-                    Crashes.TrackError(new Exception("Error while adding new point"), new Dictionary<string, string> { { "Screen", "RoutePoint" }, { "Action", "SaveRoutePoint" } });
+                    HandleError.Process("RoutePoint", "SaveRoutePoint", new Exception("Error while adding new point"), true);
+                    //Crashes.TrackError(new Exception("Error while adding new point"), new Dictionary<string, string> { { "Screen", "RoutePoint" }, { "Action", "SaveRoutePoint" } });
                 };
-            }
+            }*/
         }
 
         async void deleteRoutePoint()
@@ -182,58 +191,42 @@ namespace QuestHelper.ViewModel
 
         }
 
-        public ImageSource ImageSource
+        /*public ImageSource ImageSource
         {
             get
             {
                 return StreamImageSource.FromResource("emptyimg.png");
-                /*if (File.Exists(ImagePath))
-                {
-                    return StreamImageSource.FromFile(ImagePath);
-                } else
-                {
-                    return StreamImageSource.FromResource("emptyimg.png");
-                }*/
+
             }
-        }
+        }*/
         public double Latitude
         {
             set
             {
-                if (_point.Latitude != value)
+                if (_vpoint.Latitude != value)
                 {
-                    var realm = RoutePointManager.GetRealmInstance();
-                    realm.Write(() =>
-                    {
-                        _point.Latitude = value;
-                        _point.UpdateDate = DateTime.Now;
-                    });
+                    _vpoint.Latitude = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Latitude"));
                 }
             }
             get
             {
-                return _point.Latitude;
+                return _vpoint.Latitude;
             }
         }
         public double Longitude
         {
             set
             {
-                if (_point.Longitude != value)
+                if (_vpoint.Longitude != value)
                 {
-                    var realm = RoutePointManager.GetRealmInstance();
-                    realm.Write(() =>
-                    {
-                        _point.Longitude = value;
-                        _point.UpdateDate = DateTime.Now;
-                    });
+                    _vpoint.Longitude = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Longitude"));
                 }
             }
             get
             {
-                return _point.Longitude;
+                return _vpoint.Longitude;
             }
         }
         public string Coordinates
@@ -255,18 +248,20 @@ namespace QuestHelper.ViewModel
         {
             set
             {
-                RoutePointManager manager = new RoutePointManager();
-                manager.SetName(_point, value);
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
+                if (_vpoint.Name != value)
+                {
+                    _vpoint.Name = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
+                }                   
             }
             get
             {
-                return _point.Name;
+                return _vpoint.Name;
             }
         }
         public string ImagePath
         {
-            set
+            /*set
             {
                 if (_imageFilePath != value)
                 {
@@ -275,48 +270,33 @@ namespace QuestHelper.ViewModel
                     _imageFilePath = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagePath"));
                 }
-            }
+            }*/
             get
             {
-                RoutePointManager manager = new RoutePointManager();
-                return manager.GetDefaultImageFilename(_point);
+                return _vpoint.ImagePath;
             }
         }
         public string ImagePreviewPath
         {
             get
             {
-                RoutePointManager manager = new RoutePointManager();
-                return manager.GetDefaultImagePreviewFilename(_point);
+                return _vpoint.ImagePreviewPath;
             }
         }
 
         public string Address
         {
-            set
-            {
-                if (_point.Address != value)
-                {
-                    var realm = RoutePointManager.GetRealmInstance();
-                    realm.Write(() =>
-                    {
-                        _point.Address = value;
-                        _point.UpdateDate = DateTime.Now;
-                    });
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Address"));
-                }
-            }
             get
             {
-                return _point.Address;
+                return _vpoint.Address;
             }
         }
         public string Description
         {
             get
             {
-                if (!string.IsNullOrEmpty(_point.Description))
-                    return _point.Description;
+                if (!string.IsNullOrEmpty(_vpoint.Description))
+                    return _vpoint.Description;
                 else return "Описание не указано";
             }
         }
