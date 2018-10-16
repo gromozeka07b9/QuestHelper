@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using QuestHelper.LocalDB.Model;
+using QuestHelper.Model;
 using Realms;
 
 namespace QuestHelper.Managers
@@ -40,19 +41,47 @@ namespace QuestHelper.Managers
             return collection.FirstOrDefault();
         }
 
-        internal bool Add(RoutePoint point)
+        internal bool Save(ViewRoutePoint vpoint)
         {
             bool result = false;
+            RouteManager routeManager = new RouteManager();
             try
             {
                 _realmInstance.Write(() =>
                 {
-                    //_realmInstance.Add(route);
-                    //point.IsNew = false;
-                    //point.MainRoute = route;
-                    _realmInstance.Add(point);
-                }
-                );
+                    RoutePoint point;
+                    if (string.IsNullOrEmpty(vpoint.Id))
+                    {
+                        point = new RoutePoint();
+                        point.RouteId = vpoint.RouteId;
+                        point.MainRoute = routeManager.GetRouteById(vpoint.RouteId);
+                        point.MainRoute.Points.Add(point);//?
+                        _realmInstance.Add(point);
+                    }
+                    else
+                    {
+                        point = _realmInstance.Find<RoutePoint>(vpoint.Id);
+                    }
+                    point.Address = vpoint.Address;
+                    point.Description = vpoint.Description;
+                    point.Latitude = vpoint.Latitude;
+                    point.Longitude = vpoint.Longitude;
+                    point.Name = vpoint.Name;
+                    point.UpdateDate = DateTime.Now;
+                    if((point.MediaObjects.Count > 0) && (point.MediaObjects[0].FileName != vpoint.ImagePath))
+                    {
+                        point.MediaObjects.Clear();
+                    }
+                    if(!string.IsNullOrEmpty(vpoint.ImagePath) && (vpoint.ImagePath != "emptyimg.png"))
+                    {
+                        RoutePointMediaObject defaultMedia = new RoutePointMediaObject();
+                        defaultMedia.FileName = vpoint.ImagePath;
+                        defaultMedia.FileNamePreview = vpoint.ImagePreviewPath;
+                        defaultMedia.RoutePointId = point.RoutePointId;
+                        defaultMedia.Point = point;
+                        point.MediaObjects.Add(defaultMedia);
+                    }
+                });
                 result = true;
             }
             catch (Exception e)

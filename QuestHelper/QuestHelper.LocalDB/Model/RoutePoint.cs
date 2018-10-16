@@ -19,6 +19,7 @@ namespace QuestHelper.LocalDB.Model
         public double Longitude { get; set; }
         public string Address { get; set; }
         public string Description { get; set; }
+        [Obsolete("Не нужен", false)]
         public bool IsNew { get; set; } = true;
         public Route MainRoute { get; set; }
         public bool ServerSynced { get; set; }//Признак того, что точка уже на сервере

@@ -22,21 +22,31 @@ namespace QuestHelper.Model
         private string _address = string.Empty;
         private double _latitude = 0;
         private double _longtitude = 0;
-        private DateTime _createDate;
+        private DateTimeOffset _createDate;
 
         public ViewRoutePoint(string routeId, string routePointId)
         {
-            RoutePointManager manager = new RoutePointManager();
-            RoutePoint point = manager.GetPointById(routePointId);
-            _id = routePointId;
             _routeId = routeId;
-            _name = point.Name;
-            _description = point.Description;
-            _address = point.Address;
-            _latitude = point.Latitude;
-            _longtitude = point.Longitude;
+            RoutePointManager manager = new RoutePointManager();
+            if(string.IsNullOrEmpty(routePointId))
+            {
 
-            //_imagePath = point.im
+            } else
+            {
+                RoutePoint point = manager.GetPointById(routePointId);
+                if(point != null)
+                {
+                    _id = routePointId;
+                    _name = point.Name;
+                    _description = point.Description;
+                    _address = point.Address;
+                    _latitude = point.Latitude;
+                    _longtitude = point.Longitude;
+                    _createDate = point.CreateDate;                   
+                    _imagePath = manager.GetDefaultImageFilename(_id);
+                    _imagePreviewPath = manager.GetDefaultImagePreviewFilename(_id);
+                }
+            }
         }
 
         public string Id
@@ -46,16 +56,17 @@ namespace QuestHelper.Model
                 return _id;
             }
         }
+        public string RouteId
+        {
+            get
+            {
+                return _routeId;
+            }
+        }
         public string Name
         {
             set
             {
-                /*var realm = RoutePointManager.GetRealmInstance();
-                realm.Write(() =>
-                {
-                    _dBRoutePoint.Name = value;
-                    _dBRoutePoint.UpdateDate = DateTime.Now;
-                });*/
                 _name = value;
             }
             get
@@ -77,19 +88,6 @@ namespace QuestHelper.Model
                 return _description;
             }
         }
-        /*public ImageSource ImagePreview
-        {
-            get
-            {
-                if (_dBRoutePoint.MediaObjects.Count > 0)
-                {
-                    return ImageSource.FromFile(_dBRoutePoint.MediaObjects[0].FileNamePreview);
-                } else
-                {
-                    return ImageSource.FromFile("earth21.png");
-                }
-            }
-        }*/
 
         public string ImagePath
         {
@@ -99,8 +97,9 @@ namespace QuestHelper.Model
             }
             get
             {
-                RoutePointManager manager = new RoutePointManager();
-                return manager.GetDefaultImageFilename(_id);
+                //RoutePointManager manager = new RoutePointManager();
+                //return manager.GetDefaultImageFilename(_id);
+                return _imagePath;
             }
         }
         public string ImagePreviewPath
@@ -111,20 +110,15 @@ namespace QuestHelper.Model
             }
             get
             {
-                RoutePointManager manager = new RoutePointManager();
-                return manager.GetDefaultImagePreviewFilename(_id);
+                return _imagePreviewPath;
+                //RoutePointManager manager = new RoutePointManager();
+                //return manager.GetDefaultImagePreviewFilename(_id);
             }
         }
         public double Latitude
         {
             set
             {
-                /*var realm = RoutePointManager.GetRealmInstance();
-                realm.Write(() =>
-                {
-                    _dBRoutePoint.Latitude = value;
-                    _dBRoutePoint.UpdateDate = DateTime.Now;
-                });*/
                 _latitude = value;
             }
             get
@@ -136,12 +130,6 @@ namespace QuestHelper.Model
         {
             set
             {
-                /*var realm = RoutePointManager.GetRealmInstance();
-                realm.Write(() =>
-                {
-                    _dBRoutePoint.Longitude = value;
-                    _dBRoutePoint.UpdateDate = DateTime.Now;
-                });*/
                 _longtitude = value;
             }
             get
@@ -154,12 +142,6 @@ namespace QuestHelper.Model
         {
             set
             {
-                /*var realm = RoutePointManager.GetRealmInstance();
-                realm.Write(() =>
-                {
-                    _dBRoutePoint.Address = value;
-                    _dBRoutePoint.UpdateDate = DateTime.Now;
-                });*/
                 _address = value;
             }
             get
@@ -175,12 +157,9 @@ namespace QuestHelper.Model
 
         internal bool Save()
         {
-            /*_point.MainRoute = _route;
-            RoutePointManager manager = new RoutePointManager();
-            manager.Add()*/
-            RouteManager routeManager = new RouteManager();
+            //RouteManager routeManager = new RouteManager();
             RoutePointManager routePointManager = new RoutePointManager();
-            RoutePoint point = routePointManager.GetPointById(_id);
+            /*RoutePoint point = routePointManager.GetPointById(_id);
             if(point == null)
             {
                 point = new RoutePoint();
@@ -197,7 +176,8 @@ namespace QuestHelper.Model
             point.Latitude = _latitude;
             point.Longitude = _longtitude;
             point.Name = _name;
-            return routePointManager.Add(point);
+ */
+            return routePointManager.Save(this);
         }
     }
 }

@@ -18,7 +18,7 @@ using Xamarin.Forms.Xaml;
 
 namespace QuestHelper.ViewModel
 {
-    public class RouteViewModel : INotifyPropertyChanged
+    public class RouteViewModelOLD : INotifyPropertyChanged
     {
         private bool _splashStartScreenIsVisible;
         private bool _routeScreenIsVisible;
@@ -44,7 +44,7 @@ namespace QuestHelper.ViewModel
         public ICommand AddNewRoutePointCommand { get; private set; }
         public ICommand StartDialogCommand { get; private set; }
 
-        public RouteViewModel(Route route, bool isFirstRoute)
+        public RouteViewModelOLD(Route route, bool isFirstRoute)
         {
             _route = route;
             _isFirstRoute = isFirstRoute;

@@ -28,7 +28,8 @@ namespace QuestHelper.View
 		{
 			InitializeComponent ();
             RoutePointManager manager = new RoutePointManager();
-            _routePoint = manager.GetPointById(routePointId);
+            if(!string.IsNullOrEmpty(routePointId))
+                _routePoint = manager.GetPointById(routePointId);
             BindingContext = new RoutePointViewModel(routeId, routePointId) { Navigation = this.Navigation };
         }
 
