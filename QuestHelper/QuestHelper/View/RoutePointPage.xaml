@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:QuestHelper.View"
              x:Class="QuestHelper.View.RoutePointPage" Style="{StaticResource ContentPage}" Appearing="ContentPage_AppearingAsync">
     <ContentPage.ToolbarItems>
-        <ToolbarItem NavigationPage.HasNavigationBar="True" Command="{Binding SaveCommand}" Icon="plus.png"></ToolbarItem>
+        <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding SaveCommand}" Icon="plus.png"></ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ScrollView Orientation="Vertical">
@@ -14,10 +14,10 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="200"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
                     <RowDefinition Height="2*"></RowDefinition>
-                    <RowDefinition Height="2*"></RowDefinition>
-                    <RowDefinition Height="2*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
                     <RowDefinition Height="250"></RowDefinition>
                 </Grid.RowDefinitions>
 
@@ -56,7 +56,7 @@
                     </Label>
                 </StackLayout>
                 <StackLayout Orientation="Vertical" Grid.Row="5" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                    <local:CustomMap 
+                    <local:CustomMap
                     x:Name="PointMapOverview"
                     IsShowingUser="true"
                     MapType="Street" 

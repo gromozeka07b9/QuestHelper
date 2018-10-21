@@ -11,8 +11,6 @@ namespace QuestHelper.Model
 {
     public class ViewRoutePoint
     {
-        //private RoutePoint _dBRoutePoint;
-        //private ImageSource _imagePreview;
         private string _id = string.Empty;
         private string _routeId = string.Empty;
         private string _name = string.Empty;
@@ -27,26 +25,37 @@ namespace QuestHelper.Model
         public ViewRoutePoint(string routeId, string routePointId)
         {
             _routeId = routeId;
-            RoutePointManager manager = new RoutePointManager();
             if(string.IsNullOrEmpty(routePointId))
             {
-
-            } else
-            {
-                RoutePoint point = manager.GetPointById(routePointId);
-                if(point != null)
-                {
-                    _id = routePointId;
-                    _name = point.Name;
-                    _description = point.Description;
-                    _address = point.Address;
-                    _latitude = point.Latitude;
-                    _longtitude = point.Longitude;
-                    _createDate = point.CreateDate;                   
-                    _imagePath = manager.GetDefaultImageFilename(_id);
-                    _imagePreviewPath = manager.GetDefaultImagePreviewFilename(_id);
-                }
+                RoutePointManager manager = new RoutePointManager();
+                _imagePreviewPath = manager.GetEmptyImageFilename();
             }
+            else
+            {
+                load(routePointId);
+            }
+        }
+
+        private void load(string routePointId)
+        {
+            RoutePointManager manager = new RoutePointManager();
+            RoutePoint point = manager.GetPointById(routePointId);
+            if (point != null)
+            {
+                _id = routePointId;
+                _name = point.Name;
+                _description = point.Description;
+                _address = point.Address;
+                _latitude = point.Latitude;
+                _longtitude = point.Longitude;
+                _createDate = point.CreateDate;
+                _imagePath = manager.GetDefaultImageFilename(_id);
+                _imagePreviewPath = manager.GetDefaultImagePreviewFilename(_id);
+            }
+        }
+        internal void Refresh(string routePointId)
+        {
+            load(routePointId);
         }
 
         public string Id
@@ -83,6 +92,10 @@ namespace QuestHelper.Model
         }
         public string Description
         {
+            set
+            {
+                _description = value;
+            }
             get
             {
                 return _description;
@@ -97,8 +110,6 @@ namespace QuestHelper.Model
             }
             get
             {
-                //RoutePointManager manager = new RoutePointManager();
-                //return manager.GetDefaultImageFilename(_id);
                 return _imagePath;
             }
         }
@@ -111,10 +122,10 @@ namespace QuestHelper.Model
             get
             {
                 return _imagePreviewPath;
-                //RoutePointManager manager = new RoutePointManager();
-                //return manager.GetDefaultImagePreviewFilename(_id);
             }
         }
+
+
         public double Latitude
         {
             set
@@ -149,34 +160,10 @@ namespace QuestHelper.Model
                 return _address;
             }
         }
-        /*internal void AddMedia(string imageFilePath, string imagePreviewFilePath)
-        {
-            RoutePointMediaObjectManager manager = new RoutePointMediaObjectManager();
-            manager.Add(_dBRoutePoint, imagePreviewFilePath, imageFilePath);
-        }*/
 
         internal bool Save()
         {
-            //RouteManager routeManager = new RouteManager();
             RoutePointManager routePointManager = new RoutePointManager();
-            /*RoutePoint point = routePointManager.GetPointById(_id);
-            if(point == null)
-            {
-                point = new RoutePoint();
-
-            } else
-            {
-                point.UpdateDate = DateTimeOffset.Now;
-            }
-            point.RoutePointId = _id;
-            point.RouteId = _routeId;
-            point.MainRoute = routeManager.GetRouteById(_routeId);
-            point.Address = _address;
-            point.Description = _description;
-            point.Latitude = _latitude;
-            point.Longitude = _longtitude;
-            point.Name = _name;
- */
             return routePointManager.Save(this);
         }
     }

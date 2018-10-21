@@ -141,12 +141,16 @@ namespace QuestHelper.Managers
             }
             else
             {
-                filename = "emptyimg.png";
+                filename = GetEmptyImageFilename();
             }
 
             return filename;
         }
 
+        internal string GetEmptyImageFilename()
+        {
+            return "emptyimg.png";
+        }
         /*internal void SetName(RoutePoint point, string name)
         {
             _realmInstance.Write(() =>
@@ -171,7 +175,7 @@ namespace QuestHelper.Managers
             }
             catch (Exception e)
             {
-                //пишем лог
+                HandleError.Process("RoutePointManager", "SetSyncStatus", e, false);
             }
             return result;
         }

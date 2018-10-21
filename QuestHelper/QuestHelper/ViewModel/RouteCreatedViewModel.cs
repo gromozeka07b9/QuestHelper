@@ -14,28 +14,28 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using QuestHelper.Model;
 
 namespace QuestHelper.ViewModel
 {
     public class RouteCreatedViewModel : INotifyPropertyChanged
     {
-        private Route _route;
+        private ViewRoute _vroute;
         private RouteManager _routeManager = new RouteManager();
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand OpenRoutePointDialogCommand { get; private set; }
 
-        public RouteCreatedViewModel(Route route)
+        public RouteCreatedViewModel(string routeId)
         {
-            _route = route;
+            _vroute = new ViewRoute(routeId);
             OpenRoutePointDialogCommand = new Command(openRoutePointDialog);
         }
 
         private void openRoutePointDialog()
         {
-            _routeManager.Add(_route);
-            Navigation.PushAsync(new RoutePage(_route, false));
+            Navigation.PushAsync(new RoutePointPage(_vroute.Id, string.Empty));
         }
 
         public void startDialog()
@@ -46,7 +46,7 @@ namespace QuestHelper.ViewModel
         {
             get
             {
-                return "Маршрут '" + _route.Name + "' создан.";
+                return "Маршрут '" + _vroute.Name + "' создан.";
             }
         }
     }

@@ -19,11 +19,11 @@ namespace QuestHelper.View
 		{
             InitializeComponent ();
         }
-        public RouteCreatedPage(Route routeItem)
+        public RouteCreatedPage(string routeId)
         {
 
             InitializeComponent();
-            vm = new RouteCreatedViewModel(routeItem) { Navigation = this.Navigation };
+            vm = new RouteCreatedViewModel(routeId) { Navigation = this.Navigation };
             BindingContext = vm;
         }
 

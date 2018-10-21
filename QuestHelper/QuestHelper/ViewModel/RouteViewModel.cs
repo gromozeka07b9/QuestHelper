@@ -108,8 +108,8 @@ namespace QuestHelper.ViewModel
 
         async void addNewRoutePointAsync()
         {
-            if(!_route.IsManaged)
-                _routeManager.Add(_route);
+            /*if(!_route.IsManaged)
+                _routeManager.Add(_route);*/
             var routePointPage = new RoutePointPage(_route.RouteId, string.Empty);
             await Navigation.PushAsync(routePointPage, true);
         }

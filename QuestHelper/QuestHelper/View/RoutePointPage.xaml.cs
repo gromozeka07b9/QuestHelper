@@ -20,6 +20,7 @@ namespace QuestHelper.View
 	public partial class RoutePointPage : ContentPage
 	{
         private RoutePoint _routePoint;
+        private RoutePointViewModel _vm;
         public RoutePointPage()
         {
             InitializeComponent();
@@ -30,7 +31,20 @@ namespace QuestHelper.View
             RoutePointManager manager = new RoutePointManager();
             if(!string.IsNullOrEmpty(routePointId))
                 _routePoint = manager.GetPointById(routePointId);
-            BindingContext = new RoutePointViewModel(routeId, routePointId) { Navigation = this.Navigation };
+            _vm = new RoutePointViewModel(routeId, routePointId) { Navigation = this.Navigation };
+            _vm.PropertyChanged += Vm_PropertyChanged;
+            BindingContext = _vm;
+        }
+
+        private void Vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if((e.PropertyName == "Latitude")||(e.PropertyName == "Longitude"))
+            {
+                if((_vm.Latitude > 0)&& (_vm.Longitude > 0))
+                {
+                    CenterMap(_vm.Latitude, _vm.Longitude, _vm.Name, _vm.Address);
+                }
+            }
         }
 
         /*private bool centerMapToPositionAsync(double Latitude, double Longitude, int timeout)
@@ -69,14 +83,21 @@ namespace QuestHelper.View
         {
             if((_routePoint!=null)&&(_routePoint.Latitude > 0) && (_routePoint.Longitude > 0) && (!string.IsNullOrEmpty(_routePoint.Name)))
             {
-                CustomMapView customMap = new CustomMapView((CustomMap)this.PointMapOverview, 15);
-                if(customMap.CenterMapToPosition(_routePoint.Latitude, _routePoint.Longitude))
-                {
-                    customMap.AddPin(_routePoint.Latitude, _routePoint.Longitude, _routePoint.Name, _routePoint.Address, PointPin_Clicked);
-                } else
-                {
-                    await DisplayAlert("Ошибка", customMap.LastError, "Ок");
-                }
+                await CenterMap(_routePoint.Latitude, _routePoint.Longitude, _routePoint.Name, _routePoint.Address);
+            }
+            _vm.StartDialog();
+        }
+
+        private async Task CenterMap(double latitude, double longitude, string name, string address)
+        {
+            CustomMapView customMap = new CustomMapView((CustomMap)this.PointMapOverview, 15);
+            if (customMap.CenterMapToPosition(latitude, longitude))
+            {
+                customMap.AddPin(latitude, longitude, name, address, PointPin_Clicked);
+            }
+            else
+            {
+                await DisplayAlert("Ошибка", customMap.LastError, "Ок");
             }
         }
     }

@@ -18,14 +18,14 @@ namespace QuestHelper.View
         public EditRoutePointDescriptionPage()
 		{
             InitializeComponent ();
-            vm = new EditRoutePointDescriptionViewModel(new RoutePoint()) { Navigation = this.Navigation };
+            vm = new EditRoutePointDescriptionViewModel(string.Empty) { Navigation = this.Navigation };
             BindingContext = vm;
         }
-        public EditRoutePointDescriptionPage(RoutePoint routePoint)
+        public EditRoutePointDescriptionPage(string routePointId)
         {
 
             InitializeComponent();
-            vm = new EditRoutePointDescriptionViewModel(routePoint) { Navigation = this.Navigation };
+            vm = new EditRoutePointDescriptionViewModel(routePointId) { Navigation = this.Navigation };
             BindingContext = vm;
         }
 

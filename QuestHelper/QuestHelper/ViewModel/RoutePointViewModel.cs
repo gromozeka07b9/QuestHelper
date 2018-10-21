@@ -62,18 +62,13 @@ namespace QuestHelper.ViewModel
             "В тридевятом царстве"
         };
 
-        //RoutePoint _point;
-        //Route _route;
         ViewRoutePoint _vpoint;
         string _currentPositionString = string.Empty;
         string _imageFilePath = string.Empty;
         string _imagePreviewFilePath = string.Empty;
-        //byte[] _imagePreview;
 
         public RoutePointViewModel(string routeId, string routePointId)
         {
-            //_route = route;
-            //_point = routePoint;
             _vpoint = new ViewRoutePoint(routeId, routePointId);
             SaveCommand = new Command(saveRoutePoint);
             DeleteCommand = new Command(deleteRoutePoint);
@@ -85,6 +80,12 @@ namespace QuestHelper.ViewModel
             Coordinates = Latitude + "," + Longitude;
         }
 
+        public void StartDialog()
+        {
+            _vpoint.Refresh(_vpoint.Id);
+            //Пока не знаю как поймать событие того, редактировалось описание на другой странице и вернулись на текущую уже с модифицированным описанием
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Description"));
+        }
         private void copyCoordinatesCommand(object obj)
         {
             //throw new NotImplementedException();
@@ -92,8 +93,7 @@ namespace QuestHelper.ViewModel
 
         private async void editDescriptionCommand(object obj)
         {
-            throw new Exception("commented!");
-            //await Navigation.PushAsync(new EditRoutePointDescriptionPage(_point));
+            await Navigation.PushAsync(new EditRoutePointDescriptionPage(_vpoint.Id));
         }
         private async void takePhoto(object obj)
         {
@@ -121,12 +121,9 @@ namespace QuestHelper.ViewModel
                     ImagePreviewManager preview = new ImagePreviewManager();
                     preview.CreateImagePreview(imgPathToDirectory, info.Name, photoNamePreview);
                     _imagePreviewFilePath = imgPathToDirectory + "/" + photoNamePreview;
-                    //ImagePath = info.FullName;
-                    //_vpoint.AddMedia(info.FullName, _imagePreviewFilePath);
                     _vpoint.ImagePath = info.FullName;
                     _vpoint.ImagePreviewPath = _imagePreviewFilePath;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagePreviewPath"));
-                    //SyncFiles.GetInstance().Start();
                 }
             }
         }
@@ -138,7 +135,7 @@ namespace QuestHelper.ViewModel
             Latitude = position.Latitude;
             Longitude = position.Longitude;
             Coordinates = Latitude + "," + Longitude;
-            _vpoint.Address = await getPositionAddress(locator, position);
+            Address = await getPositionAddress(locator, position);
 
             int index = _rnd.Next(0, _pointNames.Count() - 1);
             Name = _pointNames[index];
@@ -171,19 +168,6 @@ namespace QuestHelper.ViewModel
             {
                 HandleError.Process("RoutePoint", "SaveRoutePoint", new Exception("Error while adding new point"), true);
             }
-            /*if (_point.MainRoute == null)
-            {
-                _point.MainRoute = _route;
-                RoutePointManager manager = new RoutePointManager();
-                if (manager.Add(_point, _route))
-                {
-                    await Navigation.PopAsync();
-                } else
-                {
-                    HandleError.Process("RoutePoint", "SaveRoutePoint", new Exception("Error while adding new point"), true);
-                    //Crashes.TrackError(new Exception("Error while adding new point"), new Dictionary<string, string> { { "Screen", "RoutePoint" }, { "Action", "SaveRoutePoint" } });
-                };
-            }*/
         }
 
         async void deleteRoutePoint()
@@ -191,14 +175,6 @@ namespace QuestHelper.ViewModel
 
         }
 
-        /*public ImageSource ImageSource
-        {
-            get
-            {
-                return StreamImageSource.FromResource("emptyimg.png");
-
-            }
-        }*/
         public double Latitude
         {
             set
@@ -286,6 +262,14 @@ namespace QuestHelper.ViewModel
 
         public string Address
         {
+            set
+            {
+                if(_vpoint.Address != value)
+                {
+                    _vpoint.Address = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Address"));
+                }
+            }
             get
             {
                 return _vpoint.Address;

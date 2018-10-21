@@ -51,7 +51,7 @@ namespace QuestHelper.ViewModel
 
         async void addNewRouteCommandAsync()
         {
-            await Navigation.PushAsync(new NewRoutePage(new Route(), !Routes.Any()));
+            await Navigation.PushAsync(new NewRoutePage(!Routes.Any()));
         }
 
         public bool IsRefreshing

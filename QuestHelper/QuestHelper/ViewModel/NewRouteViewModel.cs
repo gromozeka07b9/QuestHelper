@@ -14,17 +14,19 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using QuestHelper.Model;
 
 namespace QuestHelper.ViewModel
 {
     public class NewRouteViewModel : INotifyPropertyChanged
     {
         private bool _splashStartScreenIsVisible;
-        private Route _route;
+        //private Route _route;
+        private ViewRoute _vroute;
 
         private bool _isFirstRoute;
 
-        private RouteManager _routeManager = new RouteManager();
+        //private RouteManager _routeManager = new RouteManager();
         //private RoutePointManager _routePointManager = new RoutePointManager();
         //private RoutePointMediaObjectManager _routePointMediaObjectManager = new RoutePointMediaObjectManager();
 
@@ -33,9 +35,10 @@ namespace QuestHelper.ViewModel
         public ICommand ShowNewRouteDialogCommand { get; private set; }
         public ICommand OpenRoutePointDialogCommand { get; private set; }
 
-        public NewRouteViewModel(Route route, bool isFirstRoute)
+        public NewRouteViewModel(bool isFirstRoute)
         {
-            _route = route;
+            //_route = route;
+            _vroute = new ViewRoute(string.Empty);
             _isFirstRoute = isFirstRoute;
             ShowNewRouteDialogCommand = new Command(showNewRouteData);
             OpenRoutePointDialogCommand = new Command(openRoutePointDialog);
@@ -43,11 +46,21 @@ namespace QuestHelper.ViewModel
 
         private void openRoutePointDialog()
         {
-            if (!_route.IsManaged)
+            if(string.IsNullOrEmpty(_vroute.Name))
+            {
+                App.Current.MainPage.DisplayAlert("Внимание!", "Необходимо заполнить название маршрута", "Ok");
+            } else
+            {
+                if (_vroute.Save())
+                {
+                    Navigation.PushAsync(new RouteCreatedPage(_vroute.Id));
+                }
+            }
+            /*if (!_route.IsManaged)
             {
                 _routeManager.Add(_route);
                 Navigation.PushAsync(new RouteCreatedPage(_route));
-            }
+            }*/
         }
 
         public void startDialog()
@@ -64,19 +77,20 @@ namespace QuestHelper.ViewModel
         {
             set
             {
-                if (_route.Name != value)
+                if (_vroute.Name != value)
                 {
-                    var realm = RoutePointManager.GetRealmInstance();
+                    /*var realm = RoutePointManager.GetRealmInstance();
                     realm.Write(() =>
                     {
                         _route.Name = value;
-                    });
+                    });*/
+                    _vroute.Name = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
                 }
             }
             get
             {
-                return _route.Name;
+                return _vroute.Name;
             }
         }
 

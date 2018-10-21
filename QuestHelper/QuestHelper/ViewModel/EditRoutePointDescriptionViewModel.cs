@@ -14,19 +14,28 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using QuestHelper.Model;
 
 namespace QuestHelper.ViewModel
 {
     public class EditRoutePointDescriptionViewModel : INotifyPropertyChanged
     {
-        private RoutePoint _routePoint;
+        ViewRoutePoint _vpoint;
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public EditRoutePointDescriptionViewModel(RoutePoint routePoint)
+        public EditRoutePointDescriptionViewModel(string routePointId)
         {
-            _routePoint = routePoint;
+            if(!string.IsNullOrEmpty(routePointId))
+            {
+                RoutePointManager manager = new RoutePointManager();
+                var point = manager.GetPointById(routePointId);
+                _vpoint = new ViewRoutePoint(point.RouteId, routePointId);
+            } else
+            {
+                HandleError.Process("EditRoutePointDescription", "EditDescripton", new Exception("Ошибка, точка еще не создана."), true);
+            }
         }
 
         public void startDialog()
@@ -37,19 +46,16 @@ namespace QuestHelper.ViewModel
         {
             set
             {
-                if (_routePoint.Description != value)
+                if (_vpoint.Description != value)
                 {
-                    var realm = RoutePointManager.GetRealmInstance();
-                    realm.Write(() =>
-                    {
-                        _routePoint.Description = value;
-                    });
+                    _vpoint.Description = value;
+                    _vpoint.Save();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Description"));
                 }
             }
             get
             {
-                return _routePoint.Description;
+                return _vpoint.Description;
             }
         }
     }
