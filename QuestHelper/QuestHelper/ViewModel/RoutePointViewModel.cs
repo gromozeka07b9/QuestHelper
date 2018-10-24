@@ -24,7 +24,7 @@ namespace QuestHelper.ViewModel
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand DeleteCommand { get; private set; }
-        public ICommand SaveCommand { get; private set; }
+        //public ICommand SaveCommand { get; private set; }
         public ICommand TakePhotoCommand { get; private set; }
         public ICommand EditDescriptionCommand { get; private set; }
         public ICommand CopyCoordinatesCommand { get; private set; }
@@ -70,7 +70,7 @@ namespace QuestHelper.ViewModel
         public RoutePointViewModel(string routeId, string routePointId)
         {
             _vpoint = new ViewRoutePoint(routeId, routePointId);
-            SaveCommand = new Command(saveRoutePoint);
+            //SaveCommand = new Command(saveRoutePoint);
             DeleteCommand = new Command(deleteRoutePoint);
             TakePhotoCommand = new Command(takePhoto);
             EditDescriptionCommand = new Command(editDescriptionCommand);
@@ -93,6 +93,7 @@ namespace QuestHelper.ViewModel
 
         private async void editDescriptionCommand(object obj)
         {
+            _vpoint.Save();
             await Navigation.PushAsync(new EditRoutePointDescriptionPage(_vpoint.Id));
         }
         private async void takePhoto(object obj)
@@ -123,6 +124,7 @@ namespace QuestHelper.ViewModel
                     _imagePreviewFilePath = imgPathToDirectory + "/" + photoNamePreview;
                     _vpoint.ImagePath = info.FullName;
                     _vpoint.ImagePreviewPath = _imagePreviewFilePath;
+                    _vpoint.Save();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagePreviewPath"));
                 }
             }
@@ -158,7 +160,7 @@ namespace QuestHelper.ViewModel
             return address;
         }
 
-        async void saveRoutePoint()
+        /*async void saveRoutePoint()
         {
             if(_vpoint.Save())
             {
@@ -168,7 +170,7 @@ namespace QuestHelper.ViewModel
             {
                 HandleError.Process("RoutePoint", "SaveRoutePoint", new Exception("Error while adding new point"), true);
             }
-        }
+        }*/
 
         async void deleteRoutePoint()
         {
@@ -212,6 +214,7 @@ namespace QuestHelper.ViewModel
                 if (_currentPositionString != value)
                 {
                     _currentPositionString = value;
+                    _vpoint.Save();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Coordinates"));
                 }
             }
@@ -227,6 +230,7 @@ namespace QuestHelper.ViewModel
                 if (_vpoint.Name != value)
                 {
                     _vpoint.Name = value;
+                    _vpoint.Save();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
                 }                   
             }
@@ -237,16 +241,6 @@ namespace QuestHelper.ViewModel
         }
         public string ImagePath
         {
-            /*set
-            {
-                if (_imageFilePath != value)
-                {
-                    RoutePointMediaObjectManager manager = new RoutePointMediaObjectManager();
-                    manager.Add(_point, _imagePreviewFilePath, value);
-                    _imageFilePath = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagePath"));
-                }
-            }*/
             get
             {
                 return _vpoint.ImagePath;
@@ -256,7 +250,14 @@ namespace QuestHelper.ViewModel
         {
             get
             {
-                return _vpoint.ImagePreviewPath;
+                if(string.IsNullOrEmpty(_vpoint.ImagePreviewPath))
+                {
+                    return "emptyimg.png";
+                }
+                else
+                {
+                    return _vpoint.ImagePreviewPath;
+                }
             }
         }
 
@@ -267,6 +268,7 @@ namespace QuestHelper.ViewModel
                 if(_vpoint.Address != value)
                 {
                     _vpoint.Address = value;
+                    _vpoint.Save();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Address"));
                 }
             }

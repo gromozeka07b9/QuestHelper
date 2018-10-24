@@ -27,8 +27,8 @@ namespace QuestHelper.Model
             _routeId = routeId;
             if(string.IsNullOrEmpty(routePointId))
             {
-                RoutePointManager manager = new RoutePointManager();
-                _imagePreviewPath = manager.GetEmptyImageFilename();
+                //RoutePointManager manager = new RoutePointManager();
+                //_imagePreviewPath = manager.GetEmptyImageFilename();
             }
             else
             {
@@ -36,6 +36,10 @@ namespace QuestHelper.Model
             }
         }
 
+        public ViewRoutePoint()
+        {
+
+        }
         private void load(string routePointId)
         {
             RoutePointManager manager = new RoutePointManager();
@@ -164,7 +168,8 @@ namespace QuestHelper.Model
         internal bool Save()
         {
             RoutePointManager routePointManager = new RoutePointManager();
-            return routePointManager.Save(this);
+            _id = routePointManager.Save(this);
+            return !string.IsNullOrEmpty(_id);
         }
     }
 }

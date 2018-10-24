@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using QuestHelper.Model;
 
 namespace QuestHelper.ViewModel
 {
@@ -47,13 +48,13 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        internal IEnumerable<RoutePoint> GetPointsForOverview()
+        internal IEnumerable<ViewRoutePoint> GetPointsForOverview()
         {
-            var resultPoints = new List<RoutePoint>();
+            var resultPoints = new List<ViewRoutePoint>();
             var routes = _routeManager.GetRoutes();
             foreach(var route in routes)
             {
-                var points = _routePointManager.GetPointsByRoute(route);
+                var points = _routePointManager.GetPointsByRouteId(route.RouteId);
                 foreach(var point in points)
                 {
                     resultPoints.Add(point);

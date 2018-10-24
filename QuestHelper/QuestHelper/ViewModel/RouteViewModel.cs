@@ -22,16 +22,14 @@ namespace QuestHelper.ViewModel
     {
         private bool _splashStartScreenIsVisible;
         private bool _routeScreenIsVisible;
-        private ObservableCollection<RoutePoint> _pointsOfRoute = new ObservableCollection<RoutePoint>();
         private ObservableCollection<ViewRoutePoint> _viewPointsOfRoute = new ObservableCollection<ViewRoutePoint>();
-        private Route _route;
+        //private Route _route;
 
         private bool _isFirstRoute;
 
-        private RoutePoint _point;
-        private RouteManager _routeManager = new RouteManager();
+        private ViewRoute _vroute;
+        private ViewRoutePoint _selectedPoint;
         private RoutePointManager _routePointManager = new RoutePointManager();
-        private RoutePointMediaObjectManager _routePointMediaObjectManager = new RoutePointMediaObjectManager();
         private bool _listIsRefreshing;
         private bool _noPointWarningIsVisible;
         //private RoutePointsApiRequest _routePointsApi = new RoutePointsApiRequest("http://questhelperserver.azurewebsites.net");
@@ -44,9 +42,9 @@ namespace QuestHelper.ViewModel
         public ICommand AddNewRoutePointCommand { get; private set; }
         public ICommand StartDialogCommand { get; private set; }
 
-        public RouteViewModel(Route route, bool isFirstRoute)
+        public RouteViewModel(string routeId, bool isFirstRoute)
         {
-            _route = route;
+            _vroute = new ViewRoute(routeId);
             _isFirstRoute = isFirstRoute;
             ShowNewRouteDialogCommand = new Command(showNewRouteData);
             AddNewRoutePointCommand = new Command(addNewRoutePointAsync);
@@ -55,13 +53,13 @@ namespace QuestHelper.ViewModel
 
         public void startDialog()
         {
-            if (!string.IsNullOrEmpty(_route.Name))
+            if (!string.IsNullOrEmpty(_vroute.Name))
             {
                 refreshRouteData();
             }
             else
             {
-                _route.Name = "Неизвестный маршрут";
+                _vroute.Name = "Неизвестный маршрут";
                 if (_isFirstRoute)
                     showNewRouteWarningDialog();
                 else showNewRouteData();
@@ -80,14 +78,14 @@ namespace QuestHelper.ViewModel
             SplashStartScreenIsVisible = false;
             RouteScreenIsVisible = !SplashStartScreenIsVisible;
             IsRefreshing = true;
-            var points = _routePointManager.GetPointsByRoute(_route);
+            var points = _routePointManager.GetPointsByRouteId(_vroute.Id);
             if (!points.Any())
             {
-                PointsOfRoute = new ObservableCollection<RoutePoint>();
+                PointsOfRoute = new ObservableCollection<ViewRoutePoint>();
             }
             else
             {
-                PointsOfRoute = new ObservableCollection<RoutePoint>(points);
+                PointsOfRoute = new ObservableCollection<ViewRoutePoint>(points);
             }
             NoPointWarningIsVisible = PointsOfRoute.Count == 0;
             IsRefreshing = false;
@@ -103,14 +101,12 @@ namespace QuestHelper.ViewModel
         {
             SplashStartScreenIsVisible = false;
             RouteScreenIsVisible = !SplashStartScreenIsVisible;
-            PointsOfRoute = new ObservableCollection<RoutePoint>() { new RoutePoint() };
+            PointsOfRoute = new ObservableCollection<ViewRoutePoint>() { };
         }
 
         async void addNewRoutePointAsync()
         {
-            /*if(!_route.IsManaged)
-                _routeManager.Add(_route);*/
-            var routePointPage = new RoutePointPage(_route.RouteId, string.Empty);
+            var routePointPage = new RoutePointPage(_vroute.Id, string.Empty);
             await Navigation.PushAsync(routePointPage, true);
         }
 
@@ -136,33 +132,32 @@ namespace QuestHelper.ViewModel
         {
             set
             {
-                if (_route.Name != value)
+                if (_vroute.Name != value)
                 {
                     var realm = RoutePointManager.GetRealmInstance();
                     realm.Write(() =>
                     {
-                        _route.Name = value;
+                        _vroute.Name = value;
                     });
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
                 }
             }
             get
             {
-                return _route.Name;
+                return _vroute.Name;
             }
         }
 
-        public RoutePoint SelectedRoutePointItem
+        public ViewRoutePoint SelectedRoutePointItem
         {
             set
             {
-                if (_point != value)
+                if(_selectedPoint != value)
                 {
-                    RoutePoint point = value;
-                    string routePointId = point.RoutePointId;
-                    var page = new RoutePointPage(_route.RouteId, routePointId);
+                    ViewRoutePoint point = value;
+                    var page = new RoutePointPage(_vroute.Id, point.Id);
                     Navigation.PushAsync(page);
-                    _point = null;
+                    _selectedPoint = null;
                     PropertyChanged(this, new PropertyChangedEventArgs("SelectedRoutePointItem"));
                 }
             }
@@ -240,13 +235,13 @@ namespace QuestHelper.ViewModel
                 return _routeScreenIsVisible;
             }
         }
-        public ObservableCollection<RoutePoint> PointsOfRoute
+        public ObservableCollection<ViewRoutePoint> PointsOfRoute
         {
             set
             {
-                if (_pointsOfRoute != value)
+                if (_viewPointsOfRoute != value)
                 {
-                    _pointsOfRoute = value;
+                    _viewPointsOfRoute = value;
                     if (PropertyChanged != null)
                     {
                         PropertyChanged(this, new PropertyChangedEventArgs("PointsOfRoute"));
@@ -255,7 +250,7 @@ namespace QuestHelper.ViewModel
             }
             get
             {
-                return _pointsOfRoute;
+                return _viewPointsOfRoute;
             }
         }
     }

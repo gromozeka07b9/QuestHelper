@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:QuestHelper.View"
              x:Class="QuestHelper.View.RoutePointPage" Style="{StaticResource ContentPage}" Appearing="ContentPage_AppearingAsync">
-    <ContentPage.ToolbarItems>
+    <!--ContentPage.ToolbarItems>
         <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding SaveCommand}" Icon="plus.png"></ToolbarItem>
-    </ContentPage.ToolbarItems>
+    </-->
     <ContentPage.Content>
         <ScrollView Orientation="Vertical">
             <Grid>

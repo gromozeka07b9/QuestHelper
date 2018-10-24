@@ -30,9 +30,27 @@ namespace QuestHelper.Managers
             return _realmInstance.Find<RoutePoint>(id);
         }
 
-        internal IEnumerable<RoutePoint> GetPointsByRoute(Route routeItem)
+        internal IEnumerable<ViewRoutePoint> GetPointsByRouteId(string routeId)
         {
-            var collection = _realmInstance.All<RoutePoint>().Where(point => point.MainRoute == routeItem).OrderByDescending(point => point.CreateDate);
+            List<ViewRoutePoint> collection = new List<ViewRoutePoint>();
+            try
+            {
+                /*collection = from point in _realmInstance.All<RoutePoint>()
+                                 where point.MainRoute.RouteId == routeId
+                                orderby point.CreateDate descending
+                                 select new ViewRoutePoint(point.RouteId, point.RoutePointId);*/
+                //collection = _realmInstance.All<RoutePoint>().Where(point => point.MainRoute.RouteId == routeId).Select(point => new ViewRoutePoint());
+                var collectionRealm = _realmInstance.All<RoutePoint>().Where(point => point.RouteId == routeId);
+                foreach(var item in collectionRealm)
+                {
+                    collection.Add(new ViewRoutePoint(item.RouteId, item.RoutePointId));
+                }
+            }
+            catch (Exception e)
+            {
+                collection = new List<ViewRoutePoint>();
+                HandleError.Process("RoutePointManager", "GetPointsByRouteId", e, false);
+            }
             return collection;
         }
         internal RoutePoint GetPointByCoordinates(double latitude, double longitude)
@@ -41,9 +59,9 @@ namespace QuestHelper.Managers
             return collection.FirstOrDefault();
         }
 
-        internal bool Save(ViewRoutePoint vpoint)
+        internal string Save(ViewRoutePoint vpoint)
         {
-            bool result = false;
+            string returnid = string.Empty;
             RouteManager routeManager = new RouteManager();
             try
             {
@@ -62,13 +80,14 @@ namespace QuestHelper.Managers
                     {
                         point = _realmInstance.Find<RoutePoint>(vpoint.Id);
                     }
+                    returnid = point.RoutePointId;
                     point.Address = vpoint.Address;
                     point.Description = vpoint.Description;
                     point.Latitude = vpoint.Latitude;
                     point.Longitude = vpoint.Longitude;
                     point.Name = vpoint.Name;
                     point.UpdateDate = DateTime.Now;
-                    if((point.MediaObjects.Count > 0) && (point.MediaObjects[0].FileName != vpoint.ImagePath))
+                    if ((point.MediaObjects.Count > 0) && (point.MediaObjects[0].FileName != vpoint.ImagePath))
                     {
                         point.MediaObjects.Clear();
                     }
@@ -82,13 +101,12 @@ namespace QuestHelper.Managers
                         point.MediaObjects.Add(defaultMedia);
                     }
                 });
-                result = true;
             }
             catch (Exception e)
             {
                 HandleError.Process("RoutePointManager", "AddRoutePoint", e, false);
             }
-            return result;
+            return returnid;
         }
 
         internal IEnumerable<RoutePoint> GetNotSynced()
@@ -141,23 +159,15 @@ namespace QuestHelper.Managers
             }
             else
             {
-                filename = GetEmptyImageFilename();
+                //filename = GetEmptyImageFilename();
             }
 
             return filename;
         }
 
-        internal string GetEmptyImageFilename()
+        /*internal string GetEmptyImageFilename()
         {
             return "emptyimg.png";
-        }
-        /*internal void SetName(RoutePoint point, string name)
-        {
-            _realmInstance.Write(() =>
-            {
-                point.Name = name;
-                point.UpdateDate = DateTime.Now;
-            });
         }*/
         public bool SetSyncStatus(string Id, bool Status)
         {

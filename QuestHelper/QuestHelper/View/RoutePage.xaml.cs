@@ -18,7 +18,7 @@ namespace QuestHelper.View
         public RoutePage()
 		{
             InitializeComponent ();
-            vm = new RouteViewModel(new Route(), false) { Navigation = this.Navigation };
+            vm = new RouteViewModel(string.Empty, false) { Navigation = this.Navigation };
             BindingContext = vm;
         }
         public RoutePage(Route routeItem, bool isFirstRoute)
@@ -26,7 +26,7 @@ namespace QuestHelper.View
 
             InitializeComponent();
             Title = routeItem.Name;
-            vm = new RouteViewModel(routeItem, isFirstRoute) { Navigation = this.Navigation };
+            vm = new RouteViewModel(routeItem.RouteId, isFirstRoute) { Navigation = this.Navigation };
             BindingContext = vm;
         }
 
