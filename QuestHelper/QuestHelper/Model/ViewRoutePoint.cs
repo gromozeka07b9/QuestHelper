@@ -21,13 +21,14 @@ namespace QuestHelper.Model
         private double _latitude = 0;
         private double _longtitude = 0;
         private DateTimeOffset _createDate;
+        private RoutePointManager routePointManager = new RoutePointManager();
 
         public ViewRoutePoint(string routeId, string routePointId)
         {
             _routeId = routeId;
-            if(string.IsNullOrEmpty(routePointId))
+            RoutePointManager routePointManager = new RoutePointManager();
+            if (string.IsNullOrEmpty(routePointId))
             {
-                //RoutePointManager manager = new RoutePointManager();
                 //_imagePreviewPath = manager.GetEmptyImageFilename();
             }
             else
@@ -42,8 +43,7 @@ namespace QuestHelper.Model
         }
         private void load(string routePointId)
         {
-            RoutePointManager manager = new RoutePointManager();
-            RoutePoint point = manager.GetPointById(routePointId);
+            RoutePoint point = routePointManager.GetPointById(routePointId);
             if (point != null)
             {
                 _id = routePointId;
@@ -53,8 +53,8 @@ namespace QuestHelper.Model
                 _latitude = point.Latitude;
                 _longtitude = point.Longitude;
                 _createDate = point.CreateDate;
-                _imagePath = manager.GetDefaultImageFilename(_id);
-                _imagePreviewPath = manager.GetDefaultImagePreviewFilename(_id);
+                _imagePath = routePointManager.GetDefaultImageFilename(_id);
+                _imagePreviewPath = routePointManager.GetDefaultImagePreviewFilename(_id);
             }
         }
         internal void Refresh(string routePointId)
@@ -91,7 +91,7 @@ namespace QuestHelper.Model
         {
             get
             {
-                return _createDate.ToLocalTime().ToString();
+                return _createDate.ToString("D");
             }
         }
         public string Description
@@ -128,7 +128,6 @@ namespace QuestHelper.Model
                 return _imagePreviewPath;
             }
         }
-
 
         public double Latitude
         {
@@ -167,9 +166,21 @@ namespace QuestHelper.Model
 
         internal bool Save()
         {
-            RoutePointManager routePointManager = new RoutePointManager();
             _id = routePointManager.Save(this);
             return !string.IsNullOrEmpty(_id);
+        }
+        internal bool Delete()
+        {
+            bool result = routePointManager.Delete(this);
+            if(result)
+            {
+                _id = string.Empty;
+                _routeId = string.Empty;
+                _name = string.Empty;
+                _imagePath = string.Empty;
+                _imagePreviewPath = string.Empty;
+            }
+            return result;
         }
     }
 }

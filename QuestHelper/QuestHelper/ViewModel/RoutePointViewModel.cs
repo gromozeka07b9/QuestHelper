@@ -23,8 +23,7 @@ namespace QuestHelper.ViewModel
     {
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
-        public ICommand DeleteCommand { get; private set; }
-        //public ICommand SaveCommand { get; private set; }
+        public ICommand DeleteCommand { get; internal set; }
         public ICommand TakePhotoCommand { get; private set; }
         public ICommand EditDescriptionCommand { get; private set; }
         public ICommand CopyCoordinatesCommand { get; private set; }
@@ -66,12 +65,11 @@ namespace QuestHelper.ViewModel
         string _currentPositionString = string.Empty;
         string _imageFilePath = string.Empty;
         string _imagePreviewFilePath = string.Empty;
+        public Func<bool> OnDeletePoint { get; internal set; }
 
         public RoutePointViewModel(string routeId, string routePointId)
         {
             _vpoint = new ViewRoutePoint(routeId, routePointId);
-            //SaveCommand = new Command(saveRoutePoint);
-            DeleteCommand = new Command(deleteRoutePoint);
             TakePhotoCommand = new Command(takePhoto);
             EditDescriptionCommand = new Command(editDescriptionCommand);
             CopyCoordinatesCommand = new Command(copyCoordinatesCommand);
@@ -89,6 +87,14 @@ namespace QuestHelper.ViewModel
         private void copyCoordinatesCommand(object obj)
         {
             //throw new NotImplementedException();
+        }
+
+        internal async void DeletePoint()
+        {
+            if(_vpoint.Delete())
+            {
+                await Navigation.PopAsync();
+            }
         }
 
         private async void editDescriptionCommand(object obj)
@@ -171,11 +177,6 @@ namespace QuestHelper.ViewModel
                 HandleError.Process("RoutePoint", "SaveRoutePoint", new Exception("Error while adding new point"), true);
             }
         }*/
-
-        async void deleteRoutePoint()
-        {
-
-        }
 
         public double Latitude
         {

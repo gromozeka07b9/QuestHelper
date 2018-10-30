@@ -108,6 +108,30 @@ namespace QuestHelper.Managers
             }
             return returnid;
         }
+        internal bool Delete(ViewRoutePoint viewRoutePoint)
+        {
+            bool result = false;
+            string rId = viewRoutePoint.RouteId;
+            try
+            {
+                _realmInstance.Write(() =>
+                {
+                    var point = _realmInstance.Find<RoutePoint>(viewRoutePoint.Id);
+                    foreach(var item in point.MediaObjects)
+                    {
+                        _realmInstance.Remove(item);
+                    }
+                    _realmInstance.Remove(point);
+                });
+                result = true;
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RoutePointManager", "DeleteRoutePoint", e, false);
+            }
+
+            return result;
+        }
 
         internal IEnumerable<RoutePoint> GetNotSynced()
         {

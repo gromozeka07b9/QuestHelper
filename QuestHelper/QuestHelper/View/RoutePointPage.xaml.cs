@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 using Xamarin.Forms.Xaml;
@@ -21,6 +21,9 @@ namespace QuestHelper.View
 	{
         private RoutePoint _routePoint;
         private RoutePointViewModel _vm;
+
+        public ICommand Test { get; }
+
         public RoutePointPage()
         {
             InitializeComponent();
@@ -33,7 +36,17 @@ namespace QuestHelper.View
                 _routePoint = manager.GetPointById(routePointId);
             _vm = new RoutePointViewModel(routeId, routePointId) { Navigation = this.Navigation };
             _vm.PropertyChanged += Vm_PropertyChanged;
+            _vm.DeleteCommand = new Command(deleteRoutePoint);
             BindingContext = _vm;
+        }
+
+        private async void deleteRoutePoint(object obj)
+        {
+            var result = await DisplayAlert("Внимание!", "Удалить точку?", "Да", "Нет");
+            if(result)
+            {
+                _vm.DeletePoint();
+            }
         }
 
         private void Vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
