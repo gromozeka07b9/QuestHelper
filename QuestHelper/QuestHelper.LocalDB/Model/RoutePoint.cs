@@ -25,53 +25,9 @@ namespace QuestHelper.LocalDB.Model
         public bool ServerSynced { get; set; }//Признак того, что точка уже на сервере
         public DateTimeOffset ServerSyncedDate { get; set; }//Дата синхронизации
         public IList<RoutePointMediaObject> MediaObjects { get; }
-
-        public string CoordinatesByText
-        {
-            get
-            {
-                string coordsText = "Not defined";
-                if ((Latitude > 0) && (Longitude > 0))
-                {
-                    coordsText = $"{Latitude},{Longitude}";
-                }
-                return coordsText;
-            }
-        }
-        public ImageSource ImagePreview
-        {
-            get
-            {
-                ImageSource previewFile;
-                if (MediaObjects.Count > 0)
-                {
-                    previewFile = ImageSource.FromFile(MediaObjects[0].FileNamePreview);
-                    return previewFile;
-                } else
-                {
-                    return ImageSource.FromFile("earth21.png");
-                }
-                //return StreamImageSource.FromFile("star.png");
-                /*if (MediaObjects.Count > 0)
-                {
-                    //фуфу, убрать это из модели!
-                    var stream = new MemoryStream(MediaObjects[0].PreviewImage);
-                    ImageSource src;
-                    try
-                    {
-                        src = ImageSource.FromStream(() => stream);
-                    }
-                    catch(Exception exception)
-                    {
-                        src = StreamImageSource.FromFile("star.png");
-                    }
-                    return src;
-                }
-                else
-                {
-                    return StreamImageSource.FromFile("star.png");
-                }*/
-            }
-        }
+        /// <summary>
+        /// Версия записи
+        /// </summary>
+        public int Version { get; set; }
     }
 }

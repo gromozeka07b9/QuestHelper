@@ -19,5 +19,9 @@ namespace QuestHelper.Server.Models
         public double? Longitude { get; set; }
         public string Address { get; set; }
         public string Description { get; set; }
+        /// <summary>
+        /// Версия записи
+        /// </summary>
+        public int Version { get; set; }
     }
 }

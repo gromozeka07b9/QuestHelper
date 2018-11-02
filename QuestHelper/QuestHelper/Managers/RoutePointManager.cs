@@ -87,6 +87,7 @@ namespace QuestHelper.Managers
                     point.Longitude = vpoint.Longitude;
                     point.Name = vpoint.Name;
                     point.UpdateDate = DateTime.Now;
+                    point.Version++;
                     if ((point.MediaObjects.Count > 0) && (point.MediaObjects[0].FileName != vpoint.ImagePath))
                     {
                         point.MediaObjects.Clear();
@@ -98,6 +99,7 @@ namespace QuestHelper.Managers
                         defaultMedia.FileNamePreview = vpoint.ImagePreviewPath;
                         defaultMedia.RoutePointId = point.RoutePointId;
                         defaultMedia.Point = point;
+                        defaultMedia.Version++;
                         point.MediaObjects.Add(defaultMedia);
                     }
                 });

@@ -15,5 +15,9 @@ namespace QuestHelper.Server.Models
         public DateTime CreateDate { get; set; }
         public string Email { get; set; }
         public ICollection<Route> Routes { get; set; }
+        /// <summary>
+        /// Версия записи
+        /// </summary>
+        public int Version { get; set; }
     }
 }

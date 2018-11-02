@@ -93,6 +93,7 @@ namespace QuestHelper.Managers
                         route = _realmInstance.Find<Route>(viewRoute.Id);
                     }
                     route.Name = viewRoute.Name;
+                    route.Version++;
                     viewRoute.Refresh(route.RouteId);
                 });
                 result = true;

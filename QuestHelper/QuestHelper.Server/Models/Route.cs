@@ -13,5 +13,9 @@ namespace QuestHelper.Server.Models
         public string Name { get; set; }
         public DateTime CreateDate { get; set; }
         public string UserId { get; set; }
+        /// <summary>
+        /// Версия записи
+        /// </summary>
+        public int Version { get; set; }
     }
 }
