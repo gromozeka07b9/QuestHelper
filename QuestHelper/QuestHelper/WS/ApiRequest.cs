@@ -91,16 +91,23 @@ namespace QuestHelper.WS
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(new Uri(url));
             request.Method = "GET";
 
-            using (WebResponse response = await request.GetResponseAsync())
+            try
             {
-                var webresponse = (HttpWebResponse)response;
-                using (System.IO.Stream stream = response.GetResponseStream())
+                using (WebResponse response = await request.GetResponseAsync())
                 {
-                    using (var reader = new StreamReader(stream))
+                    var webresponse = (HttpWebResponse)response;
+                    using (System.IO.Stream stream = response.GetResponseStream())
                     {
-                        result = reader.ReadToEnd();
+                        using (var reader = new StreamReader(stream))
+                        {
+                            result = reader.ReadToEnd();
+                        }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("ApiRequest", "HttpRequestGET", e, false);
             }
             return result;
         }
@@ -118,7 +125,22 @@ namespace QuestHelper.WS
             }
             catch (Exception e)
             {
-
+                HandleError.Process("ApiRequest", "HttpRequestPOST", e, false);
+            }
+            return result;
+        }
+        public async Task<bool> HttpRequestDELETE(string url)
+        {
+            bool result = false;
+            var client = new HttpClient();
+            try
+            {
+                var requestResult = await client.DeleteAsync(url);
+                result = requestResult.IsSuccessStatusCode;
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("ApiRequest", "HttpRequestPOST", e, false);
             }
             return result;
         }

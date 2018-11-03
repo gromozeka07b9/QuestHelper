@@ -23,6 +23,17 @@ namespace QuestHelper.Server.Controllers
             return new ObjectResult(items);
         }
 
+        [HttpGet("{RouteId}")]
+        public IActionResult Get(string RouteId)
+        {
+            Route item = new Route();
+            using (var db = new ServerDbContext())
+            {
+                item = db.Route.Find(RouteId);
+            }
+            return new ObjectResult(item);
+        }
+
         [HttpPost]
         public void Post([FromBody]Route routeObject)
         {
@@ -36,6 +47,20 @@ namespace QuestHelper.Server.Controllers
                 else
                 {
                     db.Entry(entity).CurrentValues.SetValues(routeObject);
+                }
+                db.SaveChanges();
+            }
+        }
+
+        [HttpDelete("{RouteId}")]
+        public void Delete(string RouteId)
+        {
+            using (var db = new ServerDbContext())
+            {
+                var entity = db.Route.Find(RouteId);
+                if (entity != null)
+                {
+                    db.Remove(entity);
                 }
                 db.SaveChanges();
             }

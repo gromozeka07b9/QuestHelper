@@ -49,7 +49,7 @@ namespace QuestHelper.Managers
             }*/
         }
 
-        internal IEnumerable<Route> GetNotSynced()
+        public IEnumerable<Route> GetNotSynced()
         {
             return _realmInstance.All<Route>().Where(item => !item.ServerSynced);
         }
@@ -74,7 +74,7 @@ namespace QuestHelper.Managers
             return result;
         }
 
-        internal bool Save(ViewRoute viewRoute)
+        public bool Save(ViewRoute viewRoute)
         {
             bool result = false;
             RouteManager routeManager = new RouteManager();
