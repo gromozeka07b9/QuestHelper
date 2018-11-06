@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace QuestHelper.Server.Models
 {
-    public class SyncObjectVersions
+    public class SyncObjectStatus
     {
-        public SyncObjectVersions()
+        public SyncObjectStatus()
         {
             Statuses = new List<ObjectStatus>();
         }

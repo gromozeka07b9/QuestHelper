@@ -2,7 +2,9 @@
 using QuestHelper.WS;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using QuestHelper.Model;
 
 namespace QuestHelper.Managers.Sync
 {
@@ -19,7 +21,11 @@ namespace QuestHelper.Managers.Sync
 
         public static SyncPoints GetInstance()
         {
-            if (_instance == null) _instance = new SyncPoints();
+            if (_instance == null)
+            {
+                _instance = new SyncPoints();
+            }
+
             return _instance;
         }
         internal void SetWarningDialogContext(Action<string> showWarning)
@@ -28,10 +34,48 @@ namespace QuestHelper.Managers.Sync
         }
         internal async System.Threading.Tasks.Task StartAsync()
         {
-            IEnumerable<Route> notSyncedRoutes = _routeManager.GetNotSynced();
+            IEnumerable<Route> routes = _routeManager.GetRoutes();
+            SyncObjectStatus routeServerStatus = await _routesApi.GetSyncStatus(routes);
+
+            List<string> routesForUpload = new List<string>();
+            List<string> routesForDownload = new List<string>();
+
+            foreach (var routeServer in routeServerStatus.Statuses)
+            {
+                //если сервер вернул версию 0, значит на сервере маршрута еще нет, его надо будет отправить
+                if (routeServer.Version == 0)
+                {
+                    routesForUpload.Add(routeServer.ObjectId);
+                }
+                else
+                {
+                    //если версия на сервере уже есть, значит есть расхождение версий между сервером и клиентом
+                    //тут варианты: если на сервере более старшая версия, клиент должен ее забрать себе
+                    //если на сервере младшая версия, то клиент должен отправить свою версию на сервер
+                    //Одинаковыми версии быть не могут, если нет изменений, сервер не должен вернуть информацию по маршруту
+                    //Если на клиенте маршрута вообще нет, значит грузим его с сервера
+                    Route routeClient = routes.SingleOrDefault(r => r.RouteId == routeServer.ObjectId);
+                    if (routeClient != null)
+                    {
+                        if (routeServer.Version > routeClient.Version)
+                        {
+                            routesForDownload.Add(routeServer.ObjectId);
+                        }
+                        else
+                        {
+                            routesForUpload.Add(routeServer.ObjectId);
+                        }
+                    }
+                    else
+                    {
+                        routesForDownload.Add(routeServer.ObjectId);
+                    }
+                }
+            }
+            /*IEnumerable<Route> notSyncedRoutes = _routeManager.GetNotSynced();
             foreach(var route in notSyncedRoutes)
             {
-                bool added = await _routesApi.AddRoute(route);
+                bool added = await _routesApi.UpdateRoute(route);
                 if(added)
                 {
                     _routeManager.SetSyncStatus(route.RouteId, added);
@@ -70,7 +114,7 @@ namespace QuestHelper.Managers.Sync
                     break;
                     //Пока непонятно что делать если загрузка не проходит
                 }
-            }
+            }*/
             /*await _routesApi.AddRoute(_route);
             await _routePointsApi.AddRoutePoint(_point);
             if (_point.MediaObjects.Count > 0)

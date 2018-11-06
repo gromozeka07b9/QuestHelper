@@ -16,10 +16,8 @@ namespace QuestHelper.WS
     public class RoutesApiRequest : IRoutesApiRequest
     {
         private string _hostUrl = string.Empty;
-        public RoutesApiRequest(string hostUrl)
-        {
-            _hostUrl = hostUrl;
-        }
+        public RoutesApiRequest(string hostUrl) => _hostUrl = hostUrl;
+
         public async Task<List<Route>> GetRoutes()
         {
             List<Route> deserializedValue = new List<Route>();
@@ -35,21 +33,24 @@ namespace QuestHelper.WS
             }
             return deserializedValue;
         }
-        public async Task<SyncObjectStatus> GetSyncStatus()
+        public async Task<SyncObjectStatus> GetSyncStatus(IEnumerable<Route> routes)
         {
-            SyncObjectStatus deserializedValue = new SyncObjectStatus();
-            JObject jsonObject = JObject.FromObject(new
+            SyncObjectStatus requestValue = new SyncObjectStatus();
+            foreach (var route in routes)
             {
-                /*RouteId = routeObject.RouteId,
-                Name = routeObject.Name,
-                CreateDate = routeObject.CreateDate.DateTime,
-                UserId = 0*/
-            });
+                requestValue.Statuses.Add(new SyncObjectStatus.ObjectStatus()
+                {
+                    ObjectId = route.RouteId,
+                    Version = route.Version
+                });
+            }
+            JObject jsonRequestObject = JObject.FromObject(requestValue);
 
+            SyncObjectStatus deserializedValue = new SyncObjectStatus();
             try
             {
                 ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestPOST($"{_hostUrl}/api/routessync", jsonObject.ToString());
+                var response = await api.HttpRequestPOST($"{_hostUrl}/api/routes/sync", jsonRequestObject.ToString());
                 deserializedValue = JsonConvert.DeserializeObject<SyncObjectStatus>(response);
             }
             catch (Exception e)
@@ -59,16 +60,16 @@ namespace QuestHelper.WS
 
             return deserializedValue;
         }
-        public async Task<bool> AddRoute(Route routeObject)
+        public async Task<bool> UpdateRoute(Route routeObject)
         {
             bool addResult = false;
             JObject jsonObject = JObject.FromObject(new {
                 RouteId = routeObject.RouteId,
                 Name = routeObject.Name,
                 CreateDate = routeObject.CreateDate.DateTime,
+                Version = routeObject.Version,
                 UserId = 0
             });
-            
             try
             {
                 ApiRequest api = new ApiRequest();

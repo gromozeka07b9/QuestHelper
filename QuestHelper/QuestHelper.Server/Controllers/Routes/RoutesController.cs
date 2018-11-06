@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using QuestHelper.Server.Models;
 
-namespace QuestHelper.Server.Controllers
+namespace QuestHelper.Server.Controllers.Routes
 {
     [Route("api/[controller]")]
     public class RoutesController : Controller

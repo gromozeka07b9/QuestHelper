@@ -1,8 +1,8 @@
 using QuestHelper.LocalDB.Model;
-using QuestHelper.Managers;
-using QuestHelper.Model;
 using QuestHelper.WS;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -28,7 +28,7 @@ namespace QuestHelper.Tests
             string routeName = "XunitTests";
             route.Name = routeName;
             RoutesApiRequest _routesApi = new RoutesApiRequest(apiUrl);
-            var added = await _routesApi.AddRoute(route);
+            var added = await _routesApi.UpdateRoute(route);
             if(added)
             {
                 var all = await _routesApi.GetRoutes();
@@ -45,16 +45,87 @@ namespace QuestHelper.Tests
             Assert.True(result);
         }
         [Fact]
-        public async Task TestMust_GetSyncStatusAsync()
+        public async Task TestMust_GetSyncStatusRoute_NoChanges_Async()
         {
-            bool result = false;
+            //Arrange
             Route route = new Route();
             string routeName = "XunitTests";
             route.Name = routeName;
-            RoutesApiRequest _routesApi = new RoutesApiRequest(apiUrl);
-            //var added = await _routesApi.(route);
+            route.Version = 123;
+            bool added = await new RoutesApiRequest(apiUrl).UpdateRoute(route);
 
-            Assert.True(result);
+            if (!added)
+            {
+                throw new Exception("route doesn't created");
+            }
+
+            //Act
+            IEnumerable<Route> routes = new List<Route>() { route };
+            var syncStatus = new RoutesApiRequest(apiUrl).GetSyncStatus(routes);
+            var deleteResult = await new RoutesApiRequest(apiUrl).DeleteRoute(route);
+            if (!deleteResult) throw new Exception("Error while deleting route");
+
+            //Assert
+            //если версия маршрута на сервере и клиенте одна и та же, он не возвращается с сервера                       
+            var routePresent = syncStatus.Result.Statuses.Any(r => r.ObjectId == route.RouteId);
+            Assert.True(!routePresent);
+        }
+
+        [Fact]
+        public async Task TestMust_GetSyncStatusRoute_Changed_Async()
+        {
+            //Arrange
+            Route route = new Route();
+            string routeName = "XunitTests";
+            route.Name = routeName;
+            route.Version = 123;
+            bool added = await new RoutesApiRequest(apiUrl).UpdateRoute(route);
+
+            if (!added)
+            {
+                throw new Exception("route doesn't created");
+            }
+
+            //Act
+            //На клиенте версия другая
+            route.Version++;
+            IEnumerable<Route> routes = new List<Route>() { route };
+            var syncStatus = new RoutesApiRequest(apiUrl).GetSyncStatus(routes);
+            var deleteResult = await new RoutesApiRequest(apiUrl).DeleteRoute(route);
+            if (!deleteResult) throw new Exception("Error while deleting route");
+
+            //Assert
+            //если версия маршрута на сервере и клиенте одна и та же, он не возвращается с сервера                       
+            var routePresent = syncStatus.Result.Statuses.Any(r => r.ObjectId == route.RouteId);
+            Assert.True(routePresent);
+        }
+
+        [Fact]
+        public async Task TestMust_GetSyncStatusRoute_ServerHasNewRoute_Async()
+        {
+            //Arrange
+            Route route = new Route();
+            string routeName = "XunitTests";
+            route.Name = routeName;
+            route.Version = 123;
+            bool added = await new RoutesApiRequest(apiUrl).UpdateRoute(route);
+
+            if (!added)
+            {
+                throw new Exception("route doesn't created");
+            }
+
+            //Act
+            //На клиенте еще нет этого маршрута, сервер должен его вернуть
+            IEnumerable<Route> routes = new List<Route>() {  };
+            var syncStatus = new RoutesApiRequest(apiUrl).GetSyncStatus(routes);
+            var deleteResult = await new RoutesApiRequest(apiUrl).DeleteRoute(route);
+            if (!deleteResult) throw new Exception("Error while deleting route");
+
+            //Assert
+            //если версия маршрута на сервере и клиенте одна и та же, он не возвращается с сервера                       
+            var routePresent = syncStatus.Result.Statuses.Any(r => r.ObjectId == route.RouteId);
+            Assert.True(routePresent);
         }
     }
 }
