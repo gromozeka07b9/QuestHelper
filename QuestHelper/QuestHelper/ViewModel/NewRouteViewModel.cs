@@ -37,8 +37,8 @@ namespace QuestHelper.ViewModel
 
         public NewRouteViewModel(bool isFirstRoute)
         {
-            //_route = route;
-            _vroute = new ViewRoute(string.Empty);
+            _vroute = new ViewRoute();
+            _vroute.Version = 1;
             _isFirstRoute = isFirstRoute;
             ShowNewRouteDialogCommand = new Command(showNewRouteData);
             OpenRoutePointDialogCommand = new Command(openRoutePointDialog);
@@ -56,11 +56,6 @@ namespace QuestHelper.ViewModel
                     Navigation.PushAsync(new RouteCreatedPage(_vroute.Id));
                 }
             }
-            /*if (!_route.IsManaged)
-            {
-                _routeManager.Add(_route);
-                Navigation.PushAsync(new RouteCreatedPage(_route));
-            }*/
         }
 
         public void startDialog()
@@ -79,11 +74,6 @@ namespace QuestHelper.ViewModel
             {
                 if (_vroute.Name != value)
                 {
-                    /*var realm = RoutePointManager.GetRealmInstance();
-                    realm.Write(() =>
-                    {
-                        _route.Name = value;
-                    });*/
                     _vroute.Name = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
                 }

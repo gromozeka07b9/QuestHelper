@@ -29,7 +29,8 @@ namespace QuestHelper.ViewModel
 
         public RouteCreatedViewModel(string routeId)
         {
-            _vroute = new ViewRoute(routeId);
+            _vroute = new ViewRoute();
+            _vroute.Load(routeId);
             OpenRoutePointDialogCommand = new Command(openRoutePointDialog);
         }
 

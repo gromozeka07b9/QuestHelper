@@ -44,7 +44,8 @@ namespace QuestHelper.ViewModel
 
         public RouteViewModel(string routeId, bool isFirstRoute)
         {
-            _vroute = new ViewRoute(routeId);
+            _vroute = new ViewRoute();
+            _vroute.Load(routeId);
             _isFirstRoute = isFirstRoute;
             ShowNewRouteDialogCommand = new Command(showNewRouteData);
             AddNewRoutePointCommand = new Command(addNewRoutePointAsync);

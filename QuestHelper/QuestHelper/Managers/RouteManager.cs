@@ -10,7 +10,7 @@ namespace QuestHelper.Managers
 {
     public class RouteManager
     {
-        Realm _realmInstance;
+        readonly Realm _realmInstance;
         public RouteManager()
         {
             _realmInstance = RealmAppInstance.GetAppInstance();
@@ -21,57 +21,9 @@ namespace QuestHelper.Managers
             return points;
         }
 
-        /*internal bool Add(Route route)
-        {
-            bool result = false;
-            try
-            {
-                _realmInstance.Write(() =>
-                {
-                    //_realmInstance.Add(route, true);
-                    _realmInstance.Add(route);
-                }
-                );
-                result = true;
-            }
-            catch (Exception)
-            {
-                //пишем лог
-            }
-            return result;
-        }*/
-
-        internal void UpdateLocalData(List<Route> routes)
-        {
-            /*foreach(var route in routes)
-            {
-                Add(route);
-            }*/
-        }
-
         public IEnumerable<Route> GetNotSynced()
         {
             return _realmInstance.All<Route>().Where(item => !item.ServerSynced);
-        }
-        public bool SetSyncStatus(string Id, bool Status)
-        {
-            bool result = false;
-            try
-            {
-                _realmInstance.Write(() =>
-                {
-                    var route = _realmInstance.Find<Route>(Id);
-                    route.ServerSynced = Status;
-                    route.ServerSyncedDate = DateTime.Now;
-                }
-                );
-                result = true;
-            }
-            catch (Exception e)
-            {
-                HandleError.Process("RouteManager", "SetSyncStatus", e, false);
-            }
-            return result;
         }
 
         public bool Save(ViewRoute viewRoute)
@@ -82,18 +34,14 @@ namespace QuestHelper.Managers
             {
                 _realmInstance.Write(() =>
                 {
-                    Route route;
-                    if (string.IsNullOrEmpty(viewRoute.Id))
+                    var route = !string.IsNullOrEmpty(viewRoute.Id) ? _realmInstance.Find<Route>(viewRoute.Id) : null;
+                    if (null == route)
                     {
-                        route = new Route();
+                        route = string.IsNullOrEmpty(viewRoute.Id) ? new Route() : new Route() { RouteId = viewRoute.Id };
                         _realmInstance.Add(route);
                     }
-                    else
-                    {
-                        route = _realmInstance.Find<Route>(viewRoute.Id);
-                    }
                     route.Name = viewRoute.Name;
-                    route.Version++;
+                    route.Version = viewRoute.Version;
                     viewRoute.Refresh(route.RouteId);
                 });
                 result = true;

@@ -40,37 +40,16 @@ namespace QuestHelper.Managers.Sync
             List<string> routesForUpload = new List<string>();
             List<string> routesForDownload = new List<string>();
 
-            foreach (var routeServer in routeServerStatus.Statuses)
+            fillListsRoutesForProcess(routes, routeServerStatus, routesForUpload, routesForDownload);
+            if (routesForUpload.Count > 0)
             {
-                //если сервер вернул версию 0, значит на сервере маршрута еще нет, его надо будет отправить
-                if (routeServer.Version == 0)
-                {
-                    routesForUpload.Add(routeServer.ObjectId);
-                }
-                else
-                {
-                    //если версия на сервере уже есть, значит есть расхождение версий между сервером и клиентом
-                    //тут варианты: если на сервере более старшая версия, клиент должен ее забрать себе
-                    //если на сервере младшая версия, то клиент должен отправить свою версию на сервер
-                    //Одинаковыми версии быть не могут, если нет изменений, сервер не должен вернуть информацию по маршруту
-                    //Если на клиенте маршрута вообще нет, значит грузим его с сервера
-                    Route routeClient = routes.SingleOrDefault(r => r.RouteId == routeServer.ObjectId);
-                    if (routeClient != null)
-                    {
-                        if (routeServer.Version > routeClient.Version)
-                        {
-                            routesForDownload.Add(routeServer.ObjectId);
-                        }
-                        else
-                        {
-                            routesForUpload.Add(routeServer.ObjectId);
-                        }
-                    }
-                    else
-                    {
-                        routesForDownload.Add(routeServer.ObjectId);
-                    }
-                }
+                bool result = await uploadRoutesAsync(routesForUpload);
+                if (!result) _showWarning("Ошибка передачи данных");
+            }
+            if (routesForDownload.Count > 0)
+            {
+                bool result = await downloadRoutesAsync(routesForDownload);
+                if (!result) _showWarning("Ошибка загрузки данных");
             }
             /*IEnumerable<Route> notSyncedRoutes = _routeManager.GetNotSynced();
             foreach(var route in notSyncedRoutes)
@@ -122,6 +101,75 @@ namespace QuestHelper.Managers.Sync
                 await _routePointMediaObjectsApi.AddRoutePointMediaObject(_point.MediaObjects[0]);
             }*/
 
+        }
+
+        private async System.Threading.Tasks.Task<bool> uploadRoutesAsync(List<string> routesIdsForUpload)
+        {
+            bool result = false;
+            foreach (var routeId in routesIdsForUpload)
+            {
+                var route = _routeManager.GetRouteById(routeId);
+                if (route != null)
+                {
+                    result = await _routesApi.UpdateRoute(route);
+                    if (!result)
+                    {
+                        break;
+                    }
+                }
+                else break;
+            }
+            return result;
+        }
+        private async System.Threading.Tasks.Task<bool> downloadRoutesAsync(List<string> routesIdsForDownload)
+        {
+            bool result = false;
+            foreach (var routeId in routesIdsForDownload)
+            {
+                var route = await _routesApi.GetRoute(routeId);
+                result = route.Save();
+                if (!result)
+                {
+                    break;
+                }
+            }
+            return result;
+        }
+
+        private void fillListsRoutesForProcess(IEnumerable<Route> routes, SyncObjectStatus routeServerStatus, List<string> routesForUpload, List<string> routesForDownload)
+        {
+            foreach (var routeServer in routeServerStatus.Statuses)
+            {
+                //если сервер вернул версию 0, значит на сервере маршрута еще нет, его надо будет отправить
+                if (routeServer.Version == 0)
+                {
+                    routesForUpload.Add(routeServer.ObjectId);
+                }
+                else
+                {
+                    //если версия на сервере уже есть, значит есть расхождение версий между сервером и клиентом
+                    //тут варианты: если на сервере более старшая версия, клиент должен ее забрать себе
+                    //если на сервере младшая версия, то клиент должен отправить свою версию на сервер
+                    //Одинаковыми версии быть не могут, если нет изменений, сервер не должен вернуть информацию по маршруту
+                    //Если на клиенте маршрута вообще нет, значит грузим его с сервера
+                    Route routeClient = routes.SingleOrDefault(r => r.RouteId == routeServer.ObjectId);
+                    if (routeClient != null)
+                    {
+                        if (routeServer.Version > routeClient.Version)
+                        {
+                            routesForDownload.Add(routeServer.ObjectId);
+                        }
+                        else
+                        {
+                            routesForUpload.Add(routeServer.ObjectId);
+                        }
+                    }
+                    else
+                    {
+                        routesForDownload.Add(routeServer.ObjectId);
+                    }
+                }
+            }
         }
     }
 }
