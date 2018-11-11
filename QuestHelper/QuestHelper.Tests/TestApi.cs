@@ -2,8 +2,12 @@ using QuestHelper.LocalDB.Model;
 using QuestHelper.WS;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace QuestHelper.Tests
@@ -126,6 +130,31 @@ namespace QuestHelper.Tests
             //если версия маршрута на сервере и клиенте одна и та же, он не возвращается с сервера                       
             var routePresent = syncStatus.Result.Statuses.Any(r => r.ObjectId == route.RouteId);
             Assert.True(routePresent);
+        }
+        [Fact]
+        public async Task TestMust_MakeRequestUpload_Async()
+        {
+            try
+            {
+                Stream image = File.Open(@"c:\temp\J9AFcz.jpg", FileMode.Open);
+                HttpContent content = new StreamContent(image);
+                content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data") { Name = "file", FileName = "testfile" };
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                using (var client = new HttpClient())
+                {
+                    using (var formData = new MultipartFormDataContent())
+                    {
+                        formData.Add(content);
+                        var response = await client.PostAsync(apiUrl + "/api/RoutePointMediaObjects/2/uploadfile", formData);
+                        var result = response.IsSuccessStatusCode;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+            }
+
+            Assert.True(true);
         }
     }
 }

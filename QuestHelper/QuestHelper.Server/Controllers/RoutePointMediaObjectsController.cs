@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using QuestHelper.Server.Models;
@@ -38,6 +39,15 @@ namespace QuestHelper.Server.Controllers
                     db.Entry(entity).CurrentValues.SetValues(routeMediaObject);
                 }
                 db.SaveChanges();
+            }
+        }
+
+        [HttpPost("{routePointId}/uploadfile")]
+        public void PostUploadFile(IFormFile file)
+        {
+            if (file.Length > 0)
+            {
+                var size = file.Length;
             }
         }
     }

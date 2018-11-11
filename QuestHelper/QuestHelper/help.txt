@@ -22,3 +22,6 @@ https://forums.xamarin.com/discussion/67531/how-to-resize-image-file-on-xamarin-
 
 polyline
 https://github.com/xamarin/xamarin-forms-samples/blob/master/CustomRenderers/Map/Polyline/MapOverlay/MapPageCS.cs
+
+upload images
+https://dzone.com/articles/how-to-upload-images-to-an-aspnet-core-rest-servic
