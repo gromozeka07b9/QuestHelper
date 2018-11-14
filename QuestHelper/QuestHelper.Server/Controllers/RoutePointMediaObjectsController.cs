@@ -76,7 +76,7 @@ namespace QuestHelper.Server.Controllers
         {
             var account =
                 CloudStorageAccount.Parse(
-                    "DefaultEndpointsProtocol=https;AccountName=questhelperblob;AccountKey=0i3of0RpMeMuIo3OOq2mqPxLPTfuCF0gWt/6/dh3SZXT2fT1JexrQJLUKOOhwmYTEjFmctXUJMSp1JAk8iAjTA==;EndpointSuffix=core.windows.net");
+                    "");
             var client = account.CreateCloudBlobClient();
             var container = client.GetContainerReference("questhelperblob");
             await container.CreateIfNotExistsAsync();
@@ -85,7 +85,7 @@ namespace QuestHelper.Server.Controllers
 
         public async void SendFileToAzure(Stream blobStream, string fileName)
         {
-            var account = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=questhelperblob;AccountKey=0i3of0RpMeMuIo3OOq2mqPxLPTfuCF0gWt/6/dh3SZXT2fT1JexrQJLUKOOhwmYTEjFmctXUJMSp1JAk8iAjTA==;EndpointSuffix=core.windows.net");
+            var account = CloudStorageAccount.Parse("");
             var client = account.CreateCloudBlobClient();
             var container = client.GetContainerReference("questhelperblob");
             await container.CreateIfNotExistsAsync();
