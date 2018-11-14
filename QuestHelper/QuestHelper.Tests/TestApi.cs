@@ -15,6 +15,7 @@ namespace QuestHelper.Tests
     public class TestApi
     {
         private string apiUrl = "http://questhelperserver.azurewebsites.net";
+        //private string apiUrl = "http://localhost:31193";
 
         [Fact]
         public async Task TestMust_GetRoutesAsync()
@@ -134,27 +135,26 @@ namespace QuestHelper.Tests
         [Fact]
         public async Task TestMust_MakeRequestUpload_Async()
         {
-            try
+            bool result = false;
+            string testBlobFilename = "1testblob.jpg";
+            string routePointId = "36750d40-fd54-468a-8cd5-4af972b54be8";
+            string mediaObjectId = "2ba9c945-3c41-4fef-9d07-aaebe15b11cd";
+            string fileId = "img_e5074bd4-0e50-4d20-b43d-2b0fe28902f8.jpg";
+            Stream image = File.Open(@".\testblob\" + testBlobFilename, FileMode.Open);
+            HttpContent content = new StreamContent(image);
+            content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data") { Name = "file", FileName = fileId };
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+            using (var client = new HttpClient())
             {
-                Stream image = File.Open(@"c:\temp\J9AFcz.jpg", FileMode.Open);
-                HttpContent content = new StreamContent(image);
-                content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data") { Name = "file", FileName = "testfile" };
-                content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                using (var client = new HttpClient())
+                using (var formData = new MultipartFormDataContent())
                 {
-                    using (var formData = new MultipartFormDataContent())
-                    {
-                        formData.Add(content);
-                        var response = await client.PostAsync(apiUrl + "/api/RoutePointMediaObjects/2/uploadfile", formData);
-                        var result = response.IsSuccessStatusCode;
-                    }
+                    formData.Add(content);
+                    var response = await client.PostAsync($"{ apiUrl }/api/RoutePointMediaObjects/{ routePointId }/{ mediaObjectId }/uploadfile", formData);
+                    result = response.IsSuccessStatusCode;
                 }
             }
-            catch (Exception e)
-            {
-            }
 
-            Assert.True(true);
+            Assert.True(result);
         }
     }
 }

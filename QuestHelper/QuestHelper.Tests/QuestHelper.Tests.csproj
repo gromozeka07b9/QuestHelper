@@ -16,4 +16,10 @@
     <ProjectReference Include="..\QuestHelper\QuestHelper.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="testblob\1testblob.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

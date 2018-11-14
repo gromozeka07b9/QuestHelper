@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AppCenter.Crashes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 using Newtonsoft.Json;
 using QuestHelper.Server.Models;
 
@@ -42,13 +47,52 @@ namespace QuestHelper.Server.Controllers
             }
         }
 
-        [HttpPost("{routePointId}/uploadfile")]
-        public void PostUploadFile(IFormFile file)
+        [HttpPost("{routePointId}/{mediaObjectId}/uploadfile")]
+        public async Task PostUploadFileAsync(string routePointId, string mediaObjectId, IFormFile file)
         {
             if (file.Length > 0)
             {
-                var size = file.Length;
+                using (var db = new ServerDbContext())
+                {
+                    var entity = db.RoutePointMediaObject.Find(mediaObjectId);
+                    if ((entity != null)&&((entity.FileName == file.FileName) || (entity.FileNamePreview == file.FileName)))
+                    {
+                        using (Stream stream = file.OpenReadStream())
+                        {
+                            var blob = await GetCloudBlockBlob(file.FileName);
+                            await blob.UploadFromStreamAsync(stream);
+                        }
+                    }
+                    else
+                    {
+                        if(entity == null) throw new Exception($"Media object {mediaObjectId} not found!");
+                        throw new Exception($"Media object does not contain filename {file.FileName}");
+                    }
+                }
             }
         }
+
+        private async Task<CloudBlockBlob> GetCloudBlockBlob(string filename)
+        {
+            var account =
+                CloudStorageAccount.Parse(
+                    "DefaultEndpointsProtocol=https;AccountName=questhelperblob;AccountKey=0i3of0RpMeMuIo3OOq2mqPxLPTfuCF0gWt/6/dh3SZXT2fT1JexrQJLUKOOhwmYTEjFmctXUJMSp1JAk8iAjTA==;EndpointSuffix=core.windows.net");
+            var client = account.CreateCloudBlobClient();
+            var container = client.GetContainerReference("questhelperblob");
+            await container.CreateIfNotExistsAsync();
+            return container.GetBlockBlobReference(filename);
+        }
+
+        public async void SendFileToAzure(Stream blobStream, string fileName)
+        {
+            var account = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=questhelperblob;AccountKey=0i3of0RpMeMuIo3OOq2mqPxLPTfuCF0gWt/6/dh3SZXT2fT1JexrQJLUKOOhwmYTEjFmctXUJMSp1JAk8iAjTA==;EndpointSuffix=core.windows.net");
+            var client = account.CreateCloudBlobClient();
+            var container = client.GetContainerReference("questhelperblob");
+            await container.CreateIfNotExistsAsync();
+            CloudBlockBlob blob = container.GetBlockBlobReference(fileName);
+            //Cannot access a disposed object???
+            await blob.UploadFromStreamAsync(blobStream);
+        }
+
     }
 }
