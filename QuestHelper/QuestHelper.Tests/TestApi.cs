@@ -156,5 +156,21 @@ namespace QuestHelper.Tests
 
             Assert.True(result);
         }
+
+        [Fact]
+        public async Task TestMust_MakeRequestDowload_Async()
+        {
+            bool result = false;
+            string routePointId = "36750d40-fd54-468a-8cd5-4af972b54be8";
+            string mediaObjectId = "2ba9c945-3c41-4fef-9d07-aaebe15b11cd";
+            string fileId = "img_e5074bd4-0e50-4d20-b43d-2b0fe28902f8.jpg";
+            using (var client = new HttpClient())
+            {
+                var response = await client.GetAsync($"{apiUrl}/api/RoutePointMediaObjects/{routePointId}/{mediaObjectId}/{fileId}");
+                result = response.IsSuccessStatusCode;
+            }
+
+            Assert.True(result);
+        }
     }
 }

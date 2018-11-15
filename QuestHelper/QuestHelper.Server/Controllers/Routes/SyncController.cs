@@ -17,30 +17,34 @@ namespace QuestHelper.Server.Controllers.Routes
         {
             string userId = "0";
             SyncObjectStatus report = new SyncObjectStatus();
-            using (var db = new ServerDbContext())
+            if (syncObject.Statuses != null)
             {
-                var syncIds = syncObject.Statuses.Select(t => t.ObjectId);
-                var dbRoutes = db.Route.Where(r => syncIds.Contains(r.RouteId) && r.UserId == userId);
-                foreach(var routeVersion in syncObject.Statuses)
+                using (var db = new ServerDbContext())
                 {
-                    var dbRoute = dbRoutes.SingleOrDefault(r => r.RouteId == routeVersion.ObjectId && r.UserId == userId);
-                    if (dbRoute != null)
+                    var syncIds = syncObject.Statuses.Select(t => t.ObjectId);
+                    var dbRoutes = db.Route.Where(r => syncIds.Contains(r.RouteId) && r.UserId == userId);
+                    foreach (var routeVersion in syncObject.Statuses)
                     {
-                        //если маршрут на сервере есть, но версии разные, вернем его
-                        if(dbRoute.Version != routeVersion.Version)
-                            report.Statuses.Add(new SyncObjectStatus.ObjectStatus { ObjectId = dbRoute.RouteId, Version = dbRoute.Version});
-                        //если версия одна, не возвращаем
-                    } else
-                    {
-                        //если маршрута нет, вернем инфу о том, что надо его запушить на сервер
-                        report.Statuses.Add(new SyncObjectStatus.ObjectStatus { ObjectId = routeVersion.ObjectId, Version = 0 });
+                        var dbRoute = dbRoutes.SingleOrDefault(r => r.RouteId == routeVersion.ObjectId && r.UserId == userId);
+                        if (dbRoute != null)
+                        {
+                            //если маршрут на сервере есть, но версии разные, вернем его
+                            if (dbRoute.Version != routeVersion.Version)
+                                report.Statuses.Add(new SyncObjectStatus.ObjectStatus { ObjectId = dbRoute.RouteId, Version = dbRoute.Version });
+                            //если версия одна, не возвращаем
+                        }
+                        else
+                        {
+                            //если маршрута нет, вернем инфу о том, что надо его запушить на сервер
+                            report.Statuses.Add(new SyncObjectStatus.ObjectStatus { ObjectId = routeVersion.ObjectId, Version = 0 });
+                        }
                     }
-                }
-                //И надо найти те маршруты, которых еще может не быть на клиенте, и ему отправить чтобы забрал
-                var dbNewRoutes = db.Route.Where(r => !syncIds.Contains(r.RouteId) && r.UserId == userId);
-                foreach(var newRoute in dbNewRoutes)
-                {
-                    report.Statuses.Add(new SyncObjectStatus.ObjectStatus { ObjectId = newRoute.RouteId, Version = newRoute.Version });
+                    //И надо найти те маршруты, которых еще может не быть на клиенте, и ему отправить чтобы забрал
+                    var dbNewRoutes = db.Route.Where(r => !syncIds.Contains(r.RouteId) && r.UserId == userId);
+                    foreach (var newRoute in dbNewRoutes)
+                    {
+                        report.Statuses.Add(new SyncObjectStatus.ObjectStatus { ObjectId = newRoute.RouteId, Version = newRoute.Version });
+                    }
                 }
             }
             return new ObjectResult(report);

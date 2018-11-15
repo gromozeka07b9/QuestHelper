@@ -69,8 +69,23 @@ namespace QuestHelper.Model
                 return _id;
             }
         }
+        public string RoutePointId
+        {
+            set
+            {
+                _id = value;
+            }
+            get
+            {
+                return _id;
+            }
+        }
         public string RouteId
         {
+            set
+            {
+                _routeId = value;
+            }
             get
             {
                 return _routeId;

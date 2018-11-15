@@ -6,14 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace QuestHelper.Server.Controllers
 {
-    [Route("/")]
-    public class IndexController : Controller
+    [Route("api/")]
+    public class ApiController : Controller
     {
         // GET api/values
         [HttpGet]
         public string Get()
         {
-            return "Welcome to GoSh! - I go, I share, I live.";
+            return "Backend for QuestHelper (GoSh!)";
         }
     }
 }

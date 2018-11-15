@@ -67,13 +67,20 @@ namespace QuestHelper.Managers
             {
                 _realmInstance.Write(() =>
                 {
-                    RoutePoint point;
-                    if (string.IsNullOrEmpty(vpoint.Id))
+                    RoutePoint point = !string.IsNullOrEmpty(vpoint.Id) ? _realmInstance.Find<RoutePoint>(vpoint.Id) : null;
+                    if(point == null)
                     {
                         point = new RoutePoint();
                         point.RouteId = vpoint.RouteId;
                         point.MainRoute = routeManager.GetRouteById(vpoint.RouteId);
-                        point.MainRoute.Points.Add(point);//?
+                        if (point.MainRoute != null)
+                        {
+                            point.MainRoute.Points.Add(point);//?
+                        }
+                        else
+                        {
+                            HandleError.Process("RoutePointManager", "SavePoint", new Exception($"routeId:{vpoint.RouteId}, pointId:{vpoint.Id}"), false);
+                        }
                         _realmInstance.Add(point);
                     }
                     else
@@ -138,6 +145,10 @@ namespace QuestHelper.Managers
         internal IEnumerable<RoutePoint> GetNotSynced()
         {
             return _realmInstance.All<RoutePoint>().Where(item => !item.ServerSynced);
+        }
+        internal IEnumerable<RoutePoint> GetPoints()
+        {
+            return _realmInstance.All<RoutePoint>();
         }
 
         internal void UpdateLocalData(Route route, List<RoutePoint> points)

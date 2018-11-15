@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using QuestHelper.Server.Models;
 
-namespace QuestHelper.Server.Controllers
+namespace QuestHelper.Server.Controllers.Points
 {
     [Route("api/[controller]")]
     public class RoutePointsController : Controller
     {
-        [HttpGet("{RouteId}")]
+        /*[HttpGet("{RouteId}")]
         public IActionResult Get(string RouteId)
         {
             List<RoutePoint> items = new List<RoutePoint>();
@@ -19,6 +19,16 @@ namespace QuestHelper.Server.Controllers
                 items = db.RoutePoint.Where(x=>x.RouteId == RouteId).ToList();
             }
             return new ObjectResult(items);
+        }*/
+        [HttpGet("{RoutePointId}")]
+        public IActionResult Get(string RoutePointId)
+        {
+            RoutePoint point = new RoutePoint();
+            using (var db = new ServerDbContext())
+            {
+                point = db.RoutePoint.SingleOrDefault(x => x.RoutePointId == RoutePointId);
+            }
+            return new ObjectResult(point);
         }
 
         [HttpPost]

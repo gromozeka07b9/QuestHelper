@@ -59,7 +59,8 @@ namespace QuestHelper.Server.Controllers
                     {
                         using (Stream stream = file.OpenReadStream())
                         {
-                            var blob = await GetCloudBlockBlob(file.FileName);
+                            var blobContainer = await GetCloudBlobContainer();
+                            var blob = blobContainer.GetBlockBlobReference(file.FileName);
                             await blob.UploadFromStreamAsync(stream);
                         }
                     }
@@ -72,26 +73,37 @@ namespace QuestHelper.Server.Controllers
             }
         }
 
-        private async Task<CloudBlockBlob> GetCloudBlockBlob(string filename)
+        [HttpGet("{routePointId}/{mediaObjectId}/{fileName}")]
+        public async Task<IActionResult> GetAsync(string routePointId, string mediaObjectId, string fileName)
         {
-            var account =
-                CloudStorageAccount.Parse(
-                    "");
-            var client = account.CreateCloudBlobClient();
-            var container = client.GetContainerReference("questhelperblob");
-            await container.CreateIfNotExistsAsync();
-            return container.GetBlockBlobReference(filename);
+            Stream memStream = new MemoryStream();
+            using (var db = new ServerDbContext())
+            {
+                var entity = db.RoutePointMediaObject.Find(mediaObjectId);
+                if ((entity != null) && ((entity.FileName == fileName) || (entity.FileNamePreview == fileName)))
+                {
+                    var blobContainer = await GetCloudBlobContainer();
+                    var blob = blobContainer.GetBlockBlobReference(fileName);
+                    await blob.DownloadToStreamAsync(memStream);
+                }
+                else
+                {
+                    if (entity == null) throw new Exception($"Media object {mediaObjectId} not found!");
+                    throw new Exception($"Media object does not contain filename {fileName}");
+                }
+            }
+
+            memStream.Position = 0;
+            return File(memStream, "image/jpeg", fileName);
         }
 
-        public async void SendFileToAzure(Stream blobStream, string fileName)
+        private async Task<CloudBlobContainer> GetCloudBlobContainer()
         {
-            var account = CloudStorageAccount.Parse("");
+            var account = CloudStorageAccount.Parse("xxx");
             var client = account.CreateCloudBlobClient();
             var container = client.GetContainerReference("questhelperblob");
             await container.CreateIfNotExistsAsync();
-            CloudBlockBlob blob = container.GetBlockBlobReference(fileName);
-            //Cannot access a disposed object???
-            await blob.UploadFromStreamAsync(blobStream);
+            return container;
         }
 
     }

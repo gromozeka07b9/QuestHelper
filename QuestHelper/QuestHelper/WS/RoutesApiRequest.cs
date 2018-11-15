@@ -24,7 +24,7 @@ namespace QuestHelper.WS
             try
             {
                 ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{this._hostUrl}/api/routes");
+                var response = await api.HttpRequestGET($"{this._hostUrl}/routes");
                 deserializedValue = JsonConvert.DeserializeObject<List<Route>>(response);
             }
             catch (Exception e)
@@ -39,7 +39,7 @@ namespace QuestHelper.WS
             try
             {
                 ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{this._hostUrl}/api/routes/{id}");
+                var response = await api.HttpRequestGET($"{this._hostUrl}/routes/{id}");
                 deserializedValue = JsonConvert.DeserializeObject<ViewRoute>(response);
             }
             catch (Exception e)
@@ -65,12 +65,12 @@ namespace QuestHelper.WS
             try
             {
                 ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestPOST($"{_hostUrl}/api/routes/sync", jsonRequestObject.ToString());
+                var response = await api.HttpRequestPOST($"{_hostUrl}/routes/sync", jsonRequestObject.ToString());
                 deserializedValue = JsonConvert.DeserializeObject<SyncObjectStatus>(response);
             }
             catch (Exception e)
             {
-                HandleError.Process("RoutesApiRequest", "AddRoute", e, false);
+                HandleError.Process("RoutesApiRequest", "GetSyncStatus", e, false);
             }
 
             return deserializedValue;
@@ -88,7 +88,7 @@ namespace QuestHelper.WS
             try
             {
                 ApiRequest api = new ApiRequest();
-                await api.HttpRequestPOST($"{_hostUrl}/api/routes", jsonObject.ToString());
+                await api.HttpRequestPOST($"{_hostUrl}/routes", jsonObject.ToString());
                 addResult = true;
             }
             catch (Exception e)
@@ -103,7 +103,7 @@ namespace QuestHelper.WS
             try
             {
                 ApiRequest api = new ApiRequest();
-                deleteResult = await api.HttpRequestDELETE($"{_hostUrl}/api/routes/{routeObject.RouteId}");
+                deleteResult = await api.HttpRequestDELETE($"{_hostUrl}/routes/{routeObject.RouteId}");
             }
             catch (Exception e)
             {
