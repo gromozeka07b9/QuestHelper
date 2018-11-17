@@ -37,7 +37,7 @@ namespace QuestHelper.WS
             try
             {
                 ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestPOST($"{_hostUrl}/points/sync", jsonRequestObject.ToString());
+                var response = await api.HttpRequestPOST($"{_hostUrl}/routepoints/sync", jsonRequestObject.ToString());
                 deserializedValue = JsonConvert.DeserializeObject<SyncObjectStatus>(response);
             }
             catch (Exception e)

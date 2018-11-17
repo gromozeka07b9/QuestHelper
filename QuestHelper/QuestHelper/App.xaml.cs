@@ -28,13 +28,10 @@ namespace QuestHelper
 
             var syncPoints = SyncPoints.GetInstance();
             syncPoints.SetWarningDialogContext(ShowWarning);
-            //Task.Run(()=>syncPoints.StartAsync());//deadlock
             syncPoints.StartAsync();
 
-            /*var syncFiles = SyncFiles.GetInstance();
+            var syncFiles = SyncFiles.GetInstance();
             syncFiles.SetWarningDialogContext(ShowWarning);
-            syncFiles.Start();//ToDo:тоже надо асинк
-            */
         }
 
         public void ShowWarning(string text)

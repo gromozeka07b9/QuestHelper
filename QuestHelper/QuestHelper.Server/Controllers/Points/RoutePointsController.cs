@@ -10,16 +10,6 @@ namespace QuestHelper.Server.Controllers.Points
     [Route("api/[controller]")]
     public class RoutePointsController : Controller
     {
-        /*[HttpGet("{RouteId}")]
-        public IActionResult Get(string RouteId)
-        {
-            List<RoutePoint> items = new List<RoutePoint>();
-            using (var db = new ServerDbContext())
-            {
-                items = db.RoutePoint.Where(x=>x.RouteId == RouteId).ToList();
-            }
-            return new ObjectResult(items);
-        }*/
         [HttpGet("{RoutePointId}")]
         public IActionResult Get(string RoutePointId)
         {

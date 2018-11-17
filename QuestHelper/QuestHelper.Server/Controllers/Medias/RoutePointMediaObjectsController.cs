@@ -13,12 +13,12 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using Newtonsoft.Json;
 using QuestHelper.Server.Models;
 
-namespace QuestHelper.Server.Controllers
+namespace QuestHelper.Server.Controllers.Medias
 {
     [Route("api/[controller]")]
     public class RoutePointMediaObjectsController : Controller
     {
-        [HttpGet("{routePointId}")]
+        /*[HttpGet("{routePointId}")]
         public IActionResult Get(string routePointId)
         {
             List<RoutePointMediaObject> items = new List<RoutePointMediaObject>();
@@ -27,6 +27,16 @@ namespace QuestHelper.Server.Controllers
                 items = db.RoutePointMediaObject.Where(x=>x.RoutePointId == routePointId).ToList();
             }
             return new ObjectResult(items);
+        }*/
+        [HttpGet("{routePointMediaObjectId}")]
+        public IActionResult Get(string routePointMediaObjectId)
+        {
+            RoutePointMediaObject item = new RoutePointMediaObject();
+            using (var db = new ServerDbContext())
+            {
+                item = db.RoutePointMediaObject.SingleOrDefault(x => x.RoutePointMediaObjectId == routePointMediaObjectId);
+            }
+            return new ObjectResult(item);
         }
 
         [HttpPost]
@@ -99,7 +109,7 @@ namespace QuestHelper.Server.Controllers
 
         private async Task<CloudBlobContainer> GetCloudBlobContainer()
         {
-            var account = CloudStorageAccount.Parse("xxx");
+            var account = CloudStorageAccount.Parse("");
             var client = account.CreateCloudBlobClient();
             var container = client.GetContainerReference("questhelperblob");
             await container.CreateIfNotExistsAsync();

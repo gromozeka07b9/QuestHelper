@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using QuestHelper.LocalDB.Model;
+using QuestHelper.Model;
 using Realms;
 
 namespace QuestHelper.Managers
@@ -39,10 +40,10 @@ namespace QuestHelper.Managers
             }
             return result;
         }
-        public IEnumerable<RoutePointMediaObject> GetNotSyncedFiles()
+        /*public IEnumerable<RoutePointMediaObject> GetNotSyncedFiles()
         {
             return _realmInstance.All<RoutePointMediaObject>().Where(media=>!media.ServerSynced);
-        }
+        }*/
 
         public void UpdateLocalData(RoutePoint point, List<RoutePointMediaObject> mediaObjects)
         {
@@ -90,9 +91,51 @@ namespace QuestHelper.Managers
             });
         }
 
-        internal IEnumerable<RoutePointMediaObject> GetNotSynced()
+        internal string Save(ViewRoutePointMediaObject vmedia)
+        {
+            string returnId = string.Empty;
+
+            try
+            {
+                _realmInstance.Write(() =>
+                {
+                    RoutePointMediaObject mediaObject = !string.IsNullOrEmpty(vmedia.Id) ? _realmInstance.Find<RoutePointMediaObject>(vmedia.Id) : null;
+                    if (mediaObject == null)
+                    {
+                        mediaObject = new RoutePointMediaObject();
+                        mediaObject.RoutePointMediaObjectId = vmedia.Id;
+                        mediaObject.RoutePointId = vmedia.RoutePointId;
+                        _realmInstance.Add(mediaObject);
+                    }
+
+                    returnId = mediaObject.RoutePointMediaObjectId;
+                    mediaObject.Version = vmedia.Version;
+                    //mediaObject.FileName = vmedia.FileName;
+                    //mediaObject.FileNamePreview = vmedia.FileNamePreview;
+                });
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RoutePointMediaObjectManager", "SaveRoutePointMediaObject", e, false);
+            }
+
+            return returnId;
+        }
+
+
+        internal IEnumerable<RoutePointMediaObject> GetMediaObjects()
+        {
+            return _realmInstance.All<RoutePointMediaObject>();
+        }
+
+        internal RoutePointMediaObject GetMediaObjectById(string mediaId)
+        {
+            return _realmInstance.All<RoutePointMediaObject>().SingleOrDefault(x => x.RoutePointMediaObjectId == mediaId);
+        }
+
+        /*internal IEnumerable<RoutePointMediaObject> GetNotSynced()
         {
             return _realmInstance.All<RoutePointMediaObject>().Where(item => !item.ServerSynced);
-        }
+        }*/
     }
 }

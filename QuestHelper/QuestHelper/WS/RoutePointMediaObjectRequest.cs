@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using QuestHelper.LocalDB.Model;
 using Newtonsoft.Json.Linq;
+using QuestHelper.Model;
 
 namespace QuestHelper.WS
 {
@@ -21,7 +22,8 @@ namespace QuestHelper.WS
         }
         public async Task<List<RoutePointMediaObject>> GetRoutePointMediaObjects(string routePointId)
         {
-            List<RoutePointMediaObject> deserializedValue = new List<RoutePointMediaObject>();
+            throw new Exception("Не используется!");
+            /*List<RoutePointMediaObject> deserializedValue = new List<RoutePointMediaObject>();
             try
             {
                 ApiRequest api = new ApiRequest();
@@ -32,13 +34,41 @@ namespace QuestHelper.WS
             {
 
             }
+            return deserializedValue;*/
+        }
+        public async Task<ViewRoutePointMediaObject> GetRoutePointMediaObject(string routePointMediaObjectId)
+        {
+            ViewRoutePointMediaObject deserializedValue = new ViewRoutePointMediaObject();
+            try
+            {
+                ApiRequest api = new ApiRequest();
+                var response = await api.HttpRequestGET($"{this._hostUrl}/routepointmediaobjects/{routePointMediaObjectId}");
+                deserializedValue = JsonConvert.DeserializeObject<ViewRoutePointMediaObject>(response);
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RoutePointMediaObjectApiRequest", "GetRoutePointMediaObject", e, false);
+            }
             return deserializedValue;
         }
+        public async Task<ViewRoutePointMediaObject> GetFile(string routePointId, string routePointMediaObjectId, string filename)
+        {
+            ViewRoutePointMediaObject deserializedValue = new ViewRoutePointMediaObject();
+            try
+            {
+                ApiRequest api = new ApiRequest();
+                bool result = await api.HttpRequestGetFile($"{this._hostUrl}/routepointmediaobjects/{routePointId}/{routePointMediaObjectId}/{filename}", filename);
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RoutePointMediaObjectApiRequest", "GeFile", e, false);
+            }
+            return deserializedValue;
+        }
+
         public async Task<bool> AddRoutePointMediaObject(RoutePointMediaObject routePointMediaObject)
         {
-            bool addResult = false;
-
-            
+            bool addResult = false;            
             try
             {
                 JObject jsonObject = JObject.FromObject(new
@@ -46,17 +76,45 @@ namespace QuestHelper.WS
                     RoutePointMediaObjectId = routePointMediaObject.RoutePointMediaObjectId,
                     RoutePointId = routePointMediaObject.RoutePointId,
                     FileName = routePointMediaObject.FileName,
-                    //PreviewImage = routePointMediaObject.PreviewImage,
                     FileNamePreview = string.IsNullOrEmpty(routePointMediaObject.FileNamePreview)? "": routePointMediaObject.FileNamePreview
                 });
                 ApiRequest api = new ApiRequest();
-                await api.HttpRequestPOST($"{_hostUrl}/api/routepointmediaobjects", jsonObject.ToString());
+                await api.HttpRequestPOST($"{_hostUrl}/routepointmediaobjects", jsonObject.ToString());
                 addResult = true;
             }
             catch (Exception e)
             {
+                HandleError.Process("RoutePointMediaObjectApiRequest", "AddRoutePointMediaObject", e, false);
             }
             return addResult;
+        }
+
+        public async Task<SyncObjectStatus> GetSyncStatus(IEnumerable<Tuple<string, int>> medias)
+        {
+            SyncObjectStatus requestValue = new SyncObjectStatus();
+            foreach (var item in medias)
+            {
+                requestValue.Statuses.Add(new SyncObjectStatus.ObjectStatus()
+                {
+                    ObjectId = item.Item1,
+                    Version = item.Item2
+                });
+            }
+            JObject jsonRequestObject = JObject.FromObject(requestValue);
+
+            SyncObjectStatus deserializedValue = new SyncObjectStatus();
+            try
+            {
+                ApiRequest api = new ApiRequest();
+                var response = await api.HttpRequestPOST($"{_hostUrl}/routepointmediaobjects/sync", jsonRequestObject.ToString());
+                deserializedValue = JsonConvert.DeserializeObject<SyncObjectStatus>(response);
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RoutePointMediaObjectApiRequest", "GetSyncStatus", e, false);
+            }
+
+            return deserializedValue;
         }
     }
 }

@@ -38,28 +38,63 @@ namespace QuestHelper.Managers.Sync
         {
             await syncRoutes();
             await syncPoints();
-            /*
-            IEnumerable<RoutePointMediaObject> notSyncedMedia = _routePointMediaManager.GetNotSynced();
-            foreach (var media in notSyncedMedia)
+            await syncMedia();
+            var syncFiles = SyncFiles.GetInstance();
+            syncFiles.Start();
+        }
+
+        private async Task syncMedia()
+        {
+            var medias = _routePointMediaManager.GetMediaObjects().Select(x => new Tuple<string, int>(x.RoutePointMediaObjectId, x.Version));
+            SyncObjectStatus pointsServerStatus = await _routePointMediaObjectsApi.GetSyncStatus(medias);
+            List<string> forUpload = new List<string>();
+            List<string> forDownload = new List<string>();
+
+            fillListsObjectsForProcess(medias, pointsServerStatus, forUpload, forDownload);
+
+            if (forUpload.Count > 0)
             {
-                bool added = await _routePointMediaObjectsApi.AddRoutePointMediaObject(media);
-                if (added)
+                await uploadMediasAsync(forUpload);
+            }
+
+            if (forDownload.Count > 0)
+            {
+                await downloadMediasAsync(forDownload);
+            }
+        }
+
+        private async System.Threading.Tasks.Task<bool> uploadMediasAsync(List<string> idsForUpload)
+        {
+            bool result = false;
+            foreach (var id in idsForUpload)
+            {
+                var media = _routePointMediaManager.GetMediaObjectById(id);
+                if (media != null)
                 {
-                    SyncFiles.UploadMedia(media);
-                    _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, added);
+                    result = await _routePointMediaObjectsApi.AddRoutePointMediaObject(media);
+                    if (!result)
+                    {
+                        break;
+                    }
                 }
-                else
+                else break;
+            }
+            return result;
+        }
+
+        private async System.Threading.Tasks.Task<bool> downloadMediasAsync(List<string> idsForDownload)
+        {
+            bool result = false;
+            foreach (var id in idsForDownload)
+            {
+                var media = await _routePointMediaObjectsApi.GetRoutePointMediaObject(id);
+                result = media.Save();
+                if (!result)
                 {
                     break;
-                    //Пока непонятно что делать если загрузка не проходит
                 }
-            }*/
-            /*await _routesApi.AddRoute(_route);
-            await _routePointsApi.AddRoutePoint(_point);
-            if (_point.MediaObjects.Count > 0)
-            {
-                await _routePointMediaObjectsApi.AddRoutePointMediaObject(_point.MediaObjects[0]);
-            }*/
+            }
+            return result;
         }
 
         private async Task syncPoints()

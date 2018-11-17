@@ -111,6 +111,39 @@ namespace QuestHelper.WS
             }
             return result;
         }
+
+        public async Task<bool> HttpRequestGetFile(string url, string fullNameFile)
+        {
+            bool result = false;
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(new Uri(url));
+            request.Method = "GET";
+
+            try
+            {
+                using (WebResponse response = await request.GetResponseAsync())
+                {
+                    var webresponse = (HttpWebResponse)response;
+                    
+                    using (System.IO.Stream stream = response.GetResponseStream())
+                    {
+                        using (FileStream outputfile = File.OpenWrite(Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), fullNameFile)))
+                        {
+                            stream.CopyTo(outputfile);
+                        }
+                        /*using (StreamReader reader = new StreamReader(stream))
+                        {
+                        }*/
+                        result = true;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("ApiRequest", "HttpRequestGET", e, false);
+            }
+            return result;
+        }
+
         public async Task<string> HttpRequestPOST(string url, string parameters)
         {
             string result = string.Empty;

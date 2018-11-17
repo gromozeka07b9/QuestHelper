@@ -71,6 +71,7 @@ namespace QuestHelper.Managers
                     if(point == null)
                     {
                         point = new RoutePoint();
+                        point.RoutePointId = vpoint.Id;
                         point.RouteId = vpoint.RouteId;
                         point.MainRoute = routeManager.GetRouteById(vpoint.RouteId);
                         if (point.MainRoute != null)
@@ -85,7 +86,7 @@ namespace QuestHelper.Managers
                     }
                     else
                     {
-                        point = _realmInstance.Find<RoutePoint>(vpoint.Id);
+                        //point = _realmInstance.Find<RoutePoint>(vpoint.Id);
                     }
                     returnid = point.RoutePointId;
                     point.Address = vpoint.Address;
@@ -94,7 +95,7 @@ namespace QuestHelper.Managers
                     point.Longitude = vpoint.Longitude;
                     point.Name = vpoint.Name;
                     point.UpdateDate = DateTime.Now;
-                    point.Version++;
+                    point.Version = vpoint.Version;
                     if ((point.MediaObjects.Count > 0) && (point.MediaObjects[0].FileName != vpoint.ImagePath))
                     {
                         point.MediaObjects.Clear();

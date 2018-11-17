@@ -13,13 +13,8 @@ namespace QuestHelper.Server
         {
             optionsBuilder.UseMySql(@"Data Source=dbquesthelper.mysql.database.azure.com; Database=QuestHelper; User Id=sa@dbquesthelper; Password=Klim2002;");
         }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            /*modelBuilder.Entity<Route>()
-                .HasOne(p => p.User)
-                .WithMany(t => t.Routes)
-                .HasForeignKey(p => p.UserId);                
-                */
-        }
+        }*/
     }
 }

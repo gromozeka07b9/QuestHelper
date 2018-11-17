@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace QuestHelper.Server.Models
 {
-    public class RoutePoint
+    public class RoutePoint : IVersionedObject
     {
         public RoutePoint()
         {
@@ -23,5 +23,15 @@ namespace QuestHelper.Server.Models
         /// Версия записи
         /// </summary>
         public int Version { get; set; }
+
+        public string GetObjectId()
+        {
+            return RoutePointId;
+        }
+
+        public int GetVersion()
+        {
+            return Version;
+        }
     }
 }

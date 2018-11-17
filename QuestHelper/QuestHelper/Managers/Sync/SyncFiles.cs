@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Text;
 
 namespace QuestHelper.Managers.Sync
@@ -10,6 +11,9 @@ namespace QuestHelper.Managers.Sync
     {
         private static SyncFiles _instance;
         private Action<string> _showWarning;
+
+        private const string _apiUrl = "http://igosh.pro/api";
+        private RoutePointMediaObjectRequest _routePointMediaObjectsApi = new RoutePointMediaObjectRequest(_apiUrl);
 
         private SyncFiles()
         {
@@ -27,44 +31,22 @@ namespace QuestHelper.Managers.Sync
             return _instance;
         }
 
-        internal void Start()
+        internal async void Start()
         {
             RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
-            var mediaObjects = mediaManager.GetNotSyncedFiles();
-            
-            foreach (var media in mediaObjects)
+            var mediaObjects = mediaManager.GetMediaObjects();
+
+            var media = await _routePointMediaObjectsApi.GetFile("36750d40-fd54-468a-8cd5-4af972b54be8", "2ba9c945-3c41-4fef-9d07-aaebe15b11cd", "img_e5074bd4-0e50-4d20-b43d-2b0fe28902f8.jpg");
+                /// data / user / 0 / com.sd.QuestHelper / files /.config / img_e5074bd4 - 0e50 - 4d20 - b43d - 2b0fe28902f8.jpg
+            /*foreach (var mediaObject in mediaObjects)
             {
-                if((!media.ServerSynced)&&(string.IsNullOrEmpty(media.FileName)))
+                string filename = $"img_{mediaObject.RoutePointMediaObjectId}.jpg";
+                if (!File.Exists($"./Photos/{filename}"))
                 {
-                    mediaManager.SetSyncStatus(media.RoutePointMediaObjectId, true);
-                } else
-                {
-                    /*if ((!media.ServerSynced) && (!string.IsNullOrEmpty(media.FileName) && (!string.IsNullOrEmpty(media.FileNamePreview))))
-                    {
-                        UploadMedia(media);
-                    }*/
+                    var media = await _routePointMediaObjectsApi.GetFile(mediaObject.RoutePointId, mediaObject.RoutePointId, filename);
+
                 }
-
-                /*if (!result)
-                {
-                    _showWarning("Произошла ошибка передачи файлов на сервер. Проверьте подключение к сети и повторите отправку.");
-                    break;
-                }*/
-            }
-        }
-
-        public static void UploadMedia(LocalDB.Model.RoutePointMediaObject media)
-        {
-            RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
-            FileInfo infoFileOriginal = new FileInfo(media.FileName);
-            AzureBlobRequest storage = new AzureBlobRequest();
-            bool result = storage.SendFile(infoFileOriginal.DirectoryName, infoFileOriginal.Name);
-            if (result)
-            {
-                FileInfo infoFilePreview = new FileInfo(media.FileNamePreview);
-                result = storage.SendFile(infoFilePreview.DirectoryName, infoFilePreview.Name);
-                mediaManager.SetSyncStatus(media.RoutePointMediaObjectId, result);
-            }
+            }*/
         }
     }
 }

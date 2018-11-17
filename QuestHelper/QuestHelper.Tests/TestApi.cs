@@ -14,7 +14,7 @@ namespace QuestHelper.Tests
 {
     public class TestApi
     {
-        private string apiUrl = "http://questhelperserver.azurewebsites.net";
+        private string apiUrl = "http://igosh.pro/api";
         //private string apiUrl = "http://localhost:31193";
 
         [Fact]
@@ -149,7 +149,7 @@ namespace QuestHelper.Tests
                 using (var formData = new MultipartFormDataContent())
                 {
                     formData.Add(content);
-                    var response = await client.PostAsync($"{ apiUrl }/api/RoutePointMediaObjects/{ routePointId }/{ mediaObjectId }/uploadfile", formData);
+                    var response = await client.PostAsync($"{ apiUrl }/RoutePointMediaObjects/{ routePointId }/{ mediaObjectId }/uploadfile", formData);
                     result = response.IsSuccessStatusCode;
                 }
             }
@@ -166,7 +166,7 @@ namespace QuestHelper.Tests
             string fileId = "img_e5074bd4-0e50-4d20-b43d-2b0fe28902f8.jpg";
             using (var client = new HttpClient())
             {
-                var response = await client.GetAsync($"{apiUrl}/api/RoutePointMediaObjects/{routePointId}/{mediaObjectId}/{fileId}");
+                var response = await client.GetAsync($"{apiUrl}/RoutePointMediaObjects/{routePointId}/{mediaObjectId}/{fileId}");
                 result = response.IsSuccessStatusCode;
             }
 

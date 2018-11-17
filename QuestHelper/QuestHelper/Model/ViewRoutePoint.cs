@@ -20,6 +20,7 @@ namespace QuestHelper.Model
         private string _address = string.Empty;
         private double _latitude = 0;
         private double _longtitude = 0;
+        private int _version = 0;
         private DateTimeOffset _createDate;
         private RoutePointManager routePointManager = new RoutePointManager();
 
@@ -164,6 +165,17 @@ namespace QuestHelper.Model
             get
             {
                 return _longtitude;
+            }
+        }
+        public int Version
+        {
+            set
+            {
+                _version = value;
+            }
+            get
+            {
+                return _version;
             }
         }
 
