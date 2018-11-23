@@ -4,6 +4,7 @@ using Realms;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Xamarin.Forms;
 
@@ -23,11 +24,12 @@ namespace QuestHelper.Model
         private int _version = 0;
         private DateTimeOffset _createDate;
         private RoutePointManager routePointManager = new RoutePointManager();
+        private RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
 
         public ViewRoutePoint(string routeId, string routePointId)
         {
             _routeId = routeId;
-            RoutePointManager routePointManager = new RoutePointManager();
+            //RoutePointManager routePointManager = new RoutePointManager();
             if (string.IsNullOrEmpty(routePointId))
             {
                 //_imagePreviewPath = manager.GetEmptyImageFilename();
@@ -54,8 +56,17 @@ namespace QuestHelper.Model
                 _latitude = point.Latitude;
                 _longtitude = point.Longitude;
                 _createDate = point.CreateDate;
-                _imagePath = routePointManager.GetDefaultImageFilename(_id);
-                _imagePreviewPath = routePointManager.GetDefaultImagePreviewFilename(_id);
+                var mediaCollection = mediaManager.GetMediaObjectsByRoutePointId(_id)?.ToList();
+                if ((mediaCollection!=null) && (mediaCollection.Count > 0))
+                {
+                    _imagePath = Path.Combine(DependencyService.Get<IPathService>().PrivateExternalFolder, "pictures", $"img_{mediaCollection[0].RoutePointMediaObjectId}.jpg");
+                    _imagePreviewPath = Path.Combine(DependencyService.Get<IPathService>().PrivateExternalFolder, "pictures", $"img_{mediaCollection[0].RoutePointMediaObjectId}_preview.jpg");
+                }
+                else
+                {
+                    _imagePath = routePointManager.GetDefaultImageFilename(_id);
+                    _imagePreviewPath = routePointManager.GetDefaultImagePreviewFilename(_id);
+                }
             }
         }
         internal void Refresh(string routePointId)

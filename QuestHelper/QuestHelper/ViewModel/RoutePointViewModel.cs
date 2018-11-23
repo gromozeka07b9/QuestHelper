@@ -116,7 +116,8 @@ namespace QuestHelper.ViewModel
                 {
                     PhotoSize = PhotoSize.Full,
                     Location = new Location() { Latitude = _vpoint.Latitude, Longitude = _vpoint.Longitude, Timestamp = DateTime.Now },
-                    Directory = "Photos",
+                    //Directory = "Photos",
+                    Directory = string.Empty,
                     Name = photoName,
                     CompressionQuality = 50
                 });
@@ -127,7 +128,7 @@ namespace QuestHelper.ViewModel
                     file.Dispose();
                     ImagePreviewManager preview = new ImagePreviewManager();
                     preview.CreateImagePreview(imgPathToDirectory, info.Name, photoNamePreview);
-                    _imagePreviewFilePath = imgPathToDirectory + "/" + photoNamePreview;
+                    _imagePreviewFilePath = Path.Combine(imgPathToDirectory, photoNamePreview);
                     _vpoint.ImagePath = info.FullName;
                     _vpoint.ImagePreviewPath = _imagePreviewFilePath;
                     _vpoint.Save();
@@ -251,13 +252,29 @@ namespace QuestHelper.ViewModel
         {
             get
             {
-                if(string.IsNullOrEmpty(_vpoint.ImagePreviewPath))
+                /*if(string.IsNullOrEmpty(_vpoint.ImagePreviewPath))
                 {
-                    return "emptyimg.png";
+                    if (!string.IsNullOrEmpty(_vpoint.ImagePath))
+                    {
+                        return _vpoint.ImagePath;
+                    }
+                    else
+                    {
+                        return "emptyimg.png";
+                    }
                 }
                 else
                 {
                     return _vpoint.ImagePreviewPath;
+                }*/
+                //пока без превью
+                if (!string.IsNullOrEmpty(_vpoint.ImagePath))
+                {
+                    return _vpoint.ImagePath;
+                }
+                else
+                {
+                    return "emptyimg.png";
                 }
             }
         }

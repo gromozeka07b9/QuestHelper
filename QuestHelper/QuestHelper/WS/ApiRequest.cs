@@ -126,14 +126,14 @@ namespace QuestHelper.WS
                     
                     using (System.IO.Stream stream = response.GetResponseStream())
                     {
-                        using (FileStream outputfile = File.OpenWrite(Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), fullNameFile)))
+                        if (stream != null)
                         {
-                            stream.CopyTo(outputfile);
+                            using (FileStream outputfile = File.Create(fullNameFile))
+                            {
+                                stream.CopyTo(outputfile);
+                                result = true;
+                            }
                         }
-                        /*using (StreamReader reader = new StreamReader(stream))
-                        {
-                        }*/
-                        result = true;
                     }
                 }
             }

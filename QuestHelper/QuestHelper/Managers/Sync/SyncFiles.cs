@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using Xamarin.Forms;
 
 namespace QuestHelper.Managers.Sync
 {
@@ -36,17 +37,19 @@ namespace QuestHelper.Managers.Sync
             RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
             var mediaObjects = mediaManager.GetMediaObjects();
 
-            var media = await _routePointMediaObjectsApi.GetFile("36750d40-fd54-468a-8cd5-4af972b54be8", "2ba9c945-3c41-4fef-9d07-aaebe15b11cd", "img_e5074bd4-0e50-4d20-b43d-2b0fe28902f8.jpg");
-                /// data / user / 0 / com.sd.QuestHelper / files /.config / img_e5074bd4 - 0e50 - 4d20 - b43d - 2b0fe28902f8.jpg
-            /*foreach (var mediaObject in mediaObjects)
+            foreach (var mediaObject in mediaObjects)
             {
                 string filename = $"img_{mediaObject.RoutePointMediaObjectId}.jpg";
-                if (!File.Exists($"./Photos/{filename}"))
+                string pathToMediaFile = Path.Combine(DependencyService.Get<IPathService>().PrivateExternalFolder, "pictures", filename);
+                if (!File.Exists(pathToMediaFile))
                 {
-                    var media = await _routePointMediaObjectsApi.GetFile(mediaObject.RoutePointId, mediaObject.RoutePointId, filename);
-
+                    var result = await _routePointMediaObjectsApi.GetFile(mediaObject.RoutePointId, mediaObject.RoutePointMediaObjectId, filename);
                 }
-            }*/
+                else
+                {
+                    
+                }
+            }
         }
     }
 }

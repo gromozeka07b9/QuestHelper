@@ -10,6 +10,8 @@ using System.Net.Http;
 using QuestHelper.LocalDB.Model;
 using Newtonsoft.Json.Linq;
 using QuestHelper.Model;
+using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration;
 
 namespace QuestHelper.WS
 {
@@ -51,19 +53,20 @@ namespace QuestHelper.WS
             }
             return deserializedValue;
         }
-        public async Task<ViewRoutePointMediaObject> GetFile(string routePointId, string routePointMediaObjectId, string filename)
+        public async Task<bool> GetFile(string routePointId, string routePointMediaObjectId, string filename)
         {
-            ViewRoutePointMediaObject deserializedValue = new ViewRoutePointMediaObject();
+            bool result = false;
             try
             {
                 ApiRequest api = new ApiRequest();
-                bool result = await api.HttpRequestGetFile($"{this._hostUrl}/routepointmediaobjects/{routePointId}/{routePointMediaObjectId}/{filename}", filename);
+                string pathToMediaFile = Path.Combine(DependencyService.Get<IPathService>().PrivateExternalFolder,"pictures", filename);
+                result = await api.HttpRequestGetFile($"{this._hostUrl}/routepointmediaobjects/{routePointId}/{routePointMediaObjectId}/{filename}", pathToMediaFile);
             }
             catch (Exception e)
             {
-                HandleError.Process("RoutePointMediaObjectApiRequest", "GeFile", e, false);
+                HandleError.Process("RoutePointMediaObjectApiRequest", "GetFile", e, false);
             }
-            return deserializedValue;
+            return result;
         }
 
         public async Task<bool> AddRoutePointMediaObject(RoutePointMediaObject routePointMediaObject)

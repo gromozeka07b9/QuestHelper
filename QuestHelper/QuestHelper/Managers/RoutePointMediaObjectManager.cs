@@ -133,6 +133,10 @@ namespace QuestHelper.Managers
             return _realmInstance.All<RoutePointMediaObject>().SingleOrDefault(x => x.RoutePointMediaObjectId == mediaId);
         }
 
+        internal IEnumerable<RoutePointMediaObject> GetMediaObjectsByRoutePointId(string routePointId)
+        {
+            return _realmInstance.All<RoutePointMediaObject>().Where(x=>x.RoutePointId == routePointId);
+        }
         /*internal IEnumerable<RoutePointMediaObject> GetNotSynced()
         {
             return _realmInstance.All<RoutePointMediaObject>().Where(item => !item.ServerSynced);

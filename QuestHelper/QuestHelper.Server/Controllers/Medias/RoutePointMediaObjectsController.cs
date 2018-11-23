@@ -90,11 +90,33 @@ namespace QuestHelper.Server.Controllers.Medias
             using (var db = new ServerDbContext())
             {
                 var entity = db.RoutePointMediaObject.Find(mediaObjectId);
-                if ((entity != null) && ((entity.FileName == fileName) || (entity.FileNamePreview == fileName)))
+                if ((entity != null)&&(!string.IsNullOrEmpty(entity.FileName)))
+                {
+                    //есть фото в старом формате, перенесем фото в blobstore и дальше будем с ним работать как с blob
+                    using (Stream stream = new MemoryStream(entity.PreviewImage))
+                    {
+                        var blobContainer = await GetCloudBlobContainer();
+                        var blob = blobContainer.GetBlockBlobReference(fileName);
+                        await blob.UploadFromStreamAsync(stream);
+                        entity.PreviewImage = null;
+                        entity.FileName = null;
+                        entity.FileNamePreview = null;
+                        db.Entry(entity).CurrentValues.SetValues(entity);
+                        db.SaveChanges();
+                    }
+                }
+                if ((entity != null) && (!string.IsNullOrEmpty(entity.RoutePointMediaObjectId)))
                 {
                     var blobContainer = await GetCloudBlobContainer();
-                    var blob = blobContainer.GetBlockBlobReference(fileName);
-                    await blob.DownloadToStreamAsync(memStream);
+                    try
+                    {
+                        var blob = blobContainer.GetBlockBlobReference(fileName);
+                        await blob.DownloadToStreamAsync(memStream);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception($"Blob store does not contain filename {fileName}");
+                    }
                 }
                 else
                 {
