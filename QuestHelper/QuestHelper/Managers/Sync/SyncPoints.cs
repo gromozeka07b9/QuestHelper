@@ -2,6 +2,7 @@
 using QuestHelper.WS;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,9 +37,13 @@ namespace QuestHelper.Managers.Sync
         }
         internal async System.Threading.Tasks.Task StartAsync()
         {
+            Console.WriteLine("-------------------SyncRoutes started");
             await syncRoutes();
+            Console.WriteLine("-------------------SyncPoints started");
             await syncPoints();
+            Console.WriteLine("-------------------SyncMedia started");
             await syncMedia();
+            Console.WriteLine("-------------------SyncFiles started");
             var syncFiles = SyncFiles.GetInstance();
             syncFiles.Start();
         }
@@ -47,20 +52,24 @@ namespace QuestHelper.Managers.Sync
         {
             var medias = _routePointMediaManager.GetMediaObjects().Select(x => new Tuple<string, int>(x.RoutePointMediaObjectId, x.Version));
             SyncObjectStatus pointsServerStatus = await _routePointMediaObjectsApi.GetSyncStatus(medias);
-            List<string> forUpload = new List<string>();
-            List<string> forDownload = new List<string>();
-
-            fillListsObjectsForProcess(medias, pointsServerStatus, forUpload, forDownload);
-
-            if (forUpload.Count > 0)
+            if (pointsServerStatus != null)
             {
-                await uploadMediasAsync(forUpload);
-            }
+                List<string> forUpload = new List<string>();
+                List<string> forDownload = new List<string>();
 
-            if (forDownload.Count > 0)
-            {
-                await downloadMediasAsync(forDownload);
+                fillListsObjectsForProcess(medias, pointsServerStatus, forUpload, forDownload);
+
+                if (forUpload.Count > 0)
+                {
+                    await uploadMediasAsync(forUpload);
+                }
+
+                if (forDownload.Count > 0)
+                {
+                    await downloadMediasAsync(forDownload);
+                }
             }
+            else _showWarning("Ошибка загрузки описания картинок");
         }
 
         private async System.Threading.Tasks.Task<bool> uploadMediasAsync(List<string> idsForUpload)
@@ -101,19 +110,26 @@ namespace QuestHelper.Managers.Sync
         {
             var points = _routePointManager.GetPoints().Select(x=>new Tuple<string, int>(x.RoutePointId, x.Version));
             SyncObjectStatus pointsServerStatus = await _routePointsApi.GetSyncStatus(points);
-            List<string> forUpload = new List<string>();
-            List<string> forDownload = new List<string>();
-
-            fillListsObjectsForProcess(points, pointsServerStatus, forUpload, forDownload);
-
-            if (forUpload.Count > 0)
+            if (pointsServerStatus != null)
             {
-                await uploadPointsAsync(forUpload);
+                List<string> forUpload = new List<string>();
+                List<string> forDownload = new List<string>();
+
+                fillListsObjectsForProcess(points, pointsServerStatus, forUpload, forDownload);
+
+                if (forUpload.Count > 0)
+                {
+                    await uploadPointsAsync(forUpload);
+                }
+
+                if (forDownload.Count > 0)
+                {
+                    await downloadPointsAsync(forDownload);
+                }
             }
-
-            if (forDownload.Count > 0)
+            else
             {
-                await downloadPointsAsync(forDownload);
+                _showWarning("Ошибка загрузки точек");
             }
         }
         private async System.Threading.Tasks.Task<bool> uploadPointsAsync(List<string> idsForUpload)
@@ -155,22 +171,25 @@ namespace QuestHelper.Managers.Sync
         {
             IEnumerable<Route> routes = _routeManager.GetRoutes();
             SyncObjectStatus routeServerStatus = await _routesApi.GetSyncStatus(routes);
-
-            List<string> routesForUpload = new List<string>();
-            List<string> routesForDownload = new List<string>();
-
-            fillListsRoutesForProcess(routes, routeServerStatus, routesForUpload, routesForDownload);
-            if (routesForUpload.Count > 0)
+            if (routeServerStatus != null)
             {
-                bool result = await uploadRoutesAsync(routesForUpload);
-                if (!result) _showWarning("Ошибка передачи данных");
-            }
+                List<string> routesForUpload = new List<string>();
+                List<string> routesForDownload = new List<string>();
 
-            if (routesForDownload.Count > 0)
-            {
-                bool result = await downloadRoutesAsync(routesForDownload);
-                if (!result) _showWarning("Ошибка загрузки данных");
+                fillListsRoutesForProcess(routes, routeServerStatus, routesForUpload, routesForDownload);
+                if (routesForUpload.Count > 0)
+                {
+                    bool result = await uploadRoutesAsync(routesForUpload);
+                    if (!result) _showWarning("Ошибка передачи данных");
+                }
+
+                if (routesForDownload.Count > 0)
+                {
+                    bool result = await downloadRoutesAsync(routesForDownload);
+                    if (!result) _showWarning("Ошибка загрузки данных");
+                }
             }
+            else _showWarning("Ошибка загрузки маршрутов");
         }
 
         private async System.Threading.Tasks.Task<bool> uploadRoutesAsync(List<string> routesIdsForUpload)

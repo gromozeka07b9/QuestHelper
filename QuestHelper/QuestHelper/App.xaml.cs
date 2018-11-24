@@ -6,6 +6,7 @@ using QuestHelper.View;
 using Realms;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,12 +27,23 @@ namespace QuestHelper
 		{
             AppCenter.Start("android=85c4ccc3-f315-427c-adbd-b928e461bcc8;", typeof(Analytics), typeof(Crashes));
 
+		    Setup();
+
             var syncPoints = SyncPoints.GetInstance();
             syncPoints.SetWarningDialogContext(ShowWarning);
             syncPoints.StartAsync();
 
             var syncFiles = SyncFiles.GetInstance();
             syncFiles.SetWarningDialogContext(ShowWarning);
+        }
+
+        private void Setup()
+        {
+            string pathToPicturesDirectory = Path.Combine(DependencyService.Get<IPathService>().PrivateExternalFolder, "pictures");
+            if (!Directory.Exists(pathToPicturesDirectory))
+            {
+                Directory.CreateDirectory(pathToPicturesDirectory);
+            }
         }
 
         public void ShowWarning(string text)

@@ -65,7 +65,7 @@ namespace QuestHelper.Server.Controllers.Medias
                 using (var db = new ServerDbContext())
                 {
                     var entity = db.RoutePointMediaObject.Find(mediaObjectId);
-                    if ((entity != null)&&((entity.FileName == file.FileName) || (entity.FileNamePreview == file.FileName)))
+                    if ((entity != null) && file.FileName.Contains(entity.RoutePointMediaObjectId))
                     {
                         using (Stream stream = file.OpenReadStream())
                         {
@@ -90,20 +90,25 @@ namespace QuestHelper.Server.Controllers.Medias
             using (var db = new ServerDbContext())
             {
                 var entity = db.RoutePointMediaObject.Find(mediaObjectId);
-                if ((entity != null)&&(!string.IsNullOrEmpty(entity.FileName)))
+                if ((entity != null)&&(!string.IsNullOrEmpty(entity.FileName)|| !string.IsNullOrEmpty(entity.FileNamePreview)))
                 {
                     //есть фото в старом формате, перенесем фото в blobstore и дальше будем с ним работать как с blob
-                    using (Stream stream = new MemoryStream(entity.PreviewImage))
+                    string oldFilename = !string.IsNullOrEmpty(entity.FileName) ? entity.FileName : entity.FileNamePreview;
+                    var oldFilenameArray = oldFilename.Split('/');
+                    if (oldFilenameArray.Length > 0)
                     {
-                        var blobContainer = await GetCloudBlobContainer();
-                        var blob = blobContainer.GetBlockBlobReference(fileName);
-                        await blob.UploadFromStreamAsync(stream);
-                        entity.PreviewImage = null;
-                        entity.FileName = null;
-                        entity.FileNamePreview = null;
-                        db.Entry(entity).CurrentValues.SetValues(entity);
-                        db.SaveChanges();
+                        oldFilename = oldFilenameArray[oldFilenameArray.Length - 1];
                     }
+                    var blobContainer = await GetCloudBlobContainer();
+                    var blob = blobContainer.GetBlockBlobReference(oldFilename);
+                    var newBlob = blobContainer.GetBlockBlobReference(fileName);
+                    await newBlob.StartCopyAsync(blob);
+                    await blob.DeleteIfExistsAsync();
+                    entity.PreviewImage = null;
+                    entity.FileName = null;
+                    entity.FileNamePreview = null;
+                    db.Entry(entity).CurrentValues.SetValues(entity);
+                    db.SaveChanges();
                 }
                 if ((entity != null) && (!string.IsNullOrEmpty(entity.RoutePointMediaObjectId)))
                 {

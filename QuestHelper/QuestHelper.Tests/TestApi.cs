@@ -8,6 +8,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using QuestHelper.Model;
 using Xunit;
 
 namespace QuestHelper.Tests
@@ -132,14 +134,14 @@ namespace QuestHelper.Tests
             var routePresent = syncStatus.Result.Statuses.Any(r => r.ObjectId == route.RouteId);
             Assert.True(routePresent);
         }
-        [Fact]
-        public async Task TestMust_MakeRequestUpload_Async()
+        [Theory]
+        [InlineData("2ba9c945-3c41-4fef-9d07-aaebe15b11cd")]
+        public async Task TestMust_MakeRequestUpload_Async(string mediaObjectId)
         {
             bool result = false;
             string testBlobFilename = "1testblob.jpg";
-            string routePointId = "36750d40-fd54-468a-8cd5-4af972b54be8";
-            string mediaObjectId = "2ba9c945-3c41-4fef-9d07-aaebe15b11cd";
-            string fileId = "img_e5074bd4-0e50-4d20-b43d-2b0fe28902f8.jpg";
+            string routePointId = "not used";
+            string fileId = $"img_{mediaObjectId}.jpg";
             Stream image = File.Open(@".\testblob\" + testBlobFilename, FileMode.Open);
             HttpContent content = new StreamContent(image);
             content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data") { Name = "file", FileName = fileId };
@@ -157,13 +159,13 @@ namespace QuestHelper.Tests
             Assert.True(result);
         }
 
-        [Fact]
-        public async Task TestMust_MakeRequestDowload_Async()
+        [Theory]
+        [InlineData("2ba9c945-3c41-4fef-9d07-aaebe15b11cd")]
+        public async Task TestMust_MakeRequestDowload_Async(string mediaObjectId)
         {
             bool result = false;
-            string routePointId = "36750d40-fd54-468a-8cd5-4af972b54be8";
-            string mediaObjectId = "2ba9c945-3c41-4fef-9d07-aaebe15b11cd";
-            string fileId = "img_e5074bd4-0e50-4d20-b43d-2b0fe28902f8.jpg";
+            string routePointId = "not used";
+            string fileId = $"img_{mediaObjectId}.jpg";
             using (var client = new HttpClient())
             {
                 var response = await client.GetAsync($"{apiUrl}/RoutePointMediaObjects/{routePointId}/{mediaObjectId}/{fileId}");
@@ -172,5 +174,21 @@ namespace QuestHelper.Tests
 
             Assert.True(result);
         }
+
+        [Fact]
+        public async Task TestMust_GetSyncStatusRoutePoint_Async()
+        {
+            //Arrange
+
+            //Act
+            var syncStatus = await new RoutePointsApiRequest(apiUrl).GetSyncStatus(new List<Tuple<string, int>>(){});
+
+            //Assert
+            Assert.True(syncStatus.Statuses.Count > 0);
+            Assert.DoesNotContain(syncStatus.Statuses, x => x.ObjectId == string.Empty);
+            Assert.DoesNotContain(syncStatus.Statuses, x => x.Version == 0);
+        }
+
+
     }
 }
