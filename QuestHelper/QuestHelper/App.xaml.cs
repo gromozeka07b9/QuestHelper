@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using QuestHelper.Managers;
 using Xamarin.Forms;
 
 namespace QuestHelper
@@ -27,23 +28,39 @@ namespace QuestHelper
 		{
             AppCenter.Start("android=85c4ccc3-f315-427c-adbd-b928e461bcc8;", typeof(Analytics), typeof(Crashes));
 
-		    Setup();
+		    if (Setup())
+		    {
+		        var syncPoints = SyncPoints.GetInstance();
+		        syncPoints.SetWarningDialogContext(ShowWarning);
 
-            var syncPoints = SyncPoints.GetInstance();
-            syncPoints.SetWarningDialogContext(ShowWarning);
-            syncPoints.StartAsync();
+		        var syncFiles = SyncFiles.GetInstance();
+		        syncFiles.SetWarningDialogContext(ShowWarning);
 
-            var syncFiles = SyncFiles.GetInstance();
-            syncFiles.SetWarningDialogContext(ShowWarning);
+		        syncPoints.StartAsync();
+		    }
         }
 
-        private void Setup()
+        private bool Setup()
         {
-            string pathToPicturesDirectory = Path.Combine(DependencyService.Get<IPathService>().PrivateExternalFolder, "pictures");
-            if (!Directory.Exists(pathToPicturesDirectory))
+            bool result = false;
+
+            var realmInstance = RealmAppInstance.GetAppInstance();
+            if (realmInstance != null)
             {
-                Directory.CreateDirectory(pathToPicturesDirectory);
+                string pathToPicturesDirectory = Path.Combine(DependencyService.Get<IPathService>().PrivateExternalFolder, "pictures");
+                if (!Directory.Exists(pathToPicturesDirectory))
+                {
+                    Directory.CreateDirectory(pathToPicturesDirectory);
+                }
+                result = true;
             }
+            else
+            {
+                ShowWarning("Требуется миграция данных, которой пока что нет. Сорри.");
+                Quit();
+            }
+
+            return result;
         }
 
         public void ShowWarning(string text)

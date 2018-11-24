@@ -216,7 +216,7 @@ namespace QuestHelper.ViewModel
                 if (_currentPositionString != value)
                 {
                     _currentPositionString = value;
-                    _vpoint.Save();
+                    //_vpoint.Save();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Coordinates"));
                 }
             }

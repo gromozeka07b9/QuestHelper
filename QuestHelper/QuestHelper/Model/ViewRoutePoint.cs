@@ -29,7 +29,6 @@ namespace QuestHelper.Model
         public ViewRoutePoint(string routeId, string routePointId)
         {
             _routeId = routeId;
-            //RoutePointManager routePointManager = new RoutePointManager();
             if (string.IsNullOrEmpty(routePointId))
             {
                 //_imagePreviewPath = manager.GetEmptyImageFilename();

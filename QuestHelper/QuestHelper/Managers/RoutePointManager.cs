@@ -27,6 +27,7 @@ namespace QuestHelper.Managers
         }
         internal RoutePoint GetPointById(string id)
         {
+            //return !string.IsNullOrEmpty(id)?_realmInstance.Find<RoutePoint>(id):null;
             return _realmInstance.Find<RoutePoint>(id);
         }
 
@@ -35,11 +36,6 @@ namespace QuestHelper.Managers
             List<ViewRoutePoint> collection = new List<ViewRoutePoint>();
             try
             {
-                /*collection = from point in _realmInstance.All<RoutePoint>()
-                                 where point.MainRoute.RouteId == routeId
-                                orderby point.CreateDate descending
-                                 select new ViewRoutePoint(point.RouteId, point.RoutePointId);*/
-                //collection = _realmInstance.All<RoutePoint>().Where(point => point.MainRoute.RouteId == routeId).Select(point => new ViewRoutePoint());
                 var collectionRealm = _realmInstance.All<RoutePoint>().Where(point => point.RouteId == routeId);
                 foreach(var item in collectionRealm)
                 {

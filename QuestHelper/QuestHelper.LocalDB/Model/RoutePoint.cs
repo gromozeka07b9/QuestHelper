@@ -9,7 +9,7 @@ namespace QuestHelper.LocalDB.Model
 {
     public class RoutePoint : RealmObject
     {
-        [PrimaryKey]
+        [PrimaryKey, Required]
         public string RoutePointId { get; set; } = Guid.NewGuid().ToString();
         public string RouteId { get; set; }
         public string Name { get; set; }
