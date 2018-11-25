@@ -107,5 +107,10 @@ namespace QuestHelper.WS
             }
             return addResult;
         }
+
+        public Task<T> DownloadFromServerAsync<T>(string id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

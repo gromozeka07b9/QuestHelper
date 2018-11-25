@@ -10,7 +10,7 @@ using QuestHelper.Model;
 
 namespace QuestHelper.Managers.Sync
 {
-    public class SyncPoints
+    public class SyncMedias
     {
         private const string _apiUrl = "http://igosh.pro/api";
         private static SyncPoints _instance;

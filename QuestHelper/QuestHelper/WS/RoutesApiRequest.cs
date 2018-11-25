@@ -13,7 +13,7 @@ using QuestHelper.Model;
 
 namespace QuestHelper.WS
 {
-    public class RoutesApiRequest : IRoutesApiRequest
+    public class RoutesApiRequest : IRoutesApiRequest, IDownloadable<ViewRoute>, IUploadable<ViewRoute>
     {
         private string _hostUrl = string.Empty;
         public RoutesApiRequest(string hostUrl) => _hostUrl = hostUrl;
@@ -33,7 +33,9 @@ namespace QuestHelper.WS
             }
             return deserializedValue;
         }
-        public async Task<ViewRoute> GetRoute(string id)
+
+
+        /*public async Task<ViewRoute> GetRoute(string id)
         {
             ViewRoute deserializedValue = new ViewRoute();
             try
@@ -47,16 +49,16 @@ namespace QuestHelper.WS
                 HandleError.Process("RoutesApiRequest", "GetRoute", e, false);
             }
             return deserializedValue;
-        }
-        public async Task<SyncObjectStatus> GetSyncStatus(IEnumerable<Route> routes)
+        }*/
+        public async Task<SyncObjectStatus> GetSyncStatus(IEnumerable<Tuple<string, int>> routes)
         {
             SyncObjectStatus requestValue = new SyncObjectStatus();
             foreach (var route in routes)
             {
                 requestValue.Statuses.Add(new SyncObjectStatus.ObjectStatus()
                 {
-                    ObjectId = route.RouteId,
-                    Version = route.Version
+                    ObjectId = route.Item1,
+                    Version = route.Item2
                 });
             }
             JObject jsonRequestObject = JObject.FromObject(requestValue);
@@ -75,7 +77,7 @@ namespace QuestHelper.WS
 
             return deserializedValue;
         }
-        public async Task<bool> UpdateRoute(Route routeObject)
+        /*public async Task<bool> UpdateRoute(Route routeObject)
         {
             bool addResult = false;
             JObject jsonObject = JObject.FromObject(new {
@@ -96,7 +98,7 @@ namespace QuestHelper.WS
                 HandleError.Process("RoutesApiRequest", "AddRoute", e, false);
             }
             return addResult;
-        }
+        }*/
         public async Task<bool> DeleteRoute(Route routeObject)
         {
             bool deleteResult = false;
@@ -110,6 +112,48 @@ namespace QuestHelper.WS
                 HandleError.Process("RoutesApiRequest", "DeleteRoute", e, false);
             }
             return deleteResult;
+        }
+
+        public async Task<ISaveable> DownloadFromServerAsync(string id)
+        {
+            ViewRoute deserializedValue = new ViewRoute();
+            try
+            {
+                ApiRequest api = new ApiRequest();
+                var response = await api.HttpRequestGET($"{this._hostUrl}/routes/{id}");
+                deserializedValue = JsonConvert.DeserializeObject<ViewRoute>(response);
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RoutesApiRequest", "GetRoute", e, false);
+            }
+            return deserializedValue;
+        }
+
+        public async Task<bool> UploadToServerAsync(string jsonStructure)
+        {
+            bool addResult = false;
+            /*var uploadedObject = _routeManager.GetRouteById(id);
+            JObject jsonObject = JObject.FromObject(new
+            {
+                RouteId = routeObject.RouteId,
+                Name = routeObject.Name,
+                CreateDate = routeObject.CreateDate.DateTime,
+                Version = routeObject.Version,
+                UserId = 0
+            });*/
+            //string jsonObject = "";
+            try
+            {
+                ApiRequest api = new ApiRequest();
+                await api.HttpRequestPOST($"{_hostUrl}/routes", jsonStructure);
+                addResult = true;
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RoutesApiRequest", "AddRoute", e, false);
+            }
+            return addResult;
         }
     }
 }

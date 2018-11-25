@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace QuestHelper.Model
 {
-    public class ViewRoute
+    public class ViewRoute : ISaveable
     {
         private string _id = string.Empty;
         private string _name = string.Empty;
@@ -107,7 +107,7 @@ namespace QuestHelper.Model
 
         public string UserId { get; set; }
 
-        internal bool Save()
+        public bool Save()
         {
             RouteManager routeManager = new RouteManager();
             return routeManager.Save(this);

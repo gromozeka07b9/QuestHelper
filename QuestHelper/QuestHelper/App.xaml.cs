@@ -30,13 +30,15 @@ namespace QuestHelper
 
 		    if (Setup())
 		    {
-		        var syncPoints = SyncPoints.GetInstance();
+		        /*var syncPoints = SyncPoints.GetInstance();
 		        syncPoints.SetWarningDialogContext(ShowWarning);
 
 		        var syncFiles = SyncFiles.GetInstance();
 		        syncFiles.SetWarningDialogContext(ShowWarning);
 
-		        syncPoints.StartAsync();
+		        syncPoints.StartAsync();*/
+                SyncRoutes syncRoutes = new SyncRoutes();
+		        syncRoutes.Sync();
 		    }
         }
 

@@ -6,12 +6,12 @@ namespace QuestHelper.Managers.Sync
 {
     public class SyncServer
     {
-        public static void SyncAll()
+        /*public static void SyncAll()
         {
             var syncFiles = SyncFiles.GetInstance();
             syncFiles.CheckExistFileAndDownload();
             var syncPoints = SyncPoints.GetInstance();
             syncPoints.StartAsync();
-        }
+        }*/
     }
 }
