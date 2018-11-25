@@ -32,22 +32,25 @@ namespace QuestHelper.Managers.Sync
             return _instance;
         }
 
-        internal async void Start()
+        internal async void CheckExistFileAndDownload()
         {
             RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
             var mediaObjects = mediaManager.GetMediaObjects();
 
             foreach (var mediaObject in mediaObjects)
             {
-                string filename = $"img_{mediaObject.RoutePointMediaObjectId}.jpg";
-                string pathToMediaFile = Path.Combine(DependencyService.Get<IPathService>().PrivateExternalFolder, "pictures", filename);
+                string filename = ImagePathManager.GetImageFilename(mediaObject.RoutePointMediaObjectId, true);
+                string pathToMediaFile = ImagePathManager.GetImagePath(mediaObject.RoutePointMediaObjectId, true);
                 if (!File.Exists(pathToMediaFile))
                 {
-                    var result = await _routePointMediaObjectsApi.GetFile(mediaObject.RoutePointId, mediaObject.RoutePointMediaObjectId, filename);
-                }
-                else
-                {
-                    
+                    var result = await _routePointMediaObjectsApi.GetImage(mediaObject.RoutePointId, mediaObject.RoutePointMediaObjectId, filename);
+
+                    filename = ImagePathManager.GetImageFilename(mediaObject.RoutePointMediaObjectId);
+                    pathToMediaFile = ImagePathManager.GetImagePath(mediaObject.RoutePointMediaObjectId);
+                    if (!File.Exists(pathToMediaFile))
+                    {
+                        result = await _routePointMediaObjectsApi.GetImage(mediaObject.RoutePointId, mediaObject.RoutePointMediaObjectId, filename);
+                    }
                 }
             }
         }

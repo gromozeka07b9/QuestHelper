@@ -33,7 +33,7 @@
                 </-->
                 <StackLayout Grid.Row="1" Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="10,0,10,5">
                     <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start"></Image>
-                    <Editor Margin="0" Text="{Binding Name}" FontSize="12" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand"></Editor>
+                    <Editor Margin="0" Text="{Binding Name}" FontSize="12" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand" Completed="Editor_OnCompleted"></Editor>
                 </StackLayout>
                 <StackLayout Grid.Row="2" Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="10,0,10,5">
                     <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start"></Image>

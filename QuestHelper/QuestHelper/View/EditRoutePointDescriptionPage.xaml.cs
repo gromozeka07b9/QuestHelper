@@ -2,6 +2,7 @@
 using QuestHelper.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,5 +34,10 @@ namespace QuestHelper.View
         {
             vm.startDialog();
         }
-    }
+
+	    private void Editor_OnCompleted(object sender, EventArgs e)
+	    {
+	        vm.ApplyChanges();
+	    }
+	}
 }

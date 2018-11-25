@@ -49,7 +49,6 @@ namespace QuestHelper.ViewModel
                 if (_vpoint.Description != value)
                 {
                     _vpoint.Description = value;
-                    _vpoint.Save();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Description"));
                 }
             }
@@ -57,6 +56,12 @@ namespace QuestHelper.ViewModel
             {
                 return _vpoint.Description;
             }
+        }
+
+        public void ApplyChanges()
+        {
+            _vpoint.Version++;
+            _vpoint.Save();
         }
     }
 }

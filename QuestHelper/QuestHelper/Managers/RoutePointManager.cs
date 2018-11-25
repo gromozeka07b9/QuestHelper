@@ -27,8 +27,8 @@ namespace QuestHelper.Managers
         }
         internal RoutePoint GetPointById(string id)
         {
-            //return !string.IsNullOrEmpty(id)?_realmInstance.Find<RoutePoint>(id):null;
-            return _realmInstance.Find<RoutePoint>(id);
+            return !string.IsNullOrEmpty(id)?_realmInstance.Find<RoutePoint>(id):null;
+            //return _realmInstance.Find<RoutePoint>(id);
         }
 
         internal IEnumerable<ViewRoutePoint> GetPointsByRouteId(string routeId)
@@ -67,7 +67,7 @@ namespace QuestHelper.Managers
                     if(point == null)
                     {
                         point = new RoutePoint();
-                        point.RoutePointId = vpoint.Id;
+                        point.RoutePointId = !string.IsNullOrEmpty(vpoint.Id) ? vpoint.Id: point.RoutePointId;
                         point.RouteId = vpoint.RouteId;
                         point.MainRoute = routeManager.GetRouteById(vpoint.RouteId);
                         if (point.MainRoute != null)
@@ -92,20 +92,20 @@ namespace QuestHelper.Managers
                     point.Name = vpoint.Name;
                     point.UpdateDate = DateTime.Now;
                     point.Version = vpoint.Version;
-                    if ((point.MediaObjects.Count > 0) && (point.MediaObjects[0].FileName != vpoint.ImagePath))
+                    point.MediaObjects.Clear();
+                    foreach (var media in vpoint.MediaObjects)
+                    {
+                        point.MediaObjects.Add(media);
+                    }
+                    /*if(!string.IsNullOrEmpty(vpoint.ImagePath) && (vpoint.ImagePath != "emptyimg.png"))
                     {
                         point.MediaObjects.Clear();
-                    }
-                    if(!string.IsNullOrEmpty(vpoint.ImagePath) && (vpoint.ImagePath != "emptyimg.png"))
-                    {
                         RoutePointMediaObject defaultMedia = new RoutePointMediaObject();
-                        defaultMedia.FileName = vpoint.ImagePath;
-                        defaultMedia.FileNamePreview = vpoint.ImagePreviewPath;
                         defaultMedia.RoutePointId = point.RoutePointId;
                         defaultMedia.Point = point;
                         defaultMedia.Version++;
                         point.MediaObjects.Add(defaultMedia);
-                    }
+                    }*/
                 });
             }
             catch (Exception e)
@@ -173,7 +173,7 @@ namespace QuestHelper.Managers
             RoutePoint point = _realmInstance.Find<RoutePoint>(routePointId);
             if (point?.MediaObjects.Count > 0)
             {
-                filename = point.MediaObjects[0].FileName;
+                filename = $"img_{point.MediaObjects[0].RoutePointMediaObjectId}.jpg";
             }
             else
             {
@@ -189,7 +189,7 @@ namespace QuestHelper.Managers
             RoutePoint point = _realmInstance.Find<RoutePoint>(routePointId);
             if (point?.MediaObjects.Count > 0)
             {
-                filename = point.MediaObjects[0].FileNamePreview;
+                filename = $"img_{point.MediaObjects[0].RoutePointMediaObjectId}_preview.jpg";
             }
             else
             {

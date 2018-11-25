@@ -109,9 +109,16 @@ namespace QuestHelper.ViewModel
 
             if (CrossMedia.Current.IsCameraAvailable && CrossMedia.Current.IsTakePhotoSupported)
             {
-                string fileNameGuid = Guid.NewGuid().ToString();
-                string photoName = $"img_{fileNameGuid}.jpg";
-                string photoNamePreview = $"img_{fileNameGuid}_preview.jpg";
+                if (string.IsNullOrEmpty(_vpoint.Id))
+                {
+                    _vpoint.Save();
+                }
+
+                string mediaId = Guid.NewGuid().ToString();
+                string photoName = ImagePathManager.GetImageFilename(mediaId);
+                //string photoName = $"img_{_vpoint.Id}.jpg";
+                string photoNamePreview = ImagePathManager.GetImageFilename(mediaId, true);
+                //string photoNamePreview = $"img_{_vpoint.Id}_preview.jpg";
                 var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
                 {
                     PhotoSize = PhotoSize.Full,
@@ -128,10 +135,13 @@ namespace QuestHelper.ViewModel
                     file.Dispose();
                     ImagePreviewManager preview = new ImagePreviewManager();
                     preview.CreateImagePreview(imgPathToDirectory, info.Name, photoNamePreview);
-                    _imagePreviewFilePath = Path.Combine(imgPathToDirectory, photoNamePreview);
-                    _vpoint.ImagePath = info.FullName;
-                    _vpoint.ImagePreviewPath = _imagePreviewFilePath;
-                    _vpoint.Save();
+                    //_imagePreviewFilePath = Path.Combine(imgPathToDirectory, photoNamePreview);
+                    //_vpoint.ImagePath = info.FullName;
+                    //_vpoint.ImagePreviewPath = _imagePreviewFilePath;
+                    //_vpoint.Version++;
+                    //_vpoint.Save();
+                    _vpoint.AddImage(mediaId);
+                    ApplyChanges();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagePreviewPath"));
                 }
             }
@@ -216,7 +226,6 @@ namespace QuestHelper.ViewModel
                 if (_currentPositionString != value)
                 {
                     _currentPositionString = value;
-                    //_vpoint.Save();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Coordinates"));
                 }
             }
@@ -232,7 +241,8 @@ namespace QuestHelper.ViewModel
                 if (_vpoint.Name != value)
                 {
                     _vpoint.Name = value;
-                    _vpoint.Save();
+                    //_vpoint.Version++;
+                    //_vpoint.Save();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
                 }                   
             }
@@ -286,7 +296,8 @@ namespace QuestHelper.ViewModel
                 if(_vpoint.Address != value)
                 {
                     _vpoint.Address = value;
-                    _vpoint.Save();
+                    //_vpoint.Version++;
+                    //_vpoint.Save();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Address"));
                 }
             }
@@ -303,6 +314,12 @@ namespace QuestHelper.ViewModel
                     return _vpoint.Description;
                 else return "Описание не указано";
             }
+        }
+
+        public void ApplyChanges()
+        {
+            _vpoint.Version++;
+            _vpoint.Save();
         }
 
     }

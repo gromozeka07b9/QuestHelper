@@ -91,7 +91,8 @@ namespace QuestHelper.WS
                 Latitude = routePointObject.Latitude,
                 Longitude = routePointObject.Longitude,
                 Address = routePointObject.Address,
-                Description = routePointObject.Description
+                Description = routePointObject.Description,
+                Version = routePointObject.Version
             });
             
             try

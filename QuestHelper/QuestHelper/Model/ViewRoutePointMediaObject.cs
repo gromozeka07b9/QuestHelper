@@ -28,8 +28,9 @@ namespace QuestHelper.Model
             if (mediaObject != null)
             {
                 _id = mediaObject.RoutePointMediaObjectId;
-                _filename = mediaObject.FileName;
-                _filenamePreview = mediaObject.FileNamePreview;
+                _filename = $"img_{_id}.jpg";
+                _filenamePreview = $"img_{_id}_preview.jpg";
+                _version = mediaObject.Version;
             }
         }
 

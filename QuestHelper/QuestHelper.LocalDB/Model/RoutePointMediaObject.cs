@@ -9,8 +9,6 @@ namespace QuestHelper.LocalDB.Model
     {
         [PrimaryKey]
         public string RoutePointMediaObjectId { get; set; } = Guid.NewGuid().ToString();
-        public string FileName { get; set; }
-        public string FileNamePreview { get; set; }
         public bool ServerSynced { get; set; }//Признак того, что файл уже на сервере - и оригинал, и превью
         public DateTimeOffset ServerSyncedDate { get; set; }//Дата синхронизации
         public string RoutePointId { get; set; }

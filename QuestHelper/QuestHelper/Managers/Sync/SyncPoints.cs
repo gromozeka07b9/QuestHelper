@@ -45,7 +45,8 @@ namespace QuestHelper.Managers.Sync
             await syncMedia();
             Console.WriteLine("-------------------SyncFiles started");
             var syncFiles = SyncFiles.GetInstance();
-            syncFiles.Start();
+            syncFiles.CheckExistFileAndDownload();
+            _showWarning("Загрузка закончена");
         }
 
         private async Task syncMedia()
@@ -81,12 +82,30 @@ namespace QuestHelper.Managers.Sync
                 if (media != null)
                 {
                     result = await _routePointMediaObjectsApi.AddRoutePointMediaObject(media);
-                    if (!result)
+                    if (result)
                     {
+                        result = await _routePointMediaObjectsApi.SendImage(media.RoutePointId, media.RoutePointMediaObjectId);
+                        if (result)
+                        {
+                            result = await _routePointMediaObjectsApi.SendImage(media.RoutePointId, media.RoutePointMediaObjectId, true);
+                        }
+                        else
+                        {
+                            _showWarning("Ошибка отправки медиафайла");
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        _showWarning("Ошибка отправки описания медиафайлов");
                         break;
                     }
                 }
-                else break;
+                else
+                {
+                    _showWarning("Не определен медиаобъект");
+                    break;
+                }
             }
             return result;
         }

@@ -15,12 +15,12 @@ namespace QuestHelper.Managers
         {
             _realmInstance = RealmAppInstance.GetAppInstance();
         }
-        internal static Realm GetRealmInstance()
+        /*internal static Realm GetRealmInstance()
         {
             return RealmAppInstance.GetAppInstance();
-        }
+        }*/
 
-        public bool SetSyncStatus(string Id, bool Status)
+        /*public bool SetSyncStatus(string Id, bool Status)
         {
             bool result = false;
             try
@@ -39,19 +39,19 @@ namespace QuestHelper.Managers
                 //пишем лог
             }
             return result;
-        }
+        }*/
         /*public IEnumerable<RoutePointMediaObject> GetNotSyncedFiles()
         {
             return _realmInstance.All<RoutePointMediaObject>().Where(media=>!media.ServerSynced);
         }*/
 
-        public void UpdateLocalData(RoutePoint point, List<RoutePointMediaObject> mediaObjects)
+        /*public void UpdateLocalData(RoutePoint point, List<RoutePointMediaObject> mediaObjects)
         {
             foreach (var media in mediaObjects)
             {
                 Add(point, media);
             }
-        }
+        }*/
 
         private bool Add(RoutePoint point, RoutePointMediaObject mediaObject)
         {
@@ -74,22 +74,20 @@ namespace QuestHelper.Managers
             return result;
         }
 
-        internal void Add(RoutePoint point, string imagePreviewFilePath, string imageFilePath)
+        /*internal void Add(RoutePoint point, string imagePreviewFilePath, string imageFilePath)
         {
             _realmInstance.Write(() =>
             {
                 point.MediaObjects.Clear();
                 point.MediaObjects.Add(new RoutePointMediaObject()
                 {
-                    FileName = imageFilePath,
                     Point = point,
-                    FileNamePreview = imagePreviewFilePath,
                     RoutePointId = point.RoutePointId,
                     ServerSynced = false
                 });
                 point.UpdateDate = DateTime.Now;
             });
-        }
+        }*/
 
         internal string Save(ViewRoutePointMediaObject vmedia)
         {

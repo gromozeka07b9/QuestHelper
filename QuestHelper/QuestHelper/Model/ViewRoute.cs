@@ -14,18 +14,8 @@ namespace QuestHelper.Model
         private string _id = string.Empty;
         private string _name = string.Empty;
         private DateTimeOffset _createDate;
+        private int _version = 0;
 
-        /*public ViewRoute(string routeId)
-        {
-            _id = routeId;
-            if(string.IsNullOrEmpty(routeId))
-            {
-
-            } else
-            {
-                load(routeId);
-            }
-        }*/
         public ViewRoute()
         {
         }
@@ -39,6 +29,7 @@ namespace QuestHelper.Model
                 _id = route.RouteId;
                 _name = route.Name;
                 _createDate = route.CreateDate;
+                _version = route.Version;
             }
         }
 
@@ -101,7 +92,19 @@ namespace QuestHelper.Model
                 _createDate = value;
             }
         }
-        public int Version { get; set; }
+
+        public int Version
+        {
+            get
+            {
+                return _version;
+            }
+            set
+            {
+                _version = value;
+            }
+        }
+
         public string UserId { get; set; }
 
         internal bool Save()

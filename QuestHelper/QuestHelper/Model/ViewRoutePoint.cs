@@ -22,6 +22,7 @@ namespace QuestHelper.Model
         private double _latitude = 0;
         private double _longtitude = 0;
         private int _version = 0;
+        private List<RoutePointMediaObject> _mediaObjects = new List<RoutePointMediaObject>();
         private DateTimeOffset _createDate;
         private RoutePointManager routePointManager = new RoutePointManager();
         private RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
@@ -29,11 +30,7 @@ namespace QuestHelper.Model
         public ViewRoutePoint(string routeId, string routePointId)
         {
             _routeId = routeId;
-            if (string.IsNullOrEmpty(routePointId))
-            {
-                //_imagePreviewPath = manager.GetEmptyImageFilename();
-            }
-            else
+            if (!string.IsNullOrEmpty(routePointId))
             {
                 load(routePointId);
             }
@@ -55,11 +52,14 @@ namespace QuestHelper.Model
                 _latitude = point.Latitude;
                 _longtitude = point.Longitude;
                 _createDate = point.CreateDate;
-                var mediaCollection = mediaManager.GetMediaObjectsByRoutePointId(_id)?.ToList();
-                if ((mediaCollection!=null) && (mediaCollection.Count > 0))
+                _version = point.Version;
+                _mediaObjects = mediaManager.GetMediaObjectsByRoutePointId(_id)?.ToList();
+                if ((_mediaObjects != null) && (_mediaObjects.Count > 0))
                 {
-                    _imagePath = Path.Combine(DependencyService.Get<IPathService>().PrivateExternalFolder, "pictures", $"img_{mediaCollection[0].RoutePointMediaObjectId}.jpg");
-                    _imagePreviewPath = Path.Combine(DependencyService.Get<IPathService>().PrivateExternalFolder, "pictures", $"img_{mediaCollection[0].RoutePointMediaObjectId}_preview.jpg");
+                    _imagePath = ImagePathManager.GetImagePath(_mediaObjects[0].RoutePointMediaObjectId);
+                    _imagePreviewPath = ImagePathManager.GetImagePath(_mediaObjects[0].RoutePointMediaObjectId, true);
+                    //_imagePath = Path.Combine(DependencyService.Get<IPathService>().PrivateExternalFolder, "pictures", $"img_{mediaCollection[0].RoutePointMediaObjectId}.jpg");
+                    //_imagePreviewPath = Path.Combine(DependencyService.Get<IPathService>().PrivateExternalFolder, "pictures", $"img_{mediaCollection[0].RoutePointMediaObjectId}_preview.jpg");
                 }
                 else
                 {
@@ -70,9 +70,17 @@ namespace QuestHelper.Model
         }
         internal void Refresh(string routePointId)
         {
-            load(routePointId);
+            if(!string.IsNullOrEmpty(routePointId))
+                load(routePointId);
         }
 
+        public List<RoutePointMediaObject> MediaObjects
+        {
+            get
+            {
+                return _mediaObjects;
+            }
+        }
         public string Id
         {
             get
@@ -134,10 +142,6 @@ namespace QuestHelper.Model
 
         public string ImagePath
         {
-            set
-            {
-                _imagePath = value;
-            }
             get
             {
                 return _imagePath;
@@ -145,13 +149,13 @@ namespace QuestHelper.Model
         }
         public string ImagePreviewPath
         {
-            set
-            {
-                _imagePreviewPath = value;
-            }
             get
             {
-                return _imagePreviewPath;
+                
+                if (!string.IsNullOrEmpty(_imagePreviewPath)&& File.Exists(_imagePreviewPath))
+                    return _imagePreviewPath;
+                else
+                    return _imagePath;
             }
         }
 
@@ -218,6 +222,16 @@ namespace QuestHelper.Model
                 _imagePreviewPath = string.Empty;
             }
             return result;
+        }
+
+        internal void AddImage(string mediaId)
+        {
+            ViewRoutePointMediaObject media = new ViewRoutePointMediaObject();
+            media.RoutePointMediaObjectId = mediaId;
+            media.RoutePointId = Id;
+            media.Version = 1;
+            mediaManager.Save(media);
+            load(Id);
         }
     }
 }

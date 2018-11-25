@@ -56,6 +56,7 @@ namespace QuestHelper.View
                 if((_vm.Latitude > 0)&& (_vm.Longitude > 0))
                 {
                     CenterMap(_vm.Latitude, _vm.Longitude, _vm.Name, _vm.Address);
+                    _vm.ApplyChanges();
                 }
             }
         }
@@ -113,5 +114,10 @@ namespace QuestHelper.View
                 await DisplayAlert("Ошибка", customMap.LastError, "Ок");
             }
         }
+
+	    private void Editor_OnCompleted(object sender, EventArgs e)
+	    {
+	        _vm.ApplyChanges();
+	    }
     }
 }

@@ -9,7 +9,7 @@ namespace QuestHelper.Managers.Sync
         public static void SyncAll()
         {
             var syncFiles = SyncFiles.GetInstance();
-            syncFiles.Start();
+            syncFiles.CheckExistFileAndDownload();
             var syncPoints = SyncPoints.GetInstance();
             syncPoints.StartAsync();
         }
