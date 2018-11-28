@@ -6,313 +6,76 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using QuestHelper.Model;
 
 namespace QuestHelper.Managers.Sync
 {
-    public class SyncPoints
+    public class SyncPoints : SyncBase
     {
         private const string _apiUrl = "http://igosh.pro/api";
-        private static SyncPoints _instance;
-        private Action<string> _showWarning;
-        private RoutesApiRequest _routesApi = new RoutesApiRequest(_apiUrl);
-        private RoutePointsApiRequest _routePointsApi = new RoutePointsApiRequest(_apiUrl);
-        private RoutePointMediaObjectRequest _routePointMediaObjectsApi = new RoutePointMediaObjectRequest(_apiUrl);
-        private RouteManager _routeManager = new RouteManager();
-        private RoutePointManager _routePointManager = new RoutePointManager();
-        private RoutePointMediaObjectManager _routePointMediaManager = new RoutePointMediaObjectManager();
+        private readonly RoutePointsApiRequest _routePointsApi = new RoutePointsApiRequest(_apiUrl);
+        private readonly RoutePointManager _routePointManager = new RoutePointManager();
 
-        public static SyncPoints GetInstance()
-        {
-            if (_instance == null)
-            {
-                _instance = new SyncPoints();
-            }
 
-            return _instance;
-        }
-        internal void SetWarningDialogContext(Action<string> showWarning)
-        {
-            _showWarning = showWarning;
-        }
-        internal async System.Threading.Tasks.Task StartAsync()
-        {
-            //Console.WriteLine("-------------------SyncRoutes started");
-            //await syncRoutes();
-            Console.WriteLine("-------------------SyncPoints started");
-            await syncPoints();
-            Console.WriteLine("-------------------SyncMedia started");
-            await syncMedia();
-            Console.WriteLine("-------------------SyncFiles started");
-            var syncFiles = SyncFiles.GetInstance();
-            syncFiles.CheckExistFileAndDownload();
-            _showWarning("Загрузка закончена");
-        }
-
-        private async Task syncMedia()
-        {
-            var medias = _routePointMediaManager.GetMediaObjects().Select(x => new Tuple<string, int>(x.RoutePointMediaObjectId, x.Version));
-            SyncObjectStatus pointsServerStatus = await _routePointMediaObjectsApi.GetSyncStatus(medias);
-            if (pointsServerStatus != null)
-            {
-                List<string> forUpload = new List<string>();
-                List<string> forDownload = new List<string>();
-
-                fillListsObjectsForProcess(medias, pointsServerStatus, forUpload, forDownload);
-
-                if (forUpload.Count > 0)
-                {
-                    await uploadMediasAsync(forUpload);
-                }
-
-                if (forDownload.Count > 0)
-                {
-                    await downloadMediasAsync(forDownload);
-                }
-            }
-            else _showWarning("Ошибка загрузки описания картинок");
-        }
-
-        private async System.Threading.Tasks.Task<bool> uploadMediasAsync(List<string> idsForUpload)
+        public async Task<bool> Sync()
         {
             bool result = false;
-            foreach (var id in idsForUpload)
-            {
-                var media = _routePointMediaManager.GetMediaObjectById(id);
-                if (media != null)
-                {
-                    result = await _routePointMediaObjectsApi.AddRoutePointMediaObject(media);
-                    if (result)
-                    {
-                        result = await _routePointMediaObjectsApi.SendImage(media.RoutePointId, media.RoutePointMediaObjectId);
-                        if (result)
-                        {
-                            result = await _routePointMediaObjectsApi.SendImage(media.RoutePointId, media.RoutePointMediaObjectId, true);
-                        }
-                        else
-                        {
-                            _showWarning("Ошибка отправки медиафайла");
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        _showWarning("Ошибка отправки описания медиафайлов");
-                        break;
-                    }
-                }
-                else
-                {
-                    _showWarning("Не определен медиаобъект");
-                    break;
-                }
-            }
-            return result;
-        }
 
-        private async System.Threading.Tasks.Task<bool> downloadMediasAsync(List<string> idsForDownload)
-        {
-            bool result = false;
-            foreach (var id in idsForDownload)
-            {
-                var media = await _routePointMediaObjectsApi.GetRoutePointMediaObject(id);
-                result = media.Save();
-                if (!result)
-                {
-                    break;
-                }
-            }
-            return result;
-        }
-
-        private async Task syncPoints()
-        {
             var points = _routePointManager.GetPoints().Select(x=>new Tuple<string, int>(x.RoutePointId, x.Version));
             SyncObjectStatus pointsServerStatus = await _routePointsApi.GetSyncStatus(points);
             if (pointsServerStatus != null)
             {
+                result = true;
+
                 List<string> forUpload = new List<string>();
                 List<string> forDownload = new List<string>();
 
-                fillListsObjectsForProcess(points, pointsServerStatus, forUpload, forDownload);
+                FillListsObjectsForProcess(points, pointsServerStatus, forUpload, forDownload);
 
                 if (forUpload.Count > 0)
                 {
-                    await uploadPointsAsync(forUpload);
+                    result = await UploadAsync(GetJsonStructures(forUpload), _routePointsApi);
+                    if (!result) return result;
                 }
 
                 if (forDownload.Count > 0)
                 {
-                    await downloadPointsAsync(forDownload);
+                    result = await DownloadAsync(forDownload, _routePointsApi);
                 }
             }
-            else
-            {
-                _showWarning("Ошибка загрузки точек");
-            }
-        }
-        private async System.Threading.Tasks.Task<bool> uploadPointsAsync(List<string> idsForUpload)
-        {
-            bool result = false;
-            foreach (var id in idsForUpload)
-            {
-                var point = _routePointManager.GetPointById(id);
-                if (point != null)
-                {
-                    result = await _routePointsApi.AddRoutePoint(point);
-                    if (!result)
-                    {
-                        break;
-                    }
-                }
-                else break;
-            }
+
             return result;
         }
 
-        private async System.Threading.Tasks.Task<bool> downloadPointsAsync(List<string> idsForDownload)
+        private List<string> GetJsonStructures(List<string> pointsForUpload)
         {
-            bool result = false;
-            foreach (var id in idsForDownload)
+            List<string> jsonStructures = new List<string>();
+
+            foreach (var pointId in pointsForUpload)
             {
-                var point = await _routePointsApi.GetRoutePoint(id);
-                result = point.Save();
-                if (!result)
+                var uploadedObject = _routePointManager.GetPointById(pointId);
+                if (uploadedObject != null)
                 {
-                    break;
+                    JObject jsonObject = JObject.FromObject(new
+                    {
+                        uploadedObject.RoutePointId,
+                        uploadedObject.MainRoute.RouteId,
+                        uploadedObject.Name,
+                        CreateDate = uploadedObject.CreateDate.DateTime,
+                        UpdateDate = uploadedObject.CreateDate.DateTime,
+                        UpdatedUserId = "",
+                        uploadedObject.Latitude,
+                        uploadedObject.Longitude,
+                        uploadedObject.Address,
+                        uploadedObject.Description,
+                        uploadedObject.Version
+                    });
+                    jsonStructures.Add(jsonObject.ToString());
                 }
             }
-            return result;
+
+            return jsonStructures;
         }
-
-
-        /*private async Task syncRoutes()
-        {
-            IEnumerable<Route> routes = _routeManager.GetRoutes();
-            SyncObjectStatus routeServerStatus = await _routesApi.GetSyncStatus(routes);
-            if (routeServerStatus != null)
-            {
-                List<string> routesForUpload = new List<string>();
-                List<string> routesForDownload = new List<string>();
-
-                fillListsRoutesForProcess(routes, routeServerStatus, routesForUpload, routesForDownload);
-                if (routesForUpload.Count > 0)
-                {
-                    bool result = await uploadRoutesAsync(routesForUpload);
-                    if (!result) _showWarning("Ошибка передачи данных");
-                }
-
-                if (routesForDownload.Count > 0)
-                {
-                    bool result = await downloadRoutesAsync(routesForDownload);
-                    if (!result) _showWarning("Ошибка загрузки данных");
-                }
-            }
-            else _showWarning("Ошибка загрузки маршрутов");
-        }
-
-        private async System.Threading.Tasks.Task<bool> uploadRoutesAsync(List<string> routesIdsForUpload)
-        {
-            bool result = false;
-            foreach (var routeId in routesIdsForUpload)
-            {
-                var route = _routeManager.GetRouteById(routeId);
-                if (route != null)
-                {
-                    result = await _routesApi.UpdateRoute(route);
-                    if (!result)
-                    {
-                        break;
-                    }
-                }
-                else break;
-            }
-            return result;
-        }
-        private async System.Threading.Tasks.Task<bool> downloadRoutesAsync(List<string> routesIdsForDownload)
-        {
-            bool result = false;
-            foreach (var routeId in routesIdsForDownload)
-            {
-                var route = await _routesApi.GetRoute(routeId);
-                result = route.Save();
-                if (!result)
-                {
-                    break;
-                }
-            }
-            return result;
-        }*/
-
-        private void fillListsObjectsForProcess(IEnumerable<Tuple<string,int>> clientObjects, SyncObjectStatus serverStatus, List<string> forUpload, List<string> forDownload)
-        {
-            foreach (var serverObject in serverStatus.Statuses)
-            {
-                //если сервер вернул версию 0, значит на сервере объекта еще нет, его надо будет отправить
-                if (serverObject.Version == 0)
-                {
-                    forUpload.Add(serverObject.ObjectId);
-                }
-                else
-                {
-                    //если версия на сервере уже есть, значит есть расхождение версий между сервером и клиентом
-                    //тут варианты: если на сервере более старшая версия, клиент должен ее забрать себе
-                    //если на сервере младшая версия, то клиент должен отправить свою версию на сервер
-                    //Одинаковыми версии быть не могут, если нет изменений, сервер не должен вернуть информацию по маршруту
-                    //Если на клиенте маршрута вообще нет, значит грузим его с сервера
-                    var objectClient = clientObjects.SingleOrDefault(r => r.Item1 == serverObject.ObjectId);
-                    if (objectClient != null)
-                    {
-                        if (serverObject.Version > objectClient.Item2)
-                        {
-                            forDownload.Add(serverObject.ObjectId);
-                        }
-                        else
-                        {
-                            forUpload.Add(serverObject.ObjectId);
-                        }
-                    }
-                    else
-                    {
-                        forDownload.Add(serverObject.ObjectId);
-                    }
-                }
-            }
-        }
-        /*private void fillListsRoutesForProcess(IEnumerable<Route> routes, SyncObjectStatus routeServerStatus, List<string> routesForUpload, List<string> routesForDownload)
-        {
-            foreach (var routeServer in routeServerStatus.Statuses)
-            {
-                //если сервер вернул версию 0, значит на сервере маршрута еще нет, его надо будет отправить
-                if (routeServer.Version == 0)
-                {
-                    routesForUpload.Add(routeServer.ObjectId);
-                }
-                else
-                {
-                    //если версия на сервере уже есть, значит есть расхождение версий между сервером и клиентом
-                    //тут варианты: если на сервере более старшая версия, клиент должен ее забрать себе
-                    //если на сервере младшая версия, то клиент должен отправить свою версию на сервер
-                    //Одинаковыми версии быть не могут, если нет изменений, сервер не должен вернуть информацию по маршруту
-                    //Если на клиенте маршрута вообще нет, значит грузим его с сервера
-                    Route routeClient = routes.SingleOrDefault(r => r.RouteId == routeServer.ObjectId);
-                    if (routeClient != null)
-                    {
-                        if (routeServer.Version > routeClient.Version)
-                        {
-                            routesForDownload.Add(routeServer.ObjectId);
-                        }
-                        else
-                        {
-                            routesForUpload.Add(routeServer.ObjectId);
-                        }
-                    }
-                    else
-                    {
-                        routesForDownload.Add(routeServer.ObjectId);
-                    }
-                }
-            }
-        }*/
     }
 }

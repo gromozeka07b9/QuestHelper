@@ -24,22 +24,20 @@ namespace QuestHelper
             MainPage = new View.MainPage();
         }
 
-        protected override void OnStart ()
+        protected override async void OnStart ()
 		{
             AppCenter.Start("android=85c4ccc3-f315-427c-adbd-b928e461bcc8;", typeof(Analytics), typeof(Crashes));
 
 		    if (Setup())
 		    {
-		        /*var syncPoints = SyncPoints.GetInstance();
-		        syncPoints.SetWarningDialogContext(ShowWarning);
-
-		        var syncFiles = SyncFiles.GetInstance();
-		        syncFiles.SetWarningDialogContext(ShowWarning);
-
-		        syncPoints.StartAsync();*/
-                SyncRoutes syncRoutes = new SyncRoutes();
-		        syncRoutes.Sync();
-		    }
+                DateTime startTime = DateTime.Now;
+                var syncResult = await SyncServer.SyncAllAsync();
+		        if (!syncResult.Item1)
+		        {
+		            ShowWarning(syncResult.Item2);
+		        }
+		        ShowWarning($"Длительность синхронизации:{DateTime.Now - startTime} сек.");
+            }
         }
 
         private bool Setup()

@@ -4,36 +4,25 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace QuestHelper.Managers.Sync
 {
     public class SyncFiles
     {
-        private static SyncFiles _instance;
-        private Action<string> _showWarning;
-
         private const string _apiUrl = "http://igosh.pro/api";
-        private RoutePointMediaObjectRequest _routePointMediaObjectsApi = new RoutePointMediaObjectRequest(_apiUrl);
+        private readonly RoutePointMediaObjectRequest _routePointMediaObjectsApi = new RoutePointMediaObjectRequest(_apiUrl);
 
-        private SyncFiles()
+        public SyncFiles()
         {
 
         }
 
-        internal void SetWarningDialogContext(Action<string> showWarning)
+        internal async Task<bool> CheckExistsAllFilesForMediaAndDownloadIfNeeded()
         {
-            _showWarning = showWarning;
-        }
+            bool result = true;
 
-        public static SyncFiles GetInstance()
-        {
-            if (_instance == null) _instance = new SyncFiles();
-            return _instance;
-        }
-
-        internal async void CheckExistFileAndDownload()
-        {
             RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
             var mediaObjects = mediaManager.GetMediaObjects();
 
@@ -43,16 +32,20 @@ namespace QuestHelper.Managers.Sync
                 string pathToMediaFile = ImagePathManager.GetImagePath(mediaObject.RoutePointMediaObjectId, true);
                 if (!File.Exists(pathToMediaFile))
                 {
-                    var result = await _routePointMediaObjectsApi.GetImage(mediaObject.RoutePointId, mediaObject.RoutePointMediaObjectId, filename);
-
+                    result = await _routePointMediaObjectsApi.GetImage(mediaObject.RoutePointId, mediaObject.RoutePointMediaObjectId, filename);
+                    //если не загружено preview, то пробуем загрузить основное фото
                     filename = ImagePathManager.GetImageFilename(mediaObject.RoutePointMediaObjectId);
                     pathToMediaFile = ImagePathManager.GetImagePath(mediaObject.RoutePointMediaObjectId);
                     if (!File.Exists(pathToMediaFile))
                     {
                         result = await _routePointMediaObjectsApi.GetImage(mediaObject.RoutePointId, mediaObject.RoutePointMediaObjectId, filename);
                     }
+
+                    //if (!result) break;
                 }
             }
+
+            return result;
         }
     }
 }

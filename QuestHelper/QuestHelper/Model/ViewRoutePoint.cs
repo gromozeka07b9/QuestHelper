@@ -10,7 +10,7 @@ using Xamarin.Forms;
 
 namespace QuestHelper.Model
 {
-    public class ViewRoutePoint
+    public class ViewRoutePoint : ISaveable
     {
         private string _id = string.Empty;
         private string _routeId = string.Empty;
@@ -205,11 +205,6 @@ namespace QuestHelper.Model
             }
         }
 
-        internal bool Save()
-        {
-            _id = routePointManager.Save(this);
-            return !string.IsNullOrEmpty(_id);
-        }
         internal bool Delete()
         {
             bool result = routePointManager.Delete(this);
@@ -232,6 +227,12 @@ namespace QuestHelper.Model
             media.Version = 1;
             mediaManager.Save(media);
             load(Id);
+        }
+
+        public bool Save()
+        {
+            _id = routePointManager.Save(this);
+            return !string.IsNullOrEmpty(_id);
         }
     }
 }

@@ -13,7 +13,7 @@ using QuestHelper.Model;
 
 namespace QuestHelper.WS
 {
-    public class RoutePointsApiRequest : IRoutePointsApiRequest
+    public class RoutePointsApiRequest : IRoutePointsApiRequest, IDownloadable<ViewRoute>, IUploadable<ViewRoute>
     {
         private string _hostUrl = string.Empty;
         public RoutePointsApiRequest(string hostUrl)
@@ -63,7 +63,8 @@ namespace QuestHelper.WS
             }
             return deserializedValue;
         }
-        public async Task<ViewRoutePoint> GetRoutePoint(string routePointId)
+
+        public async Task<ISaveable> DownloadFromServerAsync(string routePointId)
         {
             ViewRoutePoint deserializedValue = new ViewRoutePoint();
             try
@@ -78,39 +79,23 @@ namespace QuestHelper.WS
             }
             return deserializedValue;
         }
-        public async Task<bool> AddRoutePoint(RoutePoint routePointObject)
+
+        public async Task<bool> UploadToServerAsync(string jsonStructure)
         {
             bool addResult = false;
-            JObject jsonObject = JObject.FromObject(new {
-                RoutePointId = routePointObject.RoutePointId,
-                RouteId = routePointObject.MainRoute.RouteId,
-                Name = routePointObject.Name,
-                CreateDate = routePointObject.CreateDate.DateTime,
-                UpdateDate = routePointObject.CreateDate.DateTime,
-                UpdatedUserId = "",
-                Latitude = routePointObject.Latitude,
-                Longitude = routePointObject.Longitude,
-                Address = routePointObject.Address,
-                Description = routePointObject.Description,
-                Version = routePointObject.Version
-            });
-            
+
             try
             {
                 ApiRequest api = new ApiRequest();
-                await api.HttpRequestPOST($"{_hostUrl}/routepoints", jsonObject.ToString());
+                await api.HttpRequestPOST($"{_hostUrl}/routepoints", jsonStructure);
                 addResult = true;
             }
             catch (Exception e)
             {
                 HandleError.Process("RoutePointsApiRequest", "AddRoutePoint", e, false);
             }
-            return addResult;
-        }
 
-        public Task<T> DownloadFromServerAsync<T>(string id)
-        {
-            throw new NotImplementedException();
+            return addResult;
         }
     }
 }

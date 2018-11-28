@@ -15,42 +15,39 @@ namespace QuestHelper.Managers.Sync
     {
         private const string _apiUrl = "http://igosh.pro/api";
         private readonly RoutesApiRequest _routesApi = new RoutesApiRequest(_apiUrl);
-        private RoutePointsApiRequest _routePointsApi = new RoutePointsApiRequest(_apiUrl);
-        private RoutePointMediaObjectRequest _routePointMediaObjectsApi = new RoutePointMediaObjectRequest(_apiUrl);
         private readonly RouteManager _routeManager = new RouteManager();
-        private RoutePointManager _routePointManager = new RoutePointManager();
-        private RoutePointMediaObjectManager _routePointMediaManager = new RoutePointMediaObjectManager();
 
         public SyncRoutes()
         {
 
         }
 
-        public async Task Sync()
+        public async Task<bool> Sync()
         {
+            bool result = false;
+
             var routes = _routeManager.GetRoutes().Select(x => new Tuple<string, int>(x.RouteId, x.Version));
             SyncObjectStatus routeServerStatus = await _routesApi.GetSyncStatus(routes);
             if (routeServerStatus != null)
             {
+                result = true;
                 List<string> routesForUpload = new List<string>();
                 List<string> routesForDownload = new List<string>();
 
                 FillListsObjectsForProcess(routes, routeServerStatus, routesForUpload, routesForDownload);
                 if (routesForUpload.Count > 0)
                 {
-                    bool result = await UploadAsync(GetJsonStructures(routesForUpload), _routesApi);
-                    //bool result = await uploadRoutesAsync(routesForUpload);
-                    //if (!result) _showWarning("Ошибка передачи данных");
+                    result = await UploadAsync(GetJsonStructures(routesForUpload), _routesApi);
+                    if (!result) return result;
                 }
 
                 if (routesForDownload.Count > 0)
                 {
-                    bool result = await DownloadAsync(routesForDownload, _routesApi);
-                    //bool result = await downloadRoutesAsync(routesForDownload);
-                    //if (!result) _showWarning("Ошибка загрузки данных");
+                    result = await DownloadAsync(routesForDownload, _routesApi);
                 }
             }
-            //else _showWarning("Ошибка загрузки маршрутов");
+
+            return result;
         }
 
         private List<string> GetJsonStructures(List<string> routesForUpload)
@@ -59,37 +56,21 @@ namespace QuestHelper.Managers.Sync
             foreach (var routeId in routesForUpload)
             {
                 var uploadedObject = _routeManager.GetRouteById(routeId);
-                JObject jsonObject = JObject.FromObject(new
+                if (uploadedObject != null)
                 {
-                    RouteId = uploadedObject.RouteId,
-                    Name = uploadedObject.Name,
-                    CreateDate = uploadedObject.CreateDate.DateTime,
-                    Version = uploadedObject.Version,
-                    UserId = 0
-                });
-                jsonStructures.Add(jsonObject.ToString());
+                    JObject jsonObject = JObject.FromObject(new
+                    {
+                        RouteId = uploadedObject.RouteId,
+                        Name = uploadedObject.Name,
+                        CreateDate = uploadedObject.CreateDate.DateTime,
+                        Version = uploadedObject.Version,
+                        UserId = 0
+                    });
+                    jsonStructures.Add(jsonObject.ToString());
+                }
             }
 
             return jsonStructures;
         }
-
-        /*private async System.Threading.Tasks.Task<bool> uploadRoutesAsync(List<string> routesIdsForUpload)
-        {
-            bool result = false;
-            foreach (var routeId in routesIdsForUpload)
-            {
-                var route = _routeManager.GetRouteById(routeId);
-                if (route != null)
-                {
-                    result = await _routesApi.UpdateRoute(route);
-                    if (!result)
-                    {
-                        break;
-                    }
-                }
-                else break;
-            }
-            return result;
-        }*/
     }
 }

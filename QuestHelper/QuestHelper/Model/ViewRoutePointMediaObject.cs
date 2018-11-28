@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace QuestHelper.Model
 {
-    public class ViewRoutePointMediaObject
+    public class ViewRoutePointMediaObject : ISaveable
     {
         private string _id = string.Empty;
         private string _filename = string.Empty;
@@ -109,7 +109,7 @@ namespace QuestHelper.Model
             }
         }
 
-        internal bool Save()
+        public bool Save()
         {
             RoutePointMediaObjectManager manager = new RoutePointMediaObjectManager();
             _id = manager.Save(this);

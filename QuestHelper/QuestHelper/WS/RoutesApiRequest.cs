@@ -35,21 +35,6 @@ namespace QuestHelper.WS
         }
 
 
-        /*public async Task<ViewRoute> GetRoute(string id)
-        {
-            ViewRoute deserializedValue = new ViewRoute();
-            try
-            {
-                ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{this._hostUrl}/routes/{id}");
-                deserializedValue = JsonConvert.DeserializeObject<ViewRoute>(response);
-            }
-            catch (Exception e)
-            {
-                HandleError.Process("RoutesApiRequest", "GetRoute", e, false);
-            }
-            return deserializedValue;
-        }*/
         public async Task<SyncObjectStatus> GetSyncStatus(IEnumerable<Tuple<string, int>> routes)
         {
             SyncObjectStatus requestValue = new SyncObjectStatus();
@@ -77,28 +62,6 @@ namespace QuestHelper.WS
 
             return deserializedValue;
         }
-        /*public async Task<bool> UpdateRoute(Route routeObject)
-        {
-            bool addResult = false;
-            JObject jsonObject = JObject.FromObject(new {
-                RouteId = routeObject.RouteId,
-                Name = routeObject.Name,
-                CreateDate = routeObject.CreateDate.DateTime,
-                Version = routeObject.Version,
-                UserId = 0
-            });
-            try
-            {
-                ApiRequest api = new ApiRequest();
-                await api.HttpRequestPOST($"{_hostUrl}/routes", jsonObject.ToString());
-                addResult = true;
-            }
-            catch (Exception e)
-            {
-                HandleError.Process("RoutesApiRequest", "AddRoute", e, false);
-            }
-            return addResult;
-        }*/
         public async Task<bool> DeleteRoute(Route routeObject)
         {
             bool deleteResult = false;
@@ -133,16 +96,6 @@ namespace QuestHelper.WS
         public async Task<bool> UploadToServerAsync(string jsonStructure)
         {
             bool addResult = false;
-            /*var uploadedObject = _routeManager.GetRouteById(id);
-            JObject jsonObject = JObject.FromObject(new
-            {
-                RouteId = routeObject.RouteId,
-                Name = routeObject.Name,
-                CreateDate = routeObject.CreateDate.DateTime,
-                Version = routeObject.Version,
-                UserId = 0
-            });*/
-            //string jsonObject = "";
             try
             {
                 ApiRequest api = new ApiRequest();
