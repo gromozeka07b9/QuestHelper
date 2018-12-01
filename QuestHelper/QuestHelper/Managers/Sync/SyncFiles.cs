@@ -29,16 +29,17 @@ namespace QuestHelper.Managers.Sync
             foreach (var mediaObject in mediaObjects)
             {
                 string filename = ImagePathManager.GetImageFilename(mediaObject.RoutePointMediaObjectId, true);
+                string pathToPicturesDirectory = ImagePathManager.GetPicturesDirectory();
                 string pathToMediaFile = ImagePathManager.GetImagePath(mediaObject.RoutePointMediaObjectId, true);
                 if (!File.Exists(pathToMediaFile))
                 {
-                    result = await _routePointMediaObjectsApi.GetImage(mediaObject.RoutePointId, mediaObject.RoutePointMediaObjectId, filename);
+                    result = await _routePointMediaObjectsApi.GetImage(mediaObject.RoutePointId, mediaObject.RoutePointMediaObjectId, pathToPicturesDirectory, filename);
                     //если не загружено preview, то пробуем загрузить основное фото
                     filename = ImagePathManager.GetImageFilename(mediaObject.RoutePointMediaObjectId);
                     pathToMediaFile = ImagePathManager.GetImagePath(mediaObject.RoutePointMediaObjectId);
                     if (!File.Exists(pathToMediaFile))
                     {
-                        result = await _routePointMediaObjectsApi.GetImage(mediaObject.RoutePointId, mediaObject.RoutePointMediaObjectId, filename);
+                        result = await _routePointMediaObjectsApi.GetImage(mediaObject.RoutePointId, mediaObject.RoutePointMediaObjectId, pathToPicturesDirectory, filename);
                     }
 
                     //if (!result) break;

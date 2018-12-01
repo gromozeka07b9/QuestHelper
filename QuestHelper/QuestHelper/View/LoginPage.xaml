@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:QuestHelper.ViewModel"
+             x:Class="QuestHelper.View.LoginPage" Title="Авторизация">
+    <ContentPage.BindingContext>
+        <viewModel:LoginViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="10">
+            </StackLayout>
+            <StackLayout Grid.Row="1" Grid.Column="0" Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="10">
+                <Entry Placeholder="Логин" Text="{Binding LoginName}" HorizontalOptions="Fill" Style="{StaticResource StandartEntryCaption}" Keyboard="Keyboard.Default">
+                </Entry>
+            </StackLayout>
+            <StackLayout Grid.Row="2" Grid.Column="0" Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="10">
+                <Entry Placeholder="Пароль" Text="{Binding Password}" HorizontalOptions="Fill" Style="{StaticResource StandartEntryCaption}" Keyboard="Keyboard.Default">
+                </Entry>
+            </StackLayout>
+            <StackLayout Grid.Row="3" Grid.Column="0" Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="10">
+                <Button HorizontalOptions="CenterAndExpand" Text="Войти" Style="{StaticResource StandartButton}" Command="{Binding LoginCommand}">
+                </Button>
+            </StackLayout>
+            <StackLayout Grid.Row="4" Grid.Column="0" Grid.RowSpan="2" Orientation="Vertical" VerticalOptions="CenterAndExpand" IsVisible="{Binding SplashStartScreenIsVisible}">
+            </StackLayout>
+            <StackLayout Grid.Row="5" Grid.Column="0" Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="10">
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

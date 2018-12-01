@@ -68,6 +68,16 @@ namespace QuestHelper.Model
                 }
             }
         }
+
+        /// <summary>
+        /// Возвращает Истина тогда, когда считаем что все минимально необходимые поля точки заполнены
+        /// </summary>
+        /// <returns></returns>
+        public bool MainFieldsIsFilled()
+        {
+            return (!string.IsNullOrEmpty(_name) && _createDate.Year > 2000);
+        }
+
         internal void Refresh(string routePointId)
         {
             if(!string.IsNullOrEmpty(routePointId))
@@ -158,6 +168,17 @@ namespace QuestHelper.Model
                     return _imagePath;
             }
         }
+        public string ImagePreviewPathForList
+        {
+            get
+            {
+                //if (!string.IsNullOrEmpty(_imagePreviewPath) && File.Exists(_imagePreviewPath))//ToDo:Нужна ли проверка файла
+                if (!string.IsNullOrEmpty(_imagePreviewPath) && File.Exists(_imagePreviewPath))
+                    return _imagePreviewPath;
+                else
+                    return "camera1.png";
+            }
+        }        
 
         public double Latitude
         {

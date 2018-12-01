@@ -69,12 +69,19 @@ namespace QuestHelper.ViewModel
 
         public RoutePointViewModel(string routeId, string routePointId)
         {
-            _vpoint = new ViewRoutePoint(routeId, routePointId);
             TakePhotoCommand = new Command(takePhoto);
             EditDescriptionCommand = new Command(editDescriptionCommand);
             CopyCoordinatesCommand = new Command(copyCoordinatesCommand);
-            if ((_vpoint.Latitude == 0)&&(_vpoint.Longitude==0))
-                fillCurrentPositionAsync();
+
+            _vpoint = new ViewRoutePoint(routeId, routePointId);
+            if (string.IsNullOrEmpty(routePointId))
+            {
+                int index = _rnd.Next(0, _pointNames.Count() - 1);
+                Name = _pointNames[index];
+                //if ((_vpoint.Latitude == 0) && (_vpoint.Longitude == 0))
+                FillCurrentPositionAsync();
+            }
+
             Coordinates = Latitude + "," + Longitude;
         }
 
@@ -147,27 +154,27 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        private async void fillCurrentPositionAsync()
+        private async void FillCurrentPositionAsync()
         {
             var locator = CrossGeolocator.Current;
             var position = await locator.GetPositionAsync(TimeSpan.FromSeconds(10));
             Latitude = position.Latitude;
             Longitude = position.Longitude;
             Coordinates = Latitude + "," + Longitude;
-            Address = await getPositionAddress(locator, position);
-
-            int index = _rnd.Next(0, _pointNames.Count() - 1);
-            Name = _pointNames[index];
+            Address = await GetPositionAddress(locator, position);
         }
 
-        private async Task<string> getPositionAddress(IGeolocator locator, Position position)
+        private async Task<string> GetPositionAddress(IGeolocator locator, Position position)
         {
             string address = string.Empty;
             try
             {
                 IEnumerable<Address> addresses = await locator.GetAddressesForPositionAsync(position);
                 var addressItem = addresses.FirstOrDefault();
-                address = $"{addressItem.SubThoroughfare}, {addressItem.Thoroughfare}, {addressItem.Locality}, {addressItem.CountryName}";
+                if (addressItem != null)
+                {
+                    address = $"{addressItem.SubThoroughfare}, {addressItem.Thoroughfare}, {addressItem.Locality}, {addressItem.CountryName}";
+                }
             }
             catch (Exception exception)
             {
@@ -176,18 +183,6 @@ namespace QuestHelper.ViewModel
             }
             return address;
         }
-
-        /*async void saveRoutePoint()
-        {
-            if(_vpoint.Save())
-            {
-                await Navigation.PopAsync();
-            }
-            else
-            {
-                HandleError.Process("RoutePoint", "SaveRoutePoint", new Exception("Error while adding new point"), true);
-            }
-        }*/
 
         public double Latitude
         {
@@ -241,8 +236,7 @@ namespace QuestHelper.ViewModel
                 if (_vpoint.Name != value)
                 {
                     _vpoint.Name = value;
-                    //_vpoint.Version++;
-                    //_vpoint.Save();
+                    ApplyChanges();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
                 }                   
             }
@@ -251,6 +245,7 @@ namespace QuestHelper.ViewModel
                 return _vpoint.Name;
             }
         }
+
         public string ImagePath
         {
             get
@@ -296,8 +291,6 @@ namespace QuestHelper.ViewModel
                 if(_vpoint.Address != value)
                 {
                     _vpoint.Address = value;
-                    //_vpoint.Version++;
-                    //_vpoint.Save();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Address"));
                 }
             }

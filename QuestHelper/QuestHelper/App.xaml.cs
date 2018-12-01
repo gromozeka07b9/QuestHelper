@@ -21,14 +21,14 @@ namespace QuestHelper
 		{
 			InitializeComponent();
 
-            MainPage = new View.MainPage();
+			MainPage = new View.MainPage();
         }
 
         protected override async void OnStart ()
 		{
             AppCenter.Start("android=85c4ccc3-f315-427c-adbd-b928e461bcc8;", typeof(Analytics), typeof(Crashes));
 
-		    if (Setup())
+            if (Setup())
 		    {
                 DateTime startTime = DateTime.Now;
                 var syncResult = await SyncServer.SyncAllAsync();

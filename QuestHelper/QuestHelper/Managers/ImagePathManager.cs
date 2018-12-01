@@ -18,5 +18,10 @@ namespace QuestHelper.Managers
         {
             return isPreview ? $"img_{mediaId}_preview.jpg" : $"img_{mediaId}.jpg";
         }
+
+        public static string GetPicturesDirectory()
+        {
+            return Path.Combine(DependencyService.Get<IPathService>().PrivateExternalFolder, "pictures");
+        }
     }
 }

@@ -36,7 +36,7 @@ namespace QuestHelper.Managers
             List<ViewRoutePoint> collection = new List<ViewRoutePoint>();
             try
             {
-                var collectionRealm = _realmInstance.All<RoutePoint>().Where(point => point.RouteId == routeId);
+                var collectionRealm = _realmInstance.All<RoutePoint>().Where(point => point.RouteId == routeId).OrderByDescending(point=>point.CreateDate);
                 foreach(var item in collectionRealm)
                 {
                     collection.Add(new ViewRoutePoint(item.RouteId, item.RoutePointId));

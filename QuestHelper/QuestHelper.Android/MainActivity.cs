@@ -26,8 +26,13 @@ namespace QuestHelper.Droid
 
         public void OnTabSelected(int position)
         {
+            AuthService authService = new AuthService();
             var pageCollections = new PagesCollection();
             MainPageMenuItem destinationPage = pageCollections.GetPageByPosition(position);
+            if (string.IsNullOrEmpty(authService.GetAuthToken()))
+            {
+                destinationPage = pageCollections.GetLoginPage();
+            }
             Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(new PageNavigationMessage() { DestinationPageDescription = destinationPage}, string.Empty);
         }
 
@@ -45,6 +50,15 @@ namespace QuestHelper.Droid
             _bottomBar.UseFixedMode();
             _bottomBar.SetFixedInactiveIconColor("#B3B8C2");
             _bottomBar.SetActiveTabColor("#3A3A9C");
+            AuthService authService = new AuthService();
+            /*if (string.IsNullOrEmpty(authService.GetAuthToken()))
+            {
+                _bottomBar.Visibility = ViewStates.Invisible;
+            }
+            else
+            {
+                _bottomBar.Visibility = ViewStates.Visible;
+            }*/
             _bottomBar.SetItems(Resource.Menu.bottombar_menu);
             _bottomBar.SetOnTabClickListener(this);
         }

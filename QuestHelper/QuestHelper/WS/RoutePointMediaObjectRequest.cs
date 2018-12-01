@@ -40,13 +40,13 @@ namespace QuestHelper.WS
             }
             return deserializedValue;
         }*/
-        public async Task<bool> GetImage(string routePointId, string routePointMediaObjectId, string filename)
+        public async Task<bool> GetImage(string routePointId, string routePointMediaObjectId, string pathToPictures, string filename)
         {
             bool result = false;
             try
             {
                 ApiRequest api = new ApiRequest();
-                string pathToMediaFile = ImagePathManager.GetImagePath(routePointMediaObjectId);
+                string pathToMediaFile = Path.Combine(pathToPictures, filename);
                 result = await api.HttpRequestGetFile($"{this._hostUrl}/routepointmediaobjects/{routePointId}/{routePointMediaObjectId}/{filename}", pathToMediaFile);
             }
             catch (Exception e)
