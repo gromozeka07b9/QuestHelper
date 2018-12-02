@@ -4,6 +4,42 @@
              x:Class="QuestHelper.App">
 	<Application.Resources>
         <ResourceDictionary>
+            
+            <Style x:Key="ContentPage" TargetType="ContentPage">
+                <Setter Property="BackgroundColor" Value="#F5F5F5"/>
+            </Style>
+
+            <Style x:Key="StandartTextLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontSize" Value="12"/>
+            </Style>
+            
+            <Style x:Key="RouteTextLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontSize" Value="12"/>
+            </Style>
+
+            <!--Style x:Key="RouteTextLabelDark" TargetType="Label">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontSize" Value="12"/>
+            </-->
+
+            <Style x:Key="StandartButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#3A3A9C"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontSize" Value="10"/>
+            </Style>
+
+            <Style x:Key="StandartEntryCaption" TargetType="Entry">
+                <Setter Property="TextColor" Value="#3A3A9C"/>
+                <Setter Property="FontSize" Value="16"/>
+            </Style>
+
+            <Style x:Key="StandartCaptionImage" TargetType="Image">
+                <Setter Property="HeightRequest" Value="32"/>
+                <Setter Property="WidthRequest" Value="32"/>
+            </Style>
+
             <Style x:Key="NavigationButton" TargetType="Image">
                 <Setter Property="Margin" Value="0,0,0,10"/>
                 <Setter Property="HeightRequest" Value="64"/>
@@ -18,12 +54,12 @@
                     </Grid.RowDefinitions>
                     <ContentPresenter Grid.Row="0"></ContentPresenter>
                     <StackLayout Grid.Row="1" Orientation="Horizontal" Padding="0" HorizontalOptions="Center">
-                        <Image Source="earth.png" Style="{StaticResource NavigationButton}">
+                        <Image Source="list.png" Style="{StaticResource NavigationButton}">
                             <Image.GestureRecognizers>
                                 <TapGestureRecognizer Command="{TemplateBinding Parent.BindingContext.MapOverviewCommand}"></TapGestureRecognizer>
                             </Image.GestureRecognizers>
                         </Image>
-                        <Image Source="list.png" Style="{StaticResource NavigationButton}">
+                        <Image Source="earth.png" Style="{StaticResource NavigationButton}">
                             <Image.GestureRecognizers>
                                 <TapGestureRecognizer Command="{TemplateBinding Parent.BindingContext.MapOverviewCommand}"></TapGestureRecognizer>
                             </Image.GestureRecognizers>

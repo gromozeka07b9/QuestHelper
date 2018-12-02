@@ -1,47 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using QuestHelper.Model.DB;
+using QuestHelper.LocalDB.Model;
+using QuestHelper.Model;
 using Realms;
 
 namespace QuestHelper.Managers
 {
     public class RouteManager
     {
-        Realm _realmInstance;
+        readonly Realm _realmInstance;
         public RouteManager()
         {
-            //_realmInstance = Realm.GetInstance();
             _realmInstance = RealmAppInstance.GetAppInstance();
         }
         internal IEnumerable<Route> GetRoutes()
         {
-            var points = _realmInstance.All<Model.DB.Route>();
-            /*foreach (var item in points)
-            {
-                _pointsOfNewRoute.Add($"name:{item.Name} latitude:{item.Latitude} longitude: {item.Longitude}");
-            }*/
+            var points = _realmInstance.All<Route>();
             return points;
         }
 
-        internal bool Save(RoutePoint point, Route route)
+        public IEnumerable<Route> GetNotSynced()
+        {
+            return _realmInstance.All<Route>().Where(item => !item.ServerSynced);
+        }
+
+        public bool Save(ViewRoute viewRoute)
         {
             bool result = false;
+            RouteManager routeManager = new RouteManager();
             try
             {
                 _realmInstance.Write(() =>
                 {
-                    _realmInstance.Add(route);
-                    _realmInstance.Add(point);
-                }
-                );
+                    var route = !string.IsNullOrEmpty(viewRoute.Id) ? _realmInstance.Find<Route>(viewRoute.Id) : null;
+                    if (null == route)
+                    {
+                        route = string.IsNullOrEmpty(viewRoute.Id) ? new Route() : new Route() { RouteId = viewRoute.Id };
+                        _realmInstance.Add(route);
+                    }
+                    route.Name = viewRoute.Name;
+                    route.Version = viewRoute.Version;
+                    viewRoute.Refresh(route.RouteId);
+                });
                 result = true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                //пишем лог
+                HandleError.Process("RouteManager", "AddRoute", e, false);
             }
             return result;
+        }
+
+        internal Route GetRouteById(string routeId)
+        {
+            return _realmInstance.Find<Route>(routeId);
         }
     }
 }

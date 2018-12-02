@@ -1,7 +1,12 @@
-﻿using Plugin.Geolocator;
+﻿using Microsoft.AppCenter.Crashes;
+using Plugin.Geolocator;
+using QuestHelper.View.Geo;
+using QuestHelper.ViewModel;
 using Realms;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
@@ -9,38 +14,58 @@ namespace QuestHelper.View
 {
     public partial class MapOverviewPage : ContentPage
     {
+        MapOverviewViewModel vm;
         public MapOverviewPage()
         {
             InitializeComponent();
-            centerMap();
+            vm = new MapOverviewViewModel();
+            vm.Navigation = this.Navigation;
+            BindingContext = vm;
+
         }
 
-        async void centerMap()
+        private void PointPin_Clicked(object sender, EventArgs e)
         {
-            var realm = Realm.GetInstance();
-            IQueryable<Model.DB.RoutePoint> points = realm.All<Model.DB.RoutePoint>();
-            var locator = CrossGeolocator.Current;
-            var lastPosition = points.FirstOrDefault();
-            if(lastPosition!=null)
+            var point = (Pin)sender;
+            vm.OpenPointPropertiesAsync(point.Position.Latitude, point.Position.Longitude);
+        }
+
+        private async void ContentPage_AppearingAsync(object sender, EventArgs e)
+        {
+            CustomMapView customMap = new CustomMapView((CustomMap)this.Content, 15);
+            var routePoints = vm.GetPointsForOverview();
+            foreach (var point in routePoints)
             {
-                MapOverview.MoveToRegion(MapSpan.FromCenterAndRadius(new Xamarin.Forms.Maps.Position(lastPosition.Latitude, lastPosition.Longitude), Distance.FromKilometers(1)));
-                var position1 = new Xamarin.Forms.Maps.Position(lastPosition.Latitude, lastPosition.Longitude); // Latitude, Longitude
-                var pin = new Pin
-                {
-                    Type = PinType.Place,
-                    Position = position1,
-                    Label = "Точка",
-                    Address = "Ваше недавнее местоположение"
-                };
-                MapOverview.Pins.Add(pin);
+                customMap.AddPin(point.Latitude, point.Longitude, point.Name, point.Address, PointPin_Clicked);
             }
-            var currentPosition = await locator.GetPositionAsync(TimeSpan.FromSeconds(10));
-            MapOverview.MoveToRegion(MapSpan.FromCenterAndRadius(new Xamarin.Forms.Maps.Position(currentPosition.Latitude, currentPosition.Longitude), Distance.FromKilometers(1)));
+
+            await centerMap(customMap);
         }
 
-        private void ContentPage_Appearing(object sender, EventArgs e)
+        private async Task centerMap(CustomMapView customMap)
         {
-            //centerMap();
+            if (await customMap.GetPositionAsync())
+            {
+                if (!customMap.CenterMapToPosition(customMap.CurrentPosition.Latitude, customMap.CurrentPosition.Longitude))
+                {
+                    bool answerRetry = await DisplayAlert("Ошибка", customMap.LastError + " Повторить?", "Да", "Нет");
+                    if (answerRetry)
+                    {
+                        await centerMap(customMap);
+                    }
+                }
+            }
+            else
+            {
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    bool answerRetry = await DisplayAlert("Ошибка", customMap.LastError + " Повторить поиск?", "Да", "Нет");
+                    if (answerRetry)
+                    {
+                        await centerMap(customMap);
+                    }
+                });
+            }
         }
     }
 }

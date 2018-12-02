@@ -2,13 +2,26 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+	<RunCodeAnalysis>False</RunCodeAnalysis>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Realm.Database" Version="3.0.0" />
+    <Compile Remove="ViewModel\RouteViewModel - old.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AppCenter" Version="1.9.0" />
+    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="1.9.0" />
+    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="1.9.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Realm.Database" Version="3.2.1" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.2" />
     <PackageReference Include="Xam.Plugin.Geolocator" Version="4.5.0.6" />
-    <PackageReference Include="Xamarin.Forms" Version="3.1.0.583944" />
-    <PackageReference Include="Xamarin.Forms.Maps" Version="3.1.0.583944" />
+    <PackageReference Include="Xam.Plugin.Media" Version="4.0.1.5" />
+    <PackageReference Include="Xamarin.Forms" Version="3.2.0.871581" />
+    <PackageReference Include="Xamarin.Forms.Maps" Version="3.2.0.871581" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\QuestHelper.LocalDB\QuestHelper.LocalDB.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,8 +31,17 @@
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="View\MainPage.xaml.cs">
       <DependentUpon>*.xaml</DependentUpon>
     </Compile>
-    <Compile Update="View\EditRoutePage.xaml.cs">
-      <DependentUpon>EditRoutePage.xaml</DependentUpon>
+    <Compile Update="View\EditRoutePointDescriptionPage.xaml.cs">
+      <DependentUpon>EditRoutePointDescriptionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="View\RouteCreatedPage.xaml.cs">
+      <DependentUpon>RouteCreatedPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="View\NewRoutePage.xaml.cs">
+      <DependentUpon>NewRoutePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="View\RoutePage.xaml.cs">
+      <DependentUpon>RoutePage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -30,10 +52,13 @@
     <EmbeddedResource Update="View\AroundMePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="View\LoginPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="View\MasterMainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="View\EditRoutePage.xaml">
+    <EmbeddedResource Update="View\RoutePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="View\RoutePointPage.xaml">
@@ -45,5 +70,41 @@
     <EmbeddedResource Update="View\UserProfilePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="View\AboutPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="View\AroundMePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="View\MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="View\MapOverviewPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="View\MasterMainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="View\RoutePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="View\RoutePointPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="View\RoutesPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="View\TabbedMainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="View\UserProfilePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
 </Project>

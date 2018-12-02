@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Realms.Exceptions;
+using Xamarin.Forms;
 
 namespace QuestHelper.Managers
 {
@@ -12,7 +14,14 @@ namespace QuestHelper.Managers
         {
             if(_realmInstance == null)
             {
-                _realmInstance = Realm.GetInstance();
+                try
+                {
+                    _realmInstance = Realm.GetInstance();
+                }
+                catch (Exception e)
+                {
+                    HandleError.Process("RealmAppInstance", "GetAppInstance", e, true);
+                }
             }
             return _realmInstance;
         }

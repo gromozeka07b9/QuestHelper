@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:View="clr-namespace:QuestHelper.View"
              x:Class="QuestHelper.View.TabbedMainPage" >
-    <View:MapOverviewPage/>
     <View:RoutesPage />
-    <View:EditRoutePage />
+    <View:MapOverviewPage/>
+    <View:RoutePage />
     <View:AroundMePage />
     <View:UserProfilePage />
     <View:AboutPage />

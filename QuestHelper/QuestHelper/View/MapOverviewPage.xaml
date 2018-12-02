@@ -3,13 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
              xmlns:viewmodel="clr-namespace:QuestHelper.ViewModel;assembly=QuestHelper"
-             x:Class="QuestHelper.View.MapOverviewPage" Appearing="ContentPage_Appearing">
-    <ContentPage.BindingContext>
-        <viewmodel:MapOverviewPageViewModel />
-    </ContentPage.BindingContext>
-
+             xmlns:local="clr-namespace:QuestHelper.View"
+             x:Class="QuestHelper.View.MapOverviewPage" Appearing="ContentPage_AppearingAsync">
     <ContentPage.Content>
-        <maps:Map
+        <local:CustomMap
                 x:Name="MapOverview"
                 IsShowingUser="true"
                 MapType="Street" 

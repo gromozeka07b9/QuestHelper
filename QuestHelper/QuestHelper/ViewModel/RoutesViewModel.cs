@@ -1,9 +1,11 @@
 ﻿using QuestHelper.Managers;
-using QuestHelper.Model.DB;
+using QuestHelper.LocalDB.Model;
 using QuestHelper.View;
+using QuestHelper.WS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -16,60 +18,77 @@ namespace QuestHelper.ViewModel
         private string _routeId;
         private IEnumerable<Route> _routes;
         private Route _routeItem;
+        private RouteManager _routeManager = new RouteManager();
+        //private RoutesApiRequest _api = new RoutesApiRequest("http://questhelperserver.azurewebsites.net");
+        private bool _noRoutesWarningIsVisible = false;
+        private bool _isRefreshing = false;
+
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
-        public ICommand MapOverviewCommand { get; private set; }
-        public ICommand RoutesCommand { get; private set; }
-        public ICommand NewRouteCommand { get; private set; }
-        public ICommand AroundMeCommand { get; private set; }
-        public ICommand MyProfileCommand { get; private set; }
-        public ICommand EditRouteCommand { get; private set; }
+        public ICommand AddNewRouteCommand { get; private set; }
+        public ICommand RefreshListRoutesCommand { get; private set; }
 
         public RoutesViewModel()
         {
-            MapOverviewCommand = new Command(mapOverviewShow);
-            RoutesCommand = new Command(routesShow);
-            NewRouteCommand = new Command(newRouteShow);
-            AroundMeCommand = new Command(aroundMeShow);
-            MyProfileCommand = new Command(myProfileShow);
-            //EditRouteCommand = new Command(editRoute);
-            EditRouteCommand = new Command<string>(editRoute);
+            AddNewRouteCommand = new Command(addNewRouteCommandAsync);
+            RefreshListRoutesCommand = new Command(refreshListRoutesCommand);
+        }
 
-            RouteManager manager = new RouteManager();
+        async void refreshListRoutesCommand()
+        {
+            IsRefreshing = true;
+            Routes = _routeManager.GetRoutes();
+            NoRoutesWarningIsVisible = Routes.Count() == 0;
+            IsRefreshing = false;
+#if DEBUG
+            //List<Route> routes = await _api.GetRoutes();
+            //_routeManager.UpdateLocalData(routes);
+#else
+            //List<Route> routes = await _api.GetRoutes();
+            //_routeManager.UpdateLocalData(routes);
+#endif
+        }
 
-            _routes = manager.GetRoutes();
-            /*foreach (var item in _routesObj)
+        async void addNewRouteCommandAsync()
+        {
+            await Navigation.PushAsync(new NewRoutePage(!Routes.Any()));
+        }
+
+        public bool IsRefreshing
+        {
+            set
             {
-                item.Name = "test";
-            }*/
+                if (_isRefreshing != value)
+                {
+                    _isRefreshing = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("IsRefreshing"));
+                    }
+                }
+            }
+            get
+            {
+                return _isRefreshing;
+            }
         }
-
-        async void editRoute(string routeId)
+        public bool NoRoutesWarningIsVisible
         {
-        }
-
-        async void mapOverviewShow()
-        {
-            //this.Navigation = Application.Current.MainPage.Navigation;
-            //await Navigation.PushAsync(new MapOverviewPage());
-        }
-
-        async void routesShow()
-        {
-            //this.Navigation = Application.Current.MainPage.Navigation;
-            //await Navigation.PushAsync(new RoutesPage());
-        }
-        async void newRouteShow()
-        {
-
-        }
-        async void aroundMeShow()
-        {
-
-        }
-        async void myProfileShow()
-        {
-
+            set
+            {
+                if (_noRoutesWarningIsVisible != value)
+                {
+                    _noRoutesWarningIsVisible = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("NoRoutesWarningIsVisible"));
+                    }
+                }
+            }
+            get
+            {
+                return _noRoutesWarningIsVisible;
+            }
         }
         public string RouteId
         {
@@ -96,8 +115,9 @@ namespace QuestHelper.ViewModel
                 if (_routeItem != value)
                 {
                     _routeItem = value;
-                    Navigation.PushAsync(new EditRoutePage(value));
-
+                    Navigation.PushAsync(new RoutePage(value, false));
+                    _routeItem = null;
+                    PropertyChanged(this, new PropertyChangedEventArgs("SelectedRouteItem"));
                 }
             }
         }

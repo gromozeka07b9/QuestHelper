@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.sd.QuestHelper" android:installLocation="auto">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.13" package="com.sd.QuestHelper" android:installLocation="auto" android:versionCode="13">
 	<uses-sdk android:minSdkVersion="15" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -10,5 +10,8 @@
 	<uses-permission android:name="android.permission.INTERNET" />
 	<application android:label="QuestHelper">
 		<meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyApt1-irM_CU02ddx-hrWAEgcbhdWwPc0A" />
+		<provider android:name="android.support.v4.content.FileProvider" android:authorities="${applicationId}.fileprovider" android:exported="false" android:grantUriPermissions="true">
+			<meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths"></meta-data>
+		</provider>
 	</application>
 </manifest>

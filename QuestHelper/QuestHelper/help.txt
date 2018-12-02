@@ -5,3 +5,23 @@ https://www.c-sharpcorner.com/article/practical-guide-for-listview-cells-in-xama
 
 pull to refresh
 https://forums.xamarin.com/discussion/35451/xamarin-forms-1-4-0-released
+
+geocoder
+https://stackoverrun.com/ru/q/12565871/google-map-%D0%B3%D0%B5%D0%BE%D0%BA%D0%BE%D0%B4%D0%B5%D1%80-%D0%B8-movetoregion-%D0%BD%D0%B5-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0%D0%B5%D1%82
+
+https://jamesmontemagno.github.io/GeolocatorPlugin/Geocoding.html
+
+mvvm
+https://redpillxamarin.com/category/tutorial/200-series/
+
+best practices
+https://blog.rsuter.com/recommendations-best-practices-implementing-mvvm-xaml-net-applications/
+
+resize
+https://forums.xamarin.com/discussion/67531/how-to-resize-image-file-on-xamarin-forms-writeablebitmap-package-cant-be-added
+
+polyline
+https://github.com/xamarin/xamarin-forms-samples/blob/master/CustomRenderers/Map/Polyline/MapOverlay/MapPageCS.cs
+
+upload images
+https://dzone.com/articles/how-to-upload-images-to-an-aspnet-core-rest-servic

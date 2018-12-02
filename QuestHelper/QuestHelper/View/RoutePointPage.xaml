@@ -1,31 +1,68 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="QuestHelper.View.RoutePointPage">
+             xmlns:local="clr-namespace:QuestHelper.View"
+             x:Class="QuestHelper.View.RoutePointPage" Style="{StaticResource ContentPage}" Appearing="ContentPage_AppearingAsync">
     <ContentPage.ToolbarItems>
-        <ToolbarItem NavigationPage.HasNavigationBar="True" Command="{Binding SaveCommand}" Text="V" ></ToolbarItem>
+        <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding DeleteCommand}" Icon="delete.png"></ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <TableView Intent="Form" HasUnevenRows="True">
-            <TableRoot>
-                <TableSection Title="Параметры данной точки:">
-                    <ViewCell>
-                        <StackLayout Orientation="Horizontal" Padding="10,0,0,0">
-                            <Label Text="{Binding Coordinates}" />
-                        </StackLayout>
-                    </ViewCell>
-                    <EntryCell Placeholder="Название" Text="{Binding Name}" Keyboard="Keyboard.Default">
-                    </EntryCell>
-                    <ImageCell ImageSource="icon.png" Text="example" />
-                    <ImageCell ImageSource="icon.png" Text="example" />
-                    <ImageCell ImageSource="icon.png" Text="example" />
-                    <ViewCell Height="200">
-                        <StackLayout Orientation="Horizontal" Padding="10,0,0,0">
-                            <Editor Text="{Binding Description}" HorizontalOptions="FillAndExpand"></Editor>
-                        </StackLayout>
-                    </ViewCell>
-                </TableSection>
-            </TableRoot>
-        </TableView>
+        <ScrollView Orientation="Vertical">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="200"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="2*"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="250"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Image Grid.Row="0" Source="{Binding ImagePreviewPath}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" Margin="0">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding TakePhotoCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
+                <!--Image Grid.Row="0" Source="https://www.xamarin.com/content/images/pages/forms/example-app.png" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" Margin="0">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding TakePhotoCommand}" />
+                    </Image.GestureRecognizers>
+                </-->
+                <StackLayout Grid.Row="1" Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="10,0,10,5">
+                    <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start"></Image>
+                    <Editor Margin="0" Text="{Binding Name}" FontSize="12" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand" Completed="Editor_OnCompleted"></Editor>
+                </StackLayout>
+                <StackLayout Grid.Row="2" Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="10,0,10,5">
+                    <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start"></Image>
+                    <Label Text="{Binding Address}" Margin="0" Style="{StaticResource RouteTextLabel}" VerticalTextAlignment="Start"/>
+                </StackLayout>
+                <StackLayout Grid.Row="3" Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="10,0,10,5">
+                    <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start"></Image>
+                    <Label Text="{Binding Description}" Margin="0" Style="{StaticResource RouteTextLabel}" TextColor="Gray" LineBreakMode="WordWrap" VerticalTextAlignment="Start">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding EditDescriptionCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" Grid.Row="4" Padding="1" Margin="10,0,10,5" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start"></Image>
+                    <Label Text="{Binding Coordinates}" Style="{StaticResource RouteTextLabel}" VerticalTextAlignment="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding CopyCoordinatesCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
+                <StackLayout Orientation="Vertical" Grid.Row="5" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <local:CustomMap
+                    x:Name="PointMapOverview"
+                    IsShowingUser="true"
+                    MapType="Street" 
+                    />
+                </StackLayout>
+            </Grid>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
