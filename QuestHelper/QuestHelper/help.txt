@@ -25,3 +25,6 @@ https://github.com/xamarin/xamarin-forms-samples/blob/master/CustomRenderers/Map
 
 upload images
 https://dzone.com/articles/how-to-upload-images-to-an-aspnet-core-rest-servic
+
+token auth
+https://metanit.com/sharp/aspnet5/23.7.php
