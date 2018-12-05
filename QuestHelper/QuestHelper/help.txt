@@ -28,3 +28,4 @@ https://dzone.com/articles/how-to-upload-images-to-an-aspnet-core-rest-servic
 
 token auth
 https://metanit.com/sharp/aspnet5/23.7.php
+https://stackoverflow.com/questions/21978658/invalidating-json-web-tokens

@@ -13,8 +13,5 @@ namespace QuestHelper.Server
         {
             optionsBuilder.UseMySql(@"Data Source=dbquesthelper.mysql.database.azure.com; Database=QuestHelper; User Id=sa@dbquesthelper; Password=Klim2002;");
         }
-        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-        }*/
     }
 }

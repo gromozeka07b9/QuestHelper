@@ -10,9 +10,12 @@ namespace QuestHelper.Server.Auth
     public class AuthOptions
     {
         public const string ISSUER = "iGosh.pro"; // издатель токена
+#if DEBUG
         public const string AUDIENCE = "http://localhost:31193/"; // потребитель токена
+#else
+        public const string AUDIENCE = "http://igosh.pro"; // потребитель токена
+#endif
         const string KEY = "";   // ключ для шифрации
-        public const int LIFETIME = 1; // время жизни токена - 1 минута
         public static SymmetricSecurityKey GetSymmetricSecurityKey()
         {
             return new SymmetricSecurityKey(Encoding.ASCII.GetBytes(KEY));

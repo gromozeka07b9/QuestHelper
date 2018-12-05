@@ -10,57 +10,45 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using QuestHelper.Server.Auth;
+using QuestHelper.Server.Managers;
 using QuestHelper.Server.Models;
 
-namespace QuestHelper.Server.Controllers
+namespace QuestHelper.Server.Controllers.Account
 {
-    //[Produces("application/json")]
     [Route("api/[controller]")]
     public class AccountController : Controller
     {
-        private List<User> people = new List<User>
-        {
-            new User { Name ="admin@gmail.com", Password="12345", Role = "admin" },
-            new User { Name ="qwerty", Password="55555", Role = "user" }
-        };
-
         [HttpPost]
         public async Task Token()
         {
             var username = Request.Form["username"];
             var password = Request.Form["password"];
 
-            var identity = GetIdentity(username, password);
-            if (identity == null)
+            IdentityManager identityManager = new IdentityManager();
+            var identity = identityManager.GetIdentity(username, password);
+            if (identity != null)
+            {
+                var encodedJwt = JwtManager.GetEncodedJwt(identity);
+
+                var response = new
+                {
+                    access_token = encodedJwt,
+                    username = identity.Name
+                };
+
+                // сериализация ответа
+                Response.ContentType = "application/json";
+                await Response.WriteAsync(JsonConvert.SerializeObject(response, new JsonSerializerSettings { Formatting = Formatting.Indented }));
+            }
+            else
             {
                 Response.StatusCode = 400;
                 await Response.WriteAsync("Invalid username or password.");
-                return;
             }
-
-            var now = DateTime.UtcNow;
-            // создаем JWT-токен
-            var jwt = new JwtSecurityToken(
-                issuer: AuthOptions.ISSUER,
-                audience: AuthOptions.AUDIENCE,
-                notBefore: now,
-                claims: identity.Claims,
-                expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
-                signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-
-            var response = new
-            {
-                access_token = encodedJwt,
-                username = identity.Name
-            };
-
-            // сериализация ответа
-            Response.ContentType = "application/json";
-            await Response.WriteAsync(JsonConvert.SerializeObject(response, new JsonSerializerSettings { Formatting = Formatting.Indented }));
+            return;
         }
 
-        private ClaimsIdentity GetIdentity(string username, string password)
+        /*private ClaimsIdentity GetIdentity(string username, string password)
         {
             User person = people.FirstOrDefault(x => x.Name == username && x.Password == password);
             if (person != null)
@@ -78,13 +66,20 @@ namespace QuestHelper.Server.Controllers
 
             // если пользователя не найдено
             return null;
-        }
+        }*/
 
         [Authorize]
         [HttpGet]
         public string Get()
         {
             return $"Name:{User.Identity.Name}";
+        }
+
+        [Authorize(Roles = "admin")]
+        [Route("getrole")]
+        public IActionResult GetRole()
+        {
+            return Ok("Ваша роль: администратор");
         }
 
     }
