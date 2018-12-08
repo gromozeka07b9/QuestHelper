@@ -24,7 +24,7 @@ namespace QuestHelper.Server.Controllers.Account
             var username = Request.Form["username"];
             var password = Request.Form["password"];
 
-            IdentityManager identityManager = new IdentityManager();
+            IdentityManager identityManager = new IdentityManager(ServerDbContext.GetOptionsContextDbServer());
             var identity = identityManager.GetIdentity(username, password);
             if (identity != null)
             {

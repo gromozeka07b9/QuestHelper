@@ -13,15 +13,15 @@ namespace QuestHelper.Server.Managers
     /// </summary>
     public class IdentityManager
     {
-        //private ServerDbContext _db;
-        public IdentityManager()
+        private DbContextOptions<ServerDbContext> _dbOptions;
+        public IdentityManager(DbContextOptions<ServerDbContext> dbOptions)
         {
-            //_db = contextDatabase;
+            _dbOptions = dbOptions;
         }
         public ClaimsIdentity GetIdentity(string username, string password)
         {
             User user = new User();
-            using (var _db = new ServerDbContext())
+            using (var _db = new ServerDbContext(_dbOptions))
             {
                 user = _db.User.FirstOrDefault(x => x.Name == username && x.Password == password);
                 if (user != null)
