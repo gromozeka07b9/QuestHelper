@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using QuestHelper.Server.Auth;
@@ -18,47 +19,74 @@ namespace QuestHelper.Server.Controllers.Account
     [Route("api/[controller]")]
     public class AccountController : Controller
     {
+        private DbContextOptions<ServerDbContext> _dbOptions = ServerDbContext.GetOptionsContextDbServer();
+
         [HttpPost]
         public async Task Token()
         {
             var username = Request.Form["username"];
             var password = Request.Form["password"];
 
-            IdentityManager identityManager = new IdentityManager(ServerDbContext.GetOptionsContextDbServer());
-            var identity = identityManager.GetIdentity(username, password);
-            if (identity != null)
+            using (var _db = new ServerDbContext(_dbOptions))
             {
-                var encodedJwt = JwtManager.GetEncodedJwt(identity);
-
-                var response = new
+                User user = _db.User.FirstOrDefault(x => x.Name == username && x.Password == password);
+                if (user != null)
                 {
-                    access_token = encodedJwt,
-                    username = identity.Name
-                };
+                    IdentityManager identityManager = new IdentityManager();
+                    var identity = identityManager.GetIdentity(user);
+                    if (identity != null)
+                    {
+                        JwtManager jwt = new JwtManager(_dbOptions);
+                        var encodedJwt = jwt.GetEncodedJwt(identity);
+                        jwt.WriteJwtHashToDb(user, encodedJwt);
 
-                // сериализация ответа
-                Response.ContentType = "application/json";
-                await Response.WriteAsync(JsonConvert.SerializeObject(response, new JsonSerializerSettings { Formatting = Formatting.Indented }));
+                        var response = new
+                        {
+                            access_token = encodedJwt,
+                            username = identity.Name
+                        };
+
+                        // сериализация ответа
+                        Response.ContentType = "application/json";
+                        await Response.WriteAsync(JsonConvert.SerializeObject(response, new JsonSerializerSettings { Formatting = Formatting.Indented }));
+                    }
+                    else
+                    {
+                        Response.StatusCode = 500;
+                        await Response.WriteAsync("Error while generate token.");
+                    }
+                }
+                else
+                {
+                    Response.StatusCode = 400;
+                    await Response.WriteAsync("Invalid username or password.");
+                }
             }
-            else
-            {
-                Response.StatusCode = 400;
-                await Response.WriteAsync("Invalid username or password.");
-            }
+
             return;
         }
 
         [Authorize]
         [HttpGet]
-        public string Get()
+        public IActionResult Get()
         {
-            return $"Name:{User.Identity.Name}";
+            ValidateUser validateContext = new ValidateUser(_dbOptions, Request);
+            if(!validateContext.UserIsValid(User.Identity.Name))
+            {
+                return Unauthorized();
+            }
+            return Ok($"Name:{User.Identity.Name}");
         }
 
         [Authorize(Roles = "admin")]
         [Route("getrole")]
         public IActionResult GetRole()
         {
+            ValidateUser validateContext = new ValidateUser(_dbOptions, Request);
+            if (!validateContext.UserIsValid(User.Identity.Name))
+            {
+                return Unauthorized();
+            }
             return Ok("Ваша роль: администратор");
         }
 

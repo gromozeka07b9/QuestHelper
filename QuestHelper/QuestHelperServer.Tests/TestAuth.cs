@@ -36,7 +36,9 @@ namespace QuestHelperServer.Tests
                 new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
                     ClaimsIdentity.DefaultRoleClaimType);
 
-            string encodedStringJwt = JwtManager.GetEncodedJwt(testIdentity);
+            var options = ServerDbContext.GetOptionsContextDbServer(true);
+            JwtManager jwt = new JwtManager(options);
+            string encodedStringJwt = jwt.GetEncodedJwt(testIdentity);
 
             Assert.False(string.IsNullOrEmpty(encodedStringJwt));
         }
@@ -44,40 +46,72 @@ namespace QuestHelperServer.Tests
         [Fact]
         public void TestMust_GetIdentityOk()
         {
-            var users = new[]
-            {
-                new User() {Name = "user1", Password = "password1", Role = "Admin"},
-                new User() {Name = "user2", Password = "password2", Role = "Guest"},
-                new User() {Name = "user3", Password = "password3", Role = "Guest"}
-            };
-
-            //var options = new DbContextOptionsBuilder<ServerDbContext>().UseInMemoryDatabase(databaseName:"for unit test").Options;
             var options = ServerDbContext.GetOptionsContextDbServer(true);
-            using (var context = new ServerDbContext(options))
-            {
-                //context.User.Add(new User(){Name = "test", Password = "pass"});
-                context.User.AddRange(users);
-                context.SaveChanges();
-                var test = context.User.Where(x => x.Name.Length > 0);
-
-            }
+            var users = prepareUsers(options);
 
             using (var context = new ServerDbContext(options))
             {
-                IdentityManager identity = new IdentityManager(options);
-                var result = identity.GetIdentity("user2", "password2");
+                IdentityManager identity = new IdentityManager();
+                var user = context.User.Find(users[0].UserId);
+                var result = identity.GetIdentity(user);
                 Assert.True(result.IsAuthenticated);
             }
-            //users.Add(new User() { });
-            //dbContext.User = new DbSet<User>();
-            //DbContextMockFactory.
-            //var dbContext = new Mock<ServerDbContext>();
-            //dbContext.Setup(x => x.User).Returns(new User() {Name = "name1"});
-            //var dbContextMock = new TestDbContext(new DbContextOptions<DbContext>());
-            //dbContextMock.Users.Add(new User(){Name = "name1", Password = "password1"});
-            //var test = dbContextMock.Users.FirstOrDefault(x => x.Name == "name1");
-            //IdentityManager identityManager = new IdentityManager();
-            //Assert.False(test==null);
+        }
+
+        [Fact]
+        public void TestMust_TokenHashWrited()
+        {
+            var options = ServerDbContext.GetOptionsContextDbServer(true);
+            var users = prepareUsers(options);
+
+            using (var context = new ServerDbContext(options))
+            {
+                IdentityManager identityManager = new IdentityManager();
+                var user = context.User.Find(users[0].UserId);
+                var identity = identityManager.GetIdentity(user);
+
+                JwtManager jwt = new JwtManager(options);
+                var encodedJwt = jwt.GetEncodedJwt(identity);
+                jwt.WriteJwtHashToDb(user, encodedJwt);
+                user = context.User.Find(users[0].UserId);
+
+
+                Assert.False(string.IsNullOrEmpty(user.TokenHash));
+            }
+        }
+
+        private User[] prepareUsers(DbContextOptions<ServerDbContext> options)
+        {
+            var users = GetUsersFixture();
+
+            using (var context = new ServerDbContext(options))
+            {
+                try
+                {
+                    foreach (var user in context.User)
+                    {
+                        context.User.Remove(user);
+                    }
+                    context.SaveChanges();
+                }
+                catch
+                {
+                }
+                context.User.AddRange(users);
+                context.SaveChanges();
+            }
+
+            return users;
+        }
+
+        private User[] GetUsersFixture()
+        {
+            return new[]
+            {
+                new User() {UserId = "1", Name = "user1", Password = "password1", Role = "Admin"},
+                new User() {UserId = "2", Name = "user2", Password = "password2", Role = "Guest"},
+                new User() {UserId = "3", Name = "user3", Password = "password3", Role = "Guest"}
+            };
         }
     }
 }

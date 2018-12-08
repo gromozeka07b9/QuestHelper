@@ -16,6 +16,7 @@ namespace QuestHelper.Server.Models
         public string Role { get; set; }
         public DateTime CreateDate { get; set; }
         public string Email { get; set; }
+        public string TokenHash { get; set; }
         public ICollection<Route> Routes { get; set; }
         /// <summary>
         /// Версия записи

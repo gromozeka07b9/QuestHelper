@@ -13,29 +13,19 @@ namespace QuestHelper.Server.Managers
     /// </summary>
     public class IdentityManager
     {
-        private DbContextOptions<ServerDbContext> _dbOptions;
-        public IdentityManager(DbContextOptions<ServerDbContext> dbOptions)
+        public ClaimsIdentity GetIdentity(User user)
         {
-            _dbOptions = dbOptions;
-        }
-        public ClaimsIdentity GetIdentity(string username, string password)
-        {
-            User user = new User();
-            using (var _db = new ServerDbContext(_dbOptions))
+            if (user != null)
             {
-                user = _db.User.FirstOrDefault(x => x.Name == username && x.Password == password);
-                if (user != null)
+                var claims = new List<Claim>
                 {
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimsIdentity.DefaultNameClaimType, user.Name),
-                        new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role)
-                    };
-                    ClaimsIdentity claimsIdentity =
-                        new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
-                            ClaimsIdentity.DefaultRoleClaimType);
-                    return claimsIdentity;
-                }
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, user.Name),
+                    new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role)
+                };
+                ClaimsIdentity claimsIdentity =
+                    new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
+                        ClaimsIdentity.DefaultRoleClaimType);
+                return claimsIdentity;
             }
             return null;
         }
