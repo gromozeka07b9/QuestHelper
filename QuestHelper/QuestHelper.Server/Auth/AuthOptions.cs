@@ -15,7 +15,7 @@ namespace QuestHelper.Server.Auth
 #else
         public const string AUDIENCE = "http://igosh.pro"; // потребитель токена
 #endif
-        const string KEY = "";   // ключ для шифрации
+        static string KEY = System.Environment.ExpandEnvironmentVariables("%GoshAuthTokenKey%");   // ключ для шифрации
         public static SymmetricSecurityKey GetSymmetricSecurityKey()
         {
             return new SymmetricSecurityKey(Encoding.ASCII.GetBytes(KEY));

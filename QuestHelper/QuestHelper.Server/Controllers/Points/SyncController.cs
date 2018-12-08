@@ -13,6 +13,8 @@ namespace QuestHelper.Server.Controllers.Points
     [Route("api/routepoints/[controller]")]
     public class SyncController : Controller
     {
+        private DbContextOptions<ServerDbContext> _dbOptions = ServerDbContext.GetOptionsContextDbServer();
+
         [HttpPost]
         public IActionResult Post([FromBody]SyncObjectStatus syncObject)
         {
@@ -20,7 +22,7 @@ namespace QuestHelper.Server.Controllers.Points
             SyncObjectStatus report = new SyncObjectStatus();
             if (syncObject.Statuses != null)
             {
-                using (var db = new ServerDbContext())
+                using (var db = new ServerDbContext(_dbOptions))
                 {
                     var syncIds = syncObject.Statuses.Select(t => t.ObjectId);
                     var dbObjects = db.RoutePoint.Where(r => syncIds.Contains(r.RoutePointId));

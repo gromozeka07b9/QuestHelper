@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using QuestHelper.Server.Models;
 
@@ -12,6 +13,8 @@ namespace QuestHelper.Server.Controllers.Routes
     [Route("api/routes/[controller]")]
     public class SyncController : Controller
     {
+        private DbContextOptions<ServerDbContext> _dbOptions = ServerDbContext.GetOptionsContextDbServer();
+
         [HttpPost]
         public IActionResult Post([FromBody]SyncObjectStatus syncObject)
         {
@@ -19,7 +22,7 @@ namespace QuestHelper.Server.Controllers.Routes
             SyncObjectStatus report = new SyncObjectStatus();
             if (syncObject.Statuses != null)
             {
-                using (var db = new ServerDbContext())
+                using (var db = new ServerDbContext(_dbOptions))
                 {
                     var syncIds = syncObject.Statuses.Select(t => t.ObjectId);
                     var dbRoutes = db.Route.Where(r => syncIds.Contains(r.RouteId) && r.UserId == userId);

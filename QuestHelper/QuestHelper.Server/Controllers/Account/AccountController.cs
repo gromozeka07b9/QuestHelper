@@ -48,26 +48,6 @@ namespace QuestHelper.Server.Controllers.Account
             return;
         }
 
-        /*private ClaimsIdentity GetIdentity(string username, string password)
-        {
-            User person = people.FirstOrDefault(x => x.Name == username && x.Password == password);
-            if (person != null)
-            {
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, person.Name),
-                    new Claim(ClaimsIdentity.DefaultRoleClaimType, person.Role)
-                };
-                ClaimsIdentity claimsIdentity =
-                    new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
-                        ClaimsIdentity.DefaultRoleClaimType);
-                return claimsIdentity;
-            }
-
-            // если пользователя не найдено
-            return null;
-        }*/
-
         [Authorize]
         [HttpGet]
         public string Get()

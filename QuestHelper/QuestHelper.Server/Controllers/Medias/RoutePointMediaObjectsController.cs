@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AppCenter.Crashes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -18,21 +19,13 @@ namespace QuestHelper.Server.Controllers.Medias
     [Route("api/[controller]")]
     public class RoutePointMediaObjectsController : Controller
     {
-        /*[HttpGet("{routePointId}")]
-        public IActionResult Get(string routePointId)
-        {
-            List<RoutePointMediaObject> items = new List<RoutePointMediaObject>();
-            using (var db = new ServerDbContext())
-            {
-                items = db.RoutePointMediaObject.Where(x=>x.RoutePointId == routePointId).ToList();
-            }
-            return new ObjectResult(items);
-        }*/
+        private DbContextOptions<ServerDbContext> _dbOptions = ServerDbContext.GetOptionsContextDbServer();
+
         [HttpGet("{routePointMediaObjectId}")]
         public IActionResult Get(string routePointMediaObjectId)
         {
             RoutePointMediaObject item = new RoutePointMediaObject();
-            using (var db = new ServerDbContext())
+            using (var db = new ServerDbContext(_dbOptions))
             {
                 item = db.RoutePointMediaObject.SingleOrDefault(x => x.RoutePointMediaObjectId == routePointMediaObjectId);
             }
@@ -42,7 +35,7 @@ namespace QuestHelper.Server.Controllers.Medias
         [HttpPost]
         public void Post([FromBody]RoutePointMediaObject routeMediaObject)
         {
-            using (var db = new ServerDbContext())
+            using (var db = new ServerDbContext(_dbOptions))
             {
                 var entity = db.RoutePointMediaObject.Find(routeMediaObject.RoutePointMediaObjectId);
                 if (entity == null)
@@ -62,7 +55,7 @@ namespace QuestHelper.Server.Controllers.Medias
         {
             if (file.Length > 0)
             {
-                using (var db = new ServerDbContext())
+                using (var db = new ServerDbContext(_dbOptions))
                 {
                     var entity = db.RoutePointMediaObject.Find(mediaObjectId);
                     if ((entity != null) && file.FileName.Contains(entity.RoutePointMediaObjectId))
@@ -87,7 +80,7 @@ namespace QuestHelper.Server.Controllers.Medias
         public async Task<IActionResult> GetAsync(string routePointId, string mediaObjectId, string fileName)
         {
             Stream memStream = new MemoryStream();
-            using (var db = new ServerDbContext())
+            using (var db = new ServerDbContext(_dbOptions))
             {
                 var entity = db.RoutePointMediaObject.Find(mediaObjectId);
                 if ((entity != null)&&(!string.IsNullOrEmpty(entity.FileName)|| !string.IsNullOrEmpty(entity.FileNamePreview)))
@@ -136,7 +129,10 @@ namespace QuestHelper.Server.Controllers.Medias
 
         private async Task<CloudBlobContainer> GetCloudBlobContainer()
         {
-            var account = CloudStorageAccount.Parse("");
+            string blobConnectionString = System.Environment.ExpandEnvironmentVariables("%GoshBlobStoreConnectionString%");
+            if(string.IsNullOrEmpty(blobConnectionString))
+                throw new Exception("Error reading blob connection string!");
+            var account = CloudStorageAccount.Parse(blobConnectionString);
             var client = account.CreateCloudBlobClient();
             var container = client.GetContainerReference("questhelperblob");
             await container.CreateIfNotExistsAsync();
