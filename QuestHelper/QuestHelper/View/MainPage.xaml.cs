@@ -14,9 +14,18 @@ namespace QuestHelper.View
         {
             InitializeComponent();
             MasterPage.ListView.ItemSelected += ListView_ItemSelected;
-
-            MessagingCenter.Subscribe<PageNavigationMessage>(this, string.Empty, (sender) => {
-                navigateToPage(sender);
+            MessagingCenter.Subscribe<PageNavigationMessage>(this, string.Empty, (sender) => 
+            {
+                TokenStoreService token = new TokenStoreService();
+                if (!string.IsNullOrEmpty(token.GetAuthToken()))
+                {
+                    navigateToPage(sender);
+                }
+                else
+                {
+                    var pageCollections = new PagesCollection();
+                    navigateToPage(new PageNavigationMessage() { DestinationPageDescription = pageCollections.GetLoginPage() });
+                }
             });
         }
 

@@ -68,7 +68,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthService.cs" />
     <Compile Include="CustomMapRenderer.cs" />
     <Compile Include="MediaService.cs" />
     <Compile Include="PathService.cs" />

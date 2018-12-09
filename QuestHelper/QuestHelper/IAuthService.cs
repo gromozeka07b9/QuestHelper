@@ -7,5 +7,6 @@ namespace QuestHelper
     public interface IAuthService
     {
         string GetAuthToken();
+        void SetAuthToken(string authToken);
     }
 }

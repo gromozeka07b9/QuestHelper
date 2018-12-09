@@ -21,6 +21,8 @@ namespace QuestHelper.ViewModel
         }
         void TryLoginCommand()
         {
+            TokenStoreService token = new TokenStoreService();
+            token.SetAuthToken("1");
             var pageCollections = new PagesCollection();
             MainPageMenuItem destinationPage = pageCollections.GetPageByPosition(0);
             Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);
