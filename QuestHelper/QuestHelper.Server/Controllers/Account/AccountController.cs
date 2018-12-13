@@ -21,15 +21,22 @@ namespace QuestHelper.Server.Controllers.Account
     {
         private DbContextOptions<ServerDbContext> _dbOptions = ServerDbContext.GetOptionsContextDbServer();
 
-        [HttpPost]
-        public async Task Token()
+        public class TokenRequest
         {
-            var username = Request.Form["username"];
-            var password = Request.Form["password"];
+            public string Username;
+            public string Password;
+        }
+
+        [HttpPost]
+        public async Task Token([FromBody]TokenRequest request)
+        {
+            //var username = Request.Form["username"];
+            //var password = Request.Form["password"];
+
 
             using (var _db = new ServerDbContext(_dbOptions))
             {
-                User user = _db.User.FirstOrDefault(x => x.Name == username && x.Password == password);
+                User user = _db.User.FirstOrDefault(x => x.Name == request.Username && x.Password == request.Password);
                 if (user != null)
                 {
                     IdentityManager identityManager = new IdentityManager();

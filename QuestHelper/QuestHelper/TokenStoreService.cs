@@ -11,6 +11,7 @@ namespace QuestHelper
 
         public string GetAuthToken()
         {
+            //AccountStore
             string token = string.Empty;
             var key = App.Current.Properties.FirstOrDefault(x => x.Key == _tokenName);
             if (key.Value != null)

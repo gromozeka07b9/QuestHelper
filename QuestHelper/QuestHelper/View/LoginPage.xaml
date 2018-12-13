@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModel="clr-namespace:QuestHelper.ViewModel"
-             x:Class="QuestHelper.View.LoginPage" Title="Авторизация" BackgroundColor="#3A3A9C">
+             x:Class="QuestHelper.View.LoginPage" BackgroundColor="#F5F5F5">
     <ContentPage.BindingContext>
         <viewModel:LoginViewModel />
     </ContentPage.BindingContext>
@@ -26,22 +26,22 @@
                 <Label Text="GoSh!" TextColor="#E38600" FontSize="50" HorizontalTextAlignment="Center"></Label>
             </StackLayout>
             <StackLayout Grid.Row="1" Grid.Column="0" Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="10" Margin="20,0,20,0">
-                <Entry Placeholder="Имя или E-mail" Text="{Binding LoginName}" HorizontalOptions="Fill" Style="{StaticResource StandartEntryCaption}" TextColor="#FFFFFF" Keyboard="Keyboard.Default">
+                <Entry Placeholder="Имя или E-mail" Text="{Binding Username}" HorizontalOptions="Fill" Style="{StaticResource StandartEntryCaption}" TextColor="#3A3A9C" Keyboard="Keyboard.Default">
                 </Entry>
             </StackLayout>
             <StackLayout Grid.Row="2" Grid.Column="0" Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="10" Margin="20,0,20,0">
-                <Entry Placeholder="Пароль" Text="{Binding Password}" HorizontalOptions="Fill" Style="{StaticResource StandartEntryCaption}" TextColor="#FFFFFF" Keyboard="Keyboard.Default">
+                <Entry Placeholder="Пароль" Text="{Binding Password}" HorizontalOptions="Fill" Style="{StaticResource StandartEntryCaption}" TextColor="#3A3A9C" Keyboard="Keyboard.Default" IsPassword="True">
                 </Entry>
             </StackLayout>
             <StackLayout Grid.Row="3" Grid.Column="0" Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="10">
-                <Label Text="или" TextColor="#FFFFFF" FontSize="24" HorizontalTextAlignment="Center"></Label>
+                <Label Text="или" TextColor="#3A3A9C" FontSize="24" HorizontalTextAlignment="Center"></Label>
             </StackLayout>
             <StackLayout Grid.Row="4" Grid.Column="0" Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="10" Margin="20,0,20,0">
-                <Entry Placeholder="Имя для demo-режима" Text="{Binding DemoName}" HorizontalOptions="Fill" Style="{StaticResource StandartEntryCaption}" TextColor="#FFFFFF" Keyboard="Keyboard.Default">
+                <Entry Placeholder="Имя для demo-режима" Text="{Binding DemoName}" HorizontalOptions="Fill" Style="{StaticResource StandartEntryCaption}" TextColor="#3A3A9C" Keyboard="Keyboard.Default">
                 </Entry>
             </StackLayout>
             <StackLayout Grid.Row="5" Grid.Column="0" Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="10" Margin="20,0,20,0">
-                <Button HorizontalOptions="Fill" Text="Войти" BackgroundColor="#E38600" Command="{Binding LoginCommand}">
+                <Button HorizontalOptions="Fill" Text="Войти" BackgroundColor="#3A3A9C" TextColor="#F5F5F5" Command="{Binding LoginCommand}">
                 </Button>
             </StackLayout>
             <StackLayout Grid.Row="6" Grid.Column="0" Grid.RowSpan="2" Orientation="Vertical" VerticalOptions="CenterAndExpand" IsVisible="{Binding SplashStartScreenIsVisible}">
@@ -49,7 +49,7 @@
             <StackLayout Grid.Row="7" Grid.Column="0" Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="10">
             </StackLayout>
             <StackLayout Grid.Row="8" Grid.Column="0" Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="10">
-                <Label Text="I go. I share. I live." TextColor="#FFFFFF" FontSize="24" HorizontalTextAlignment="Center"></Label>
+                <Label Text="I go. I share. I live." TextColor="#3A3A9C" FontSize="18" HorizontalTextAlignment="Center"></Label>
             </StackLayout>
         </Grid>
     </ContentPage.Content>

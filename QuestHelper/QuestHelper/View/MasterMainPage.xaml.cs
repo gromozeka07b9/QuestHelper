@@ -15,6 +15,7 @@ namespace QuestHelper.View
             InitializeComponent();
             BindingContext = new MasterMainPageViewModel();
             ListView = MenuItemsListView;
+            NavigationPage.SetHasNavigationBar(this, false);
         }
     }
 

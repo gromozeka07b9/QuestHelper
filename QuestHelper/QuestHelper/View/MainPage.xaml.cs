@@ -23,6 +23,11 @@ namespace QuestHelper.View
                 }
                 else
                 {
+                    var toolbarService = DependencyService.Get<IToolbarService>();
+                    if (!toolbarService.ToolbarIsHidden())
+                    {
+                        toolbarService.SetVisibilityToolbar(false);
+                    }
                     var pageCollections = new PagesCollection();
                     navigateToPage(new PageNavigationMessage() { DestinationPageDescription = pageCollections.GetLoginPage() });
                 }
@@ -49,7 +54,6 @@ namespace QuestHelper.View
         {
             page.Title = title;
             page.Icon = new FileImageSource() { File = iconName };
-
             Detail = new NavigationPage(page);
             IsPresented = false;
 

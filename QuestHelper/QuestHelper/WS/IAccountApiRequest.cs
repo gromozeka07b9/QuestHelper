@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace QuestHelper.WS
 {
-    public interface IRoutesApiRequest
+    public interface IAccountApiRequest
     {
-        Task<List<Route>> GetRoutes();
+        Task<string> GetTokenAsync(string login, string password);
     }
 }
