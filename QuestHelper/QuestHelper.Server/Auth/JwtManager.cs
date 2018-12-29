@@ -14,13 +14,10 @@ namespace QuestHelper.Server.Auth
 {
     public class JwtManager
     {
-        private DbContextOptions<ServerDbContext> _dbOptions = ServerDbContext.GetOptionsContextDbServer();
-
-        public JwtManager(DbContextOptions<ServerDbContext> dbOptions)
+        public JwtManager()
         {
-            _dbOptions = dbOptions;
         }
-        public string GetEncodedJwt(ClaimsIdentity identity)
+        public string GetEncodedJwt(ClaimsIdentity identity, string userKey)
         {
             var now = DateTime.UtcNow;
             // создаем JWT-токен
@@ -32,62 +29,22 @@ namespace QuestHelper.Server.Auth
                 expires: now.Add(TimeSpan.FromDays(10)),
                 signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(),
                     SecurityAlgorithms.HmacSha256));
+            jwt.Payload["UserKey"] = userKey;
+
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
-
-        internal bool TokenHashRequestAndDbAreEqual(string name, string requestToken)
+        public string GetUserKeyFromToken(string jwtToken)
         {
-            string requestHash = ByteArrayToString(GetHashForString(requestToken));
-            using (var context = new ServerDbContext(_dbOptions))
-            {
-                User user = context.User.FirstOrDefault(x => x.Name == name);
-                if (user != null)
-                {
-                    return requestHash.Equals(user.TokenHash);
-                }
-            }
-            return false;
-        }
+            string userKey = string.Empty;
 
-        public void WriteJwtHashToDb(User user, string token)
-        {
-            if (!string.IsNullOrEmpty(user.UserId))
+            var handler = new JwtSecurityTokenHandler();
+            if (!string.IsNullOrEmpty(jwtToken))
             {
-                var hash = GetHashForString(token);
-                using (var context = new ServerDbContext(_dbOptions))
-                {
-                    var entity = context.User.Find(user.UserId);
-                    if (entity != null)
-                    {
-                        user.TokenHash = ByteArrayToString(hash);
-                        context.Entry(entity).CurrentValues.SetValues(user);
-                        context.SaveChanges();
-                    }
-                    else throw new Exception("Not found user by UserId");
-                }
+                var token = handler.ReadJwtToken(jwtToken);
+                userKey = token.Payload["UserKey"] as string;
             }
-            else
-            {
-                throw new Exception("User can't have empty Id!");
-            }
-        }
 
-        private byte[] GetHashForString(string token)
-        {
-            byte[] tokenInBytes = ASCIIEncoding.ASCII.GetBytes(token);
-            var hash = new MD5CryptoServiceProvider().ComputeHash(tokenInBytes);
-            return hash;
-        }
-
-        string ByteArrayToString(byte[] arrInput)
-        {
-            int i;
-            StringBuilder sOutput = new StringBuilder(arrInput.Length);
-            for (i = 0; i < arrInput.Length; i++)
-            {
-                sOutput.Append(arrInput[i].ToString("X2"));
-            }
-            return sOutput.ToString();
+            return userKey;
         }
     }
 }

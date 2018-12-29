@@ -17,8 +17,7 @@ namespace QuestHelper.Managers
         }
         internal IEnumerable<Route> GetRoutes()
         {
-            var points = _realmInstance.All<Route>();
-            return points;
+            return _realmInstance.All<Route>().OrderByDescending(r => r.CreateDate);
         }
 
         public IEnumerable<Route> GetNotSynced()
@@ -42,6 +41,7 @@ namespace QuestHelper.Managers
                     }
                     route.Name = viewRoute.Name;
                     route.Version = viewRoute.Version;
+                    route.CreateDate = viewRoute.CreateDate;
                     viewRoute.Refresh(route.RouteId);
                 });
                 result = true;

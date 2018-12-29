@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace QuestHelper
 {
     public interface IAuthService
     {
-        string GetAuthToken();
-        void SetAuthToken(string authToken);
+        Task<string> GetAuthTokenAsync();
+        Task SetAuthTokenAsync(string authToken);
     }
 }

@@ -43,6 +43,7 @@ namespace QuestHelper.Server
                 });
             services.AddMvc();
             services.AddDbContext<ServerDbContext>();
+            services.AddScoped<RequestFilter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

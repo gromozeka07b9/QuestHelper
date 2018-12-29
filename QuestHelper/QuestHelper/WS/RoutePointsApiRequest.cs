@@ -16,9 +16,12 @@ namespace QuestHelper.WS
     public class RoutePointsApiRequest : IRoutePointsApiRequest, IDownloadable<ViewRoute>, IUploadable<ViewRoute>
     {
         private string _hostUrl = string.Empty;
-        public RoutePointsApiRequest(string hostUrl)
+        private string _authToken = string.Empty;
+        public HttpStatusCode LastHttpStatusCode;
+        public RoutePointsApiRequest(string hostUrl, string authToken)
         {
             _hostUrl = hostUrl;
+            _authToken = authToken;
         }
         public async Task<SyncObjectStatus> GetSyncStatus(IEnumerable<Tuple<string, int>> points)
         {
@@ -37,7 +40,8 @@ namespace QuestHelper.WS
             try
             {
                 ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestPOST($"{_hostUrl}/routepoints/sync", jsonRequestObject.ToString());
+                var response = await api.HttpRequestPOST($"{_hostUrl}/routepoints/sync", jsonRequestObject.ToString(), _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
                 deserializedValue = JsonConvert.DeserializeObject<SyncObjectStatus>(response);
             }
             catch (Exception e)
@@ -54,7 +58,8 @@ namespace QuestHelper.WS
             try
             {
                 ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{this._hostUrl}/routepoints/{routeId}");
+                var response = await api.HttpRequestGET($"{this._hostUrl}/routepoints/{routeId}", _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
                 deserializedValue = JsonConvert.DeserializeObject<List<RoutePoint>>(response);
             }
             catch (Exception e)
@@ -70,7 +75,8 @@ namespace QuestHelper.WS
             try
             {
                 ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{this._hostUrl}/routepoints/{routePointId}");
+                var response = await api.HttpRequestGET($"{this._hostUrl}/routepoints/{routePointId}", _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
                 deserializedValue = JsonConvert.DeserializeObject<ViewRoutePoint>(response);
             }
             catch (Exception e)
@@ -87,7 +93,8 @@ namespace QuestHelper.WS
             try
             {
                 ApiRequest api = new ApiRequest();
-                await api.HttpRequestPOST($"{_hostUrl}/routepoints", jsonStructure);
+                await api.HttpRequestPOST($"{_hostUrl}/routepoints", jsonStructure, _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
                 addResult = true;
             }
             catch (Exception e)
@@ -97,5 +104,10 @@ namespace QuestHelper.WS
 
             return addResult;
         }
+        public HttpStatusCode GetLastHttpStatusCode()
+        {
+            return LastHttpStatusCode;
+        }
+
     }
 }

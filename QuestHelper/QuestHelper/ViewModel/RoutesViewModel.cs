@@ -10,6 +10,7 @@ using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using QuestHelper.Model.Messages;
 
 namespace QuestHelper.ViewModel
 {
@@ -40,13 +41,7 @@ namespace QuestHelper.ViewModel
             Routes = _routeManager.GetRoutes();
             NoRoutesWarningIsVisible = Routes.Count() == 0;
             IsRefreshing = false;
-#if DEBUG
-            //List<Route> routes = await _api.GetRoutes();
-            //_routeManager.UpdateLocalData(routes);
-#else
-            //List<Route> routes = await _api.GetRoutes();
-            //_routeManager.UpdateLocalData(routes);
-#endif
+            //Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);//переделать
         }
 
         async void addNewRouteCommandAsync()

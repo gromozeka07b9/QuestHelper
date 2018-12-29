@@ -8,6 +8,7 @@ namespace QuestHelper.Server
     {
         public DbSet<Route> Route { get; set; }
         public DbSet<RoutePoint> RoutePoint { get; set; }
+        public DbSet<RouteAccess> RouteAccess { get; set; }
         public DbSet<RoutePointMediaObject> RoutePointMediaObject { get; set; }
         public DbSet<User> User { get; set; }
 
@@ -32,10 +33,6 @@ namespace QuestHelper.Server
         {
         }
 
-        /*public ServerDbContext()
-        {
-
-        }*/
         public ServerDbContext(DbContextOptions<ServerDbContext> options) : base(options)
         {
 

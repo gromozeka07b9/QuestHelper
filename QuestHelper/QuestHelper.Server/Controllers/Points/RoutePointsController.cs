@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using QuestHelper.Server.Managers;
 using QuestHelper.Server.Models;
 
 namespace QuestHelper.Server.Controllers.Points
 {
+    [Authorize]
+    [ServiceFilter(typeof(RequestFilter))]
     [Route("api/[controller]")]
     public class RoutePointsController : Controller
     {
@@ -16,10 +21,12 @@ namespace QuestHelper.Server.Controllers.Points
         [HttpGet("{RoutePointId}")]
         public IActionResult Get(string RoutePointId)
         {
+            string userId = IdentityManager.GetUserId(HttpContext);
             RoutePoint point = new RoutePoint();
             using (var db = new ServerDbContext(_dbOptions))
             {
-                point = db.RoutePoint.SingleOrDefault(x => x.RoutePointId == RoutePointId);
+                var routeaccess = db.RouteAccess.Where(u => u.UserId == userId).Select(u => u.RouteId).ToList();
+                point = db.RoutePoint.SingleOrDefault(x => x.RoutePointId == RoutePointId && routeaccess.Contains(x.RouteId));
             }
             return new ObjectResult(point);
         }
@@ -27,17 +34,27 @@ namespace QuestHelper.Server.Controllers.Points
         [HttpPost]
         public void Post([FromBody]RoutePoint routePointObject)
         {
+            string userId = IdentityManager.GetUserId(HttpContext);
             using (var db = new ServerDbContext(_dbOptions))
             {
-                var entity = db.RoutePoint.Find(routePointObject.RoutePointId);
-                if (entity == null)
+                bool accessGranted = db.RouteAccess.Where(u => u.UserId == userId && u.RouteId == routePointObject.RouteId).Any();
+                if (accessGranted)
                 {
-                    db.RoutePoint.Add(routePointObject);
-                } else
-                {
-                    db.Entry(entity).CurrentValues.SetValues(routePointObject);
+                    var entity = db.RoutePoint.Find(routePointObject.RoutePointId);
+                    if (entity == null)
+                    {
+                        db.RoutePoint.Add(routePointObject);
+                    }
+                    else
+                    {
+                        db.Entry(entity).CurrentValues.SetValues(routePointObject);
+                    }
+                    db.SaveChanges();
                 }
-                db.SaveChanges();
+                else
+                {
+                    Response.StatusCode = 400;
+                }
             }
         }
     }

@@ -14,9 +14,15 @@ namespace QuestHelper.Managers.Sync
     public class SyncPoints : SyncBase
     {
         private const string _apiUrl = "http://igosh.pro/api";
-        private readonly RoutePointsApiRequest _routePointsApi = new RoutePointsApiRequest(_apiUrl);
+        private readonly string _authToken = string.Empty;
+        private readonly RoutePointsApiRequest _routePointsApi;
         private readonly RoutePointManager _routePointManager = new RoutePointManager();
 
+        public SyncPoints(string authToken)
+        {
+            _authToken = authToken;
+            _routePointsApi = new RoutePointsApiRequest(_apiUrl, _authToken);
+        }
 
         public async Task<bool> Sync()
         {
@@ -55,7 +61,7 @@ namespace QuestHelper.Managers.Sync
             foreach (var pointId in pointsForUpload)
             {
                 var uploadedObject = _routePointManager.GetPointById(pointId);
-                if (uploadedObject != null)
+                if ((uploadedObject != null)&&(uploadedObject.CreateDate.Year > 2000))
                 {
                     JObject jsonObject = JObject.FromObject(new
                     {

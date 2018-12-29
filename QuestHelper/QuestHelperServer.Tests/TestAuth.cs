@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using Castle.Core.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using QuestHelper.Server.Managers;
@@ -27,6 +28,7 @@ namespace QuestHelperServer.Tests
         [Fact]
         public void TestMust_GenerateJwt()
         {
+            string userKey = "test";
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, "name"),
@@ -36,9 +38,9 @@ namespace QuestHelperServer.Tests
                 new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
                     ClaimsIdentity.DefaultRoleClaimType);
 
-            var options = ServerDbContext.GetOptionsContextDbServer(true);
-            JwtManager jwt = new JwtManager(options);
-            string encodedStringJwt = jwt.GetEncodedJwt(testIdentity);
+            //var options = ServerDbContext.GetOptionsContextDbServer(true);
+            JwtManager jwt = new JwtManager();
+            string encodedStringJwt = jwt.GetEncodedJwt(testIdentity, userKey);
 
             Assert.False(string.IsNullOrEmpty(encodedStringJwt));
         }
@@ -59,25 +61,43 @@ namespace QuestHelperServer.Tests
         }
 
         [Fact]
-        public void TestMust_TokenHashWrited()
+        public void TestMust_ValidateUserKey()
         {
+            string userName = "user1";
             var options = ServerDbContext.GetOptionsContextDbServer(true);
             var users = prepareUsers(options);
 
-            using (var context = new ServerDbContext(options))
+            string userKey = users.Find(x=>x.Name == userName).TokenKey;
+
+            var claims = new List<Claim>
             {
-                IdentityManager identityManager = new IdentityManager();
-                var user = context.User.Find(users[0].UserId);
-                var identity = identityManager.GetIdentity(user);
+                new Claim(ClaimsIdentity.DefaultNameClaimType, "name"),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, "role")
+            };
+            ClaimsIdentity testIdentity =
+                new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
+                    ClaimsIdentity.DefaultRoleClaimType);
 
-                JwtManager jwt = new JwtManager(options);
-                var encodedJwt = jwt.GetEncodedJwt(identity);
-                jwt.WriteJwtHashToDb(user, encodedJwt);
-                user = context.User.Find(users[0].UserId);
+            JwtManager jwt = new JwtManager();
+            string encodedStringJwt = jwt.GetEncodedJwt(testIdentity, userKey);
+            jwt = null;
 
+            //проверим, что ключ тот же
+            JwtManager jwtTest = new JwtManager();
+            string userKeyTest = jwtTest.GetUserKeyFromToken(encodedStringJwt);
 
-                Assert.False(string.IsNullOrEmpty(user.TokenHash));
-            }
+            Assert.Equal(userKey, userKeyTest);
+
+            //и проведем валидацию
+            ValidateUser validate = new ValidateUser(options, encodedStringJwt);
+            Assert.True(validate.UserIsValid(userName));
+
+            //и сбросим userkey и снова проведем валидацию
+            var testUser = users.Find(x => x.Name == userName);
+            testUser.TokenKey = Guid.NewGuid().ToString();
+            UpdateUser(options, testUser);
+            ValidateUser validateFault = new ValidateUser(options, encodedStringJwt);
+            Assert.False(validateFault.UserIsValid(userName));
         }
 
         private User[] prepareUsers(DbContextOptions<ServerDbContext> options)
@@ -103,14 +123,31 @@ namespace QuestHelperServer.Tests
 
             return users;
         }
+        private void UpdateUser(DbContextOptions<ServerDbContext> options, User user)
+        {
+            var users = GetUsersFixture();
+
+            using (var context = new ServerDbContext(options))
+            {
+                try
+                {
+                    var entity = context.User.Find(user.UserId);
+                    context.Entry(entity).CurrentValues.SetValues(user);
+                    context.SaveChanges();
+                }
+                catch
+                {
+                }
+            }
+        }
 
         private User[] GetUsersFixture()
         {
             return new[]
             {
-                new User() {UserId = "1", Name = "user1", Password = "password1", Role = "Admin"},
-                new User() {UserId = "2", Name = "user2", Password = "password2", Role = "Guest"},
-                new User() {UserId = "3", Name = "user3", Password = "password3", Role = "Guest"}
+                new User() {UserId = "1", Name = "user1", Password = "password1", Role = "Admin", TokenKey = Guid.NewGuid().ToString()},
+                new User() {UserId = "2", Name = "user2", Password = "password2", Role = "Guest", TokenKey = Guid.NewGuid().ToString()},
+                new User() {UserId = "3", Name = "user3", Password = "password3", Role = "Guest", TokenKey = Guid.NewGuid().ToString()}
             };
         }
     }

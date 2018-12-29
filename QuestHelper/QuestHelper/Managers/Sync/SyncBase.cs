@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using QuestHelper.Model;
 using QuestHelper.WS;
@@ -9,6 +10,8 @@ namespace QuestHelper.Managers.Sync
 {
     public class SyncBase
     {
+        public bool AuthRequired { get; internal set; }
+
         public void FillListsObjectsForProcess(IEnumerable<Tuple<string, int>> clientObjects, SyncObjectStatus serverStatus, List<string> forUpload, List<string> forDownload)
         {
             foreach (var serverObject in serverStatus.Statuses)
@@ -50,6 +53,7 @@ namespace QuestHelper.Managers.Sync
             foreach (var id in idsForDownload)
             {
                 ISaveable downloadedObject = await api.DownloadFromServerAsync(id);
+                AuthRequired = (api.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || api.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
                 result = downloadedObject.Save();
                 if (!result)
                 {
@@ -64,6 +68,7 @@ namespace QuestHelper.Managers.Sync
             foreach (string objectJson in jsonStructureForUpload)
             {
                 result = await api.UploadToServerAsync(objectJson);
+                AuthRequired = (api.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || api.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
                 if (!result)
                 {
                     break;

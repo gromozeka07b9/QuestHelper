@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using QuestHelper.Managers;
+//using Xamarin.Essentials;
 
 namespace QuestHelper
 {
@@ -9,23 +12,43 @@ namespace QuestHelper
     {
         private string _tokenName = "AuthToken";
 
-        public string GetAuthToken()
+        public async Task<string> GetAuthTokenAsync()
         {
-            //AccountStore
             string token = string.Empty;
-            var key = App.Current.Properties.FirstOrDefault(x => x.Key == _tokenName);
-            if (key.Value != null)
+
+            try
             {
-                token = key.Value.ToString();
+                //token = await SecureStorage.GetAsync(_tokenName);
+                throw new Exception("Essentials exp");
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("TokenStoreService", "SetAuthToken", e, false);
+            }
+
+            //если токен не был сохранен в безопасное хранилище, ищем его в небезопасном - Android 4.4.2
+            if (string.IsNullOrEmpty(token))
+            {
+                ParameterManager par = new ParameterManager();
+                par.Get(_tokenName, out token);
             }
             return token;
         }
 
-        public void SetAuthToken(string authToken)
+        public async Task SetAuthTokenAsync(string authToken)
         {
-            if (App.Current.Properties.Where(x => x.Key == _tokenName).Any())
-                App.Current.Properties.Remove(_tokenName);
-            App.Current.Properties.Add(_tokenName, authToken);
+            try
+            {
+                //SecureStorage.Remove(_tokenName);
+                //await SecureStorage.SetAsync(_tokenName, authToken);
+                throw new Exception("Essentials exp");
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("TokenStoreService", "SetAuthToken", e, false);
+                ParameterManager par = new ParameterManager();
+                par.Set(_tokenName, authToken);
+            }
         }
     }
 }

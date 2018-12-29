@@ -1,4 +1,5 @@
 ﻿using QuestHelper.Model;
+using QuestHelper.Model.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,10 @@ namespace QuestHelper.View
         {
             InitializeComponent();
             MasterPage.ListView.ItemSelected += ListView_ItemSelected;
-            MessagingCenter.Subscribe<PageNavigationMessage>(this, string.Empty, (sender) => 
+            MessagingCenter.Subscribe<PageNavigationMessage>(this, string.Empty, async (sender) => 
             {
                 TokenStoreService token = new TokenStoreService();
-                if (!string.IsNullOrEmpty(token.GetAuthToken()))
+                if (!string.IsNullOrEmpty(await token.GetAuthTokenAsync()))
                 {
                     navigateToPage(sender);
                 }

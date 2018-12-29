@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
@@ -14,12 +15,14 @@ namespace QuestHelper.Managers.Sync
     public class SyncRoutes : SyncBase
     {
         private const string _apiUrl = "http://igosh.pro/api";
-        private readonly RoutesApiRequest _routesApi = new RoutesApiRequest(_apiUrl);
+        private readonly RoutesApiRequest _routesApi;
         private readonly RouteManager _routeManager = new RouteManager();
+        private readonly string _authToken = string.Empty;
 
-        public SyncRoutes()
+        public SyncRoutes(string authToken)
         {
-
+            _authToken = authToken;
+            _routesApi = new RoutesApiRequest(_apiUrl, _authToken);
         }
 
         public async Task<bool> Sync()
@@ -28,6 +31,7 @@ namespace QuestHelper.Managers.Sync
 
             var routes = _routeManager.GetRoutes().Select(x => new Tuple<string, int>(x.RouteId, x.Version));
             SyncObjectStatus routeServerStatus = await _routesApi.GetSyncStatus(routes);
+            AuthRequired = (_routesApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routesApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
             if (routeServerStatus != null)
             {
                 result = true;

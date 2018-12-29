@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Crashes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,10 +13,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Newtonsoft.Json;
+using QuestHelper.Server.Managers;
 using QuestHelper.Server.Models;
 
 namespace QuestHelper.Server.Controllers.Medias
 {
+    [Authorize]
+    [ServiceFilter(typeof(RequestFilter))]
     [Route("api/[controller]")]
     public class RoutePointMediaObjectsController : Controller
     {
@@ -24,10 +28,13 @@ namespace QuestHelper.Server.Controllers.Medias
         [HttpGet("{routePointMediaObjectId}")]
         public IActionResult Get(string routePointMediaObjectId)
         {
+            string userId = IdentityManager.GetUserId(HttpContext);
             RoutePointMediaObject item = new RoutePointMediaObject();
             using (var db = new ServerDbContext(_dbOptions))
             {
-                item = db.RoutePointMediaObject.SingleOrDefault(x => x.RoutePointMediaObjectId == routePointMediaObjectId);
+                var routeAccess = db.RouteAccess.Where(u => u.UserId == userId).Select(u => u.RouteId).ToList();
+                var availablePoints = db.RoutePoint.Where(p => routeAccess.Contains(p.RouteId)).Select(p => p.RoutePointId).ToList();
+                item = db.RoutePointMediaObject.SingleOrDefault(x => x.RoutePointMediaObjectId == routePointMediaObjectId && availablePoints.Contains(x.RoutePointId));
             }
             return new ObjectResult(item);
         }
@@ -35,42 +42,62 @@ namespace QuestHelper.Server.Controllers.Medias
         [HttpPost]
         public void Post([FromBody]RoutePointMediaObject routeMediaObject)
         {
+            string userId = IdentityManager.GetUserId(HttpContext);
             using (var db = new ServerDbContext(_dbOptions))
             {
-                var entity = db.RoutePointMediaObject.Find(routeMediaObject.RoutePointMediaObjectId);
-                if (entity == null)
+                var routeAccess = db.RouteAccess.Where(u => u.UserId == userId).Select(u => u.RouteId).ToList();
+                var accessGranted = db.RoutePoint.Where(p => routeAccess.Contains(p.RouteId) && p.RoutePointId == routeMediaObject.RoutePointId).Any();
+                if (accessGranted)
                 {
-                    db.RoutePointMediaObject.Add(routeMediaObject);
+                    var entity = db.RoutePointMediaObject.Find(routeMediaObject.RoutePointMediaObjectId);
+                    if (entity == null)
+                    {
+                        db.RoutePointMediaObject.Add(routeMediaObject);
+                    }
+                    else
+                    {
+                        db.Entry(entity).CurrentValues.SetValues(routeMediaObject);
+                    }
+                    db.SaveChanges();
                 }
                 else
                 {
-                    db.Entry(entity).CurrentValues.SetValues(routeMediaObject);
+                    Response.StatusCode = 400;
                 }
-                db.SaveChanges();
             }
         }
 
         [HttpPost("{routePointId}/{mediaObjectId}/uploadfile")]
         public async Task PostUploadFileAsync(string routePointId, string mediaObjectId, IFormFile file)
         {
+            string userId = IdentityManager.GetUserId(HttpContext);
             if (file.Length > 0)
             {
                 using (var db = new ServerDbContext(_dbOptions))
                 {
-                    var entity = db.RoutePointMediaObject.Find(mediaObjectId);
-                    if ((entity != null) && file.FileName.Contains(entity.RoutePointMediaObjectId))
+                    var routeAccess = db.RouteAccess.Where(u => u.UserId == userId).Select(u => u.RouteId).ToList();
+                    var accessGranted = db.RoutePoint.Where(p => routeAccess.Contains(p.RouteId) && p.RoutePointId == routePointId).Any();
+                    if (accessGranted)
                     {
-                        using (Stream stream = file.OpenReadStream())
+                        var entity = db.RoutePointMediaObject.Find(mediaObjectId);
+                        if ((entity != null) && file.FileName.Contains(entity.RoutePointMediaObjectId))
                         {
-                            var blobContainer = await GetCloudBlobContainer();
-                            var blob = blobContainer.GetBlockBlobReference(file.FileName);
-                            await blob.UploadFromStreamAsync(stream);
+                            using (Stream stream = file.OpenReadStream())
+                            {
+                                var blobContainer = await GetCloudBlobContainer();
+                                var blob = blobContainer.GetBlockBlobReference(file.FileName);
+                                await blob.UploadFromStreamAsync(stream);
+                            }
+                        }
+                        else
+                        {
+                            if (entity == null) throw new Exception($"Media object {mediaObjectId} not found!");
+                            throw new Exception($"Media object does not contain filename {file.FileName}");
                         }
                     }
                     else
                     {
-                        if(entity == null) throw new Exception($"Media object {mediaObjectId} not found!");
-                        throw new Exception($"Media object does not contain filename {file.FileName}");
+                        Response.StatusCode = 400;
                     }
                 }
             }
@@ -79,47 +106,57 @@ namespace QuestHelper.Server.Controllers.Medias
         [HttpGet("{routePointId}/{mediaObjectId}/{fileName}")]
         public async Task<IActionResult> GetAsync(string routePointId, string mediaObjectId, string fileName)
         {
+            string userId = IdentityManager.GetUserId(HttpContext);
             Stream memStream = new MemoryStream();
             using (var db = new ServerDbContext(_dbOptions))
             {
-                var entity = db.RoutePointMediaObject.Find(mediaObjectId);
-                if ((entity != null)&&(!string.IsNullOrEmpty(entity.FileName)|| !string.IsNullOrEmpty(entity.FileNamePreview)))
+                var routeAccess = db.RouteAccess.Where(u => u.UserId == userId).Select(u => u.RouteId).ToList();
+                var accessGranted = db.RoutePoint.Where(p => routeAccess.Contains(p.RouteId) && p.RoutePointId == routePointId).Any();
+                if (accessGranted)
                 {
-                    //есть фото в старом формате, перенесем фото в blobstore и дальше будем с ним работать как с blob
-                    string oldFilename = !string.IsNullOrEmpty(entity.FileName) ? entity.FileName : entity.FileNamePreview;
-                    var oldFilenameArray = oldFilename.Split('/');
-                    if (oldFilenameArray.Length > 0)
+                    var entity = db.RoutePointMediaObject.Find(mediaObjectId);
+                    if ((entity != null) && (!string.IsNullOrEmpty(entity.FileName) || !string.IsNullOrEmpty(entity.FileNamePreview)))
                     {
-                        oldFilename = oldFilenameArray[oldFilenameArray.Length - 1];
+                        //есть фото в старом формате, перенесем фото в blobstore и дальше будем с ним работать как с blob
+                        string oldFilename = !string.IsNullOrEmpty(entity.FileName) ? entity.FileName : entity.FileNamePreview;
+                        var oldFilenameArray = oldFilename.Split('/');
+                        if (oldFilenameArray.Length > 0)
+                        {
+                            oldFilename = oldFilenameArray[oldFilenameArray.Length - 1];
+                        }
+                        var blobContainer = await GetCloudBlobContainer();
+                        var blob = blobContainer.GetBlockBlobReference(oldFilename);
+                        var newBlob = blobContainer.GetBlockBlobReference(fileName);
+                        await newBlob.StartCopyAsync(blob);
+                        await blob.DeleteIfExistsAsync();
+                        entity.PreviewImage = null;
+                        entity.FileName = null;
+                        entity.FileNamePreview = null;
+                        db.Entry(entity).CurrentValues.SetValues(entity);
+                        db.SaveChanges();
                     }
-                    var blobContainer = await GetCloudBlobContainer();
-                    var blob = blobContainer.GetBlockBlobReference(oldFilename);
-                    var newBlob = blobContainer.GetBlockBlobReference(fileName);
-                    await newBlob.StartCopyAsync(blob);
-                    await blob.DeleteIfExistsAsync();
-                    entity.PreviewImage = null;
-                    entity.FileName = null;
-                    entity.FileNamePreview = null;
-                    db.Entry(entity).CurrentValues.SetValues(entity);
-                    db.SaveChanges();
-                }
-                if ((entity != null) && (!string.IsNullOrEmpty(entity.RoutePointMediaObjectId)))
-                {
-                    var blobContainer = await GetCloudBlobContainer();
-                    try
+                    if ((entity != null) && (!string.IsNullOrEmpty(entity.RoutePointMediaObjectId)))
                     {
-                        var blob = blobContainer.GetBlockBlobReference(fileName);
-                        await blob.DownloadToStreamAsync(memStream);
+                        var blobContainer = await GetCloudBlobContainer();
+                        try
+                        {
+                            var blob = blobContainer.GetBlockBlobReference(fileName);
+                            await blob.DownloadToStreamAsync(memStream);
+                        }
+                        catch (Exception e)
+                        {
+                            throw new Exception($"Blob store does not contain filename {fileName}");
+                        }
                     }
-                    catch (Exception e)
+                    else
                     {
-                        throw new Exception($"Blob store does not contain filename {fileName}");
+                        if (entity == null) throw new Exception($"Media object {mediaObjectId} not found!");
+                        throw new Exception($"Media object does not contain filename {fileName}");
                     }
                 }
                 else
                 {
-                    if (entity == null) throw new Exception($"Media object {mediaObjectId} not found!");
-                    throw new Exception($"Media object does not contain filename {fileName}");
+                    Response.StatusCode = 204;
                 }
             }
 

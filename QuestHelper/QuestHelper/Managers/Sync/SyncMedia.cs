@@ -8,22 +8,31 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using QuestHelper.Model;
+using System.Net;
 
 namespace QuestHelper.Managers.Sync
 {
     public class SyncMedia : SyncBase
     {
         private const string _apiUrl = "http://igosh.pro/api";
-        private readonly RoutePointsApiRequest _routePointsApi = new RoutePointsApiRequest(_apiUrl);
-        private readonly RoutePointMediaObjectRequest _routePointMediaObjectsApi = new RoutePointMediaObjectRequest(_apiUrl);
+        private readonly RoutePointsApiRequest _routePointsApi;
+        private readonly RoutePointMediaObjectRequest _routePointMediaObjectsApi;
         private readonly RoutePointMediaObjectManager _routePointMediaManager = new RoutePointMediaObjectManager();
+        private readonly string _authToken = string.Empty;
 
+        public SyncMedia(string authToken)
+        {
+            _authToken = authToken;
+            _routePointsApi = new RoutePointsApiRequest(_apiUrl, _authToken);
+            _routePointMediaObjectsApi = new RoutePointMediaObjectRequest(_apiUrl, _authToken);
+        }
         public async Task<bool> Sync()
         {
             bool result = false;
 
             var medias = _routePointMediaManager.GetMediaObjects().Select(x => new Tuple<string, int>(x.RoutePointMediaObjectId, x.Version));
             SyncObjectStatus mediasServerStatus = await _routePointMediaObjectsApi.GetSyncStatus(medias);
+            AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
             if (mediasServerStatus != null)
             {
                 result = true;
@@ -51,7 +60,7 @@ namespace QuestHelper.Managers.Sync
 
                 if (result)
                 {
-                    SyncFiles syncFiles = new SyncFiles();
+                    SyncFiles syncFiles = new SyncFiles(_authToken);
                     result = await syncFiles.CheckExistsAllFilesForMediaAndDownloadIfNeeded();
                 }
             }
@@ -67,9 +76,11 @@ namespace QuestHelper.Managers.Sync
             {
                 var media = _routePointMediaManager.GetMediaObjectById(mediaId);
                 result = await _routePointMediaObjectsApi.SendImage(media.RoutePointId, media.RoutePointMediaObjectId);
+                AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
                 if (result)
                 {
                     result = await _routePointMediaObjectsApi.SendImage(media.RoutePointId, media.RoutePointMediaObjectId, true);
+                    AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
                 }
 
                 if (!result)

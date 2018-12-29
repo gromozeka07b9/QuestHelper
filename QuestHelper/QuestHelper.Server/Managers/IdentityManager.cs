@@ -5,6 +5,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Http;
 
 namespace QuestHelper.Server.Managers
 {
@@ -19,8 +21,8 @@ namespace QuestHelper.Server.Managers
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, user.Name),
-                    new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role)
+                    new Claim(JwtRegisteredClaimNames.UniqueName, user.Name),
+                    new Claim(JwtRegisteredClaimNames.NameId, user.UserId)
                 };
                 ClaimsIdentity claimsIdentity =
                     new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
@@ -28,6 +30,17 @@ namespace QuestHelper.Server.Managers
                 return claimsIdentity;
             }
             return null;
+        }
+
+        public static string GetUserId(HttpContext context)
+        {
+            object userIdObj;
+            if (context.Items.TryGetValue("UserId", out userIdObj))
+            {
+                return userIdObj.ToString();
+            }
+
+            return string.Empty;
         }
     }
 }

@@ -13,11 +13,13 @@ using System.Threading.Tasks;
 using QuestHelper.Managers;
 using Xamarin.Forms;
 using QuestHelper.Model;
+using QuestHelper.Model.Messages;
 
 namespace QuestHelper
 {
 	public partial class App : Application
 	{
+	    private bool SynchronizeStarted = false;
 		public App ()
 		{
 			InitializeComponent();
@@ -25,45 +27,50 @@ namespace QuestHelper
 
 		    MainPage = new View.MainPage();
 
-		    /*var authService = DependencyService.Get<IAuthService>();
-		    if (!string.IsNullOrEmpty(authService.GetAuthToken()))
-		    {
-		        MainPage = new View.LoginPage();
-            }
-		    else
-		    {
-		        MainPage = new View.MainPage();
-		    }*/
-            /*MessagingCenter.Subscribe<PageNavigationMessage>(this, string.Empty, (sender) => {
-		        if (sender.DestinationPageDescription.TargetType == typeof(View.MainPage))
-		        {
-		            //MainPage = new View.MainPage();
-		        } else if(sender.DestinationPageDescription.TargetType == typeof(View.LoginPage))
-
-		        {
-		            MainPage = new View.LoginPage();
-		        }
-            });*/
-
         }
 
         protected override async void OnStart ()
 		{
             AppCenter.Start("android=85c4ccc3-f315-427c-adbd-b928e461bcc8;", typeof(Analytics), typeof(Crashes));
-
-		    //var authService = DependencyService.Get<IAuthService>();
-
-            /*if (Setup() && !string.IsNullOrEmpty(authService.GetAuthToken()))
+		    MessagingCenter.Subscribe<SyncMessage>(this, string.Empty, async (sender) =>
 		    {
-                DateTime startTime = DateTime.Now;
-                var syncResult = await SyncServer.SyncAllAsync();
-		        if (!syncResult.Item1)
-		        {
-		            ShowWarning(syncResult.Item2);
-		        }
-		        ShowWarning($"Длительность синхронизации:{DateTime.Now - startTime} сек.");
-            }*/
+		        await startSyncAll();
+		    });
 
+            TokenStoreService token = new TokenStoreService();
+
+            if (Setup() && !string.IsNullOrEmpty(await token.GetAuthTokenAsync()))
+            {
+                await startSyncAll();
+            }
+
+        }
+
+	    private async Task startSyncAll()
+	    {
+	        if (!SynchronizeStarted)
+	        {
+	            SynchronizeStarted = true;
+                DateTime startTime = DateTime.Now;
+	            var syncResult = await SyncServer.SyncAllAsync();
+	            SynchronizeStarted = false;
+                if (!syncResult.Item1)
+	            {
+	                if (SyncServer.AuthRequired)
+	                {
+	                    var pageCollections = new PagesCollection();
+	                    MainPageMenuItem destinationPage = pageCollections.GetLoginPage();
+	                    Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(
+	                        new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);
+	                }
+	                else ShowWarning(syncResult.Item2);
+	            }
+	            else
+	            {
+	                ShowWarning($"Длительность синхронизации:{DateTime.Now - startTime} сек.");
+	            }
+	        }
+	        else ShowWarning($"Синхронизация уже запущена");
         }
 
         private bool Setup()

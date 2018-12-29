@@ -12,18 +12,29 @@ namespace QuestHelper.Server.Auth
     public class ValidateUser
     {
         private DbContextOptions<ServerDbContext> _dbOptions;
-        private HttpRequest _request;
+        private string _token;
 
-        public ValidateUser(DbContextOptions<ServerDbContext> dbOptions, HttpRequest request)
+        public ValidateUser(DbContextOptions<ServerDbContext> dbOptions, string token)
         {
             _dbOptions = dbOptions;
-            _request = request;
+            _token = token;
         }
 
-        internal bool UserIsValid(string name)
+        public bool UserIsValid(string name)
         {
-            JwtManager jwt = new JwtManager(_dbOptions);
-            return jwt.TokenHashRequestAndDbAreEqual(name, BearerParser.GetTokenFromHeader(_request.Headers));
+            JwtManager jwt = new JwtManager();
+
+            if (!string.IsNullOrEmpty(_token) && !string.IsNullOrEmpty(name))
+            {
+                string userKey = jwt.GetUserKeyFromToken(_token);
+                using (var context = new ServerDbContext(_dbOptions))
+                {
+                    var result = context.User.Where(x => x.TokenKey == userKey && x.Name == name);
+                    return result.Count() > 0;
+                }
+            }
+
+            return false;
         }
     }
 }

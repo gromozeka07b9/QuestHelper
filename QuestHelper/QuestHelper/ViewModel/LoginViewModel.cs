@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Text;
 using System.Windows.Input;
 using QuestHelper.Model;
+using QuestHelper.Model.Messages;
 using QuestHelper.View;
 using QuestHelper.WS;
 using Xamarin.Forms;
@@ -31,21 +32,28 @@ namespace QuestHelper.ViewModel
             if (!string.IsNullOrEmpty(authToken))
             {
                 TokenStoreService tokenService = new TokenStoreService();
-                tokenService.SetAuthToken(authToken);
-                var pageCollections = new PagesCollection();
-                MainPageMenuItem destinationPage = pageCollections.GetPageByPosition(0);
-                Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);
-                var toolbarService = DependencyService.Get<IToolbarService>();
-                if (toolbarService.ToolbarIsHidden())
-                {
-                    toolbarService.SetVisibilityToolbar(true);
-                }
+                await tokenService.SetAuthTokenAsync(authToken);
+                Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+                ShowMainPage();
             }
             else
             {
-                await Application.Current.MainPage.DisplayAlert("Внимание!", "Неправильный логин или пароль!", "Отмена");
+                await Application.Current.MainPage.DisplayAlert("Внимание!", "Неправильный логин или пароль!", "Ok");
             }
 
+        }
+
+        private static void ShowMainPage()
+        {
+            var pageCollections = new PagesCollection();
+            MainPageMenuItem destinationPage = pageCollections.GetPageByPosition(0);
+            Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(
+                new PageNavigationMessage() {DestinationPageDescription = destinationPage}, string.Empty);
+            var toolbarService = DependencyService.Get<IToolbarService>();
+            if (toolbarService.ToolbarIsHidden())
+            {
+                toolbarService.SetVisibilityToolbar(true);
+            }
         }
 
         public string Username

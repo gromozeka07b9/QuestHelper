@@ -20,26 +20,13 @@ namespace QuestHelper.WS
     public class RoutePointMediaObjectRequest : IRoutePointMediaObjectRequest, IDownloadable<ViewRoute>, IUploadable<ViewRoute>
     {
         private string _hostUrl = string.Empty;
-        public RoutePointMediaObjectRequest(string hostUrl)
+        private string _authToken = string.Empty;
+        public HttpStatusCode LastHttpStatusCode;
+        public RoutePointMediaObjectRequest(string hostUrl, string authToken)
         {
             _hostUrl = hostUrl;
+            _authToken = authToken;
         }
-        /*public async Task<List<RoutePointMediaObject>> GetRoutePointMediaObjects(string routePointId)
-        {
-            throw new Exception("Не используется!");
-            List<RoutePointMediaObject> deserializedValue = new List<RoutePointMediaObject>();
-            try
-            {
-                ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{this._hostUrl}/api/routepointmediaobjects/{routePointId}");
-                deserializedValue = JsonConvert.DeserializeObject<List<RoutePointMediaObject>>(response);
-            }
-            catch (Exception)
-            {
-
-            }
-            return deserializedValue;
-        }*/
         public async Task<bool> GetImage(string routePointId, string routePointMediaObjectId, string pathToPictures, string filename)
         {
             bool result = false;
@@ -47,7 +34,8 @@ namespace QuestHelper.WS
             {
                 ApiRequest api = new ApiRequest();
                 string pathToMediaFile = Path.Combine(pathToPictures, filename);
-                result = await api.HttpRequestGetFile($"{this._hostUrl}/routepointmediaobjects/{routePointId}/{routePointMediaObjectId}/{filename}", pathToMediaFile);
+                result = await api.HttpRequestGetFile($"{this._hostUrl}/routepointmediaobjects/{routePointId}/{routePointMediaObjectId}/{filename}", pathToMediaFile, _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
             }
             catch (Exception e)
             {
@@ -68,10 +56,12 @@ namespace QuestHelper.WS
                     content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
                     using (var client = new HttpClient())
                     {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authToken);
                         using (var formData = new MultipartFormDataContent())
                         {
                             formData.Add(content);
                             var response = await client.PostAsync($"{ this._hostUrl }/routepointmediaobjects/{ routePointId }/{ routePointMediaObjectId }/uploadfile", formData);
+                            LastHttpStatusCode = response.StatusCode;
                             result = response.IsSuccessStatusCode;
                         }
                     }
@@ -97,7 +87,8 @@ namespace QuestHelper.WS
             try
             {
                 ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestPOST($"{_hostUrl}/routepointmediaobjects/sync", jsonRequestObject.ToString());
+                var response = await api.HttpRequestPOST($"{_hostUrl}/routepointmediaobjects/sync", jsonRequestObject.ToString(), _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
                 deserializedValue = JsonConvert.DeserializeObject<SyncObjectStatus>(response);
             }
             catch (Exception e)
@@ -114,7 +105,8 @@ namespace QuestHelper.WS
             try
             {
                 ApiRequest api = new ApiRequest();
-                await api.HttpRequestPOST($"{_hostUrl}/routepointmediaobjects", jsonStructure);
+                await api.HttpRequestPOST($"{_hostUrl}/routepointmediaobjects", jsonStructure, _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
                 addResult = true;
             }
             catch (Exception e)
@@ -130,7 +122,8 @@ namespace QuestHelper.WS
             try
             {
                 ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{this._hostUrl}/routepointmediaobjects/{routePointMediaObjectId}");
+                var response = await api.HttpRequestGET($"{this._hostUrl}/routepointmediaobjects/{routePointMediaObjectId}", _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
                 deserializedValue = JsonConvert.DeserializeObject<ViewRoutePointMediaObject>(response);
             }
             catch (Exception e)
@@ -138,6 +131,10 @@ namespace QuestHelper.WS
                 HandleError.Process("RoutePointMediaObjectApiRequest", "GetRoutePointMediaObject", e, false);
             }
             return deserializedValue;
+        }
+        public HttpStatusCode GetLastHttpStatusCode()
+        {
+            return LastHttpStatusCode;
         }
     }
 }

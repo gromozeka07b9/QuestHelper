@@ -30,10 +30,6 @@ namespace QuestHelper.Server.Controllers.Account
         [HttpPost]
         public async Task Token([FromBody]TokenRequest request)
         {
-            //var username = Request.Form["username"];
-            //var password = Request.Form["password"];
-
-
             using (var _db = new ServerDbContext(_dbOptions))
             {
                 User user = _db.User.FirstOrDefault(x => x.Name == request.Username && x.Password == request.Password);
@@ -43,9 +39,8 @@ namespace QuestHelper.Server.Controllers.Account
                     var identity = identityManager.GetIdentity(user);
                     if (identity != null)
                     {
-                        JwtManager jwt = new JwtManager(_dbOptions);
-                        var encodedJwt = jwt.GetEncodedJwt(identity);
-                        jwt.WriteJwtHashToDb(user, encodedJwt);
+                        JwtManager jwt = new JwtManager();
+                        var encodedJwt = jwt.GetEncodedJwt(identity, user.TokenKey);
 
                         var response = new
                         {
@@ -77,25 +72,12 @@ namespace QuestHelper.Server.Controllers.Account
         [HttpGet]
         public IActionResult Get()
         {
-            ValidateUser validateContext = new ValidateUser(_dbOptions, Request);
+            ValidateUser validateContext = new ValidateUser(_dbOptions, BearerParser.GetTokenFromHeader(Request.Headers));
             if(!validateContext.UserIsValid(User.Identity.Name))
             {
                 return Unauthorized();
             }
             return Ok($"Name:{User.Identity.Name}");
         }
-
-        [Authorize(Roles = "admin")]
-        [Route("getrole")]
-        public IActionResult GetRole()
-        {
-            ValidateUser validateContext = new ValidateUser(_dbOptions, Request);
-            if (!validateContext.UserIsValid(User.Identity.Name))
-            {
-                return Unauthorized();
-            }
-            return Ok("Ваша роль: администратор");
-        }
-
     }
 }

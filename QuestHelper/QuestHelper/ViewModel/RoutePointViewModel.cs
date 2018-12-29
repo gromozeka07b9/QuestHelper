@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using QuestHelper.Model;
+using QuestHelper.Model.Messages;
 
 namespace QuestHelper.ViewModel
 {
@@ -142,14 +143,10 @@ namespace QuestHelper.ViewModel
                     file.Dispose();
                     ImagePreviewManager preview = new ImagePreviewManager();
                     preview.CreateImagePreview(imgPathToDirectory, info.Name, photoNamePreview);
-                    //_imagePreviewFilePath = Path.Combine(imgPathToDirectory, photoNamePreview);
-                    //_vpoint.ImagePath = info.FullName;
-                    //_vpoint.ImagePreviewPath = _imagePreviewFilePath;
-                    //_vpoint.Version++;
-                    //_vpoint.Save();
                     _vpoint.AddImage(mediaId);
                     ApplyChanges();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagePreviewPath"));
+                    Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
                 }
             }
         }

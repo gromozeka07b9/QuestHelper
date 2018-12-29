@@ -34,6 +34,10 @@ namespace QuestHelper.Model
             {
                 load(routePointId);
             }
+            else
+            {
+                _createDate = DateTimeOffset.Now;
+            }
         }
 
         public ViewRoutePoint()
@@ -73,10 +77,10 @@ namespace QuestHelper.Model
         /// Возвращает Истина тогда, когда считаем что все минимально необходимые поля точки заполнены
         /// </summary>
         /// <returns></returns>
-        public bool MainFieldsIsFilled()
+        /*public bool MainFieldsIsFilled()
         {
             return (!string.IsNullOrEmpty(_name) && _createDate.Year > 2000);
-        }
+        }*/
 
         internal void Refresh(string routePointId)
         {
@@ -138,6 +142,17 @@ namespace QuestHelper.Model
                 return _createDate.ToString("D");
             }
         }
+        public DateTimeOffset CreateDate
+        {
+            set
+            {
+                _createDate = value;
+            }
+            get
+            {
+                return _createDate;
+            }
+        }
         public string Description
         {
             set
@@ -172,7 +187,6 @@ namespace QuestHelper.Model
         {
             get
             {
-                //if (!string.IsNullOrEmpty(_imagePreviewPath) && File.Exists(_imagePreviewPath))//ToDo:Нужна ли проверка файла
                 if (!string.IsNullOrEmpty(_imagePreviewPath) && File.Exists(_imagePreviewPath))
                     return _imagePreviewPath;
                 else

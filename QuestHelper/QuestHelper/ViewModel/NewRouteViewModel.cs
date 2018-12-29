@@ -38,6 +38,7 @@ namespace QuestHelper.ViewModel
         public NewRouteViewModel(bool isFirstRoute)
         {
             _vroute = new ViewRoute();
+            _vroute.CreateDate = DateTimeOffset.Now;
             _vroute.Version = 1;
             _isFirstRoute = isFirstRoute;
             ShowNewRouteDialogCommand = new Command(showNewRouteData);

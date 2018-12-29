@@ -28,7 +28,6 @@ namespace QuestHelper.Managers
         internal RoutePoint GetPointById(string id)
         {
             return !string.IsNullOrEmpty(id)?_realmInstance.Find<RoutePoint>(id):null;
-            //return _realmInstance.Find<RoutePoint>(id);
         }
 
         internal IEnumerable<ViewRoutePoint> GetPointsByRouteId(string routeId)
@@ -92,20 +91,12 @@ namespace QuestHelper.Managers
                     point.Name = vpoint.Name;
                     point.UpdateDate = DateTime.Now;
                     point.Version = vpoint.Version;
+                    point.CreateDate = vpoint.CreateDate;
                     point.MediaObjects.Clear();
                     foreach (var media in vpoint.MediaObjects)
                     {
                         point.MediaObjects.Add(media);
                     }
-                    /*if(!string.IsNullOrEmpty(vpoint.ImagePath) && (vpoint.ImagePath != "emptyimg.png"))
-                    {
-                        point.MediaObjects.Clear();
-                        RoutePointMediaObject defaultMedia = new RoutePointMediaObject();
-                        defaultMedia.RoutePointId = point.RoutePointId;
-                        defaultMedia.Point = point;
-                        defaultMedia.Version++;
-                        point.MediaObjects.Add(defaultMedia);
-                    }*/
                 });
             }
             catch (Exception e)
@@ -139,31 +130,21 @@ namespace QuestHelper.Managers
             return result;
         }
 
-        internal IEnumerable<RoutePoint> GetNotSynced()
+        /*internal IEnumerable<RoutePoint> GetNotSynced()
         {
             return _realmInstance.All<RoutePoint>().Where(item => !item.ServerSynced);
-        }
+        }*/
         internal IEnumerable<RoutePoint> GetPoints()
         {
             return _realmInstance.All<RoutePoint>();
         }
 
-        internal void UpdateLocalData(Route route, List<RoutePoint> points)
+        /*internal void UpdateLocalData(Route route, List<RoutePoint> points)
         {
-            /*foreach (var point in points)
+            foreach (var point in points)
             {
                 Add(point, route);
-            }*/
-        }
-
-        /*internal void AddMediaObject(RoutePoint point, string imagePreviewFilePath, string imageFilePath)
-        {
-            _realmInstance.Write(() =>
-            {
-                point.MediaObjects.Clear();
-                point.MediaObjects.Add(new RoutePointMediaObject() { FileName = imageFilePath, Point = point, FileNamePreview = imagePreviewFilePath });
-                point.UpdateDate = DateTime.Now;
-            });
+            }
         }*/
 
         internal string GetDefaultImageFilename(string routePointId)
@@ -197,31 +178,6 @@ namespace QuestHelper.Managers
             }
 
             return filename;
-        }
-
-        /*internal string GetEmptyImageFilename()
-        {
-            return "emptyimg.png";
-        }*/
-        public bool SetSyncStatus(string Id, bool Status)
-        {
-            bool result = false;
-            try
-            {
-                _realmInstance.Write(() =>
-                {
-                    var point = _realmInstance.Find<RoutePoint>(Id);
-                    point.ServerSynced = Status;
-                    point.ServerSyncedDate = DateTime.Now;
-                }
-                );
-                result = true;
-            }
-            catch (Exception e)
-            {
-                HandleError.Process("RoutePointManager", "SetSyncStatus", e, false);
-            }
-            return result;
         }
     }
 }

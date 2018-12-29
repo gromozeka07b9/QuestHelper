@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using QuestHelper.Server.Auth;
+using QuestHelper.Server.Managers;
 using QuestHelper.Server.Models;
 
 namespace QuestHelper.Server.Controllers.Routes
 {
+    [Authorize]
+    [ServiceFilter(typeof(RequestFilter))]
     [Route("api/routes/[controller]")]
     public class SyncController : Controller
     {
@@ -18,17 +23,18 @@ namespace QuestHelper.Server.Controllers.Routes
         [HttpPost]
         public IActionResult Post([FromBody]SyncObjectStatus syncObject)
         {
-            string userId = "0";
+            string userId = IdentityManager.GetUserId(HttpContext);
             SyncObjectStatus report = new SyncObjectStatus();
             if (syncObject.Statuses != null)
             {
                 using (var db = new ServerDbContext(_dbOptions))
                 {
+                    var routeaccess = db.RouteAccess.Where(u => u.UserId == userId).Select(u=>u.RouteId).ToList();
                     var syncIds = syncObject.Statuses.Select(t => t.ObjectId);
-                    var dbRoutes = db.Route.Where(r => syncIds.Contains(r.RouteId) && r.UserId == userId);
+                    var dbRoutes = db.Route.Where(r => syncIds.Contains(r.RouteId) && routeaccess.Contains(r.RouteId));
                     foreach (var routeVersion in syncObject.Statuses)
                     {
-                        var dbRoute = dbRoutes.SingleOrDefault(r => r.RouteId == routeVersion.ObjectId && r.UserId == userId);
+                        var dbRoute = dbRoutes.SingleOrDefault(r => r.RouteId == routeVersion.ObjectId);
                         if (dbRoute != null)
                         {
                             //если маршрут на сервере есть, но версии разные, вернем его
@@ -43,7 +49,7 @@ namespace QuestHelper.Server.Controllers.Routes
                         }
                     }
                     //И надо найти те маршруты, которых еще может не быть на клиенте, и ему отправить чтобы забрал
-                    var dbNewRoutes = db.Route.Where(r => !syncIds.Contains(r.RouteId) && r.UserId == userId);
+                    var dbNewRoutes = db.Route.Where(r => !syncIds.Contains(r.RouteId) && routeaccess.Contains(r.RouteId));
                     foreach (var newRoute in dbNewRoutes)
                     {
                         report.Statuses.Add(new SyncObjectStatus.ObjectStatus { ObjectId = newRoute.RouteId, Version = newRoute.Version });

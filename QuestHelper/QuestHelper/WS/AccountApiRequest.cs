@@ -31,7 +31,7 @@ namespace QuestHelper.WS
             try
             {
                 ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestPOST($"{_hostUrl}/account", jsonRequestObject.ToString());
+                var response = await api.HttpRequestPOST($"{_hostUrl}/account", jsonRequestObject.ToString(), string.Empty);
                 var result = JsonConvert.DeserializeObject<TokenResponse>(response);
                 if (!string.IsNullOrEmpty(result.Access_Token))
                 {

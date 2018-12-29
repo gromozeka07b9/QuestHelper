@@ -12,6 +12,7 @@ using Xamarin.Forms;
 using QuestHelper.Model;
 using System.Threading.Tasks;
 using Android.Content;
+using QuestHelper.Model.Messages;
 
 namespace QuestHelper.Droid
 {

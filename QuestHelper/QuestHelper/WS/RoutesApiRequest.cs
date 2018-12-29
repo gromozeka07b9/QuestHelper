@@ -16,7 +16,14 @@ namespace QuestHelper.WS
     public class RoutesApiRequest : IRoutesApiRequest, IDownloadable<ViewRoute>, IUploadable<ViewRoute>
     {
         private string _hostUrl = string.Empty;
-        public RoutesApiRequest(string hostUrl) => _hostUrl = hostUrl;
+        private string _authToken = string.Empty;
+        public HttpStatusCode LastHttpStatusCode;
+
+        public RoutesApiRequest(string hostUrl, string authToken)
+        {
+            _hostUrl = hostUrl;
+            _authToken = authToken;
+        }
 
         public async Task<List<Route>> GetRoutes()
         {
@@ -24,7 +31,8 @@ namespace QuestHelper.WS
             try
             {
                 ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{this._hostUrl}/routes");
+                var response = await api.HttpRequestGET($"{this._hostUrl}/routes", _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
                 deserializedValue = JsonConvert.DeserializeObject<List<Route>>(response);
             }
             catch (Exception e)
@@ -52,7 +60,8 @@ namespace QuestHelper.WS
             try
             {
                 ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestPOST($"{_hostUrl}/routes/sync", jsonRequestObject.ToString());
+                var response = await api.HttpRequestPOST($"{_hostUrl}/routes/sync", jsonRequestObject.ToString(), _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
                 deserializedValue = JsonConvert.DeserializeObject<SyncObjectStatus>(response);
             }
             catch (Exception e)
@@ -68,7 +77,8 @@ namespace QuestHelper.WS
             try
             {
                 ApiRequest api = new ApiRequest();
-                deleteResult = await api.HttpRequestDELETE($"{_hostUrl}/routes/{routeObject.RouteId}");
+                deleteResult = await api.HttpRequestDELETE($"{_hostUrl}/routes/{routeObject.RouteId}", _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
             }
             catch (Exception e)
             {
@@ -83,7 +93,8 @@ namespace QuestHelper.WS
             try
             {
                 ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{this._hostUrl}/routes/{id}");
+                var response = await api.HttpRequestGET($"{this._hostUrl}/routes/{id}", _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
                 deserializedValue = JsonConvert.DeserializeObject<ViewRoute>(response);
             }
             catch (Exception e)
@@ -99,14 +110,20 @@ namespace QuestHelper.WS
             try
             {
                 ApiRequest api = new ApiRequest();
-                await api.HttpRequestPOST($"{_hostUrl}/routes", jsonStructure);
-                addResult = true;
+                await api.HttpRequestPOST($"{_hostUrl}/routes", jsonStructure, _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
+                addResult = LastHttpStatusCode == HttpStatusCode.OK;
             }
             catch (Exception e)
             {
                 HandleError.Process("RoutesApiRequest", "AddRoute", e, false);
             }
             return addResult;
+        }
+
+        public HttpStatusCode GetLastHttpStatusCode()
+        {
+            return LastHttpStatusCode;
         }
     }
 }
