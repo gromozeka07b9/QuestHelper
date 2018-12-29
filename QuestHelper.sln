@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuestHelper.LocalDB", "Ques
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuestHelper.Tests", "QuestHelper\QuestHelper.Tests\QuestHelper.Tests.csproj", "{E8F0B2E1-D9E4-46D7-A0F8-5712D949AE4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuestHelperServer.Tests", "QuestHelper\QuestHelperServer.Tests\QuestHelperServer.Tests.csproj", "{5C6AB982-4CCE-4139-9DC6-5223DE6D906A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuestHelperServer.Tests", "QuestHelper\QuestHelperServer.Tests\QuestHelperServer.Tests.csproj", "{5C6AB982-4CCE-4139-9DC6-5223DE6D906A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
