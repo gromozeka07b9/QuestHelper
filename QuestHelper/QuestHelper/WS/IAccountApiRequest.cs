@@ -7,6 +7,6 @@ namespace QuestHelper.WS
 {
     public interface IAccountApiRequest
     {
-        Task<string> GetTokenAsync(string login, string password);
+        Task<string> GetTokenAsync(string login, string password, bool demomode);
     }
 }

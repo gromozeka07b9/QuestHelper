@@ -52,7 +52,8 @@ namespace QuestHelper
 	        {
 	            SynchronizeStarted = true;
                 DateTime startTime = DateTime.Now;
-	            var syncResult = await SyncServer.SyncAllAsync();
+	            ShowWarning("Синхронизация запущена");
+                var syncResult = await SyncServer.SyncAllAsync();
 	            SynchronizeStarted = false;
                 if (!syncResult.Item1)
 	            {
@@ -89,7 +90,7 @@ namespace QuestHelper
             }
             else
             {
-                ShowWarning("Требуется миграция данных, которой пока что нет. Сорри.");
+                ShowWarning("Изменена схема БД, нужно удалить приложение и установить новую версию. Это временно, починим.");
                 Quit();
             }
 
@@ -98,7 +99,9 @@ namespace QuestHelper
 
         public void ShowWarning(string text)
         {            
-            MainPage.DisplayAlert("Внимание!", text, "Ok");
+            //MainPage.DisplayAlert("Внимание!", text, "Ok");
+            DependencyService.Get<IToastService>().LongToast(text);
+
         }
         protected override void OnSleep ()
 		{

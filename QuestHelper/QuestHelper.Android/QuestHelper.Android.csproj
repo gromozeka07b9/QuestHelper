@@ -69,6 +69,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomMapRenderer.cs" />
+    <Compile Include="ToastService.cs" />
+    <Compile Include="UsernameService.cs" />
     <Compile Include="MediaService.cs" />
     <Compile Include="PathService.cs" />
     <Compile Include="SplashActivity.cs" />

@@ -68,6 +68,61 @@ namespace QuestHelper.Server.Controllers.Account
             return;
         }
 
+        [Route("demotoken")]
+        [HttpPost]
+        public async Task DemoToken([FromBody]TokenRequest request)
+        {
+            using (var _db = new ServerDbContext(_dbOptions))
+            {
+                User user = _db.User.FirstOrDefault(x => x.Name == request.Username && x.Role == "demo");
+                if (user == null)
+                {
+                    user = createDemoUser(request, _db);
+                }
+
+                IdentityManager identityManager = new IdentityManager();
+                var identity = identityManager.GetIdentity(user);
+                if (identity != null)
+                {
+                    JwtManager jwt = new JwtManager();
+                    var encodedJwt = jwt.GetEncodedJwt(identity, user.TokenKey);
+
+                    var response = new
+                    {
+                        access_token = encodedJwt,
+                        username = identity.Name
+                    };
+
+                    // сериализация ответа
+                    Response.ContentType = "application/json";
+                    await Response.WriteAsync(JsonConvert.SerializeObject(response,
+                        new JsonSerializerSettings {Formatting = Formatting.Indented}));
+                }
+                else
+                {
+                    Response.StatusCode = 500;
+                    await Response.WriteAsync("Error while generate token.");
+                }
+            }
+
+            return;
+        }
+
+        private User createDemoUser(TokenRequest request, ServerDbContext _db)
+        {
+            User demoUser = new User();
+            demoUser.UserId = Guid.NewGuid().ToString();
+            demoUser.Role = "demo";
+            demoUser.Name = request.Username;
+            demoUser.Password = demoUser.Name;
+            demoUser.Version = 1;
+            demoUser.CreateDate = DateTime.Now;
+            demoUser.TokenKey = demoUser.Name;
+            _db.User.Add(demoUser);
+            _db.SaveChanges();
+            return demoUser;
+        }
+
         [Authorize]
         [HttpGet]
         public IActionResult Get()

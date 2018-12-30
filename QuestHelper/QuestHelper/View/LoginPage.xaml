@@ -33,15 +33,19 @@
                 <Entry Placeholder="Пароль" Text="{Binding Password}" HorizontalOptions="Fill" Style="{StaticResource StandartEntryCaption}" TextColor="#3A3A9C" Keyboard="Keyboard.Default" IsPassword="True">
                 </Entry>
             </StackLayout>
-            <StackLayout Grid.Row="3" Grid.Column="0" Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="10">
+            <!--StackLayout Grid.Row="3" Grid.Column="0" Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="10">
                 <Label Text="или" TextColor="#3A3A9C" FontSize="24" HorizontalTextAlignment="Center"></Label>
-            </StackLayout>
-            <StackLayout Grid.Row="4" Grid.Column="0" Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="10" Margin="20,0,20,0">
+            </-->
+            <!--StackLayout Grid.Row="4" Grid.Column="0" Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="10" Margin="20,0,20,0">
                 <Entry Placeholder="Имя для demo-режима" Text="{Binding DemoName}" HorizontalOptions="Fill" Style="{StaticResource StandartEntryCaption}" TextColor="#3A3A9C" Keyboard="Keyboard.Default">
                 </Entry>
-            </StackLayout>
-            <StackLayout Grid.Row="5" Grid.Column="0" Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="10" Margin="20,0,20,0">
+            </-->
+            <StackLayout Grid.Row="3" Grid.Column="0" Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="10" Margin="20,0,20,0">
                 <Button HorizontalOptions="Fill" Text="Войти" BackgroundColor="#3A3A9C" TextColor="#F5F5F5" Command="{Binding LoginCommand}">
+                </Button>
+            </StackLayout>
+            <StackLayout Grid.Row="5" Grid.Column="0" Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="10" Margin="50,0,50,0">
+                <Button HorizontalOptions="Fill" Text="Демо-режим" FontSize="14" BackgroundColor="#F5F5F5" BorderColor="Blue" TextColor="Blue" Command="{Binding DemoCommand}">
                 </Button>
             </StackLayout>
             <StackLayout Grid.Row="6" Grid.Column="0" Grid.RowSpan="2" Orientation="Vertical" VerticalOptions="CenterAndExpand" IsVisible="{Binding SplashStartScreenIsVisible}">

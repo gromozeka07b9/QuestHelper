@@ -124,9 +124,7 @@ namespace QuestHelper.ViewModel
 
                 string mediaId = Guid.NewGuid().ToString();
                 string photoName = ImagePathManager.GetImageFilename(mediaId);
-                //string photoName = $"img_{_vpoint.Id}.jpg";
                 string photoNamePreview = ImagePathManager.GetImageFilename(mediaId, true);
-                //string photoNamePreview = $"img_{_vpoint.Id}_preview.jpg";
                 var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
                 {
                     PhotoSize = PhotoSize.Full,
@@ -254,30 +252,16 @@ namespace QuestHelper.ViewModel
         {
             get
             {
-                /*if(string.IsNullOrEmpty(_vpoint.ImagePreviewPath))
-                {
-                    if (!string.IsNullOrEmpty(_vpoint.ImagePath))
-                    {
-                        return _vpoint.ImagePath;
-                    }
-                    else
-                    {
-                        return "emptyimg.png";
-                    }
-                }
-                else
-                {
-                    return _vpoint.ImagePreviewPath;
-                }*/
-                //пока без превью
-                if (!string.IsNullOrEmpty(_vpoint.ImagePath))
+                return _vpoint.ImagePath;
+                //пока без превью WTF!?
+                /*if (!string.IsNullOrEmpty(_vpoint.ImagePreviewPath))
                 {
                     return _vpoint.ImagePath;
                 }
                 else
                 {
                     return "emptyimg.png";
-                }
+                }*/
             }
         }
 
@@ -289,6 +273,7 @@ namespace QuestHelper.ViewModel
                 {
                     _vpoint.Address = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Address"));
+                    ApplyChanges();
                 }
             }
             get

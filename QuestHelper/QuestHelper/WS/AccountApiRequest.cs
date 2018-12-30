@@ -22,7 +22,7 @@ namespace QuestHelper.WS
             public string Access_Token;
             public string Username;
         }
-        public async System.Threading.Tasks.Task<string> GetTokenAsync(string login, string password)
+        public async System.Threading.Tasks.Task<string> GetTokenAsync(string login, string password, bool demomode = false)
         {
             string token = string.Empty;
 
@@ -31,7 +31,8 @@ namespace QuestHelper.WS
             try
             {
                 ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestPOST($"{_hostUrl}/account", jsonRequestObject.ToString(), string.Empty);
+                string demoroute = demomode ? "demotoken" : "";
+                var response = await api.HttpRequestPOST($"{_hostUrl}/account/{demoroute}", jsonRequestObject.ToString(), string.Empty);
                 var result = JsonConvert.DeserializeObject<TokenResponse>(response);
                 if (!string.IsNullOrEmpty(result.Access_Token))
                 {

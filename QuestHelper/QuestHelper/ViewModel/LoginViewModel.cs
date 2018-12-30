@@ -15,20 +15,42 @@ namespace QuestHelper.ViewModel
     {
         private string _password;
         private string _username;
+        private string _apiUrl = "http://igosh.pro/api";
 
         public event PropertyChangedEventHandler PropertyChanged;
         public INavigation Navigation { get; set; }
         public ICommand LoginCommand { get; private set; }
+        public ICommand DemoCommand { get; private set; }
 
         public LoginViewModel()
         {
             LoginCommand = new Command(TryLoginCommandAsync);
+            DemoCommand = new Command(DemoCommandAsync);
         }
         async void TryLoginCommandAsync()
         {
-            string apiUrl = "http://igosh.pro/api";
-            AccountApiRequest apiRequest = new AccountApiRequest(apiUrl);
+            string username = await DependencyService.Get<IUsernameService>().GetUsername();
+            AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
             var authToken = await apiRequest.GetTokenAsync(_username, _password);
+            if (!string.IsNullOrEmpty(authToken))
+            {
+                TokenStoreService tokenService = new TokenStoreService();
+                await tokenService.SetAuthTokenAsync(authToken);
+                Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+                ShowMainPage();
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Внимание!", "Неправильный логин или пароль!", "Ok");
+            }
+
+        }
+        async void DemoCommandAsync()
+        {
+            string username = await DependencyService.Get<IUsernameService>().GetUsername();
+            AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
+            //Для демо режима пароль такой же
+            var authToken = await apiRequest.GetTokenAsync(username, username, true);
             if (!string.IsNullOrEmpty(authToken))
             {
                 TokenStoreService tokenService = new TokenStoreService();

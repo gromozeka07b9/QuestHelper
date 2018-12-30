@@ -41,7 +41,6 @@ namespace QuestHelper.ViewModel
             Routes = _routeManager.GetRoutes();
             NoRoutesWarningIsVisible = Routes.Count() == 0;
             IsRefreshing = false;
-            //Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);//переделать
         }
 
         async void addNewRouteCommandAsync()
@@ -126,6 +125,7 @@ namespace QuestHelper.ViewModel
                     if (PropertyChanged != null)
                     {
                         PropertyChanged(this, new PropertyChangedEventArgs("Routes"));
+                        NoRoutesWarningIsVisible = _routes.Count() > 0;
                     }
                 }
             }

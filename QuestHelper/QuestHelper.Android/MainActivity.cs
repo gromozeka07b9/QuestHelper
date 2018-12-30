@@ -13,13 +13,13 @@ using QuestHelper.Model;
 using System.Threading.Tasks;
 using Android.Content;
 using QuestHelper.Model.Messages;
+using Plugin.CurrentActivity;
 
 namespace QuestHelper.Droid
 {
     [Activity(Label = "QuestHelper", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = false, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity, BottomNavigationBar.Listeners.IOnTabClickListener
     {
-        //private BottomBar _bottomBar;
 
         public void OnTabReSelected(int position)
         {
@@ -38,7 +38,9 @@ namespace QuestHelper.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(bundle);
-            
+
+            CrossCurrentActivity.Current.Init(this, bundle);
+
             global::Xamarin.Forms.Forms.Init(this, bundle);
             Xamarin.FormsMaps.Init(this, bundle);
             LoadApplication(new App());
@@ -48,13 +50,6 @@ namespace QuestHelper.Droid
 
         private void StartMainScreen(Bundle bundle)
         {
-            /*_bottomBar = BottomBar.Attach(this, bundle);
-            _bottomBar.UseFixedMode();
-            _bottomBar.SetFixedInactiveIconColor("#B3B8C2");
-            _bottomBar.SetActiveTabColor("#3A3A9C");
-            _bottomBar.SetItems(Resource.Menu.bottombar_menu);
-            _bottomBar.SetOnTabClickListener(this);*/
-            //_bottomBar.Hide(false);
             ToolbarService.CreateToolbar(this, bundle);
         }
 

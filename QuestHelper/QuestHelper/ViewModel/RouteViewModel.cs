@@ -23,7 +23,6 @@ namespace QuestHelper.ViewModel
         private bool _splashStartScreenIsVisible;
         private bool _routeScreenIsVisible;
         private ObservableCollection<ViewRoutePoint> _viewPointsOfRoute = new ObservableCollection<ViewRoutePoint>();
-        //private Route _route;
 
         private bool _isFirstRoute;
 
@@ -32,8 +31,6 @@ namespace QuestHelper.ViewModel
         private RoutePointManager _routePointManager = new RoutePointManager();
         private bool _listIsRefreshing;
         private bool _noPointWarningIsVisible;
-        //private RoutePointsApiRequest _routePointsApi = new RoutePointsApiRequest("http://questhelperserver.azurewebsites.net");
-        //private RoutePointMediaObjectRequest _routePointMediaObjectsApi = new RoutePointMediaObjectRequest("http://questhelperserver.azurewebsites.net");
         private bool _isRefreshing;
 
         public INavigation Navigation { get; set; }
@@ -90,13 +87,6 @@ namespace QuestHelper.ViewModel
             }
             NoPointWarningIsVisible = PointsOfRoute.Count == 0;
             IsRefreshing = false;
-            //List<RoutePoint> loadedPoints = await _routePointsApi.GetRoutePoints(_route.RouteId);
-            //_routePointManager.UpdateLocalData(_route, loadedPoints);
-            /*foreach(var point in loadedPoints)
-            {
-                List<RoutePointMediaObject> loadedMediaObjects = await _routePointMediaObjectsApi.GetRoutePointMediaObjects(point.RoutePointId);
-                _routePointMediaObjectManager.UpdateLocalData(point, loadedMediaObjects);
-            }*/
         }
         void showNewRouteData()
         {
