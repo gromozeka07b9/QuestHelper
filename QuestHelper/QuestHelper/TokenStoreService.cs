@@ -19,7 +19,6 @@ namespace QuestHelper
             try
             {
                 token = await SecureStorage.GetAsync(_tokenName);
-                //throw new Exception("Essentials exp");
             }
             catch (Exception e)
             {
@@ -27,11 +26,11 @@ namespace QuestHelper
             }
 
             //если токен не был сохранен в безопасное хранилище, ищем его в небезопасном - Android 4.4.2
-            /*if (string.IsNullOrEmpty(token))
+            if (string.IsNullOrEmpty(token))
             {
                 ParameterManager par = new ParameterManager();
                 par.Get(_tokenName, out token);
-            }*/
+            }
             return token;
         }
 
@@ -41,13 +40,12 @@ namespace QuestHelper
             {
                 SecureStorage.Remove(_tokenName);
                 await SecureStorage.SetAsync(_tokenName, authToken);
-                //throw new Exception("Essentials exp");
             }
             catch (Exception e)
             {
                 HandleError.Process("TokenStoreService", "SetAuthToken", e, false);
-                /*ParameterManager par = new ParameterManager();
-                par.Set(_tokenName, authToken);*/
+                ParameterManager par = new ParameterManager();
+                par.Set(_tokenName, authToken);
             }
         }
     }

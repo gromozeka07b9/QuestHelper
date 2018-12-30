@@ -1,4 +1,5 @@
-﻿using Microsoft.AppCenter.Crashes;
+﻿using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using Plugin.Geolocator;
 using QuestHelper.View.Geo;
 using QuestHelper.ViewModel;
@@ -21,7 +22,7 @@ namespace QuestHelper.View
             vm = new MapOverviewViewModel();
             vm.Navigation = this.Navigation;
             BindingContext = vm;
-
+            Analytics.TrackEvent("Map showed");
         }
 
         private void PointPin_Clicked(object sender, EventArgs e)

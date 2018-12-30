@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using System.Windows.Input;
+using Microsoft.AppCenter.Analytics;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
 using QuestHelper.View;
@@ -31,9 +32,11 @@ namespace QuestHelper.ViewModel
         {
             string username = await DependencyService.Get<IUsernameService>().GetUsername();
             AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
+            Analytics.TrackEvent("GetToken started", new Dictionary<string, string> { { "Username", _username } });
             var authToken = await apiRequest.GetTokenAsync(_username, _password);
             if (!string.IsNullOrEmpty(authToken))
             {
+                Analytics.TrackEvent("GetToken done", new Dictionary<string, string> { { "Username", _username } });
                 TokenStoreService tokenService = new TokenStoreService();
                 await tokenService.SetAuthTokenAsync(authToken);
                 Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
@@ -41,6 +44,7 @@ namespace QuestHelper.ViewModel
             }
             else
             {
+                Analytics.TrackEvent("GetToken error", new Dictionary<string, string> { { "Username", _username } });
                 await Application.Current.MainPage.DisplayAlert("Внимание!", "Неправильный логин или пароль!", "Ok");
             }
 
@@ -48,11 +52,13 @@ namespace QuestHelper.ViewModel
         async void DemoCommandAsync()
         {
             string username = await DependencyService.Get<IUsernameService>().GetUsername();
+            Analytics.TrackEvent("GetToken Demo started", new Dictionary<string, string> { { "Username", username } });
             AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
             //Для демо режима пароль такой же
             var authToken = await apiRequest.GetTokenAsync(username, username, true);
             if (!string.IsNullOrEmpty(authToken))
             {
+                Analytics.TrackEvent("GetToken Demo done", new Dictionary<string, string> { { "Username", username } });
                 TokenStoreService tokenService = new TokenStoreService();
                 await tokenService.SetAuthTokenAsync(authToken);
                 Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
@@ -60,6 +66,7 @@ namespace QuestHelper.ViewModel
             }
             else
             {
+                Analytics.TrackEvent("GetToken Demo error", new Dictionary<string, string> { { "Username", username } });
                 await Application.Current.MainPage.DisplayAlert("Внимание!", "Неправильный логин или пароль!", "Ok");
             }
 

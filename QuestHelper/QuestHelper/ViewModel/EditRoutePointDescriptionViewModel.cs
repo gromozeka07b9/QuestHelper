@@ -15,6 +15,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using QuestHelper.Model;
+using Microsoft.AppCenter.Analytics;
 
 namespace QuestHelper.ViewModel
 {
@@ -60,6 +61,7 @@ namespace QuestHelper.ViewModel
 
         public void ApplyChanges()
         {
+            Analytics.TrackEvent("Description edited");
             _vpoint.Version++;
             _vpoint.Save();
         }

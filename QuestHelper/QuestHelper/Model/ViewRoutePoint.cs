@@ -37,6 +37,8 @@ namespace QuestHelper.Model
             else
             {
                 _createDate = DateTimeOffset.Now;
+                _imagePreviewPath = "emptyimg.png";
+                _imagePath = "emptyimg.png";
             }
         }
 
@@ -62,8 +64,6 @@ namespace QuestHelper.Model
                 {
                     _imagePath = ImagePathManager.GetImagePath(_mediaObjects[0].RoutePointMediaObjectId);
                     _imagePreviewPath = ImagePathManager.GetImagePath(_mediaObjects[0].RoutePointMediaObjectId, true);
-                    //_imagePath = Path.Combine(DependencyService.Get<IPathService>().PrivateExternalFolder, "pictures", $"img_{mediaCollection[0].RoutePointMediaObjectId}.jpg");
-                    //_imagePreviewPath = Path.Combine(DependencyService.Get<IPathService>().PrivateExternalFolder, "pictures", $"img_{mediaCollection[0].RoutePointMediaObjectId}_preview.jpg");
                 }
                 else
                 {
@@ -72,15 +72,6 @@ namespace QuestHelper.Model
                 }
             }
         }
-
-        /// <summary>
-        /// Возвращает Истина тогда, когда считаем что все минимально необходимые поля точки заполнены
-        /// </summary>
-        /// <returns></returns>
-        /*public bool MainFieldsIsFilled()
-        {
-            return (!string.IsNullOrEmpty(_name) && _createDate.Year > 2000);
-        }*/
 
         internal void Refresh(string routePointId)
         {
@@ -176,11 +167,12 @@ namespace QuestHelper.Model
         {
             get
             {
-                
-                if (!string.IsNullOrEmpty(_imagePreviewPath)&& File.Exists(_imagePreviewPath))
+                return _imagePreviewPath;
+
+                /*if (!string.IsNullOrEmpty(_imagePreviewPath)&& File.Exists(_imagePreviewPath))
                     return _imagePreviewPath;
                 else
-                    return _imagePath;
+                    return _imagePath;*/
             }
         }
         public string ImagePreviewPathForList

@@ -26,6 +26,7 @@ namespace QuestHelper
 
 
 		    MainPage = new View.MainPage();
+		    Analytics.TrackEvent("Start app");
 
         }
 
@@ -50,6 +51,7 @@ namespace QuestHelper
 	    {
 	        if (!SynchronizeStarted)
 	        {
+	            Analytics.TrackEvent("Sync all");
 	            SynchronizeStarted = true;
                 DateTime startTime = DateTime.Now;
 	            ShowWarning("Синхронизация запущена");
@@ -65,12 +67,15 @@ namespace QuestHelper
 	                        new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);
 	                }
 	                else ShowWarning(syncResult.Item2);
+	                Analytics.TrackEvent("Sync error", new Dictionary<string, string> { { "Sync error", syncResult.Item2 } });
 	            }
-	            else
-	            {
-	                ShowWarning($"Длительность синхронизации:{DateTime.Now - startTime} сек.");
+                else
+                {
+                    var diff = DateTime.Now - startTime;
+                    ShowWarning($"Длительность синхронизации:{diff} сек.");
+	                Analytics.TrackEvent("Sync all done", new Dictionary<string, string>{{"Delay", Math.Round(diff.TotalSeconds).ToString()} });
 	            }
-	        }
+            }
 	        else ShowWarning($"Синхронизация уже запущена");
         }
 
@@ -90,6 +95,7 @@ namespace QuestHelper
             }
             else
             {
+                Analytics.TrackEvent("MigrationRequired");
                 ShowWarning("Изменена схема БД, нужно удалить приложение и установить новую версию. Это временно, починим.");
                 Quit();
             }

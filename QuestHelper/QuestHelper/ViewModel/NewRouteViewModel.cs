@@ -15,20 +15,16 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using QuestHelper.Model;
+using Microsoft.AppCenter.Analytics;
 
 namespace QuestHelper.ViewModel
 {
     public class NewRouteViewModel : INotifyPropertyChanged
     {
         private bool _splashStartScreenIsVisible;
-        //private Route _route;
         private ViewRoute _vroute;
 
         private bool _isFirstRoute;
-
-        //private RouteManager _routeManager = new RouteManager();
-        //private RoutePointManager _routePointManager = new RoutePointManager();
-        //private RoutePointMediaObjectManager _routePointMediaObjectManager = new RoutePointMediaObjectManager();
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -52,6 +48,7 @@ namespace QuestHelper.ViewModel
                 App.Current.MainPage.DisplayAlert("Внимание!", "Необходимо заполнить название маршрута", "Ok");
             } else
             {
+                Analytics.TrackEvent("Route created", new Dictionary<string, string> { { "Route", _vroute.Name } });
                 if (_vroute.Save())
                 {
                     Navigation.PushAsync(new RouteCreatedPage(_vroute.Id));

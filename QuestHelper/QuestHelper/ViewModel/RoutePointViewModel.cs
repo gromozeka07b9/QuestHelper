@@ -17,6 +17,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
+using Microsoft.AppCenter.Analytics;
 
 namespace QuestHelper.ViewModel
 {
@@ -29,6 +30,7 @@ namespace QuestHelper.ViewModel
         public ICommand EditDescriptionCommand { get; private set; }
         public ICommand CopyCoordinatesCommand { get; private set; }
 
+        private string defaultImageName = "emptyimg.png";
         private static Random _rnd = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
         private List<string> _pointNames = new List<string>()
         {
@@ -66,6 +68,7 @@ namespace QuestHelper.ViewModel
         string _currentPositionString = string.Empty;
         string _imageFilePath = string.Empty;
         string _imagePreviewFilePath = string.Empty;
+
         public Func<bool> OnDeletePoint { get; internal set; }
 
         public RoutePointViewModel(string routeId, string routePointId)
@@ -84,6 +87,7 @@ namespace QuestHelper.ViewModel
             }
 
             Coordinates = Latitude + "," + Longitude;
+            Analytics.TrackEvent("Point created");
         }
 
         public void StartDialog()
@@ -112,40 +116,52 @@ namespace QuestHelper.ViewModel
         }
         private async void takePhoto(object obj)
         {
-
-            await CrossMedia.Current.Initialize();
-
-            if (CrossMedia.Current.IsCameraAvailable && CrossMedia.Current.IsTakePhotoSupported)
+            if (string.IsNullOrEmpty(_vpoint.ImagePath) || _vpoint.ImagePath == defaultImageName)
             {
-                if (string.IsNullOrEmpty(_vpoint.Id))
-                {
-                    _vpoint.Save();
-                }
+                await CrossMedia.Current.Initialize();
 
-                string mediaId = Guid.NewGuid().ToString();
-                string photoName = ImagePathManager.GetImageFilename(mediaId);
-                string photoNamePreview = ImagePathManager.GetImageFilename(mediaId, true);
-                var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+                if (CrossMedia.Current.IsCameraAvailable && CrossMedia.Current.IsTakePhotoSupported)
                 {
-                    PhotoSize = PhotoSize.Full,
-                    Location = new Location() { Latitude = _vpoint.Latitude, Longitude = _vpoint.Longitude, Timestamp = DateTime.Now },
-                    //Directory = "Photos",
-                    Directory = string.Empty,
-                    Name = photoName,
-                    CompressionQuality = 50
-                });
-                if (file != null)
-                {
-                    FileInfo info = new FileInfo(file.Path);
-                    string imgPathToDirectory = info.DirectoryName;
-                    file.Dispose();
-                    ImagePreviewManager preview = new ImagePreviewManager();
-                    preview.CreateImagePreview(imgPathToDirectory, info.Name, photoNamePreview);
-                    _vpoint.AddImage(mediaId);
-                    ApplyChanges();
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagePreviewPath"));
-                    Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+                    if (string.IsNullOrEmpty(_vpoint.Id))
+                    {
+                        _vpoint.Save();
+                    }
+
+                    string mediaId = Guid.NewGuid().ToString();
+                    string photoName = ImagePathManager.GetImageFilename(mediaId);
+                    string photoNamePreview = ImagePathManager.GetImageFilename(mediaId, true);
+                    var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+                    {
+                        PhotoSize = PhotoSize.Full,
+                        Location = new Location() { Latitude = _vpoint.Latitude, Longitude = _vpoint.Longitude, Timestamp = DateTime.Now },
+                        //Directory = "Photos",
+                        Directory = string.Empty,
+                        Name = photoName,
+                        CompressionQuality = 50
+                    });
+                    long fileSize = 0;
+                    if (file != null)
+                    {
+                        FileInfo info = new FileInfo(file.Path);
+                        string imgPathToDirectory = info.DirectoryName;
+                        fileSize = info.Length;
+                        file.Dispose();
+                        ImagePreviewManager preview = new ImagePreviewManager();
+                        preview.CreateImagePreview(imgPathToDirectory, info.Name, photoNamePreview);
+                        _vpoint.AddImage(mediaId);
+                        ApplyChanges();
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagePreviewPath"));
+                        Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+                    }
+
+                    Analytics.TrackEvent("Photo added", new Dictionary<string, string> { { "Photo size", fileSize.ToString() } });
                 }
+            }
+            else
+            {
+                //Device.OpenUri(new Uri((_vpoint.ImagePath));
+                var defaultViewerService = DependencyService.Get<IDefaultViewer>();
+                defaultViewerService.Show(_vpoint.ImagePath);
             }
         }
 
@@ -252,16 +268,7 @@ namespace QuestHelper.ViewModel
         {
             get
             {
-                return _vpoint.ImagePath;
-                //пока без превью WTF!?
-                /*if (!string.IsNullOrEmpty(_vpoint.ImagePreviewPath))
-                {
-                    return _vpoint.ImagePath;
-                }
-                else
-                {
-                    return "emptyimg.png";
-                }*/
+                return _vpoint.ImagePreviewPath;
             }
         }
 

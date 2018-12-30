@@ -174,7 +174,7 @@ namespace QuestHelper.Managers
             }
             else
             {
-                //filename = GetEmptyImageFilename();
+                filename = "emptyimg.png";
             }
 
             return filename;
