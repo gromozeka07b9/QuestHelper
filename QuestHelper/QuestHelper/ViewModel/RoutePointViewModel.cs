@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using ExifLib;
 using Xamarin.Forms;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
@@ -29,6 +30,7 @@ namespace QuestHelper.ViewModel
         public ICommand TakePhotoCommand { get; private set; }
         public ICommand EditDescriptionCommand { get; private set; }
         public ICommand CopyCoordinatesCommand { get; private set; }
+        public ICommand AddPhotoCommand { get; private set; }
 
         private string defaultImageName = "emptyimg.png";
         private static Random _rnd = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
@@ -73,7 +75,8 @@ namespace QuestHelper.ViewModel
 
         public RoutePointViewModel(string routeId, string routePointId)
         {
-            TakePhotoCommand = new Command(takePhoto);
+            TakePhotoCommand = new Command(takePhotoAsync);
+            AddPhotoCommand = new Command(addPhotoAsync);
             EditDescriptionCommand = new Command(editDescriptionCommand);
             CopyCoordinatesCommand = new Command(copyCoordinatesCommand);
 
@@ -90,6 +93,45 @@ namespace QuestHelper.ViewModel
             Analytics.TrackEvent("Point created");
         }
 
+        private async void addPhotoAsync(object obj)
+        {
+            _vpoint.Save();
+            bool b = await CrossMedia.Current.Initialize();
+            if (CrossMedia.Current.IsPickPhotoSupported)
+            {
+                MediaFile photoPicked = await CrossMedia.Current.PickPhotoAsync();
+
+                if (photoPicked != null)
+                {
+                    string imgPathDirectory = ImagePathManager.GetPicturesDirectory();
+                    string mediaId = Guid.NewGuid().ToString();
+                    string photoName = ImagePathManager.GetImageFilename(mediaId);
+                    string photoNamePreview = ImagePathManager.GetImageFilename(mediaId, true);
+                    File.Copy(photoPicked.Path, ImagePathManager.GetImagePath(mediaId));
+                    addPreview(imgPathDirectory, photoName, photoNamePreview, mediaId);
+
+                    ExifManager exif = new ExifManager();
+                    var coords = exif.GetCoordinates(photoPicked.Path);
+                    if ((coords.Latitude > 0 && coords.Longitude >0) && await App.Current.MainPage.DisplayAlert("Доступны координаты съемки",
+                        "Использовать их для данной точки?", "Да", "Нет"))
+                    {
+                        Latitude = coords.Latitude;
+                        Longitude = coords.Longitude;
+                        _vpoint.Address = string.Empty;
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Latitude"));
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Longitude"));
+                        FillAddressByCoordinatesAsync(Latitude, Longitude);
+                    }
+                    ApplyChanges();
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagePreviewPath"));
+                    Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+                    FileInfo info = new FileInfo(photoPicked.Path);
+                    Analytics.TrackEvent("Photo added", new Dictionary<string, string> { { "Photo size", info.Length.ToString() } });
+                }
+            }
+        }
+
+        
         public void StartDialog()
         {
             _vpoint.Refresh(_vpoint.Id);
@@ -114,7 +156,7 @@ namespace QuestHelper.ViewModel
             _vpoint.Save();
             await Navigation.PushAsync(new EditRoutePointDescriptionPage(_vpoint.Id));
         }
-        private async void takePhoto(object obj)
+        private async void takePhotoAsync(object obj)
         {
             if (string.IsNullOrEmpty(_vpoint.ImagePath) || _vpoint.ImagePath == defaultImageName)
             {
@@ -146,15 +188,13 @@ namespace QuestHelper.ViewModel
                         string imgPathToDirectory = info.DirectoryName;
                         fileSize = info.Length;
                         file.Dispose();
-                        ImagePreviewManager preview = new ImagePreviewManager();
-                        preview.CreateImagePreview(imgPathToDirectory, info.Name, photoNamePreview);
-                        _vpoint.AddImage(mediaId);
+                        addPreview(imgPathToDirectory, info.Name, photoNamePreview, mediaId);
                         ApplyChanges();
                         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagePreviewPath"));
                         Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
                     }
 
-                    Analytics.TrackEvent("Photo added", new Dictionary<string, string> { { "Photo size", fileSize.ToString() } });
+                    Analytics.TrackEvent("Photo taken", new Dictionary<string, string> { { "Photo size", fileSize.ToString() } });
                 }
             }
             else
@@ -165,6 +205,14 @@ namespace QuestHelper.ViewModel
             }
         }
 
+        private void addPreview(string imgPathToDirectory, string photoName, string photoNamePreview, string mediaId)
+        {
+            FileInfo info;
+            ImagePreviewManager preview = new ImagePreviewManager();
+            preview.CreateImagePreview(imgPathToDirectory, photoName, photoNamePreview);
+            _vpoint.AddImage(mediaId);
+        }
+
         private async void FillCurrentPositionAsync()
         {
             var locator = CrossGeolocator.Current;
@@ -173,6 +221,12 @@ namespace QuestHelper.ViewModel
             Longitude = position.Longitude;
             Coordinates = Latitude + "," + Longitude;
             Address = await GetPositionAddress(locator, position);
+        }
+
+        private async void FillAddressByCoordinatesAsync(double latitude, double longitude)
+        {
+            var locator = CrossGeolocator.Current;
+            Address = await GetPositionAddress(locator, new Position(latitude, longitude));
         }
 
         private async Task<string> GetPositionAddress(IGeolocator locator, Position position)

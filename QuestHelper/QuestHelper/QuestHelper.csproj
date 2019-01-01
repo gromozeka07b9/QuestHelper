@@ -9,6 +9,7 @@
     <Compile Remove="ViewModel\RouteViewModel - old.cs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="ExifLib.Standard" Version="1.7.0" />
     <PackageReference Include="Microsoft.AppCenter" Version="1.9.0" />
     <PackageReference Include="Microsoft.AppCenter.Analytics" Version="1.9.0" />
     <PackageReference Include="Microsoft.AppCenter.Crashes" Version="1.9.0" />

@@ -21,16 +21,20 @@
                     <RowDefinition Height="250"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <Image Grid.Row="0" Source="{Binding ImagePreviewPath}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" Margin="0">
-                    <Image.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding TakePhotoCommand}" />
-                    </Image.GestureRecognizers>
-                </Image>
+
                 <!--Image Grid.Row="0" Source="https://www.xamarin.com/content/images/pages/forms/example-app.png" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" Margin="0">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding TakePhotoCommand}" />
                     </Image.GestureRecognizers>
                 </-->
+                <StackLayout Grid.Row="0" Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="10,0,10,5">
+                    <Image Source="{Binding ImagePreviewPath}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" Margin="0">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding TakePhotoCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Text="Add" Command="{Binding AddPhotoCommand}"></Button>
+                </StackLayout>
                 <StackLayout Grid.Row="1" Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="10,0,10,5">
                     <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start"></Image>
                     <Editor Margin="0" Text="{Binding Name}" FontSize="12" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand" Completed="Editor_OnCompleted"></Editor>
