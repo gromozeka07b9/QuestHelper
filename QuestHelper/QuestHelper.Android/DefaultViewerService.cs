@@ -26,6 +26,8 @@ namespace QuestHelper.Droid
         {
             Intent intent = new Intent();
             intent.SetAction(Intent.ActionView);
+            intent.AddFlags(ActivityFlags.NewTask);
+            intent.AddFlags(ActivityFlags.MultipleTask);
             intent.SetDataAndType(Android.Net.Uri.Parse("file:///" + filename), "image/*");
             Android.App.Application.Context.StartActivity(intent);
         }
