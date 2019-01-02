@@ -38,6 +38,7 @@ namespace QuestHelper.View
             _vm.PropertyChanged += Vm_PropertyChanged;
             _vm.DeleteCommand = new Command(deleteRoutePoint);
             BindingContext = _vm;
+
         }
 
         private async void deleteRoutePoint(object obj)
@@ -51,43 +52,54 @@ namespace QuestHelper.View
 
         private void Vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if((e.PropertyName == "Latitude")||(e.PropertyName == "Longitude"))
+            switch (e.PropertyName)
             {
-                if((_vm.Latitude > 0)&& (_vm.Longitude > 0))
+                case "Latitude":
+                case "Longitude":
                 {
-                    CenterMap(_vm.Latitude, _vm.Longitude, _vm.Name, _vm.Address);
-                    _vm.ApplyChanges();
-                }
+                    if ((_vm.Latitude > 0) && (_vm.Longitude > 0))
+                    {
+                        CenterMap(_vm.Latitude, _vm.Longitude, _vm.Name, _vm.Address);
+                        _vm.ApplyChanges();
+                    }
+                };break;
+                case "Images":
+                {
+                    UpdateImages();
+                };break;
             }
         }
 
-        /*private bool centerMapToPositionAsync(double Latitude, double Longitude, int timeout)
-        {
-            bool result = false;
-            var locator = CrossGeolocator.Current;
-            try
-            {
-                CustomMap mapOverview = (CustomMap)this.PointMapOverview;
-                mapOverview.MoveToRegion(MapSpan.FromCenterAndRadius(new Xamarin.Forms.Maps.Position(Latitude, Longitude), Distance.FromKilometers(1)));
-                var position1 = new Xamarin.Forms.Maps.Position(Latitude, Longitude);
-                var pointPin = new Pin
-                {
-                    Type = PinType.Place,
-                    Position = position1,
-                    Label = _routePoint.Name,
-                    Address = _routePoint.Address
+	    private void UpdateImages()
+	    {
+	        var control = this.FindByName<StackLayout>("ImagesStackPanel");
+	        control.Children.Clear();
+	        if (_vm.Images.Count == 0)
+	        {
+	            Image img = new Image()
+	            {
+	                Source = "camera1.png",
+	                Aspect = Aspect.AspectFill,
+	                HorizontalOptions = LayoutOptions.CenterAndExpand,
+	                VerticalOptions = LayoutOptions.CenterAndExpand
+	            };
+	            img.GestureRecognizers.Add(new TapGestureRecognizer() { Command = _vm.ViewPhotoCommand, CommandParameter = new FileImageSource() });
+                control.Children.Add(img);
+	        }
+            foreach (var image in _vm.Images)
+	        {
+	            Image img = new Image()
+	            {
+	                Source = image.Source,
+	                Aspect = Aspect.AspectFill,
+                    WidthRequest = _vm.Images.Count == 1?0:200,
+	                HorizontalOptions = LayoutOptions.FillAndExpand,
+	                VerticalOptions = LayoutOptions.FillAndExpand
                 };
-                pointPin.Clicked += PointPin_Clicked; ;
-                mapOverview.Pins.Add(pointPin);
-                result = true;
-            }
-            catch (Exception exception)
-            {
-                var properties = new Dictionary<string, string> { { "Screen", "RoutePointPage" }, { "Action", "CenterToMap" } };
-                Crashes.TrackError(exception, properties);
-            }
-            return result;
-        }*/
+                img.GestureRecognizers.Add(new TapGestureRecognizer() { Command = _vm.ViewPhotoCommand, CommandParameter = img.Source});
+                control.Children.Add(img);
+	        }
+	    }
 
         private void PointPin_Clicked(object sender, EventArgs e)
         {
@@ -100,6 +112,7 @@ namespace QuestHelper.View
                 await CenterMap(_routePoint.Latitude, _routePoint.Longitude, _routePoint.Name, _routePoint.Address);
             }
             _vm.StartDialog();
+            UpdateImages();
         }
 
         private async Task CenterMap(double latitude, double longitude, string name, string address)

@@ -19,6 +19,7 @@ using Xamarin.Forms;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
 using Microsoft.AppCenter.Analytics;
+using System.Collections.ObjectModel;
 
 namespace QuestHelper.ViewModel
 {
@@ -28,6 +29,7 @@ namespace QuestHelper.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand DeleteCommand { get; internal set; }
         public ICommand TakePhotoCommand { get; private set; }
+        public ICommand ViewPhotoCommand { get; private set; }
         public ICommand EditDescriptionCommand { get; private set; }
         public ICommand CopyCoordinatesCommand { get; private set; }
         public ICommand AddPhotoCommand { get; private set; }
@@ -76,6 +78,7 @@ namespace QuestHelper.ViewModel
         public RoutePointViewModel(string routeId, string routePointId)
         {
             TakePhotoCommand = new Command(takePhotoAsync);
+            ViewPhotoCommand = new Command(viewPhotoAsync);
             AddPhotoCommand = new Command(addPhotoAsync);
             EditDescriptionCommand = new Command(editDescriptionCommand);
             CopyCoordinatesCommand = new Command(copyCoordinatesCommand);
@@ -91,6 +94,20 @@ namespace QuestHelper.ViewModel
 
             Coordinates = Latitude + "," + Longitude;
             Analytics.TrackEvent("Point created");
+        }
+
+        private void viewPhotoAsync(object imageSource)
+        {
+            var defaultViewerService = DependencyService.Get<IDefaultViewer>();
+            string path = (FileImageSource) imageSource;
+            if (string.IsNullOrEmpty(path))
+            {
+                takePhotoAsync();
+            }
+            else
+            {
+                defaultViewerService.Show(path.Replace("_preview", ""));
+            }
         }
 
         private async void addPhotoAsync(object obj)
@@ -123,7 +140,7 @@ namespace QuestHelper.ViewModel
                         FillAddressByCoordinatesAsync(Latitude, Longitude);
                     }
                     ApplyChanges();
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagePreviewPath"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
                     Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
                     FileInfo info = new FileInfo(photoPicked.Path);
                     Analytics.TrackEvent("Photo added", new Dictionary<string, string> { { "Photo size", info.Length.ToString() } });
@@ -156,58 +173,47 @@ namespace QuestHelper.ViewModel
             _vpoint.Save();
             await Navigation.PushAsync(new EditRoutePointDescriptionPage(_vpoint.Id));
         }
-        private async void takePhotoAsync(object obj)
+        private async void takePhotoAsync()
         {
-            if (string.IsNullOrEmpty(_vpoint.ImagePath) || _vpoint.ImagePath == defaultImageName)
-            {
-                await CrossMedia.Current.Initialize();
+            await CrossMedia.Current.Initialize();
 
-                if (CrossMedia.Current.IsCameraAvailable && CrossMedia.Current.IsTakePhotoSupported)
+            if (CrossMedia.Current.IsCameraAvailable && CrossMedia.Current.IsTakePhotoSupported)
+            {
+                if (string.IsNullOrEmpty(_vpoint.Id))
                 {
-                    if (string.IsNullOrEmpty(_vpoint.Id))
-                    {
-                        _vpoint.Save();
-                    }
-
-                    string mediaId = Guid.NewGuid().ToString();
-                    string photoName = ImagePathManager.GetImageFilename(mediaId);
-                    string photoNamePreview = ImagePathManager.GetImageFilename(mediaId, true);
-                    var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
-                    {
-                        PhotoSize = PhotoSize.Full,
-                        Location = new Location() { Latitude = _vpoint.Latitude, Longitude = _vpoint.Longitude, Timestamp = DateTime.Now },
-                        //Directory = "Photos",
-                        Directory = string.Empty,
-                        Name = photoName,
-                        CompressionQuality = 50
-                    });
-                    long fileSize = 0;
-                    if (file != null)
-                    {
-                        FileInfo info = new FileInfo(file.Path);
-                        string imgPathToDirectory = info.DirectoryName;
-                        fileSize = info.Length;
-                        file.Dispose();
-                        addPreview(imgPathToDirectory, info.Name, photoNamePreview, mediaId);
-                        ApplyChanges();
-                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagePreviewPath"));
-                        Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
-                    }
-
-                    Analytics.TrackEvent("Photo taken", new Dictionary<string, string> { { "Photo size", fileSize.ToString() } });
+                    _vpoint.Save();
                 }
-            }
-            else
-            {
-                //Device.OpenUri(new Uri((_vpoint.ImagePath));
-                var defaultViewerService = DependencyService.Get<IDefaultViewer>();
-                defaultViewerService.Show(_vpoint.ImagePath);
+
+                string mediaId = Guid.NewGuid().ToString();
+                string photoName = ImagePathManager.GetImageFilename(mediaId);
+                string photoNamePreview = ImagePathManager.GetImageFilename(mediaId, true);
+                var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+                {
+                    PhotoSize = PhotoSize.Full,
+                    Location = new Location() { Latitude = _vpoint.Latitude, Longitude = _vpoint.Longitude, Timestamp = DateTime.Now },
+                    //Directory = "Photos",
+                    Directory = string.Empty,
+                    Name = photoName,
+                    CompressionQuality = 50
+                });
+                long fileSize = 0;
+                if (file != null)
+                {
+                    FileInfo info = new FileInfo(file.Path);
+                    string imgPathToDirectory = info.DirectoryName;
+                    fileSize = info.Length;
+                    file.Dispose();
+                    addPreview(imgPathToDirectory, info.Name, photoNamePreview, mediaId);
+                    ApplyChanges();
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
+                    Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+                }
+                Analytics.TrackEvent("Photo taken", new Dictionary<string, string> { { "Photo size", fileSize.ToString() } });
             }
         }
 
         private void addPreview(string imgPathToDirectory, string photoName, string photoNamePreview, string mediaId)
         {
-            FileInfo info;
             ImagePreviewManager preview = new ImagePreviewManager();
             preview.CreateImagePreview(imgPathToDirectory, photoName, photoNamePreview);
             _vpoint.AddImage(mediaId);
@@ -311,7 +317,7 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        public string ImagePath
+        /*public string ImagePath
         {
             get
             {
@@ -324,7 +330,7 @@ namespace QuestHelper.ViewModel
             {
                 return _vpoint.ImagePreviewPath;
             }
-        }
+        }*/
 
         public string Address
         {
@@ -352,11 +358,23 @@ namespace QuestHelper.ViewModel
             }
         }
 
+        public List<ImagePreview> Images
+        {
+            get
+            {
+                List<ImagePreview> imgs = _vpoint.MediaObjects.Select(x => new ImagePreview() {Source = ImagePathManager.GetImagePath(x.RoutePointMediaObjectId, true)}).ToList();
+                return imgs;
+            }
+        }
         public void ApplyChanges()
         {
             _vpoint.Version++;
             _vpoint.Save();
         }
 
+        public class ImagePreview
+        {
+            public string Source;
+        }
     }
 }

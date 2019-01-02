@@ -52,6 +52,7 @@ namespace QuestHelper.ViewModel
         async void DemoCommandAsync()
         {
             string username = await DependencyService.Get<IUsernameService>().GetUsername();
+            DependencyService.Get<IToastService>().LongToast($"Username:{username}");
             Analytics.TrackEvent("GetToken Demo started", new Dictionary<string, string> { { "Username", username } });
             AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
             //Для демо режима пароль такой же
