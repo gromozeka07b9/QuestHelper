@@ -18,8 +18,7 @@ namespace QuestHelper.Droid
 {
     public class MediaService : IMediaService
     {
-
-        public byte[] ResizeImage(byte[] imageData, float width, float height)
+        public byte[] ResizeImage(byte[] imageData, float width, float height, int quality)
         {
             // Load the bitmap 
             BitmapFactory.Options options = new BitmapFactory.Options();// Create object of bitmapfactory's option method for further option use
@@ -32,32 +31,37 @@ namespace QuestHelper.Droid
             var originalHeight = originalImage.Height;
             var originalWidth = originalImage.Width;
 
-            if (originalHeight > originalWidth)
+            if ((width > 0) && (height > 0))
             {
-                newHeight = height;
-                float ratio = originalHeight / height;
-                newWidth = originalWidth / ratio;
+
+                if (originalHeight > originalWidth)
+                {
+                    newHeight = height;
+                    float ratio = originalHeight / height;
+                    newWidth = originalWidth / ratio;
+                }
+                else
+                {
+                    newWidth = width;
+                    float ratio = originalWidth / width;
+                    newHeight = originalHeight / ratio;
+                }
             }
             else
             {
-                newWidth = width;
-                float ratio = originalWidth / width;
-                newHeight = originalHeight / ratio;
+                newWidth = originalWidth;
+                newHeight = originalHeight;
             }
 
             Bitmap resizedImage = Bitmap.CreateScaledBitmap(originalImage, (int)newWidth, (int)newHeight, true);
 
-            originalImage.Recycle();
-
             using (MemoryStream ms = new MemoryStream())
             {
-                resizedImage.Compress(Bitmap.CompressFormat.Jpeg, 50, ms);
-
+                resizedImage.Compress(Bitmap.CompressFormat.Jpeg, quality, ms);
                 resizedImage.Recycle();
-
+                originalImage.Recycle();
                 return ms.ToArray();
             }
-
         }
     }
 }

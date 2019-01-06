@@ -39,5 +39,9 @@ namespace QuestHelper.Model
         {
             return Pages.Single(x => x.TargetType == typeof(MainPage));
         }
+        public MainPageMenuItem GetOverviewMapPage()
+        {
+            return Pages.Single(x => x.TargetType == typeof(MapOverviewPage));
+        }
     }
 }

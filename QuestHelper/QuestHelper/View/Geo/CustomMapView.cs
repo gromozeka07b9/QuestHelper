@@ -21,19 +21,20 @@ namespace QuestHelper.View.Geo
 
         public string LastError { get => _lastError;}
         public Plugin.Geolocator.Abstractions.Position CurrentPosition { get => _currentPosition;}
+        public List<Xamarin.Forms.Maps.Position> RouteCoordinates { get; set; }
 
         public CustomMapView(CustomMap customMapView, int timeoutInSeconds)
         {
             _customMapView = customMapView;
             _timeoutInSeconds = timeoutInSeconds;
         }
-        public bool CenterMapToPosition(double Latitude, double Longitude)
+        public bool CenterMapToPosition(double Latitude, double Longitude, double ScaleKilometers)
         {
             bool result = false;
             _lastError = string.Empty;
             try
             {
-                _customMapView.MoveToRegion(MapSpan.FromCenterAndRadius(new Xamarin.Forms.Maps.Position(Latitude, Longitude), Distance.FromKilometers(1)));
+                _customMapView.MoveToRegion(MapSpan.FromCenterAndRadius(new Xamarin.Forms.Maps.Position(Latitude, Longitude), Distance.FromKilometers(ScaleKilometers)));
                 result = true;
             }
             catch (Exception exception)

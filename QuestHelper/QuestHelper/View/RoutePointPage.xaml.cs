@@ -118,7 +118,7 @@ namespace QuestHelper.View
         private async Task CenterMap(double latitude, double longitude, string name, string address)
         {
             CustomMapView customMap = new CustomMapView((CustomMap)this.PointMapOverview, 15);
-            if (customMap.CenterMapToPosition(latitude, longitude))
+            if (customMap.CenterMapToPosition(latitude, longitude, 1))
             {
                 customMap.AddPin(latitude, longitude, name, address, PointPin_Clicked);
             }

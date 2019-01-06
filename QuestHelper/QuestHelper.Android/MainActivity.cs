@@ -23,13 +23,20 @@ namespace QuestHelper.Droid
 
         public void OnTabReSelected(int position)
         {
+            NavigateToPage(position);
         }
 
         public void OnTabSelected(int position)
         {
+            NavigateToPage(position);
+        }
+
+        private static void NavigateToPage(int position)
+        {
             var pageCollections = new PagesCollection();
             MainPageMenuItem destinationPage = pageCollections.GetPageByPosition(position);
-            Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(new PageNavigationMessage() { DestinationPageDescription = destinationPage}, string.Empty);
+            Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(
+                new PageNavigationMessage() {DestinationPageDescription = destinationPage}, string.Empty);
         }
 
         protected override void OnCreate(Bundle bundle)

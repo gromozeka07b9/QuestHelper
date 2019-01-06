@@ -133,6 +133,13 @@ namespace QuestHelper.Model
                 return _createDate.ToString("D");
             }
         }
+        public string NameText
+        {
+            get
+            {
+                return _name.ToUpper();
+            }
+        }
         public DateTimeOffset CreateDate
         {
             set

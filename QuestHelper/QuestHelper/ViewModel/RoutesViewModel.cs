@@ -35,6 +35,7 @@ namespace QuestHelper.ViewModel
             RefreshListRoutesCommand = new Command(refreshListRoutesCommand);
         }
 
+
         async void refreshListRoutesCommand()
         {
             IsRefreshing = true;

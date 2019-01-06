@@ -27,6 +27,7 @@ namespace QuestHelper.ViewModel
         //public ICommand StartDialogCommand { get; private set; }
         public ICommand OpenPointPropertiesCommand { get; private set; }
 
+        //public IEnumerable<Route> VisibleRoutes = new List<Route>();
         public MapOverviewViewModel()
         {
             OpenPointPropertiesCommand = new Command(openPointPropertiesCommand);
@@ -48,21 +49,38 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        internal IEnumerable<ViewRoutePoint> GetPointsForOverview()
+        internal IEnumerable<ViewRoutePoint> GetPointsForOverviewRoute(string routeId)
         {
             var resultPoints = new List<ViewRoutePoint>();
-            var routes = _routeManager.GetRoutes();
-            foreach(var route in routes)
+            IEnumerable<Route> routes;
+            if (string.IsNullOrEmpty(routeId))
+            {
+                routes = _routeManager.GetRoutes();
+            }
+            else
+            {
+                Route route = _routeManager.GetRouteById(routeId);
+                if (route != null)
+                {
+                    var routesList = new List<Route>();
+                    routesList.Add(route);
+                    routes = routesList;
+                }
+                else
+                {
+                    routes = new List<Route>();
+                }
+            }
+            foreach (var route in routes)
             {
                 var points = _routePointManager.GetPointsByRouteId(route.RouteId);
-                foreach(var point in points)
+                foreach (var point in points)
                 {
                     resultPoints.Add(point);
                 }
             }
             return resultPoints;
         }
-
         /*public void startDialog()
 {
    if (!string.IsNullOrEmpty(_route.Name))

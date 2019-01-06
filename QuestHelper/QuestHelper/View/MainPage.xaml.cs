@@ -14,6 +14,7 @@ namespace QuestHelper.View
         public MainPage()
         {
             InitializeComponent();
+            var pageCollections = new PagesCollection();
             MasterPage.ListView.ItemSelected += ListView_ItemSelected;
             MessagingCenter.Subscribe<PageNavigationMessage>(this, string.Empty, async (sender) => 
             {
@@ -29,9 +30,15 @@ namespace QuestHelper.View
                     {
                         toolbarService.SetVisibilityToolbar(false);
                     }
-                    var pageCollections = new PagesCollection();
                     navigateToPage(new PageNavigationMessage() { DestinationPageDescription = pageCollections.GetLoginPage() });
                 }
+            });
+            MessagingCenter.Subscribe<ToggleFullscreenMapMessage>(this, string.Empty, (sender) =>
+            {
+                var pageParameters = pageCollections.GetOverviewMapPage();
+                var page = (MapOverviewPage)Activator.CreateInstance(pageParameters.TargetType);
+                page.CurrentRouteId = sender.RouteId;
+                openContentPage(page, pageParameters.Title, pageParameters.IconName);
             });
         }
 

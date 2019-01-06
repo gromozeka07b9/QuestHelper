@@ -2,6 +2,7 @@
 using QuestHelper.LocalDB.Model;
 using QuestHelper.Managers;
 using QuestHelper.Model;
+using QuestHelper.Model.Messages;
 using QuestHelper.View;
 using QuestHelper.WS;
 using Realms;
@@ -38,6 +39,8 @@ namespace QuestHelper.ViewModel
         public ICommand ShowNewRouteDialogCommand { get; private set; }
         public ICommand AddNewRoutePointCommand { get; private set; }
         public ICommand StartDialogCommand { get; private set; }
+        public ICommand EditRouteCommand { get; private set; }
+        public ICommand FullScreenMapCommand { get; private set; }
 
         public RouteViewModel(string routeId, bool isFirstRoute)
         {
@@ -47,6 +50,18 @@ namespace QuestHelper.ViewModel
             ShowNewRouteDialogCommand = new Command(showNewRouteData);
             AddNewRoutePointCommand = new Command(addNewRoutePointAsync);
             StartDialogCommand = new Command(startDialog);
+            EditRouteCommand = new Command(editRouteCommandAsync);
+            FullScreenMapCommand = new Command(fullScreenMapCommandAsync);
+        }
+        private void fullScreenMapCommandAsync(object obj)
+        {
+            var pageCollections = new PagesCollection();
+            //Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(new PageNavigationMessage() { DestinationPageDescription = pageCollections.GetOverviewMapPage() }, string.Empty);
+            Xamarin.Forms.MessagingCenter.Send<ToggleFullscreenMapMessage>(new ToggleFullscreenMapMessage() { Fullscreen = true, RouteId = _vroute.RouteId}, string.Empty);
+        }
+
+        private void editRouteCommandAsync(object obj)
+        {
         }
 
         public void startDialog()

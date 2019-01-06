@@ -9,41 +9,66 @@ namespace QuestHelper.Managers
 {
     public class ImagePreviewManager
     {
-        public byte[] GetPreviewImage(IMediaService mediaService, byte[] byteArrayOriginal, int width, int height)
+        private int _width = 640;
+        private int _height = 480;
+        private int _quality = 50;
+
+        private byte[] GetPreviewImage(IMediaService mediaService, byte[] byteArrayOriginal, int width, int height, int quality)
         {
-            var byteArrayPreview = mediaService.ResizeImage(byteArrayOriginal, width, height);
+            var byteArrayPreview = mediaService.ResizeImage(byteArrayOriginal, width, height, quality);
             return byteArrayPreview;
         }
-
-        public void CreateImagePreview(string pathToDirectory, string originalFileName, string previewFileName)
+        public void CreateImagePreview(string pathToOriginalDirectory, string originalFileName, string pathToPreviewDirectory, string previewFileName)
         {
             try
             {
-                byte[] originalByteArray = File.ReadAllBytes(pathToDirectory + "/" + originalFileName);
+                byte[] originalByteArray = File.ReadAllBytes(pathToOriginalDirectory + "/" + originalFileName);
                 if (originalByteArray.Length > 0)
                 {
                     ImagePreviewManager previewManager = new ImagePreviewManager();
                     var mediaService = DependencyService.Get<IMediaService>();
-                    byte[] imgPreviewByteArray = previewManager.GetPreviewImage(mediaService, originalByteArray, 640, 480);
-                    File.WriteAllBytes(pathToDirectory + "/" + previewFileName, imgPreviewByteArray);
+                    byte[] imgPreviewByteArray = previewManager.GetPreviewImage(mediaService, originalByteArray, _width, _height, _quality);
+                    File.WriteAllBytes(pathToPreviewDirectory + "/" + previewFileName, imgPreviewByteArray);
                 }
             }
             catch (Exception e)
             {
-                Crashes.TrackError(e, new Dictionary<string, string> { { "Img", "ImgPreview" }, { pathToDirectory + "/" + originalFileName, previewFileName } });
+                Crashes.TrackError(e, new Dictionary<string, string> { { "Img", "ImgPreview" }, { originalFileName, previewFileName } });
             }
-            /*using (var stream = originalFile.GetStream())
+        }
+
+        public int PreviewWidth
+        {
+            set
             {
-                byte[] originalByteArray = new byte[stream.Length];
-                int resultRead = stream.Read(originalByteArray, 0, originalByteArray.Length);
-                if (resultRead > 0)
-                {
-                    ImagePreviewManager previewManager = new ImagePreviewManager();
-                    byte[] imgPreviewByteArray = previewManager.GetPreviewImage(mediaService, originalByteArray, 640, 480);
-                    FileInfo info = new FileInfo(originalFilePath);
-                    File.WriteAllBytes(info.DirectoryName + "/" + previewFileName, imgPreviewByteArray);
-                }
-            }*/
+                _width = value; 
+            }
+            get
+            {
+                return _width;
+            }
+        }
+        public int PreviewHeight
+        {
+            set
+            {
+                _height = value;
+            }
+            get
+            {
+                return _height;
+            }
+        }
+        public int PreviewQuality
+        {
+            set
+            {
+                _quality = value;
+            }
+            get
+            {
+                return _quality;
+            }
         }
     }
 }

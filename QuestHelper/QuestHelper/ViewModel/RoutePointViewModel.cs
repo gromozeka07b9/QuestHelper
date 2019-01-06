@@ -122,10 +122,20 @@ namespace QuestHelper.ViewModel
                 {
                     string imgPathDirectory = ImagePathManager.GetPicturesDirectory();
                     string mediaId = Guid.NewGuid().ToString();
-                    string photoName = ImagePathManager.GetImageFilename(mediaId);
-                    string photoNamePreview = ImagePathManager.GetImageFilename(mediaId, true);
-                    File.Copy(photoPicked.Path, ImagePathManager.GetImagePath(mediaId));
-                    addPreview(imgPathDirectory, photoName, photoNamePreview, mediaId);
+                    //используем метод создания превью для того, чтобы сделать основное фото из оригинального, но с уменьшенным качеством
+
+                    ImagePreviewManager resizedOriginal = new ImagePreviewManager();
+                    resizedOriginal.PreviewHeight = 0;
+                    resizedOriginal.PreviewWidth = 0;
+                    resizedOriginal.PreviewQuality = 60;
+                    FileInfo originalFileInfo = new FileInfo(photoPicked.Path);
+
+                    resizedOriginal.CreateImagePreview(originalFileInfo.DirectoryName, originalFileInfo.Name, imgPathDirectory, ImagePathManager.GetImageFilename(mediaId, false));
+
+
+                    ImagePreviewManager preview = new ImagePreviewManager();
+                    preview.CreateImagePreview(originalFileInfo.DirectoryName, originalFileInfo.Name, imgPathDirectory, ImagePathManager.GetImageFilename(mediaId, true));
+                    _vpoint.AddImage(mediaId);
 
                     ExifManager exif = new ExifManager();
                     var coords = exif.GetCoordinates(photoPicked.Path);
@@ -142,8 +152,7 @@ namespace QuestHelper.ViewModel
                     ApplyChanges();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
                     Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
-                    FileInfo info = new FileInfo(photoPicked.Path);
-                    Analytics.TrackEvent("Photo added", new Dictionary<string, string> { { "Photo size", info.Length.ToString() } });
+                    Analytics.TrackEvent("Photo added", new Dictionary<string, string> { { "Photo size", originalFileInfo.Length.ToString() } });
                 }
             }
         }
@@ -203,20 +212,19 @@ namespace QuestHelper.ViewModel
                     string imgPathToDirectory = info.DirectoryName;
                     fileSize = info.Length;
                     file.Dispose();
-                    addPreview(imgPathToDirectory, info.Name, photoNamePreview, mediaId);
+                    //addPreview(imgPathToDirectory, info.Name, photoNamePreview, mediaId);
+
+                    ImagePreviewManager preview = new ImagePreviewManager();
+                    preview.CreateImagePreview(imgPathToDirectory, info.Name, imgPathToDirectory, photoNamePreview);
+                    _vpoint.AddImage(mediaId);
+
+
                     ApplyChanges();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
                     Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
                 }
                 Analytics.TrackEvent("Photo taken", new Dictionary<string, string> { { "Photo size", fileSize.ToString() } });
             }
-        }
-
-        private void addPreview(string imgPathToDirectory, string photoName, string photoNamePreview, string mediaId)
-        {
-            ImagePreviewManager preview = new ImagePreviewManager();
-            preview.CreateImagePreview(imgPathToDirectory, photoName, photoNamePreview);
-            _vpoint.AddImage(mediaId);
         }
 
         private async void FillCurrentPositionAsync()
@@ -316,21 +324,6 @@ namespace QuestHelper.ViewModel
                 return _vpoint.Name;
             }
         }
-
-        /*public string ImagePath
-        {
-            get
-            {
-                return _vpoint.ImagePath;
-            }
-        }
-        public string ImagePreviewPath
-        {
-            get
-            {
-                return _vpoint.ImagePreviewPath;
-            }
-        }*/
 
         public string Address
         {
