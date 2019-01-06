@@ -53,7 +53,7 @@ namespace QuestHelper.View
                 custMap.RouteCoordinates = vm.PointsOfRoute.Select(x => new Position(x.Latitude, x.Longitude)).ToList();
                 CustomMapView customMap = new CustomMapView(custMap, 15);
                 
-                if (customMap.CenterMapToPosition(centerPoint.Latitude, centerPoint.Longitude, 5))
+                if (customMap.CenterMapToPosition(centerPoint.Latitude, centerPoint.Longitude, 50))
                 {
                     for (int i = 0; i < vm.PointsOfRoute.Count; i++)
                     {
@@ -95,5 +95,5 @@ namespace QuestHelper.View
         {
             //throw new NotImplementedException();
         }
-    }
+	}
 }
