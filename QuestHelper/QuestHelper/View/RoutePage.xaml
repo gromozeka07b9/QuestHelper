@@ -14,6 +14,7 @@
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding EditRouteCommand}" Icon="edit.png"></ToolbarItem>
+        <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding ShareRouteCommand}" Icon="share.png"></ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ScrollView Orientation="Vertical">

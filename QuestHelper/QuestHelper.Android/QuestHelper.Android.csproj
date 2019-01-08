@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomMapRenderer.cs" />
+    <Compile Include="InstagramShareService.cs" />
     <Compile Include="ToastService.cs" />
     <Compile Include="DefaultViewerService.cs" />
     <Compile Include="UsernameService.cs" />
@@ -323,6 +324,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\fullscreen_exit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\share.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

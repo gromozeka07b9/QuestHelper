@@ -32,8 +32,12 @@ namespace QuestHelper
 
         protected override async void OnStart ()
 		{
-            AppCenter.Start("android=85c4ccc3-f315-427c-adbd-b928e461bcc8;", typeof(Analytics), typeof(Crashes));
-		    MessagingCenter.Subscribe<SyncMessage>(this, string.Empty, async (sender) =>
+#if DEBUG
+           AppCenter.Start("android=e7661afa-ce82-4b68-b98d-e35a71bb75c1;", typeof(Analytics), typeof(Crashes));
+#else
+           AppCenter.Start("android=85c4ccc3-f315-427c-adbd-b928e461bcc8;", typeof(Analytics), typeof(Crashes));
+#endif
+            MessagingCenter.Subscribe<SyncMessage>(this, string.Empty, async (sender) =>
 		    {
 		        await startSyncAll();
 		    });
@@ -54,7 +58,7 @@ namespace QuestHelper
 	            Analytics.TrackEvent("Sync all");
 	            SynchronizeStarted = true;
                 DateTime startTime = DateTime.Now;
-	            ShowWarning("Синхронизация запущена");
+	            //ShowWarning("Синхронизация запущена");
                 var syncResult = await SyncServer.SyncAllAsync();
 	            SynchronizeStarted = false;
                 if (!syncResult.Item1)
@@ -105,8 +109,7 @@ namespace QuestHelper
 
         public void ShowWarning(string text)
         {            
-            //MainPage.DisplayAlert("Внимание!", text, "Ok");
-            DependencyService.Get<IToastService>().LongToast(text);
+            DependencyService.Get<IToastService>().ShortToast(text);
 
         }
         protected override void OnSleep ()

@@ -32,3 +32,6 @@ https://stackoverflow.com/questions/21978658/invalidating-json-web-tokens
 
 toast:
 https://stackoverflow.com/questions/35279403/toast-equivalent-for-xamarin-forms
+
+share instagram:
+https://developers.facebook.com/docs/instagram/sharing-to-feed/

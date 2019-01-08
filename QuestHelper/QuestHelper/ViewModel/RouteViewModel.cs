@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -40,6 +41,7 @@ namespace QuestHelper.ViewModel
         public ICommand AddNewRoutePointCommand { get; private set; }
         public ICommand StartDialogCommand { get; private set; }
         public ICommand EditRouteCommand { get; private set; }
+        public ICommand ShareRouteCommand { get; private set; }
         public ICommand FullScreenMapCommand { get; private set; }
 
         public RouteViewModel(string routeId, bool isFirstRoute)
@@ -51,12 +53,33 @@ namespace QuestHelper.ViewModel
             AddNewRoutePointCommand = new Command(addNewRoutePointAsync);
             StartDialogCommand = new Command(startDialog);
             EditRouteCommand = new Command(editRouteCommandAsync);
+            ShareRouteCommand = new Command(shareRouteCommandAsync);
             FullScreenMapCommand = new Command(fullScreenMapCommandAsync);
         }
+
+        private void shareRouteCommandAsync(object obj)
+        {
+            var points = _routePointManager.GetPointsByRouteId(_vroute.RouteId);
+            if (points.Any())
+            {
+                ViewRoutePoint vp = new ViewRoutePoint(_vroute.RouteId,points.First().RoutePointId);
+                var instagramShareService = DependencyService.Get<IInstagramShareService>();
+                instagramShareService.Share(vp.ImagePath);
+
+                /*Share.RequestAsync(new ShareTextRequest()
+                {
+                    //Text = $"Маршрут:{_vroute.Name}",
+                    Text = (new Uri($"{vp.ImagePath}")).AbsoluteUri,
+                    //Text = "http://mediad.publicbroadcasting.net/p/wunc/files/styles/x_large/public/201705/standardized_test.jpg",
+                    Subject = "Название маршрута из GoSh!"
+                });*/
+
+            }
+        }
+
         private void fullScreenMapCommandAsync(object obj)
         {
             var pageCollections = new PagesCollection();
-            //Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(new PageNavigationMessage() { DestinationPageDescription = pageCollections.GetOverviewMapPage() }, string.Empty);
             Xamarin.Forms.MessagingCenter.Send<ToggleFullscreenMapMessage>(new ToggleFullscreenMapMessage() { Fullscreen = true, RouteId = _vroute.RouteId}, string.Empty);
         }
 
