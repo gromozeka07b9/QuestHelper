@@ -22,13 +22,15 @@ namespace QuestHelper.ViewModel
     public class EditRoutePointDescriptionViewModel : INotifyPropertyChanged
     {
         ViewRoutePoint _vpoint;
-
+        private bool _isEditMode = false;
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
+        public ICommand EditDescriptionCommand { get; private set; }
 
         public EditRoutePointDescriptionViewModel(string routePointId)
         {
-            if(!string.IsNullOrEmpty(routePointId))
+            EditDescriptionCommand = new Command(editDescriptionCommand);
+            if (!string.IsNullOrEmpty(routePointId))
             {
                 RoutePointManager manager = new RoutePointManager();
                 var point = manager.GetPointById(routePointId);
@@ -37,6 +39,13 @@ namespace QuestHelper.ViewModel
             {
                 HandleError.Process("EditRoutePointDescription", "EditDescripton", new Exception("Ошибка, точка еще не создана."), true);
             }
+
+            IsEditMode = false;
+        }
+
+        private void editDescriptionCommand(object obj)
+        {
+            IsEditMode = true;
         }
 
         public void startDialog()
@@ -65,5 +74,25 @@ namespace QuestHelper.ViewModel
             _vpoint.Version++;
             _vpoint.Save();
         }
+
+        public bool IsEditMode
+        {
+            set
+            {
+                if (_isEditMode != value)
+                {
+                    _isEditMode = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("IsEditMode"));
+                    }
+                }
+            }
+            get
+            {
+                return _isEditMode;
+            }
+        }
+
     }
 }

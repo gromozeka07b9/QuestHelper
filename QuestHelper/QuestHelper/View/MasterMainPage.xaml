@@ -14,13 +14,13 @@
                 <ColumnDefinition Width="30"/>
               </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="150"/>
+                <RowDefinition Height="0"/>
                 <RowDefinition Height="10"/>
                 <RowDefinition Height="10"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-                <Image Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="3" Source="test.jpg" Margin="0" HorizontalOptions="Fill" VerticalOptions="Start">
-                </Image>
+                <!--Image Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="3" Source="test.jpg" Margin="0" HorizontalOptions="Fill" VerticalOptions="Start">
+                </-->
             </Grid>
       </ListView.Header>
       <ListView.ItemTemplate>
@@ -31,8 +31,8 @@
             <Label VerticalOptions="FillAndExpand" 
                 VerticalTextAlignment="Center" 
                 Text="{Binding Title}" 
-                TextColor="#ECEFF1"
-                FontSize="15"/>
+                TextColor="Black"
+                FontSize="16"/>
             </StackLayout>
           </ViewCell>
         </DataTemplate>

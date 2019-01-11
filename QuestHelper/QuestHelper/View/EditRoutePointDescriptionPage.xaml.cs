@@ -21,13 +21,17 @@ namespace QuestHelper.View
             InitializeComponent ();
             vm = new EditRoutePointDescriptionViewModel(string.Empty) { Navigation = this.Navigation };
             BindingContext = vm;
-        }
+		    var editor = this.FindByName<Editor>("EditorElement");
+            editor.Keyboard = Keyboard.Create(KeyboardFlags.All);
+		}
         public EditRoutePointDescriptionPage(string routePointId)
         {
 
             InitializeComponent();
             vm = new EditRoutePointDescriptionViewModel(routePointId) { Navigation = this.Navigation };
             BindingContext = vm;
+            var editor = this.FindByName<Editor>("EditorElement");
+            editor.Keyboard = Keyboard.Create(KeyboardFlags.All);
         }
 
         private void ContentPage_Appearing(object sender, EventArgs e)

@@ -8,8 +8,4 @@
       android:id="@+id/bottomBarOverviewPage"
       android:icon="@drawable/map"
       android:title="На карте" />
-  <item
-      android:id="@+id/bottomBarAroundMe"
-      android:icon="@drawable/triple"
-      android:title="Вокруг меня" />
 </menu>

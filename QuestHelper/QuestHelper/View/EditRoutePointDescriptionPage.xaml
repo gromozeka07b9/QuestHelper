@@ -3,13 +3,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:QuestHelper.ViewModel;assembly=QuestHelper"
              xmlns:local="clr-namespace:QuestHelper.View.Converters"
+             xmlns:view="clr-namespace:QuestHelper.View"
              x:Class="QuestHelper.View.EditRoutePointDescriptionPage" Appearing="ContentPage_Appearing" Title="Описание точки" Style="{StaticResource ContentPage}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:NegativeBoolConverter  x:Key="inverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <Frame CornerRadius="10" HasShadow="True" Padding="0" BorderColor="Accent" OutlineColor="#CAECFF" BackgroundColor="#C8FFFF" IsClippedToBounds="False" Margin="10">
-            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="5">
-                <Editor Placeholder="Здесь можно указать описание данного места" Completed="Editor_OnCompleted"  Text="{Binding Description}" FontSize="Medium" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                </Editor>
-            </StackLayout>
+        <Frame CornerRadius="10" HasShadow="True" Padding="0" BorderColor="Accent" OutlineColor="#CAECFF" BackgroundColor="#C8FFFF" IsClippedToBounds="False" Margin="5">
+            <ScrollView Orientation="Vertical">
+                <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0">
+                    <Label IsVisible="{Binding IsEditMode, Converter={StaticResource inverter}}" Text="{Binding Description}" Margin="5" Style="{StaticResource RouteTextLabel}" TextColor="Gray" FontSize="Small" LineBreakMode="WordWrap" VerticalTextAlignment="Start" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding EditDescriptionCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <view:CustomEditor IsVisible="{Binding IsEditMode}" x:Name="EditorElement" Placeholder="Здесь можно указать описание данного места" AutoSize="Disabled" Completed="Editor_OnCompleted"  Text="{Binding Description}" FontSize="Small" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    </view:CustomEditor>
+                </StackLayout>
+            </ScrollView>
         </Frame>
     </ContentPage.Content>
 </ContentPage>

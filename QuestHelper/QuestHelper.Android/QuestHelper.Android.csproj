@@ -80,6 +80,8 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomEditorRenderer.cs" />
+    <Compile Include="CustomEditTextRenderer.cs" />
     <Compile Include="CustomMapRenderer.cs" />
     <Compile Include="InstagramShareService.cs" />
     <Compile Include="ToastService.cs" />

@@ -26,7 +26,7 @@ namespace QuestHelper.View
         public MasterMainPageViewModel()
         {
             var collection = new PagesCollection();
-            MenuItems = collection.Pages;
+            MenuItems = collection.GetPagesForMenu();
         }
 
         #region INotifyPropertyChanged Implementation

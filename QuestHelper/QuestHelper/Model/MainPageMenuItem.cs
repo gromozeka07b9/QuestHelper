@@ -11,5 +11,6 @@ namespace QuestHelper.Model
 
         public string IconName { get; set; }
         public Type TargetType { get; set; }
+        public bool ShowInMenu { get; set; }
     }
 }

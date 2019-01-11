@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms.Maps;
 using Xamarin.Forms;
+using QuestHelper.Managers;
 
 namespace QuestHelper.View.Geo
 {
@@ -54,6 +55,9 @@ namespace QuestHelper.View.Geo
                 try
                 {
                     _currentPosition = await _locator.GetPositionAsync(TimeSpan.FromSeconds(_timeoutInSeconds));
+                    ParameterManager par = new ParameterManager();
+                    par.Set("LastPositionLatitude", _currentPosition.Latitude.ToString());
+                    par.Set("LastPositionLongitude", _currentPosition.Longitude.ToString());
                     result = true;
                 }
                 catch (Exception)
