@@ -18,8 +18,9 @@ namespace QuestHelper.Managers
             var byteArrayPreview = mediaService.ResizeImage(byteArrayOriginal, width, height, quality);
             return byteArrayPreview;
         }
-        public void CreateImagePreview(string pathToOriginalDirectory, string originalFileName, string pathToPreviewDirectory, string previewFileName)
+        public bool CreateImagePreview(string pathToOriginalDirectory, string originalFileName, string pathToPreviewDirectory, string previewFileName)
         {
+            bool result = false;
             try
             {
                 byte[] originalByteArray = File.ReadAllBytes(pathToOriginalDirectory + "/" + originalFileName);
@@ -29,12 +30,15 @@ namespace QuestHelper.Managers
                     var mediaService = DependencyService.Get<IMediaService>();
                     byte[] imgPreviewByteArray = previewManager.GetPreviewImage(mediaService, originalByteArray, _width, _height, _quality);
                     File.WriteAllBytes(pathToPreviewDirectory + "/" + previewFileName, imgPreviewByteArray);
+                    result = true;
                 }
             }
             catch (Exception e)
             {
                 Crashes.TrackError(e, new Dictionary<string, string> { { "Img", "ImgPreview" }, { originalFileName, previewFileName } });
             }
+
+            return result;
         }
 
         public int PreviewWidth

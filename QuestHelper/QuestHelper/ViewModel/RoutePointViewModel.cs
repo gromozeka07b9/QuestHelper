@@ -130,29 +130,40 @@ namespace QuestHelper.ViewModel
                     resizedOriginal.PreviewQuality = 60;
                     FileInfo originalFileInfo = new FileInfo(photoPicked.Path);
 
-                    resizedOriginal.CreateImagePreview(originalFileInfo.DirectoryName, originalFileInfo.Name, imgPathDirectory, ImagePathManager.GetImageFilename(mediaId, false));
-
-
-                    ImagePreviewManager preview = new ImagePreviewManager();
-                    preview.CreateImagePreview(originalFileInfo.DirectoryName, originalFileInfo.Name, imgPathDirectory, ImagePathManager.GetImageFilename(mediaId, true));
-                    _vpoint.AddImage(mediaId);
-
-                    ExifManager exif = new ExifManager();
-                    var coords = exif.GetCoordinates(photoPicked.Path);
-                    if ((coords.Latitude > 0 && coords.Longitude >0) && await App.Current.MainPage.DisplayAlert("Доступны координаты съемки",
-                        "Использовать их для данной точки?", "Да", "Нет"))
+                    if (resizedOriginal.CreateImagePreview(originalFileInfo.DirectoryName, originalFileInfo.Name,
+                        imgPathDirectory, ImagePathManager.GetImageFilename(mediaId, false)))
                     {
-                        Latitude = coords.Latitude;
-                        Longitude = coords.Longitude;
-                        _vpoint.Address = string.Empty;
-                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Latitude"));
-                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Longitude"));
-                        FillAddressByCoordinatesAsync(Latitude, Longitude);
+                        ImagePreviewManager preview = new ImagePreviewManager();
+                        if (preview.CreateImagePreview(originalFileInfo.DirectoryName, originalFileInfo.Name,
+                            imgPathDirectory, ImagePathManager.GetImageFilename(mediaId, true)))
+                        {
+                            ExifManager exif = new ExifManager();
+                            var coords = exif.GetCoordinates(photoPicked.Path);
+                            if ((coords.Latitude > 0 && coords.Longitude > 0) && await App.Current.MainPage.DisplayAlert("Доступны координаты съемки",
+                                    "Использовать их для данной точки?", "Да", "Нет"))
+                            {
+                                Latitude = coords.Latitude;
+                                Longitude = coords.Longitude;
+                                _vpoint.Address = string.Empty;
+                                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Latitude"));
+                                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Longitude"));
+                                FillAddressByCoordinatesAsync(Latitude, Longitude);
+                            }
+                            _vpoint.AddImage(mediaId);
+                            ApplyChanges();
+                            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
+                            Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+                            Analytics.TrackEvent("Media: photo added", new Dictionary<string, string> { { "Photo size", originalFileInfo.Length.ToString() } });
+                        }
+                        else
+                        {
+                            Analytics.TrackEvent("Media: add photo error create preview ", new Dictionary<string, string> { { "mediaId", mediaId } });
+                        }
                     }
-                    ApplyChanges();
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
-                    Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
-                    Analytics.TrackEvent("Photo added", new Dictionary<string, string> { { "Photo size", originalFileInfo.Length.ToString() } });
+                    else
+                    {
+                        Analytics.TrackEvent("Media: error resize photo ", new Dictionary<string, string> { { "mediaId", mediaId } });
+                    }
                 }
             }
         }
@@ -212,18 +223,21 @@ namespace QuestHelper.ViewModel
                     string imgPathToDirectory = info.DirectoryName;
                     fileSize = info.Length;
                     file.Dispose();
-                    //addPreview(imgPathToDirectory, info.Name, photoNamePreview, mediaId);
 
                     ImagePreviewManager preview = new ImagePreviewManager();
-                    preview.CreateImagePreview(imgPathToDirectory, info.Name, imgPathToDirectory, photoNamePreview);
-                    _vpoint.AddImage(mediaId);
-
-
-                    ApplyChanges();
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
-                    Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+                    if (preview.CreateImagePreview(imgPathToDirectory, info.Name, imgPathToDirectory, photoNamePreview))
+                    {
+                        _vpoint.AddImage(mediaId);
+                        ApplyChanges();
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
+                        Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+                        Analytics.TrackEvent("Media: photo taken", new Dictionary<string, string> { { "Photo size", fileSize.ToString() } });
+                    }
+                    else
+                    {
+                        Analytics.TrackEvent("Media: new photo error create preview", new Dictionary<string, string> { { "mediaId", mediaId } });
+                    }
                 }
-                Analytics.TrackEvent("Photo taken", new Dictionary<string, string> { { "Photo size", fileSize.ToString() } });
             }
         }
 

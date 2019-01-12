@@ -6,6 +6,9 @@
     <ContentPage.BindingContext>
         <viewmodel:RoutesViewModel />
     </ContentPage.BindingContext>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding SyncStartCommand}" Icon="loop.png"></ToolbarItem>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid>
             <Grid.ColumnDefinitions>

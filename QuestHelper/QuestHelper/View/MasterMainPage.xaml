@@ -1,43 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="QuestHelper.View.MasterMainPage" Title="Quest helper">
     <ContentPage.Content>
-        <StackLayout>
-        <ListView x:Name="MenuItemsListView"
-              SeparatorVisibility="Default"
-              HasUnevenRows="true"
-              ItemsSource="{Binding MenuItems}">
-      <ListView.Header>
-          <Grid>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="30"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="30"/>
-              </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0"/>
-                <RowDefinition Height="10"/>
-                <RowDefinition Height="10"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-                <!--Image Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="3" Source="test.jpg" Margin="0" HorizontalOptions="Fill" VerticalOptions="Start">
-                </-->
-            </Grid>
-      </ListView.Header>
-      <ListView.ItemTemplate>
-        <DataTemplate>
-          <ViewCell>
-            <StackLayout Padding="15,10" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
-            <Image Source="{Binding IconName}" VerticalOptions="Start" WidthRequest="32" Margin="0,0,10,0"/>
-            <Label VerticalOptions="FillAndExpand" 
-                VerticalTextAlignment="Center" 
-                Text="{Binding Title}" 
-                TextColor="Black"
-                FontSize="16"/>
-            </StackLayout>
-          </ViewCell>
-        </DataTemplate>
-      </ListView.ItemTemplate>
-    </ListView>
-  </StackLayout>
+        <StackLayout Orientation="Vertical" >
+            <ListView x:Name="MenuItemsListView"
+                  SeparatorVisibility="Default"
+                  HasUnevenRows="true"
+                  ItemsSource="{Binding MenuItems}">
+                  <ListView.Header>
+                      <Grid>
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="30"/>
+                          </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0"/>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                      </Grid>
+                  </ListView.Header>
+                  <ListView.ItemTemplate>
+                    <DataTemplate>
+                      <ViewCell>
+                        <StackLayout Padding="15,10" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+                        <Image Source="{Binding IconName}" VerticalOptions="Start" WidthRequest="32" Margin="0,0,10,0"/>
+                        <Label VerticalOptions="FillAndExpand" 
+                            VerticalTextAlignment="Center" 
+                            Text="{Binding Title}" 
+                            TextColor="Black"
+                            FontSize="16"/>
+                        </StackLayout>
+                      </ViewCell>
+                    </DataTemplate>
+                  </ListView.ItemTemplate>
+            </ListView>
+            <Label Text="Статус синхронизации" TextColor="DarkBlue" FontSize="12" Margin="5">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GetSyncStatusCommand}"></TapGestureRecognizer>
+                </Label.GestureRecognizers>
+            </Label>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

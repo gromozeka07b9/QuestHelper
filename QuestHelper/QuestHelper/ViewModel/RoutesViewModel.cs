@@ -28,15 +28,17 @@ namespace QuestHelper.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand AddNewRouteCommand { get; private set; }
         public ICommand RefreshListRoutesCommand { get; private set; }
+        public ICommand SyncStartCommand { get; private set; }
 
         public RoutesViewModel()
         {
             AddNewRouteCommand = new Command(addNewRouteCommandAsync);
             RefreshListRoutesCommand = new Command(refreshListRoutesCommand);
+            SyncStartCommand = new Command(syncStartCommand);
         }
 
 
-        async void refreshListRoutesCommand()
+        void refreshListRoutesCommand()
         {
             IsRefreshing = true;
             Routes = _routeManager.GetRoutes();
@@ -47,6 +49,10 @@ namespace QuestHelper.ViewModel
         async void addNewRouteCommandAsync()
         {
             await Navigation.PushAsync(new NewRoutePage(!Routes.Any()));
+        }
+        private void syncStartCommand(object obj)
+        {
+            Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
         }
 
         public bool IsRefreshing

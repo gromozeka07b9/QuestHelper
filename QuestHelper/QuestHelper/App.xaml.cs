@@ -20,7 +20,9 @@ namespace QuestHelper
 	public partial class App : Application
 	{
 	    private bool SynchronizeStarted = false;
-		public App ()
+	    private string statusSyncKey = "SyncStatus";
+
+        public App ()
 		{
 			InitializeComponent();
 
@@ -58,7 +60,10 @@ namespace QuestHelper
 	            Analytics.TrackEvent("Sync all");
 	            SynchronizeStarted = true;
                 DateTime startTime = DateTime.Now;
-	            //ShowWarning("Синхронизация запущена");
+                //ShowWarning("Синхронизация запущена");
+	            ParameterManager par = new ParameterManager();
+	            par.Set(statusSyncKey, $"Sync started:{startTime.ToLocalTime().ToString()}");
+
                 var syncResult = await SyncServer.SyncAllAsync();
 	            SynchronizeStarted = false;
                 if (!syncResult.Item1)
@@ -71,11 +76,14 @@ namespace QuestHelper
 	                        new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);
 	                }
 	                else ShowWarning(syncResult.Item2);
+	                var diff = DateTime.Now - startTime;
+	                par.Set(statusSyncKey, $"Sync finished with error:{DateTime.Now.ToLocalTime().ToString()}, due {diff} sec");
 	                Analytics.TrackEvent("Sync error", new Dictionary<string, string> { { "Sync error", syncResult.Item2 } });
 	            }
                 else
                 {
                     var diff = DateTime.Now - startTime;
+                    par.Set(statusSyncKey, $"Sync finished at {DateTime.Now.ToLocalTime().ToString()}, due {diff} sec");
                     ShowWarning($"Длительность синхронизации:{diff} сек.");
 	                Analytics.TrackEvent("Sync all done", new Dictionary<string, string>{{"Delay", Math.Round(diff.TotalSeconds).ToString()} });
 	            }

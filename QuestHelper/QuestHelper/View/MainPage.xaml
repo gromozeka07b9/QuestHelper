@@ -4,7 +4,7 @@
              x:Class="QuestHelper.View.MainPage"
              xmlns:view="clr-namespace:QuestHelper.View">
     <MasterDetailPage.Master>
-        <view:MasterMainPage x:Name="MasterPage" />
+        <view:MasterMainPage x:Name="MasterPage"/>
     </MasterDetailPage.Master>
     <MasterDetailPage.Detail>
         <NavigationPage>

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using QuestHelper.Model;
 using System.Net;
+using Microsoft.AppCenter.Analytics;
 
 namespace QuestHelper.Managers.Sync
 {
@@ -85,6 +86,7 @@ namespace QuestHelper.Managers.Sync
 
                 if (!result)
                 {
+                    Analytics.TrackEvent("Sync media: upload error", new Dictionary<string, string> { { "RoutePointMediaObjectId", media.RoutePointMediaObjectId } });
                     //ToDo:пока костыль, увеличим версию чтобы при следующей синхронизации повторно отправить файлы. Нужна поддержка на стороне сервера для проверки файлов.
                     //Ошибка может возникнуть при отправке файлов на сервер
                     ViewRoutePointMediaObject viewMedia = new ViewRoutePointMediaObject();
