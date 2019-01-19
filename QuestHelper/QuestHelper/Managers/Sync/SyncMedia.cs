@@ -31,7 +31,7 @@ namespace QuestHelper.Managers.Sync
         {
             bool result = false;
 
-            var medias = _routePointMediaManager.GetMediaObjects().Select(x => new Tuple<string, int>(x.RoutePointMediaObjectId, x.Version));
+            var medias = _routePointMediaManager.GetAllMediaObjects().Select(x => new Tuple<string, int>(x.RoutePointMediaObjectId, x.Version));
             SyncObjectStatus mediasServerStatus = await _routePointMediaObjectsApi.GetSyncStatus(medias);
             AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
             if (mediasServerStatus != null)
@@ -46,24 +46,21 @@ namespace QuestHelper.Managers.Sync
                 if (forUpload.Count > 0)
                 {
                     result = await UploadAsync(GetJsonStructures(forUpload), _routePointMediaObjectsApi);
-                    if (result)
-                    {
-                        result = await SendFilesForMediaList(forUpload);
-                    }
-
                     if (!result) return result;
                 }
 
                 if (forDownload.Count > 0)
                 {
                     result = await DownloadAsync(forDownload, _routePointMediaObjectsApi);
+                    if (!result) return result;
                 }
 
-                if (result)
-                {
-                    SyncFiles syncFiles = new SyncFiles(_authToken);
-                    result = await syncFiles.CheckExistsAllFilesForMediaAndDownloadIfNeeded();
-                }
+                result = await SendNotSyncedFiles();
+                if (!result) return result;
+
+                SyncFiles syncFiles = new SyncFiles(_authToken);
+                result = await syncFiles.CheckExistsAllFilesForMediaAndDownloadIfNeeded();
+                if (!result) return result;
             }
 
             return result;
@@ -84,16 +81,33 @@ namespace QuestHelper.Managers.Sync
                     AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
                 }
 
+                _routePointMediaManager.SetSyncStatus(mediaId, result);
                 if (!result)
                 {
                     Analytics.TrackEvent("Sync media: upload error", new Dictionary<string, string> { { "RoutePointMediaObjectId", media.RoutePointMediaObjectId } });
-                    //ToDo:пока костыль, увеличим версию чтобы при следующей синхронизации повторно отправить файлы. Нужна поддержка на стороне сервера для проверки файлов.
-                    //Ошибка может возникнуть при отправке файлов на сервер
-                    ViewRoutePointMediaObject viewMedia = new ViewRoutePointMediaObject();
-                    viewMedia.Load(mediaId);
-                    viewMedia.Version++;
-                    viewMedia.Save();
-                    break;
+                }
+            }
+
+            return result;
+        }
+        private async Task<bool> SendNotSyncedFiles()
+        {
+            var notSyncedMedias = _routePointMediaManager.GetNotSyncedMediaObjects();
+            bool result = !(notSyncedMedias.Count() > 0);
+            foreach (var media in notSyncedMedias)
+            {
+                result = await _routePointMediaObjectsApi.SendImage(media.RoutePointId, media.RoutePointMediaObjectId);
+                AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
+                if (result)
+                {
+                    result = await _routePointMediaObjectsApi.SendImage(media.RoutePointId, media.RoutePointMediaObjectId, true);
+                    AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
+                }
+
+                _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, result);
+                if (!result)
+                {
+                    Analytics.TrackEvent("Sync media: upload error", new Dictionary<string, string> { { "RoutePointMediaObjectId", media.RoutePointMediaObjectId } });
                 }
             }
 

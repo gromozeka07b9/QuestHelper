@@ -27,7 +27,7 @@ namespace QuestHelper.Managers.Sync
             bool result = true;
 
             RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
-            var mediaObjects = mediaManager.GetMediaObjects();
+            var mediaObjects = mediaManager.GetAllMediaObjects();
 
             foreach (var mediaObject in mediaObjects)
             {

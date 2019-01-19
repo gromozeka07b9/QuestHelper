@@ -60,9 +60,18 @@ namespace QuestHelper.WS
                         using (var formData = new MultipartFormDataContent())
                         {
                             formData.Add(content);
-                            var response = await client.PostAsync($"{ this._hostUrl }/routepointmediaobjects/{ routePointId }/{ routePointMediaObjectId }/uploadfile", formData);
-                            LastHttpStatusCode = response.StatusCode;
-                            result = response.IsSuccessStatusCode;
+                            HttpResponseMessage response = new HttpResponseMessage();
+                            try
+                            {
+                                response = await client.PostAsync($"{ this._hostUrl }/routepointmediaobjects/{ routePointId }/{ routePointMediaObjectId }/uploadfile", formData);
+                                LastHttpStatusCode = response.StatusCode;
+                                result = response.IsSuccessStatusCode;
+                            }
+                            catch (Exception e)
+                            {
+                                HandleError.Process("RoutePointMediaObjectApiRequest", "SendImage", e, false);
+                                result = false;
+                            }
                         }
                     }
                 }
@@ -125,6 +134,7 @@ namespace QuestHelper.WS
                 var response = await api.HttpRequestGET($"{this._hostUrl}/routepointmediaobjects/{routePointMediaObjectId}", _authToken);
                 LastHttpStatusCode = api.LastHttpStatusCode;
                 deserializedValue = JsonConvert.DeserializeObject<ViewRoutePointMediaObject>(response);
+                deserializedValue.ServerSynced = true;
             }
             catch (Exception e)
             {

@@ -15,12 +15,8 @@ namespace QuestHelper.Managers
         {
             _realmInstance = RealmAppInstance.GetAppInstance();
         }
-        /*internal static Realm GetRealmInstance()
-        {
-            return RealmAppInstance.GetAppInstance();
-        }*/
 
-        /*public bool SetSyncStatus(string Id, bool Status)
+        public bool SetSyncStatus(string Id, bool Status)
         {
             bool result = false;
             try
@@ -36,22 +32,10 @@ namespace QuestHelper.Managers
             }
             catch (Exception e)
             {
-                //пишем лог
+                HandleError.Process("RoutePointMediaObjectManager", "SetSyncStatus", e, false);
             }
             return result;
-        }*/
-        /*public IEnumerable<RoutePointMediaObject> GetNotSyncedFiles()
-        {
-            return _realmInstance.All<RoutePointMediaObject>().Where(media=>!media.ServerSynced);
-        }*/
-
-        /*public void UpdateLocalData(RoutePoint point, List<RoutePointMediaObject> mediaObjects)
-        {
-            foreach (var media in mediaObjects)
-            {
-                Add(point, media);
-            }
-        }*/
+        }
 
         private bool Add(RoutePoint point, RoutePointMediaObject mediaObject)
         {
@@ -69,7 +53,7 @@ namespace QuestHelper.Managers
             }
             catch (Exception e)
             {
-                //пишем лог
+                HandleError.Process("RoutePointMediaObjectManager", "Add", e, false);
             }
             return result;
         }
@@ -107,9 +91,9 @@ namespace QuestHelper.Managers
                     }
 
                     returnId = mediaObject.RoutePointMediaObjectId;
+                    mediaObject.ServerSynced = vmedia.ServerSynced;
+                    mediaObject.ServerSyncedDate = vmedia.ServerSyncedDate;
                     mediaObject.Version = vmedia.Version;
-                    //mediaObject.FileName = vmedia.FileName;
-                    //mediaObject.FileNamePreview = vmedia.FileNamePreview;
                 });
             }
             catch (Exception e)
@@ -121,9 +105,13 @@ namespace QuestHelper.Managers
         }
 
 
-        internal IEnumerable<RoutePointMediaObject> GetMediaObjects()
+        internal IEnumerable<RoutePointMediaObject> GetAllMediaObjects()
         {
             return _realmInstance.All<RoutePointMediaObject>();
+        }
+        internal IEnumerable<RoutePointMediaObject> GetNotSyncedMediaObjects()
+        {
+            return _realmInstance.All<RoutePointMediaObject>().Where(x=>!x.ServerSynced);
         }
 
         internal RoutePointMediaObject GetMediaObjectById(string mediaId)

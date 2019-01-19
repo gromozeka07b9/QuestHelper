@@ -15,6 +15,8 @@ namespace QuestHelper.Model
         private string _filename = string.Empty;
         private string _filenamePreview = string.Empty;
         private string _routePointId = string.Empty;
+        private bool _serverSynced = false;
+        private DateTimeOffset _serverSyncedDate;
         private int _version = 0;
 
         public ViewRoutePointMediaObject()
@@ -31,6 +33,8 @@ namespace QuestHelper.Model
                 _filename = $"img_{_id}.jpg";
                 _filenamePreview = $"img_{_id}_preview.jpg";
                 _version = mediaObject.Version;
+                _serverSynced = mediaObject.ServerSynced;
+                _serverSyncedDate = mediaObject.ServerSyncedDate;
             }
         }
 
@@ -106,6 +110,28 @@ namespace QuestHelper.Model
             set
             {
                 _version = value;
+            }
+        }
+        public bool ServerSynced
+        {
+            get
+            {
+                return _serverSynced;
+            }
+            set
+            {
+                _serverSynced = value;
+            }
+        }
+        public DateTimeOffset ServerSyncedDate
+        {
+            get
+            {
+                return _serverSyncedDate;
+            }
+            set
+            {
+                _serverSyncedDate = value;
             }
         }
 
