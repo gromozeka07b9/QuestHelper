@@ -1,6 +1,7 @@
 ﻿using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Plugin.Geolocator;
+using QuestHelper.Model;
 using QuestHelper.View.Geo;
 using QuestHelper.ViewModel;
 using Realms;
@@ -34,21 +35,26 @@ namespace QuestHelper.View
 
         private async void ContentPage_AppearingAsync(object sender, EventArgs e)
         {
-            CustomMapView customMap = new CustomMapView((CustomMap)this.Content, 15);
-            var routePoints = vm.GetPointsForOverviewRoute(CurrentRouteId);
-            if (routePoints.Count() > 0)
+            var customMap = (CustomMap)this.Content;
+            customMap.Points = vm.GetPointsForOverviewRoute(CurrentRouteId).Select(x => new PointForMap()
+            {
+                Latitude = x.Latitude, Longitude = x.Longitude, PathToPicture = x.ImagePreviewPathForList, Name = x.Name, Description = x.Description
+            }).ToList();
+            CustomMapView customMapView = new CustomMapView(customMap, 15);
+            await centerMap(customMapView, customMap.Points.First().Latitude, customMap.Points.First().Longitude);
+            /*if (routePoints.Count() > 0)
             {
                 foreach (var point in routePoints)
                 {
                     customMap.AddPin(point.Latitude, point.Longitude, point.Name, point.Address, PointPin_Clicked);
                 }
 
-                await centerMap(customMap, routePoints.First().Latitude, routePoints.First().Longitude);
+                await centerMap(customMapView, routePoints.First().Latitude, routePoints.First().Longitude);
             }
             else
             {
                 await getPositionAndCenterMap(customMap);
-            }
+            }*/
         }
 
         private async Task getPositionAndCenterMap(CustomMapView customMap)

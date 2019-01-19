@@ -7,11 +7,14 @@ using Android.App;
 using Android.Content;
 using Android.Gms.Maps;
 using Android.Gms.Maps.Model;
+using Android.Graphics;
+using Android.Media;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using QuestHelper.Droid;
+using QuestHelper.Model;
 using QuestHelper.Model.Messages;
 using QuestHelper.View;
 using QuestHelper.View.Geo;
@@ -24,7 +27,6 @@ namespace QuestHelper.Droid
 {
     public class CustomMapRenderer : MapRenderer, GoogleMap.IInfoWindowAdapter
     {
-        private List<Position> routeCoordinates;
         private CustomMap customMap;
 
         public CustomMapRenderer(Context context) : base(context)
@@ -38,34 +40,50 @@ namespace QuestHelper.Droid
             {
                 Android.Views.View view;
 
-                var customPin = GetCustomPin(marker);
-                if (customPin == null)
+                var point = customMap.Points
+                    .Where(x => x.Latitude == marker.Position.Latitude && x.Longitude == marker.Position.Longitude)
+                    .FirstOrDefault();
+
+                if (point == null)
                 {
                     throw new Exception("Custom pin not found");
                 }
 
-                /*if (customPin.Id.ToString() == "Xamarin")
-                {
-                    view = inflater.Inflate(Resource.Layout.XamarinMapInfoWindow, null);
-                }
-                else
-                {
-                    view = inflater.Inflate(Resource.Layout.MapInfoWindow, null);
-                }*/
                 view = inflater.Inflate(Resource.Layout.MapInfoWindow, null);
 
-                /*var infoTitle = view.FindViewById<TextView>(Resource.Id.InfoWindowTitle1);
-                var infoSubtitle = view.FindViewById<TextView>(Resource.Id.InfoWindowSubtitle1);
+                var infoImg = view.FindViewById<ImageView>(Resource.Id.InfoWindowImage);
+                var infoTitle = view.FindViewById<TextView>(Resource.Id.InfoWindowTitle);
+                var infoDescription = view.FindViewById<TextView>(Resource.Id.InfoWindowSubtitle);
 
+                if (infoImg != null)
+                {
+                    Bitmap bm = BitmapFactory.DecodeFile(point.PathToPicture);
+                    if (bm != null)
+                    {
+                        infoImg.SetImageBitmap(cropCenter(bm, 500, 400));
+                        bm = null;
+                    }
+                }
                 if (infoTitle != null)
                 {
-                    infoTitle.Text = marker.Title;
+                    infoTitle.Text = point.Name;
                 }
-                if (infoSubtitle != null)
+                if (infoDescription != null)
                 {
-                    infoSubtitle.Text = marker.Snippet;
-                }*/
-
+                    int maxLength = 100;
+                    string text = string.Empty;
+                    if (string.IsNullOrEmpty(point.Description))
+                    {
+                        text = "Описание не заполнено";
+                    } else if (point.Description.Length > maxLength)
+                    {
+                        text = point.Description.Substring(0, maxLength) + "...";
+                    } else
+                    {
+                        text = point.Description;
+                    }
+                    infoDescription.Text = text;
+                }
                 return view;
             }
             return null;
@@ -74,19 +92,6 @@ namespace QuestHelper.Droid
         public Android.Views.View GetInfoWindow(Marker marker)
         {
             return null;
-        }
-
-        CustomPin GetCustomPin(Marker annotation)
-        {
-            /*var position = new Position(annotation.Position.Latitude, annotation.Position.Longitude);
-            foreach (var pin in customPins)
-            {
-                if (pin.Position == position)
-                {
-                    return pin;
-                }
-            }*/
-            return new CustomPin(){Url = "http://test"};
         }
 
         protected override void OnElementChanged(Xamarin.Forms.Platform.Android.ElementChangedEventArgs<Map> e)
@@ -100,7 +105,6 @@ namespace QuestHelper.Droid
 
             if (e.NewElement != null)
             {
-                //var formsMap = (CustomMap)e.NewElement;
                 customMap = (CustomMap) e.NewElement;
                 Control.GetMapAsync(this);
             }
@@ -109,28 +113,56 @@ namespace QuestHelper.Droid
         protected override void OnMapReady(Android.Gms.Maps.GoogleMap map)
         {
             base.OnMapReady(map);
-            map.MapClick += Map_MapClick;  
-            /*routeCoordinates = customMap.RouteCoordinates;
-            var polylineOptions = new PolylineOptions();
-            polylineOptions.InvokeWidth(15);
-            polylineOptions.InvokeColor(0x66FF0000);
-
-            foreach (var position in routeCoordinates)
+            map.MapClick += Map_MapClick;
+            foreach (var point in customMap.Points)
             {
-                var latlng = new LatLng(position.Latitude, position.Longitude);
+                var latlng = new LatLng(point.Latitude, point.Longitude);
                 var marker = new MarkerOptions();
                 marker.SetPosition(latlng);
-                marker.SetIcon(BitmapDescriptorFactory.FromResource(Resource.Drawable.pinstart));
-                NativeMap.AddMarker(marker);
-                polylineOptions.Add(latlng);
-            }
+                BitmapDescriptor pic = null;
+                if (!string.IsNullOrEmpty(point.PathToPicture))
+                {
+                    Bitmap bm = BitmapFactory.DecodeFile(point.PathToPicture);
+                    if (bm != null)
+                    {
+                        pic = BitmapDescriptorFactory.FromBitmap(cropCenter(bm));
+                        bm = null;
+                    }
+                }
 
-            NativeMap.AddPolyline(polylineOptions);*/
-            
-            //NativeMap.InfoWindowClick += OnInfoWindowClick;
-            //NativeMap.SetInfoWindowAdapter(this);
+                if (pic == null)
+                {
+                    pic = BitmapDescriptorFactory.FromResource(Resource.Drawable.place_unknown);
+                }
+                marker.SetIcon(pic);
+                marker.SetTitle("test");
+                NativeMap.AddMarker(marker);
+            }
+            NativeMap.InfoWindowClick += OnInfoWindowClick;
+            NativeMap.SetInfoWindowAdapter(this);
         }
 
+        public static Bitmap cropCenter(Bitmap bmp, int width = 256, int height = 192)
+        {
+            bool portrait = bmp.Width < bmp.Height;
+            if (portrait)
+            {
+                int x = width;
+                width = height;
+                height = x;
+            }
+
+            Bitmap result = null;
+            try
+            {
+                result = ThumbnailUtils.ExtractThumbnail(bmp, width, height);
+            }
+            catch (Exception)
+            {
+
+            }
+            return result;
+        }
         private void Map_MapClick(object sender, GoogleMap.MapClickEventArgs e)
         {
             Xamarin.Forms.MessagingCenter.Send<MapSelectNewPointMessage>(new MapSelectNewPointMessage(){Latitude = e.Point.Latitude , Longitude = e.Point.Longitude }, string.Empty);
@@ -139,19 +171,13 @@ namespace QuestHelper.Droid
 
         private void OnInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
         {
-            var customPin = GetCustomPin(e.Marker);
-            if (customPin == null)
-            {
-                throw new Exception("Custom pin not found");
-            }
+            Xamarin.Forms.MessagingCenter.Send<MapOpenPointMessage>(new MapOpenPointMessage() { Latitude = e.Marker.Position.Latitude, Longitude = e.Marker.Position.Longitude }, string.Empty);
+        }
 
-            if (!string.IsNullOrWhiteSpace(customPin.Url))
-            {
-                var url = Android.Net.Uri.Parse(customPin.Url);
-                var intent = new Intent(Intent.ActionView, url);
-                intent.AddFlags(ActivityFlags.NewTask);
-                Android.App.Application.Context.StartActivity(intent);
-            }
+        public override bool DispatchTouchEvent(MotionEvent e)
+        {
+            Parent.Parent.Parent.Parent.RequestDisallowInterceptTouchEvent(true);
+            return base.DispatchTouchEvent(e);
         }
 
     }

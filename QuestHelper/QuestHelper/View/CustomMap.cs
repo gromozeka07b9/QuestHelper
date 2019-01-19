@@ -2,17 +2,18 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using QuestHelper.Model;
 using Xamarin.Forms.Maps;
 
 namespace QuestHelper.View
 {
     public class CustomMap : Map
     {
-        public List<Xamarin.Forms.Maps.Position> RouteCoordinates { get; set; }
+        public List<PointForMap> Points { get; set; }
 
         public CustomMap()
         {
-            RouteCoordinates = new List<Xamarin.Forms.Maps.Position>();
+            Points = new List<PointForMap>();
         }
     }
 }

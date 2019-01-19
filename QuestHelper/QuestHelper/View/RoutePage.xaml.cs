@@ -50,12 +50,15 @@ namespace QuestHelper.View
             {
                 var centerPoint = vm.PointsOfRoute[0];
                 CustomMap custMap = (CustomMap) this.PointMapOverview;
-                custMap.RouteCoordinates = vm.PointsOfRoute.Select(x => new Position(x.Latitude, x.Longitude)).ToList();
+                custMap.Points = vm.PointsOfRoute.Select(x => new PointForMap()
+                {
+                    Latitude = x.Latitude, Longitude = x.Longitude,PathToPicture = x.ImagePreviewPathForList, Name = x.Name, Description = x.Description
+                }).ToList();
                 CustomMapView customMap = new CustomMapView(custMap, 15);
                 
                 if (customMap.CenterMapToPosition(centerPoint.Latitude, centerPoint.Longitude, 50))
                 {
-                    for (int i = 0; i < vm.PointsOfRoute.Count; i++)
+                    /*for (int i = 0; i < vm.PointsOfRoute.Count; i++)
                     {
                         var point = vm.PointsOfRoute[i];
                         if (i == 0)
@@ -69,7 +72,7 @@ namespace QuestHelper.View
                         {
                             customMap.AddPin(point.Latitude, point.Longitude, point.Name, point.Address, PointPin_Clicked);
                         }
-                    }
+                    }*/
                 }
                 else
                 {

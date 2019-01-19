@@ -43,6 +43,11 @@ namespace QuestHelper
 		    {
 		        await startSyncAll();
 		    });
+		    MessagingCenter.Subscribe<MapOpenPointMessage>(this, string.Empty, (sender) =>
+		    {
+                //пока непонятно, как будем открывать точку из карты
+                ShowWarning("Данная функция в разработке");
+		    });
 
             TokenStoreService token = new TokenStoreService();
 
