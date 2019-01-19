@@ -57,7 +57,7 @@ namespace QuestHelper.View
                 case "Latitude":
                 case "Longitude":
                 {
-                    if ((_vm.Latitude > 0) && (_vm.Longitude > 0))
+                    if ((_vm.Latitude != 0) && (_vm.Longitude != 0))
                     {
                         CenterMap(_vm.Latitude, _vm.Longitude, _vm.Name, _vm.Address);
                         _vm.ApplyChanges();
@@ -107,7 +107,7 @@ namespace QuestHelper.View
 
         private async void ContentPage_AppearingAsync(object sender, EventArgs e)
         {
-            if((_routePoint!=null)&&(_routePoint.Latitude > 0) && (_routePoint.Longitude > 0) && (!string.IsNullOrEmpty(_routePoint.Name)))
+            if((_routePoint!=null)&&(_routePoint.Latitude != 0) && (_routePoint.Longitude != 0) && (!string.IsNullOrEmpty(_routePoint.Name)))
             {
                 await CenterMap(_routePoint.Latitude, _routePoint.Longitude, _routePoint.Name, _routePoint.Address);
             }
