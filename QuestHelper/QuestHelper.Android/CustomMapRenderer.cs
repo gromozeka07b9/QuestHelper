@@ -12,6 +12,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using QuestHelper.Droid;
+using QuestHelper.Model.Messages;
 using QuestHelper.View;
 using QuestHelper.View.Geo;
 using Xamarin.Forms;
@@ -108,7 +109,8 @@ namespace QuestHelper.Droid
         protected override void OnMapReady(Android.Gms.Maps.GoogleMap map)
         {
             base.OnMapReady(map);
-            routeCoordinates = customMap.RouteCoordinates;
+            map.MapClick += Map_MapClick;  
+            /*routeCoordinates = customMap.RouteCoordinates;
             var polylineOptions = new PolylineOptions();
             polylineOptions.InvokeWidth(15);
             polylineOptions.InvokeColor(0x66FF0000);
@@ -116,17 +118,23 @@ namespace QuestHelper.Droid
             foreach (var position in routeCoordinates)
             {
                 var latlng = new LatLng(position.Latitude, position.Longitude);
-                /*var marker = new MarkerOptions();
+                var marker = new MarkerOptions();
                 marker.SetPosition(latlng);
                 marker.SetIcon(BitmapDescriptorFactory.FromResource(Resource.Drawable.pinstart));
-                NativeMap.AddMarker(marker);*/
+                NativeMap.AddMarker(marker);
                 polylineOptions.Add(latlng);
             }
 
-            NativeMap.AddPolyline(polylineOptions);
-
+            NativeMap.AddPolyline(polylineOptions);*/
+            
             //NativeMap.InfoWindowClick += OnInfoWindowClick;
             //NativeMap.SetInfoWindowAdapter(this);
+        }
+
+        private void Map_MapClick(object sender, GoogleMap.MapClickEventArgs e)
+        {
+            Xamarin.Forms.MessagingCenter.Send<MapSelectNewPointMessage>(new MapSelectNewPointMessage(){Latitude = e.Point.Latitude , Longitude = e.Point.Longitude }, string.Empty);
+            //NativeMap.AddMarker(new MarkerOptions().SetPosition(new LatLng(e.Point.Latitude, e.Point.Longitude)).SetTitle("touch marker"));
         }
 
         private void OnInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
@@ -145,5 +153,6 @@ namespace QuestHelper.Droid
                 Android.App.Application.Context.StartActivity(intent);
             }
         }
+
     }
 }

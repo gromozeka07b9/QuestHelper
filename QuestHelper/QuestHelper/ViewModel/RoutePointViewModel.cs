@@ -82,7 +82,6 @@ namespace QuestHelper.ViewModel
             AddPhotoCommand = new Command(addPhotoAsync);
             EditDescriptionCommand = new Command(editDescriptionCommand);
             CopyCoordinatesCommand = new Command(copyCoordinatesCommand);
-
             _vpoint = new ViewRoutePoint(routeId, routePointId);
             if (string.IsNullOrEmpty(routePointId))
             {
@@ -93,7 +92,20 @@ namespace QuestHelper.ViewModel
             }
 
             Coordinates = Latitude + "," + Longitude;
-            Analytics.TrackEvent("Point created");
+            Analytics.TrackEvent("Dialog point opened");
+        }
+
+        private async void SetNewCoordinates(double latitude, double longitude)
+        {
+            var notCancel = await Application.Current.MainPage.DisplayAlert("Изменение координат точки", "Вы уверены, что хотите установить новые координаты?", "Нет", "Да");
+            if (!notCancel)
+            {
+                _vpoint.Latitude = latitude;
+                _vpoint.Longitude = longitude;
+                ApplyChanges();
+                Coordinates = Latitude + "," + Longitude;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Longitude"));
+            }
         }
 
         private void viewPhotoAsync(object imageSource)
@@ -168,12 +180,21 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        
+        internal void CloseDialog()
+        {
+            MessagingCenter.Unsubscribe<MapSelectNewPointMessage>(this, string.Empty);
+        }
+
         public void StartDialog()
         {
             _vpoint.Refresh(_vpoint.Id);
             //Пока не знаю как поймать событие того, редактировалось описание на другой странице и вернулись на текущую уже с модифицированным описанием
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Description"));
+            MessagingCenter.Subscribe<MapSelectNewPointMessage>(this, string.Empty, (sender) =>
+            {
+                SetNewCoordinates(sender.Latitude, sender.Longitude);
+            });
+
         }
         private void copyCoordinatesCommand(object obj)
         {
