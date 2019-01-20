@@ -104,6 +104,23 @@ namespace QuestHelper.WS
             return deserializedValue;
         }
 
+        internal async Task<bool> ShareRouteAsync(string jsonStructure)
+        {
+            bool shareResult = false;
+            try
+            {
+                ApiRequest api = new ApiRequest();
+                await api.HttpRequestPOST($"{_hostUrl}/routes/share", jsonStructure, _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
+                shareResult = LastHttpStatusCode == HttpStatusCode.OK;
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RoutesApiRequest", "Share", e, false);
+            }
+            return shareResult;
+        }
+
         public async Task<bool> UploadToServerAsync(string jsonStructure)
         {
             bool addResult = false;

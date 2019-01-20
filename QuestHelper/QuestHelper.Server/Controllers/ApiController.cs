@@ -13,7 +13,8 @@ namespace QuestHelper.Server.Controllers
         [HttpGet]
         public string Get()
         {
-            return "Backend for QuestHelper (GoSh!)";
+            string version = typeof(Startup).Assembly.GetName().Version.ToString();
+            return $"Backend for QuestHelper (GoSh!) Api version:{version}";
         }
     }
 }

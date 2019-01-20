@@ -45,7 +45,7 @@ namespace QuestHelper.Server.Controllers.Account
                         var response = new
                         {
                             access_token = encodedJwt,
-                            username = identity.Name
+                            username = user.Name
                         };
 
                         // сериализация ответа

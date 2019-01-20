@@ -19,6 +19,11 @@ namespace QuestHelper.Server.Controllers.Routes
     public class RoutesController : Controller
     {
         private DbContextOptions<ServerDbContext> _dbOptions = ServerDbContext.GetOptionsContextDbServer();
+        public class ShareRequest
+        {
+            public string RouteIdForShare;
+            public string[] UserId;
+        }
 
         [HttpGet]
         public IActionResult Get()
@@ -62,6 +67,8 @@ namespace QuestHelper.Server.Controllers.Routes
                 var entity = db.Route.Find(routeObject.RouteId);
                 if (entity == null)
                 {
+                    routeObject.CreatorId = userId;
+                    routeObject.IsDeleted = false;
                     db.Route.Add(routeObject);
                     RouteAccess accessObject = new RouteAccess();
                     accessObject.UserId = userId;
@@ -84,15 +91,69 @@ namespace QuestHelper.Server.Controllers.Routes
             string userId = IdentityManager.GetUserId(HttpContext);
             using (var db = new ServerDbContext(_dbOptions))
             {
-                bool accessGranted = db.RouteAccess.Where(u => u.UserId == userId).Select(u => u.RouteId).Any();
-                if (accessGranted)
+                bool userIsCreatorRoute = db.Route.Where(u => u.RouteId == RouteId && u.CreatorId == userId).Any();
+                if (userIsCreatorRoute)
                 {
-                    var entity = db.Route.Find(RouteId);
-                    if (entity != null)
+                    bool accessGranted = db.RouteAccess.Where(u => u.UserId == userId).Select(u => u.RouteId).Any();
+                    if (accessGranted)
                     {
-                        db.Remove(entity);
+                        var entity = db.Route.Find(RouteId);
+                        if (entity != null)
+                        {
+                            entity.IsDeleted = true;
+                            db.Entry(entity).CurrentValues.SetValues(entity);
+                            //db.Remove(entity);
+                        }
+                        db.SaveChanges();
                     }
-                    db.SaveChanges();
+                    else
+                    {
+                        Response.StatusCode = 400;
+                    }
+                }
+                else
+                {
+                    Response.StatusCode = 400;
+                }
+            }
+        }
+
+        [Route("share")]
+        [HttpPost]
+        public void Share([FromBody]ShareRequest request)
+        {
+            string userId = IdentityManager.GetUserId(HttpContext);
+            using (var db = new ServerDbContext(_dbOptions))
+            {
+                bool userIsCreatorRoute = db.Route.Where(u => u.RouteId == request.RouteIdForShare && u.CreatorId == userId).Any();
+                if (userIsCreatorRoute)
+                {
+                    bool accessGranted = db.RouteAccess.Where(u => u.UserId == userId).Select(u => u.RouteId).Any();
+                    if (accessGranted)
+                    {
+                        foreach (string shareUserId in request.UserId)
+                        {
+                            bool userAlreadyHaveAccess = db.RouteAccess.Where(u => u.UserId == shareUserId && u.RouteId == request.RouteIdForShare).Any();
+                            if (!userAlreadyHaveAccess)
+                            {
+                                RouteAccess routeAccess = new RouteAccess();
+                                routeAccess.UserId = shareUserId;
+                                routeAccess.CreateDate = DateTime.Now;
+                                routeAccess.RouteId = request.RouteIdForShare;
+                                routeAccess.RouteAccessId = Guid.NewGuid().ToString();
+                                db.RouteAccess.Add(routeAccess);
+                            }
+                        }
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        Response.StatusCode = 400;
+                    }
+                }
+                else
+                {
+                    Response.StatusCode = 400;
                 }
             }
         }

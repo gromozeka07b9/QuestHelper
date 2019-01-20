@@ -35,3 +35,6 @@ https://stackoverflow.com/questions/35279403/toast-equivalent-for-xamarin-forms
 
 share instagram:
 https://developers.facebook.com/docs/instagram/sharing-to-feed/
+
+facebook share:
+http://www.saatchisynergize.co.za/blog/facebook-users-now-have-more-control-over-app-share/

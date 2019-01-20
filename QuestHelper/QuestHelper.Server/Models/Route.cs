@@ -16,5 +16,7 @@ namespace QuestHelper.Server.Models
         /// Версия записи
         /// </summary>
         public int Version { get; set; }
+        public string CreatorId { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }
