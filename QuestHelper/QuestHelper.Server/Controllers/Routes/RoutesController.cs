@@ -133,15 +133,24 @@ namespace QuestHelper.Server.Controllers.Routes
                     {
                         foreach (string shareUserId in request.UserId)
                         {
-                            bool userAlreadyHaveAccess = db.RouteAccess.Where(u => u.UserId == shareUserId && u.RouteId == request.RouteIdForShare).Any();
-                            if (!userAlreadyHaveAccess)
+                            bool userForShareExist = db.User.Where(u => u.UserId == shareUserId).Any();
+                            if (userForShareExist)
                             {
-                                RouteAccess routeAccess = new RouteAccess();
-                                routeAccess.UserId = shareUserId;
-                                routeAccess.CreateDate = DateTime.Now;
-                                routeAccess.RouteId = request.RouteIdForShare;
-                                routeAccess.RouteAccessId = Guid.NewGuid().ToString();
-                                db.RouteAccess.Add(routeAccess);
+                                bool userAlreadyHaveAccess = db.RouteAccess.Where(u => u.UserId == shareUserId && u.RouteId == request.RouteIdForShare).Any();
+                                if (!userAlreadyHaveAccess)
+                                {
+                                    RouteAccess routeAccess = new RouteAccess();
+                                    routeAccess.UserId = shareUserId;
+                                    routeAccess.CreateDate = DateTime.Now;
+                                    routeAccess.RouteId = request.RouteIdForShare;
+                                    routeAccess.RouteAccessId = Guid.NewGuid().ToString();
+                                    db.RouteAccess.Add(routeAccess);
+                                }
+                            }
+                            else
+                            {
+                                Response.StatusCode = 404;
+                                return;
                             }
                         }
                         db.SaveChanges();

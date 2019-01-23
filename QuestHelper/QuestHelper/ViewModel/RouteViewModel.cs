@@ -24,7 +24,6 @@ namespace QuestHelper.ViewModel
 {
     public class RouteViewModel : INotifyPropertyChanged
     {
-        private const string _apiUrl = "http://igosh.pro/api";
         private bool _splashStartScreenIsVisible;
         private bool _routeScreenIsVisible;
         private ObservableCollection<ViewRoutePoint> _viewPointsOfRoute = new ObservableCollection<ViewRoutePoint>();
@@ -81,20 +80,8 @@ namespace QuestHelper.ViewModel
         }
         private async void shareRouteCommandAsync(object obj)
         {
-            TokenStoreService token = new TokenStoreService();
-            string authToken = await token.GetAuthTokenAsync();
-            var routesApi = new RoutesApiRequest(_apiUrl, authToken);
-            List<string> accessForUsersId = new List<string>();
-            accessForUsersId.Add("ed3d1c79-3d21-4f08-8680-6815586003bd");
-
-            ShareRequest shareRequest = new ShareRequest();
-            shareRequest.RouteIdForShare = _vroute.RouteId;
-            shareRequest.UserId = accessForUsersId.ToArray();
-            JObject jsonRequestObject = JObject.FromObject(shareRequest);
-
-            bool result = await routesApi.ShareRouteAsync(jsonRequestObject.ToString());
-            string resultShareText = result ? "Маршрут теперь доступен выбранным пользователям" : "Не получилось поделиться маршрутом";
-            DependencyService.Get<IToastService>().ShortToast(resultShareText);
+            var shareRoutePage = new ShareRoutePage(_vroute.RouteId);
+            await Navigation.PushAsync(shareRoutePage, true);
         }
 
         private void fullScreenMapCommandAsync(object obj)
