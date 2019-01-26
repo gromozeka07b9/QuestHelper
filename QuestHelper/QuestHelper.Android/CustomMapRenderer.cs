@@ -14,11 +14,13 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using ImageCircle.Forms.Plugin.Abstractions;
 using QuestHelper.Droid;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
 using QuestHelper.View;
 using QuestHelper.View.Geo;
+using Refractored.Controls;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 using Xamarin.Forms.Maps.Android;
@@ -136,11 +138,15 @@ namespace QuestHelper.Droid
                 BitmapDescriptor pic = null;
                 if (!string.IsNullOrEmpty(point.PathToPicture))
                 {
+                    CircleImageView circleView = new CircleImageView(Context);
                     Bitmap bm = BitmapFactory.DecodeFile(point.PathToPicture);
                     if (bm != null)
                     {
-                        pic = BitmapDescriptorFactory.FromBitmap(cropCenter(bm));
+                        var croppedBitmap = getCroppedBitmap(bm, 300);
+                        //pic = BitmapDescriptorFactory.FromBitmap(cropCenter(bm));
+                        pic = BitmapDescriptorFactory.FromBitmap(croppedBitmap);
                         bm = null;
+                        croppedBitmap = null;
                     }
                 }
 
@@ -148,14 +154,45 @@ namespace QuestHelper.Droid
                 {
                     pic = BitmapDescriptorFactory.FromResource(Resource.Drawable.place_unknown);
                 }
+
                 marker.SetIcon(pic);
-                marker.SetTitle("test");
                 NativeMap.AddMarker(marker);
+                //NativeMap.AddCircle(new CircleOptions().InvokeCenter(latlng).InvokeRadius(100));
             }
             NativeMap.InfoWindowClick += OnInfoWindowClick;
             NativeMap.SetInfoWindowAdapter(this);
         }
 
+        public static Bitmap getCroppedBitmap(Bitmap bmp, int radius)
+        {
+            Bitmap sbmp;
+            if (bmp.Width != radius || bmp.Height != radius)
+                sbmp = Bitmap.CreateScaledBitmap(bmp, radius, radius, false);
+            else
+                sbmp = bmp;
+
+            Bitmap output = Bitmap.CreateBitmap(sbmp.Width, sbmp.Height, Bitmap.Config.Argb8888);
+            Canvas canvas = new Canvas(output);
+            Paint paint = new Paint();
+            Rect rect = new Rect(0, 0, sbmp.Width, sbmp.Height);
+
+            paint.AntiAlias = true;
+            paint.FilterBitmap = true;
+            paint.Dither = true;
+            canvas.DrawARGB(0, 0, 0, 0);
+            paint.Color = (Android.Graphics.Color.ParseColor("#BAB399"));
+
+            canvas.DrawCircle(sbmp.Width / 2 + 0.0f, sbmp.Height / 2 + 0.0f, sbmp.Width / 2 + 0.0f, paint);
+            paint.SetXfermode(new PorterDuffXfermode(PorterDuff.Mode.SrcIn));
+            try
+            {
+                canvas.DrawBitmap(sbmp, rect, rect, paint);
+            }
+            catch (Exception ex)
+            {
+            }
+            return output;
+        }
         public static Bitmap cropCenter(Bitmap bmp, int width = 256, int height = 192)
         {
             bool portrait = bmp.Width < bmp.Height;
@@ -180,7 +217,6 @@ namespace QuestHelper.Droid
         private void Map_MapClick(object sender, GoogleMap.MapClickEventArgs e)
         {
             Xamarin.Forms.MessagingCenter.Send<MapSelectNewPointMessage>(new MapSelectNewPointMessage(){Latitude = e.Point.Latitude , Longitude = e.Point.Longitude }, string.Empty);
-            //NativeMap.AddMarker(new MarkerOptions().SetPosition(new LatLng(e.Point.Latitude, e.Point.Longitude)).SetTitle("touch marker"));
         }
 
         private void OnInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)

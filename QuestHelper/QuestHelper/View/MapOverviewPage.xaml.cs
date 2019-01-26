@@ -50,8 +50,8 @@ namespace QuestHelper.View
                 }
 
                 await centerMap(customMapView, routePoints.First().Latitude, routePoints.First().Longitude);
-            }
-            else
+            }*/
+            /*else
             {
                 await getPositionAndCenterMap(customMap);
             }*/

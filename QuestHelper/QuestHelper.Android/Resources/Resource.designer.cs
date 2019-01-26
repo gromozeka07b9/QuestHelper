@@ -2101,6 +2101,18 @@ namespace QuestHelper.Droid
 			// aapt resource value: 0x7f010019
 			public const int circleCrop = 2130771993;
 			
+			// aapt resource value: 0x7f010191
+			public const int civ_border_color = 2130772369;
+			
+			// aapt resource value: 0x7f010192
+			public const int civ_border_overlay = 2130772370;
+			
+			// aapt resource value: 0x7f010190
+			public const int civ_border_width = 2130772368;
+			
+			// aapt resource value: 0x7f010193
+			public const int civ_fill_color = 2130772371;
+			
 			// aapt resource value: 0x7f01010b
 			public const int closeIcon = 2130772235;
 			
@@ -8508,6 +8520,24 @@ namespace QuestHelper.Droid
 			
 			// aapt resource value: 11
 			public const int CardView_contentPaddingTop = 11;
+			
+			public static int[] CircleImageView = new int[] {
+					2130772368,
+					2130772369,
+					2130772370,
+					2130772371};
+			
+			// aapt resource value: 1
+			public const int CircleImageView_civ_border_color = 1;
+			
+			// aapt resource value: 2
+			public const int CircleImageView_civ_border_overlay = 2;
+			
+			// aapt resource value: 0
+			public const int CircleImageView_civ_border_width = 0;
+			
+			// aapt resource value: 3
+			public const int CircleImageView_civ_fill_color = 3;
 			
 			public static int[] CollapsingToolbarLayout = new int[] {
 					2130772034,

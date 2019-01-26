@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Android.Content;
 using QuestHelper.Model.Messages;
 using Plugin.CurrentActivity;
+using ImageCircle.Forms.Plugin.Droid;
 
 namespace QuestHelper.Droid
 {
@@ -50,6 +51,7 @@ namespace QuestHelper.Droid
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             Xamarin.FormsMaps.Init(this, bundle);
+            ImageCircleRenderer.Init();
             LoadApplication(new App());
 
             StartMainScreen(bundle);
