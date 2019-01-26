@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -107,6 +108,19 @@ namespace QuestHelper.Droid
             {
                 customMap = (CustomMap) e.NewElement;
                 Control.GetMapAsync(this);
+            }
+        }
+
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            base.OnElementPropertyChanged(sender, e);
+
+            if (this.Element == null || this.Control == null)
+                return;
+
+            if (e.PropertyName == "")
+            {
+
             }
         }
 

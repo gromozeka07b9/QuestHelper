@@ -42,6 +42,7 @@ namespace QuestHelper.Managers
                     route.Name = viewRoute.Name;
                     route.Version = viewRoute.Version;
                     route.CreateDate = viewRoute.CreateDate;
+                    route.IsShared = viewRoute.IsShared;
                     viewRoute.Refresh(route.RouteId);
                 });
                 result = true;

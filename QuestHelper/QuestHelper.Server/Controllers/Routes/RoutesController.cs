@@ -145,6 +145,13 @@ namespace QuestHelper.Server.Controllers.Routes
                                     routeAccess.RouteId = request.RouteIdForShare;
                                     routeAccess.RouteAccessId = Guid.NewGuid().ToString();
                                     db.RouteAccess.Add(routeAccess);
+                                    Route routeEntity = db.Route.Find(request.RouteIdForShare);
+                                    if (!routeEntity.IsShared)
+                                    {
+                                        routeEntity.IsShared = true;
+                                        routeEntity.Version++;
+                                        db.Entry(routeEntity).CurrentValues.SetValues(routeEntity);
+                                    }
                                 }
                             }
                             else

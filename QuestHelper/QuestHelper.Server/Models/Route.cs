@@ -18,5 +18,6 @@ namespace QuestHelper.Server.Models
         public int Version { get; set; }
         public string CreatorId { get; set; }
         public bool IsDeleted { get; set; }
+        public bool IsShared { get; set; }
     }
 }

@@ -1,0 +1,23 @@
+﻿{
+  "RoutesPage.xaml": {
+    "Color": "Red",
+    "Routes": [
+      {
+        "Name": "Москва заснежная",
+        "CreateDate": { "LocalDateTime" : "01/26/2019 11:45:41" }
+      },
+      {
+        "Name": "Камчатка",
+        "CreateDate": { "LocalDateTime": "25 декабря, 2018" }
+      },
+      {
+        "Name": "Бесплатные туалеты в Москве, теплые и комфортные",
+        "CreateDate": { "LocalDateTime": "01/26/2019 11:45:41" }
+      },
+      {
+        "Name": "Парк Горького",
+        "CreateDate": { "LocalDateTime": "01/26/2019 11:45:41" }
+      }
+    ]
+  }
+}

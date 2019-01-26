@@ -106,6 +106,7 @@ namespace QuestHelper.Model
         }
 
         public string UserId { get; set; }
+        public bool IsShared { get; set; }
 
         public bool Save()
         {

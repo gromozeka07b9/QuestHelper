@@ -8,8 +8,8 @@
                 <ListView.Header>
                     <Frame CornerRadius="5" HasShadow="True" Padding="0" BorderColor="Accent" OutlineColor="#CAECFF" IsClippedToBounds="False" Margin="5">
                         <StackLayout Orientation="Vertical">
-                            <Label Text="Пригласите друзей, чтобы вместе с ними добавлять впечатления:" Style="{StaticResource RouteTextLabel}" Margin="15,0,0,0" FontSize="9"></Label>
-                            <SearchBar x:Name="SearchBar" SearchCommand="{Binding SearchUserCommand}" SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}" TextChanged="SearchBar_OnTextChanged"></SearchBar>
+                            <Label Text="Пригласите друзей, чтобы поделиться с ними впечатлениями:" Style="{StaticResource RouteTextLabel}" Margin="15,0,0,0" FontSize="9"></Label>
+                            <SearchBar BackgroundColor="LightGray" x:Name="SearchBar" SearchCommand="{Binding SearchUserCommand}" SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}" TextChanged="SearchBar_OnTextChanged"></SearchBar>
                         </StackLayout>
                     </Frame>
                 </ListView.Header>
