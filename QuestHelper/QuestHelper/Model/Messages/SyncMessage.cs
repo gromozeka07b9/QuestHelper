@@ -6,5 +6,6 @@ namespace QuestHelper.Model.Messages
 {
     public class SyncMessage
     {
+        public bool ShowErrorMessageIfExist = true;
     }
 }

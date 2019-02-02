@@ -10,10 +10,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Acr.UserDialogs;
 using QuestHelper.Managers;
 using Xamarin.Forms;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
+using Xamarin.Essentials;
 
 namespace QuestHelper
 {
@@ -29,8 +31,7 @@ namespace QuestHelper
 
 		    MainPage = new View.MainPage();
 		    Analytics.TrackEvent("Start app");
-
-        }
+		}
 
         protected override async void OnStart ()
 		{
@@ -41,7 +42,7 @@ namespace QuestHelper
 #endif
             MessagingCenter.Subscribe<SyncMessage>(this, string.Empty, async (sender) =>
 		    {
-		        await startSyncAll();
+		        await startProgressSync(sender.ShowErrorMessageIfExist);
 		    });
 		    MessagingCenter.Subscribe<MapOpenPointMessage>(this, string.Empty, (sender) =>
 		    {
@@ -53,9 +54,26 @@ namespace QuestHelper
 
             if (Setup() && !string.IsNullOrEmpty(await token.GetAuthTokenAsync()))
             {
-                await startSyncAll();
+                await startProgressSync(true);
             }
 
+        }
+
+	    private async Task startProgressSync(bool showErrorMessageIfExist)
+	    {
+	        var networkState = Connectivity.NetworkAccess;
+	        if (networkState == NetworkAccess.Internet)
+	        {
+	            using (UserDialogs.Instance.Loading("Синхронизация данных", null, null, true, MaskType.Black))
+	            {
+	                await startSyncAll();
+	            }
+	        }
+	        else
+	        {
+                if(showErrorMessageIfExist)
+	                UserDialogs.Instance.Alert("Проверьте ваше подключение к сети", "Синхронизация выключена", "Ок");
+	        }
         }
 
 	    private async Task startSyncAll()
@@ -123,7 +141,6 @@ namespace QuestHelper
         public void ShowWarning(string text)
         {            
             DependencyService.Get<IToastService>().ShortToast(text);
-
         }
         protected override void OnSleep ()
 		{
