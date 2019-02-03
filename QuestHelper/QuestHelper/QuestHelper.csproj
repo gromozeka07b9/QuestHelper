@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
 	<RunCodeAnalysis>False</RunCodeAnalysis>
+	<Configurations>Debug;Release;Gorilla</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -37,6 +38,9 @@
     </Compile>
     <Compile Update="View\EditRoutePointDescriptionPage.xaml.cs">
       <DependentUpon>EditRoutePointDescriptionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="View\MapRouteOverviewPage.xaml.cs">
+      <DependentUpon>MapRouteOverviewPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="View\RouteCreatedPage.xaml.cs">
       <DependentUpon>RouteCreatedPage.xaml</DependentUpon>

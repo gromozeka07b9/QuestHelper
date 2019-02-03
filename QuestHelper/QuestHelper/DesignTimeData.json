@@ -4,7 +4,7 @@
     "Routes": [
       {
         "Name": "Москва заснежная",
-        "CreateDate": { "LocalDateTime" : "01/26/2019 11:45:41" }
+        "CreateDate": { "LocalDateTime": "01/26/2019 11:45:41" }
       },
       {
         "Name": "Камчатка",
@@ -17,6 +17,26 @@
       {
         "Name": "Парк Горького",
         "CreateDate": { "LocalDateTime": "01/26/2019 11:45:41" }
+      }
+    ]
+  },
+  "RoutePage.xaml": {
+    "PointsOfRoute": [
+      {
+        "NameText": "Москва заснежная",
+        "CreateDateText": { "LocalDateTime": "01/26/2019 11:45:41" }
+      },
+      {
+        "NameText": "Москва заснежная",
+        "CreateDateText": { "LocalDateTime": "01/26/2019 11:45:41" }
+      },
+      {
+        "NameText": "Москва заснежная",
+        "CreateDateText": { "LocalDateTime": "01/26/2019 11:45:41" }
+      },
+      {
+        "NameText": "Москва заснежная",
+        "CreateDateText": { "LocalDateTime": "01/26/2019 11:45:41" }
       }
     ]
   }

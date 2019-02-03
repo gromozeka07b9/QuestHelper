@@ -61,6 +61,7 @@
                     <local:CustomMap
                     x:Name="PointMapOverview"
                     IsShowingUser="true"
+                    UseInterceptTouchEvent="true"
                     MapType="Street" 
                     />
                 </StackLayout>

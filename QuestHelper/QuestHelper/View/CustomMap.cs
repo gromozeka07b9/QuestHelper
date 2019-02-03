@@ -10,10 +10,12 @@ namespace QuestHelper.View
     public class CustomMap : Map
     {
         public List<PointForMap> Points { get; set; }
+        public bool UseInterceptTouchEvent { get; set; }
 
         public CustomMap()
         {
             Points = new List<PointForMap>();
+            UseInterceptTouchEvent = false;
         }
     }
 }

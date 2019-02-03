@@ -123,9 +123,16 @@ namespace QuestHelper.Managers
         {
             return _realmInstance.All<RoutePointMediaObject>().Where(x=>x.RoutePointId == routePointId);
         }
-        /*internal IEnumerable<RoutePointMediaObject> GetNotSynced()
+        internal int GetCountByRouteId(string routeId)
         {
-            return _realmInstance.All<RoutePointMediaObject>().Where(item => !item.ServerSynced);
-        }*/
+            int count = 0;
+            var route = _realmInstance.All<Route>().Where(x => x.RouteId == routeId).FirstOrDefault();
+            foreach (var point in route.Points)
+            {
+                count += _realmInstance.All<RoutePointMediaObject>().Where(x => x.RoutePointId == point.RoutePointId).Count();
+            }
+
+            return count;
+        }
     }
 }

@@ -32,6 +32,8 @@ namespace QuestHelper.Droid
     {
         private CustomMap customMap;
 
+        public int prevMarkerSize = 0;
+
         public CustomMapRenderer(Context context) : base(context)
         {
         }
@@ -130,6 +132,14 @@ namespace QuestHelper.Droid
         {
             base.OnMapReady(map);
             map.MapClick += Map_MapClick;
+            drawMarkers(200);
+            NativeMap.InfoWindowClick += OnInfoWindowClick;
+            NativeMap.SetInfoWindowAdapter(this);
+        }
+
+        private void drawMarkers(int markerSize)
+        {
+            NativeMap.Clear();
             foreach (var point in customMap.Points)
             {
                 var latlng = new LatLng(point.Latitude, point.Longitude);
@@ -142,7 +152,7 @@ namespace QuestHelper.Droid
                     Bitmap bm = BitmapFactory.DecodeFile(point.PathToPicture);
                     if (bm != null)
                     {
-                        var croppedBitmap = getCroppedBitmap(bm, 300);
+                        var croppedBitmap = getCroppedBitmap(bm, markerSize);
                         //pic = BitmapDescriptorFactory.FromBitmap(cropCenter(bm));
                         pic = BitmapDescriptorFactory.FromBitmap(croppedBitmap);
                         bm = null;
@@ -159,8 +169,6 @@ namespace QuestHelper.Droid
                 NativeMap.AddMarker(marker);
                 //NativeMap.AddCircle(new CircleOptions().InvokeCenter(latlng).InvokeRadius(100));
             }
-            NativeMap.InfoWindowClick += OnInfoWindowClick;
-            NativeMap.SetInfoWindowAdapter(this);
         }
 
         public static Bitmap getCroppedBitmap(Bitmap bmp, int radius)
@@ -226,9 +234,34 @@ namespace QuestHelper.Droid
 
         public override bool DispatchTouchEvent(MotionEvent e)
         {
-            Parent.Parent.Parent.Parent.RequestDisallowInterceptTouchEvent(true);
-            return base.DispatchTouchEvent(e);
+            if (customMap.UseInterceptTouchEvent)
+                Parent.Parent.Parent.Parent.RequestDisallowInterceptTouchEvent(true);
+            var dispatchEvent = base.DispatchTouchEvent(e);
+
+            int markerSize = getMarkerSizeByZoom(NativeMap.CameraPosition.Zoom);
+            if (markerSize != prevMarkerSize)
+            {
+                prevMarkerSize = markerSize;
+                drawMarkers(markerSize);
+            }
+
+            return dispatchEvent;
         }
 
+        private int getMarkerSizeByZoom(float zoom)
+        {
+            float oneOfThree = NativeMap.MaxZoomLevel / 3;
+            if (zoom <= oneOfThree)
+            {
+                return 100;
+            }else if (zoom <= oneOfThree * 2)
+            {
+                return 200;
+            }else if (zoom <= oneOfThree * 3)
+            {
+                return 300;
+            }
+            else return 200;
+        }
     }
 }

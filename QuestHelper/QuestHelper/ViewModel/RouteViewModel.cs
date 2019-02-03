@@ -32,10 +32,16 @@ namespace QuestHelper.ViewModel
 
         private ViewRoute _vroute;
         private ViewRoutePoint _selectedPoint;
+        private RouteManager _routeManager = new RouteManager();
         private RoutePointManager _routePointManager = new RoutePointManager();
+        private RoutePointMediaObjectManager _routePointMediaObjectManager = new RoutePointMediaObjectManager();
         private bool _listIsRefreshing;
         private bool _noPointWarningIsVisible;
         private bool _isRefreshing;
+        private int _countOfPhotos;
+        private int _countOfPoints;
+        private string _routeLength = "0";
+        private string _routeLengthSteps = "0";
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -86,8 +92,8 @@ namespace QuestHelper.ViewModel
 
         private void fullScreenMapCommandAsync(object obj)
         {
-            var pageCollections = new PagesCollection();
-            Xamarin.Forms.MessagingCenter.Send<ToggleFullscreenMapMessage>(new ToggleFullscreenMapMessage() { Fullscreen = true, RouteId = _vroute.RouteId}, string.Empty);
+            var mapRoutePage = new MapRouteOverviewPage(_vroute.RouteId);
+            Navigation.PushAsync(mapRoutePage, true);
         }
 
         private void editRouteCommandAsync(object obj)
@@ -108,6 +114,21 @@ namespace QuestHelper.ViewModel
                 else showNewRouteData();
             }
             ListIsRefreshing = false;
+            CountOfPoints = _routePointManager.GetPointsByRouteId(_vroute.RouteId).Count();
+            CountOfPhotos = _routePointMediaObjectManager.GetCountByRouteId(_vroute.RouteId);
+            double routeLengthInKm = _routeManager.GetLength(_vroute.RouteId);
+            if (routeLengthInKm < 1000)
+            {
+                double routeLength = _routeManager.GetLength(_vroute.RouteId) * 1000;
+                RouteLength = $"{routeLength.ToString("F1")} метров";
+                RouteLengthSteps = $"{(routeLength * 1.3).ToString("N0")} шагов";
+            }
+            else
+            {
+                double routeLength = _routeManager.GetLength(_vroute.RouteId);
+                RouteLength = $"{routeLength.ToString("F1")} км";
+                RouteLengthSteps = $"{(routeLength *1000 * 1.3).ToString("N0")} шагов";
+            }
         }
 
         private void showNewRouteWarningDialog()
@@ -116,7 +137,7 @@ namespace QuestHelper.ViewModel
             RouteScreenIsVisible = !SplashStartScreenIsVisible;
         }
 
-        private async void refreshRouteData()
+        private void refreshRouteData()
         {
             SplashStartScreenIsVisible = false;
             RouteScreenIsVisible = !SplashStartScreenIsVisible;
@@ -181,6 +202,66 @@ namespace QuestHelper.ViewModel
             get
             {
                 return _vroute.Name;
+            }
+        }
+        public string RouteLength
+        {
+            set
+            {
+                if (_routeLength != value)
+                {
+                    _routeLength = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RouteLength"));
+                }
+            }
+            get
+            {
+                return _routeLength;
+            }
+        }
+        public string RouteLengthSteps
+        {
+            set
+            {
+                if (_routeLengthSteps != value)
+                {
+                    _routeLengthSteps = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RouteLengthSteps"));
+                }
+            }
+            get
+            {
+                return _routeLengthSteps;
+            }
+        }
+        public int CountOfPhotos
+        {
+            set
+            {
+                if (_countOfPhotos != value)
+                {
+                    _countOfPhotos = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountOfPhotos"));
+                }
+            }
+            get
+            {
+                return _countOfPhotos;
+            }
+        }
+        public int CountOfPoints
+        {
+            set
+            {
+                if (_countOfPoints != value)
+                {
+                    _countOfPoints = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountOfPoints"));
+                }
+            }
+            get
+            {
+                return _countOfPoints;
             }
         }
 

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:local="clr-namespace:QuestHelper.View"
+             x:Class="QuestHelper.View.MapRouteOverviewPage" Appearing="ContentPage_AppearingAsync">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="8*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <local:CustomMap
+                Grid.Row="0" Grid.RowSpan="2"
+                x:Name="MapRouteOverview"
+                IsShowingUser="true"
+                MapType="Street" 
+            />
+            <Label Grid.Row="0" Text="{Binding RouteName}" FontSize="25" HorizontalTextAlignment="Start" Margin="10" VerticalOptions="FillAndExpand"></Label>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

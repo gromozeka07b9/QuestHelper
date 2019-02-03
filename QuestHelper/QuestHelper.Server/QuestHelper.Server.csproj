@@ -6,6 +6,7 @@
     <ApplicationInsightsResourceId>/subscriptions/73073e7d-c51d-42a9-bec8-434c3d28c1de/resourcegroups/TranslateHelper/providers/microsoft.insights/components/ServerWeb20171015090425</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/73073e7d-c51d-42a9-bec8-434c3d28c1de/resourcegroups/TranslateHelper/providers/microsoft.insights/components/ServerWeb20171015090425</ApplicationInsightsAnnotationResourceId>
     <Version>1.1.2</Version>
+    <Configurations>Debug;Release;Gorilla</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

@@ -5,6 +5,7 @@ using System.Text;
 using QuestHelper.LocalDB.Model;
 using QuestHelper.Model;
 using Realms;
+using Xamarin.Essentials;
 
 namespace QuestHelper.Managers
 {
@@ -57,6 +58,39 @@ namespace QuestHelper.Managers
         internal Route GetRouteById(string routeId)
         {
             return _realmInstance.Find<Route>(routeId);
+        }
+
+        internal double GetLength(string routeId)
+        {
+            double length = 0;
+            if (!string.IsNullOrEmpty(routeId))
+            {
+                var route = _realmInstance.Find<Route>(routeId);
+                if (route != null)
+                {
+                    int countPoints = route.Points.Count;
+                    for (int index = 0; index < countPoints; index++)
+                    {
+                        if (index + 1 < countPoints)
+                        {
+                            var firstPoint = route.Points[index];
+                            var secondPoint = route.Points[index + 1];
+                            if((firstPoint.Latitude != 0)&&(firstPoint.Longitude!=0))
+                            {
+                                if ((secondPoint.Latitude != 0) && (secondPoint.Longitude != 0))
+                                {
+                                    Location firstPointLocation = new Location(firstPoint.Latitude, firstPoint.Longitude);
+                                    Location secondPointLocation = new Location(secondPoint.Latitude, secondPoint.Longitude);
+                                    length += Location.CalculateDistance(firstPointLocation, secondPointLocation, DistanceUnits.Kilometers);
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+
+            return length;
         }
     }
 }
