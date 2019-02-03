@@ -232,9 +232,9 @@ namespace QuestHelper.ViewModel
                 {
                     PhotoSize = PhotoSize.Full,
                     Location = new Location() { Latitude = _vpoint.Latitude, Longitude = _vpoint.Longitude, Timestamp = DateTime.Now },
-                    //Directory = "Photos",
                     Directory = string.Empty,
                     Name = photoName,
+                    SaveToAlbum = true,
                     CompressionQuality = 50
                 });
                 long fileSize = 0;
