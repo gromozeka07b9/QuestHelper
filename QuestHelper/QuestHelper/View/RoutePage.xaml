@@ -36,7 +36,7 @@
                 </StackLayout>
                 <StackLayout Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" Orientation="Vertical" IsVisible="{Binding RouteScreenIsVisible}">
                     <ListView VerticalOptions="StartAndExpand" RowHeight="250" HasUnevenRows="True" ItemsSource="{Binding PointsOfRoute}" SelectedItem="{Binding SelectedRoutePointItem,Mode=TwoWay}" IsPullToRefreshEnabled="False" RefreshCommand="{Binding StartDialogCommand}" IsRefreshing="{Binding ListIsRefreshing}">
-                        <ListView.Header>
+                        <!--ListView.Header>
                             <Frame HeightRequest="120" CornerRadius="10" HasShadow="True" Padding="0" BorderColor="Accent" OutlineColor="#CAECFF" IsClippedToBounds="False" Margin="5,5,5,10">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -66,7 +66,7 @@
                                     </StackLayout>
                                 </Grid>
                             </Frame>
-                        </ListView.Header>
+                        </-->
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>

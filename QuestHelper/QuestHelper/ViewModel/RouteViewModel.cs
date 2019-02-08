@@ -38,10 +38,10 @@ namespace QuestHelper.ViewModel
         private bool _listIsRefreshing;
         private bool _noPointWarningIsVisible;
         private bool _isRefreshing;
-        private int _countOfPhotos;
+        /*private int _countOfPhotos;
         private int _countOfPoints;
         private string _routeLength = "0";
-        private string _routeLengthSteps = "0";
+        private string _routeLengthSteps = "0";*/
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -54,8 +54,7 @@ namespace QuestHelper.ViewModel
 
         public RouteViewModel(string routeId, bool isFirstRoute)
         {
-            _vroute = new ViewRoute();
-            _vroute.Load(routeId);
+            _vroute = new ViewRoute(routeId);
             _isFirstRoute = isFirstRoute;
             ShowNewRouteDialogCommand = new Command(showNewRouteData);
             AddNewRoutePointCommand = new Command(addNewRoutePointAsync);
@@ -114,7 +113,7 @@ namespace QuestHelper.ViewModel
                 else showNewRouteData();
             }
             ListIsRefreshing = false;
-            CountOfPoints = _routePointManager.GetPointsByRouteId(_vroute.RouteId).Count();
+            /*CountOfPoints = _routePointManager.GetPointsByRouteId(_vroute.RouteId).Count();
             CountOfPhotos = _routePointMediaObjectManager.GetCountByRouteId(_vroute.RouteId);
             double routeLengthInKm = _routeManager.GetLength(_vroute.RouteId);
             if (routeLengthInKm < 1000)
@@ -128,7 +127,7 @@ namespace QuestHelper.ViewModel
                 double routeLength = _routeManager.GetLength(_vroute.RouteId);
                 RouteLength = $"{routeLength.ToString("F1")} км";
                 RouteLengthSteps = $"{(routeLength *1000 * 1.3).ToString("N0")} шагов";
-            }
+            }*/
         }
 
         private void showNewRouteWarningDialog()
@@ -204,7 +203,7 @@ namespace QuestHelper.ViewModel
                 return _vroute.Name;
             }
         }
-        public string RouteLength
+        /*public string RouteLength
         {
             set
             {
@@ -263,7 +262,7 @@ namespace QuestHelper.ViewModel
             {
                 return _countOfPoints;
             }
-        }
+        }*/
 
         public ViewRoutePoint SelectedRoutePointItem
         {

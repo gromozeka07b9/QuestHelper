@@ -11,14 +11,15 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using QuestHelper.Model.Messages;
+using QuestHelper.Model;
 
 namespace QuestHelper.ViewModel
 {
     class RoutesViewModel : INotifyPropertyChanged
     {
         private string _routeId;
-        private IEnumerable<Route> _routes;
-        private Route _routeItem;
+        private IEnumerable<ViewRoute> _routes;
+        private ViewRoute _routeItem;
         private RouteManager _routeManager = new RouteManager();
         //private RoutesApiRequest _api = new RoutesApiRequest("http://questhelperserver.azurewebsites.net");
         private bool _noRoutesWarningIsVisible = false;
@@ -109,20 +110,20 @@ namespace QuestHelper.ViewModel
                 return _routeId;
             }
         }
-        public Route SelectedRouteItem
+        public ViewRoute SelectedRouteItem
         {
             set
             {
                 if (_routeItem != value)
                 {
                     _routeItem = value;
-                    Navigation.PushAsync(new RoutePage(value, false));
+                    Navigation.PushAsync(new RoutePage(value.RouteId, false));
                     _routeItem = null;
                     PropertyChanged(this, new PropertyChangedEventArgs("SelectedRouteItem"));
                 }
             }
         }
-        public IEnumerable<Route> Routes
+        public IEnumerable<ViewRoute> Routes
         {
             set
             {

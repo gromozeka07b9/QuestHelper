@@ -89,7 +89,7 @@ namespace QuestHelper.WS
 
         public async Task<ISaveable> DownloadFromServerAsync(string id)
         {
-            ViewRoute deserializedValue = new ViewRoute();
+            ViewRoute deserializedValue = new ViewRoute(id);
             try
             {
                 ApiRequest api = new ApiRequest();

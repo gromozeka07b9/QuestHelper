@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using QuestHelper.Managers;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 using Xamarin.Forms.Xaml;
@@ -18,25 +18,31 @@ namespace QuestHelper.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RoutePage : ContentPage
 	{
-        RouteViewModel vm;
+        private RouteViewModel _vm;
+	    private Route _route;
         public RoutePage()
 		{
             InitializeComponent ();
-            vm = new RouteViewModel(string.Empty, false) { Navigation = this.Navigation };
-            BindingContext = vm;
+		    _vm = new RouteViewModel(string.Empty, false) { Navigation = this.Navigation };
+            BindingContext = _vm;
         }
-        public RoutePage(Route routeItem, bool isFirstRoute)
+        public RoutePage(string routeId, bool isFirstRoute)
         {
 
             InitializeComponent();
-            Title = routeItem.Name;
-            vm = new RouteViewModel(routeItem.RouteId, isFirstRoute) { Navigation = this.Navigation };
-            BindingContext = vm;
+            RouteManager manager = new RouteManager();
+            if (!string.IsNullOrEmpty(routeId))
+            {
+                _route = manager.GetRouteById(routeId);
+            }
+            Title = _route.Name;
+            _vm = new RouteViewModel(_route.RouteId, isFirstRoute) { Navigation = this.Navigation };
+            BindingContext = _vm;
         }
 
         private void ContentPage_Appearing(object sender, EventArgs e)
         {
-            vm.startDialog();
+            _vm.startDialog();
         }
     }
 }

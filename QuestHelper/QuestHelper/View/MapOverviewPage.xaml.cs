@@ -35,26 +35,13 @@ namespace QuestHelper.View
 
         private async void ContentPage_AppearingAsync(object sender, EventArgs e)
         {
-            var customMap = (CustomMap)this.Content;
+            /*var customMap = (CustomMap)this.Content;
             customMap.Points = vm.GetPointsForOverviewRoute(CurrentRouteId).Select(x => new PointForMap()
             {
                 Latitude = x.Latitude, Longitude = x.Longitude, PathToPicture = x.ImagePreviewPathForList, Name = x.Name, Description = x.Description
             }).ToList();
             CustomMapView customMapView = new CustomMapView(customMap, 15);
-            await centerMap(customMapView, customMap.Points.First().Latitude, customMap.Points.First().Longitude);
-            /*if (routePoints.Count() > 0)
-            {
-                foreach (var point in routePoints)
-                {
-                    customMap.AddPin(point.Latitude, point.Longitude, point.Name, point.Address, PointPin_Clicked);
-                }
-
-                await centerMap(customMapView, routePoints.First().Latitude, routePoints.First().Longitude);
-            }*/
-            /*else
-            {
-                await getPositionAndCenterMap(customMap);
-            }*/
+            await centerMap(customMapView, customMap.Points.First().Latitude, customMap.Points.First().Longitude);*/
         }
 
         private async Task getPositionAndCenterMap(CustomMapView customMap)

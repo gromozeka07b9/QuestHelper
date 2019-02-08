@@ -16,9 +16,24 @@ namespace QuestHelper.Managers
         {
             _realmInstance = RealmAppInstance.GetAppInstance();
         }
-        internal IEnumerable<Route> GetRoutes()
+        /*internal IEnumerable<Route> GetRoutes()
         {
             return _realmInstance.All<Route>().OrderByDescending(r => r.CreateDate);
+        }*/
+        internal IEnumerable<ViewRoute> GetRoutes()
+        {
+            List<ViewRoute> vroutes = new List<ViewRoute>();
+            var routes = _realmInstance.All<Route>().OrderByDescending(r => r.CreateDate);
+            if (routes.Any())
+            {
+                foreach (var route in routes)
+                {
+                    vroutes.Add(new ViewRoute(route.RouteId));
+                }
+                //vroutes = routes.Select(r => new ViewRoute{Name = r.Name, RouteId = r.RouteId, CreateDate = r.CreateDate, Id = r.RouteId, Version = r.Version, IsShared = r.IsShared});
+                //vroutes = routes.Select(r => new ViewRoute);
+            }
+            return vroutes;
         }
 
         public IEnumerable<Route> GetNotSynced()
@@ -58,6 +73,18 @@ namespace QuestHelper.Managers
         internal Route GetRouteById(string routeId)
         {
             return _realmInstance.Find<Route>(routeId);
+        }
+        internal ViewRoute GetViewRouteById(string routeId)
+        {
+            return new ViewRoute(routeId);
+            /*Route route = _realmInstance.Find<Route>(routeId);
+            if (route != null)
+            {
+                ViewRoute vroute = new ViewRoute();
+                vroute
+                return vroute;
+            }
+            return _realmInstance.Find<Route>(routeId);*/
         }
 
         internal double GetLength(string routeId)

@@ -53,6 +53,13 @@ namespace QuestHelper.Managers
             var collection = _realmInstance.All<RoutePoint>().Where(point => point.Latitude == latitude && point.Longitude == longitude);
             return collection.FirstOrDefault();
         }
+        internal ViewRoutePoint GetStartPointByRouteId(string routeId)
+        {
+            var points = _realmInstance.All<RoutePoint>().Where(point => point.RouteId == routeId)
+                .OrderBy(point => point.CreateDate);
+
+            return new ViewRoutePoint(routeId, points.FirstOrDefault().RoutePointId);
+        }
 
         internal string Save(ViewRoutePoint vpoint)
         {

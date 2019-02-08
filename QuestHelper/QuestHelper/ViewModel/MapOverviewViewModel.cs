@@ -49,7 +49,7 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        internal IEnumerable<ViewRoutePoint> GetPointsForOverviewRoute(string routeId)
+        /*internal IEnumerable<ViewRoutePoint> GetPointsForOverviewRoute(string routeId)
         {
             var resultPoints = new List<ViewRoutePoint>();
             IEnumerable<Route> routes;
@@ -80,57 +80,6 @@ namespace QuestHelper.ViewModel
                 }
             }
             return resultPoints;
-        }
-        /*public void startDialog()
-{
-   if (!string.IsNullOrEmpty(_route.Name))
-   {
-       showRouteData();
-   }
-   else
-   {
-       _route.Name = "Неизвестный маршрут";
-       showNewRouteWarningDialog();
-   }
-   ListIsRefreshing = false;
-}*/
-
-
-        /*public bool ListIsRefreshing
-        {
-            set
-            {
-                if (_listIsRefreshing != value)
-                {
-                    _listIsRefreshing = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("ListIsRefreshing"));
-                    }
-                }
-            }
-            get
-            {
-                return _listIsRefreshing;
-            }
-        }
-        public bool NoPointWarningIsVisible
-        {
-            set
-            {
-                if (_noPointWarningIsVisible != value)
-                {
-                    _noPointWarningIsVisible = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("NoPointWarningIsVisible"));
-                    }
-                }
-            }
-            get
-            {
-                return _noPointWarningIsVisible;
-            }
         }*/
     }
 }

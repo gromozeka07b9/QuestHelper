@@ -55,23 +55,23 @@ namespace QuestHelper.ViewModel
         internal IEnumerable<ViewRoutePoint> GetPointsForOverviewRoute()
         {
             var resultPoints = new List<ViewRoutePoint>();
-            IEnumerable<Route> routes;
+            IEnumerable<ViewRoute> routes;
             if (string.IsNullOrEmpty(_routeId))
             {
                 routes = _routeManager.GetRoutes();
             }
             else
             {
-                Route route = _routeManager.GetRouteById(_routeId);
+                ViewRoute route = _routeManager.GetViewRouteById(_routeId);
                 if (route != null)
                 {
-                    var routesList = new List<Route>();
+                    var routesList = new List<ViewRoute>();
                     routesList.Add(route);
                     routes = routesList;
                 }
                 else
                 {
-                    routes = new List<Route>();
+                    routes = new List<ViewRoute>();
                 }
             }
             foreach (var route in routes)
