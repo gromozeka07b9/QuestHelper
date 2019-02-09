@@ -53,13 +53,13 @@ namespace QuestHelper.Managers
             var collection = _realmInstance.All<RoutePoint>().Where(point => point.Latitude == latitude && point.Longitude == longitude);
             return collection.FirstOrDefault();
         }
-        internal ViewRoutePoint GetStartPointByRouteId(string routeId)
+        /*internal ViewRoutePoint GetStartPointByRouteId(string routeId)
         {
             var points = _realmInstance.All<RoutePoint>().Where(point => point.RouteId == routeId)
                 .OrderBy(point => point.CreateDate);
 
             return new ViewRoutePoint(routeId, points.FirstOrDefault().RoutePointId);
-        }
+        }*/
 
         internal string Save(ViewRoutePoint vpoint)
         {
@@ -144,6 +144,17 @@ namespace QuestHelper.Managers
         internal IEnumerable<RoutePoint> GetPoints()
         {
             return _realmInstance.All<RoutePoint>();
+        }
+        internal Tuple<RoutePoint, RoutePoint> GetFirstAndLastPoints(string routeId)
+        {
+            var routePoints = _realmInstance.All<RoutePoint>().Where(p => p.RouteId == routeId).OrderBy(p=>p.CreateDate);
+            if (routePoints.Count() > 0)
+            {
+                var first = routePoints.FirstOrDefault();
+                var last = routePoints.LastOrDefault();
+                return new Tuple<RoutePoint, RoutePoint>(first, last);
+            }
+            return new Tuple<RoutePoint,RoutePoint>(new RoutePoint(), new RoutePoint());
         }
 
         /*internal void UpdateLocalData(Route route, List<RoutePoint> points)

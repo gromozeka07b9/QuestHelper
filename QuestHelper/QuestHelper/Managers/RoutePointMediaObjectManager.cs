@@ -79,6 +79,7 @@ namespace QuestHelper.Managers
 
             try
             {
+                var pointObject = _realmInstance.Find<RoutePoint>(vmedia.RoutePointId);
                 _realmInstance.Write(() =>
                 {
                     RoutePointMediaObject mediaObject = !string.IsNullOrEmpty(vmedia.Id) ? _realmInstance.Find<RoutePointMediaObject>(vmedia.Id) : null;
@@ -87,6 +88,7 @@ namespace QuestHelper.Managers
                         mediaObject = new RoutePointMediaObject();
                         mediaObject.RoutePointMediaObjectId = vmedia.Id;
                         mediaObject.RoutePointId = vmedia.RoutePointId;
+                        mediaObject.Point = pointObject;
                         _realmInstance.Add(mediaObject);
                     }
 
@@ -104,6 +106,20 @@ namespace QuestHelper.Managers
             return returnId;
         }
 
+        internal ViewRoutePointMediaObject GetFirstMediaObjectByRouteId(string routeId)
+        {
+            ViewRoutePointMediaObject resultMedia = new ViewRoutePointMediaObject();
+            var point = _realmInstance.All<RoutePoint>().Where(p => p.RouteId == routeId).OrderBy(p=>p.CreateDate).ToList().FirstOrDefault();
+            if (point != null)
+            {
+                var media = _realmInstance.All<RoutePointMediaObject>().Where(p => p.RoutePointId == point.RoutePointId).FirstOrDefault();
+                if (media != null)
+                {
+                    resultMedia.Load(media.RoutePointMediaObjectId);
+                }
+            }
+            return resultMedia;
+        }
 
         internal IEnumerable<RoutePointMediaObject> GetAllMediaObjects()
         {

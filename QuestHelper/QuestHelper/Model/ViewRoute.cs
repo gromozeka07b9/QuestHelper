@@ -3,6 +3,7 @@ using QuestHelper.Managers;
 using Realms;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -122,24 +123,73 @@ namespace QuestHelper.Model
         {
             get
             {
-                /*RoutePointManager pointManager = new RoutePointManager();
-                var startPoint = pointManager.GetStartPointByRouteId(RouteId);
                 RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
-                var media = mediaManager.GetMediaObjectsByRoutePointId(startPoint.RoutePointId).FirstOrDefault();
-                if (!string.IsNullOrEmpty(media.RoutePointMediaObjectId))
-                    return ImagePathManager.GetImagePath(media.RoutePointMediaObjectId, true);
-                else return string.Empty;*/
-                return string.Empty;
+                ViewRoutePointMediaObject vMedia = mediaManager.GetFirstMediaObjectByRouteId(RouteId);
+                if (!string.IsNullOrEmpty(vMedia.Id))
+                {
+                    return ImagePathManager.GetImagePath(vMedia.RoutePointMediaObjectId, true);
+                }
+                else
+                {
+                    return "mount1.png";
+                }
             }
         }
-        public string RouteLength
+        public string RouteLengthKm
         {
             get
             {
-                /*RouteManager _routeManager = new RouteManager();
-                double routeLength = _routeManager.GetLength(RouteId) * 1000;
-                return $"{routeLength.ToString("F1")} метров";*/
-                return "";
+                RouteManager _routeManager = new RouteManager();
+                double routeLength = _routeManager.GetLength(RouteId);
+                return $"{routeLength.ToString("F1")} км";
+            }
+
+        }
+        public string RoutePointsCount
+        {
+            get
+            {
+                RoutePointManager _routePointManager = new RoutePointManager();
+                return $"Точек: {_routePointManager.GetPointsByRouteId(RouteId).Count().ToString("N0")}";
+            }
+
+        }
+        public string RoutePhotosCount
+        {
+            get
+            {
+                RoutePointMediaObjectManager _routePointMediaObjectManager = new RoutePointMediaObjectManager();
+                return $"Фото: {_routePointMediaObjectManager.GetCountByRouteId(RouteId).ToString("N0")}";
+            }
+
+        }
+        public string RoutePointAndPhotosCount
+        {
+            get
+            {
+                RoutePointManager _routePointManager = new RoutePointManager();
+                RoutePointMediaObjectManager _routePointMediaObjectManager = new RoutePointMediaObjectManager();
+                return $"Точек: {_routePointManager.GetPointsByRouteId(RouteId).Count().ToString("N0")}, фото: {_routePointMediaObjectManager.GetCountByRouteId(RouteId).ToString("N0")}";
+            }
+
+        }
+        public string RouteDays
+        {
+            get
+            {
+                RoutePointManager _routePointManager = new RoutePointManager();
+                var tuplePoints = _routePointManager.GetFirstAndLastPoints(RouteId);
+                return $"{tuplePoints.Item1.CreateDate.Year.ToString()}, {tuplePoints.Item1.CreateDate.ToString("MMMM", CultureInfo.InvariantCulture)} {tuplePoints.Item1.CreateDate.Day} - {tuplePoints.Item2.CreateDate.ToString("MMMM", CultureInfo.InvariantCulture)} {tuplePoints.Item2.CreateDate.Day}";
+            }
+
+        }
+        public string RouteLengthSteps
+        {
+            get
+            {
+                RouteManager _routeManager = new RouteManager();
+                double routeLength = _routeManager.GetLength(RouteId);
+                return $"{(routeLength * 1000 * 1.3).ToString("N0")} шагов";
             }
 
         }

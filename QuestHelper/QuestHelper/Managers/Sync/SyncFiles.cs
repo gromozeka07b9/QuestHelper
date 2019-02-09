@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace QuestHelper.Managers.Sync
             _routePointMediaObjectsApi = new RoutePointMediaObjectRequest(_apiUrl, _authToken);
         }
 
-        internal async Task<bool> CheckExistsAllFilesForMediaAndDownloadIfNeeded()
+        internal async Task<bool> CheckExistsAllImageAndDownloadIfNeeded(bool IsPreview)
         {
             bool result = true;
 
@@ -31,21 +32,13 @@ namespace QuestHelper.Managers.Sync
 
             foreach (var mediaObject in mediaObjects)
             {
-                string filename = ImagePathManager.GetImageFilename(mediaObject.RoutePointMediaObjectId, true);
+                string filename = ImagePathManager.GetImageFilename(mediaObject.RoutePointMediaObjectId, IsPreview);
                 string pathToPicturesDirectory = ImagePathManager.GetPicturesDirectory();
-                string pathToMediaFile = ImagePathManager.GetImagePath(mediaObject.RoutePointMediaObjectId, true);
+                string pathToMediaFile = ImagePathManager.GetImagePath(mediaObject.RoutePointMediaObjectId, IsPreview);
                 if (!File.Exists(pathToMediaFile))
                 {
                     result = await _routePointMediaObjectsApi.GetImage(mediaObject.RoutePointId, mediaObject.RoutePointMediaObjectId, pathToPicturesDirectory, filename);
                     AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
-                    //если не загружено preview, то пробуем загрузить основное фото
-                    filename = ImagePathManager.GetImageFilename(mediaObject.RoutePointMediaObjectId);
-                    pathToMediaFile = ImagePathManager.GetImagePath(mediaObject.RoutePointMediaObjectId);
-                    if (!File.Exists(pathToMediaFile))
-                    {
-                        result = await _routePointMediaObjectsApi.GetImage(mediaObject.RoutePointId, mediaObject.RoutePointMediaObjectId, pathToPicturesDirectory, filename);
-                        AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
-                    }
                 }
             }
 

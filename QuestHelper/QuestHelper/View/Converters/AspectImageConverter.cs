@@ -7,7 +7,8 @@ namespace QuestHelper.View.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (value.ToString() == "camera1.png")
+            string imageName = value.ToString();
+            if ((imageName == "camera1.png") || (imageName == "mount1.png"))
             {
                 return Aspect.AspectFit;
             }

@@ -59,59 +59,44 @@ namespace QuestHelper.Managers.Sync
                 if (!result) return result;
 
                 SyncFiles syncFiles = new SyncFiles(_authToken);
-                result = await syncFiles.CheckExistsAllFilesForMediaAndDownloadIfNeeded();
-                if (!result) return result;
+                await syncFiles.CheckExistsAllImageAndDownloadIfNeeded(true);
+                await syncFiles.CheckExistsAllImageAndDownloadIfNeeded(false);
             }
 
             return result;
         }
 
-        private async Task<bool> SendFilesForMediaList(List<string> forUpload)
-        {
-            bool result = false;
-
-            foreach (var mediaId in forUpload)
-            {
-                var media = _routePointMediaManager.GetMediaObjectById(mediaId);
-                result = await _routePointMediaObjectsApi.SendImage(media.RoutePointId, media.RoutePointMediaObjectId);
-                AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
-                if (result)
-                {
-                    result = await _routePointMediaObjectsApi.SendImage(media.RoutePointId, media.RoutePointMediaObjectId, true);
-                    AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
-                }
-
-                _routePointMediaManager.SetSyncStatus(mediaId, result);
-                if (!result)
-                {
-                    Analytics.TrackEvent("Sync media: upload error", new Dictionary<string, string> { { "RoutePointMediaObjectId", media.RoutePointMediaObjectId } });
-                }
-            }
-
-            return result;
-        }
         private async Task<bool> SendNotSyncedFiles()
         {
             var notSyncedMedias = _routePointMediaManager.GetNotSyncedMediaObjects();
-            bool result = !(notSyncedMedias.Count() > 0);
+            bool sendResult = await SendImage(notSyncedMedias, true);
+            if (sendResult)
+            {
+                sendResult = await SendImage(notSyncedMedias, false);
+                if (sendResult)
+                {
+                    foreach (var media in notSyncedMedias)
+                    {
+                        _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, sendResult);
+                    }
+                }
+            }
+            return sendResult;
+        }
+
+        private async Task<bool> SendImage(IEnumerable<RoutePointMediaObject> notSyncedMedias, bool isPreview)
+        {
             foreach (var media in notSyncedMedias)
             {
-                result = await _routePointMediaObjectsApi.SendImage(media.RoutePointId, media.RoutePointMediaObjectId);
+                bool result = await _routePointMediaObjectsApi.SendImage(media.RoutePointId, media.RoutePointMediaObjectId, isPreview);
                 AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
-                if (result)
-                {
-                    result = await _routePointMediaObjectsApi.SendImage(media.RoutePointId, media.RoutePointMediaObjectId, true);
-                    AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
-                }
-
-                _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, result);
                 if (!result)
                 {
                     Analytics.TrackEvent("Sync media: upload error", new Dictionary<string, string> { { "RoutePointMediaObjectId", media.RoutePointMediaObjectId } });
+                    return false;
                 }
             }
-
-            return result;
+            return true;
         }
 
         private List<string> GetJsonStructures(List<string> mediasForUpload)

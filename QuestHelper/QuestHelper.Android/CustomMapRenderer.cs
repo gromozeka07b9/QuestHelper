@@ -132,7 +132,7 @@ namespace QuestHelper.Droid
         {
             base.OnMapReady(map);
             map.MapClick += Map_MapClick;
-            drawMarkers(200);
+            drawMarkers(250);
             NativeMap.InfoWindowClick += OnInfoWindowClick;
             NativeMap.SetInfoWindowAdapter(this);
         }
@@ -188,7 +188,7 @@ namespace QuestHelper.Droid
             paint.FilterBitmap = true;
             paint.Dither = true;
             canvas.DrawARGB(0, 0, 0, 0);
-            paint.Color = (Android.Graphics.Color.ParseColor("#BAB399"));
+            paint.Color = Android.Graphics.Color.ParseColor("#000000");
 
             canvas.DrawCircle(sbmp.Width / 2 + 0.0f, sbmp.Height / 2 + 0.0f, sbmp.Width / 2 + 0.0f, paint);
             paint.SetXfermode(new PorterDuffXfermode(PorterDuff.Mode.SrcIn));
@@ -238,12 +238,12 @@ namespace QuestHelper.Droid
                 Parent.Parent.Parent.Parent.RequestDisallowInterceptTouchEvent(true);
             var dispatchEvent = base.DispatchTouchEvent(e);
 
-            int markerSize = getMarkerSizeByZoom(NativeMap.CameraPosition.Zoom);
+            /*int markerSize = getMarkerSizeByZoom(NativeMap.CameraPosition.Zoom);
             if (markerSize != prevMarkerSize)
             {
                 prevMarkerSize = markerSize;
                 drawMarkers(markerSize);
-            }
+            }*/
 
             return dispatchEvent;
         }

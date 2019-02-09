@@ -64,22 +64,23 @@ namespace QuestHelper
 	        var networkState = Connectivity.NetworkAccess;
 	        if (networkState == NetworkAccess.Internet)
 	        {
-	            if (showErrorMessageIfExist)
-	            {
-	                using (UserDialogs.Instance.Loading("Синхронизация данных", null, null, true, MaskType.Gradient))
-	                {
-	                    await startSyncAll();
-	                }
-	            }
+	            await startSyncAll();
+	            /*if (showErrorMessageIfExist)
+                {
+                    using (UserDialogs.Instance.Loading("Синхронизация данных", null, null, true, MaskType.None))
+                    {
+                        await startSyncAll();
+                    }
+                }
                 else
-	            {
-	                await startSyncAll();
-	            }
+                {
+                    await startSyncAll();
+                }*/
             }
-	        else
+            else
 	        {
                 if(showErrorMessageIfExist)
-	                UserDialogs.Instance.Alert("Проверьте ваше подключение к сети", "Синхронизация выключена", "Ок");
+	                UserDialogs.Instance.Alert("Проверьте ваше подключение к сети", "Ошибка синхронизации", "Ок");
 	        }
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using System.Windows.Input;
+using Acr.UserDialogs;
 using Microsoft.AppCenter.Analytics;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
@@ -30,38 +31,15 @@ namespace QuestHelper.ViewModel
         }
         async void TryLoginCommandAsync()
         {
-            string username = await DependencyService.Get<IUsernameService>().GetUsername();
-            AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
-            Analytics.TrackEvent("GetToken started", new Dictionary<string, string> { { "Username", _username } });
-            var authToken = await apiRequest.GetTokenAsync(_username, _password);
-            if (!string.IsNullOrEmpty(authToken))
+            using (UserDialogs.Instance.Loading("Авторизация...", null, null, true, MaskType.Black))
             {
-                Analytics.TrackEvent("GetToken done", new Dictionary<string, string> { { "Username", _username } });
-                TokenStoreService tokenService = new TokenStoreService();
-                await tokenService.SetAuthTokenAsync(authToken);
-                Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
-                ShowMainPage();
-            }
-            else
-            {
-                Analytics.TrackEvent("GetToken error", new Dictionary<string, string> { { "Username", _username } });
-                await Application.Current.MainPage.DisplayAlert("Внимание!", "Неправильный логин или пароль!", "Ok");
-            }
-
-        }
-        async void DemoCommandAsync()
-        {
-            string username = await DependencyService.Get<IUsernameService>().GetUsername();
-            if (!string.IsNullOrEmpty(username))
-            {
-                DependencyService.Get<IToastService>().LongToast($"Username:{username}");
-                Analytics.TrackEvent("GetToken Demo started", new Dictionary<string, string> { { "Username", username } });
+                string username = await DependencyService.Get<IUsernameService>().GetUsername();
                 AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
-                //Для демо режима пароль такой же
-                var authToken = await apiRequest.GetTokenAsync(username, username, true);
+                Analytics.TrackEvent("GetToken started", new Dictionary<string, string> { { "Username", _username } });
+                var authToken = await apiRequest.GetTokenAsync(_username, _password);
                 if (!string.IsNullOrEmpty(authToken))
                 {
-                    Analytics.TrackEvent("GetToken Demo done", new Dictionary<string, string> { { "Username", username } });
+                    Analytics.TrackEvent("GetToken done", new Dictionary<string, string> { { "Username", _username } });
                     TokenStoreService tokenService = new TokenStoreService();
                     await tokenService.SetAuthTokenAsync(authToken);
                     Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
@@ -69,13 +47,41 @@ namespace QuestHelper.ViewModel
                 }
                 else
                 {
-                    Analytics.TrackEvent("GetToken Demo error", new Dictionary<string, string> { { "Username", username } });
+                    Analytics.TrackEvent("GetToken error", new Dictionary<string, string> { { "Username", _username } });
                     await Application.Current.MainPage.DisplayAlert("Внимание!", "Неправильный логин или пароль!", "Ok");
                 }
             }
-            else
+        }
+        async void DemoCommandAsync()
+        {
+            using (UserDialogs.Instance.Loading("Авторизация...", null, null, true, MaskType.Black))
             {
-                await Application.Current.MainPage.DisplayAlert("Внимание!", "Не найдена учетная запись gmail для использования в демо-режиме", "Ok");
+                string username = await DependencyService.Get<IUsernameService>().GetUsername();
+                if (!string.IsNullOrEmpty(username))
+                {
+                    DependencyService.Get<IToastService>().LongToast($"Username:{username}");
+                    Analytics.TrackEvent("GetToken Demo started", new Dictionary<string, string> { { "Username", username } });
+                    AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
+                    //Для демо режима пароль такой же
+                    var authToken = await apiRequest.GetTokenAsync(username, username, true);
+                    if (!string.IsNullOrEmpty(authToken))
+                    {
+                        Analytics.TrackEvent("GetToken Demo done", new Dictionary<string, string> { { "Username", username } });
+                        TokenStoreService tokenService = new TokenStoreService();
+                        await tokenService.SetAuthTokenAsync(authToken);
+                        Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+                        ShowMainPage();
+                    }
+                    else
+                    {
+                        Analytics.TrackEvent("GetToken Demo error", new Dictionary<string, string> { { "Username", username } });
+                        await Application.Current.MainPage.DisplayAlert("Внимание!", "Неправильный логин или пароль!", "Ok");
+                    }
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Внимание!", "Не найдена учетная запись gmail для использования в демо-режиме", "Ok");
+                }
             }
         }
 
