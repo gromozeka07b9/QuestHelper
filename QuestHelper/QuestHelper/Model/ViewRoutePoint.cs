@@ -59,17 +59,22 @@ namespace QuestHelper.Model
                 _longtitude = point.Longitude;
                 _createDate = point.CreateDate;
                 _version = point.Version;
-                _mediaObjects = mediaManager.GetMediaObjectsByRoutePointId(_id)?.ToList();
-                if ((_mediaObjects != null) && (_mediaObjects.Count > 0))
-                {
-                    _imagePath = ImagePathManager.GetImagePath(_mediaObjects[0].RoutePointMediaObjectId);
-                    _imagePreviewPath = ImagePathManager.GetImagePath(_mediaObjects[0].RoutePointMediaObjectId, true);
-                }
-                else
-                {
-                    _imagePath = routePointManager.GetDefaultImageFilename(_id);
-                    _imagePreviewPath = routePointManager.GetDefaultImagePreviewFilename(_id);
-                }
+                refreshMediaObjects();
+            }
+        }
+
+        private void refreshMediaObjects()
+        {
+            _mediaObjects = mediaManager.GetMediaObjectsByRoutePointId(_id)?.ToList();
+            if ((_mediaObjects != null) && (_mediaObjects.Count > 0))
+            {
+                _imagePath = ImagePathManager.GetImagePath(_mediaObjects[0].RoutePointMediaObjectId);
+                _imagePreviewPath = ImagePathManager.GetImagePath(_mediaObjects[0].RoutePointMediaObjectId, true);
+            }
+            else
+            {
+                _imagePath = routePointManager.GetDefaultImageFilename(_id);
+                _imagePreviewPath = routePointManager.GetDefaultImagePreviewFilename(_id);
             }
         }
 
@@ -261,6 +266,29 @@ namespace QuestHelper.Model
             media.Version = 1;
             mediaManager.Save(media);
             load(Id);
+        }
+        internal void DeleteImage(string mediaId)
+        {
+            if (mediaManager.Delete(mediaId))
+            {
+                string imagePath = ImagePathManager.GetImagePath(mediaId);
+                string imagePreviewPath = ImagePathManager.GetImagePath(mediaId, true);
+                try
+                {
+                    File.Delete(imagePath);
+                }
+                catch (Exception)
+                {
+                }
+                try
+                {
+                    File.Delete(imagePreviewPath);
+                }
+                catch (Exception)
+                {
+                }
+                refreshMediaObjects();
+            }
         }
 
         public bool Save()

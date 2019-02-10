@@ -18,5 +18,6 @@ namespace QuestHelper.LocalDB.Model
         /// Версия записи
         /// </summary>
         public int Version { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

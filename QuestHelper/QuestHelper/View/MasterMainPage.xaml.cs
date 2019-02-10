@@ -53,8 +53,13 @@ namespace QuestHelper.View
             {
                 string statusSyncKey = "SyncStatus";
                 string status = "Not started";
-                ParameterManager par = new ParameterManager();
-                par.Get(statusSyncKey, out status);
+                object objectStatus;
+                if (Application.Current.Properties.TryGetValue(statusSyncKey, out objectStatus))
+                {
+                    status = (string) objectStatus;
+                }
+                //ParameterManager par = new ParameterManager();
+                //par.Get(statusSyncKey, out status);
                 return status;
             }
         }

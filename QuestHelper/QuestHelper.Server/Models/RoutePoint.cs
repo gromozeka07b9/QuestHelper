@@ -23,6 +23,7 @@ namespace QuestHelper.Server.Models
         /// Версия записи
         /// </summary>
         public int Version { get; set; }
+        public bool IsDeleted { get; set; }
 
         public string GetObjectId()
         {

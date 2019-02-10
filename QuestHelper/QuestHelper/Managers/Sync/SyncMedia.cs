@@ -112,7 +112,8 @@ namespace QuestHelper.Managers.Sync
                     {
                         uploadedObject.RoutePointMediaObjectId,
                         uploadedObject.RoutePointId,
-                        uploadedObject.Version
+                        uploadedObject.Version,
+                        uploadedObject.IsDeleted
                     });
                     jsonStructures.Add(jsonObject.ToString());
                 }

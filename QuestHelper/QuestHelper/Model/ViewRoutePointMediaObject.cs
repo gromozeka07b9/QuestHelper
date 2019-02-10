@@ -16,6 +16,7 @@ namespace QuestHelper.Model
         private string _filenamePreview = string.Empty;
         private string _routePointId = string.Empty;
         private bool _serverSynced = false;
+        private bool _isDeleted = false;
         private DateTimeOffset _serverSyncedDate;
         private int _version = 0;
 
@@ -35,6 +36,7 @@ namespace QuestHelper.Model
                 _version = mediaObject.Version;
                 _serverSynced = mediaObject.ServerSynced;
                 _serverSyncedDate = mediaObject.ServerSyncedDate;
+                _isDeleted = mediaObject.IsDeleted;
             }
         }
 
@@ -110,6 +112,17 @@ namespace QuestHelper.Model
             set
             {
                 _version = value;
+            }
+        }
+        public bool IsDeleted
+        {
+            get
+            {
+                return _isDeleted;
+            }
+            set
+            {
+                _isDeleted = value;
             }
         }
         public bool ServerSynced

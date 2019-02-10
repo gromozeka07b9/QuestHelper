@@ -20,6 +20,7 @@ using QuestHelper.Model;
 using QuestHelper.Model.Messages;
 using Microsoft.AppCenter.Analytics;
 using System.Collections.ObjectModel;
+using Acr.UserDialogs;
 
 namespace QuestHelper.ViewModel
 {
@@ -30,6 +31,7 @@ namespace QuestHelper.ViewModel
         public ICommand DeleteCommand { get; internal set; }
         public ICommand TakePhotoCommand { get; private set; }
         public ICommand ViewPhotoCommand { get; private set; }
+        public ICommand DeletePhotoCommand { get; private set; }
         public ICommand EditDescriptionCommand { get; private set; }
         public ICommand CopyCoordinatesCommand { get; private set; }
         public ICommand AddPhotoCommand { get; private set; }
@@ -79,6 +81,7 @@ namespace QuestHelper.ViewModel
         {
             TakePhotoCommand = new Command(takePhotoAsync);
             ViewPhotoCommand = new Command(viewPhotoAsync);
+            DeletePhotoCommand = new Command(deletePhotoAsync);
             AddPhotoCommand = new Command(addPhotoAsync);
             EditDescriptionCommand = new Command(editDescriptionCommand);
             CopyCoordinatesCommand = new Command(copyCoordinatesCommand);
@@ -119,6 +122,15 @@ namespace QuestHelper.ViewModel
             else
             {
                 defaultViewerService.Show(path.Replace("_preview", ""));
+            }
+        }
+        private async void deletePhotoAsync(object mediaId)
+        {
+            bool delete = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig() { Message = "Вы уверены что хотите удалить фото?", Title = "Удаление фото", OkText = "Да", CancelText = "Нет" });
+            if (delete)
+            {
+                _vpoint.DeleteImage((string)mediaId);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
             }
         }
 
@@ -390,8 +402,7 @@ namespace QuestHelper.ViewModel
         {
             get
             {
-                List<ImagePreview> imgs = _vpoint.MediaObjects.Select(x => new ImagePreview() {Source = ImagePathManager.GetImagePath(x.RoutePointMediaObjectId, true)}).ToList();
-                return imgs;
+                return _vpoint.MediaObjects.Where(x=>!x.IsDeleted).Select(x => new ImagePreview() {Source = ImagePathManager.GetImagePath(x.RoutePointMediaObjectId, true), MediaId = x.RoutePointMediaObjectId}).ToList();
             }
         }
         public void ApplyChanges()
@@ -403,6 +414,7 @@ namespace QuestHelper.ViewModel
         public class ImagePreview
         {
             public string Source;
+            public string MediaId;
         }
     }
 }

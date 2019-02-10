@@ -84,6 +84,7 @@ namespace QuestHelper.View
 	                VerticalOptions = LayoutOptions.CenterAndExpand
 	            };
 	            img.GestureRecognizers.Add(new TapGestureRecognizer() { Command = _vm.ViewPhotoCommand, CommandParameter = new FileImageSource() });
+	            img.GestureRecognizers.Add(new TapGestureRecognizer() { Command = _vm.ViewPhotoCommand, CommandParameter = new FileImageSource(), NumberOfTapsRequired = 2});
                 control.Children.Add(img);
 	        }
             foreach (var image in _vm.Images)
@@ -97,6 +98,7 @@ namespace QuestHelper.View
 	                VerticalOptions = LayoutOptions.FillAndExpand
                 };
                 img.GestureRecognizers.Add(new TapGestureRecognizer() { Command = _vm.ViewPhotoCommand, CommandParameter = img.Source});
+	            img.GestureRecognizers.Add(new TapGestureRecognizer() { Command = _vm.DeletePhotoCommand, CommandParameter = image.MediaId, NumberOfTapsRequired = 2});
                 control.Children.Add(img);
 	        }
 	    }

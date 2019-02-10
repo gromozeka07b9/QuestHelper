@@ -32,13 +32,16 @@ namespace QuestHelper.Managers.Sync
 
             foreach (var mediaObject in mediaObjects)
             {
-                string filename = ImagePathManager.GetImageFilename(mediaObject.RoutePointMediaObjectId, IsPreview);
-                string pathToPicturesDirectory = ImagePathManager.GetPicturesDirectory();
-                string pathToMediaFile = ImagePathManager.GetImagePath(mediaObject.RoutePointMediaObjectId, IsPreview);
-                if (!File.Exists(pathToMediaFile))
+                if (!mediaObject.IsDeleted)
                 {
-                    result = await _routePointMediaObjectsApi.GetImage(mediaObject.RoutePointId, mediaObject.RoutePointMediaObjectId, pathToPicturesDirectory, filename);
-                    AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
+                    string filename = ImagePathManager.GetImageFilename(mediaObject.RoutePointMediaObjectId, IsPreview);
+                    string pathToPicturesDirectory = ImagePathManager.GetPicturesDirectory();
+                    string pathToMediaFile = ImagePathManager.GetImagePath(mediaObject.RoutePointMediaObjectId, IsPreview);
+                    if (!File.Exists(pathToMediaFile))
+                    {
+                        result = await _routePointMediaObjectsApi.GetImage(mediaObject.RoutePointId, mediaObject.RoutePointMediaObjectId, pathToPicturesDirectory, filename);
+                        AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
+                    }
                 }
             }
 

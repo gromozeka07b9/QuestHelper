@@ -31,6 +31,8 @@ namespace QuestHelper
 
 		    MainPage = new View.MainPage();
 		    Analytics.TrackEvent("Start app");
+		    Application.Current.Properties.Remove("SyncStatus");
+		    Application.Current.Properties.Remove("WorkInRoaming");
 		}
 
         protected override async void OnStart ()
@@ -61,8 +63,8 @@ namespace QuestHelper
 
 	    private async Task startProgressSync(bool showErrorMessageIfExist)
 	    {
-	        var networkState = Connectivity.NetworkAccess;
-	        if (networkState == NetworkAccess.Internet)
+	        bool possibleStartSync = await checkSyncPossibilityAsync(showErrorMessageIfExist);
+            if (possibleStartSync)
 	        {
 	            await startSyncAll();
 	            /*if (showErrorMessageIfExist)
@@ -77,23 +79,48 @@ namespace QuestHelper
                     await startSyncAll();
                 }*/
             }
-            else
-	        {
-                if(showErrorMessageIfExist)
-	                UserDialogs.Instance.Alert("Проверьте ваше подключение к сети", "Ошибка синхронизации", "Ок");
-	        }
         }
 
-	    private async Task startSyncAll()
+        private async Task<bool> checkSyncPossibilityAsync(bool showErrorMessageIfExist)
+        {
+            bool possibility = false;
+            bool workInRoaming = false;
+            bool isRoaming = DependencyService.Get<INetworkConnectionsService>().IsRoaming();
+            if (isRoaming)
+            {
+                object storedWorkInRoaming;
+                if (Application.Current.Properties.TryGetValue("WorkInRoaming", out storedWorkInRoaming))
+                {
+                    workInRoaming = (bool)storedWorkInRoaming;
+                    possibility = workInRoaming;
+                }
+                else
+                {
+                    workInRoaming = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig() { Message = "Использовать синхронизацию в роуминге?", Title = "Используется роуминг", OkText = "Да", CancelText = "Нет" });
+                    Application.Current.Properties.Add("WorkInRoaming", workInRoaming);
+                }
+            }
+            if(!isRoaming||((isRoaming)&&(workInRoaming)))
+            {
+                var networkState = Connectivity.NetworkAccess;
+                possibility = networkState == NetworkAccess.Internet;
+                if ((!possibility)&&(showErrorMessageIfExist))
+                    UserDialogs.Instance.Alert("Проверьте ваше подключение к сети", "Ошибка синхронизации", "Ок");
+            }
+
+            return possibility;
+        }
+
+        private async Task startSyncAll()
 	    {
 	        if (!SynchronizeStarted)
 	        {
+	            string statusSyncKey = "SyncStatus";
 	            Analytics.TrackEvent("Sync all");
 	            SynchronizeStarted = true;
                 DateTime startTime = DateTime.Now;
-                //ShowWarning("Синхронизация запущена");
-	            ParameterManager par = new ParameterManager();
-	            par.Set(statusSyncKey, $"Sync started:{startTime.ToLocalTime().ToString()}");
+	            Application.Current.Properties.Remove(statusSyncKey);
+                Application.Current.Properties.Add(statusSyncKey, $"Sync started:{startTime.ToLocalTime().ToString()}");
 
                 var syncResult = await SyncServer.SyncAllAsync();
 	            SynchronizeStarted = false;
@@ -108,13 +135,15 @@ namespace QuestHelper
 	                }
 	                else ShowWarning(syncResult.Item2);
 	                var diff = DateTime.Now - startTime;
-	                par.Set(statusSyncKey, $"Sync finished with error:{DateTime.Now.ToLocalTime().ToString()}, due {diff} sec");
+	                Application.Current.Properties.Remove(statusSyncKey);
+	                Application.Current.Properties.Add(statusSyncKey, $"Sync finished with error:{DateTime.Now.ToLocalTime().ToString()}, due {diff} sec");
 	                Analytics.TrackEvent("Sync error", new Dictionary<string, string> { { "Sync error", syncResult.Item2 } });
 	            }
                 else
                 {
                     var diff = DateTime.Now - startTime;
-                    par.Set(statusSyncKey, $"Sync finished at {DateTime.Now.ToLocalTime().ToString()}, due {diff} sec");
+                    Application.Current.Properties.Remove(statusSyncKey);
+                    Application.Current.Properties.Add(statusSyncKey, $"Sync finished at {DateTime.Now.ToLocalTime().ToString()}, due {diff} sec");
                     ShowWarning($"Длительность синхронизации:{diff} сек.");
 	                Analytics.TrackEvent("Sync all done", new Dictionary<string, string>{{"Delay", Math.Round(diff.TotalSeconds).ToString()} });
 	            }

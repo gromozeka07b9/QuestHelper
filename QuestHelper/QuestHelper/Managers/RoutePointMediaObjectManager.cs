@@ -37,7 +37,7 @@ namespace QuestHelper.Managers
             return result;
         }
 
-        private bool Add(RoutePoint point, RoutePointMediaObject mediaObject)
+        /*private bool Add(RoutePoint point, RoutePointMediaObject mediaObject)
         {
             bool result = false;
             try
@@ -56,22 +56,34 @@ namespace QuestHelper.Managers
                 HandleError.Process("RoutePointMediaObjectManager", "Add", e, false);
             }
             return result;
-        }
-
-        /*internal void Add(RoutePoint point, string imagePreviewFilePath, string imageFilePath)
-        {
-            _realmInstance.Write(() =>
-            {
-                point.MediaObjects.Clear();
-                point.MediaObjects.Add(new RoutePointMediaObject()
-                {
-                    Point = point,
-                    RoutePointId = point.RoutePointId,
-                    ServerSynced = false
-                });
-                point.UpdateDate = DateTime.Now;
-            });
         }*/
+        internal bool Delete(string mediaObjectId)
+        {
+            bool result = false;
+            try
+            {
+                _realmInstance.Write(() =>
+                    {
+                        var mediaObject = _realmInstance.Find<RoutePointMediaObject>(mediaObjectId);
+                        if (mediaObject != null)
+                        {
+                            var pointObject = _realmInstance.Find<RoutePoint>(mediaObject.RoutePointId);
+                            if (pointObject != null)
+                            {
+                                mediaObject.IsDeleted = true;
+                                mediaObject.Version++;
+                                result = mediaObject.IsDeleted;
+                            }
+                        }
+                    }
+                );
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RoutePointMediaObjectManager", "Delete", e, false);
+            }
+            return result;
+        }
 
         internal string Save(ViewRoutePointMediaObject vmedia)
         {
@@ -89,6 +101,7 @@ namespace QuestHelper.Managers
                         mediaObject.RoutePointMediaObjectId = vmedia.Id;
                         mediaObject.RoutePointId = vmedia.RoutePointId;
                         mediaObject.Point = pointObject;
+                        mediaObject.IsDeleted = vmedia.IsDeleted;
                         _realmInstance.Add(mediaObject);
                     }
 
@@ -96,6 +109,7 @@ namespace QuestHelper.Managers
                     mediaObject.ServerSynced = vmedia.ServerSynced;
                     mediaObject.ServerSyncedDate = vmedia.ServerSyncedDate;
                     mediaObject.Version = vmedia.Version;
+                    mediaObject.IsDeleted = vmedia.IsDeleted;
                 });
             }
             catch (Exception e)
@@ -112,7 +126,7 @@ namespace QuestHelper.Managers
             var point = _realmInstance.All<RoutePoint>().Where(p => p.RouteId == routeId).OrderBy(p=>p.CreateDate).ToList().FirstOrDefault();
             if (point != null)
             {
-                var media = _realmInstance.All<RoutePointMediaObject>().Where(p => p.RoutePointId == point.RoutePointId).FirstOrDefault();
+                var media = _realmInstance.All<RoutePointMediaObject>().Where(p => p.RoutePointId == point.RoutePointId&&!p.IsDeleted).FirstOrDefault();
                 if (media != null)
                 {
                     resultMedia.Load(media.RoutePointMediaObjectId);
@@ -137,15 +151,15 @@ namespace QuestHelper.Managers
 
         internal IEnumerable<RoutePointMediaObject> GetMediaObjectsByRoutePointId(string routePointId)
         {
-            return _realmInstance.All<RoutePointMediaObject>().Where(x=>x.RoutePointId == routePointId);
+            return _realmInstance.All<RoutePointMediaObject>().Where(x=>x.RoutePointId == routePointId&&!x.IsDeleted);
         }
         internal int GetCountByRouteId(string routeId)
         {
             int count = 0;
-            var route = _realmInstance.All<Route>().Where(x => x.RouteId == routeId).FirstOrDefault();
+            var route = _realmInstance.All<Route>().Where(x => x.RouteId == routeId&&!x.IsDeleted).FirstOrDefault();
             foreach (var point in route.Points)
             {
-                count += _realmInstance.All<RoutePointMediaObject>().Where(x => x.RoutePointId == point.RoutePointId).Count();
+                count += _realmInstance.All<RoutePointMediaObject>().Where(x => x.RoutePointId == point.RoutePointId&&!point.IsDeleted).Count();
             }
 
             return count;

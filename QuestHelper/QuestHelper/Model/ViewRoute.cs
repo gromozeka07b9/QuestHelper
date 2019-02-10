@@ -127,12 +127,16 @@ namespace QuestHelper.Model
                 ViewRoutePointMediaObject vMedia = mediaManager.GetFirstMediaObjectByRouteId(RouteId);
                 if (!string.IsNullOrEmpty(vMedia.Id))
                 {
-                    return ImagePathManager.GetImagePath(vMedia.RoutePointMediaObjectId, true);
+                    if (!vMedia.IsDeleted)
+                    {
+                        string path = ImagePathManager.GetImagePath(vMedia.RoutePointMediaObjectId, true);
+                        if (File.Exists(path))
+                        {
+                            return ImagePathManager.GetImagePath(vMedia.RoutePointMediaObjectId, true);
+                        }
+                    }
                 }
-                else
-                {
-                    return "mount1.png";
-                }
+                return "mount1.png";
             }
         }
         public string RouteLengthKm
@@ -179,7 +183,14 @@ namespace QuestHelper.Model
             {
                 RoutePointManager _routePointManager = new RoutePointManager();
                 var tuplePoints = _routePointManager.GetFirstAndLastPoints(RouteId);
-                return $"{tuplePoints.Item1.CreateDate.Year.ToString()}, {tuplePoints.Item1.CreateDate.ToString("MMMM", CultureInfo.InvariantCulture)} {tuplePoints.Item1.CreateDate.Day} - {tuplePoints.Item2.CreateDate.ToString("MMMM", CultureInfo.InvariantCulture)} {tuplePoints.Item2.CreateDate.Day}";
+                if (tuplePoints.Item1.CreateDate.Day == tuplePoints.Item2.CreateDate.Day)
+                {
+                    return $"{tuplePoints.Item1.CreateDate.Year.ToString()}, {tuplePoints.Item1.CreateDate.ToString("MMMM", CultureInfo.InvariantCulture)} {tuplePoints.Item1.CreateDate.Day}";
+                }
+                else
+                {
+                    return $"{tuplePoints.Item1.CreateDate.Year.ToString()}, {tuplePoints.Item1.CreateDate.ToString("MMMM", CultureInfo.InvariantCulture)} {tuplePoints.Item1.CreateDate.Day} - {tuplePoints.Item2.CreateDate.ToString("MMMM", CultureInfo.InvariantCulture)} {tuplePoints.Item2.CreateDate.Day}";
+                }
             }
 
         }

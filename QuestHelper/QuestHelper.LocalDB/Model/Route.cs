@@ -22,5 +22,6 @@ namespace QuestHelper.LocalDB.Model
         public string DefaultImage { get; set; }
         public string LengthMetres { get; set; }
         public string LengthSteps { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

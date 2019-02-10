@@ -24,6 +24,7 @@ namespace QuestHelper.ViewModel
         //private RoutesApiRequest _api = new RoutesApiRequest("http://questhelperserver.azurewebsites.net");
         private bool _noRoutesWarningIsVisible = false;
         private bool _isRefreshing = false;
+        private int _countOfUpdateListByTimer = 0;
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -43,8 +44,28 @@ namespace QuestHelper.ViewModel
         {
             IsRefreshing = true;
             Routes = _routeManager.GetRoutes();
+            if (Routes.Count() == 0)
+            {
+                Device.StartTimer(TimeSpan.FromSeconds(3), OnTimerForUpdate);
+            }
             NoRoutesWarningIsVisible = Routes.Count() == 0;
             IsRefreshing = false;
+        }
+
+        private bool OnTimerForUpdate()
+        {
+            bool continueTimer = true;
+            _countOfUpdateListByTimer++;
+            if ((_countOfUpdateListByTimer > 10)||(Routes.Count() > 0))
+            {
+                continueTimer = false;
+                _countOfUpdateListByTimer = 0;
+            }
+            else
+            {
+                refreshListRoutesCommand();
+            }
+            return continueTimer;
         }
 
         async void addNewRouteCommandAsync()
