@@ -48,33 +48,33 @@ namespace QuestHelper.WS
             bool result = false;
             string nameMediafile = ImagePathManager.GetImageFilename(routePointMediaObjectId, isPreview);
             string pathToMediaFile = ImagePathManager.GetImagePath(routePointMediaObjectId, isPreview);
-            using (Stream image = File.Open(pathToMediaFile, FileMode.Open))
+            try
             {
-                using (HttpContent content = new StreamContent(image))
+                using (Stream image = File.Open(pathToMediaFile, FileMode.Open))
                 {
-                    content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data") { Name = "file", FileName = nameMediafile };
-                    content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                    using (var client = new HttpClient())
+                    using (HttpContent content = new StreamContent(image))
                     {
-                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authToken);
-                        using (var formData = new MultipartFormDataContent())
+                        content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data") { Name = "file", FileName = nameMediafile };
+                        content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                        using (var client = new HttpClient())
                         {
-                            formData.Add(content);
-                            HttpResponseMessage response = new HttpResponseMessage();
-                            try
+                            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authToken);
+                            using (var formData = new MultipartFormDataContent())
                             {
+                                formData.Add(content);
+                                HttpResponseMessage response = new HttpResponseMessage();
                                 response = await client.PostAsync($"{ this._hostUrl }/routepointmediaobjects/{ routePointId }/{ routePointMediaObjectId }/uploadfile", formData);
                                 LastHttpStatusCode = response.StatusCode;
                                 result = response.IsSuccessStatusCode;
                             }
-                            catch (Exception e)
-                            {
-                                HandleError.Process("RoutePointMediaObjectApiRequest", "SendImage", e, false);
-                                result = false;
-                            }
                         }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RoutePointMediaObjectApiRequest", "SendImage", e, false);
+                result = false;
             }
             return result;
         }

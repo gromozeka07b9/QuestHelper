@@ -86,7 +86,7 @@ namespace QuestHelper.Managers.Sync
 
         private async Task<bool> SendImage(IEnumerable<RoutePointMediaObject> notSyncedMedias, bool isPreview)
         {
-            foreach (var media in notSyncedMedias)
+            foreach (var media in notSyncedMedias.Where(m=>!m.IsDeleted))
             {
                 bool result = await _routePointMediaObjectsApi.SendImage(media.RoutePointId, media.RoutePointMediaObjectId, isPreview);
                 AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
