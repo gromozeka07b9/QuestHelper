@@ -65,6 +65,7 @@ namespace QuestHelper.Managers
         {
             string returnid = string.Empty;
             RouteManager routeManager = new RouteManager();
+            if(vpoint.Version == 0) throw new Exception("point version = 0");
             try
             {
                 _realmInstance.Write(() =>

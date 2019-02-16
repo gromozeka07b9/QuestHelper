@@ -8,6 +8,7 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using QuestHelper.LocalDB.Model;
 using Newtonsoft.Json.Linq;
 using QuestHelper.Managers;
@@ -45,9 +46,36 @@ namespace QuestHelper.WS
         }
         public async Task<bool> SendImage(string routePointId, string routePointMediaObjectId, bool isPreview = false)
         {
-            bool result = false;
+            bool sendResult = false;
             string nameMediafile = ImagePathManager.GetImageFilename(routePointMediaObjectId, isPreview);
             string pathToMediaFile = ImagePathManager.GetImagePath(routePointMediaObjectId, isPreview);
+            if (File.Exists(pathToMediaFile))
+            {
+                int triesCount = 0;
+                while (!sendResult)
+                {
+                    sendResult = await TryToSendFileAsync(pathToMediaFile, nameMediafile, routePointId, routePointMediaObjectId);
+                    if ((!sendResult)&&(triesCount < 10))
+                    {
+                        triesCount++;
+                        Thread.Sleep(30);//ToDo: останавливает основной поток, UI будет тупить, надо на таймер переделать
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                HandleError.Process("RoutePointMediaObjectApiRequest", "SendImage", new Exception($"File {pathToMediaFile} not found"), false);
+            }
+            return sendResult;
+        }
+
+        private async Task<bool> TryToSendFileAsync(string pathToMediaFile, string nameMediafile, string routePointId, string routePointMediaObjectId)
+        {
+            bool result = false;
             try
             {
                 using (Stream image = File.Open(pathToMediaFile, FileMode.Open))
@@ -73,9 +101,10 @@ namespace QuestHelper.WS
             }
             catch (Exception e)
             {
-                HandleError.Process("RoutePointMediaObjectApiRequest", "SendImage", e, false);
+                HandleError.Process("RoutePointMediaObjectApiRequest", "TryToSendFileAsync", e, false);
                 result = false;
             }
+
             return result;
         }
 

@@ -173,6 +173,7 @@ namespace QuestHelper.ViewModel
             if (_sharePointMessage != null)
             {
                 ViewRoutePoint newPoint = new ViewRoutePoint(_routeItem.RouteId, string.Empty);
+                newPoint.Version++;
                 if (string.IsNullOrEmpty(_sharePointMessage.Subject))
                 {
                     string name = _sharePointMessage.Description.Substring(0,15);
@@ -187,16 +188,11 @@ namespace QuestHelper.ViewModel
                     newPoint.Name = _sharePointMessage.Subject;
                 }
                 newPoint.Description = _sharePointMessage.Description;
-                string[] lines = newPoint.Description.Split(new []{ "\\n" }, StringSplitOptions.RemoveEmptyEntries);
-                if (lines.Length > 0)
+                CustomGeocoding geo = new CustomGeocoding(newPoint.Description);
+                if (await geo.GetCoordinatesAsync())
                 {
-                    string address = newPoint.Description;
-                    var locations = await Geocoding.GetLocationsAsync(address);
-                    if (locations.Any())
-                    {
-                        newPoint.Longitude = locations.FirstOrDefault().Longitude;
-                        newPoint.Latitude = locations.FirstOrDefault().Latitude;
-                    }
+                    newPoint.Longitude = geo.Longtitude;
+                    newPoint.Latitude = geo.Latitude;
                 }
                 if (newPoint.Save())
                 {
