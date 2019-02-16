@@ -12,6 +12,7 @@ using QuestHelper.Managers;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 using Xamarin.Forms.Xaml;
+using QuestHelper.Model.Messages;
 
 namespace QuestHelper.View
 {
@@ -44,5 +45,15 @@ namespace QuestHelper.View
         {
             _vm.startDialog();
         }
-    }
+
+        /*internal void AddSharePointMessage(ShareFromGoogleMapsMessage sharePointMessage)
+        {
+            _vm.AddNewPointFromShare(sharePointMessage);
+        }*/
+
+	    private void RoutePage_OnDisappearing(object sender, EventArgs e)
+	    {
+	        _vm.closeDialog();
+	    }
+	}
 }

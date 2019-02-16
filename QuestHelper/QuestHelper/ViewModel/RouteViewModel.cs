@@ -19,6 +19,8 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Newtonsoft.Json.Linq;
+using Point = System.Drawing.Point;
+using Acr.UserDialogs;
 
 namespace QuestHelper.ViewModel
 {
@@ -38,16 +40,13 @@ namespace QuestHelper.ViewModel
         private bool _listIsRefreshing;
         private bool _noPointWarningIsVisible;
         private bool _isRefreshing;
-        /*private int _countOfPhotos;
-        private int _countOfPoints;
-        private string _routeLength = "0";
-        private string _routeLengthSteps = "0";*/
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand ShowNewRouteDialogCommand { get; private set; }
         public ICommand AddNewRoutePointCommand { get; private set; }
         public ICommand StartDialogCommand { get; private set; }
+
         public ICommand EditRouteCommand { get; private set; }
         public ICommand ShareRouteCommand { get; private set; }
         public ICommand FullScreenMapCommand { get; private set; }
@@ -63,6 +62,13 @@ namespace QuestHelper.ViewModel
             ShareRouteCommand = new Command(shareRouteCommandAsync);
             FullScreenMapCommand = new Command(fullScreenMapCommandAsync);
         }
+        /*internal void AddNewPointFromShare(ShareFromGoogleMapsMessage sharePointMessage)
+        {
+            RoutePointViewModel pointViewModel = new RoutePointViewModel(_vroute.RouteId, string.Empty);
+            pointViewModel.Name = sharePointMessage.Subject;
+            pointViewModel.Description = sharePointMessage.Description;
+            pointViewModel.ApplyChanges();
+        }*/
 
         private void shareRouteCommandAsyncOLD(object obj)
         {
@@ -101,6 +107,18 @@ namespace QuestHelper.ViewModel
 
         public void startDialog()
         {
+            /*MessagingCenter.Subscribe<ShareFromGoogleMapsMessage>(this, string.Empty, (sender) =>
+            {
+                ViewRoutePoint _vpoint = new ViewRoutePoint(_vroute.RouteId, string.Empty);
+                _vpoint.Name = sender.Subject;
+                _vpoint.Description = sender.Description;
+                if (_vpoint.Save())
+                {
+                    UserDialogs.Instance.Alert($"В маршрут '{_vroute.Name}' успешно добавлена новая точка", "Создание новой точки");
+                }
+                UserDialogs.Instance.Alert($"В маршрут '{_vroute.Name}' успешно добавлена новая точка", "Создание новой точки");
+            });*/
+
             if (!string.IsNullOrEmpty(_vroute.Name))
             {
                 refreshRouteData();
@@ -128,6 +146,10 @@ namespace QuestHelper.ViewModel
                 RouteLength = $"{routeLength.ToString("F1")} км";
                 RouteLengthSteps = $"{(routeLength *1000 * 1.3).ToString("N0")} шагов";
             }*/
+        }
+        internal void closeDialog()
+        {
+            //MessagingCenter.Unsubscribe<ShareFromGoogleMapsMessage>(this, string.Empty);
         }
 
         private void showNewRouteWarningDialog()

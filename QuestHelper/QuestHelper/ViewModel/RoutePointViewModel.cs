@@ -396,6 +396,10 @@ namespace QuestHelper.ViewModel
                     return _vpoint.Description;
                 else return "Описание не указано";
             }
+            set
+            {
+                _vpoint.Description = value;
+            }
         }
 
         public List<ImagePreview> Images

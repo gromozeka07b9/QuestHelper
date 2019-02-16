@@ -12,6 +12,8 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using QuestHelper.Model.Messages;
 using QuestHelper.Model;
+using Acr.UserDialogs;
+using Xamarin.Essentials;
 
 namespace QuestHelper.ViewModel
 {
@@ -21,10 +23,12 @@ namespace QuestHelper.ViewModel
         private IEnumerable<ViewRoute> _routes;
         private ViewRoute _routeItem;
         private RouteManager _routeManager = new RouteManager();
+
         //private RoutesApiRequest _api = new RoutesApiRequest("http://questhelperserver.azurewebsites.net");
         private bool _noRoutesWarningIsVisible = false;
         private bool _isRefreshing = false;
         private int _countOfUpdateListByTimer = 0;
+        private ShareFromGoogleMapsMessage _sharePointMessage;
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -38,7 +42,23 @@ namespace QuestHelper.ViewModel
             RefreshListRoutesCommand = new Command(refreshListRoutesCommand);
             SyncStartCommand = new Command(syncStartCommand);
         }
+        public void startDialog()
+        {
+            /*MessagingCenter.Subscribe<ShareFromGoogleMapsMessage>(this, string.Empty, (sender) =>
+            {
+                UserDialogs.Instance.Alert($"Выберите маршрут, в который планируете добавить точку", "Создание новой точки");
+                Application.Current.Quit();
+            });*/
+        }
+        internal void closeDialog()
+        {
+            //MessagingCenter.Unsubscribe<ShareFromGoogleMapsMessage>(this, string.Empty);
+        }
 
+        internal void AddSharedPoint(ShareFromGoogleMapsMessage msg)
+        {
+            _sharePointMessage = msg;
+        }
 
         void refreshListRoutesCommand()
         {
@@ -138,12 +158,54 @@ namespace QuestHelper.ViewModel
                 if (_routeItem != value)
                 {
                     _routeItem = value;
-                    Navigation.PushAsync(new RoutePage(value.RouteId, false));
-                    _routeItem = null;
+
+                    var routePage = new RoutePage(value.RouteId, false);
+                    Navigation.PushAsync(routePage);
                     PropertyChanged(this, new PropertyChangedEventArgs("SelectedRouteItem"));
+                    addNewPointFromShareAsync(_routeItem.Name);
+                    _routeItem = null;
                 }
             }
         }
+
+        private async void addNewPointFromShareAsync(string routeName)
+        {
+            if (_sharePointMessage != null)
+            {
+                ViewRoutePoint newPoint = new ViewRoutePoint(_routeItem.RouteId, string.Empty);
+                if (string.IsNullOrEmpty(_sharePointMessage.Subject))
+                {
+                    string name = _sharePointMessage.Description.Substring(0,15);
+                    if (_sharePointMessage.Description.Length > 15)
+                    {
+                        name += "...";
+                    }
+                    newPoint.Name = name;
+                }
+                else
+                {
+                    newPoint.Name = _sharePointMessage.Subject;
+                }
+                newPoint.Description = _sharePointMessage.Description;
+                string[] lines = newPoint.Description.Split(new []{ "\\n" }, StringSplitOptions.RemoveEmptyEntries);
+                if (lines.Length > 0)
+                {
+                    string address = newPoint.Description;
+                    var locations = await Geocoding.GetLocationsAsync(address);
+                    if (locations.Any())
+                    {
+                        newPoint.Longitude = locations.FirstOrDefault().Longitude;
+                        newPoint.Latitude = locations.FirstOrDefault().Latitude;
+                    }
+                }
+                if (newPoint.Save())
+                {
+                    _sharePointMessage = null;
+                    UserDialogs.Instance.Alert($"Новая точка '{newPoint.Name}' в маршрут '{routeName}' добавлена", "Добавление точки");
+                }
+            }
+        }
+
         public IEnumerable<ViewRoute> Routes
         {
             set

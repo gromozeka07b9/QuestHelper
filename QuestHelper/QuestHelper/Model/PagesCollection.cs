@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using ProcessShareIntentPage = QuestHelper.View.ProcessShareIntentPage;
 
 namespace QuestHelper.Model
 {
@@ -21,6 +22,7 @@ namespace QuestHelper.Model
                 new MainPageMenuItem { Id = 3, Title = "Профиль", TargetType = typeof(UserProfilePage), IconName="account.png", ShowInMenu = true},
                 new MainPageMenuItem { Id = 4, Title = "О нас", TargetType = typeof(AboutPage), IconName="earth.png", ShowInMenu = true},
                 new MainPageMenuItem { Id = 5, Title = string.Empty, TargetType = typeof(LoginPage)},
+                new MainPageMenuItem { Id = 6, Title = "Обработка выбора", TargetType = typeof(ProcessShareIntentPage), IconName="earth.png"},
 
                 new MainPageMenuItem { Id = 999, Title = "Main page", TargetType = typeof(MainPage)}//старт view с навигацией по страницам
                 });
@@ -42,6 +44,14 @@ namespace QuestHelper.Model
         public MainPageMenuItem GetOverviewMapPage()
         {
             return Pages.Single(x => x.TargetType == typeof(MapOverviewPage));
+        }
+        public MainPageMenuItem GetSelectRoutesPage()
+        {
+            return Pages.Single(x => x.TargetType == typeof(RoutesPage));
+        }
+        public MainPageMenuItem GetProcessSharePage()
+        {
+            return Pages.Single(x => x.TargetType == typeof(ProcessShareIntentPage));
         }
 
         public ObservableCollection<MainPageMenuItem> GetPagesForMenu()

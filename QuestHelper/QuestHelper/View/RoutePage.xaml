@@ -5,7 +5,7 @@
              xmlns:local="clr-namespace:QuestHelper.View.Converters"
              xmlns:views="clr-namespace:QuestHelper.View"
              xmlns:circle="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
-             x:Class="QuestHelper.View.RoutePage" Appearing="ContentPage_Appearing" Style="{StaticResource ContentPage}">
+             x:Class="QuestHelper.View.RoutePage" Appearing="ContentPage_Appearing" Disappearing="RoutePage_OnDisappearing" Style="{StaticResource ContentPage}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:NegativeBoolConverter  x:Key="inverter" />

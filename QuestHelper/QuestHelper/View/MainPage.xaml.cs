@@ -1,10 +1,12 @@
-﻿using QuestHelper.Model;
+﻿using Acr.UserDialogs;
+using QuestHelper.Model;
 using QuestHelper.Model.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace QuestHelper.View
@@ -16,12 +18,13 @@ namespace QuestHelper.View
             InitializeComponent();
             var pageCollections = new PagesCollection();
             MasterPage.ListView.ItemSelected += ListView_ItemSelected;
-            MessagingCenter.Subscribe<PageNavigationMessage>(this, string.Empty, async (sender) => 
+            //var pageCollections = new PagesCollection();
+            MessagingCenter.Subscribe<PageNavigationMessage>(this, string.Empty, async (senderMsg) =>
             {
                 TokenStoreService token = new TokenStoreService();
                 if (!string.IsNullOrEmpty(await token.GetAuthTokenAsync()))
                 {
-                    navigateToPage(sender);
+                    navigateToPage(senderMsg);
                 }
                 else
                 {
@@ -33,12 +36,13 @@ namespace QuestHelper.View
                     navigateToPage(new PageNavigationMessage() { DestinationPageDescription = pageCollections.GetLoginPage() });
                 }
             });
-            MessagingCenter.Subscribe<ToggleFullscreenMapMessage>(this, string.Empty, (sender) =>
+            MessagingCenter.Subscribe<ShareFromGoogleMapsMessage>(this, string.Empty, (senderMsg) =>
             {
-                var pageParameters = pageCollections.GetOverviewMapPage();
-                var page = (MapOverviewPage)Activator.CreateInstance(pageParameters.TargetType);
-                page.CurrentRouteId = sender.RouteId;
-                openContentPage(page, pageParameters.Title, pageParameters.IconName);
+                UserDialogs.Instance.Alert($"Выберите маршрут, в который планируете добавить точку", "Создание новой точки");
+                MessagingCenter.Unsubscribe<ShareFromGoogleMapsMessage>(this, string.Empty);
+                var pageParameters = pageCollections.GetSelectRoutesPage();
+                var page = (RoutesPage)Activator.CreateInstance(pageParameters.TargetType, args: senderMsg);
+                openContentPage(page, "Обработка выбора", "");
             });
         }
 
@@ -66,6 +70,23 @@ namespace QuestHelper.View
             IsPresented = false;
 
             MasterPage.ListView.SelectedItem = null;
+        }
+
+        private void MainPage_OnAppearing(object sender, EventArgs e)
+        {
+            var pageCollections = new PagesCollection();
+            MessagingCenter.Subscribe<ToggleFullscreenMapMessage>(this, string.Empty, (senderMsg) =>
+            {
+                var pageParameters = pageCollections.GetOverviewMapPage();
+                var page = (MapOverviewPage)Activator.CreateInstance(pageParameters.TargetType);
+                //page.CurrentRouteId = sender.RouteId;
+                openContentPage(page, pageParameters.Title, pageParameters.IconName);
+            });
+        }
+
+        private void MainPage_OnDisappearing(object sender, EventArgs e)
+        {
+            MessagingCenter.Unsubscribe<ShareFromGoogleMapsMessage>(this, string.Empty);
         }
     }
 }

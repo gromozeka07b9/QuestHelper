@@ -54,12 +54,25 @@ namespace QuestHelper.Droid
             Xamarin.FormsMaps.Init(this, bundle);
             ImageCircleRenderer.Init();
             UserDialogs.Init(this);
+
+            string shareSubject = Intent.GetStringExtra("shareSubject") ?? string.Empty;
+            string shareDescription = Intent.GetStringExtra("shareDescription") ?? string.Empty;
+
             LoadApplication(new App());
 
-            StartMainScreen(bundle);
+            if (!string.IsNullOrEmpty(shareDescription))
+            {
+                var pageCollections = new PagesCollection();
+                MainPageMenuItem destinationPage = pageCollections.GetProcessSharePage();
+                Xamarin.Forms.MessagingCenter.Send<ShareFromGoogleMapsMessage>(new ShareFromGoogleMapsMessage() { Subject = shareSubject, Description = shareDescription }, string.Empty);
+            }
+            else
+            {
+                StartToolbar(bundle);
+            }
         }
 
-        private void StartMainScreen(Bundle bundle)
+        private void StartToolbar(Bundle bundle)
         {
             ToolbarService.CreateToolbar(this, bundle);
         }
