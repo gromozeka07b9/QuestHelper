@@ -115,26 +115,6 @@ namespace QuestHelper.Server.Controllers.Medias
                 if (accessGranted)
                 {
                     var entity = db.RoutePointMediaObject.Find(mediaObjectId);
-                    if ((entity != null) && (!string.IsNullOrEmpty(entity.FileName) || !string.IsNullOrEmpty(entity.FileNamePreview)))
-                    {
-                        //есть фото в старом формате, перенесем фото в blobstore и дальше будем с ним работать как с blob
-                        string oldFilename = !string.IsNullOrEmpty(entity.FileName) ? entity.FileName : entity.FileNamePreview;
-                        var oldFilenameArray = oldFilename.Split('/');
-                        if (oldFilenameArray.Length > 0)
-                        {
-                            oldFilename = oldFilenameArray[oldFilenameArray.Length - 1];
-                        }
-                        var blobContainer = await GetCloudBlobContainer();
-                        var blob = blobContainer.GetBlockBlobReference(oldFilename);
-                        var newBlob = blobContainer.GetBlockBlobReference(fileName);
-                        await newBlob.StartCopyAsync(blob);
-                        await blob.DeleteIfExistsAsync();
-                        entity.PreviewImage = null;
-                        entity.FileName = null;
-                        entity.FileNamePreview = null;
-                        db.Entry(entity).CurrentValues.SetValues(entity);
-                        db.SaveChanges();
-                    }
                     if ((entity != null) && (!string.IsNullOrEmpty(entity.RoutePointMediaObjectId)))
                     {
                         var blobContainer = await GetCloudBlobContainer();

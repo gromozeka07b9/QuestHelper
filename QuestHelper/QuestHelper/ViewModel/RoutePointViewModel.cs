@@ -361,9 +361,16 @@ namespace QuestHelper.ViewModel
             {
                 if (_vpoint.Name != value)
                 {
-                    _vpoint.Name = value;
-                    ApplyChanges();
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
+                    if (!string.IsNullOrEmpty(_vpoint.Name))
+                    {
+                        _vpoint.Name = value;
+                        ApplyChanges();
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
+                    }
+                    else
+                    {
+                        UserDialogs.Instance.Alert(new AlertConfig(){Title = "Внимание!", Message = "Название точки должно быть заполнено", OkText = "Ok"});
+                    }
                 }                   
             }
             get

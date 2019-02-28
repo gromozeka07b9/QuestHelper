@@ -10,6 +10,7 @@ namespace QuestHelper.Managers.Sync
 {
     public class SyncBase
     {
+        protected string _errorReport = string.Empty;
         public bool AuthRequired { get; internal set; }
 
         public void FillListsObjectsForProcess(IEnumerable<Tuple<string, int>> clientObjects, SyncObjectStatus serverStatus, List<string> forUpload, List<string> forDownload)
@@ -49,31 +50,39 @@ namespace QuestHelper.Managers.Sync
         }
         public async System.Threading.Tasks.Task<bool> DownloadAsync<T>(List<string> idsForDownload, IDownloadable<T> api)
         {
-            bool result = false;
+            bool result = true;
+            StringBuilder sbErrors = new StringBuilder();
+            string syncType = typeof(T).ToString();
             foreach (var id in idsForDownload)
             {
                 ISaveable downloadedObject = await api.DownloadFromServerAsync(id);
                 AuthRequired = (api.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || api.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
-                result = downloadedObject.Save();
-                if (!result)
+                bool resultId = downloadedObject.Save();
+                if (!resultId)
                 {
-                    break;
+                    sbErrors.AppendLine($"downloading {syncType}:{id}");
+                    result = resultId;
                 }
             }
+            _errorReport += sbErrors.ToString();
             return result;
         }
         public async System.Threading.Tasks.Task<bool> UploadAsync<T>(List<string> jsonStructureForUpload, IUploadable<T> api)
         {
-            bool result = false;
+            bool result = true;
+            StringBuilder sbErrors = new StringBuilder();
+            string syncType = typeof(T).ToString();
             foreach (string objectJson in jsonStructureForUpload)
             {
-                result = await api.UploadToServerAsync(objectJson);
+                bool resultId = await api.UploadToServerAsync(objectJson);
                 AuthRequired = (api.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || api.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
-                if (!result)
+                if (!resultId)
                 {
-                    break;
+                    sbErrors.AppendLine($"uploading {syncType}:{objectJson}");
+                    result = resultId;
                 }
             }
+            _errorReport += sbErrors.ToString();
             return result;
         }
     }

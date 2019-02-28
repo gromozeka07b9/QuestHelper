@@ -1,7 +1,11 @@
-﻿using System;
+﻿using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Text;
+using Xamarin.Forms;
 
 namespace QuestHelper.Managers.Sync
 {
@@ -31,6 +35,8 @@ namespace QuestHelper.Managers.Sync
                         syncResult = await syncMedia.Sync();
                         if (!syncResult)
                         {
+                            saveErrorReport(syncMedia.ErrorReport);
+                            await prepareErrorReportToAppcenterAsync(syncMedia.ErrorReport);
                             errorMsg = "Ошибка синхронизации файлов!";
                         }
                     }
@@ -48,5 +54,37 @@ namespace QuestHelper.Managers.Sync
 
             return new Tuple<bool, string>(syncResult, errorMsg);
     }
+
+        private static async System.Threading.Tasks.Task prepareErrorReportToAppcenterAsync(string errorReport)
+        {
+            string username = await DependencyService.Get<IUsernameService>().GetUsername();
+            Dictionary<string, string> reportLines = new Dictionary<string, string>();
+            reportLines.Add("User", username);
+            using (StringReader sr = new StringReader(errorReport))
+            {
+                string line;
+                int index = 0;
+                while ((line = sr.ReadLine())!=null)
+                {
+
+                    reportLines.Add("line" + index, line);
+                    index++;
+                }
+            }
+            Crashes.TrackError(new Exception("Error sync media"), reportLines);
+        }
+
+        private static void saveErrorReport(string errorReport)
+        {
+            try
+            {
+                string path = Path.Combine(ImagePathManager.GetPicturesDirectory(), "sync.log");
+                File.WriteAllText(path, errorReport);
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("SyncServer", "saveErrorReport", e, false);
+            }
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace QuestHelper.Managers.Sync
         private const string _apiUrl = "http://igosh.pro/api";
         private readonly string _authToken = string.Empty;
         private readonly RoutePointMediaObjectRequest _routePointMediaObjectsApi;
+        protected string _errorReport = string.Empty;
         public bool AuthRequired { get; internal set; }
 
         public SyncFiles(string authToken)
@@ -26,6 +27,7 @@ namespace QuestHelper.Managers.Sync
         internal async Task<bool> CheckExistsAllImageAndDownloadIfNeeded(bool IsPreview)
         {
             bool result = true;
+            StringBuilder sbErrors = new StringBuilder();
 
             RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
             var mediaObjects = mediaManager.GetAllMediaObjects();
@@ -41,11 +43,22 @@ namespace QuestHelper.Managers.Sync
                     {
                         result = await _routePointMediaObjectsApi.GetImage(mediaObject.RoutePointId, mediaObject.RoutePointMediaObjectId, pathToPicturesDirectory, filename);
                         AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
+                        if (!result)
+                        {
+                            sbErrors.AppendLine($"downl: p:{mediaObject.RoutePointId}, f:{filename}, result:{result}");
+                        }
                     }
                 }
             }
 
+            _errorReport = sbErrors.ToString();
+
             return result;
+        }
+
+        public string ErrorReport
+        {
+            get { return _errorReport; }
         }
     }
 }
