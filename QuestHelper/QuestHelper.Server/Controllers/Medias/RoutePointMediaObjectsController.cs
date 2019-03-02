@@ -86,7 +86,10 @@ namespace QuestHelper.Server.Controllers.Medias
                             {
                                 var blobContainer = await GetCloudBlobContainer();
                                 var blob = blobContainer.GetBlockBlobReference(file.FileName);
-                                await blob.UploadFromStreamAsync(stream);
+                                if (!await blob.ExistsAsync())
+                                {
+                                    await blob.UploadFromStreamAsync(stream);
+                                }
                             }
                         }
                         else
@@ -142,6 +145,17 @@ namespace QuestHelper.Server.Controllers.Medias
 
             memStream.Position = 0;
             return File(memStream, "image/jpeg", fileName);
+        }
+
+        [HttpGet("{fileName}/imageexist")]
+        public async Task ImageExistAsync(string fileName)
+        {
+            string userId = IdentityManager.GetUserId(HttpContext);
+            var blobContainer = await GetCloudBlobContainer();
+            var blob = blobContainer.GetBlockBlobReference(fileName);
+            if (await blob.ExistsAsync())
+                Response.StatusCode = 200;
+            else Response.StatusCode = 404;
         }
 
         private async Task<CloudBlobContainer> GetCloudBlobContainer()

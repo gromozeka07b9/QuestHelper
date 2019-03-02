@@ -95,7 +95,7 @@ namespace QuestHelper.WS
                 ApiRequest api = new ApiRequest();
                 await api.HttpRequestPOST($"{_hostUrl}/routepoints", jsonStructure, _authToken);
                 LastHttpStatusCode = api.LastHttpStatusCode;
-                addResult = true;
+                addResult = LastHttpStatusCode == HttpStatusCode.OK;
             }
             catch (Exception e)
             {

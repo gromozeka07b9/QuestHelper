@@ -136,7 +136,7 @@ namespace QuestHelper
 	                else ShowWarning(syncResult.Item2);
 	                var diff = DateTime.Now - startTime;
 	                Application.Current.Properties.Remove(statusSyncKey);
-	                Application.Current.Properties.Add(statusSyncKey, $"Sync finished with error:{DateTime.Now.ToLocalTime().ToString()}, due {diff} sec");
+	                Application.Current.Properties.Add(statusSyncKey, $"Sync finished with error:{DateTime.Now.ToLocalTime().ToString()}, due {diff} sec, {syncResult.Item2}");
 	                Analytics.TrackEvent("Sync error", new Dictionary<string, string> { { "Sync error", syncResult.Item2 } });
 	            }
                 else

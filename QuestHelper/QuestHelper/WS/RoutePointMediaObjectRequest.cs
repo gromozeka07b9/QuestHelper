@@ -73,6 +73,19 @@ namespace QuestHelper.WS
             return sendResult;
         }
 
+        public async Task<HttpStatusCode> ImageExist(string nameMediafile)
+        {
+            ApiRequest api = new ApiRequest();
+            try
+            {
+                await api.HttpRequestGET($"{this._hostUrl}/routepointmediaobjects/{nameMediafile}/imageexist", _authToken);
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RoutePointMediaObjectApiRequest", "ImageExist", e, false);
+            }
+            return api.LastHttpStatusCode;
+        }
         private async Task<bool> TryToSendFileAsync(string pathToMediaFile, string nameMediafile, string routePointId, string routePointMediaObjectId)
         {
             bool result = false;
@@ -145,7 +158,7 @@ namespace QuestHelper.WS
                 ApiRequest api = new ApiRequest();
                 await api.HttpRequestPOST($"{_hostUrl}/routepointmediaobjects", jsonStructure, _authToken);
                 LastHttpStatusCode = api.LastHttpStatusCode;
-                addResult = true;
+                addResult = LastHttpStatusCode==HttpStatusCode.OK;
             }
             catch (Exception e)
             {
@@ -163,7 +176,7 @@ namespace QuestHelper.WS
                 var response = await api.HttpRequestGET($"{this._hostUrl}/routepointmediaobjects/{routePointMediaObjectId}", _authToken);
                 LastHttpStatusCode = api.LastHttpStatusCode;
                 deserializedValue = JsonConvert.DeserializeObject<ViewRoutePointMediaObject>(response);
-                deserializedValue.ServerSynced = true;
+                //deserializedValue.ServerSynced = true;
             }
             catch (Exception e)
             {

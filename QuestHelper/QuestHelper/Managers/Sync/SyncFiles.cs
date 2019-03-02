@@ -51,7 +51,7 @@ namespace QuestHelper.Managers.Sync
                 }
             }
 
-            _errorReport = sbErrors.ToString();
+            _errorReport += sbErrors.ToString();
 
             return result;
         }

@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using QuestHelper.Model;
 using System.Net;
 using Microsoft.AppCenter.Analytics;
+using System.IO;
 
 namespace QuestHelper.Managers.Sync
 {
@@ -55,25 +56,102 @@ namespace QuestHelper.Managers.Sync
                     if (!result) return result;
                 }
 
-                result = await SendNotSyncedFiles();
+                bool resultSyncPreview = await SyncFiles(true);
+                bool resultSyncOriginal = await SyncFiles(false);
+                result = (resultSyncOriginal)&&(resultSyncPreview);
+                //result = await SendNotSyncedFiles();
                 //if (!result) return result;
 
-                SyncFiles syncFiles = new SyncFiles(_authToken);
+                /*SyncFiles syncFiles = new SyncFiles(_authToken);
                 bool resultDownloadingPreview = await syncFiles.CheckExistsAllImageAndDownloadIfNeeded(true);
                 bool resultDownloadingFull = await syncFiles.CheckExistsAllImageAndDownloadIfNeeded(false);
                 if (result)
                 {
                     result = !((resultDownloadingPreview == false) || (resultDownloadingFull == false));
-                    if (!result) _errorReport = syncFiles.ErrorReport;
-                }
+                    if (!result) _errorReport += syncFiles.ErrorReport;
+                }*/
             }
 
             return result;
         }
 
-        private async Task<bool> SendNotSyncedFiles()
+        private async Task<bool> SyncFiles(bool IsSyncPreview)
+        {
+            bool syncResult = true;
+
+            var notSyncedMedias = _routePointMediaManager.GetNotSyncedMediaObjects(IsSyncPreview).Where(m => !m.IsDeleted);
+            StringBuilder sbErrors = new StringBuilder();
+            foreach (var media in notSyncedMedias)
+            {
+                sbErrors.AppendLine($"to sync: preview:{IsSyncPreview} p:{media.RoutePointId} m:{media.RoutePointMediaObjectId}");
+            }
+            _errorReport += sbErrors.ToString();
+
+            foreach (var media in notSyncedMedias)
+            {
+                string nameMediafile = ImagePathManager.GetImageFilename(media.RoutePointMediaObjectId, IsSyncPreview);
+                HttpStatusCode checkResult = await _routePointMediaObjectsApi.ImageExist(nameMediafile);
+                AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
+                if (AuthRequired) return false;
+                switch (checkResult)
+                {
+                    case HttpStatusCode.NotFound:
+                    {
+                        bool resultUpload = await _routePointMediaObjectsApi.SendImage(media.RoutePointId, media.RoutePointMediaObjectId, IsSyncPreview);
+                        AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
+                        if (AuthRequired) return false;
+                        if (resultUpload)
+                        {
+                            _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, IsSyncPreview, true);
+                        }
+                        else
+                        {
+                            syncResult = false;
+                            sbErrors.AppendLine($"error upload: p:{media.RoutePointId} m:{media.RoutePointMediaObjectId}");
+                        }
+                    }; break;
+                    case HttpStatusCode.OK:
+                    {
+                        string pathToPictures = ImagePathManager.GetPicturesDirectory();
+                        string pathToMediaFile = Path.Combine(pathToPictures, nameMediafile);
+                        if (!File.Exists(pathToMediaFile))
+                        {
+                            bool resultDownload = await _routePointMediaObjectsApi.GetImage(media.RoutePointId, media.RoutePointMediaObjectId, ImagePathManager.GetPicturesDirectory(), nameMediafile);
+                            AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
+                            if (AuthRequired) return false;
+                            if (resultDownload)
+                            {
+                                _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, IsSyncPreview, true);
+                            }
+                            else
+                            {
+                                syncResult = false;
+                                sbErrors.AppendLine($"error download: p:{media.RoutePointId} m:{media.RoutePointMediaObjectId}");
+                            }
+                        }
+                        else
+                        {
+                            _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, IsSyncPreview, true);
+                        }
+                        }; break;
+                }
+
+            }
+
+            _errorReport += sbErrors.ToString();
+
+            return syncResult;
+        }
+
+        /*private async Task<bool> SendNotSyncedFiles()
         {
             var notSyncedMedias = _routePointMediaManager.GetNotSyncedMediaObjects();
+            StringBuilder sbErrors = new StringBuilder();
+            foreach (var media in notSyncedMedias)
+            {
+                sbErrors.AppendLine($"to sync file: p:{media.RoutePointId} m:{media.RoutePointMediaObjectId}");
+            }
+            _errorReport += sbErrors.ToString();
             bool sendResult = await SendImages(notSyncedMedias, true);
             if (sendResult)
             {
@@ -87,7 +165,7 @@ namespace QuestHelper.Managers.Sync
                 }
             }
             return sendResult;
-        }
+        }*/
 
         private async Task<bool> SendImages(IEnumerable<RoutePointMediaObject> notSyncedMedias, bool isPreview)
         {
@@ -106,7 +184,7 @@ namespace QuestHelper.Managers.Sync
                 }
             }
 
-            _errorReport = sbErrors.ToString();
+            _errorReport += sbErrors.ToString();
 
             return result;
         }

@@ -16,7 +16,7 @@ namespace QuestHelper.Managers
             _realmInstance = RealmAppInstance.GetAppInstance();
         }
 
-        public bool SetSyncStatus(string Id, bool Status)
+        public bool SetSyncStatus(string Id, bool IsSyncPreview, bool Status)
         {
             bool result = false;
             try
@@ -24,8 +24,10 @@ namespace QuestHelper.Managers
                 _realmInstance.Write(() =>
                 {
                     var mediaObject = _realmInstance.Find<RoutePointMediaObject>(Id);
-                    mediaObject.ServerSynced = Status;
-                    mediaObject.ServerSyncedDate = DateTime.Now;
+                    if(IsSyncPreview)
+                        mediaObject.PreviewServerSynced = Status;
+                    else
+                        mediaObject.OriginalServerSynced = Status;
                 }
                 );
                 result = true;
@@ -106,7 +108,8 @@ namespace QuestHelper.Managers
                     }
 
                     returnId = mediaObject.RoutePointMediaObjectId;
-                    mediaObject.ServerSynced = vmedia.ServerSynced;
+                    mediaObject.OriginalServerSynced = vmedia.OriginalServerSynced;
+                    mediaObject.PreviewServerSynced = vmedia.PreviewServerSynced;
                     mediaObject.ServerSyncedDate = vmedia.ServerSyncedDate;
                     mediaObject.Version = vmedia.Version;
                     mediaObject.IsDeleted = vmedia.IsDeleted;
@@ -139,9 +142,12 @@ namespace QuestHelper.Managers
         {
             return _realmInstance.All<RoutePointMediaObject>();
         }
-        internal IEnumerable<RoutePointMediaObject> GetNotSyncedMediaObjects()
+        internal IEnumerable<RoutePointMediaObject> GetNotSyncedMediaObjects(bool OnlyPreview)
         {
-            return _realmInstance.All<RoutePointMediaObject>().Where(x=>!x.ServerSynced);
+            if(OnlyPreview)
+                return _realmInstance.All<RoutePointMediaObject>().Where(x=>!x.PreviewServerSynced);
+            else
+                return _realmInstance.All<RoutePointMediaObject>().Where(x => !x.OriginalServerSynced);
         }
 
         internal RoutePointMediaObject GetMediaObjectById(string mediaId)

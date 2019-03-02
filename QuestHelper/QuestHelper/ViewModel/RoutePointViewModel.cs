@@ -361,7 +361,7 @@ namespace QuestHelper.ViewModel
             {
                 if (_vpoint.Name != value)
                 {
-                    if (!string.IsNullOrEmpty(_vpoint.Name))
+                    if (!string.IsNullOrEmpty(value))
                     {
                         _vpoint.Name = value;
                         ApplyChanges();

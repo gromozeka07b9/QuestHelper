@@ -15,7 +15,8 @@ namespace QuestHelper.Model
         private string _filename = string.Empty;
         private string _filenamePreview = string.Empty;
         private string _routePointId = string.Empty;
-        private bool _serverSynced = false;
+        private bool _originalServerSynced = false;
+        private bool _previewServerSynced = false;
         private bool _isDeleted = false;
         private DateTimeOffset _serverSyncedDate;
         private int _version = 0;
@@ -34,7 +35,8 @@ namespace QuestHelper.Model
                 _filename = $"img_{_id}.jpg";
                 _filenamePreview = $"img_{_id}_preview.jpg";
                 _version = mediaObject.Version;
-                _serverSynced = mediaObject.ServerSynced;
+                _originalServerSynced = mediaObject.OriginalServerSynced;
+                _previewServerSynced = mediaObject.PreviewServerSynced;
                 _serverSyncedDate = mediaObject.ServerSyncedDate;
                 _isDeleted = mediaObject.IsDeleted;
             }
@@ -125,15 +127,26 @@ namespace QuestHelper.Model
                 _isDeleted = value;
             }
         }
-        public bool ServerSynced
+        public bool OriginalServerSynced
         {
             get
             {
-                return _serverSynced;
+                return _originalServerSynced;
             }
             set
             {
-                _serverSynced = value;
+                _originalServerSynced = value;
+            }
+        }
+        public bool PreviewServerSynced
+        {
+            get
+            {
+                return _previewServerSynced;
+            }
+            set
+            {
+                _previewServerSynced = value;
             }
         }
         public DateTimeOffset ServerSyncedDate
