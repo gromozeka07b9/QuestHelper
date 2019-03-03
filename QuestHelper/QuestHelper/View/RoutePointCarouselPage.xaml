@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CarouselPage xmlns="http://xamarin.com/schemas/2014/forms"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              x:Class="QuestHelper.View.RoutePointCarouselPage" NavigationPage.HasNavigationBar="False" Appearing="RoutePointCarouselPage_OnAppearing" Disappearing="RoutePointCarouselPage_OnDisappearing" BackgroundColor="AliceBlue">
+    <!--ContentPage BackgroundColor="Red">
+        <StackLayout>
+            <Label Text="Red" FontSize="Medium" HorizontalOptions="Center" />
+            <BoxView Color="Red" WidthRequest="200" HeightRequest="200" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
+        </StackLayout>
+    </>
+    <ContentPage BackgroundColor="Yellow">
+        <StackLayout>
+            <Label Text="Yellow" FontSize="Medium" HorizontalOptions="Center" />
+            <BoxView Color="Yellow" WidthRequest="200" HeightRequest="200" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
+        </StackLayout>
+    </ContentPage>
+    <ContentPage BackgroundColor="Blue">
+        <StackLayout>
+            <Label Text="Blue" FontSize="Medium" HorizontalOptions="Center" />
+            <BoxView Color="Blue" WidthRequest="200" HeightRequest="200" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
+        </StackLayout>
+    </ContentPage-->
+</CarouselPage>

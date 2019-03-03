@@ -68,7 +68,7 @@ namespace QuestHelper.Droid
             }
             else
             {
-                StartToolbar(bundle);
+                StartToolbar(bundle);                
             }
         }
 

@@ -195,6 +195,7 @@ namespace QuestHelper.ViewModel
         internal void CloseDialog()
         {
             MessagingCenter.Unsubscribe<MapSelectNewPointMessage>(this, string.Empty);
+            setVisibleBottomNavigation(true);
         }
 
         public void StartDialog()
@@ -206,8 +207,15 @@ namespace QuestHelper.ViewModel
             {
                 SetNewCoordinates(sender.Latitude, sender.Longitude);
             });
-
+            setVisibleBottomNavigation(false);
         }
+
+        private void setVisibleBottomNavigation(bool visible)
+        {
+            var toolbarService = DependencyService.Get<IToolbarService>();
+            toolbarService.SetVisibilityToolbar(visible);
+        }
+
         private void copyCoordinatesCommand(object obj)
         {
             //throw new NotImplementedException();

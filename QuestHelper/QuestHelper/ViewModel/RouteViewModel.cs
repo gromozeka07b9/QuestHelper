@@ -184,7 +184,8 @@ namespace QuestHelper.ViewModel
 
         async void addNewRoutePointAsync()
         {
-            var routePointPage = new RoutePointPage(_vroute.Id, string.Empty);
+            //var routePointPage = new RoutePointPage(_vroute.Id, string.Empty);
+            var routePointPage = new RoutePointCarouselPage(_vroute.Id, string.Empty);
             await Navigation.PushAsync(routePointPage, true);
         }
 
@@ -293,7 +294,8 @@ namespace QuestHelper.ViewModel
                 if(_selectedPoint != value)
                 {
                     ViewRoutePoint point = value;
-                    var page = new RoutePointPage(_vroute.Id, point.Id);
+                    //var page = new RoutePointPage(_vroute.Id, point.Id);
+                    var page = new RoutePointCarouselPage(_vroute.Id, point.Id);
                     Navigation.PushAsync(page);
                     _selectedPoint = null;
                     PropertyChanged(this, new PropertyChangedEventArgs("SelectedRoutePointItem"));

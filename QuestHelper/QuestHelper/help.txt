@@ -38,3 +38,6 @@ https://developers.facebook.com/docs/instagram/sharing-to-feed/
 
 facebook share:
 http://www.saatchisynergize.co.za/blog/facebook-users-now-have-more-control-over-app-share/
+
+transparent navigation bar:
+https://xamgirl.com/transparent-navigation-bar-in-xamarin-forms/
