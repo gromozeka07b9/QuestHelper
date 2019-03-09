@@ -19,10 +19,17 @@
                 <Setter Property="FontSize" Value="12"/>
             </Style>
 
-            <!--Style x:Key="RouteTextLabelDark" TargetType="Label">
-                <Setter Property="TextColor" Value="Black"/>
-                <Setter Property="FontSize" Value="12"/>
-            </-->
+            <Style x:Key="ImageBigTextLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="LightGray"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="FontSize" Value="20"/>
+            </Style>
+
+            <Style x:Key="ImageSmallTextLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="LightGray"/>
+                <Setter Property="FontAttributes" Value="None"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
 
             <Style x:Key="StandartButton" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="#3A3A9C"/>

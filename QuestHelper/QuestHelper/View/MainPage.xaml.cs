@@ -28,11 +28,6 @@ namespace QuestHelper.View
                 }
                 else
                 {
-                    var toolbarService = DependencyService.Get<IToolbarService>();
-                    if (!toolbarService.ToolbarIsHidden())
-                    {
-                        toolbarService.SetVisibilityToolbar(false);
-                    }
                     navigateToPage(new PageNavigationMessage() { DestinationPageDescription = pageCollections.GetLoginPage() });
                 }
             });

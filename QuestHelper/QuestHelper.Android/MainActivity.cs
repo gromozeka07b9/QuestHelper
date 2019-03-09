@@ -69,6 +69,8 @@ namespace QuestHelper.Droid
             else
             {
                 StartToolbar(bundle);                
+                ToolbarService bar  = new ToolbarService();
+                bar.SetVisibilityToolbar(false);
             }
         }
 

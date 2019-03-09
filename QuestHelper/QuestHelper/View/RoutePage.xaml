@@ -15,7 +15,8 @@
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding EditRouteCommand}" Icon="edit.png"></ToolbarItem>
-        <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding FullScreenMapCommand}" Icon="zoom_out_map.png"></ToolbarItem>
+        <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding FullScreenMapCommand}" Icon="map1.png"></ToolbarItem>
+        <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding PhotoAlbumCommand}" Icon="photo.png"></ToolbarItem>
         <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding ShareRouteCommand}" Icon="person_add.png"></ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
@@ -83,7 +84,7 @@
                                             </Grid.RowDefinitions>
                                             <Image Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="1" Opacity="1" Source="{Binding ImagePreviewPathForList}" IsVisible="{Binding IsNew, Converter={StaticResource inverter}}" Aspect="{Binding ImagePreviewPathForList, Converter={StaticResource aspectimage}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
 
-                                            <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="1" Text="{Binding NameText}" Style="{StaticResource RouteTextLabel}" FontSize="15" FontAttributes="Bold" TextColor="LightGray" Margin="5,0,0,5" LineBreakMode="WordWrap" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand" VerticalTextAlignment="End"></Label>
+                                            <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="1" Text="{Binding NameText}" Style="{StaticResource ImageBigTextLabel}" Margin="5,0,0,5" LineBreakMode="WordWrap" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand" VerticalTextAlignment="End"></Label>
                                             <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Text="{Binding CreateDateText}" Style="{StaticResource RouteTextLabel}" TextColor="Gray" Margin="10,0,0,10" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand" VerticalTextAlignment="Center"></Label>
 
                                         </Grid>

@@ -17,6 +17,7 @@ namespace QuestHelper.Model
         private string _name = string.Empty;
         private DateTimeOffset _createDate;
         private int _version = 0;
+        private bool _isShared = false;
 
         public ViewRoute(string routeId)
         {
@@ -45,6 +46,7 @@ namespace QuestHelper.Model
                 _name = route.Name;
                 _createDate = route.CreateDate;
                 _version = route.Version;
+                _isShared = route.IsShared;
             }
         }
 
@@ -206,7 +208,14 @@ namespace QuestHelper.Model
         }
 
         public string UserId { get; set; }
-        public bool IsShared { get; set; }
+
+        public bool IsShared
+        {
+            get
+            {
+                return _isShared;
+            }
+        }
 
         public bool Save()
         {

@@ -1,7 +1,10 @@
-﻿using QuestHelper.Managers;
+﻿using Microsoft.AppCenter.Crashes;
+using QuestHelper.Managers;
 using QuestHelper.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,9 +17,8 @@ namespace QuestHelper.View
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class RoutePointCarouselPage : CarouselPage
 	{
-	    //private RoutePoint _routePoint;
 	    private string _routePointId;
-	    private RoutePointViewModel _vm;
+	    private RoutePointCarouselViewModel _vm;
 
 	    public RoutePointCarouselPage()
 	    {
@@ -27,19 +29,23 @@ namespace QuestHelper.View
 		{
 			InitializeComponent ();
 		    _routePointId = routePointId;
-            /*RoutePointManager manager = new RoutePointManager();
-		    if (!string.IsNullOrEmpty(routePointId))
-		        _routePoint = manager.GetPointById(routePointId);*/
-		    _vm = new RoutePointViewModel(routeId, routePointId) { Navigation = this.Navigation };
+		    _vm = new RoutePointCarouselViewModel(routeId) { Navigation = this.Navigation };
 		    BindingContext = _vm;
 		}
 
 	    private void RoutePointCarouselPage_OnAppearing(object sender, EventArgs e)
 	    {
 	        _vm.StartDialog();
-	        foreach (var media in _vm.Images)
+	        try
 	        {
-	            Children.Add(new PointCarouselItemPage(_routePointId, media.MediaId));
+	            foreach (var page in _vm.CarouselPages)
+	            {
+	                Children.Add(page);
+	            }
+	        }
+            catch (Exception exception)
+	        {
+	            Crashes.TrackError(exception);
 	        }
         }
 
@@ -47,5 +53,11 @@ namespace QuestHelper.View
 	    {
 	        _vm.CloseDialog();
 	    }
-    }
+
+	    private void RoutePointCarouselPage_OnCurrentPageChanged(object sender, EventArgs e)
+	    {
+	        var currentPage = CurrentPage;
+            currentPage?.SendAppearing();
+	    }
+	}
 }

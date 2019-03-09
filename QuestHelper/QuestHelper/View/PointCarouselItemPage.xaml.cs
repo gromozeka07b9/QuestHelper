@@ -14,17 +14,28 @@ namespace QuestHelper.View
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class PointCarouselItemPage : ContentPage
 	{
-        private ViewRoutePoint _routePoint;
+        public ViewRoutePoint _routePoint;
         private PointCarouselItemViewModel _vm;
         public PointCarouselItemPage()
 		{
 			InitializeComponent ();
 		}
-	    public PointCarouselItemPage(string routePointId, string routePointMediaId)
+	    public PointCarouselItemPage(string routeId, string routePointId, string routePointMediaId)
 	    {
 	        InitializeComponent();
-	        _vm = new PointCarouselItemViewModel(routePointId, routePointMediaId) { Navigation = this.Navigation };
+	        _vm = new PointCarouselItemViewModel(routeId, routePointId, routePointMediaId) { Navigation = this.Navigation };
 	        BindingContext = _vm;
+
 	    }
-    }
+
+
+	    private void PointCarouselItemPage_OnAppearing(object sender, EventArgs e)
+	    {
+	        ImageItem.Source = _vm.OneImage;
+	    }
+
+	    private void PointCarouselItemPage_OnDisappearing(object sender, EventArgs e)
+	    {
+	    }
+	}
 }

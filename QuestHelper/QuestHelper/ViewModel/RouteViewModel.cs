@@ -50,7 +50,8 @@ namespace QuestHelper.ViewModel
         public ICommand EditRouteCommand { get; private set; }
         public ICommand ShareRouteCommand { get; private set; }
         public ICommand FullScreenMapCommand { get; private set; }
-
+        public ICommand PhotoAlbumCommand { get; private set; }
+        
         public RouteViewModel(string routeId, bool isFirstRoute)
         {
             _vroute = new ViewRoute(routeId);
@@ -61,14 +62,22 @@ namespace QuestHelper.ViewModel
             EditRouteCommand = new Command(editRouteCommandAsync);
             ShareRouteCommand = new Command(shareRouteCommandAsync);
             FullScreenMapCommand = new Command(fullScreenMapCommandAsync);
+            PhotoAlbumCommand = new Command(photoAlbumCommandAsync);
         }
-        /*internal void AddNewPointFromShare(ShareFromGoogleMapsMessage sharePointMessage)
+
+        private void photoAlbumCommandAsync(object obj)
         {
-            RoutePointViewModel pointViewModel = new RoutePointViewModel(_vroute.RouteId, string.Empty);
-            pointViewModel.Name = sharePointMessage.Subject;
-            pointViewModel.Description = sharePointMessage.Description;
-            pointViewModel.ApplyChanges();
-        }*/
+            var page = new RoutePointCarouselPage(_vroute.RouteId, string.Empty);
+            Navigation.PushAsync(page);
+        }
+
+        /*internal void AddNewPointFromShare(ShareFromGoogleMapsMessage sharePointMessage)
+{
+   RoutePointViewModel pointViewModel = new RoutePointViewModel(_vroute.RouteId, string.Empty);
+   pointViewModel.Name = sharePointMessage.Subject;
+   pointViewModel.Description = sharePointMessage.Description;
+   pointViewModel.ApplyChanges();
+}*/
 
         private void shareRouteCommandAsyncOLD(object obj)
         {
@@ -294,8 +303,7 @@ namespace QuestHelper.ViewModel
                 if(_selectedPoint != value)
                 {
                     ViewRoutePoint point = value;
-                    //var page = new RoutePointPage(_vroute.Id, point.Id);
-                    var page = new RoutePointCarouselPage(_vroute.Id, point.Id);
+                    var page = new RoutePointPage(_vroute.Id, point.Id);
                     Navigation.PushAsync(page);
                     _selectedPoint = null;
                     PropertyChanged(this, new PropertyChangedEventArgs("SelectedRoutePointItem"));

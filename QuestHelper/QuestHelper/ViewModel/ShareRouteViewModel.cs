@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Acr.UserDialogs;
+using Newtonsoft.Json.Linq;
 using QuestHelper.Model;
 using QuestHelper.Model.WS;
 using QuestHelper.WS;
@@ -40,8 +41,12 @@ namespace QuestHelper.ViewModel
 
         private async void searchUsersCommandAsync(object text)
         {
-            _usersFullList = await getUsersFromServerAsync(text.ToString());
-            FilterUsersByTextAsync(text.ToString());
+            string searchTxt = text.ToString().Trim();
+            if (!string.IsNullOrEmpty(searchTxt))
+            {
+                _usersFullList = await getUsersFromServerAsync(searchTxt);
+                FilterUsersByTextAsync(text.ToString());
+            }
         }
 
         public async void FilterUsersByTextAsync(string textForSearch)

@@ -22,7 +22,11 @@ namespace QuestHelper.View
 
         private void SearchBar_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            _vm.FilterUsersByTextAsync(e.NewTextValue);
+            string searchTxt = e.NewTextValue.ToString().Trim();
+            if (!string.IsNullOrEmpty(searchTxt))
+            {
+                _vm.FilterUsersByTextAsync(searchTxt);
+            }
         }
     }
 }
