@@ -193,8 +193,7 @@ namespace QuestHelper.ViewModel
 
         async void addNewRoutePointAsync()
         {
-            //var routePointPage = new RoutePointPage(_vroute.Id, string.Empty);
-            var routePointPage = new RoutePointCarouselPage(_vroute.Id, string.Empty);
+            var routePointPage = new RoutePointPage(_vroute.Id, string.Empty);
             await Navigation.PushAsync(routePointPage, true);
         }
 
