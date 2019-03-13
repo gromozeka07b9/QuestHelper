@@ -16,6 +16,8 @@ namespace QuestHelper.View
 	{
         public ViewRoutePoint _routePoint;
         private PointCarouselItemViewModel _vm;
+	    private bool isShowPreview = true;
+
         public PointCarouselItemPage()
 		{
 			InitializeComponent ();
@@ -25,16 +27,26 @@ namespace QuestHelper.View
 	        InitializeComponent();
 	        _vm = new PointCarouselItemViewModel(routeId, routePointId, routePointMediaId) { Navigation = this.Navigation };
 	        BindingContext = _vm;
-
 	    }
 
 
-	    private void PointCarouselItemPage_OnAppearing(object sender, EventArgs e)
+        private void PointCarouselItemPage_OnAppearing(object sender, EventArgs e)
 	    {
-	        ImageItem.Source = _vm.OneImage;
-	    }
+	        if (isShowPreview)
+	        {
+	            ImageItem.Source = _vm.OneImagePreview;
+	            Device.StartTimer(TimeSpan.FromMilliseconds(500), OnTimerForUpdate);
+	        }
+        }
 
-	    private void PointCarouselItemPage_OnDisappearing(object sender, EventArgs e)
+        private bool OnTimerForUpdate()
+        {
+            ImageItem.Source = _vm.OneImage;
+            isShowPreview = false;
+            return false;
+        }
+
+        private void PointCarouselItemPage_OnDisappearing(object sender, EventArgs e)
 	    {
 	    }
 	}

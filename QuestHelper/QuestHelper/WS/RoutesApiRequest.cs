@@ -10,6 +10,7 @@ using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using QuestHelper.LocalDB.Model;
 using QuestHelper.Model;
+using System.Threading;
 
 namespace QuestHelper.WS
 {
@@ -57,20 +58,44 @@ namespace QuestHelper.WS
             JObject jsonRequestObject = JObject.FromObject(requestValue);
 
             SyncObjectStatus deserializedValue = new SyncObjectStatus();
+
+            bool requestResult = false;
+            int triesCount = 0;
+            while (!requestResult)
+            {
+                deserializedValue = await TryToRequestAsync(jsonRequestObject.ToString(), _authToken);
+                requestResult = LastHttpStatusCode == HttpStatusCode.OK;
+                if ((!requestResult) && (triesCount < 10) && (LastHttpStatusCode!=HttpStatusCode.InternalServerError))
+                {
+                    triesCount++;
+                    Thread.Sleep(30);//ToDo: останавливает основной поток, UI будет тупить, надо на таймер переделать
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return deserializedValue;
+        }
+
+        private async Task<SyncObjectStatus> TryToRequestAsync(string jsonRequestString, string authToken)
+        {
             try
             {
                 ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestPOST($"{_hostUrl}/routes/sync", jsonRequestObject.ToString(), _authToken);
+                var response = await api.HttpRequestPOST($"{_hostUrl}/routes/sync", jsonRequestString, authToken);
                 LastHttpStatusCode = api.LastHttpStatusCode;
-                deserializedValue = JsonConvert.DeserializeObject<SyncObjectStatus>(response);
+                return JsonConvert.DeserializeObject<SyncObjectStatus>(response);
             }
             catch (Exception e)
             {
                 HandleError.Process("RoutesApiRequest", "GetSyncStatus", e, false);
             }
 
-            return deserializedValue;
+            return new SyncObjectStatus();
         }
+
         public async Task<bool> DeleteRoute(Route routeObject)
         {
             bool deleteResult = false;

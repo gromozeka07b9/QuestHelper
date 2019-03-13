@@ -71,6 +71,11 @@ namespace QuestHelper.View.Geo
             return result;
         }
 
+        public void ClearPins()
+        {
+            _customMapView.Pins.Clear();
+        }
+
         public void AddPin(double latitude, double longitude, string name, string address, EventHandler pin_clicked)
         {
             _lastError = string.Empty;

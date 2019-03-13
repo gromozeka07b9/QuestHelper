@@ -122,6 +122,7 @@ namespace QuestHelper.View
             CustomMapView customMap = new CustomMapView((CustomMap)this.PointMapOverview, 15);
             if (customMap.CenterMapToPosition(latitude, longitude, 1))
             {
+                customMap.ClearPins();
                 customMap.AddPin(latitude, longitude, name, address, PointPin_Clicked);
             }
             else

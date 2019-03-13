@@ -59,17 +59,6 @@ namespace QuestHelper.Managers.Sync
                 bool resultSyncPreview = await SyncFiles(true);
                 bool resultSyncOriginal = await SyncFiles(false);
                 result = (resultSyncOriginal)&&(resultSyncPreview);
-                //result = await SendNotSyncedFiles();
-                //if (!result) return result;
-
-                /*SyncFiles syncFiles = new SyncFiles(_authToken);
-                bool resultDownloadingPreview = await syncFiles.CheckExistsAllImageAndDownloadIfNeeded(true);
-                bool resultDownloadingFull = await syncFiles.CheckExistsAllImageAndDownloadIfNeeded(false);
-                if (result)
-                {
-                    result = !((resultDownloadingPreview == false) || (resultDownloadingFull == false));
-                    if (!result) _errorReport += syncFiles.ErrorReport;
-                }*/
             }
 
             return result;
@@ -142,30 +131,6 @@ namespace QuestHelper.Managers.Sync
 
             return syncResult;
         }
-
-        /*private async Task<bool> SendNotSyncedFiles()
-        {
-            var notSyncedMedias = _routePointMediaManager.GetNotSyncedMediaObjects();
-            StringBuilder sbErrors = new StringBuilder();
-            foreach (var media in notSyncedMedias)
-            {
-                sbErrors.AppendLine($"to sync file: p:{media.RoutePointId} m:{media.RoutePointMediaObjectId}");
-            }
-            _errorReport += sbErrors.ToString();
-            bool sendResult = await SendImages(notSyncedMedias, true);
-            if (sendResult)
-            {
-                sendResult = await SendImages(notSyncedMedias, false);
-                if (sendResult)
-                {
-                    foreach (var media in notSyncedMedias)
-                    {
-                        _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, sendResult);
-                    }
-                }
-            }
-            return sendResult;
-        }*/
 
         private async Task<bool> SendImages(IEnumerable<RoutePointMediaObject> notSyncedMedias, bool isPreview)
         {

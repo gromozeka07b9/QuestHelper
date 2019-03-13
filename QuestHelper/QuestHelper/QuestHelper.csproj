@@ -7,7 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Managers\Sync\SyncFiles.cs" />
     <Compile Remove="ViewModel\RouteViewModel - old.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Managers\Sync\SyncFiles.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Acr.UserDialogs" Version="7.0.1" />

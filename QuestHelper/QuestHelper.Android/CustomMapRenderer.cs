@@ -49,48 +49,49 @@ namespace QuestHelper.Droid
                     .Where(x => x.Latitude == marker.Position.Latitude && x.Longitude == marker.Position.Longitude)
                     .FirstOrDefault();
 
-                if (point == null)
+                if (point != null)
                 {
-                    throw new Exception("Custom pin not found");
-                }
+                    view = inflater.Inflate(Resource.Layout.MapInfoWindow, null);
 
-                view = inflater.Inflate(Resource.Layout.MapInfoWindow, null);
+                    var infoImg = view.FindViewById<ImageView>(Resource.Id.InfoWindowImage);
+                    var infoTitle = view.FindViewById<TextView>(Resource.Id.InfoWindowTitle);
+                    var infoDescription = view.FindViewById<TextView>(Resource.Id.InfoWindowSubtitle);
 
-                var infoImg = view.FindViewById<ImageView>(Resource.Id.InfoWindowImage);
-                var infoTitle = view.FindViewById<TextView>(Resource.Id.InfoWindowTitle);
-                var infoDescription = view.FindViewById<TextView>(Resource.Id.InfoWindowSubtitle);
-
-                if (infoImg != null)
-                {
-                    Bitmap bm = BitmapFactory.DecodeFile(point.PathToPicture);
-                    if (bm != null)
+                    if (infoImg != null)
                     {
-                        infoImg.SetImageBitmap(cropCenter(bm, 500, 400));
-                        bm = null;
+                        Bitmap bm = BitmapFactory.DecodeFile(point.PathToPicture);
+                        if (bm != null)
+                        {
+                            infoImg.SetImageBitmap(cropCenter(bm, 500, 400));
+                            bm = null;
+                        }
                     }
-                }
-                if (infoTitle != null)
-                {
-                    infoTitle.Text = point.Name;
-                }
-                if (infoDescription != null)
-                {
-                    int maxLength = 100;
-                    string text = string.Empty;
-                    if (string.IsNullOrEmpty(point.Description))
+                    if (infoTitle != null)
                     {
-                        text = "Описание не заполнено";
-                    } else if (point.Description.Length > maxLength)
-                    {
-                        text = point.Description.Substring(0, maxLength) + "...";
-                    } else
-                    {
-                        text = point.Description;
+                        infoTitle.Text = point.Name;
                     }
-                    infoDescription.Text = text;
+                    if (infoDescription != null)
+                    {
+                        int maxLength = 100;
+                        string text = string.Empty;
+                        if (string.IsNullOrEmpty(point.Description))
+                        {
+                            text = "Описание не заполнено";
+                        }
+                        else if (point.Description.Length > maxLength)
+                        {
+                            text = point.Description.Substring(0, maxLength) + "...";
+                        }
+                        else
+                        {
+                            text = point.Description;
+                        }
+                        infoDescription.Text = text;
+                    }
+                    return view;
                 }
-                return view;
             }
+
             return null;
         }
 

@@ -16,7 +16,6 @@ namespace QuestHelper.ViewModel
         private readonly ViewRoute _routeObject;
         private readonly ViewRoutePoint _pointObject;
         private readonly ViewRoutePointMediaObject _mediaObject;
-
         private Aspect _imageAspect;
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -38,6 +37,7 @@ namespace QuestHelper.ViewModel
             ChangeImageAspectCommand = new Command(changeImageAspectCommand);
             EditRoutePointCommand = new Command(editRoutePointCommand);
             PhotoImageAspect = Aspect.AspectFill;
+
         }
 
         private void editRoutePointCommand(object obj)
@@ -105,11 +105,18 @@ namespace QuestHelper.ViewModel
                 return !string.IsNullOrEmpty(_mediaObject.RoutePointMediaObjectId);
             }
         }
-        public string OneImage
+        public string OneImagePreview
         {
             get
             {
                 return ImagePathManager.GetImagePath(_mediaObject.RoutePointMediaObjectId, true);
+            }
+        }
+        public string OneImage
+        {
+            get
+            {
+                return ImagePathManager.GetImagePath(_mediaObject.RoutePointMediaObjectId, false);
             }
         }
     }

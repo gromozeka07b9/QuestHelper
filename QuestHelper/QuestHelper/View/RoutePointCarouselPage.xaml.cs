@@ -1,4 +1,6 @@
-﻿using Microsoft.AppCenter.Crashes;
+﻿using Acr.UserDialogs;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using QuestHelper.Managers;
 using QuestHelper.ViewModel;
 using System;
@@ -7,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
@@ -31,22 +34,35 @@ namespace QuestHelper.View
 		    _routePointId = routePointId;
 		    _vm = new RoutePointCarouselViewModel(routeId) { Navigation = this.Navigation };
 		    BindingContext = _vm;
+		    FillPagesCollectionAsync();
 		}
 
-	    private void RoutePointCarouselPage_OnAppearing(object sender, EventArgs e)
+        private void RoutePointCarouselPage_OnAppearing(object sender, EventArgs e)
 	    {
 	        _vm.StartDialog();
-	        try
-	        {
+        }
+
+        private async Task FillPagesCollectionAsync()
+	    {
+	        DateTime startTime = DateTime.Now;
+            try
+            {
 	            foreach (var page in _vm.CarouselPages)
 	            {
 	                Children.Add(page);
 	            }
 	        }
-            catch (Exception exception)
+	        catch (Exception exception)
 	        {
 	            Crashes.TrackError(exception);
 	        }
+
+	        string username = await DependencyService.Get<IUsernameService>().GetUsername();
+            LoggerLevels levels = new LoggerLevels();
+	        var eventStructure = new Dictionary<string, string>
+	            {{"DelayLevel", levels.GetTimeLevels(startTime, DateTime.Now, 2, 5, 8).ToString()}};
+	        eventStructure.Add("Username", username);
+            Analytics.TrackEvent("Carousel: create time", eventStructure);
         }
 
         private void RoutePointCarouselPage_OnDisappearing(object sender, EventArgs e)
