@@ -23,6 +23,7 @@ namespace QuestHelper.Model
                 new MainPageMenuItem { Id = 4, Title = "О нас", TargetType = typeof(AboutPage), IconName="earth.png", ShowInMenu = true},
                 new MainPageMenuItem { Id = 5, Title = string.Empty, TargetType = typeof(LoginPage)},
                 new MainPageMenuItem { Id = 6, Title = "Обработка выбора", TargetType = typeof(ProcessShareIntentPage), IconName="earth.png"},
+                new MainPageMenuItem { Id = 7, Title = "Описание", TargetType = typeof(SplashWizardPage), ShowInMenu = true},
 
                 new MainPageMenuItem { Id = 999, Title = "Main page", TargetType = typeof(MainPage)}//старт view с навигацией по страницам
                 });

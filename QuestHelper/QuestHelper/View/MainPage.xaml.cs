@@ -1,4 +1,5 @@
 ﻿using Acr.UserDialogs;
+using QuestHelper.Managers;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
 using System;
@@ -21,14 +22,21 @@ namespace QuestHelper.View
             //var pageCollections = new PagesCollection();
             MessagingCenter.Subscribe<PageNavigationMessage>(this, string.Empty, async (senderMsg) =>
             {
-                TokenStoreService token = new TokenStoreService();
-                if (!string.IsNullOrEmpty(await token.GetAuthTokenAsync()))
+                if (senderMsg.DestinationPageDescription.TargetType == typeof(SplashWizardPage))
                 {
-                    navigateToPage(senderMsg);
+                    await Navigation.PushModalAsync(new NavigationPage(new SplashWizardPage()));
                 }
                 else
                 {
-                    navigateToPage(new PageNavigationMessage() { DestinationPageDescription = pageCollections.GetLoginPage() });
+                    TokenStoreService token = new TokenStoreService();
+                    if (!string.IsNullOrEmpty(await token.GetAuthTokenAsync()))
+                    {
+                        navigateToPage(senderMsg);
+                    }
+                    else
+                    {
+                        navigateToPage(new PageNavigationMessage() { DestinationPageDescription = pageCollections.GetLoginPage() });
+                    }
                 }
             });
             MessagingCenter.Subscribe<ShareFromGoogleMapsMessage>(this, string.Empty, (senderMsg) =>
@@ -67,7 +75,7 @@ namespace QuestHelper.View
             MasterPage.ListView.SelectedItem = null;
         }
 
-        private void MainPage_OnAppearing(object sender, EventArgs e)
+        private async void MainPage_OnAppearing(object sender, EventArgs e)
         {
             var pageCollections = new PagesCollection();
             MessagingCenter.Subscribe<ToggleFullscreenMapMessage>(this, string.Empty, (senderMsg) =>
@@ -77,6 +85,16 @@ namespace QuestHelper.View
                 //page.CurrentRouteId = sender.RouteId;
                 openContentPage(page, pageParameters.Title, pageParameters.IconName);
             });
+
+            ParameterManager par = new ParameterManager();
+            string showOnboarding = string.Empty;
+            if (par.Get("NeedShowOnboarding", out showOnboarding))
+            {
+                if (showOnboarding == "1")
+                {
+                    await Navigation.PushModalAsync(new NavigationPage(new SplashWizardPage()));
+                }
+            }
         }
 
         private void MainPage_OnDisappearing(object sender, EventArgs e)

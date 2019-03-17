@@ -22,7 +22,6 @@ namespace QuestHelper
 	public partial class App : Application
 	{
 	    private bool SynchronizeStarted = false;
-	    private string statusSyncKey = "SyncStatus";
 
         public App ()
 		{
@@ -33,6 +32,12 @@ namespace QuestHelper
 		    Analytics.TrackEvent("Start app");
 		    Application.Current.Properties.Remove("SyncStatus");
 		    Application.Current.Properties.Remove("WorkInRoaming");
+		    ParameterManager par = new ParameterManager();
+		    string showOnboarding = string.Empty;
+		    if (!par.Get("NeedShowOnboarding", out showOnboarding))
+		    {
+		        par.Set("NeedShowOnboarding", "1");
+		    }
 		}
 
         protected override async void OnStart ()
@@ -50,6 +55,10 @@ namespace QuestHelper
 		    {
                 //пока непонятно, как будем открывать точку из карты
                 ShowWarning("Данная функция в разработке");
+		    });
+		    MessagingCenter.Subscribe<StartAppMessage>(this, string.Empty, (sender) =>
+		    {
+		        MainPage = new View.MainPage();
 		    });
 
             TokenStoreService token = new TokenStoreService();
