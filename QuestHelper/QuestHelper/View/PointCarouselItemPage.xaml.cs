@@ -2,6 +2,7 @@
 using QuestHelper.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,13 +42,14 @@ namespace QuestHelper.View
 
         private bool OnTimerForUpdate()
         {
-            ImageItem.Source = _vm.OneImage;
+            if (File.Exists(_vm.OneImage))
+            {
+                ImageItem.Source = _vm.OneImage;
+            }
+
             isShowPreview = false;
             return false;
         }
 
-        private void PointCarouselItemPage_OnDisappearing(object sender, EventArgs e)
-	    {
-	    }
-	}
+    }
 }

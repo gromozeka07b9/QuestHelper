@@ -98,13 +98,13 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        public bool FullscreenButtonIsVisible
+        /*public bool FullscreenButtonIsVisible
         {
             get
             {
                 return !string.IsNullOrEmpty(_mediaObject.RoutePointMediaObjectId);
             }
-        }
+        }*/
         public string OneImagePreview
         {
             get

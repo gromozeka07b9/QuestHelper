@@ -12,9 +12,8 @@ namespace QuestHelper.Server.Models
         [Key]
         public string RoutePointMediaObjectId { get; set; }
         public string RoutePointId { get; set; }
-        public string FileName { get; set; }
-        public string FileNamePreview { get; set; }
-        public byte[] PreviewImage { get; set; }
+        public bool ImageLoadedToServer { get; set; }
+        public bool ImagePreviewLoadedToServer { get; set; }
         /// <summary>
         /// Версия записи
         /// </summary>

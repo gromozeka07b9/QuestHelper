@@ -8,5 +8,6 @@ namespace QuestHelper.Model.WS
     {
         public string RouteIdForShare;
         public string[] UserId;
+        public bool CanChangeRoute;
     }
 }

@@ -46,7 +46,7 @@ namespace QuestHelper.Server.Controllers.Medias
                             report.Statuses.Add(new SyncObjectStatus.ObjectStatus { ObjectId = clientVersion.ObjectId, Version = 0 });
                         }
                     }
-                    var dbNewObjects = db.RoutePointMediaObject.Where(r => !syncIds.Contains(r.RoutePointMediaObjectId) && availablePoints.Contains(r.RoutePointId));
+                    var dbNewObjects = db.RoutePointMediaObject.Where(r => !syncIds.Contains(r.RoutePointMediaObjectId) && availablePoints.Contains(r.RoutePointId) && r.ImageLoadedToServer && r.ImagePreviewLoadedToServer);
                     foreach (var newObject in dbNewObjects)
                     {
                         report.Statuses.Add(new SyncObjectStatus.ObjectStatus { ObjectId = newObject.RoutePointMediaObjectId, Version = newObject.Version });

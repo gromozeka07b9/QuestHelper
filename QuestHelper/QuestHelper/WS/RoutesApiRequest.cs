@@ -65,7 +65,7 @@ namespace QuestHelper.WS
             {
                 deserializedValue = await TryToRequestAsync(jsonRequestObject.ToString(), _authToken);
                 requestResult = LastHttpStatusCode == HttpStatusCode.OK;
-                if ((!requestResult) && (triesCount < 10) && (LastHttpStatusCode!=HttpStatusCode.InternalServerError))
+                if ((!requestResult) && (triesCount < 5) && (LastHttpStatusCode==HttpStatusCode.InternalServerError))//пока не пойму почему на сервере 500 при валидации пользователя
                 {
                     triesCount++;
                     Thread.Sleep(30);//ToDo: останавливает основной поток, UI будет тупить, надо на таймер переделать

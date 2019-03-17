@@ -125,6 +125,7 @@ namespace QuestHelper.ViewModel
                 ShareRequest shareRequest = new ShareRequest();
                 shareRequest.RouteIdForShare = _routeId;
                 shareRequest.UserId = accessForUsersId.ToArray();
+                shareRequest.CanChangeRoute = true;
                 JObject jsonRequestObject = JObject.FromObject(shareRequest);
 
                 bool result = await routesApi.ShareRouteAsync(jsonRequestObject.ToString());

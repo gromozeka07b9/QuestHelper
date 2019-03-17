@@ -45,7 +45,10 @@ namespace QuestHelper.View
                 Latitude = x.Latitude, Longitude = x.Longitude, PathToPicture = x.ImagePreviewPathForList, Name = x.Name, Description = x.Description
             }).ToList();
             CustomMapView customMapView = new CustomMapView(customMap, 15);
-            await centerMap(customMapView, customMap.Points.First().Latitude, customMap.Points.First().Longitude);
+            if (customMap.Points.Count() > 0)
+            {
+                await centerMap(customMapView, customMap.Points.First().Latitude, customMap.Points.First().Longitude);
+            }
         }
 
         private async Task getPositionAndCenterMap(CustomMapView customMap)

@@ -11,6 +11,8 @@ using QuestHelper.Model;
 using System.Net;
 using Microsoft.AppCenter.Analytics;
 using System.IO;
+using Xamarin.Forms;
+using QuestHelper.Model.Messages;
 
 namespace QuestHelper.Managers.Sync
 {
@@ -56,7 +58,9 @@ namespace QuestHelper.Managers.Sync
                     if (!result) return result;
                 }
 
+                MessagingCenter.Send<SyncProgressMessage>(new SyncProgressMessage() { SyncInProgress = true, SyncDetailText = "Синхронизация превью..." }, string.Empty);
                 bool resultSyncPreview = await SyncFiles(true);
+                MessagingCenter.Send<SyncProgressMessage>(new SyncProgressMessage() { SyncInProgress = true, SyncDetailText = "Синхронизация оригиналов..." }, string.Empty);
                 bool resultSyncOriginal = await SyncFiles(false);
                 result = (resultSyncOriginal)&&(resultSyncPreview);
             }

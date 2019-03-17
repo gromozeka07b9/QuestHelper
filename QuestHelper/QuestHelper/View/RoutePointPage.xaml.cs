@@ -136,7 +136,7 @@ namespace QuestHelper.View
 	        _vm.ApplyChanges();
 	    }
 
-	    private void RoutePointPage_OnDisappearing(object sender, EventArgs e)
+        private void RoutePointPage_OnDisappearing(object sender, EventArgs e)
 	    {
 	        _vm.CloseDialog();
 	    }

@@ -27,10 +27,17 @@ namespace QuestHelper.Server.Auth
             if (!string.IsNullOrEmpty(_token) && !string.IsNullOrEmpty(name))
             {
                 string userKey = jwt.GetUserKeyFromToken(_token);
-                using (var context = new ServerDbContext(_dbOptions))
+                try
                 {
-                    var result = context.User.Where(x => x.TokenKey == userKey && x.Name == name);
-                    return result.Count() > 0;
+                    using (var context = new ServerDbContext(_dbOptions))
+                    {
+                        var result = context.User.Where(x => x.TokenKey == userKey && x.Name == name);
+                        return result.Count() > 0;
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Check user error", e);
                 }
             }
 

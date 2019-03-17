@@ -151,7 +151,7 @@ namespace QuestHelper.ViewModel
                     ImagePreviewManager resizedOriginal = new ImagePreviewManager();
                     resizedOriginal.PreviewHeight = 0;
                     resizedOriginal.PreviewWidth = 0;
-                    resizedOriginal.PreviewQuality = 60;
+                    resizedOriginal.PreviewQuality = 40;
                     FileInfo originalFileInfo = new FileInfo(photoPicked.Path);
 
                     if (resizedOriginal.CreateImagePreview(originalFileInfo.DirectoryName, originalFileInfo.Name,
@@ -242,12 +242,12 @@ namespace QuestHelper.ViewModel
                 string photoNamePreview = ImagePathManager.GetImageFilename(mediaId, true);
                 var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
                 {
-                    PhotoSize = PhotoSize.Full,
+                    PhotoSize = PhotoSize.Large,
                     Location = new Location() { Latitude = _vpoint.Latitude, Longitude = _vpoint.Longitude, Timestamp = DateTime.Now },
                     Directory = string.Empty,
                     Name = photoName,
                     SaveToAlbum = true,
-                    CompressionQuality = 50
+                    CompressionQuality = 30
                 });
                 long fileSize = 0;
                 if (file != null)
@@ -361,16 +361,8 @@ namespace QuestHelper.ViewModel
             {
                 if (_vpoint.Name != value)
                 {
-                    if (!string.IsNullOrEmpty(value))
-                    {
-                        _vpoint.Name = value;
-                        ApplyChanges();
-                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
-                    }
-                    else
-                    {
-                        UserDialogs.Instance.Alert(new AlertConfig(){Title = "Внимание!", Message = "Название точки должно быть заполнено", OkText = "Ok"});
-                    }
+                    _vpoint.Name = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
                 }                   
             }
             get
@@ -416,10 +408,18 @@ namespace QuestHelper.ViewModel
                 return _vpoint.MediaObjects.Where(x=>!x.IsDeleted).Select(x => new ImagePreview() {Source = ImagePathManager.GetImagePath(x.RoutePointMediaObjectId, true), MediaId = x.RoutePointMediaObjectId}).ToList();
             }
         }
+
         public void ApplyChanges()
         {
-            _vpoint.Version++;
-            _vpoint.Save();
+            if (!string.IsNullOrEmpty(_vpoint.Name))
+            {
+                _vpoint.Version++;
+                _vpoint.Save();
+            }
+            else
+            {
+                UserDialogs.Instance.Alert(new AlertConfig() { Title = "Внимание!", Message = "Название точки должно быть заполнено", OkText = "Ok" });
+            }
         }
 
         public class ImagePreview

@@ -16,7 +16,14 @@ namespace QuestHelper.Managers
             {
                 try
                 {
-                    _realmInstance = Realm.GetInstance();
+                    var config = new RealmConfiguration()
+                    {
+                        SchemaVersion = 1, MigrationCallback = (migration, oldSchemaVersion) =>
+                        {
+
+                        }
+                    };
+                    _realmInstance = Realm.GetInstance(config);
                 }
                 catch (Exception e)
                 {

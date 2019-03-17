@@ -30,8 +30,6 @@ namespace QuestHelper.Managers
                 {
                     vroutes.Add(new ViewRoute(route.RouteId));
                 }
-                //vroutes = routes.Select(r => new ViewRoute{Name = r.Name, RouteId = r.RouteId, CreateDate = r.CreateDate, Id = r.RouteId, Version = r.Version, IsShared = r.IsShared});
-                //vroutes = routes.Select(r => new ViewRoute);
             }
             return vroutes;
         }
@@ -59,6 +57,7 @@ namespace QuestHelper.Managers
                     route.Version = viewRoute.Version;
                     route.CreateDate = viewRoute.CreateDate;
                     route.IsShared = viewRoute.IsShared;
+                    //creatorId не передаем, он заполняется только на сервере
                     viewRoute.Refresh(route.RouteId);
                 });
                 result = true;

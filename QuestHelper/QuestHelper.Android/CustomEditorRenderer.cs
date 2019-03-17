@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.Graphics.Drawables;
@@ -10,7 +9,9 @@ using Android.OS;
 using Android.Runtime;
 using Android.Text.Method;
 using Android.Views;
+using Android.Views.InputMethods;
 using Android.Widget;
+using Java.Lang;
 using QuestHelper.Droid;
 using QuestHelper.View;
 using Xamarin.Forms;
@@ -21,6 +22,7 @@ namespace QuestHelper.Droid
 {
     public class CustomEditorRenderer : EditorRenderer
     {
+        private bool _inititialized = false;
         public CustomEditorRenderer(Context context) : base(context)
         {
         }
@@ -29,6 +31,29 @@ namespace QuestHelper.Droid
         protected override void OnElementChanged(ElementChangedEventArgs<Editor> e)
         {
             base.OnElementChanged(e);
+            /*if (this.Control != null)
+            {
+                if (!_inititialized)
+                {
+                    this.Control.FocusChange += ((sender, evt) => {
+                        if (evt.HasFocus)
+                        {
+                            System.Threading.ThreadPool.QueueUserWorkItem(s =>
+                            {
+                                Thread.Sleep(100); // For some reason, a short delay is required here.
+                                Device.BeginInvokeOnMainThread(() =>
+                                {
+                                    var inputMethodManager = (InputMethodManager)Control.Context.GetSystemService(Android.Content.Context.InputMethodService);
+                                    inputMethodManager.ShowSoftInputFromInputMethod(Control.WindowToken, ShowFlags.Forced);
+                                });
+                                //InvokeOnMainThread(() => ((Android.Views.InputMethods.InputMethodManager)GetUIContext().GetSystemService(Android.Content.Context.InputMethodService)).ShowSoftInput(this.Control, Android.Views.InputMethods.ShowFlags.Implicit));
+                            });
+                        }
+                    });
+                    _inititialized = true;
+                }
+            }*/
+
             if (e.OldElement == null)
             {
                 var nativeEditText = (global::Android.Widget.EditText)Control;

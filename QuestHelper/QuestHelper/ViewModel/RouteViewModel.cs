@@ -71,14 +71,6 @@ namespace QuestHelper.ViewModel
             Navigation.PushAsync(page);
         }
 
-        /*internal void AddNewPointFromShare(ShareFromGoogleMapsMessage sharePointMessage)
-{
-   RoutePointViewModel pointViewModel = new RoutePointViewModel(_vroute.RouteId, string.Empty);
-   pointViewModel.Name = sharePointMessage.Subject;
-   pointViewModel.Description = sharePointMessage.Description;
-   pointViewModel.ApplyChanges();
-}*/
-
         private void shareRouteCommandAsyncOLD(object obj)
         {
             var points = _routePointManager.GetPointsByRouteId(_vroute.RouteId);
@@ -140,25 +132,9 @@ namespace QuestHelper.ViewModel
                 else showNewRouteData();
             }
             ListIsRefreshing = false;
-            /*CountOfPoints = _routePointManager.GetPointsByRouteId(_vroute.RouteId).Count();
-            CountOfPhotos = _routePointMediaObjectManager.GetCountByRouteId(_vroute.RouteId);
-            double routeLengthInKm = _routeManager.GetLength(_vroute.RouteId);
-            if (routeLengthInKm < 1000)
-            {
-                double routeLength = _routeManager.GetLength(_vroute.RouteId) * 1000;
-                RouteLength = $"{routeLength.ToString("F1")} метров";
-                RouteLengthSteps = $"{(routeLength * 1.3).ToString("N0")} шагов";
-            }
-            else
-            {
-                double routeLength = _routeManager.GetLength(_vroute.RouteId);
-                RouteLength = $"{routeLength.ToString("F1")} км";
-                RouteLengthSteps = $"{(routeLength *1000 * 1.3).ToString("N0")} шагов";
-            }*/
         }
         internal void closeDialog()
         {
-            //MessagingCenter.Unsubscribe<ShareFromGoogleMapsMessage>(this, string.Empty);
         }
 
         private void showNewRouteWarningDialog()

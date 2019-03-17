@@ -29,6 +29,8 @@ namespace QuestHelper.ViewModel
         private bool _isRefreshing = false;
         private int _countOfUpdateListByTimer = 0;
         private ShareFromGoogleMapsMessage _sharePointMessage;
+        private bool _syncProgressIsVisible = false;
+        private string _syncProgressDetailText = string.Empty;
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -44,15 +46,15 @@ namespace QuestHelper.ViewModel
         }
         public void startDialog()
         {
-            /*MessagingCenter.Subscribe<ShareFromGoogleMapsMessage>(this, string.Empty, (sender) =>
-            {
-                UserDialogs.Instance.Alert($"Выберите маршрут, в который планируете добавить точку", "Создание новой точки");
-                Application.Current.Quit();
-            });*/
+            MessagingCenter.Subscribe<SyncProgressMessage>(this, string.Empty, (sender) =>
+                {
+                    SyncProgressIsVisible = sender.SyncInProgress;
+                    SyncProgressDetailText = sender.SyncDetailText;
+                });
         }
         internal void closeDialog()
         {
-            //MessagingCenter.Unsubscribe<ShareFromGoogleMapsMessage>(this, string.Empty);
+            MessagingCenter.Unsubscribe<SyncProgressMessage>(this, string.Empty);
         }
 
         internal void AddSharedPoint(ShareFromGoogleMapsMessage msg)
@@ -97,6 +99,42 @@ namespace QuestHelper.ViewModel
             Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
         }
 
+        public bool SyncProgressIsVisible
+        {
+            get
+            {
+                return _syncProgressIsVisible;
+            }
+            set
+            {
+                if (_syncProgressIsVisible != value)
+                {
+                    _syncProgressIsVisible = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("SyncProgressIsVisible"));
+                    }
+                }
+            }
+        }
+        public string SyncProgressDetailText
+        {
+            get
+            {
+                return _syncProgressDetailText;
+            }
+            set
+            {
+                if (_syncProgressDetailText != value)
+                {
+                    _syncProgressDetailText = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("SyncProgressDetailText"));
+                    }
+                }
+            }
+        }
         public bool IsRefreshing
         {
             set

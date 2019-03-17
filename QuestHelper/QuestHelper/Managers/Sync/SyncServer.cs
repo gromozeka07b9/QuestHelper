@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using QuestHelper.Model.Messages;
 using Xamarin.Forms;
 
 namespace QuestHelper.Managers.Sync
@@ -22,15 +23,18 @@ namespace QuestHelper.Managers.Sync
             string authToken = await token.GetAuthTokenAsync();
             if (!string.IsNullOrEmpty(authToken))
             {
+                MessagingCenter.Send<SyncProgressMessage>(new SyncProgressMessage(){SyncInProgress = true, SyncDetailText = "Синхронизация маршрутов..." }, string.Empty);
                 SyncRoutes syncRoutes = new SyncRoutes(authToken);
                 syncResult = await syncRoutes.Sync();
                 AuthRequired = syncRoutes.AuthRequired;
                 if (syncResult)
                 {
+                    MessagingCenter.Send<SyncProgressMessage>(new SyncProgressMessage() { SyncInProgress = true, SyncDetailText = "Синхронизация точек..." }, string.Empty);
                     SyncPoints syncPoints = new SyncPoints(authToken);
                     syncResult = await syncPoints.Sync();
                     if (syncResult)
                     {
+                        MessagingCenter.Send<SyncProgressMessage>(new SyncProgressMessage() { SyncInProgress = true, SyncDetailText = "Синхронизация медиа..." }, string.Empty);
                         SyncMedia syncMedia = new SyncMedia(authToken);
                         syncResult = await syncMedia.Sync();
                         if (!syncResult)
@@ -51,7 +55,7 @@ namespace QuestHelper.Managers.Sync
                 }
             }
 
-
+            MessagingCenter.Send<SyncProgressMessage>(new SyncProgressMessage() { SyncInProgress = false, SyncDetailText = string.Empty}, string.Empty);
             return new Tuple<bool, string>(syncResult, errorMsg);
     }
 

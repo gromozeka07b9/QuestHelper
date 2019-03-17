@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:QuestHelper.View.Converters"
              xmlns:circle="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
              xmlns:view="clr-namespace:QuestHelper.View"
-             x:Class="QuestHelper.View.PointCarouselItemPage" NavigationPage.HasNavigationBar="False" Appearing="PointCarouselItemPage_OnAppearing" Disappearing="PointCarouselItemPage_OnDisappearing" BackgroundImage="blackbackground">
+             x:Class="QuestHelper.View.PointCarouselItemPage" NavigationPage.HasNavigationBar="False" Appearing="PointCarouselItemPage_OnAppearing" BackgroundImage="blackbackground">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:EmptyImageConverter  x:Key="emptyimage" />
@@ -14,9 +14,8 @@
     <ContentPage.Content>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="8*"></ColumnDefinition>
-                <ColumnDefinition Width="1.5*"></ColumnDefinition>
-                <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                <ColumnDefinition Width="9*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="3*"></RowDefinition>
@@ -24,13 +23,17 @@
                 <RowDefinition Height="3*"></RowDefinition>
                 <RowDefinition Height="3*"></RowDefinition>
             </Grid.RowDefinitions>
-            <view:CustomImage x:Name="ImageItem" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="4" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="{Binding PhotoImageAspect}"></view:CustomImage>
-            <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Vertical" VerticalOptions="StartAndExpand">
+            <view:CustomImage x:Name="ImageItem" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="4" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="{Binding PhotoImageAspect}">
+                <view:CustomImage.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="2" Command="{Binding ChangeImageAspectCommand}"></TapGestureRecognizer>
+                </view:CustomImage.GestureRecognizers>
+            </view:CustomImage>
+            <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical" VerticalOptions="StartAndExpand">
                 <Label Text="{Binding RouteName}" Style="{StaticResource ImageBigTextLabel}" FontSize="12" HorizontalOptions="FillAndExpand" Margin="10"></Label>
                 <Label Text="{Binding RoutePointName}" Style="{StaticResource ImageBigTextLabel}" HorizontalOptions="FillAndExpand" Margin="10"></Label>
             </StackLayout>
-            <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="2" Text="{Binding RoutePointDescription}" Style="{StaticResource ImageSmallTextLabel}" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" Margin="10" LineBreakMode="WordWrap"></Label>
-            <AbsoluteLayout Grid.Row="0" Grid.Column="1" HorizontalOptions="EndAndExpand" Margin="5,5,0,0" IsVisible="{Binding FullscreenButtonIsVisible}">
+            <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" Text="{Binding RoutePointDescription}" Style="{StaticResource ImageSmallTextLabel}" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" Margin="10" LineBreakMode="WordWrap"></Label>
+            <!--AbsoluteLayout Grid.Row="0" Grid.Column="1" HorizontalOptions="EndAndExpand" Margin="5,5,0,0" IsVisible="{Binding FullscreenButtonIsVisible}">
                 <circle:CircleImage HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="50" HeightRequest="40" BorderColor="LightGray" BorderThickness="2" Margin="0" FillColor="Gray">
                 </circle:CircleImage>
                 <Image Source="fullscreen" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="50" HeightRequest="40">
@@ -38,8 +41,8 @@
                         <TapGestureRecognizer Command="{Binding ChangeImageAspectCommand}"></TapGestureRecognizer>
                     </Image.GestureRecognizers>
                 </Image>
-            </AbsoluteLayout>
-            <AbsoluteLayout Grid.Row="0" Grid.Column="2" HorizontalOptions="EndAndExpand" Margin="0,5,5,0">
+            </-->
+            <AbsoluteLayout Grid.Row="0" Grid.Column="1" HorizontalOptions="Center" Margin="5">
                 <circle:CircleImage HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="50" HeightRequest="40" BorderColor="LightGray" BorderThickness="2" Margin="0" FillColor="Gray">
                 </circle:CircleImage>
                 <Image Source="edit" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="50" HeightRequest="40">

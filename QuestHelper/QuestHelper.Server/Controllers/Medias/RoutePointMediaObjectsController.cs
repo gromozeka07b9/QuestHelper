@@ -91,6 +91,17 @@ namespace QuestHelper.Server.Controllers.Medias
                                     await blob.UploadFromStreamAsync(stream);
                                 }
                             }
+
+                            if (file.FileName.Contains("_preview"))
+                            {
+                                entity.ImagePreviewLoadedToServer = true;
+                            }
+                            else
+                            {
+                                entity.ImageLoadedToServer = true;
+                            }
+                            db.Entry(entity).CurrentValues.SetValues(entity);
+                            db.SaveChanges();
                         }
                         else
                         {

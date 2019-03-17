@@ -23,6 +23,7 @@ namespace QuestHelper.Server.Controllers.Routes
         {
             public string RouteIdForShare;
             public string[] UserId;
+            public bool CanChangeRoute;
         }
 
         [HttpGet]
@@ -144,6 +145,7 @@ namespace QuestHelper.Server.Controllers.Routes
                                     routeAccess.CreateDate = DateTime.Now;
                                     routeAccess.RouteId = request.RouteIdForShare;
                                     routeAccess.RouteAccessId = Guid.NewGuid().ToString();
+                                    routeAccess.CanChange = request.CanChangeRoute;
                                     db.RouteAccess.Add(routeAccess);
                                     Route routeEntity = db.Route.Find(request.RouteIdForShare);
                                     if (!routeEntity.IsShared)

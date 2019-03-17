@@ -43,5 +43,31 @@ namespace QuestHelper.View
 	    {
 	        vm.ApplyChanges();
 	    }
-	}
+
+	    private void EditorElement_OnFocused(object sender, FocusEventArgs e)
+	    {
+	        /*var editor = (CustomEditor) sender;
+	        if (editor.Text.Equals(editor.Placeholder))
+	        {
+	            Device.BeginInvokeOnMainThread(() =>
+	            {
+	                editor.Text = "";
+	                editor.Focus();
+	            });
+	        }*/
+        }
+
+	    private void EditorElement_OnUnfocused(object sender, FocusEventArgs e)
+	    {
+	        /*var editor = (CustomEditor)sender;
+	        if (string.IsNullOrEmpty(editor.Text))
+	        {
+	            Device.BeginInvokeOnMainThread(() =>
+	            {
+	                editor.Text = editor.Placeholder;
+	                editor.Unfocus();
+	            });
+	        }*/
+	    }
+    }
 }

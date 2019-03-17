@@ -18,6 +18,7 @@ namespace QuestHelper.Model
         private DateTimeOffset _createDate;
         private int _version = 0;
         private bool _isShared = false;
+        private string _creatorId = string.Empty;
 
         public ViewRoute(string routeId)
         {
@@ -47,6 +48,7 @@ namespace QuestHelper.Model
                 _createDate = route.CreateDate;
                 _version = route.Version;
                 _isShared = route.IsShared;
+                _creatorId = route.CreatorId;
             }
         }
 
@@ -88,6 +90,17 @@ namespace QuestHelper.Model
             get
             {
                 return _name;
+            }
+        }
+        public string CreatorId
+        {
+            set
+            {
+                _creatorId = value;
+            }
+            get
+            {
+                return _creatorId;
             }
         }
         public string CreateDateText
@@ -132,10 +145,11 @@ namespace QuestHelper.Model
                     if (!vMedia.IsDeleted)
                     {
                         string path = ImagePathManager.GetImagePath(vMedia.RoutePointMediaObjectId, true);
-                        if (File.Exists(path))
+                        /*if (File.Exists(path))
                         {
                             return ImagePathManager.GetImagePath(vMedia.RoutePointMediaObjectId, true);
-                        }
+                        }*/
+                        return path;
                     }
                 }
                 return "mount1.png";

@@ -53,7 +53,8 @@
                                         <RowDefinition Height="1*"/>
                                     </Grid.RowDefinitions>
                                     <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="{Binding ImagePreviewPathForList}" Margin="0,0,0,0" Aspect="{Binding ImagePreviewPathForList, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
-                                    
+                                    <!--Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Margin="0,0,0,0" Aspect="{Binding ImagePreviewPathForList, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/-->
+
                                     <Image Grid.Column="0" Grid.Row="0" Source="{Binding IsShared, Converter={StaticResource lockimage}}" WidthRequest="28" HeightRequest="28" Margin="10,10,5,0" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand"/>
                                     <!--Image Grid.Column="2" Grid.Row="0" Source="smile_satisfied.png" WidthRequest="24" HeightRequest="24" Margin="0,10,10,0" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand"/-->
                                     <Label Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding RouteLengthKm}" FontSize="10" FontAttributes="Bold" LineBreakMode="NoWrap" Margin="0,0,10,0" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Start" HorizontalTextAlignment="End"></Label>
@@ -69,6 +70,11 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <AbsoluteLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalOptions="Center" IsVisible="{Binding SyncProgressIsVisible}">
+                <Frame BackgroundColor="Gray" Opacity="0.8" CornerRadius="10" Margin="10" Padding="10,5,10,5">
+                    <Label Text="{Binding SyncProgressDetailText}" TextColor="White" FontSize="12"></Label>
+                </Frame>
+            </AbsoluteLayout>
             <AbsoluteLayout Grid.Row="2" Grid.Column="2" VerticalOptions="Center">
                 <Image Source="additem.png" WidthRequest="96" HeightRequest="96" HorizontalOptions="EndAndExpand" AbsoluteLayout.LayoutBounds=".6,.0,0.6, 1." AbsoluteLayout.LayoutFlags="All">
                     <Image.GestureRecognizers>
