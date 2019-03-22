@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace QuestHelper.WS
 {
@@ -15,6 +16,7 @@ namespace QuestHelper.WS
         public class TokenRequest
         {
             public string Username;
+            public string Email;
             public string Password;
         }
         public class TokenResponse
@@ -33,6 +35,30 @@ namespace QuestHelper.WS
                 ApiRequest api = new ApiRequest();
                 string demoroute = demomode ? "demotoken" : "";
                 var response = await api.HttpRequestPOST($"{_hostUrl}/account/{demoroute}", jsonRequestObject.ToString(), string.Empty);
+                var result = JsonConvert.DeserializeObject<TokenResponse>(response);
+                if (!string.IsNullOrEmpty(result.Access_Token))
+                {
+                    token = result.Access_Token;
+                }
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("AccountApiRequest", "GetToken", e, false);
+            }
+
+            return token;
+        }
+
+        public async System.Threading.Tasks.Task<string> RegisterNewUserAsync(string username, string password, string email)
+        {
+            string token = string.Empty;
+
+            JObject jsonRequestObject = JObject.FromObject(new TokenRequest() { Username = username, Password = password, Email = email});
+
+            try
+            {
+                ApiRequest api = new ApiRequest();
+                var response = await api.HttpRequestPOST($"{_hostUrl}/account/new", jsonRequestObject.ToString(), string.Empty);
                 var result = JsonConvert.DeserializeObject<TokenResponse>(response);
                 if (!string.IsNullOrEmpty(result.Access_Token))
                 {

@@ -16,41 +16,92 @@ namespace QuestHelper.ViewModel
     public class LoginViewModel : INotifyPropertyChanged
     {
         private string _password;
+        private string _passwordConfirm;
         private string _username;
         private string _apiUrl = "http://igosh.pro/api";
+        private string _email;
 
         public event PropertyChangedEventHandler PropertyChanged;
         public INavigation Navigation { get; set; }
         public ICommand LoginCommand { get; private set; }
+        public ICommand GoToRegisterCommand { get; private set; }
+        public ICommand RegisterCommand { get; private set; }
         public ICommand DemoCommand { get; private set; }
 
         public LoginViewModel()
         {
             LoginCommand = new Command(TryLoginCommandAsync);
+            GoToRegisterCommand = new Command(GoToRegisterCommandAsync);
+            RegisterCommand = new Command(RegisterCommandAsync);
             DemoCommand = new Command(DemoCommandAsync);
         }
+
+        private async void GoToRegisterCommandAsync()
+        {
+            await Navigation.PushModalAsync(new NavigationPage(new RegisterPage()));
+        }
+
+        async void RegisterCommandAsync()
+        {
+            if ((!string.IsNullOrEmpty(_username) && !string.IsNullOrEmpty(_password) && !string.IsNullOrEmpty(_email)))
+            {
+                if (_email.Contains("@") && _email.Contains("."))
+                {
+                    if (_password.Equals(_passwordConfirm))
+                    {
+                        using (UserDialogs.Instance.Loading("Регистрация...", null, null, true, MaskType.Black))
+                        {
+                            AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
+                            Analytics.TrackEvent("Register user started", new Dictionary<string, string> { { "Username", _username } });
+                            var authToken = await apiRequest.RegisterNewUserAsync(_username, _password, _email);
+                            if (!string.IsNullOrEmpty(authToken))
+                            {
+                                Analytics.TrackEvent("Register new user done", new Dictionary<string, string> { { "Username", _username } });
+                                TokenStoreService tokenService = new TokenStoreService();
+                                await tokenService.SetAuthTokenAsync(authToken);
+                                Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+                                await Navigation.PopModalAsync();
+                                ShowMainPage();
+                            }
+                            else
+                            {
+                                Analytics.TrackEvent("Register new user error", new Dictionary<string, string> { { "Username", _username } });
+                                await Application.Current.MainPage.DisplayAlert("Внимание!", "Ошибка регистрации пользователя. Возможно, данный адрес e-mail уже используется.", "Ok");
+                            }
+                        }
+                    }
+                    else await Application.Current.MainPage.DisplayAlert("Внимание!", "Пожалуйста, введите одинаковые пароли", "Ok");
+                }
+                else await Application.Current.MainPage.DisplayAlert("Внимание!", "Пожалуйста, укажите корректный электронный адрес", "Ok");
+            }
+            else await Application.Current.MainPage.DisplayAlert("Внимание!", "Пожалуйста, заполните все поля", "Ok");
+        }
+
         async void TryLoginCommandAsync()
         {
-            using (UserDialogs.Instance.Loading("Авторизация...", null, null, true, MaskType.Black))
+            if ((!string.IsNullOrEmpty(_username) && !string.IsNullOrEmpty(_password)))
             {
-                string username = await DependencyService.Get<IUsernameService>().GetUsername();
-                AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
-                Analytics.TrackEvent("GetToken started", new Dictionary<string, string> { { "Username", _username } });
-                var authToken = await apiRequest.GetTokenAsync(_username, _password);
-                if (!string.IsNullOrEmpty(authToken))
+                using (UserDialogs.Instance.Loading("Авторизация...", null, null, true, MaskType.Black))
                 {
-                    Analytics.TrackEvent("GetToken done", new Dictionary<string, string> { { "Username", _username } });
-                    TokenStoreService tokenService = new TokenStoreService();
-                    await tokenService.SetAuthTokenAsync(authToken);
-                    Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
-                    ShowMainPage();
+                    string username = await DependencyService.Get<IUsernameService>().GetUsername();
+                    AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
+                    Analytics.TrackEvent("GetToken started", new Dictionary<string, string> { { "Username", _username } });
+                    var authToken = await apiRequest.GetTokenAsync(_username, _password);
+                    if (!string.IsNullOrEmpty(authToken))
+                    {
+                        Analytics.TrackEvent("GetToken done", new Dictionary<string, string> { { "Username", _username } });
+                        TokenStoreService tokenService = new TokenStoreService();
+                        await tokenService.SetAuthTokenAsync(authToken);
+                        Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+                        ShowMainPage();
+                    }
+                    else
+                    {
+                        Analytics.TrackEvent("GetToken error", new Dictionary<string, string> { { "Username", _username } });
+                        await Application.Current.MainPage.DisplayAlert("Внимание!", "Неправильный логин или пароль!", "Ok");
+                    }
                 }
-                else
-                {
-                    Analytics.TrackEvent("GetToken error", new Dictionary<string, string> { { "Username", _username } });
-                    await Application.Current.MainPage.DisplayAlert("Внимание!", "Неправильный логин или пароль!", "Ok");
-                }
-            }
+            } else await Application.Current.MainPage.DisplayAlert("Внимание!", "Пожалуйста, заполните логин и пароль", "Ok");
         }
         async void DemoCommandAsync()
         {
@@ -116,6 +167,24 @@ namespace QuestHelper.ViewModel
                 return _username;
             }
         }
+        public string Email
+        {
+            set
+            {
+                if (_email != value)
+                {
+                    _email = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("Email"));
+                    }
+                }
+            }
+            get
+            {
+                return _email;
+            }
+        }
         public string Password
         {
             set
@@ -133,6 +202,30 @@ namespace QuestHelper.ViewModel
             {
                 return _password;
             }
+        }
+        public string PasswordConfirm
+        {
+            set
+            {
+                if (_passwordConfirm != value)
+                {
+                    _passwordConfirm = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("PasswordConfirm"));
+                    }
+                }
+            }
+            get
+            {
+                return _passwordConfirm;
+            }
+        }
+
+        public async void startDialogAsync()
+        {
+            string username = await DependencyService.Get<IUsernameService>().GetUsername();
+            Email = username;
         }
     }
 }

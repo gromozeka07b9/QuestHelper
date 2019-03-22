@@ -24,6 +24,7 @@ namespace QuestHelper.Server.Controllers.Account
         public class TokenRequest
         {
             public string Username;
+            public string Email;
             public string Password;
         }
 
@@ -33,6 +34,10 @@ namespace QuestHelper.Server.Controllers.Account
             using (var _db = new ServerDbContext(_dbOptions))
             {
                 User user = _db.User.FirstOrDefault(x => x.Name == request.Username && x.Password == request.Password);
+                if (user == null)
+                {
+                    user = _db.User.FirstOrDefault(x => x.Email == request.Username && x.Password == request.Password);
+                }
                 if (user != null)
                 {
                     IdentityManager identityManager = new IdentityManager();
@@ -77,50 +82,94 @@ namespace QuestHelper.Server.Controllers.Account
                 User user = _db.User.FirstOrDefault(x => x.Name == request.Username && x.Role == "demo");
                 if (user == null)
                 {
-                    user = createDemoUser(request, _db);
+                    user = CreateUser(request, _db, true);
                 }
 
-                IdentityManager identityManager = new IdentityManager();
-                var identity = identityManager.GetIdentity(user);
-                if (identity != null)
+                await MakeJwtResponse(user);
+            }
+
+            return;
+        }
+
+        private User CreateUser(TokenRequest request, ServerDbContext _db, bool isDemoUser)
+        {
+            User user = new User();
+            user.UserId = Guid.NewGuid().ToString();
+            user.Role = isDemoUser ? "demo" : "user";
+            user.Name = request.Username;
+            user.Email = request.Email;
+            user.Password = isDemoUser ? user.Name : request.Password;
+            user.Version = 1;
+            user.CreateDate = DateTime.Now;
+            user.TokenKey = user.Name;
+            _db.User.Add(user);
+            _db.SaveChanges();
+            return user;
+        }
+
+        [Route("new")]
+        [HttpPost]
+        public async Task New([FromBody]TokenRequest request)
+        {
+            using (var _db = new ServerDbContext(_dbOptions))
+            {
+                User user = _db.User.FirstOrDefault(x => x.Email == request.Email);
+                if (user == null)
                 {
-                    JwtManager jwt = new JwtManager();
-                    var encodedJwt = jwt.GetEncodedJwt(identity, user.TokenKey);
-
-                    var response = new
+                    user = CreateUser(request, _db, false);
+                    if (user != null)
                     {
-                        access_token = encodedJwt,
-                        username = identity.Name
-                    };
-
-                    // сериализация ответа
-                    Response.ContentType = "application/json";
-                    await Response.WriteAsync(JsonConvert.SerializeObject(response,
-                        new JsonSerializerSettings {Formatting = Formatting.Indented}));
+                        AddAccessToDemoRoute(_db, user);
+                        await MakeJwtResponse(user);
+                    }
                 }
                 else
                 {
-                    Response.StatusCode = 500;
-                    await Response.WriteAsync("Error while generate token.");
+                    Response.StatusCode = 403;
+                    await Response.WriteAsync("Error creating new user");
                 }
             }
 
             return;
         }
 
-        private User createDemoUser(TokenRequest request, ServerDbContext _db)
+        private void AddAccessToDemoRoute(ServerDbContext _db, User user)
         {
-            User demoUser = new User();
-            demoUser.UserId = Guid.NewGuid().ToString();
-            demoUser.Role = "demo";
-            demoUser.Name = request.Username;
-            demoUser.Password = demoUser.Name;
-            demoUser.Version = 1;
-            demoUser.CreateDate = DateTime.Now;
-            demoUser.TokenKey = demoUser.Name;
-            _db.User.Add(demoUser);
+            RouteAccess access = new RouteAccess();
+            access.RouteAccessId = Guid.NewGuid().ToString();
+            access.RouteId = "3e8064a5-5c58-4f4a-9f52-62e72210770b";//Демо-маршрут. Да, знаю.
+            access.CanChange = false;
+            access.CreateDate = DateTime.Now;
+            access.UserId = user.UserId;
+            _db.RouteAccess.Add(access);
             _db.SaveChanges();
-            return demoUser;
+        }
+
+        private async Task MakeJwtResponse(User user)
+        {
+            IdentityManager identityManager = new IdentityManager();
+            var identity = identityManager.GetIdentity(user);
+            if (identity != null)
+            {
+                JwtManager jwt = new JwtManager();
+                var encodedJwt = jwt.GetEncodedJwt(identity, user.TokenKey);
+
+                var response = new
+                {
+                    access_token = encodedJwt,
+                    username = identity.Name
+                };
+
+                // сериализация ответа
+                Response.ContentType = "application/json";
+                await Response.WriteAsync(JsonConvert.SerializeObject(response,
+                    new JsonSerializerSettings {Formatting = Formatting.Indented}));
+            }
+            else
+            {
+                Response.StatusCode = 500;
+                await Response.WriteAsync("Error while generate token.");
+            }
         }
 
         [Authorize]
