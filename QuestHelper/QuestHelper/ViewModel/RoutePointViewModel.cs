@@ -136,6 +136,7 @@ namespace QuestHelper.ViewModel
 
         private async void addPhotoAsync(object obj)
         {
+            _vpoint.Version++;
             _vpoint.Save();
             bool b = await CrossMedia.Current.Initialize();
             if (CrossMedia.Current.IsPickPhotoSupported)
@@ -234,6 +235,7 @@ namespace QuestHelper.ViewModel
             {
                 if (string.IsNullOrEmpty(_vpoint.Id))
                 {
+                    _vpoint.Version++;
                     _vpoint.Save();
                 }
 
