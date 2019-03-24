@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pancardview="clr-namespace:PanCardView;assembly=PanCardView"
+             xmlns:view="clr-namespace:QuestHelper.View;assembly=QuestHelper"
+             x:Class="QuestHelper.View.RouteCarouselRootPage" BackgroundColor="Black" NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <ScrollView Orientation="Vertical">
+            <StackLayout>
+                <Grid HeightRequest="450">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"></RowDefinition>
+                        <RowDefinition Height="8*"></RowDefinition>
+                        <RowDefinition Height="1*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <pancardview:CardsView Grid.Row="0" Grid.RowSpan="3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="Cards">
+                        <pancardview:CardsView.ItemTemplate>
+                            <DataTemplate>
+                                <ContentView Padding="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <Frame VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="5" CornerRadius="10" Padding="0">
+                                        <Image Source="{Binding Source}" Aspect="AspectFill" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer NumberOfTapsRequired="2" Command="{Binding ChangeImageAspectCommand}"></TapGestureRecognizer>
+                                            </Image.GestureRecognizers>
+                                        </Image>
+                                    </Frame>
+                                </ContentView>
+                            </DataTemplate>
+                        </pancardview:CardsView.ItemTemplate>
+                    </pancardview:CardsView>
+                    <Label Grid.Row="0" Text="Тестовый маршрут" Style="{StaticResource ImageBigTextLabel}" FontSize="12" HorizontalOptions="FillAndExpand" Margin="10"></Label>
+                    <Label Grid.Row="2" Text="Название тестовой точки, может быть длинным" Style="{StaticResource ImageBigTextLabel}" HorizontalOptions="FillAndExpand" Margin="10"></Label>
+                </Grid>
+                <Label TextColor="White" Margin="10" FontSize="20" Text="sdkfjh sdhfs kdh ksdjfh skdlfakjsh a lskdjfha lskd a lskdjh falsjd fhalsd jhfalskdjh alskdj hflasjd flasjkdh  hjqklweg lk sd fkjag sldkb asldkfa slkdjf alskdjf a sdkjfag sldjg sdfg sdf gsd fg sdfg sdf gsd fgs fg sdf gsd fgs dfg sd fgs df sd gsd fgs djf hsdj fgjsdh fgsjdh fgsjdh fgjsdh fjksdhf ksjdh f,sdjn fsd fgsjd fskldjf gsd fglsdj gsld fgs dfgshdfjklg sldjf sd fg sdfhs ldflg sdlfj gsldjf gsldf glwejhr ldf sd fg sldfj" LineBreakMode="WordWrap"></Label>
+                <view:CustomMap HeightRequest="200" x:Name="PointMapOverview" VerticalOptions="FillAndExpand"
+                                IsShowingUser="true"
+                                UseInterceptTouchEvent="true"
+                                MapType="Street" 
+                />
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
