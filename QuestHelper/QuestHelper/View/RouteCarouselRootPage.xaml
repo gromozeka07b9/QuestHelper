@@ -3,17 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pancardview="clr-namespace:PanCardView;assembly=PanCardView"
              xmlns:view="clr-namespace:QuestHelper.View;assembly=QuestHelper"
-             x:Class="QuestHelper.View.RouteCarouselRootPage" BackgroundColor="Black" NavigationPage.HasNavigationBar="False">
+             x:Class="QuestHelper.View.RouteCarouselRootPage" BackgroundColor="Black" NavigationPage.HasNavigationBar="False" Appearing="RouteCarouselRootPage_OnAppearing">
     <ContentPage.Content>
         <ScrollView Orientation="Vertical">
             <StackLayout>
-                <Grid HeightRequest="450">
+                <Grid HeightRequest="500">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"></RowDefinition>
-                        <RowDefinition Height="8*"></RowDefinition>
-                        <RowDefinition Height="1*"></RowDefinition>
+                        <RowDefinition Height="7*"></RowDefinition>
+                        <RowDefinition Height="2*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <pancardview:CardsView Grid.Row="0" Grid.RowSpan="3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="Cards">
+                    <!--pancardview:CardsView Grid.Row="0" Grid.RowSpan="3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="Cards" AreAnimationsEnabled="False" MoveWidthPercentage="50" SwipeThresholdDistance="50">
                         <pancardview:CardsView.ItemTemplate>
                             <DataTemplate>
                                 <ContentView Padding="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
@@ -27,15 +27,30 @@
                                 </ContentView>
                             </DataTemplate>
                         </pancardview:CardsView.ItemTemplate>
-                    </pancardview:CardsView>
-                    <Label Grid.Row="0" Text="Тестовый маршрут" Style="{StaticResource ImageBigTextLabel}" FontSize="12" HorizontalOptions="FillAndExpand" Margin="10"></Label>
-                    <Label Grid.Row="2" Text="Название тестовой точки, может быть длинным" Style="{StaticResource ImageBigTextLabel}" HorizontalOptions="FillAndExpand" Margin="10"></Label>
+                    </pancardview:CardsView-->
+                    <pancardview:CarouselView Grid.Row="0" Grid.RowSpan="3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="Cards" ItemsSource="{Binding CarouselPages}" AreAnimationsEnabled="True" ItemAppearing="Cards_OnItemAppearing">
+                        <pancardview:CarouselView.ItemTemplate>
+                            <DataTemplate>
+                                <ContentView Padding="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Black">
+                                    <Frame VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0" CornerRadius="0" Padding="0">
+                                        <Image Source="{Binding ImageSource}" Aspect="{Binding PhotoImageAspect}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0" BackgroundColor="Black">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer NumberOfTapsRequired="2" Command="{Binding ChangeImageAspectCommand}"></TapGestureRecognizer>
+                                            </Image.GestureRecognizers>
+                                        </Image>
+                                    </Frame>
+                                </ContentView>
+                            </DataTemplate>
+                        </pancardview:CarouselView.ItemTemplate>
+                    </pancardview:CarouselView>
+                    <Label Grid.Row="0" Text="{Binding RouteName}" Style="{StaticResource ImageBigTextLabel}" FontSize="12" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" Margin="10"></Label>
+                    <Label Grid.Row="1" Grid.RowSpan="2" Text="{Binding RoutePointName}" Style="{StaticResource ImageBigTextLabel}" VerticalOptions="EndAndExpand" HorizontalOptions="StartAndExpand" Margin="10"></Label>
                 </Grid>
-                <Label TextColor="White" Margin="10" FontSize="20" Text="sdkfjh sdhfs kdh ksdjfh skdlfakjsh a lskdjfha lskd a lskdjh falsjd fhalsd jhfalskdjh alskdj hflasjd flasjkdh  hjqklweg lk sd fkjag sldkb asldkfa slkdjf alskdjf a sdkjfag sldjg sdfg sdf gsd fg sdfg sdf gsd fgs fg sdf gsd fgs dfg sd fgs df sd gsd fgs djf hsdj fgjsdh fgsjdh fgsjdh fgjsdh fjksdhf ksjdh f,sdjn fsd fgsjd fskldjf gsd fglsdj gsld fgs dfgshdfjklg sldjf sd fg sdfhs ldflg sdlfj gsldjf gsldf glwejhr ldf sd fg sldfj" LineBreakMode="WordWrap"></Label>
-                <view:CustomMap HeightRequest="200" x:Name="PointMapOverview" VerticalOptions="FillAndExpand"
-                                IsShowingUser="true"
+                <Label TextColor="White" Margin="10" FontSize="20" Text="{Binding RoutePointDescription}" LineBreakMode="WordWrap"></Label>
+                <view:CustomMap HeightRequest="300" x:Name="MapRouteOverview" VerticalOptions="FillAndExpand"
+                                IsShowingUser="False"
                                 UseInterceptTouchEvent="true"
-                                MapType="Street" 
+                                MapType="Street"
                 />
             </StackLayout>
         </ScrollView>

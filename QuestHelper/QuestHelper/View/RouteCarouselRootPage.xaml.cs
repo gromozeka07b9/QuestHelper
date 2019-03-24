@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PanCardView;
+using PanCardView.EventArgs;
 using QuestHelper.Managers;
 using QuestHelper.ViewModel;
 using Xamarin.Forms;
+using Xamarin.Forms.Maps;
 using Xamarin.Forms.Xaml;
 
 namespace QuestHelper.View
@@ -13,22 +16,27 @@ namespace QuestHelper.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RouteCarouselRootPage : ContentPage
     {
-        private PointCarouselRootViewModel _vm;
-        public RouteCarouselRootPage()
+        private RouteCarouselRootViewModel _vm;
+        public RouteCarouselRootPage(string routeId)
         {
             InitializeComponent();
-            _vm = new PointCarouselRootViewModel("","","") { Navigation = this.Navigation };
+            _vm = new RouteCarouselRootViewModel(routeId) { Navigation = this.Navigation };
             BindingContext = _vm;
+        }
 
-            RoutePointMediaObjectManager manager = new RoutePointMediaObjectManager();
-            var list = manager.GetAllMediaObjects();
-            List<Image> imgs = new List<Image>();
-            foreach (var item in list)
+        private void RouteCarouselRootPage_OnAppearing(object sender, EventArgs e)
+        {
+            MapRouteOverview.Points = _vm.PointsOnMap;
+        }
+
+        private void Cards_OnItemAppearing(CardsView view, ItemAppearingEventArgs args)
+        {
+            var newItem = (RouteCarouselRootViewModel.CarouselItem) view.SelectedItem;
+            if ((_vm.CurrentItem?.Latitude != newItem.Latitude)||(_vm.CurrentItem?.Longitude != newItem.Longitude))
             {
-                Image img = new Image(){Source = ImagePathManager.GetImagePath(item.RoutePointMediaObjectId, true)};
-                imgs.Add(img);
+                MapRouteOverview.MoveToRegion(MapSpan.FromCenterAndRadius(new Xamarin.Forms.Maps.Position(newItem.Latitude, newItem.Longitude), Distance.FromKilometers(3)));
             }
-            Cards.ItemsSource = imgs;
+            _vm.CurrentItem = newItem;
         }
     }
 }

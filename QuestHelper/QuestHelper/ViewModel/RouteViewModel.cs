@@ -68,7 +68,7 @@ namespace QuestHelper.ViewModel
         private void photoAlbumCommandAsync(object obj)
         {
             //var page = new RoutePointCarouselPage(_vroute.RouteId, string.Empty);
-            var page = new RouteCarouselRootPage();
+            var page = new RouteCarouselRootPage(_vroute.RouteId);
             Navigation.PushAsync(page);
         }
 
