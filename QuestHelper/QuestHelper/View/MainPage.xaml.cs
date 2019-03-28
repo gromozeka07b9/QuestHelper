@@ -24,6 +24,7 @@ namespace QuestHelper.View
             {
                 if (senderMsg.DestinationPageDescription.TargetType == typeof(SplashWizardPage))
                 {
+                    //DependencyService.Get<IToolbarService>().SetVisibilityToolbar(false);
                     await Navigation.PushModalAsync(new NavigationPage(new SplashWizardPage()));
                 }
                 else
@@ -31,10 +32,12 @@ namespace QuestHelper.View
                     TokenStoreService token = new TokenStoreService();
                     if (!string.IsNullOrEmpty(await token.GetAuthTokenAsync()))
                     {
+                        //DependencyService.Get<IToolbarService>().SetVisibilityToolbar(true);
                         navigateToPage(senderMsg);
                     }
                     else
                     {
+                        //DependencyService.Get<IToolbarService>().SetVisibilityToolbar(false);
                         navigateToPage(new PageNavigationMessage() { DestinationPageDescription = pageCollections.GetLoginPage() });
                     }
                 }
@@ -92,6 +95,7 @@ namespace QuestHelper.View
             {
                 if (showOnboarding == "1")
                 {
+                    //DependencyService.Get<IToolbarService>().SetVisibilityToolbar(false);
                     await Navigation.PushModalAsync(new NavigationPage(new SplashWizardPage()));
                 }
             }

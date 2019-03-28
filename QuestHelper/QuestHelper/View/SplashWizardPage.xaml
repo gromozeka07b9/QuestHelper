@@ -10,13 +10,34 @@
                 <ColumnDefinition Width="3*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="7*"></RowDefinition>
-                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="6*"></RowDefinition>
+                <RowDefinition Height="3*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFit" Margin="5"></Image>
-            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Text="Добро пожаловать в GoSh!" HorizontalTextAlignment="Center" FontSize="25" TextColor="White" HorizontalOptions="CenterAndExpand" Margin="10" />
-            <Label Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Text="Пропустить" HorizontalTextAlignment="Center" FontSize="Small" TextColor="White" HorizontalOptions="StartAndExpand" Margin="10" >
+            <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage1" Style="{StaticResource WizardImage}"></Image>
+            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Text="Добро пожаловать в&#10;GoSh!" Style="{StaticResource WizardMainTextLabel}" />
+            <Label Grid.Column="1" Grid.Row="3" Text="Пропустить" Style="{StaticResource WizardBottomTextLabel}" >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
+                </Label.GestureRecognizers>
+            </Label>    
+        </Grid>
+    </ContentPage>
+    <ContentPage>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="6*"></RowDefinition>
+                <RowDefinition Height="3*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></Image>
+            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2" Text="Сохраняйте свои впечатления, объединяя их по темам, например:&#10; - отпуск на Кипре&#10; - бесплатные парковки&#10; - заметки с конференции" Style="{StaticResource WizardMainTextLabel}" />
+            <Label Grid.Column="1" Grid.Row="3" Text="Пропустить" Style="{StaticResource WizardBottomTextLabel}" >
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
                 </Label.GestureRecognizers>
@@ -31,12 +52,13 @@
                 <ColumnDefinition Width="3*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="7*"></RowDefinition>
-                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="6*"></RowDefinition>
+                <RowDefinition Height="3*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="2" Text="Копите свои впечатления здесь, объединяя их по темам или местоположению, например:&#10;&#10; - отпуск на Кипре&#10;&#10; - бесплатные парковки&#10;&#10; - заметки со встречи" HorizontalTextAlignment="Center" FontSize="20" TextColor="White" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Margin="10,10,10,10" />
-            <Label Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Text="Пропустить" HorizontalTextAlignment="Center" FontSize="Small" TextColor="White" HorizontalOptions="StartAndExpand" Margin="10" >
+            <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_all" Style="{StaticResource WizardImage}"></Image>
+            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2" Text="В этой копилке все ваши фотографии, текстовые заметки с описаниями интересных мест и событий, привязанных к позиции на карте" Style="{StaticResource WizardMainTextLabel}" />
+            <Label Grid.Column="1" Grid.Row="3" Text="Пропустить" Style="{StaticResource WizardBottomTextLabel}" >
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
                 </Label.GestureRecognizers>
@@ -51,12 +73,13 @@
                 <ColumnDefinition Width="3*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="7*"></RowDefinition>
-                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="6*"></RowDefinition>
+                <RowDefinition Height="3*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="2" Text="В этой копилке все ваши фотографии, текстовые заметки с описаниями интересных мест и событий, привязанных к позиции на карте" HorizontalTextAlignment="Center" FontSize="20" TextColor="White" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Margin="10,10,10,10" />
-            <Label Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Text="Пропустить" HorizontalTextAlignment="Center" FontSize="Small" TextColor="White" HorizontalOptions="StartAndExpand" Margin="10" >
+            <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></Image>
+            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2" Text="Вы можете планировать маршруты, добавляя точки с местами из других приложений, например, Google maps или Яндекс.Карты" Style="{StaticResource WizardMainTextLabel}" />
+            <Label Grid.Column="1" Grid.Row="3" Text="Пропустить" Style="{StaticResource WizardBottomTextLabel}" >
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
                 </Label.GestureRecognizers>
@@ -71,12 +94,13 @@
                 <ColumnDefinition Width="3*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="7*"></RowDefinition>
-                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="6*"></RowDefinition>
+                <RowDefinition Height="3*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="2" Text="Вы можете планировать маршруты, добавляя точки с местами из других приложений, например, Google maps или Яндекс.Карты" HorizontalTextAlignment="Center" FontSize="20" TextColor="White" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Margin="10,10,10,10" />
-            <Label Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Text="Пропустить" HorizontalTextAlignment="Center" FontSize="Small" TextColor="White" HorizontalOptions="StartAndExpand" Margin="10" >
+            <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></Image>
+            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2" Text="Добавляйте фотографии из галереи или снимайте сразу в GoSh! Если фотография содержит геометку, вы сможете увидеть её на карте" Style="{StaticResource WizardMainTextLabel}" />
+            <Label Grid.Column="1" Grid.Row="3" Text="Пропустить" Style="{StaticResource WizardBottomTextLabel}" >
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
                 </Label.GestureRecognizers>
@@ -91,12 +115,13 @@
                 <ColumnDefinition Width="3*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="7*"></RowDefinition>
-                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="6*"></RowDefinition>
+                <RowDefinition Height="3*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="2" Text="Вы можете добавлять уже существующие в галерее фотографии, так же можете снимать напрямую из Gosh!, при этом, если фотография содержит геопозицию, в дальнейшем вы сможете видеть их на карте" HorizontalTextAlignment="Center" FontSize="20" TextColor="White" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Margin="10,10,10,10" />
-            <Label Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Text="Пропустить" HorizontalTextAlignment="Center" FontSize="Small" TextColor="White" HorizontalOptions="StartAndExpand" Margin="10" >
+            <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></Image>
+            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2" Text="Gosh! работает там, где нет сети Интернет. Записывайте впечатления в любом месте, при появлении сети данные синхронизируются" Style="{StaticResource WizardMainTextLabel}" />
+            <Label Grid.Column="1" Grid.Row="3" Text="Пропустить" Style="{StaticResource WizardBottomTextLabel}" >
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
                 </Label.GestureRecognizers>
@@ -111,12 +136,13 @@
                 <ColumnDefinition Width="3*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="7*"></RowDefinition>
-                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="6*"></RowDefinition>
+                <RowDefinition Height="3*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="2" Text="Gosh! может работать там, где нет сети Интернет. Записывайте впечатления в любом месте, при появлении сети все данные будут синхронизированы" HorizontalTextAlignment="Center" FontSize="20" TextColor="White" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Margin="10,10,10,10" />
-            <Label Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Text="Пропустить" HorizontalTextAlignment="Center" FontSize="Small" TextColor="White" HorizontalOptions="StartAndExpand" Margin="10" >
+            <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></Image>
+            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2" Text="Расскажите о своих впечатлениях друзьям с помощью функции 'Поделиться'" Style="{StaticResource WizardMainTextLabel}" />
+            <Label Grid.Column="1" Grid.Row="3" Text="Пропустить" Style="{StaticResource WizardBottomTextLabel}" >
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
                 </Label.GestureRecognizers>
@@ -131,12 +157,13 @@
                 <ColumnDefinition Width="3*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="7*"></RowDefinition>
-                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="6*"></RowDefinition>
+                <RowDefinition Height="3*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="2" Text="Расскажите о своих впечатлениях друзьям с помощью функции 'Поделиться'" HorizontalTextAlignment="Center" FontSize="20" TextColor="White" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Margin="10,10,10,10" />
-            <Label Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Text="Пропустить" HorizontalTextAlignment="Center" FontSize="Small" TextColor="White" HorizontalOptions="StartAndExpand" Margin="10" >
+            <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></Image>
+            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2" Text="Вдвоем лучше - снимайте фото, записывайте впечатления вместе с друзьями в одном маршруте!" Style="{StaticResource WizardMainTextLabel}" />
+            <Label Grid.Column="1" Grid.Row="3" Text="Пропустить" Style="{StaticResource WizardBottomTextLabel}" >
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
                 </Label.GestureRecognizers>
@@ -151,31 +178,13 @@
                 <ColumnDefinition Width="3*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="7*"></RowDefinition>
-                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="6*"></RowDefinition>
+                <RowDefinition Height="3*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="2" Text="Вдвоем лучше - снимайте фото, записывайте впечатления вместе с друзьями в одном маршруте, при использовании сети вы будете в режиме он-лайн видеть все впечатления, добавленные вашими друзьями!" HorizontalTextAlignment="Center" FontSize="20" TextColor="White" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Margin="10,10,10,10" />
-            <Label Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Text="Пропустить" HorizontalTextAlignment="Center" FontSize="Small" TextColor="White" HorizontalOptions="StartAndExpand" Margin="10" >
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
-                </Label.GestureRecognizers>
-            </Label>
-        </Grid>
-    </ContentPage>
-    <ContentPage>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="7*"></RowDefinition>
-                <RowDefinition Height="2*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Text="Давайте начнем, мне есть что вам рассказать!" HorizontalTextAlignment="Center" FontSize="20" TextColor="White" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Margin="10,10,10,10">
+            <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></Image>
+            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="3" Text="Давайте скорее начнём!" Style="{StaticResource WizardMainTextLabel}" />
+            <Label Grid.Column="1" Grid.Row="3" Text="Начать!" Style="{StaticResource WizardBottomTextLabel}" >
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
                 </Label.GestureRecognizers>
