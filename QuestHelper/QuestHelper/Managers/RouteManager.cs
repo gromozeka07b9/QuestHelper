@@ -57,7 +57,8 @@ namespace QuestHelper.Managers
                     route.Version = viewRoute.Version;
                     route.CreateDate = viewRoute.CreateDate;
                     route.IsShared = viewRoute.IsShared;
-                    //creatorId не передаем, он заполняется только на сервере
+                    route.IsPublished = viewRoute.IsPublished;
+                    route.CreatorId = viewRoute.CreatorId;
                     viewRoute.Refresh(route.RouteId);
                 });
                 result = true;

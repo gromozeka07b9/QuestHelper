@@ -48,6 +48,7 @@ namespace QuestHelper.ViewModel
         public ICommand StartDialogCommand { get; private set; }
 
         public ICommand EditRouteCommand { get; private set; }
+        public ICommand AddPersonCommand { get; private set; }
         public ICommand ShareRouteCommand { get; private set; }
         public ICommand FullScreenMapCommand { get; private set; }
         public ICommand PhotoAlbumCommand { get; private set; }
@@ -60,6 +61,7 @@ namespace QuestHelper.ViewModel
             AddNewRoutePointCommand = new Command(addNewRoutePointAsync);
             StartDialogCommand = new Command(startDialog);
             EditRouteCommand = new Command(editRouteCommandAsync);
+            AddPersonCommand = new Command(addPersonCommandAsync);
             ShareRouteCommand = new Command(shareRouteCommandAsync);
             FullScreenMapCommand = new Command(fullScreenMapCommandAsync);
             PhotoAlbumCommand = new Command(photoAlbumCommandAsync);
@@ -91,10 +93,30 @@ namespace QuestHelper.ViewModel
 
             }
         }
-        private async void shareRouteCommandAsync(object obj)
+        private async void addPersonCommandAsync(object obj)
         {
             var shareRoutePage = new ShareRoutePage(_vroute.RouteId);
             await Navigation.PushAsync(shareRoutePage, true);
+        }
+        private async void shareRouteCommandAsync(object obj)
+        {
+            bool answerYesIsNo = await Application.Current.MainPage.DisplayAlert("Внимание", "После публикации маршрут будет доступен всем пользователям в альбоме. Вы уверены?", "Нет", "Да");
+            if (!answerYesIsNo) //порядок кнопок - хардкод, и непонятно, почему именно такой
+            {
+                TokenStoreService tokenService = new TokenStoreService();
+                string userId = await tokenService.GetUserIdAsync();
+                if (userId.Equals(_vroute.CreatorId))
+                {
+                    _vroute.IsPublished = true;
+                    _vroute.Version++;
+                    _vroute.Save();
+                    await Application.Current.MainPage.DisplayAlert("Внимание!", "После синхронизации маршрут будет опубликован", "Ok");
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Внимание!", "Публиковать можно только созданные вами маршруты", "Ok");
+                }
+            }
         }
 
         private void fullScreenMapCommandAsync(object obj)

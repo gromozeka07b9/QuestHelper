@@ -20,6 +20,7 @@ namespace QuestHelper.LocalDB.Model
         /// </summary>
         public int Version { get; set; }
         public bool IsShared { get; set; }
+        public bool IsPublished { get; set; }
         public string DefaultImage { get; set; }
         public string LengthMetres { get; set; }
         public string LengthSteps { get; set; }

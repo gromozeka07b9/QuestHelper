@@ -2,8 +2,9 @@
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:View="clr-namespace:QuestHelper.View"
-             x:Class="QuestHelper.View.TabbedMainPage" >
+             x:Class="QuestHelper.View.TabbedMainPage">
     <View:RoutesPage />
+    <View:AlbomsPage />
     <View:MapOverviewPage/>
     <View:RoutePage />
     <View:AroundMePage />

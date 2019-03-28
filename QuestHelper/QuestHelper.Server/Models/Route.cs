@@ -19,5 +19,6 @@ namespace QuestHelper.Server.Models
         public string CreatorId { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsShared { get; set; }
+        public bool IsPublished { get; set; }
     }
 }

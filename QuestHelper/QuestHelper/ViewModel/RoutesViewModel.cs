@@ -37,13 +37,21 @@ namespace QuestHelper.ViewModel
         public ICommand AddNewRouteCommand { get; private set; }
         public ICommand RefreshListRoutesCommand { get; private set; }
         public ICommand SyncStartCommand { get; private set; }
+        public ICommand ShowAlbumsCommand { get; private set; }
 
         public RoutesViewModel()
         {
             AddNewRouteCommand = new Command(addNewRouteCommandAsync);
             RefreshListRoutesCommand = new Command(refreshListRoutesCommand);
             SyncStartCommand = new Command(syncStartCommand);
+            ShowAlbumsCommand = new Command(showAlbumsCommandAsync);
         }
+
+        private async void showAlbumsCommandAsync()
+        {
+            await Navigation.PushAsync(new AlbomsPage());
+        }
+
         public void startDialog()
         {
             MessagingCenter.Subscribe<SyncProgressMessage>(this, string.Empty, (sender) =>

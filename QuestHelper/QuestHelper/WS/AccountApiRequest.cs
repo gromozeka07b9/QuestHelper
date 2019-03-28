@@ -23,11 +23,12 @@ namespace QuestHelper.WS
         {
             public string Access_Token;
             public string Username;
+            public string Email;
+            public string UserId;
         }
-        public async System.Threading.Tasks.Task<string> GetTokenAsync(string login, string password, bool demomode = false)
+        public async System.Threading.Tasks.Task<TokenResponse> GetTokenAsync(string login, string password, bool demomode = false)
         {
-            string token = string.Empty;
-
+            TokenResponse authData = new TokenResponse();
             JObject jsonRequestObject = JObject.FromObject(new TokenRequest(){Username = login, Password = password});
 
             try
@@ -35,23 +36,19 @@ namespace QuestHelper.WS
                 ApiRequest api = new ApiRequest();
                 string demoroute = demomode ? "demotoken" : "";
                 var response = await api.HttpRequestPOST($"{_hostUrl}/account/{demoroute}", jsonRequestObject.ToString(), string.Empty);
-                var result = JsonConvert.DeserializeObject<TokenResponse>(response);
-                if (!string.IsNullOrEmpty(result.Access_Token))
-                {
-                    token = result.Access_Token;
-                }
+                authData = JsonConvert.DeserializeObject<TokenResponse>(response);
             }
             catch (Exception e)
             {
                 HandleError.Process("AccountApiRequest", "GetToken", e, false);
             }
 
-            return token;
+            return authData;
         }
 
-        public async System.Threading.Tasks.Task<string> RegisterNewUserAsync(string username, string password, string email)
+        public async System.Threading.Tasks.Task<TokenResponse> RegisterNewUserAsync(string username, string password, string email)
         {
-            string token = string.Empty;
+            TokenResponse authData = new TokenResponse();
 
             JObject jsonRequestObject = JObject.FromObject(new TokenRequest() { Username = username, Password = password, Email = email});
 
@@ -59,18 +56,14 @@ namespace QuestHelper.WS
             {
                 ApiRequest api = new ApiRequest();
                 var response = await api.HttpRequestPOST($"{_hostUrl}/account/new", jsonRequestObject.ToString(), string.Empty);
-                var result = JsonConvert.DeserializeObject<TokenResponse>(response);
-                if (!string.IsNullOrEmpty(result.Access_Token))
-                {
-                    token = result.Access_Token;
-                }
+                authData = JsonConvert.DeserializeObject<TokenResponse>(response);
             }
             catch (Exception e)
             {
                 HandleError.Process("AccountApiRequest", "GetToken", e, false);
             }
 
-            return token;
+            return authData;
         }
     }
 }

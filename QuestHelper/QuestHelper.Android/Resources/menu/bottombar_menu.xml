@@ -3,7 +3,11 @@
   <item
       android:id="@+id/bottomBarRoutesPage"
       android:icon="@drawable/list"
-      android:title="Маршруты" />
+      android:title="Впечатления" />
+  <item
+    android:id="@+id/bottomBarAlbomsPage"
+    android:icon="@drawable/photo"
+    android:title="Альбомы" />
   <item
       android:id="@+id/bottomBarOverviewPage"
       android:icon="@drawable/map"

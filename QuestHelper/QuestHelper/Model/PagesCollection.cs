@@ -16,14 +16,15 @@ namespace QuestHelper.Model
         {
             Pages = new ObservableCollection<MainPageMenuItem>(new[]
             {
-                new MainPageMenuItem { Id = 0, Title = "Маршруты", TargetType = typeof(RoutesPage), IconName="list.png", ShowInMenu = true},
-                new MainPageMenuItem { Id = 1, Title = "На карте", TargetType = typeof(MapOverviewPage), IconName="earth.png", ShowInMenu = true},
-                new MainPageMenuItem { Id = 2, Title = "Вокруг меня", TargetType = typeof(AroundMePage), IconName="nearme.png"},
-                new MainPageMenuItem { Id = 3, Title = "Профиль", TargetType = typeof(UserProfilePage), IconName="account.png", ShowInMenu = true},
-                new MainPageMenuItem { Id = 4, Title = "О нас", TargetType = typeof(AboutPage), IconName="earth.png", ShowInMenu = true},
-                new MainPageMenuItem { Id = 5, Title = string.Empty, TargetType = typeof(LoginPage)},
-                new MainPageMenuItem { Id = 6, Title = "Обработка выбора", TargetType = typeof(ProcessShareIntentPage), IconName="earth.png"},
-                new MainPageMenuItem { Id = 7, Title = "Описание", TargetType = typeof(SplashWizardPage), ShowInMenu = true},
+                new MainPageMenuItem { Id = 0, Title = "Впечатления", TargetType = typeof(RoutesPage), IconName="list.png", ShowInMenu = true},
+                new MainPageMenuItem { Id = 1, Title = "Альбомы", TargetType = typeof(AlbomsPage), IconName="photo.png", ShowInMenu = true},
+                new MainPageMenuItem { Id = 2, Title = "На карте", TargetType = typeof(MapOverviewPage), IconName="earth.png", ShowInMenu = true},
+                new MainPageMenuItem { Id = 3, Title = "Вокруг меня", TargetType = typeof(AroundMePage), IconName="nearme.png"},
+                new MainPageMenuItem { Id = 4, Title = "Профиль", TargetType = typeof(UserProfilePage), IconName="account.png", ShowInMenu = true},
+                new MainPageMenuItem { Id = 5, Title = "О нас", TargetType = typeof(AboutPage), IconName="earth.png", ShowInMenu = true},
+                new MainPageMenuItem { Id = 6, Title = string.Empty, TargetType = typeof(LoginPage)},
+                new MainPageMenuItem { Id = 7, Title = "Обработка выбора", TargetType = typeof(ProcessShareIntentPage), IconName="earth.png"},
+                new MainPageMenuItem { Id = 8, Title = "Описание", TargetType = typeof(SplashWizardPage), ShowInMenu = true},
 
                 new MainPageMenuItem { Id = 999, Title = "Main page", TargetType = typeof(MainPage)}//старт view с навигацией по страницам
                 });

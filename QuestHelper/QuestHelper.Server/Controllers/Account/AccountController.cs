@@ -50,7 +50,9 @@ namespace QuestHelper.Server.Controllers.Account
                         var response = new
                         {
                             access_token = encodedJwt,
-                            username = user.Name
+                            username = user.Name,
+                            email = user.Email,
+                            userid = user.UserId
                         };
 
                         // сериализация ответа
@@ -137,7 +139,7 @@ namespace QuestHelper.Server.Controllers.Account
         {
             RouteAccess access = new RouteAccess();
             access.RouteAccessId = Guid.NewGuid().ToString();
-            access.RouteId = "3e8064a5-5c58-4f4a-9f52-62e72210770b";//Демо-маршрут. Да, знаю.
+            access.RouteId = "dfdd6823-a44c-4f1a-8df8-2996deb4185c";//Демо-маршрут. Да, знаю.
             access.CanChange = false;
             access.CreateDate = DateTime.Now;
             access.UserId = user.UserId;
@@ -157,7 +159,9 @@ namespace QuestHelper.Server.Controllers.Account
                 var response = new
                 {
                     access_token = encodedJwt,
-                    username = identity.Name
+                    username = identity.Name,
+                    email = user.Email,
+                    userid = user.UserId
                 };
 
                 // сериализация ответа

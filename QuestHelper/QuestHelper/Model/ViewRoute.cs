@@ -18,6 +18,7 @@ namespace QuestHelper.Model
         private DateTimeOffset _createDate;
         private int _version = 0;
         private bool _isShared = false;
+        private bool _isPublished = false;
         private string _creatorId = string.Empty;
 
         public ViewRoute(string routeId)
@@ -48,6 +49,7 @@ namespace QuestHelper.Model
                 _createDate = route.CreateDate;
                 _version = route.Version;
                 _isShared = route.IsShared;
+                _isPublished = route.IsPublished;
                 _creatorId = route.CreatorId;
             }
         }
@@ -228,6 +230,17 @@ namespace QuestHelper.Model
             get
             {
                 return _isShared;
+            }
+        }
+        public bool IsPublished
+        {
+            get
+            {
+                return _isPublished;
+            }
+            set
+            {
+                _isPublished = value;
             }
         }
 

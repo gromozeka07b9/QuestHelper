@@ -18,7 +18,7 @@ namespace QuestHelper.Managers
                 {
                     var config = new RealmConfiguration()
                     {
-                        SchemaVersion = 1, MigrationCallback = (migration, oldSchemaVersion) =>
+                        SchemaVersion = 2, MigrationCallback = (migration, oldSchemaVersion) =>
                         {
 
                         }

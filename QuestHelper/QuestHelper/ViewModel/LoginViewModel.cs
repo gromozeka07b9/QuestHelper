@@ -10,6 +10,7 @@ using QuestHelper.Model.Messages;
 using QuestHelper.View;
 using QuestHelper.WS;
 using Xamarin.Forms;
+using static QuestHelper.WS.AccountApiRequest;
 
 namespace QuestHelper.ViewModel
 {
@@ -33,7 +34,7 @@ namespace QuestHelper.ViewModel
             LoginCommand = new Command(TryLoginCommandAsync);
             GoToRegisterCommand = new Command(GoToRegisterCommandAsync);
             RegisterCommand = new Command(RegisterCommandAsync);
-            DemoCommand = new Command(DemoCommandAsync);
+            //DemoCommand = new Command(DemoCommandAsync);
         }
 
         private async void GoToRegisterCommandAsync()
@@ -53,12 +54,12 @@ namespace QuestHelper.ViewModel
                         {
                             AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
                             Analytics.TrackEvent("Register user started", new Dictionary<string, string> { { "Username", _username } });
-                            var authToken = await apiRequest.RegisterNewUserAsync(_username, _password, _email);
-                            if (!string.IsNullOrEmpty(authToken))
+                            TokenResponse authData = await apiRequest.RegisterNewUserAsync(_username, _password, _email);
+                            if (!string.IsNullOrEmpty(authData?.Access_Token))
                             {
                                 Analytics.TrackEvent("Register new user done", new Dictionary<string, string> { { "Username", _username } });
                                 TokenStoreService tokenService = new TokenStoreService();
-                                await tokenService.SetAuthTokenAsync(authToken);
+                                await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId);
                                 Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
                                 await Navigation.PopModalAsync();
                                 ShowMainPage();
@@ -86,12 +87,12 @@ namespace QuestHelper.ViewModel
                     string username = await DependencyService.Get<IUsernameService>().GetUsername();
                     AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
                     Analytics.TrackEvent("GetToken started", new Dictionary<string, string> { { "Username", _username } });
-                    var authToken = await apiRequest.GetTokenAsync(_username, _password);
-                    if (!string.IsNullOrEmpty(authToken))
+                    TokenResponse authData = await apiRequest.GetTokenAsync(_username, _password);
+                    if (!string.IsNullOrEmpty(authData?.Access_Token))
                     {
                         Analytics.TrackEvent("GetToken done", new Dictionary<string, string> { { "Username", _username } });
                         TokenStoreService tokenService = new TokenStoreService();
-                        await tokenService.SetAuthTokenAsync(authToken);
+                        await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId);
                         Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
                         ShowMainPage();
                     }
@@ -103,7 +104,7 @@ namespace QuestHelper.ViewModel
                 }
             } else await Application.Current.MainPage.DisplayAlert("Внимание!", "Пожалуйста, заполните логин и пароль", "Ok");
         }
-        async void DemoCommandAsync()
+        /*async void DemoCommandAsync()
         {
             using (UserDialogs.Instance.Loading("Авторизация...", null, null, true, MaskType.Black))
             {
@@ -134,7 +135,7 @@ namespace QuestHelper.ViewModel
                     await Application.Current.MainPage.DisplayAlert("Внимание!", "Не найдена учетная запись gmail для использования в демо-режиме", "Ok");
                 }
             }
-        }
+        }*/
 
         private static void ShowMainPage()
         {
