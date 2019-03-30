@@ -41,9 +41,16 @@ namespace QuestHelper.View
             BindingContext = _vm;
         }
 
-        private void ContentPage_Appearing(object sender, EventArgs e)
+        private async void ContentPage_Appearing(object sender, EventArgs e)
         {
             _vm.startDialog();
+            if (!ToolbarItems.Where(x => x.Command == _vm.ShareRouteCommand).Any())
+            {
+                if (await _vm.UserCanShareAsync())
+                {
+                    ToolbarItems.Add(new ToolbarItem() { Command = _vm.ShareRouteCommand, Icon = "share.png" });
+                }
+            }
         }
 
         /*internal void AddSharePointMessage(ShareFromGoogleMapsMessage sharePointMessage)

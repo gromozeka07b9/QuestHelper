@@ -32,8 +32,9 @@ namespace QuestHelper.Server.Controllers.Medias
             RoutePointMediaObject item = new RoutePointMediaObject();
             using (var db = new ServerDbContext(_dbOptions))
             {
+                var publishRoutes = db.Route.Where(r => r.IsPublished && r.IsDeleted == false).Select(r => r.RouteId).ToList();
                 var routeAccess = db.RouteAccess.Where(u => u.UserId == userId).Select(u => u.RouteId).ToList();
-                var availablePoints = db.RoutePoint.Where(p => routeAccess.Contains(p.RouteId)).Select(p => p.RoutePointId).ToList();
+                var availablePoints = db.RoutePoint.Where(p => routeAccess.Contains(p.RouteId)||(publishRoutes.Contains(p.RouteId))).Select(p => p.RoutePointId).ToList();
                 item = db.RoutePointMediaObject.SingleOrDefault(x => x.RoutePointMediaObjectId == routePointMediaObjectId && availablePoints.Contains(x.RoutePointId));
             }
             return new ObjectResult(item);
@@ -124,8 +125,9 @@ namespace QuestHelper.Server.Controllers.Medias
             Stream memStream = new MemoryStream();
             using (var db = new ServerDbContext(_dbOptions))
             {
+                var publishRoutes = db.Route.Where(r => r.IsPublished && r.IsDeleted == false).Select(r => r.RouteId).ToList();
                 var routeAccess = db.RouteAccess.Where(u => u.UserId == userId).Select(u => u.RouteId).ToList();
-                var accessGranted = db.RoutePoint.Where(p => routeAccess.Contains(p.RouteId) && p.RoutePointId == routePointId).Any();
+                var accessGranted = db.RoutePoint.Where(p => (routeAccess.Contains(p.RouteId)|| publishRoutes.Contains(p.RouteId)) && p.RoutePointId == routePointId).Any();
                 if (accessGranted)
                 {
                     var entity = db.RoutePointMediaObject.Find(mediaObjectId);

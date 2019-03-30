@@ -57,11 +57,19 @@ namespace QuestHelper.Managers.Sync
             {
                 ISaveable downloadedObject = await api.DownloadFromServerAsync(id);
                 AuthRequired = (api.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || api.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
-                bool resultId = downloadedObject.Save();
-                if (!resultId)
+                try
                 {
-                    sbErrors.AppendLine($"downloading {syncType}:{id}");
-                    result = resultId;
+                    bool resultId = downloadedObject.Save();
+                    if (!resultId)
+                    {
+                        sbErrors.AppendLine($"downloading error {syncType}:{id}");
+                        result = resultId;
+                    }
+                }
+                catch (Exception e)
+                {
+                    sbErrors.AppendLine($"downloading error {syncType}:{id}");
+                    HandleError.Process("DownloadAsync", typeof(T).ToString(), e, false);
                 }
             }
             _errorReport += sbErrors.ToString();

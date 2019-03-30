@@ -98,19 +98,24 @@ namespace QuestHelper.ViewModel
             var shareRoutePage = new ShareRoutePage(_vroute.RouteId);
             await Navigation.PushAsync(shareRoutePage, true);
         }
+        internal async Task<bool> UserCanShareAsync()
+        {
+            TokenStoreService tokenService = new TokenStoreService();
+            string userId = await tokenService.GetUserIdAsync();
+            return userId.Equals(_vroute.CreatorId);
+        }
         private async void shareRouteCommandAsync(object obj)
         {
             bool answerYesIsNo = await Application.Current.MainPage.DisplayAlert("Внимание", "После публикации маршрут будет доступен всем пользователям в альбоме. Вы уверены?", "Нет", "Да");
             if (!answerYesIsNo) //порядок кнопок - хардкод, и непонятно, почему именно такой
             {
-                TokenStoreService tokenService = new TokenStoreService();
-                string userId = await tokenService.GetUserIdAsync();
-                if (userId.Equals(_vroute.CreatorId))
+                if (await UserCanShareAsync())
                 {
                     _vroute.IsPublished = true;
                     _vroute.Version++;
                     _vroute.Save();
                     await Application.Current.MainPage.DisplayAlert("Внимание!", "После синхронизации маршрут будет опубликован", "Ok");
+                    Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage() { ShowErrorMessageIfExist = false }, string.Empty);
                 }
                 else
                 {

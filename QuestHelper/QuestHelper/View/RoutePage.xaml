@@ -18,7 +18,7 @@
         <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding FullScreenMapCommand}" Icon="map1.png"></ToolbarItem>
         <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding PhotoAlbumCommand}" Icon="photo.png"></ToolbarItem>
         <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding AddPersonCommand}" Icon="person_add.png"></ToolbarItem>
-        <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding ShareRouteCommand}" Icon="share.png"></ToolbarItem>
+        <!--ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding ShareRouteCommand}" Icon="share.png"></-->
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ScrollView Orientation="Vertical">

@@ -25,8 +25,9 @@ namespace QuestHelper.Server.Controllers.Points
             RoutePoint point = new RoutePoint();
             using (var db = new ServerDbContext(_dbOptions))
             {
+                var publishRoutes = db.Route.Where(r => r.IsPublished && r.IsDeleted == false).Select(r => r.RouteId).ToList();
                 var routeaccess = db.RouteAccess.Where(u => u.UserId == userId).Select(u => u.RouteId).ToList();
-                point = db.RoutePoint.SingleOrDefault(x => x.RoutePointId == RoutePointId && routeaccess.Contains(x.RouteId));
+                point = db.RoutePoint.SingleOrDefault(x => x.RoutePointId == RoutePointId && (routeaccess.Contains(x.RouteId)||(publishRoutes.Contains(x.RouteId))));
             }
             return new ObjectResult(point);
         }

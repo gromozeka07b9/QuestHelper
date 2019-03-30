@@ -40,7 +40,8 @@ namespace QuestHelper.View
         private async void ContentPage_AppearingAsync(object sender, EventArgs e)
         {
             var customMap = this.FindByName<CustomMap>("MapRouteOverview");
-            customMap.Points = vm.GetPointsForOverviewRoute().Select(x => new PointForMap()
+            var points = await vm.GetPointsForOverviewRouteAsync();
+            customMap.Points = points.Select(x => new PointForMap()
             {
                 Latitude = x.Latitude, Longitude = x.Longitude, PathToPicture = x.ImagePreviewPathForList, Name = x.Name, Description = x.Description
             }).ToList();

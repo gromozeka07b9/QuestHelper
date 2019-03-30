@@ -43,20 +43,21 @@ namespace QuestHelper.Server.Controllers.Routes
         public IActionResult Get(string RouteId)
         {
             string userId = IdentityManager.GetUserId(HttpContext);
-            Route item = new Route();
+            Route resultRoute = new Route();
             using (var db = new ServerDbContext(_dbOptions))
             {
                 bool accessGranted = db.RouteAccess.Where(u => u.UserId == userId && u.RouteId == RouteId).Any();
-                if (accessGranted)
+                Route route = db.Route.Find(RouteId);
+                if ((accessGranted)||(route.IsPublished))
                 {
-                    item = db.Route.Find(RouteId);
+                    resultRoute = route;
                 }
                 else
                 {
                     return new ObjectResult(null);
                 }
             }
-            return new ObjectResult(item);
+            return new ObjectResult(resultRoute);
         }
 
         [HttpPost]
@@ -69,7 +70,6 @@ namespace QuestHelper.Server.Controllers.Routes
                 if (entity == null)
                 {
                     routeObject.CreatorId = userId;
-                    routeObject.IsDeleted = false;
                     db.Route.Add(routeObject);
                     RouteAccess accessObject = new RouteAccess();
                     accessObject.UserId = userId;

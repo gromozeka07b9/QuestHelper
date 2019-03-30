@@ -38,20 +38,22 @@ namespace QuestHelper.ViewModel
             //_vroute.Version = 1;
             _isFirstRoute = isFirstRoute;
             ShowNewRouteDialogCommand = new Command(showNewRouteData);
-            OpenRoutePointDialogCommand = new Command(openRoutePointDialog);
+            OpenRoutePointDialogCommand = new Command(openRoutePointDialogAsync);
         }
 
-        private void openRoutePointDialog()
+        private async void openRoutePointDialogAsync()
         {
             if(string.IsNullOrEmpty(_vroute.Name))
             {
-                App.Current.MainPage.DisplayAlert("Внимание!", "Необходимо заполнить название маршрута", "Ok");
+                await App.Current.MainPage.DisplayAlert("Внимание!", "Необходимо заполнить название маршрута", "Ok");
             } else
             {
                 Analytics.TrackEvent("Route created", new Dictionary<string, string> { { "Route", _vroute.Name } });
+                TokenStoreService tokenService = new TokenStoreService();
+                _vroute.CreatorId = await tokenService.GetUserIdAsync();
                 if (_vroute.Save())
                 {
-                    Navigation.PushAsync(new RouteCreatedPage(_vroute.Id));
+                    await Navigation.PushAsync(new RouteCreatedPage(_vroute.Id));
                 }
             }
         }

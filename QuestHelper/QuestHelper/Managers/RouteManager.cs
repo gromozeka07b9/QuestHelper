@@ -20,10 +20,42 @@ namespace QuestHelper.Managers
         {
             return _realmInstance.All<Route>().OrderByDescending(r => r.CreateDate);
         }*/
-        internal IEnumerable<ViewRoute> GetRoutes()
+        internal IEnumerable<ViewRoute> GetRoutes(string UserId)
+        {
+            List<ViewRoute> vroutes = new List<ViewRoute>();
+            var routes = _realmInstance.All<Route>().Where(u=>!u.IsPublished||(u.IsPublished && u.CreatorId == UserId)).OrderByDescending(r => r.CreateDate);
+            if (routes.Any())
+            {
+                foreach (var route in routes)
+                {
+                    vroutes.Add(new ViewRoute(route.RouteId));
+                }
+            }
+            return vroutes;
+        }
+
+        internal IEnumerable<ViewRoute> GetRoutesForSync()
         {
             List<ViewRoute> vroutes = new List<ViewRoute>();
             var routes = _realmInstance.All<Route>().OrderByDescending(r => r.CreateDate);
+            if (routes.Any())
+            {
+                foreach (var route in routes)
+                {
+                    vroutes.Add(new ViewRoute(route.RouteId));
+                }
+            }
+            return vroutes;
+        }
+
+        /// <summary>
+        /// На данном этапе публичные маршруты ничем почти не отличаются от обычных
+        /// </summary>
+        /// <returns></returns>
+        internal IEnumerable<ViewRoute> GetPosts()
+        {
+            List<ViewRoute> vroutes = new List<ViewRoute>();
+            var routes = _realmInstance.All<Route>().Where(r=>r.IsPublished).OrderByDescending(r => r.CreateDate);
             if (routes.Any())
             {
                 foreach (var route in routes)

@@ -28,9 +28,10 @@ namespace QuestHelper.Server.Controllers.Points
             {
                 using (var db = new ServerDbContext(_dbOptions))
                 {
-                    var routeaccess = db.RouteAccess.Where(u => u.UserId == userId).Select(u => u.RouteId).ToList();
+                    var publishRoutes = db.Route.Where(r=>r.IsPublished && r.IsDeleted == false).Select(r => r.RouteId).ToList();
+                    var routeAccess = db.RouteAccess.Where(u => u.UserId == userId).Select(u => u.RouteId).ToList();
                     var syncIds = syncObject.Statuses.Select(t => t.ObjectId);
-                    var dbObjects = db.RoutePoint.Where(r => syncIds.Contains(r.RoutePointId) && routeaccess.Contains(r.RouteId));
+                    var dbObjects = db.RoutePoint.Where(r => syncIds.Contains(r.RoutePointId) && (routeAccess.Contains(r.RouteId) || publishRoutes.Contains(r.RouteId)));
                     foreach (var clientVersion in syncObject.Statuses)
                     {
                         var dbObject = dbObjects.SingleOrDefault(r => r.RoutePointId == clientVersion.ObjectId);
@@ -44,7 +45,7 @@ namespace QuestHelper.Server.Controllers.Points
                             report.Statuses.Add(new SyncObjectStatus.ObjectStatus { ObjectId = clientVersion.ObjectId, Version = 0 });
                         }
                     }
-                    var dbNewObjects = db.RoutePoint.Where(r => !syncIds.Contains(r.RoutePointId) && routeaccess.Contains(r.RouteId));
+                    var dbNewObjects = db.RoutePoint.Where(r => !syncIds.Contains(r.RoutePointId) && (routeAccess.Contains(r.RouteId)||(publishRoutes.Contains(r.RouteId))));
                     foreach (var newObject in dbNewObjects)
                     {
                         report.Statuses.Add(new SyncObjectStatus.ObjectStatus { ObjectId = newObject.RoutePointId, Version = newObject.Version });

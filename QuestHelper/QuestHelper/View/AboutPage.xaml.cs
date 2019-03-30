@@ -16,5 +16,16 @@ namespace QuestHelper.View
 		{
 			InitializeComponent ();
 		}
+	    void OnEmailContactsTapped(object sender, EventArgs args)
+	    {
+	        try
+	        {
+	            string email = ((Label)sender).Text;
+	            Device.OpenUri(new Uri($"mailto:{email}"));
+	        }
+	        catch (Exception)
+	        {
+	        }
+	    }
 	}
 }

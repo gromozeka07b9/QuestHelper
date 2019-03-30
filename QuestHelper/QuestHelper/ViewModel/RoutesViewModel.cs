@@ -42,7 +42,7 @@ namespace QuestHelper.ViewModel
         public RoutesViewModel()
         {
             AddNewRouteCommand = new Command(addNewRouteCommandAsync);
-            RefreshListRoutesCommand = new Command(refreshListRoutesCommand);
+            RefreshListRoutesCommand = new Command(refreshListRoutesCommandAsync);
             SyncStartCommand = new Command(syncStartCommand);
             //ShowAlbumsCommand = new Command(showAlbumsCommandAsync);
         }
@@ -70,10 +70,12 @@ namespace QuestHelper.ViewModel
             _sharePointMessage = msg;
         }
 
-        void refreshListRoutesCommand()
+        async void refreshListRoutesCommandAsync()
         {
             IsRefreshing = true;
-            Routes = _routeManager.GetRoutes();
+            TokenStoreService tokenService = new TokenStoreService();
+            string currentUserId = await tokenService.GetUserIdAsync();
+            Routes = _routeManager.GetRoutes(currentUserId);
             if (Routes.Count() == 0)
             {
                 Device.StartTimer(TimeSpan.FromSeconds(3), OnTimerForUpdate);
@@ -86,14 +88,14 @@ namespace QuestHelper.ViewModel
         {
             bool continueTimer = true;
             _countOfUpdateListByTimer++;
-            if ((_countOfUpdateListByTimer > 10)||(Routes.Count() > 0))
+            if ((_countOfUpdateListByTimer > 2)||(Routes.Count() > 0))
             {
                 continueTimer = false;
                 _countOfUpdateListByTimer = 0;
             }
             else
             {
-                refreshListRoutesCommand();
+                refreshListRoutesCommandAsync();
             }
             return continueTimer;
         }

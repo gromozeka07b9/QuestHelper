@@ -48,6 +48,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>SplashWizardResource.resx</DependentUpon>
     </Compile>
+    <Compile Update="View\AlbumsPage.xaml.cs">
+      <DependentUpon>AlbumsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="View\MainPage.xaml.cs">
       <DependentUpon>*.xaml</DependentUpon>
     </Compile>
@@ -83,7 +86,7 @@
     <EmbeddedResource Update="View\AboutPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="View\AlbomsPage.xaml">
+    <EmbeddedResource Update="View\AlbumsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="View\AroundMePage.xaml">

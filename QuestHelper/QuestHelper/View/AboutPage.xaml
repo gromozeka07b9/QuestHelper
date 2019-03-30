@@ -3,10 +3,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="QuestHelper.View.AboutPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="About"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="3*" />
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Row="0" Orientation="Vertical" Margin="10">
+                <Image Source="icon" HorizontalOptions="Center" HeightRequest="40" WidthRequest="40"></Image>
+                <Label Text="GoSh!" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
+                <Label Text="Версия 1.0" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
+            </StackLayout>
+            <Label Grid.Row="2" Text="Команда:&#10;Исследования - Ольга&#10;Разработка - Сергей&#10;Дизайн - Клим&#10;Поддержка - Вероника" HorizontalTextAlignment="Center" VerticalOptions="StartAndExpand" HorizontalOptions="CenterAndExpand" />
+            <StackLayout Grid.Row="3" Orientation="Vertical">
+                <Label Text="При возникновении вопросов или предложений напишите нам:" HorizontalTextAlignment="Center"  FontSize="Small" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
+                <Label Text="devhelpersd@gmail.com" FontSize="Medium" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Tapped="OnEmailContactsTapped"
+                            NumberOfTapsRequired="1" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

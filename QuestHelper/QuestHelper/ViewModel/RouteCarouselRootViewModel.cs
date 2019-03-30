@@ -55,6 +55,13 @@ namespace QuestHelper.ViewModel
                 return text;
             }
         }
+        public bool DescriptionIsVisible
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(_currentItem?.RoutePointDescription);
+            }
+        }
 
         public List<PointForMap> PointsOnMap { get; } = new List<PointForMap>();
 
@@ -68,6 +75,7 @@ namespace QuestHelper.ViewModel
                     _currentItem = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RoutePointName"));
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RoutePointDescription"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DescriptionIsVisible"));
                 }
             }
         }

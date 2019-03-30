@@ -52,13 +52,15 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        internal IEnumerable<ViewRoutePoint> GetPointsForOverviewRoute()
+        internal async Task<IEnumerable<ViewRoutePoint>> GetPointsForOverviewRouteAsync()
         {
             var resultPoints = new List<ViewRoutePoint>();
             IEnumerable<ViewRoute> routes;
             if (string.IsNullOrEmpty(_routeId))
             {
-                routes = _routeManager.GetRoutes();
+                TokenStoreService tokenService = new TokenStoreService();
+                string userId = await tokenService.GetUserIdAsync();
+                routes = _routeManager.GetRoutes(userId);
             }
             else
             {

@@ -29,8 +29,9 @@ namespace QuestHelper.Server.Controllers.Medias
             {
                 using (var db = new ServerDbContext(_dbOptions))
                 {
+                    var publishRoutes = db.Route.Where(r => r.IsPublished && r.IsDeleted == false).Select(r => r.RouteId).ToList();
                     var routeAccess = db.RouteAccess.Where(u => u.UserId == userId).Select(u => u.RouteId).ToList();
-                    var availablePoints = db.RoutePoint.Where(p => routeAccess.Contains(p.RouteId)).Select(p=>p.RoutePointId).ToList();
+                    var availablePoints = db.RoutePoint.Where(p => (routeAccess.Contains(p.RouteId) || publishRoutes.Contains(p.RouteId))).Select(p=>p.RoutePointId).ToList();
                     var syncIds = syncObject.Statuses.Select(t => t.ObjectId);
                     var dbObjects = db.RoutePointMediaObject.Where(r => syncIds.Contains(r.RoutePointMediaObjectId) && availablePoints.Contains(r.RoutePointId));
                     foreach (var clientVersion in syncObject.Statuses)

@@ -49,7 +49,7 @@ namespace QuestHelper.Server.Controllers.Routes
                         }
                     }
                     //И надо найти те маршруты, которых еще может не быть на клиенте, и ему отправить чтобы забрал
-                    var dbNewRoutes = db.Route.Where(r => !syncIds.Contains(r.RouteId) && routeaccess.Contains(r.RouteId));
+                    var dbNewRoutes = db.Route.Where(r => !syncIds.Contains(r.RouteId) && (routeaccess.Contains(r.RouteId) || (r.IsPublished)));
                     foreach (var newRoute in dbNewRoutes)
                     {
                         report.Statuses.Add(new SyncObjectStatus.ObjectStatus { ObjectId = newRoute.RouteId, Version = newRoute.Version });

@@ -29,7 +29,7 @@ namespace QuestHelper.Managers.Sync
         {
             bool result = false;
 
-            var routes = _routeManager.GetRoutes().Select(x => new Tuple<string, int>(x.RouteId, x.Version));
+            var routes = _routeManager.GetRoutesForSync().Select(x => new Tuple<string, int>(x.RouteId, x.Version));
             SyncObjectStatus routeServerStatus = await _routesApi.GetSyncStatus(routes);
             AuthRequired = (_routesApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routesApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
             if (routeServerStatus != null)
@@ -68,6 +68,7 @@ namespace QuestHelper.Managers.Sync
                         Name = uploadedObject.Name,
                         CreateDate = uploadedObject.CreateDate.DateTime,
                         Version = uploadedObject.Version,
+                        IsPublished = uploadedObject.IsPublished,
                         UserId = 0
                     });
                     jsonStructures.Add(jsonObject.ToString());
