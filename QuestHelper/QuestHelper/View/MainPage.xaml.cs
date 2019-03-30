@@ -95,7 +95,7 @@ namespace QuestHelper.View
             {
                 if (showOnboarding == "1")
                 {
-                    //DependencyService.Get<IToolbarService>().SetVisibilityToolbar(false);
+                    DependencyService.Get<IToolbarService>().SetVisibilityToolbar(false);
                     await Navigation.PushModalAsync(new NavigationPage(new SplashWizardPage()));
                 }
             }

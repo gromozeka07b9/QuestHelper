@@ -4,5 +4,6 @@
     {
         bool ToolbarIsHidden();
         void SetVisibilityToolbar(bool Visibility);
+        void SetDarkMode(bool DarkMode);
     }
 }

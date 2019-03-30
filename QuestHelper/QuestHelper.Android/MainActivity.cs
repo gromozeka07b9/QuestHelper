@@ -16,6 +16,7 @@ using QuestHelper.Model.Messages;
 using Plugin.CurrentActivity;
 using ImageCircle.Forms.Plugin.Droid;
 using Acr.UserDialogs;
+using QuestHelper.Managers;
 
 namespace QuestHelper.Droid
 {
@@ -37,8 +38,22 @@ namespace QuestHelper.Droid
         {
             var pageCollections = new PagesCollection();
             MainPageMenuItem destinationPage = pageCollections.GetPageByPosition(position);
-            Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(
-                new PageNavigationMessage() {DestinationPageDescription = destinationPage}, string.Empty);
+            Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>( new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);
+            /*ParameterManager par = new ParameterManager();
+            string NeedShowOnboarding = string.Empty;
+            par.Get("NeedShowOnboarding", out NeedShowOnboarding);
+            var pageCollections = new PagesCollection();
+            if (NeedShowOnboarding.Equals("0"))
+            {
+                MainPageMenuItem destinationPage = pageCollections.GetPageByPosition(position);
+                Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(
+                    new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);
+            }
+            else
+            {
+                Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(
+                    new PageNavigationMessage() { DestinationPageDescription = pageCollections.GetProcessWizardPage()}, string.Empty);
+            }*/
         }
 
         protected override void OnCreate(Bundle bundle)
@@ -59,7 +74,6 @@ namespace QuestHelper.Droid
             string shareDescription = Intent.GetStringExtra("shareDescription") ?? string.Empty;
 
             LoadApplication(new App());
-
             if (!string.IsNullOrEmpty(shareDescription))
             {
                 var pageCollections = new PagesCollection();
@@ -70,7 +84,7 @@ namespace QuestHelper.Droid
             {
                 StartToolbar(bundle);                
                 ToolbarService bar  = new ToolbarService();
-                bar.SetVisibilityToolbar(false);
+                bar.SetVisibilityToolbar(true);
             }
         }
 

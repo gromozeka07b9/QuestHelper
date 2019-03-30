@@ -19,5 +19,17 @@ namespace QuestHelper.View
 		    _vm = new LoginViewModel() { Navigation = this.Navigation };
 		    BindingContext = _vm;
 		}
+
+	    private void LoginPage_OnAppearing(object sender, EventArgs e)
+	    {
+	        var toolbarService = DependencyService.Get<IToolbarService>();
+	        toolbarService.SetVisibilityToolbar(false);
+	    }
+
+        private void LoginPage_OnDisappearing(object sender, EventArgs e)
+	    {
+	        var toolbarService = DependencyService.Get<IToolbarService>();
+	        toolbarService.SetVisibilityToolbar(true);
+	    }
     }
 }

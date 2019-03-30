@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pancardview="clr-namespace:PanCardView;assembly=PanCardView"
              xmlns:view="clr-namespace:QuestHelper.View;assembly=QuestHelper"
-             x:Class="QuestHelper.View.RouteCarouselRootPage" BackgroundColor="Black" NavigationPage.HasNavigationBar="False" Appearing="RouteCarouselRootPage_OnAppearing">
+             x:Class="QuestHelper.View.RouteCarouselRootPage" BackgroundColor="Black" NavigationPage.HasNavigationBar="False" Appearing="RouteCarouselRootPage_OnAppearing" Disappearing="RouteCarouselRootPage_OnDisappearing">
     <ContentPage.Content>
         <ScrollView Orientation="Vertical">
             <StackLayout>
@@ -46,7 +46,7 @@
                     <Label Grid.Row="0" Text="{Binding RouteName}" Style="{StaticResource ImageBigTextLabel}" FontSize="12" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" Margin="10"></Label>
                     <Label Grid.Row="1" Grid.RowSpan="2" Text="{Binding RoutePointName}" Style="{StaticResource ImageBigTextLabel}" VerticalOptions="EndAndExpand" HorizontalOptions="StartAndExpand" Margin="10"></Label>
                 </Grid>
-                <Label TextColor="White" Margin="10" FontSize="20" Text="{Binding RoutePointDescription}" LineBreakMode="WordWrap"></Label>
+                <Label TextColor="White" Margin="10" FontSize="15" Text="{Binding RoutePointDescription}" LineBreakMode="WordWrap"></Label>
                 <view:CustomMap HeightRequest="300" x:Name="MapRouteOverview" VerticalOptions="FillAndExpand"
                                 IsShowingUser="False"
                                 UseInterceptTouchEvent="true"

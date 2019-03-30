@@ -16,7 +16,7 @@ namespace QuestHelper.Model
         {
             Pages = new ObservableCollection<MainPageMenuItem>(new[]
             {
-                new MainPageMenuItem { Id = 0, Title = "Впечатления", TargetType = typeof(RoutesPage), IconName="list.png", ShowInMenu = true},
+                new MainPageMenuItem { Id = 0, Title = "Маршруты", TargetType = typeof(RoutesPage), IconName="list.png", ShowInMenu = true},
                 new MainPageMenuItem { Id = 1, Title = "Альбомы", TargetType = typeof(AlbomsPage), IconName="photo.png", ShowInMenu = true},
                 new MainPageMenuItem { Id = 2, Title = "На карте", TargetType = typeof(MapOverviewPage), IconName="earth.png", ShowInMenu = true},
                 new MainPageMenuItem { Id = 3, Title = "Вокруг меня", TargetType = typeof(AroundMePage), IconName="nearme.png"},
@@ -54,6 +54,10 @@ namespace QuestHelper.Model
         public MainPageMenuItem GetProcessSharePage()
         {
             return Pages.Single(x => x.TargetType == typeof(ProcessShareIntentPage));
+        }
+        public MainPageMenuItem GetProcessWizardPage()
+        {
+            return Pages.Single(x => x.TargetType == typeof(SplashWizardPage));
         }
 
         public ObservableCollection<MainPageMenuItem> GetPagesForMenu()

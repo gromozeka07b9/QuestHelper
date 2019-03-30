@@ -42,7 +42,7 @@ namespace QuestHelper.Managers
             return result;
         }
 
-        internal bool Get(string key, out string value)
+        public bool Get(string key, out string value)
         {
             value = string.Empty;
             var result =_realmInstance.Find<Parameter>(key);

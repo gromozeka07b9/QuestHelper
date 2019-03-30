@@ -5,6 +5,8 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -18,6 +20,7 @@ namespace QuestHelper.Droid
     public class ToolbarService : IToolbarService
     {
         public static BottomBar _bottomBar;
+        private static MainActivity _activity;
 
         public static BottomBar Bar
         {
@@ -25,9 +28,10 @@ namespace QuestHelper.Droid
         }
         public static void CreateToolbar(MainActivity activity, Bundle bundle)
         {
+            _activity = activity;
             _bottomBar = BottomBar.Attach(activity, bundle);
             _bottomBar.UseFixedMode();
-            _bottomBar.SetFixedInactiveIconColor("#B3B8C2");
+            //_bottomBar.SetFixedInactiveIconColor("#000000");
             _bottomBar.SetActiveTabColor("#3A3A9C");
             _bottomBar.SetItems(Resource.Menu.bottombar_menu);
             _bottomBar.SetOnTabClickListener(activity);
@@ -37,11 +41,26 @@ namespace QuestHelper.Droid
             if (Visibility)
             {
                 _bottomBar.Show(false);
-                _bottomBar.SetItems(Resource.Menu.bottombar_menu);
             }
             else
             {
                 _bottomBar.Hide(false);
+            }
+        }
+        public void SetDarkMode(bool DarkMode)
+        {
+            if (!DarkMode)
+            {
+                //Корректно не работает скрытие, оставляю пока видимой панель, но со сменой цвета для альбома
+                //проблема в том, что при скрытии панели наверху остается поле таба, наверное надо копать в сторону tabbar.axml и менять там размер
+                _bottomBar.SetItems(Resource.Menu.bottombar_menu);
+                var container = _bottomBar.ItemContainer;
+                container.SetBackgroundColor(Color.White);
+            }
+            else
+            {
+                var container = _bottomBar.ItemContainer;
+                container.SetBackgroundColor(Color.Black);
             }
         }
 

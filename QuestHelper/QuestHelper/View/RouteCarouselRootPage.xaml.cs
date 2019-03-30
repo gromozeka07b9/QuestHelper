@@ -27,6 +27,8 @@ namespace QuestHelper.View
         private void RouteCarouselRootPage_OnAppearing(object sender, EventArgs e)
         {
             MapRouteOverview.Points = _vm.PointsOnMap;
+            var toolbarService = DependencyService.Get<IToolbarService>();
+            toolbarService.SetDarkMode(true);
         }
 
         private void Cards_OnItemAppearing(CardsView view, ItemAppearingEventArgs args)
@@ -37,6 +39,12 @@ namespace QuestHelper.View
                 MapRouteOverview.MoveToRegion(MapSpan.FromCenterAndRadius(new Xamarin.Forms.Maps.Position(newItem.Latitude, newItem.Longitude), Distance.FromKilometers(3)));
             }
             _vm.CurrentItem = newItem;
+        }
+
+        private void RouteCarouselRootPage_OnDisappearing(object sender, EventArgs e)
+        {
+            var toolbarService = DependencyService.Get<IToolbarService>();
+            toolbarService.SetDarkMode(false);
         }
     }
 }

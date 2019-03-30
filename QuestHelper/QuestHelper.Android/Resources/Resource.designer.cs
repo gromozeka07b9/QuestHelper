@@ -7240,7 +7240,7 @@ namespace QuestHelper.Droid
 			public const int lockopen = 2130837814;
 			
 			// aapt resource value: 0x7f020137
-			public const int Logo = 2130837815;
+			public const int logo = 2130837815;
 			
 			// aapt resource value: 0x7f020138
 			public const int loop = 2130837816;
@@ -7587,9 +7587,6 @@ namespace QuestHelper.Droid
 			
 			// aapt resource value: 0x7f0c00e6
 			public const int bottomBarAlbomsPage = 2131493094;
-			
-			// aapt resource value: 0x7f0c00e7
-			public const int bottomBarOverviewPage = 2131493095;
 			
 			// aapt resource value: 0x7f0c00e5
 			public const int bottomBarRoutesPage = 2131493093;
