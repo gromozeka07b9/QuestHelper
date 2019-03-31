@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="QuestHelper.View.MasterMainPage" Title="Quest helper">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="QuestHelper.View.MasterMainPage" Title="GoSh!">
     <ContentPage.Content>
         <StackLayout Orientation="Vertical" >
             <ListView x:Name="MenuItemsListView"
@@ -7,19 +7,10 @@
                   HasUnevenRows="true"
                   ItemsSource="{Binding MenuItems}">
                   <ListView.Header>
-                      <Grid>
-                          <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="30"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="30"/>
-                          </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="0"/>
-                                <RowDefinition Height="10"/>
-                                <RowDefinition Height="10"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                      </Grid>
+                      <StackLayout Orientation="Horizontal" Margin="10" VerticalOptions="Center" HorizontalOptions="Center">
+                        <Image Source="icon" WidthRequest="40" HeightRequest="40" Margin="5"></Image>
+                        <Label Text="GoSh!" TextColor="Black" FontSize="25" Margin="5"></Label>
+                      </StackLayout>
                   </ListView.Header>
                   <ListView.ItemTemplate>
                     <DataTemplate>

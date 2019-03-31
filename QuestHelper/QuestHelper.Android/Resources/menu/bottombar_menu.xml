@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
   <item
       android:id="@+id/bottomBarRoutesPage"
-      android:icon="@drawable/list"
+      android:icon="@drawable/map"
       android:title="Маршруты" />
   <item
     android:id="@+id/bottomBarAlbomsPage"
-    android:icon="@drawable/map"
+    android:icon="@drawable/list"
     android:title="Альбомы" />
   <!--item
       android:id="@+id/bottomBarOverviewPage"

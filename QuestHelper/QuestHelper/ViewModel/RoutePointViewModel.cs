@@ -106,6 +106,7 @@ namespace QuestHelper.ViewModel
                 _vpoint.Latitude = latitude;
                 _vpoint.Longitude = longitude;
                 ApplyChanges();
+                FillAddressByCoordinatesAsync(Latitude, Longitude);
                 Coordinates = Latitude + "," + Longitude;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Longitude"));
             }

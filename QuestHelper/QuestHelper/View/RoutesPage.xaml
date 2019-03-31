@@ -34,7 +34,8 @@
                         <!--TapGestureRecognizer Command="{Binding TakePhotoCommand}" /-->
                     </Image.GestureRecognizers>
                 </Image>
-                <Label Text="У вас пока нет ни одного маршрута" Style="{StaticResource StandartTextLabel}" HorizontalOptions="CenterAndExpand" ></Label>
+                <Label Text="У вас пока нет ни одного маршрута." Style="{StaticResource StandartTextLabel}" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" ></Label>
+                <Label Text="Чтобы добавить новый, нажмите кнопку '+'" Style="{StaticResource StandartTextLabel}" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" ></Label>
             </StackLayout>
             <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" SeparatorVisibility="None" ItemsSource="{Binding Routes}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshListRoutesCommand}" x:Name="RoutesListView" RowHeight="250"  SelectedItem="{Binding SelectedRouteItem,Mode=TwoWay}">
                 <ListView.ItemTemplate>
@@ -70,7 +71,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <AbsoluteLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalOptions="Center" IsVisible="{Binding SyncProgressIsVisible}">
+            <AbsoluteLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" VerticalOptions="StartAndExpand" IsVisible="{Binding SyncProgressIsVisible}">
                 <Frame BackgroundColor="Gray" Opacity="0.8" CornerRadius="10" Margin="10" Padding="10,5,10,5">
                     <Label Text="{Binding SyncProgressDetailText}" TextColor="White" FontSize="12"></Label>
                 </Frame>
@@ -82,9 +83,9 @@
                     </Image.GestureRecognizers>
                 </Image>
             </AbsoluteLayout>
-            <StackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+            <!--StackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
                 <Label Text="Нажмите, чтобы добавить новый:" Style="{StaticResource StandartTextLabel}" HorizontalOptions="EndAndExpand" IsVisible="{Binding NoRoutesWarningIsVisible}" ></Label>
-            </StackLayout>
+            </-->
         </Grid>
     </ContentPage.Content>
 </ContentPage>

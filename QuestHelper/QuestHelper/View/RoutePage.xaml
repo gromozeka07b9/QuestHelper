@@ -14,7 +14,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding EditRouteCommand}" Icon="edit.png"></ToolbarItem>
+        <!--ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding EditRouteCommand}" Icon="edit.png"></-->
         <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding FullScreenMapCommand}" Icon="map1.png"></ToolbarItem>
         <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding PhotoAlbumCommand}" Icon="photo.png"></ToolbarItem>
         <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding AddPersonCommand}" Icon="person_add.png"></ToolbarItem>

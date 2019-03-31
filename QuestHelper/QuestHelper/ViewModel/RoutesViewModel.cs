@@ -86,18 +86,16 @@ namespace QuestHelper.ViewModel
 
         private bool OnTimerForUpdate()
         {
-            bool continueTimer = true;
             _countOfUpdateListByTimer++;
             if ((_countOfUpdateListByTimer > 2)||(Routes.Count() > 0))
             {
-                continueTimer = false;
                 _countOfUpdateListByTimer = 0;
             }
             else
             {
                 refreshListRoutesCommandAsync();
             }
-            return continueTimer;
+            return false;
         }
 
         async void addNewRouteCommandAsync()

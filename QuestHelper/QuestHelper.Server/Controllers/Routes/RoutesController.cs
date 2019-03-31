@@ -80,6 +80,15 @@ namespace QuestHelper.Server.Controllers.Routes
                 }
                 else
                 {
+                    if (!string.IsNullOrEmpty(entity.CreatorId))
+                    {
+                        if (!entity.CreatorId.Equals(routeObject.CreatorId))
+                        {
+                            //throw new Exception($"Gosh server: Client try to change CreatorId! was {entity.CreatorId} try {routeObject.CreatorId}");
+                            //Непонятно, почему меняется CreatorId - он устанавливается только при создании маршрута
+                            routeObject.CreatorId = entity.CreatorId;
+                        }
+                    }
                     db.Entry(entity).CurrentValues.SetValues(routeObject);
                 }
                 db.SaveChanges();

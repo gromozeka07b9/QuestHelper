@@ -69,6 +69,7 @@ namespace QuestHelper.Managers.Sync
                         CreateDate = uploadedObject.CreateDate.DateTime,
                         Version = uploadedObject.Version,
                         IsPublished = uploadedObject.IsPublished,
+                        CreatorId = uploadedObject.CreatorId,
                         UserId = 0
                     });
                     jsonStructures.Add(jsonObject.ToString());
