@@ -12,6 +12,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Microsoft.AppCenter.Crashes;
 using Plugin.CurrentActivity;
 using QuestHelper.Droid;
 using Xamarin.Forms;
@@ -28,8 +29,15 @@ namespace QuestHelper.Droid
             intent.SetAction(Intent.ActionView);
             intent.AddFlags(ActivityFlags.NewTask);
             intent.AddFlags(ActivityFlags.MultipleTask);
-            intent.SetDataAndType(Android.Net.Uri.Parse("file:///" + filename), "image/*");
-            Android.App.Application.Context.StartActivity(intent);
+            try
+            {
+                intent.SetDataAndType(Android.Net.Uri.Parse("file:///" + filename), "image/*");
+                Android.App.Application.Context.StartActivity(intent);
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("DefaultViewer", "Show", e, false);
+            }
         }
     }
 }

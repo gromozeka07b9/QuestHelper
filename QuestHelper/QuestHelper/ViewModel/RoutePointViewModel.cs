@@ -142,7 +142,13 @@ namespace QuestHelper.ViewModel
             bool b = await CrossMedia.Current.Initialize();
             if (CrossMedia.Current.IsPickPhotoSupported)
             {
-                MediaFile photoPicked = await CrossMedia.Current.PickPhotoAsync();
+                MediaFile photoPicked = null;
+
+                PermissionManager permissions = new PermissionManager();
+                if (await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Photos, "Разрешение необходимо для выбора фото"))
+                {
+                    photoPicked = await CrossMedia.Current.PickPhotoAsync();
+                }
 
                 if (photoPicked != null)
                 {
@@ -243,15 +249,22 @@ namespace QuestHelper.ViewModel
                 string mediaId = Guid.NewGuid().ToString();
                 string photoName = ImagePathManager.GetImageFilename(mediaId);
                 string photoNamePreview = ImagePathManager.GetImageFilename(mediaId, true);
-                var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+
+                MediaFile file = null;
+                PermissionManager permissions = new PermissionManager();
+                if (await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Photos, "Разрешение необходимо для съемки фото"))
                 {
-                    PhotoSize = PhotoSize.Large,
-                    Location = new Location() { Latitude = _vpoint.Latitude, Longitude = _vpoint.Longitude, Timestamp = DateTime.Now },
-                    Directory = string.Empty,
-                    Name = photoName,
-                    SaveToAlbum = true,
-                    CompressionQuality = 30
-                });
+                    file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+                    {
+                        PhotoSize = PhotoSize.Large,
+                        Location = new Location() { Latitude = _vpoint.Latitude, Longitude = _vpoint.Longitude, Timestamp = DateTime.Now },
+                        Directory = string.Empty,
+                        Name = photoName,
+                        SaveToAlbum = true,
+                        CompressionQuality = 30
+                    });
+                }
+
                 long fileSize = 0;
                 if (file != null)
                 {

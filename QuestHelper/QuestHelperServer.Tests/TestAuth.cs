@@ -11,7 +11,7 @@ using Xunit;
 using Moq;
 using QuestHelper.Server;
 using QuestHelper.Server.Models;
-using Xamarin.Forms.Xaml;
+//using Xamarin.Forms.Xaml;
 
 namespace QuestHelperServer.Tests
 {

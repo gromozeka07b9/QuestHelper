@@ -12,10 +12,14 @@ using Android.Graphics;
 using Android.Media;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V4.App;
 using Android.Views;
 using Android.Widget;
 using ImageCircle.Forms.Plugin.Abstractions;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
 using QuestHelper.Droid;
+using QuestHelper.Managers;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
 using QuestHelper.View;
@@ -129,13 +133,17 @@ namespace QuestHelper.Droid
             }
         }
 
-        protected override void OnMapReady(Android.Gms.Maps.GoogleMap map)
+        protected override async void OnMapReady(Android.Gms.Maps.GoogleMap map)
         {
-            base.OnMapReady(map);
-            map.MapClick += Map_MapClick;
-            drawMarkers(250);
-            NativeMap.InfoWindowClick += OnInfoWindowClick;
-            NativeMap.SetInfoWindowAdapter(this);
+            PermissionManager permissions = new PermissionManager();
+            if (await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, "Разрешение необходимо для получения координат точки"))
+            {
+                base.OnMapReady(map);
+                map.MapClick += Map_MapClick;
+                drawMarkers(250);
+                NativeMap.InfoWindowClick += OnInfoWindowClick;
+                NativeMap.SetInfoWindowAdapter(this);
+            }
         }
 
         private void drawMarkers(int markerSize)
@@ -249,7 +257,7 @@ namespace QuestHelper.Droid
             return dispatchEvent;
         }
 
-        private int getMarkerSizeByZoom(float zoom)
+        /*private int getMarkerSizeByZoom(float zoom)
         {
             float oneOfThree = NativeMap.MaxZoomLevel / 3;
             if (zoom <= oneOfThree)
@@ -263,6 +271,6 @@ namespace QuestHelper.Droid
                 return 300;
             }
             else return 200;
-        }
+        }*/
     }
 }

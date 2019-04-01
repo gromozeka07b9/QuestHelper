@@ -17,12 +17,19 @@ using Plugin.CurrentActivity;
 using ImageCircle.Forms.Plugin.Droid;
 using Acr.UserDialogs;
 using QuestHelper.Managers;
+using Plugin.Permissions;
 
 namespace QuestHelper.Droid
 {
     [Activity(Label = "QuestHelper", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = false, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity, BottomNavigationBar.Listeners.IOnTabClickListener
     {
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+        {
+            PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
 
         public void OnTabReSelected(int position)
         {

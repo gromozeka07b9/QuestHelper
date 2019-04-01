@@ -15,7 +15,7 @@ namespace QuestHelper.View
         public CustomMap()
         {
             Points = new List<PointForMap>();
-            UseInterceptTouchEvent = false;
+            UseInterceptTouchEvent = true;
         }
     }
 }
