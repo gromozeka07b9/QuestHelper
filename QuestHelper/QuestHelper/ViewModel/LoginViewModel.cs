@@ -67,7 +67,7 @@ namespace QuestHelper.ViewModel
                             else
                             {
                                 Analytics.TrackEvent("Register new user error", new Dictionary<string, string> { { "Username", _username } });
-                                await Application.Current.MainPage.DisplayAlert("Внимание!", "Ошибка регистрации пользователя. Возможно, данный адрес e-mail уже используется.", "Ok");
+                                await Application.Current.MainPage.DisplayAlert("Внимание!", "Ошибка регистрации пользователя. Возможно, указанное имя или адрес e-mail уже заняты", "Ok");
                             }
                         }
                     }

@@ -20,6 +20,8 @@ namespace QuestHelper.Model
         private bool _isShared = false;
         private bool _isPublished = false;
         private string _creatorId = string.Empty;
+        private bool _isDeleted = false;
+        private string _imagePreviewPathForList = string.Empty;
 
         public ViewRoute(string routeId)
         {
@@ -50,6 +52,7 @@ namespace QuestHelper.Model
                 _version = route.Version;
                 _isShared = route.IsShared;
                 _isPublished = route.IsPublished;
+                _isDeleted = route.IsDeleted;
                 _creatorId = route.CreatorId;
             }
         }
@@ -140,21 +143,20 @@ namespace QuestHelper.Model
         {
             get
             {
-                RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
-                ViewRoutePointMediaObject vMedia = mediaManager.GetFirstMediaObjectByRouteId(RouteId);
-                if (!string.IsNullOrEmpty(vMedia.Id))
+                if (string.IsNullOrEmpty(_imagePreviewPathForList))
                 {
-                    if (!vMedia.IsDeleted)
+                    RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
+                    ViewRoutePointMediaObject vMedia = mediaManager.GetFirstMediaObjectByRouteId(RouteId);
+                    if (!string.IsNullOrEmpty(vMedia.Id))
                     {
-                        string path = ImagePathManager.GetImagePath(vMedia.RoutePointMediaObjectId, true);
-                        /*if (File.Exists(path))
+                        if (!vMedia.IsDeleted)
                         {
-                            return ImagePathManager.GetImagePath(vMedia.RoutePointMediaObjectId, true);
-                        }*/
-                        return path;
+                            _imagePreviewPathForList = ImagePathManager.GetImagePath(vMedia.RoutePointMediaObjectId, true);
+                        }
                     }
+                    else _imagePreviewPathForList = "mount1.png";
                 }
-                return "mount1.png";
+                return _imagePreviewPathForList;
             }
         }
         public string RouteLengthKm
@@ -241,6 +243,17 @@ namespace QuestHelper.Model
             set
             {
                 _isPublished = value;
+            }
+        }
+        public bool IsDeleted
+        {
+            get
+            {
+                return _isDeleted;
+            }
+            set
+            {
+                _isDeleted = value;
             }
         }
 

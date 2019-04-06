@@ -140,7 +140,11 @@ namespace QuestHelper.Managers
 
         internal IEnumerable<RoutePointMediaObject> GetAllMediaObjects()
         {
-            return _realmInstance.All<RoutePointMediaObject>();
+            var deletedRoutes = _realmInstance.All<Route>().Where(r => r.IsDeleted).ToList().Select(d => d.RouteId);
+            var pointsInDeletedRoutes = _realmInstance.All<RoutePoint>().ToList().Where(r => (deletedRoutes.Any(d => d == r.RouteId))).Select(p=>p.RoutePointId);
+            //return _realmInstance.All<RoutePoint>().ToList().Where(r => (!deletedRoutes.Any(d => d == r.RouteId)));
+            var objects = _realmInstance.All<RoutePointMediaObject>().ToList().Where(m=> (!pointsInDeletedRoutes.Any(p=>p==m.RoutePointId)));
+            return objects;
         }
         internal IEnumerable<RoutePointMediaObject> GetNotSyncedMediaObjects(bool OnlyPreview)
         {

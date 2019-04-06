@@ -31,7 +31,8 @@ namespace QuestHelper.Server.Controllers.Routes
                 {
                     var routeaccess = db.RouteAccess.Where(u => u.UserId == userId).Select(u=>u.RouteId).ToList();
                     var syncIds = syncObject.Statuses.Select(t => t.ObjectId);
-                    var dbRoutes = db.Route.Where(r => (syncIds.Contains(r.RouteId) && routeaccess.Contains(r.RouteId)) || r.IsPublished);
+                    //var dbRoutes = db.Route.Where(r => (syncIds.Contains(r.RouteId) && routeaccess.Contains(r.RouteId)) || r.IsPublished);
+                    var dbRoutes = db.Route.Where(r => (syncIds.Contains(r.RouteId) || routeaccess.Contains(r.RouteId) || r.IsPublished));
                     foreach (var routeVersion in syncObject.Statuses)
                     {
                         var dbRoute = dbRoutes.SingleOrDefault(r => r.RouteId == routeVersion.ObjectId);

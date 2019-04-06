@@ -28,10 +28,10 @@ namespace QuestHelper.Server.Controllers.Points
             {
                 using (var db = new ServerDbContext(_dbOptions))
                 {
-                    var publishRoutes = db.Route.Where(r=>r.IsPublished && r.IsDeleted == false).Select(r => r.RouteId).ToList();
+                    var publishRoutes = db.Route.Where(r=>r.IsPublished).Select(r => r.RouteId).ToList();
                     var routeAccess = db.RouteAccess.Where(u => u.UserId == userId).Select(u => u.RouteId).ToList();
                     var syncIds = syncObject.Statuses.Select(t => t.ObjectId);
-                    var dbObjects = db.RoutePoint.Where(r => syncIds.Contains(r.RoutePointId) && (routeAccess.Contains(r.RouteId) || publishRoutes.Contains(r.RouteId)));
+                    var dbObjects = db.RoutePoint.Where(r => syncIds.Contains(r.RoutePointId) || (routeAccess.Contains(r.RouteId) || publishRoutes.Contains(r.RouteId)));
                     foreach (var clientVersion in syncObject.Statuses)
                     {
                         var dbObject = dbObjects.SingleOrDefault(r => r.RoutePointId == clientVersion.ObjectId);

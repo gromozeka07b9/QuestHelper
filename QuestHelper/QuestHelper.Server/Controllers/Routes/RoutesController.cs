@@ -48,7 +48,7 @@ namespace QuestHelper.Server.Controllers.Routes
             {
                 bool accessGranted = db.RouteAccess.Where(u => u.UserId == userId && u.RouteId == RouteId).Any();
                 Route route = db.Route.Find(RouteId);
-                if ((accessGranted)||(route.IsPublished))
+                if ((accessGranted)||(route.IsPublished)||(route.IsDeleted))
                 {
                     resultRoute = route;
                 }

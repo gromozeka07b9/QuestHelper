@@ -144,7 +144,9 @@ namespace QuestHelper.Managers
         }*/
         internal IEnumerable<RoutePoint> GetPoints()
         {
-            return _realmInstance.All<RoutePoint>();
+            var deletedRoutes = _realmInstance.All<Route>().Where(r => r.IsDeleted).ToList().Select(d=>d.RouteId);
+            return _realmInstance.All<RoutePoint>().ToList().Where(r => (!deletedRoutes.Any(d => d == r.RouteId)));
+            //return _realmInstance.All<RoutePoint>().Where(r=>(!deletedRoutes.Any(d=>d == r.RouteId)));
         }
         internal Tuple<RoutePoint, RoutePoint> GetFirstAndLastPoints(string routeId)
         {

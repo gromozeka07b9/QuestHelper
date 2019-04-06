@@ -90,6 +90,7 @@ namespace QuestHelper.Managers
                     route.CreateDate = viewRoute.CreateDate;
                     route.IsShared = viewRoute.IsShared;
                     route.IsPublished = viewRoute.IsPublished;
+                    route.IsDeleted = viewRoute.IsDeleted;
                     route.CreatorId = viewRoute.CreatorId;
                     viewRoute.Refresh(route.RouteId);
                 });
