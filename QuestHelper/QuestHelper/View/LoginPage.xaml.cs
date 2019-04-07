@@ -28,8 +28,8 @@ namespace QuestHelper.View
 
         private void LoginPage_OnDisappearing(object sender, EventArgs e)
 	    {
-	        var toolbarService = DependencyService.Get<IToolbarService>();
-	        toolbarService.SetVisibilityToolbar(true);
+	        //var toolbarService = DependencyService.Get<IToolbarService>();
+	        //toolbarService.SetVisibilityToolbar(true);
 	    }
     }
 }

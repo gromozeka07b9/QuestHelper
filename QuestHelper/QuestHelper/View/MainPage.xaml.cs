@@ -66,6 +66,8 @@ namespace QuestHelper.View
             MainPageMenuItem item = e.SelectedItem as MainPageMenuItem;
             if (item != null)
                 MessagingCenter.Send<PageNavigationMessage>(new PageNavigationMessage() { DestinationPageDescription = item }, string.Empty);
+            //item = null;
+            MasterPage.ListView.SelectedItem = null;
         }
 
         private void openContentPage(Page page, string title, string iconName)

@@ -40,11 +40,17 @@ namespace QuestHelper.Droid
         {
             if (Visibility)
             {
-                _bottomBar.Show(false);
+                //_bottomBar.Show(false);
+                var layout = _activity.FindViewById<LinearLayout>(Resource.Id.bb_bottom_bar_item_container);
+                layout.Visibility = ViewStates.Visible;
+                _bottomBar.Invalidate();
+                    //.RefreshDrawableState();
             }
             else
             {
-                _bottomBar.Hide(false);
+                //_bottomBar.Hide(false);
+                var layout = _activity.FindViewById<LinearLayout>(Resource.Id.bb_bottom_bar_item_container);
+                layout.Visibility = ViewStates.Gone;
             }
         }
         public void SetDarkMode(bool DarkMode)
