@@ -13,6 +13,7 @@ using Microsoft.AppCenter.Analytics;
 using System.IO;
 using Xamarin.Forms;
 using QuestHelper.Model.Messages;
+using QuestHelper.Model.WS;
 
 namespace QuestHelper.Managers.Sync
 {
@@ -80,36 +81,27 @@ namespace QuestHelper.Managers.Sync
             }
             _errorReport += sbErrors.ToString();
 
+            ImagesServerStatus imagesRequestObject = new ImagesServerStatus();
             foreach (var media in notSyncedMedias)
             {
                 string nameMediafile = ImagePathManager.GetImageFilename(media.RoutePointMediaObjectId, IsSyncPreview);
-                HttpStatusCode checkResult = await _routePointMediaObjectsApi.ImageExist(nameMediafile);
-                AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
-                if (AuthRequired) return false;
-                switch (checkResult)
+                imagesRequestObject.Images.Add(new ImagesServerStatus.Imagefile(){Name = nameMediafile });
+            }
+            ImagesServerStatus imagesResponseObject = await _routePointMediaObjectsApi.GetImagesStatus(imagesRequestObject);
+            AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
+            if (AuthRequired) return false;
+            if (imagesResponseObject.Images.Count > 0)
+            {
+                foreach (var imageItem in imagesResponseObject.Images)
                 {
-                    case HttpStatusCode.NotFound:
-                    {
-                        bool resultUpload = await _routePointMediaObjectsApi.SendImage(media.RoutePointId, media.RoutePointMediaObjectId, IsSyncPreview);
-                        AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
-                        if (AuthRequired) return false;
-                        if (resultUpload)
-                        {
-                            _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, IsSyncPreview, true);
-                        }
-                        else
-                        {
-                            syncResult = false;
-                            sbErrors.AppendLine($"error upload: p:{media.RoutePointId} m:{media.RoutePointMediaObjectId}");
-                        }
-                    }; break;
-                    case HttpStatusCode.OK:
+                    var media = getMediaByImagename(notSyncedMedias, imageItem.Name);
+                    if (imageItem.OnServer)
                     {
                         string pathToPictures = ImagePathManager.GetPicturesDirectory();
-                        string pathToMediaFile = Path.Combine(pathToPictures, nameMediafile);
+                        string pathToMediaFile = Path.Combine(pathToPictures, imageItem.Name);
                         if (!File.Exists(pathToMediaFile))
                         {
-                            bool resultDownload = await _routePointMediaObjectsApi.GetImage(media.RoutePointId, media.RoutePointMediaObjectId, ImagePathManager.GetPicturesDirectory(), nameMediafile);
+                            bool resultDownload = await _routePointMediaObjectsApi.GetImage(media.RoutePointId, media.RoutePointMediaObjectId, ImagePathManager.GetPicturesDirectory(), imageItem.Name);
                             AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
                             if (AuthRequired) return false;
                             if (resultDownload)
@@ -126,14 +118,90 @@ namespace QuestHelper.Managers.Sync
                         {
                             _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, IsSyncPreview, true);
                         }
-                        }; break;
+                    }
+                    else
+                    {
+                        bool resultUpload = await _routePointMediaObjectsApi.SendImage(media.RoutePointId, media.RoutePointMediaObjectId, IsSyncPreview);
+                        AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
+                        if (AuthRequired) return false;
+                        if (resultUpload)
+                        {
+                            _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, IsSyncPreview, true);
+                        }
+                        else
+                        {
+                            syncResult = false;
+                            sbErrors.AppendLine($"error upload: p:{media.RoutePointId} m:{media.RoutePointMediaObjectId}");
+                        }
+                    }
                 }
-
             }
+            /*foreach (var media in notSyncedMedias)
+        {
+            string nameMediafile = ImagePathManager.GetImageFilename(media.RoutePointMediaObjectId, IsSyncPreview);
+            HttpStatusCode checkResult = await _routePointMediaObjectsApi.ImageExist(nameMediafile);
+            AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
+            if (AuthRequired) return false;
+            switch (checkResult)
+            {
+                case HttpStatusCode.NotFound:
+                {
+                    bool resultUpload = await _routePointMediaObjectsApi.SendImage(media.RoutePointId, media.RoutePointMediaObjectId, IsSyncPreview);
+                    AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
+                    if (AuthRequired) return false;
+                    if (resultUpload)
+                    {
+                        _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, IsSyncPreview, true);
+                    }
+                    else
+                    {
+                        syncResult = false;
+                        sbErrors.AppendLine($"error upload: p:{media.RoutePointId} m:{media.RoutePointMediaObjectId}");
+                    }
+                }; break;
+                case HttpStatusCode.OK:
+                {
+                    string pathToPictures = ImagePathManager.GetPicturesDirectory();
+                    string pathToMediaFile = Path.Combine(pathToPictures, nameMediafile);
+                    if (!File.Exists(pathToMediaFile))
+                    {
+                        bool resultDownload = await _routePointMediaObjectsApi.GetImage(media.RoutePointId, media.RoutePointMediaObjectId, ImagePathManager.GetPicturesDirectory(), nameMediafile);
+                        AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
+                        if (AuthRequired) return false;
+                        if (resultDownload)
+                        {
+                            _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, IsSyncPreview, true);
+                        }
+                        else
+                        {
+                            syncResult = false;
+                            sbErrors.AppendLine($"error download: p:{media.RoutePointId} m:{media.RoutePointMediaObjectId}");
+                        }
+                    }
+                    else
+                    {
+                        _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, IsSyncPreview, true);
+                    }
+                    }; break;
+            }
+
+        }*/
 
             _errorReport += sbErrors.ToString();
 
             return syncResult;
+        }
+
+        private RoutePointMediaObject getMediaByImagename(IEnumerable<RoutePointMediaObject> notSyncedMedias, string name)
+        {
+            string imageNameOriginal = name.ToLower().Replace("_preview", "").Replace("img_", "").Trim();
+            var imageNameParts = imageNameOriginal.Split('.');
+            if (imageNameParts.Length > 0)
+            {
+                var item = notSyncedMedias.Where(m => m.RoutePointMediaObjectId.Equals(imageNameParts[0])).SingleOrDefault();
+                return item;
+            }
+            return new RoutePointMediaObject();
         }
 
         private async Task<bool> SendImages(IEnumerable<RoutePointMediaObject> notSyncedMedias, bool isPreview)

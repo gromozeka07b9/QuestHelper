@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 using Newtonsoft.Json;
 using QuestHelper.Server.Managers;
 using QuestHelper.Server.Models;
@@ -56,5 +58,62 @@ namespace QuestHelper.Server.Controllers.Medias
             }
             return new ObjectResult(report);
         }
+
+        [HttpPost("imagestatus")]
+        public async Task<IActionResult> ImagesStatusAsync([FromBody]ImagesServerStatus imagesClient)
+        {
+            string userId = IdentityManager.GetUserId(HttpContext);
+            ImagesServerStatus status = new ImagesServerStatus();
+            using (var db = new ServerDbContext(_dbOptions))
+            {
+                var blobContainer = await GetCloudBlobContainer();
+                foreach (var image in imagesClient.Images)
+                {
+                    string imageNameOriginal = image.Name.ToLower().Replace("_preview", "").Replace("img_", "").Trim();
+                    var imageNameParts = imageNameOriginal.Split('.');
+                    if (imageNameParts.Length > 0)
+                    {
+                        string imageName = imageNameParts[0];
+                        var mediaObject = db.RoutePointMediaObject.Where(m => m.RoutePointMediaObjectId == imageName).SingleOrDefault();
+                        if (mediaObject != null)
+                        {
+                            if (image.Name.Contains("_preview"))
+                            {
+                                image.OnServer = mediaObject.ImagePreviewLoadedToServer;
+                                if (!mediaObject.ImagePreviewLoadedToServer)
+                                {
+                                    var blob = blobContainer.GetBlockBlobReference(image.Name);
+                                    image.OnServer = await blob.ExistsAsync();
+                                }
+                            }
+                            else
+                            {
+                                image.OnServer = mediaObject.ImageLoadedToServer;
+                                if (!mediaObject.ImageLoadedToServer)
+                                {
+                                    var blob = blobContainer.GetBlockBlobReference(image.Name);
+                                    image.OnServer = await blob.ExistsAsync();
+                                }
+                            }
+                        }
+                        status.Images.Add(image);
+                    }
+                }
+            }
+
+            return new ObjectResult(status);
+        }
+        private async Task<CloudBlobContainer> GetCloudBlobContainer()
+        {
+            string blobConnectionString = System.Environment.ExpandEnvironmentVariables("%GoshBlobStoreConnectionString%");
+            if (string.IsNullOrEmpty(blobConnectionString))
+                throw new Exception("Error reading blob connection string!");
+            var account = CloudStorageAccount.Parse(blobConnectionString);
+            var client = account.CreateCloudBlobClient();
+            var container = client.GetContainerReference("questhelperblob");
+            await container.CreateIfNotExistsAsync();
+            return container;
+        }
+
     }
 }

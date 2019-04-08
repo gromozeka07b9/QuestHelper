@@ -13,6 +13,7 @@ using QuestHelper.LocalDB.Model;
 using Newtonsoft.Json.Linq;
 using QuestHelper.Managers;
 using QuestHelper.Model;
+using QuestHelper.Model.WS;
 using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration;
 
@@ -145,6 +146,26 @@ namespace QuestHelper.WS
             catch (Exception e)
             {
                 HandleError.Process("RoutePointMediaObjectApiRequest", "GetSyncStatus", e, false);
+            }
+
+            return deserializedValue;
+        }
+
+        public async Task<ImagesServerStatus> GetImagesStatus(ImagesServerStatus imagesServerStatus)
+        {
+            JObject jsonRequestObject = JObject.FromObject(imagesServerStatus);
+
+            ImagesServerStatus deserializedValue = new ImagesServerStatus();
+            try
+            {
+                ApiRequest api = new ApiRequest();
+                var response = await api.HttpRequestPOST($"{_hostUrl}/routepointmediaobjects/sync/imagestatus", jsonRequestObject.ToString(), _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
+                deserializedValue = JsonConvert.DeserializeObject<ImagesServerStatus>(response);
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RoutePointMediaObjectApiRequest", "GetImagesStatus", e, false);
             }
 
             return deserializedValue;

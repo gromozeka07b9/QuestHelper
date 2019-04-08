@@ -167,9 +167,12 @@ namespace QuestHelper.Managers
         {
             int count = 0;
             var route = _realmInstance.All<Route>().Where(x => x.RouteId == routeId&&!x.IsDeleted).FirstOrDefault();
-            foreach (var point in route.Points)
+            if (route != null)
             {
-                count += _realmInstance.All<RoutePointMediaObject>().Where(x => x.RoutePointId == point.RoutePointId&&!point.IsDeleted).Count();
+                foreach (var point in route.Points)
+                {
+                    count += _realmInstance.All<RoutePointMediaObject>().Where(x => x.RoutePointId == point.RoutePointId && !point.IsDeleted).Count();
+                }
             }
 
             return count;
