@@ -1,16 +1,21 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using QuestHelper.Server.Managers;
 using QuestHelper.Server.Models.WS;
 
 namespace QuestHelper.Server.Controllers.RouteSync
 {
+    [Authorize]
+    [ServiceFilter(typeof(RequestFilter))]
     [Produces("application/json")]
     [Route("api/route")]//Внимательно, маршрут отличается от контроллера!
     public class RouteSyncController : Controller
@@ -65,15 +70,51 @@ namespace QuestHelper.Server.Controllers.RouteSync
                 route.Route.Points.Add(point);
             }
 
-            using (SHA256 hash = SHA256.Create())
+            /*using (SHA256 hash = SHA256.Create())
             {
                 byte[] versionAsBytes = Encoding.ASCII.GetBytes(versions.ToString());
                 byte[] versionHash = hash.ComputeHash(versionAsBytes);
 
                 route.VersionHash = BitConverter.ToString(versionHash).Replace("-",string.Empty);
-            }
+            }*/
             return new ObjectResult(route);
         }
+
+        [HttpGet("version/get")]
+        public IActionResult GetRouteData()
+        {
+            string userId = IdentityManager.GetUserId(HttpContext);
+            //string userId = "bf7d6d63-6b18-4e54-a2d9-703a60ca73f6";
+
+            DateTime startDate = DateTime.Now;
+            List<RouteVersion> routeVersions = new List<RouteVersion>();
+            using (var db = new ServerDbContext(_dbOptions))
+            {
+                var routeaccess = db.RouteAccess.Where(u => u.UserId == userId).Select(u => u.RouteId).ToList();
+                routeVersions = db.Route.Where(r => routeaccess.Contains(r.RouteId)).Select(r=>new RouteVersion(){Id = r.RouteId, Version = r.Version}).ToList();
+                var pointIds = db.RoutePoint.Where(p => routeVersions.Where(r => r.Id == p.RouteId).Any()).Select(p => new {p.RouteId, p.RoutePointId, p.Version}).ToList();
+                var mediaIds = db.RoutePointMediaObject
+                    .Where(m => pointIds.Where(p => p.RoutePointId == m.RoutePointId).Any()).Select(m => new {m.RoutePointMediaObjectId, m.Version, m.RoutePointId})
+                    .ToList();
+                foreach (var route in routeVersions)
+                {
+                    int pointsVersionSum = 0;
+                    int mediasVersionSum = 0;
+                    var routePoints = pointIds.Where(p => p.RouteId == route.Id);
+                    pointsVersionSum = routePoints.Select(p=>p.Version).Sum();
+                    foreach (var point in routePoints)
+                    {
+                        mediasVersionSum += mediaIds.Where(m => m.RoutePointId == point.RoutePointId).Select(m => m.Version).Sum();
+                    }
+
+                    route.ObjVerHash = HashGenerator.Generate((route.Version + pointsVersionSum + mediasVersionSum).ToString());
+                }
+            }
+
+            TimeSpan delay = DateTime.Now - startDate;
+            return new ObjectResult(routeVersions);
+        }
+
 
         [HttpGet("{routeid}")]
         public IActionResult GetRouteData(string routeId)
