@@ -42,6 +42,22 @@ namespace QuestHelper.WS
             }
             return deserializedValue;
         }
+        public async Task<List<Route>> GetRoutesVersions()
+        {
+            List<Route> deserializedValue = new List<Route>();
+            try
+            {
+                ApiRequest api = new ApiRequest();
+                var response = await api.HttpRequestGET($"{this._hostUrl}/routes", _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
+                deserializedValue = JsonConvert.DeserializeObject<List<Route>>(response);
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RoutesApiRequest", "GetRoutes", e, false);
+            }
+            return deserializedValue;
+        }
 
 
         public async Task<SyncObjectStatus> GetSyncStatus(IEnumerable<Tuple<string, int>> routes)

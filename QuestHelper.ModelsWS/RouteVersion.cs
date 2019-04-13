@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace QuestHelper.Server.Models.WS
+namespace QuestHelper.SharedModelsWS
 {
     public class RouteVersion : ModelVersionBase
     {

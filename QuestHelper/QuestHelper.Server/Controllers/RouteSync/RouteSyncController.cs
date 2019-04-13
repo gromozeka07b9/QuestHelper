@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuestHelper.Server.Managers;
-using QuestHelper.Server.Models.WS;
+using QuestHelper.Server.Models;
+using QuestHelper.SharedModelsWS;
+using Route = QuestHelper.SharedModelsWS.Route;
+using RoutePoint = QuestHelper.SharedModelsWS.RoutePoint;
 
 namespace QuestHelper.Server.Controllers.RouteSync
 {
@@ -90,19 +90,19 @@ namespace QuestHelper.Server.Controllers.RouteSync
             AvailableRoutes availRoutes = new AvailableRoutes(_dbOptions);
             var dbRoute = availRoutes.Get(userId).FirstOrDefault(r=>r.RouteId == routeId);
             if (dbRoute != null)
-            {
-                routeRoot.Route = new Route(dbRoute);
+            {                
+                routeRoot.Route = ConverterDbModelToWs.RouteConvert(dbRoute);
 
                 using (var db = new ServerDbContext(_dbOptions))
                 {
                     var dbPoints = db.RoutePoint.Where(p => p.RouteId == dbRoute.RouteId).ToList();
                     foreach (var dbPoint in dbPoints)
                     {
-                        RoutePoint routePoint = new RoutePoint(dbPoint);
+                        RoutePoint routePoint = ConverterDbModelToWs.RoutePointConvert(dbPoint);
                         var dbMedias = db.RoutePointMediaObject.Where(m => m.RoutePointId == dbPoint.RoutePointId);
                         foreach (var dbMedia in dbMedias)
                         {
-                            routePoint.MediaObjects.Add(new RoutePointMediaObject(dbMedia));
+                            routePoint.MediaObjects.Add(ConverterDbModelToWs.RoutePointMediaObjectConvert(dbMedia));
                         }
                         routeRoot.Route.Points.Add(routePoint);
                     }

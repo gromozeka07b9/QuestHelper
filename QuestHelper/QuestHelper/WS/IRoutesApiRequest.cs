@@ -8,5 +8,6 @@ namespace QuestHelper.WS
     public interface IRoutesApiRequest
     {
         Task<List<Route>> GetRoutes();
+        Task<List<Route>> GetRoutesVersions();
     }
 }

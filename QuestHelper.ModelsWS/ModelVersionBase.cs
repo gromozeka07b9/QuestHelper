@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace QuestHelper.Server.Models.WS
+namespace QuestHelper.SharedModelsWS
 {
-    public abstract class ModelBase
+    public abstract class ModelVersionBase
     {
         public string Id { get; set; }
-        public DateTimeOffset CreateDate { get; set; }
         public int Version { get; set; }
-        public bool IsDeleted { get; set; }
     }
 }

@@ -14,6 +14,20 @@ namespace QuestHelper.Managers.Sync
     {
         public static bool AuthRequired = false;
 
+        public static async System.Threading.Tasks.Task<Tuple<bool, string>> SyncAll_v2()
+        {
+            string errorMsg = string.Empty;
+            bool syncResult = false;
+
+            TokenStoreService token = new TokenStoreService();
+            string authToken = await token.GetAuthTokenAsync();
+            if (!string.IsNullOrEmpty(authToken))
+            {
+                SyncRoutes syncRoutes = new SyncRoutes(authToken);
+
+            }
+        }
+
         public static async System.Threading.Tasks.Task<Tuple<bool, string>> SyncAllAsync()
         {
             string errorMsg = string.Empty;
