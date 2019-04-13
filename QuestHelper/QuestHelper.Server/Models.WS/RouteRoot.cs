@@ -8,11 +8,9 @@ namespace QuestHelper.Server.Models.WS
     public class RouteRoot
     {
         public Route Route;
-        public ICollection<RoutePoint> Points { get; set; }
 
         public RouteRoot()
         {
-            Points = new List<RoutePoint>();
         }
 
     }
