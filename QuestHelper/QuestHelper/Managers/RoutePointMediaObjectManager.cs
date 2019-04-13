@@ -107,6 +107,13 @@ namespace QuestHelper.Managers
                         _realmInstance.Add(mediaObject);
                     }
 
+                    if (mediaObject.Version != vmedia.Version)
+                    {
+                        //нужно для того, чтобы синхронизация обнаружила отличия от сервера и проверила версии с последующей отправкой изменений на сервер
+                        var route = pointObject.MainRoute;
+                        route.ObjVerHash = string.Empty;
+                    }
+
                     returnId = mediaObject.RoutePointMediaObjectId;
                     mediaObject.OriginalServerSynced = vmedia.OriginalServerSynced;
                     mediaObject.PreviewServerSynced = vmedia.PreviewServerSynced;

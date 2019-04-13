@@ -92,6 +92,7 @@ namespace QuestHelper.Managers
                     route.IsPublished = viewRoute.IsPublished;
                     route.IsDeleted = viewRoute.IsDeleted;
                     route.CreatorId = viewRoute.CreatorId;
+                    route.ObjVerHash = viewRoute.ObjVerHash;
                     viewRoute.Refresh(route.RouteId);
                 });
                 result = true;

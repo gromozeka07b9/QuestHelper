@@ -131,7 +131,8 @@ namespace QuestHelper
 	            Application.Current.Properties.Remove(statusSyncKey);
                 Application.Current.Properties.Add(statusSyncKey, $"Sync started:{startTime.ToLocalTime().ToString()}");
 
-                var syncResult = await SyncServer.SyncAllAsync();
+                //var syncResult = await SyncServer.SyncAllAsync();
+	            var syncResult = await SyncServer.SyncAll_v2();
 	            SynchronizeStarted = false;
                 if (!syncResult.Item1)
 	            {

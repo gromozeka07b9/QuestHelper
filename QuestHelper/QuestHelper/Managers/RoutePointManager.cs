@@ -91,6 +91,12 @@ namespace QuestHelper.Managers
                     {
                         //point = _realmInstance.Find<RoutePoint>(vpoint.Id);
                     }
+
+                    if (point.Version != vpoint.Version)
+                    {
+                        //нужно для того, чтобы синхронизация обнаружила отличия от сервера и проверила версии с последующей отправкой изменений на сервер
+                        point.MainRoute.ObjVerHash = string.Empty;
+                    }
                     returnid = point.RoutePointId;
                     point.Address = vpoint.Address;
                     point.Description = vpoint.Description;

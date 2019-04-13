@@ -18,7 +18,8 @@ namespace QuestHelper.Managers
                 {
                     var config = new RealmConfiguration()
                     {
-                        SchemaVersion = 2, MigrationCallback = (migration, oldSchemaVersion) =>
+                        //v3 - added Route.ObjVerHash
+                        SchemaVersion = 3, MigrationCallback = (migration, oldSchemaVersion) =>
                         {
 
                         }

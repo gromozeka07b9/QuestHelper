@@ -1,5 +1,6 @@
 ﻿using QuestHelper.LocalDB.Model;
 using QuestHelper.Managers;
+using QuestHelper.SharedModelsWS;
 using Realms;
 using System;
 using System.Collections.Generic;
@@ -32,12 +33,25 @@ namespace QuestHelper.Model
             if (mediaObject != null)
             {
                 _id = mediaObject.RoutePointMediaObjectId;
+                _routePointId = mediaObject.RoutePointId;
                 _filename = $"img_{_id}.jpg";
                 _filenamePreview = $"img_{_id}_preview.jpg";
                 _version = mediaObject.Version;
                 _originalServerSynced = mediaObject.OriginalServerSynced;
                 _previewServerSynced = mediaObject.PreviewServerSynced;
                 _serverSyncedDate = mediaObject.ServerSyncedDate;
+                _isDeleted = mediaObject.IsDeleted;
+            }
+        }
+        internal void FillFromWSModel(SharedModelsWS.RoutePointMediaObject mediaObject)
+        {
+            if (mediaObject != null)
+            {
+                _id = mediaObject.Id;
+                _routePointId = mediaObject.RoutePointId;
+                _filename = $"img_{_id}.jpg";
+                _filenamePreview = $"img_{_id}_preview.jpg";
+                _version = mediaObject.Version;
                 _isDeleted = mediaObject.IsDeleted;
             }
         }

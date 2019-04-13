@@ -1,5 +1,6 @@
 ﻿using QuestHelper.LocalDB.Model;
 using QuestHelper.Managers;
+using QuestHelper.SharedModelsWS;
 using Realms;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Xamarin.Forms;
+using RoutePoint = QuestHelper.SharedModelsWS.RoutePoint;
 
 namespace QuestHelper.Model
 {
@@ -22,7 +24,7 @@ namespace QuestHelper.Model
         private double _latitude = 0;
         private double _longtitude = 0;
         private int _version = 0;
-        private List<RoutePointMediaObject> _mediaObjects = new List<RoutePointMediaObject>();
+        private List<LocalDB.Model.RoutePointMediaObject> _mediaObjects = new List<LocalDB.Model.RoutePointMediaObject>();
         private DateTimeOffset _createDate;
         private RoutePointManager routePointManager = new RoutePointManager();
         private RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
@@ -48,7 +50,7 @@ namespace QuestHelper.Model
         }
         private void load(string routePointId)
         {
-            RoutePoint point = routePointManager.GetPointById(routePointId);
+            LocalDB.Model.RoutePoint point = routePointManager.GetPointById(routePointId);
             if (point != null)
             {
                 _id = routePointId;
@@ -59,6 +61,21 @@ namespace QuestHelper.Model
                 _longtitude = point.Longitude;
                 _createDate = point.CreateDate;
                 _version = point.Version;
+                refreshMediaObjects();
+            }
+        }
+        internal void FillFromWSModel(RoutePoint routePoint)
+        {
+            if (routePoint != null)
+            {
+                _id = routePoint.Id;
+                _name = routePoint.Name;
+                _description = routePoint.Description;
+                _address = routePoint.Address;
+                _latitude = routePoint.Latitude.HasValue ? (double)routePoint.Latitude : 0;
+                _longtitude = routePoint.Longitude.HasValue ? (double)routePoint.Longitude : 0;
+                _createDate = routePoint.CreateDate;
+                _version = routePoint.Version;
                 refreshMediaObjects();
             }
         }
@@ -84,7 +101,7 @@ namespace QuestHelper.Model
                 load(routePointId);
         }
 
-        public List<RoutePointMediaObject> MediaObjects
+        public List<LocalDB.Model.RoutePointMediaObject> MediaObjects
         {
             get
             {
@@ -138,6 +155,7 @@ namespace QuestHelper.Model
                 return _createDate.ToString("D");
             }
         }
+
         public string NameText
         {
             get

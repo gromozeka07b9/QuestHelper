@@ -24,8 +24,8 @@ namespace QuestHelper.Tests
         public async Task TestMust_GetRoutesAsync()
         {
             RoutesApiRequest _routesApi = new RoutesApiRequest(apiUrl, authToken);
-            var result = await _routesApi.GetRoutes();
-            Assert.True(result.Count > 0);
+            //var result = await _routesApi.GetRoutes();
+            //Assert.True(result.Count > 0);
         }
 
         /*[Fact]
@@ -90,8 +90,8 @@ namespace QuestHelper.Tests
             route.Version++;
             IEnumerable<Route> routes = new List<Route>() { route };
             var syncStatus = new RoutesApiRequest(apiUrl, authToken).GetSyncStatus(routes.Select(x => new Tuple<string, int>(x.RouteId, x.Version)));
-            var deleteResult = await new RoutesApiRequest(apiUrl, authToken).DeleteRoute(route);
-            if (!deleteResult) throw new Exception("Error while deleting route");
+            //var deleteResult = await new RoutesApiRequest(apiUrl, authToken).DeleteRoute(route);
+            //if (!deleteResult) throw new Exception("Error while deleting route");
 
             //Assert
             //если версия маршрута на сервере и клиенте одна и та же, он не возвращается с сервера                       

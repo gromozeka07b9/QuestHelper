@@ -8,13 +8,14 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
-using QuestHelper.LocalDB.Model;
 using QuestHelper.Model;
 using System.Threading;
+using QuestHelper.SharedModelsWS;
 
 namespace QuestHelper.WS
 {
-    public class RoutesApiRequest : IRoutesApiRequest, IDownloadable<ViewRoute>, IUploadable<ViewRoute>
+    //public class RoutesApiRequest : IRoutesApiRequest, IDownloadable<ViewRoute>, IUploadable<ViewRoute>
+    public class RoutesApiRequest : IDownloadable<ViewRoute>, IUploadable<ViewRoute>
     {
         private string _hostUrl = string.Empty;
         private string _authToken = string.Empty;
@@ -26,39 +27,39 @@ namespace QuestHelper.WS
             _authToken = authToken;
         }
 
-        public async Task<List<Route>> GetRoutes()
+        public async Task<List<RouteVersion>> GetRoutesVersions()
         {
-            List<Route> deserializedValue = new List<Route>();
+            List<RouteVersion> deserializedValue = new List<RouteVersion>();
             try
             {
                 ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{this._hostUrl}/routes", _authToken);
+                var response = await api.HttpRequestGET($"{this._hostUrl}/route/version/get", _authToken);
                 LastHttpStatusCode = api.LastHttpStatusCode;
-                deserializedValue = JsonConvert.DeserializeObject<List<Route>>(response);
+                deserializedValue = JsonConvert.DeserializeObject<List<RouteVersion>>(response);
             }
             catch (Exception e)
             {
-                HandleError.Process("RoutesApiRequest", "GetRoutes", e, false);
-            }
-            return deserializedValue;
-        }
-        public async Task<List<Route>> GetRoutesVersions()
-        {
-            List<Route> deserializedValue = new List<Route>();
-            try
-            {
-                ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{this._hostUrl}/routes", _authToken);
-                LastHttpStatusCode = api.LastHttpStatusCode;
-                deserializedValue = JsonConvert.DeserializeObject<List<Route>>(response);
-            }
-            catch (Exception e)
-            {
-                HandleError.Process("RoutesApiRequest", "GetRoutes", e, false);
+                HandleError.Process("RoutesApiRequest", "GetRoutesVersions", e, false);
             }
             return deserializedValue;
         }
 
+        public async Task<RouteRoot> GetRouteRoot(string routeId)
+        {
+            RouteRoot deserializedValue = new RouteRoot();
+            try
+            {
+                ApiRequest api = new ApiRequest();
+                var response = await api.HttpRequestGET($"{this._hostUrl}/route/{routeId}", _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
+                deserializedValue = JsonConvert.DeserializeObject<RouteRoot>(response);
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RoutesApiRequest", "GetRouteRoot", e, false);
+            }
+            return deserializedValue;
+        }
 
         public async Task<SyncObjectStatus> GetSyncStatus(IEnumerable<Tuple<string, int>> routes)
         {
@@ -112,7 +113,7 @@ namespace QuestHelper.WS
             return new SyncObjectStatus();
         }
 
-        public async Task<bool> DeleteRoute(Route routeObject)
+        public async Task<bool> DeleteRoute(QuestHelper.LocalDB.Model.Route routeObject)
         {
             bool deleteResult = false;
             try

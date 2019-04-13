@@ -19,6 +19,7 @@ namespace QuestHelper.LocalDB.Model
         /// Версия записи
         /// </summary>
         public int Version { get; set; }
+        public string ObjVerHash { get; set; }
         public bool IsShared { get; set; }
         public bool IsPublished { get; set; }
         public string DefaultImage { get; set; }

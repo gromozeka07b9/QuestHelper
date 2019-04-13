@@ -24,8 +24,9 @@ namespace QuestHelper.Managers.Sync
             if (!string.IsNullOrEmpty(authToken))
             {
                 SyncRoutes syncRoutes = new SyncRoutes(authToken);
-
+                bool result = await syncRoutes.Sync();
             }
+            return new Tuple<bool, string>(syncResult, errorMsg);
         }
 
         public static async System.Threading.Tasks.Task<Tuple<bool, string>> SyncAllAsync()

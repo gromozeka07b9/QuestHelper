@@ -1,5 +1,6 @@
 ﻿using QuestHelper.LocalDB.Model;
 using QuestHelper.Managers;
+using QuestHelper.SharedModelsWS;
 using Realms;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace QuestHelper.Model
         private string _creatorId = string.Empty;
         private bool _isDeleted = false;
         private string _imagePreviewPathForList = string.Empty;
+        private string _objVerHash = string.Empty;
 
         public ViewRoute(string routeId)
         {
@@ -43,7 +45,7 @@ namespace QuestHelper.Model
         public void Load(string routeId)
         {
             RouteManager manager = new RouteManager();
-            Route route = manager.GetRouteById(routeId);
+            LocalDB.Model.Route route = manager.GetRouteById(routeId);
             if (route != null)
             {
                 _id = route.RouteId;
@@ -54,6 +56,22 @@ namespace QuestHelper.Model
                 _isPublished = route.IsPublished;
                 _isDeleted = route.IsDeleted;
                 _creatorId = route.CreatorId;
+                _objVerHash = route.ObjVerHash;
+            }
+        }
+        internal void FillFromWSModel(RouteRoot routeRoot, string routeHash)
+        {
+            if (routeRoot != null)
+            {
+                _id = routeRoot.Route.Id;
+                _name = routeRoot.Route.Name;
+                _createDate = routeRoot.Route.CreateDate;
+                _version = routeRoot.Route.Version;
+                _isShared = routeRoot.Route.IsShared;
+                _isPublished = routeRoot.Route.IsPublished;
+                _isDeleted = routeRoot.Route.IsDeleted;
+                _creatorId = routeRoot.Route.CreatorId;
+                _objVerHash = routeHash;
             }
         }
 
@@ -125,6 +143,18 @@ namespace QuestHelper.Model
             set
             {
                 _createDate = value;
+            }
+        }
+
+        public string ObjVerHash
+        {
+            set
+            {
+                _objVerHash = value;
+            }
+            get
+            {
+                return _objVerHash;
             }
         }
 

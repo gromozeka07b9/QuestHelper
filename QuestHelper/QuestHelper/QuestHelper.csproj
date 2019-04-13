@@ -32,6 +32,7 @@
     <PackageReference Include="Xamarin.Forms.Maps" Version="3.4.0.1008975" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\QuestHelper.ModelsWS\QuestHelper.SharedModelsWS.csproj" />
     <ProjectReference Include="..\QuestHelper.LocalDB\QuestHelper.LocalDB.csproj" />
   </ItemGroup>
 
