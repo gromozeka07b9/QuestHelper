@@ -54,7 +54,7 @@ namespace QuestHelper.Managers.Sync
             return result;
         }
 
-        private List<string> GetJsonStructures(List<string> pointsForUpload)
+        internal List<string> GetJsonStructures(List<string> pointsForUpload)
         {
             List<string> jsonStructures = new List<string>();
 

@@ -38,7 +38,7 @@ namespace QuestHelper.Managers.Sync
                 var routesLocal = _routeManager.GetRoutesForSync().Select(x => new {x.RouteId, x.Version, x.ObjVerHash});
                 var differentRoutes = listRoutesVersions.Where(r=>(!routesLocal.Any(l=>(l.RouteId == r.Id && l.ObjVerHash == r.ObjVerHash))));
                 List<Tuple<string, string>> newServerRoutes = new List<Tuple<string, string>>();
-                List<Tuple<string, string>> newClientRoutes = new List<Tuple<string, string>>();
+                List<string> newClientRoutes = new List<string>();
                 List<Tuple<string, string>> changedRoutes = new List<Tuple<string, string>>();
                 foreach (var routeVersion in differentRoutes)
                 {
@@ -54,8 +54,10 @@ namespace QuestHelper.Managers.Sync
                     }
                 }
 
+                newClientRoutes = routesLocal.Where(r => !listRoutesVersions.Any(d => d.Id == r.RouteId)).Select(r=>r.RouteId).ToList();
+
                 bool resultUpdate = await UpdateRoutesAsync(changedRoutes);
-                //bool resultUpload = UploadRoutes(newClientRoutes);
+                bool resultUpload = await UploadRoutes(newClientRoutes);
                 bool resultDownload = await DownloadRoutesAsync(newServerRoutes);
             }
             return result;
@@ -63,6 +65,10 @@ namespace QuestHelper.Managers.Sync
 
         private async Task<bool> UpdateRoutesAsync(List<Tuple<string, string>> changedRoutes)
         {
+            List<string> routesToUpload = new List<string>();
+            List<string> pointsToUpload = new List<string>();
+            List<string> mediasToUpload = new List<string>();
+
             foreach (var serverRoute in changedRoutes)
             {
                 var routeRoot = await _routesApi.GetRouteRoot(serverRoute.Item1);
@@ -80,8 +86,8 @@ namespace QuestHelper.Managers.Sync
                     }
                     else if(routeRoot.Route.Version < localRoute.Version)
                     {
-                        //отправка
-                        updateResult = true;
+                        //в очередь на отправку
+                        routesToUpload.Add(routeRoot.Route.Id);
                     }
                     else if (routeRoot.Route.Version == localRoute.Version)
                     {
@@ -101,7 +107,8 @@ namespace QuestHelper.Managers.Sync
                             }
                             else if (serverPoint.Version < localPoint.Version)
                             {
-                                //отправка
+                                //в очередь на отправку
+                                pointsToUpload.Add(serverPoint.Id);
                                 updateResult = true;
                             }
                             else if (serverPoint.Version == localPoint.Version)
@@ -122,12 +129,13 @@ namespace QuestHelper.Managers.Sync
                                     }
                                     else if (mediaObject.Version < localMedia.Version)
                                     {
-                                        //отправка
+                                        //в очередь на отправку
+                                        mediasToUpload.Add(mediaObject.Id);
                                         updateResult = true;
                                     }
                                     else if (mediaObject.Version == localMedia.Version)
                                     {
-                                        //нет изменений, они где-то глубже чем на уровне медиа
+                                        //нет изменений, скорее всего какой-то косяк
                                         updateResult = true;
                                     }
 
@@ -149,9 +157,9 @@ namespace QuestHelper.Managers.Sync
             return true;
         }
 
-        private bool UploadRoutes(List<Tuple<string, string>> newClientRoutes)
+        private async Task<bool> UploadRoutes(List<string> newClientRoutes)
         {
-            return true;
+            return await UploadAsync(GetJsonStructures(newClientRoutes), _routesApi);
         }
 
         private async Task<bool> DownloadRoutesAsync(List<Tuple<string, string>> newServerRoutes)
