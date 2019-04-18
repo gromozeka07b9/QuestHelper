@@ -7,6 +7,7 @@ namespace QuestHelper.SharedModelsWS
     {
         public ICollection<PointVersion> Points { get; set; }
         public string ObjVerHash = string.Empty;
+        public string ObjVer = string.Empty;
         public RouteVersion()
         {
             Points = new List<PointVersion>();

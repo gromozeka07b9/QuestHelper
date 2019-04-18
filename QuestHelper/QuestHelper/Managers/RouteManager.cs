@@ -16,10 +16,19 @@ namespace QuestHelper.Managers
         {
             _realmInstance = RealmAppInstance.GetAppInstance();
         }
-        /*internal IEnumerable<Route> GetRoutes()
+        internal IEnumerable<ViewRoute> GetRoutes(List<string> iDs)
         {
-            return _realmInstance.All<Route>().OrderByDescending(r => r.CreateDate);
-        }*/
+            List<ViewRoute> vroutes = new List<ViewRoute>();
+            var dbRoutes = _realmInstance.All<Route>().ToList().Where(r => iDs.Contains(r.RouteId));
+            if (dbRoutes.Any())
+            {
+                foreach (var route in dbRoutes)
+                {
+                    vroutes.Add(new ViewRoute(route.RouteId));
+                }
+            }
+            return vroutes;
+        }
         internal IEnumerable<ViewRoute> GetRoutes(string UserId)
         {
             List<ViewRoute> vroutes = new List<ViewRoute>();

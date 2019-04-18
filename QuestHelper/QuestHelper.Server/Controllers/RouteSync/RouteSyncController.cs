@@ -58,21 +58,22 @@ namespace QuestHelper.Server.Controllers.RouteSync
                 {
                     StringBuilder versions = new StringBuilder();
                     versions.Append(route.Version.ToString());
-                    var routePoints = pointIds.Where(p => p.RouteId == route.Id).Select(p=>new {p.Version, p.RoutePointId});
+                    var routePoints = pointIds.Where(p => p.RouteId == route.Id).Select(p=>new {p.Version, p.RoutePointId}).OrderBy(p=>p.RoutePointId);
                     foreach (var item in routePoints)
                     {
                         versions.Append(item.Version.ToString());
                     }
                     foreach (var point in routePoints)
                     {
-                        var mediaVersions = mediaIds.Where(m => m.RoutePointId == point.RoutePointId).Select(m => m.Version);
+                        var mediaVersions = mediaIds.Where(m => m.RoutePointId == point.RoutePointId).Select(m => m.Version).OrderBy(m=>m);
                         foreach (int version in mediaVersions)
                         {
                             versions.Append(version.ToString());
                         }
                     }
-
-                    route.ObjVerHash = HashGenerator.Generate(versions.ToString());
+                    //FFDC094EA6D4AF89DFC4FC5882631B9005FCD682D89249DF8018782ECC3AC338
+                    route.ObjVer = versions.ToString();
+                    route.ObjVerHash = HashGenerator.Generate(route.ObjVer);
                 }
             }
 
@@ -108,7 +109,6 @@ namespace QuestHelper.Server.Controllers.RouteSync
                     }
                 }
             }
-
             return new ObjectResult(routeRoot);
         }
     }

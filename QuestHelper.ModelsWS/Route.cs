@@ -14,5 +14,8 @@ namespace QuestHelper.SharedModelsWS
         public string CreatorId { get; set; }
         public bool IsShared { get; set; }
         public bool IsPublished { get; set; }
+        public DateTimeOffset CreateDate { get; set; }
+        public int Version { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using QuestHelper.Model;
 using Xamarin.Forms;
+using Route = QuestHelper.SharedModelsWS.Route;
 
 namespace QuestHelper.Managers.Sync
 {
@@ -59,8 +60,37 @@ namespace QuestHelper.Managers.Sync
                 bool resultUpdate = await UpdateRoutesAsync(changedRoutes);
                 bool resultUpload = await UploadRoutes(newClientRoutes);
                 bool resultDownload = await DownloadRoutesAsync(newServerRoutes);
+                if ((changedRoutes.Count > 0) || (newClientRoutes.Count > 0) || (newServerRoutes.Count > 0))
+                {
+                    List<string> routesForGenerateHash = new List<string>();
+                    routesForGenerateHash.AddRange(changedRoutes.Select(r=>r.Item1));
+                    routesForGenerateHash.AddRange(newClientRoutes.Select(r=>r));
+                    routesForGenerateHash.AddRange(newServerRoutes.Select(r => r.Item1));
+                    generateHashForRoutes(routesForGenerateHash);
+                }
             }
             return result;
+        }
+
+        private void generateHashForRoutes(List<string> routesForGenerateHash)
+        {
+            StringBuilder versions = new StringBuilder();
+            var routes = _routeManager.GetRoutes(routesForGenerateHash);
+            foreach (var route in routes)
+            {
+                versions.Append(route.Version);
+                foreach (var point in _routePointManager.GetPointsByRouteId(route.RouteId).OrderBy(p=>p.RoutePointId))
+                {
+                    versions.Append(route.Version);
+                    foreach (var media in _routePointMediaManager.GetMediaObjectsByRoutePointId(point.RoutePointId).OrderBy(m=>m.RoutePointMediaObjectId))
+                    {
+                        versions.Append(media.Version);
+                    }
+                }
+                string test = HashManager.Generate("322");
+                route.ObjVerHash = HashManager.Generate(versions.ToString());
+                route.Save();
+            }
         }
 
         private async Task<bool> UpdateRoutesAsync(List<Tuple<string, string>> changedRoutes)
