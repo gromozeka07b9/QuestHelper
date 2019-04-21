@@ -81,7 +81,7 @@ namespace QuestHelper.Managers.Sync
                 versions.Append(route.Version);
                 foreach (var point in _routePointManager.GetPointsByRouteId(route.RouteId).OrderBy(p=>p.RoutePointId))
                 {
-                    versions.Append(route.Version);
+                    versions.Append(point.Version);
                     foreach (var media in _routePointMediaManager.GetMediaObjectsByRoutePointId(point.RoutePointId).OrderBy(m=>m.RoutePointMediaObjectId))
                     {
                         versions.Append(media.Version);
