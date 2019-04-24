@@ -63,15 +63,11 @@ namespace QuestHelper.Server.Controllers.RouteSync
                     {
                         versions.Append(item.Version.ToString());
                     }
-                    foreach (var point in routePoints)
+                    var mediaVersions = mediaIds.Where(m => routePoints.Any(p=>p.RoutePointId == m.RoutePointId)).OrderBy(m => m.RoutePointMediaObjectId).Select(m => m.Version);
+                    foreach (int version in mediaVersions)
                     {
-                        var mediaVersions = mediaIds.Where(m => m.RoutePointId == point.RoutePointId).Select(m => m.Version).OrderBy(m=>m);
-                        foreach (int version in mediaVersions)
-                        {
-                            versions.Append(version.ToString());
-                        }
+                        versions.Append(version.ToString());
                     }
-                    //FFDC094EA6D4AF89DFC4FC5882631B9005FCD682D89249DF8018782ECC3AC338
                     route.ObjVer = versions.ToString();
                     route.ObjVerHash = HashGenerator.Generate(route.ObjVer);
                 }

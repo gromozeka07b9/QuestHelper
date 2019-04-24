@@ -18,6 +18,8 @@ namespace QuestHelper.Managers.Sync
     {
         private const string _apiUrl = "http://igosh.pro/api";
         private readonly RoutesApiRequest _routesApi;
+        private readonly RoutePointsApiRequest _routePointsApi;
+        private readonly RoutePointMediaObjectRequest _routePointMediaObjectsApi;
         private readonly RouteManager _routeManager = new RouteManager();
         private readonly RoutePointManager _routePointManager = new RoutePointManager();
         private readonly RoutePointMediaObjectManager _routePointMediaManager = new RoutePointMediaObjectManager();
@@ -27,6 +29,8 @@ namespace QuestHelper.Managers.Sync
         {
             _authToken = authToken;
             _routesApi = new RoutesApiRequest(_apiUrl, _authToken);
+            _routePointsApi = new RoutePointsApiRequest(_apiUrl, _authToken);
+            _routePointMediaObjectsApi = new RoutePointMediaObjectRequest(_apiUrl, _authToken);
         }
 
         public async Task<bool> Sync()
@@ -74,18 +78,21 @@ namespace QuestHelper.Managers.Sync
 
         private void generateHashForRoutes(List<string> routesForGenerateHash)
         {
-            StringBuilder versions = new StringBuilder();
             var routes = _routeManager.GetRoutes(routesForGenerateHash);
             foreach (var route in routes)
             {
+                StringBuilder versions = new StringBuilder();
                 versions.Append(route.Version);
-                foreach (var point in _routePointManager.GetPointsByRouteId(route.RouteId).OrderBy(p=>p.RoutePointId))
+                var points = _routePointManager.GetPointsByRouteId(route.RouteId).OrderBy(p => p.RoutePointId);
+                foreach (var point in points)
                 {
                     versions.Append(point.Version);
-                    foreach (var media in _routePointMediaManager.GetMediaObjectsByRoutePointId(point.RoutePointId).OrderBy(m=>m.RoutePointMediaObjectId))
-                    {
-                        versions.Append(media.Version);
-                    }
+                }
+
+                var medias = _routePointMediaManager.GetMediaObjectsByRouteId(route.RouteId).OrderBy(m => m.RoutePointMediaObjectId);
+                foreach (var media in medias)
+                {
+                    versions.Append(media.Version);
                 }
                 string test = HashManager.Generate("322");
                 route.ObjVerHash = HashManager.Generate(versions.ToString());
@@ -99,9 +106,9 @@ namespace QuestHelper.Managers.Sync
             List<string> pointsToUpload = new List<string>();
             List<string> mediasToUpload = new List<string>();
 
-            foreach (var serverRoute in changedRoutes)
+            foreach (var updateRoute in changedRoutes)
             {
-                var routeRoot = await _routesApi.GetRouteRoot(serverRoute.Item1);
+                var routeRoot = await _routesApi.GetRouteRoot(updateRoute.Item1);
                 AuthRequired = (_routesApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routesApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
                 if ((!AuthRequired) && (routeRoot != null))
                 {
@@ -109,9 +116,9 @@ namespace QuestHelper.Managers.Sync
                     var localRoute = _routeManager.GetRouteById(routeRoot.Route.Id);
                     if ((localRoute == null) || (routeRoot.Route.Version > localRoute.Version))
                     {
-                        ViewRoute updateRoute = new ViewRoute(serverRoute.Item1);
-                        updateRoute.FillFromWSModel(routeRoot, serverRoute.Item2);
-                        updateResult = updateRoute.Save();
+                        ViewRoute updateViewRoute = new ViewRoute(updateRoute.Item1);
+                        updateViewRoute.FillFromWSModel(routeRoot, updateRoute.Item2);
+                        updateResult = updateViewRoute.Save();
 
                     }
                     else if(routeRoot.Route.Version < localRoute.Version)
@@ -126,6 +133,12 @@ namespace QuestHelper.Managers.Sync
                     }
                     if (updateResult)
                     {
+                        var pointsByRoute = _routePointManager.GetPointsByRouteId(updateRoute.Item1);
+                        var newClientPoints = pointsByRoute
+                            .Where(p => !routeRoot.Route.Points.Any(sp => sp.Id == p.RoutePointId)).Select(p => p.Id)
+                            .ToList();
+                        pointsToUpload.AddRange(newClientPoints);
+
                         foreach (var serverPoint in routeRoot.Route.Points)
                         {
                             var localPoint = _routePointManager.GetPointById(serverPoint.Id);
@@ -179,7 +192,18 @@ namespace QuestHelper.Managers.Sync
 
                     if (updateResult)
                     {
-
+                        if (routesToUpload.Count > 0)
+                        {
+                            await UploadAsync(GetJsonStructures(routesToUpload), _routesApi);
+                        }
+                        if (pointsToUpload.Count > 0)
+                        {
+                            await UploadAsync(GetJsonStructuresPoints(pointsToUpload), _routePointsApi);
+                        }
+                        if (mediasToUpload.Count > 0)
+                        {
+                            await UploadAsync(GetJsonStructuresMedias(mediasToUpload), _routePointMediaObjectsApi);
+                        }
                     }
                 }
                 else if (AuthRequired) return false;
@@ -282,5 +306,59 @@ namespace QuestHelper.Managers.Sync
 
             return jsonStructures;
         }
+
+        internal List<string> GetJsonStructuresPoints(List<string> pointsForUpload)
+        {
+            List<string> jsonStructures = new List<string>();
+
+            foreach (var pointId in pointsForUpload)
+            {
+                var uploadedObject = _routePointManager.GetPointById(pointId);
+                if ((uploadedObject != null) && (uploadedObject.CreateDate.Year > 2000))
+                {
+                    JObject jsonObject = JObject.FromObject(new
+                    {
+                        uploadedObject.RoutePointId,
+                        uploadedObject.MainRoute.RouteId,
+                        uploadedObject.Name,
+                        CreateDate = uploadedObject.CreateDate.DateTime,
+                        UpdateDate = uploadedObject.CreateDate.DateTime,
+                        UpdatedUserId = "",
+                        uploadedObject.Latitude,
+                        uploadedObject.Longitude,
+                        uploadedObject.Address,
+                        uploadedObject.Description,
+                        uploadedObject.Version
+                    });
+                    jsonStructures.Add(jsonObject.ToString());
+                }
+            }
+
+            return jsonStructures;
+        }
+        private List<string> GetJsonStructuresMedias(List<string> mediasForUpload)
+        {
+            List<string> jsonStructures = new List<string>();
+
+            foreach (var mediaId in mediasForUpload)
+            {
+                var uploadedObject = _routePointMediaManager.GetMediaObjectById(mediaId);
+                if (uploadedObject != null)
+                {
+                    JObject jsonObject = JObject.FromObject(new
+                    {
+                        uploadedObject.RoutePointMediaObjectId,
+                        uploadedObject.RoutePointId,
+                        uploadedObject.Version,
+                        uploadedObject.IsDeleted
+                    });
+                    jsonStructures.Add(jsonObject.ToString());
+                }
+            }
+
+            return jsonStructures;
+        }
+
+
     }
 }
