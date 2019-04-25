@@ -40,6 +40,7 @@ namespace QuestHelper.Server.Models
                 point.Address = dbPoint.Address;
                 point.Description = dbPoint.Description;
                 point.Id = dbPoint.RoutePointId;
+                point.CreateDate = dbPoint.CreateDate;
                 point.IsDeleted = dbPoint.IsDeleted;
                 point.Version = dbPoint.Version;
             }

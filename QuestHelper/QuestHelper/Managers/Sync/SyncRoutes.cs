@@ -139,6 +139,9 @@ namespace QuestHelper.Managers.Sync
                             .ToList();
                         pointsToUpload.AddRange(newClientPoints);
 
+                        //var mediasByRoute = _routePointMediaManager.GetMediaObjectsByRouteId(updateRoute.Item1);
+                        //var newMedias = mediasByRoute.Where(m => !routeRoot.Route.Points.Any(sp => sp.Id == p.RoutePointId))
+
                         foreach (var serverPoint in routeRoot.Route.Points)
                         {
                             var localPoint = _routePointManager.GetPointById(serverPoint.Id);

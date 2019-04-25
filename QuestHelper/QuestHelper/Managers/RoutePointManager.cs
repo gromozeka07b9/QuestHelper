@@ -35,7 +35,7 @@ namespace QuestHelper.Managers
             List<ViewRoutePoint> collection = new List<ViewRoutePoint>();
             try
             {
-                var collectionRealm = _realmInstance.All<RoutePoint>().Where(point => point.RouteId == routeId).OrderBy(point=>point.CreateDate);
+                var collectionRealm = _realmInstance.All<RoutePoint>().Where(point => point.RouteId == routeId && !point.IsDeleted).OrderBy(point=>point.CreateDate);
                 foreach(var item in collectionRealm)
                 {
                     collection.Add(new ViewRoutePoint(item.RouteId, item.RoutePointId));
@@ -105,6 +105,7 @@ namespace QuestHelper.Managers
                     point.Name = vpoint.Name;
                     point.UpdateDate = DateTime.Now;
                     point.Version = vpoint.Version;
+                    point.IsDeleted = vpoint.IsDeleted;
                     point.CreateDate = vpoint.CreateDate;
                     point.MediaObjects.Clear();
                     foreach (var media in vpoint.MediaObjects)

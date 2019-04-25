@@ -23,6 +23,7 @@ namespace QuestHelper.Model
         private string _address = string.Empty;
         private double _latitude = 0;
         private double _longtitude = 0;
+        private bool _isDeleted = false;
         private int _version = 0;
         private List<LocalDB.Model.RoutePointMediaObject> _mediaObjects = new List<LocalDB.Model.RoutePointMediaObject>();
         private DateTimeOffset _createDate;
@@ -61,6 +62,7 @@ namespace QuestHelper.Model
                 _longtitude = point.Longitude;
                 _createDate = point.CreateDate;
                 _version = point.Version;
+                _isDeleted = point.IsDeleted;
                 refreshMediaObjects();
             }
         }
@@ -76,6 +78,7 @@ namespace QuestHelper.Model
                 _longtitude = routePoint.Longitude.HasValue ? (double)routePoint.Longitude : 0;
                 _createDate = routePoint.CreateDate;
                 _version = routePoint.Version;
+                _isDeleted = routePoint.IsDeleted;
                 refreshMediaObjects();
             }
         }
@@ -247,6 +250,18 @@ namespace QuestHelper.Model
             get
             {
                 return _version;
+            }
+        }
+
+        public bool IsDeleted
+        {
+            get
+            {
+                return _isDeleted;
+            }
+            set
+            {
+                _isDeleted = value;
             }
         }
 

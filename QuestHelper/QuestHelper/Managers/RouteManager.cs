@@ -32,7 +32,7 @@ namespace QuestHelper.Managers
         internal IEnumerable<ViewRoute> GetRoutes(string UserId)
         {
             List<ViewRoute> vroutes = new List<ViewRoute>();
-            var routes = _realmInstance.All<Route>().Where(u=>!u.IsPublished||(u.IsPublished && u.CreatorId == UserId)).OrderByDescending(r => r.CreateDate);
+            var routes = _realmInstance.All<Route>().Where(u=>(!u.IsDeleted && !u.IsPublished)||(!u.IsDeleted && u.IsPublished && u.CreatorId == UserId)).OrderByDescending(r => r.CreateDate);
             if (routes.Any())
             {
                 foreach (var route in routes)

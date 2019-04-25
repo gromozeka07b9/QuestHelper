@@ -75,6 +75,8 @@ namespace QuestHelper.Managers
                                 mediaObject.IsDeleted = true;
                                 mediaObject.Version++;
                                 result = mediaObject.IsDeleted;
+                                //нужно для того, чтобы синхронизация обнаружила отличия от сервера и проверила версии с последующей отправкой изменений на сервер
+                                pointObject.MainRoute.ObjVerHash = string.Empty;
                             }
                         }
                     }
