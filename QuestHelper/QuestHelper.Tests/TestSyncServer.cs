@@ -15,6 +15,16 @@ namespace QuestHelper.Tests
         }
 
         [Fact]
+        public void TestMust_SyncTestRoute()
+        {
+            string routeId = "";
+            string authToken = "";
+            SyncRoute syncRoute = new SyncRoute(routeId);
+            syncRoute.SetAuthToken(authToken);
+            Assert.True(syncRoute.Sync()); 
+        }
+
+        /*[Fact]
         public void TestMust_DetectObjectsForUpload()
         {
             TestSync sync = new TestSync();
@@ -67,6 +77,6 @@ namespace QuestHelper.Tests
 
             sync.FillListsObjectsForProcess(clientObjects, serverStatus, forUpload, forDownload);
             Assert.True(forDownload.Count == 2);
-        }
+        }*/
     }
 }
