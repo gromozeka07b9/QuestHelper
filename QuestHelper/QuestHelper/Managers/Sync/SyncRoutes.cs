@@ -42,35 +42,16 @@ namespace QuestHelper.Managers.Sync
             {
                 var routesLocal = _routeManager.GetRoutesForSync().Select(x => new {x.RouteId, x.Version, x.ObjVerHash});
                 var differentRoutes = listRoutesVersions.Where(r=>(!routesLocal.Any(l=>(l.RouteId == r.Id && l.ObjVerHash == r.ObjVerHash))));
-                List<Tuple<string, string>> newServerRoutes = new List<Tuple<string, string>>();
-                List<string> newClientRoutes = new List<string>();
-                List<Tuple<string, string>> changedRoutes = new List<Tuple<string, string>>();
-                foreach (var routeVersion in differentRoutes)
+                var newClientRoutes = routesLocal.Where(r => !listRoutesVersions.Any(d => d.Id == r.RouteId)).Select(r => r.RouteId).ToList();
+                foreach (var serverRouteVersion in differentRoutes)
                 {
-                    var localRoute = routesLocal.Where(r => r.RouteId == routeVersion.Id).SingleOrDefault();
-                    if (localRoute != null)
-                    {
-                        changedRoutes.Add(new Tuple<string, string>(routeVersion.Id, routeVersion.ObjVerHash));
-                    }
-                    else
-                    {
-                        //новый маршрут на сервере, грузить
-                        newServerRoutes.Add(new Tuple<string,string>(routeVersion.Id, routeVersion.ObjVerHash));
-                    }
+                    SyncRoute syncRouteContext = new SyncRoute(serverRouteVersion.Id, _authToken);
+                    result = await syncRouteContext.SyncAsync(serverRouteVersion.ObjVerHash);
                 }
-
-                newClientRoutes = routesLocal.Where(r => !listRoutesVersions.Any(d => d.Id == r.RouteId)).Select(r=>r.RouteId).ToList();
-
-                bool resultUpdate = await UpdateRoutesAsync(changedRoutes);
-                bool resultUpload = await UploadRoutes(newClientRoutes);
-                bool resultDownload = await DownloadRoutesAsync(newServerRoutes);
-                if ((changedRoutes.Count > 0) || (newClientRoutes.Count > 0) || (newServerRoutes.Count > 0))
+                foreach (var localRouteId in newClientRoutes)
                 {
-                    List<string> routesForGenerateHash = new List<string>();
-                    routesForGenerateHash.AddRange(changedRoutes.Select(r=>r.Item1));
-                    routesForGenerateHash.AddRange(newClientRoutes.Select(r=>r));
-                    routesForGenerateHash.AddRange(newServerRoutes.Select(r => r.Item1));
-                    generateHashForRoutes(routesForGenerateHash);
+                    SyncRoute syncRouteContext = new SyncRoute(localRouteId, _authToken);
+                    result = await syncRouteContext.SyncAsync(string.Empty);
                 }
             }
             return result;
@@ -100,7 +81,7 @@ namespace QuestHelper.Managers.Sync
             }
         }
 
-        private async Task<bool> UpdateRoutesAsync(List<Tuple<string, string>> changedRoutes)
+        /*private async Task<bool> UpdateRoutesAsync(List<Tuple<string, string>> changedRoutes)
         {
             List<string> routesToUpload = new List<string>();
             List<string> pointsToUpload = new List<string>();
@@ -254,7 +235,7 @@ namespace QuestHelper.Managers.Sync
                 } else if (AuthRequired) return false;
             }
             return true;
-        }
+        }*/
 
         /*public async Task<bool> Sync()
 {
@@ -285,7 +266,7 @@ namespace QuestHelper.Managers.Sync
    return result;
 }*/
 
-        private List<string> GetJsonStructures(List<string> routesForUpload)
+        /*protected List<string> GetRouteJsonStructures(List<string> routesForUpload)
         {            
             List<string> jsonStructures = new List<string>();
             foreach (var routeId in routesForUpload)
@@ -360,7 +341,7 @@ namespace QuestHelper.Managers.Sync
             }
 
             return jsonStructures;
-        }
+        }*/
 
 
     }

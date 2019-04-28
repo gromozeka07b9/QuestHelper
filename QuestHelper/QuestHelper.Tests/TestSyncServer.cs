@@ -15,13 +15,21 @@ namespace QuestHelper.Tests
         }
 
         [Fact]
-        public void TestMust_SyncTestRoute()
+        public async void TestMust_SyncOneRouteAsync()
         {
             string routeId = "";
             string authToken = "";
-            SyncRoute syncRoute = new SyncRoute(routeId);
-            syncRoute.SetAuthToken(authToken);
-            Assert.True(syncRoute.Sync()); 
+            SyncRoute syncRoute = new SyncRoute(routeId, authToken);
+            bool result = await syncRoute.SyncAsync("hash");
+            Assert.True(result); 
+        }
+        [Fact]
+        public void TestMust_SyncTwoRoutes()
+        {
+            /*string routeId = "";
+            string authToken = "";
+            SyncRoute syncRoute = new SyncRoute(routeId, authToken);
+            Assert.True(syncRoute.Sync("hash"));*/
         }
 
         /*[Fact]
