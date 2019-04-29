@@ -20,13 +20,15 @@ namespace QuestHelper.Server
             }
             else
             {
-                string dbLogin = System.Environment.ExpandEnvironmentVariables("%GoshDbLogin%");
-                string dbPassword = System.Environment.ExpandEnvironmentVariables("%GoshDbPassword%");
+                //string dbLogin = System.Environment.ExpandEnvironmentVariables("%GoshDbLogin%");
+                //string dbPassword = System.Environment.ExpandEnvironmentVariables("%GoshDbPassword%");
+                string dbLogin = System.Environment.GetEnvironmentVariable("GoshDbLogin");
+                string dbPassword = System.Environment.GetEnvironmentVariable("GoshDbPassword");
                 if (string.IsNullOrEmpty(dbLogin) || string.IsNullOrEmpty(dbPassword))
                 {
                     throw new Exception("Error reading DB login or password!");
                 }
-                return new DbContextOptionsBuilder<ServerDbContext>().UseMySql($@"Data Source=dbquesthelper.mysql.database.azure.com; Database=QuestHelper; User Id={dbLogin}; Password={dbPassword};").Options;
+                return new DbContextOptionsBuilder<ServerDbContext>().UseMySql($@"Data Source=176-99-12-253.cloudvps.regruhosting.ru; Database=QuestHelper; User Id={dbLogin}; Password={dbPassword};").Options;
             }
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
