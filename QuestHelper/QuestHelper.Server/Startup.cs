@@ -19,8 +19,6 @@ namespace QuestHelper.Server
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            //var test = Configuration.GetValue("CloudStorageAccount:ConnectionString", "");
-            Console.WriteLine("!!Read config");
         }
 
         public IConfiguration Configuration { get; }

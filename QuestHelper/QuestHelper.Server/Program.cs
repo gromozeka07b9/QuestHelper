@@ -15,6 +15,7 @@ namespace QuestHelper.Server
         public static void Main(string[] args)
         {
             BuildWebHost(args).Run();
+            Console.WriteLine("QuestHelper server started");
         }
 
         public static IWebHost BuildWebHost(string[] args) =>

@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -63,6 +64,7 @@ namespace QuestHelper.Server.Controllers.Medias
         public async Task<IActionResult> ImagesStatusAsync([FromBody]ImagesServerStatus imagesClient)
         {
             string userId = IdentityManager.GetUserId(HttpContext);
+            throw new Exception("azure blob is offline");
             ImagesServerStatus status = new ImagesServerStatus();
             using (var db = new ServerDbContext(_dbOptions))
             {

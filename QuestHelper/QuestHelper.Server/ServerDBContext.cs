@@ -24,11 +24,18 @@ namespace QuestHelper.Server
                 //string dbPassword = System.Environment.ExpandEnvironmentVariables("%GoshDbPassword%");
                 string dbLogin = System.Environment.GetEnvironmentVariable("GoshDbLogin");
                 string dbPassword = System.Environment.GetEnvironmentVariable("GoshDbPassword");
+                Console.WriteLine("dbLogin:'" + dbLogin + "'");
+                Console.WriteLine("dbPassword:'" + dbPassword + "'");
                 if (string.IsNullOrEmpty(dbLogin) || string.IsNullOrEmpty(dbPassword))
                 {
-                    throw new Exception("Error reading DB login or password!");
+                    string errorMsg = "Error reading DB login or password!";
+                    Console.WriteLine(errorMsg);
+                    throw new Exception(errorMsg);
                 }
-                return new DbContextOptionsBuilder<ServerDbContext>().UseMySql($@"Data Source=176-99-12-253.cloudvps.regruhosting.ru; Database=QuestHelper; User Id={dbLogin}; Password={dbPassword};").Options;
+
+                string connectionString = $@"Data Source=igosh.pro; Database=questhelper; User Id={dbLogin}; Password={dbPassword};";
+                Console.WriteLine(connectionString);
+                return new DbContextOptionsBuilder<ServerDbContext>().UseMySql(connectionString).Options;
             }
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

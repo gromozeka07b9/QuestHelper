@@ -82,6 +82,7 @@ namespace QuestHelper.Server.Controllers.Medias
                         var entity = db.RoutePointMediaObject.Find(mediaObjectId);
                         if ((entity != null) && file.FileName.Contains(entity.RoutePointMediaObjectId))
                         {
+                            throw new Exception("azure blob is offline");
                             using (Stream stream = file.OpenReadStream())
                             {
                                 var blobContainer = await GetCloudBlobContainer();
@@ -132,6 +133,7 @@ namespace QuestHelper.Server.Controllers.Medias
                     var entity = db.RoutePointMediaObject.Find(mediaObjectId);
                     if ((entity != null) && (!string.IsNullOrEmpty(entity.RoutePointMediaObjectId)))
                     {
+                        throw new Exception("azure blob is offline");
                         var blobContainer = await GetCloudBlobContainer();
                         try
                         {
@@ -163,6 +165,7 @@ namespace QuestHelper.Server.Controllers.Medias
         public async Task ImageExistAsync(string fileName)
         {
             string userId = IdentityManager.GetUserId(HttpContext);
+            throw new Exception("azure blob is offline");
             var blobContainer = await GetCloudBlobContainer();
             var blob = blobContainer.GetBlockBlobReference(fileName);
             if (await blob.ExistsAsync())
