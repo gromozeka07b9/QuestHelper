@@ -8,7 +8,7 @@
     <Version>1.1.16</Version>
     <Configurations>Debug;Release</Configurations>
     <NeutralLanguage>en</NeutralLanguage>
-    <AssemblyVersion>1.1.14.0</AssemblyVersion>
+    <AssemblyVersion>1.1.16.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
