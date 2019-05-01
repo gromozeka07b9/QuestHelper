@@ -22,6 +22,8 @@ namespace QuestHelper.Server.Controllers.Medias
     public class SyncController : Controller
     {
         private DbContextOptions<ServerDbContext> _dbOptions = ServerDbContext.GetOptionsContextDbServer();
+        //private string _pathToMediaCatalog = "C:\\gosh\\pics\\pictures";
+        private string _pathToMediaCatalog = "/media/goshmedia";
 
         [HttpPost]
         public IActionResult Post([FromBody]SyncObjectStatus syncObject)
@@ -61,14 +63,13 @@ namespace QuestHelper.Server.Controllers.Medias
         }
 
         [HttpPost("imagestatus")]
-        public async Task<IActionResult> ImagesStatusAsync([FromBody]ImagesServerStatus imagesClient)
+        public IActionResult ImagesStatus([FromBody]ImagesServerStatus imagesClient)
         {
             string userId = IdentityManager.GetUserId(HttpContext);
-            throw new Exception("azure blob is offline");
             ImagesServerStatus status = new ImagesServerStatus();
             using (var db = new ServerDbContext(_dbOptions))
             {
-                var blobContainer = await GetCloudBlobContainer();
+                MediaManager mediaManager = new MediaManager(_pathToMediaCatalog);
                 foreach (var image in imagesClient.Images)
                 {
                     string imageNameOriginal = image.Name.ToLower().Replace("_preview", "").Replace("img_", "").Trim();
@@ -84,8 +85,7 @@ namespace QuestHelper.Server.Controllers.Medias
                                 image.OnServer = mediaObject.ImagePreviewLoadedToServer;
                                 if (!mediaObject.ImagePreviewLoadedToServer)
                                 {
-                                    var blob = blobContainer.GetBlockBlobReference(image.Name);
-                                    image.OnServer = await blob.ExistsAsync();
+                                    image.OnServer = mediaManager.FileExist(image.Name);
                                 }
                             }
                             else
@@ -93,8 +93,7 @@ namespace QuestHelper.Server.Controllers.Medias
                                 image.OnServer = mediaObject.ImageLoadedToServer;
                                 if (!mediaObject.ImageLoadedToServer)
                                 {
-                                    var blob = blobContainer.GetBlockBlobReference(image.Name);
-                                    image.OnServer = await blob.ExistsAsync();
+                                    image.OnServer = mediaManager.FileExist(image.Name);
                                 }
                             }
                         }
@@ -105,17 +104,5 @@ namespace QuestHelper.Server.Controllers.Medias
 
             return new ObjectResult(status);
         }
-        private async Task<CloudBlobContainer> GetCloudBlobContainer()
-        {
-            string blobConnectionString = System.Environment.ExpandEnvironmentVariables("%GoshBlobStoreConnectionString%");
-            if (string.IsNullOrEmpty(blobConnectionString))
-                throw new Exception("Error reading blob connection string!");
-            var account = CloudStorageAccount.Parse(blobConnectionString);
-            var client = account.CreateCloudBlobClient();
-            var container = client.GetContainerReference("questhelperblob");
-            await container.CreateIfNotExistsAsync();
-            return container;
-        }
-
     }
 }

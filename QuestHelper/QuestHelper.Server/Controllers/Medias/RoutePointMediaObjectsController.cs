@@ -23,7 +23,14 @@ namespace QuestHelper.Server.Controllers.Medias
     public class RoutePointMediaObjectsController : Controller
     {
         private DbContextOptions<ServerDbContext> _dbOptions = ServerDbContext.GetOptionsContextDbServer();
+        //private string _pathToMediaCatalog = "C:\\gosh\\pics\\pictures";
+        private string _pathToMediaCatalog = "/media/goshmedia";
+        private MediaManager _mediaManager;
 
+        public RoutePointMediaObjectsController()
+        {
+            _mediaManager = new MediaManager(_pathToMediaCatalog);
+        }
         [HttpGet("{routePointMediaObjectId}")]
         public IActionResult Get(string routePointMediaObjectId)
         {
@@ -82,17 +89,10 @@ namespace QuestHelper.Server.Controllers.Medias
                         var entity = db.RoutePointMediaObject.Find(mediaObjectId);
                         if ((entity != null) && file.FileName.Contains(entity.RoutePointMediaObjectId))
                         {
-                            throw new Exception("azure blob is offline");
-                            using (Stream stream = file.OpenReadStream())
+                            using (var stream = new FileStream(Path.Combine(_pathToMediaCatalog, file.FileName), FileMode.Create))
                             {
-                                var blobContainer = await GetCloudBlobContainer();
-                                var blob = blobContainer.GetBlockBlobReference(file.FileName);
-                                if (!await blob.ExistsAsync())
-                                {
-                                    await blob.UploadFromStreamAsync(stream);
-                                }
+                                await file.CopyToAsync(stream);
                             }
-
                             if (file.FileName.Contains("_preview"))
                             {
                                 entity.ImagePreviewLoadedToServer = true;
@@ -119,31 +119,22 @@ namespace QuestHelper.Server.Controllers.Medias
         }
 
         [HttpGet("{routePointId}/{mediaObjectId}/{fileName}")]
-        public async Task<IActionResult> GetAsync(string routePointId, string mediaObjectId, string fileName)
+        public IActionResult Get(string routePointId, string mediaObjectId, string fileName)
         {
             string userId = IdentityManager.GetUserId(HttpContext);
-            Stream memStream = new MemoryStream();
+            MemoryStream memStream = new MemoryStream();
             using (var db = new ServerDbContext(_dbOptions))
             {
                 var publishRoutes = db.Route.Where(r => r.IsPublished && r.IsDeleted == false).Select(r => r.RouteId).ToList();
                 var routeAccess = db.RouteAccess.Where(u => u.UserId == userId).Select(u => u.RouteId).ToList();
-                var accessGranted = db.RoutePoint.Where(p => (routeAccess.Contains(p.RouteId)|| publishRoutes.Contains(p.RouteId)) && p.RoutePointId == routePointId).Any();
+                var accessGranted = db.RoutePoint.Where(p => (routeAccess.Contains(p.RouteId) || publishRoutes.Contains(p.RouteId)) && p.RoutePointId == routePointId).Any();
                 if (accessGranted)
                 {
                     var entity = db.RoutePointMediaObject.Find(mediaObjectId);
                     if ((entity != null) && (!string.IsNullOrEmpty(entity.RoutePointMediaObjectId)))
                     {
-                        throw new Exception("azure blob is offline");
-                        var blobContainer = await GetCloudBlobContainer();
-                        try
-                        {
-                            var blob = blobContainer.GetBlockBlobReference(fileName);
-                            await blob.DownloadToStreamAsync(memStream);
-                        }
-                        catch (Exception e)
-                        {
-                            throw new Exception($"Blob store does not contain filename {fileName}");
-                        }
+                        //ToDo:memory stream не нужен, можно просто отдавать filestream
+                        _mediaManager.DownloadToStream(memStream, fileName);
                     }
                     else
                     {
@@ -162,28 +153,12 @@ namespace QuestHelper.Server.Controllers.Medias
         }
 
         [HttpGet("{fileName}/imageexist")]
-        public async Task ImageExistAsync(string fileName)
+        public void ImageExist(string fileName)
         {
             string userId = IdentityManager.GetUserId(HttpContext);
-            throw new Exception("azure blob is offline");
-            var blobContainer = await GetCloudBlobContainer();
-            var blob = blobContainer.GetBlockBlobReference(fileName);
-            if (await blob.ExistsAsync())
+            if (_mediaManager.FileExist(Path.Combine(_pathToMediaCatalog, fileName)))
                 Response.StatusCode = 200;
             else Response.StatusCode = 404;
         }
-
-        private async Task<CloudBlobContainer> GetCloudBlobContainer()
-        {
-            string blobConnectionString = System.Environment.ExpandEnvironmentVariables("%GoshBlobStoreConnectionString%");
-            if(string.IsNullOrEmpty(blobConnectionString))
-                throw new Exception("Error reading blob connection string!");
-            var account = CloudStorageAccount.Parse(blobConnectionString);
-            var client = account.CreateCloudBlobClient();
-            var container = client.GetContainerReference("questhelperblob");
-            await container.CreateIfNotExistsAsync();
-            return container;
-        }
-
     }
 }
