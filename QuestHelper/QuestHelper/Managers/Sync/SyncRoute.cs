@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using QuestHelper.SharedModelsWS;
 using System.Collections.Generic;
 using System.Text;
+using QuestHelper.LocalDB.Model;
+using System.IO;
 
 namespace QuestHelper.Managers.Sync
 {
@@ -21,6 +23,7 @@ namespace QuestHelper.Managers.Sync
         private readonly RouteManager _routeManager = new RouteManager();
         private readonly RoutePointManager _routePointManager = new RoutePointManager();
         private readonly RoutePointMediaObjectManager _routePointMediaManager = new RoutePointMediaObjectManager();
+        private bool _syncImages = false;
 
         public SyncRoute(string routeId, string authToken)
         {
@@ -56,6 +59,12 @@ namespace QuestHelper.Managers.Sync
                         updateResult = await updateMedias(routeRoot);
                         if (!updateResult) return false;
 
+                        if (_syncImages)
+                        {
+                            updateResult = await updateImagesAsync(routeRoot);
+                            if(!updateResult) return false;
+                        }
+
                     }
                     else return false;
                 }
@@ -66,6 +75,62 @@ namespace QuestHelper.Managers.Sync
             refreshHashForRoute(updatedLocalRoute, sbVersions);
 
             return true;
+        }
+
+        private async Task<bool> updateImagesAsync(RouteRoot routeRoot)
+        {
+            var medias = _routePointMediaManager.GetMediaObjectsByRouteId(routeRoot.Route.Id).Where(m=>!m.OriginalServerSynced || !m.PreviewServerSynced);
+            foreach(var media in medias)
+            {
+                bool result = await updateImageAsync(media);
+                
+            }
+            return true;
+        }
+
+        private async Task<bool> updateImageAsync(LocalDB.Model.RoutePointMediaObject media)
+        {
+            bool result = false;
+
+            string pathToPicturesDirectory = ImagePathManager.GetPicturesDirectory();
+            if (!media.OriginalServerSynced)
+            {
+                result = await syncImage(media, pathToPicturesDirectory, false);
+                if (result)
+                {
+                    _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, false, true);
+                }
+            }
+
+            if (!media.PreviewServerSynced)
+            {
+                result = await syncImage(media, pathToPicturesDirectory, true);
+                if (result)
+                {
+                    _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, true, true);
+                }
+            }
+
+            return result;
+        }
+
+        private async Task<bool> syncImage(LocalDB.Model.RoutePointMediaObject media, string pathToPicturesDirectory, bool isPreview)
+        {
+            bool result = false;
+
+            string filename = ImagePathManager.GetImageFilename(media.RoutePointMediaObjectId, isPreview);
+            string pathToMediaFile = ImagePathManager.GetImagePath(media.RoutePointMediaObjectId, isPreview);
+            if (!File.Exists(pathToMediaFile))
+            {
+                result = await _routePointMediaObjectsApi.GetImage(media.RoutePointId, media.RoutePointMediaObjectId, pathToPicturesDirectory, filename);
+            }
+            else
+            {
+                result = await _routePointMediaObjectsApi.SendImage(media.RoutePointId, media.RoutePointMediaObjectId, isPreview);
+                //AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
+            }
+
+            return result;
         }
 
         private StringBuilder getVersionsForRoute(ViewRoute updatedLocalRoute)
@@ -97,7 +162,7 @@ namespace QuestHelper.Managers.Sync
 
             var medias = _routePointMediaManager.GetMediaObjectsByRouteId(routeRoot.Route.Id);
 
-            List<RoutePointMediaObject> serverMedias = new List<RoutePointMediaObject>();
+            List<SharedModelsWS.RoutePointMediaObject> serverMedias = new List<SharedModelsWS.RoutePointMediaObject>();
             foreach (var serverPoint in routeRoot.Route.Points)
             {                
                 serverMedias.AddRange(serverPoint.MediaObjects.Select(m => m));
@@ -203,6 +268,18 @@ namespace QuestHelper.Managers.Sync
             }
 
             return updateResult;
+        }
+
+        public bool SyncImages
+        {
+            set
+            {
+                _syncImages = value;
+            }
+            get
+            {
+                return _syncImages;
+            }
         }
     }
 }

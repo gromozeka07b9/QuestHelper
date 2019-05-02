@@ -24,12 +24,12 @@ namespace QuestHelper.Managers.Sync
             if (!string.IsNullOrEmpty(authToken))
             {
                 SyncRoutes syncRoutes = new SyncRoutes(authToken);
-                bool result = await syncRoutes.Sync();
+                syncResult = await syncRoutes.Sync();
             }
             return new Tuple<bool, string>(syncResult, errorMsg);
         }
 
-        public static async System.Threading.Tasks.Task<Tuple<bool, string>> SyncAllAsync()
+        /*public static async System.Threading.Tasks.Task<Tuple<bool, string>> SyncAllAsync()
         {
             string errorMsg = string.Empty;
             bool syncResult = false;
@@ -72,7 +72,7 @@ namespace QuestHelper.Managers.Sync
 
             MessagingCenter.Send<SyncProgressMessage>(new SyncProgressMessage() { SyncInProgress = false, SyncDetailText = string.Empty}, string.Empty);
             return new Tuple<bool, string>(syncResult, errorMsg);
-    }
+    }*/
 
         private static async System.Threading.Tasks.Task prepareErrorReportToAppcenterAsync(string errorReport)
         {

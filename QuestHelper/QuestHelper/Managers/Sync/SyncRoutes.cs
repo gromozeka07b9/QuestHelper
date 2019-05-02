@@ -35,9 +35,10 @@ namespace QuestHelper.Managers.Sync
 
         public async Task<bool> Sync()
         {
-            bool result = false;
+            bool result = true;
             var listRoutesVersions = await _routesApi.GetRoutesVersions();
             AuthRequired = (_routesApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routesApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
+            if(AuthRequired) return false;
             if ((!AuthRequired) && (listRoutesVersions != null))
             {
                 var routesLocal = _routeManager.GetRoutesForSync().Select(x => new {x.RouteId, x.Version, x.ObjVerHash});
@@ -46,11 +47,13 @@ namespace QuestHelper.Managers.Sync
                 foreach (var serverRouteVersion in differentRoutes)
                 {
                     SyncRoute syncRouteContext = new SyncRoute(serverRouteVersion.Id, _authToken);
+                    syncRouteContext.SyncImages = true;
                     result = await syncRouteContext.SyncAsync(serverRouteVersion.ObjVerHash);
                 }
                 foreach (var localRouteId in newClientRoutes)
                 {
                     SyncRoute syncRouteContext = new SyncRoute(localRouteId, _authToken);
+                    syncRouteContext.SyncImages = true;
                     result = await syncRouteContext.SyncAsync(string.Empty);
                 }
             }
