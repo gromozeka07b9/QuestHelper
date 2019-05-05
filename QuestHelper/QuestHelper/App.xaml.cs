@@ -65,7 +65,7 @@ namespace QuestHelper
 
             if (Setup() && !string.IsNullOrEmpty(await token.GetAuthTokenAsync()))
             {
-                //await startProgressSync(true);
+                await startProgressSync(true);
             }
 
         }

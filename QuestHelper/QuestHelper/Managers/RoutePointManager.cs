@@ -8,26 +8,26 @@ using Realms;
 
 namespace QuestHelper.Managers
 {
-    public class RoutePointManager
+    public class RoutePointManager : RealmInstanceMaker
     {
-        Realm _realmInstance;
+        //Realm _realmInstance;
         public RoutePointManager()
         {
-            _realmInstance = RealmAppInstance.GetAppInstance();
-            _realmInstance.Error += _realmInstance_Error;
+            //_realmInstance = RealmAppInstance.GetAppInstance();
+            //_realmInstance.Error += _realmInstance_Error;
         }
 
-        private void _realmInstance_Error(object sender, ErrorEventArgs e)
+        /*private void _realmInstance_Error(object sender, ErrorEventArgs e)
         {
-        }
+        }*/
 
-        internal static Realm GetRealmInstance()
+        /*internal static Realm GetRealmInstance()
         {
             return RealmAppInstance.GetAppInstance();
-        }
+        }*/
         internal RoutePoint GetPointById(string id)
         {
-            return !string.IsNullOrEmpty(id)?_realmInstance.Find<RoutePoint>(id):null;
+            return !string.IsNullOrEmpty(id)? RealmInstance.Find<RoutePoint>(id):null;
         }
 
         internal IEnumerable<ViewRoutePoint> GetPointsByRouteId(string routeId)
@@ -35,7 +35,7 @@ namespace QuestHelper.Managers
             List<ViewRoutePoint> collection = new List<ViewRoutePoint>();
             try
             {
-                var collectionRealm = _realmInstance.All<RoutePoint>().Where(point => point.RouteId == routeId && !point.IsDeleted).OrderBy(point=>point.CreateDate);
+                var collectionRealm = RealmInstance.All<RoutePoint>().Where(point => point.RouteId == routeId && !point.IsDeleted).OrderBy(point=>point.CreateDate);
                 foreach(var item in collectionRealm)
                 {
                     collection.Add(new ViewRoutePoint(item.RouteId, item.RoutePointId));
@@ -50,7 +50,7 @@ namespace QuestHelper.Managers
         }
         internal RoutePoint GetPointByCoordinates(double latitude, double longitude)
         {
-            var collection = _realmInstance.All<RoutePoint>().Where(point => point.Latitude == latitude && point.Longitude == longitude);
+            var collection = RealmInstance.All<RoutePoint>().Where(point => point.Latitude == latitude && point.Longitude == longitude);
             return collection.FirstOrDefault();
         }
         /*internal ViewRoutePoint GetStartPointByRouteId(string routeId)
@@ -65,12 +65,13 @@ namespace QuestHelper.Managers
         {
             string returnid = string.Empty;
             RouteManager routeManager = new RouteManager();
-            if(vpoint.Version == 0) throw new Exception("point version = 0");
+            if (vpoint.Version == 0) throw new Exception("point version = 0");
+            if (vpoint.CreateDate.Year == 1) throw new Exception("create date year = 1");
             try
             {
-                _realmInstance.Write(() =>
+                RealmInstance.Write(() =>
                 {
-                    RoutePoint point = !string.IsNullOrEmpty(vpoint.Id) ? _realmInstance.Find<RoutePoint>(vpoint.Id) : null;
+                    RoutePoint point = !string.IsNullOrEmpty(vpoint.Id) ? RealmInstance.Find<RoutePoint>(vpoint.Id) : null;
                     if(point == null)
                     {
                         point = new RoutePoint();
@@ -85,7 +86,7 @@ namespace QuestHelper.Managers
                         {
                             HandleError.Process("RoutePointManager", "SavePoint", new Exception($"routeId:{vpoint.RouteId}, pointId:{vpoint.Id}"), false);
                         }
-                        _realmInstance.Add(point);
+                        RealmInstance.Add(point);
                     }
                     else
                     {
@@ -126,14 +127,14 @@ namespace QuestHelper.Managers
             string rId = viewRoutePoint.RouteId;
             try
             {
-                _realmInstance.Write(() =>
+                RealmInstance.Write(() =>
                 {
-                    var point = _realmInstance.Find<RoutePoint>(viewRoutePoint.Id);
+                    var point = RealmInstance.Find<RoutePoint>(viewRoutePoint.Id);
                     foreach(var item in point.MediaObjects)
                     {
-                        _realmInstance.Remove(item);
+                        RealmInstance.Remove(item);
                     }
-                    _realmInstance.Remove(point);
+                    RealmInstance.Remove(point);
                 });
                 result = true;
             }
@@ -151,13 +152,13 @@ namespace QuestHelper.Managers
         }*/
         internal IEnumerable<RoutePoint> GetPoints()
         {
-            var deletedRoutes = _realmInstance.All<Route>().Where(r => r.IsDeleted).ToList().Select(d=>d.RouteId);
-            return _realmInstance.All<RoutePoint>().ToList().Where(r => (!deletedRoutes.Any(d => d == r.RouteId)));
+            var deletedRoutes = RealmInstance.All<Route>().Where(r => r.IsDeleted).ToList().Select(d=>d.RouteId);
+            return RealmInstance.All<RoutePoint>().ToList().Where(r => (!deletedRoutes.Any(d => d == r.RouteId)));
             //return _realmInstance.All<RoutePoint>().Where(r=>(!deletedRoutes.Any(d=>d == r.RouteId)));
         }
         internal Tuple<RoutePoint, RoutePoint> GetFirstAndLastPoints(string routeId)
         {
-            var routePoints = _realmInstance.All<RoutePoint>().Where(p => p.RouteId == routeId).OrderBy(p=>p.CreateDate);
+            var routePoints = RealmInstance.All<RoutePoint>().Where(p => p.RouteId == routeId).OrderBy(p=>p.CreateDate);
             if (routePoints.Count() > 0)
             {
                 var first = routePoints.FirstOrDefault();
@@ -179,7 +180,7 @@ namespace QuestHelper.Managers
         {
             string filename = string.Empty;
 
-            RoutePoint point = _realmInstance.Find<RoutePoint>(routePointId);
+            RoutePoint point = RealmInstance.Find<RoutePoint>(routePointId);
             if (point?.MediaObjects.Count > 0)
             {
                 filename = $"img_{point.MediaObjects[0].RoutePointMediaObjectId}.jpg";
@@ -195,7 +196,7 @@ namespace QuestHelper.Managers
         internal string GetDefaultImagePreviewFilename(string routePointId)
         {
             string filename = string.Empty;
-            RoutePoint point = _realmInstance.Find<RoutePoint>(routePointId);
+            RoutePoint point = RealmInstance.Find<RoutePoint>(routePointId);
             if (point?.MediaObjects.Count > 0)
             {
                 filename = $"img_{point.MediaObjects[0].RoutePointMediaObjectId}_preview.jpg";

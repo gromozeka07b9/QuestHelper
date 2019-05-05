@@ -225,11 +225,11 @@ namespace QuestHelper.ViewModel
             {
                 if (_vroute.Name != value)
                 {
-                    var realm = RoutePointManager.GetRealmInstance();
+                    /*var realm = RoutePointManager.GetRealmInstance();
                     realm.Write(() =>
                     {
                         _vroute.Name = value;
-                    });
+                    });*/
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
                 }
             }

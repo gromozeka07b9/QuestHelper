@@ -59,11 +59,11 @@ namespace QuestHelper.Managers.Sync
                         updateResult = await updateMedias(routeRoot);
                         if (!updateResult) return false;
 
-                        if (_syncImages)
+                        /*if (_syncImages)
                         {
                             updateResult = await updateImagesAsync(routeRoot);
                             if(!updateResult) return false;
-                        }
+                        }*/
 
                     }
                     else return false;
@@ -79,54 +79,80 @@ namespace QuestHelper.Managers.Sync
 
         private async Task<bool> updateImagesAsync(RouteRoot routeRoot)
         {
-            var medias = _routePointMediaManager.GetMediaObjectsByRouteId(routeRoot.Route.Id).Where(m=>!m.OriginalServerSynced || !m.PreviewServerSynced);
+            StringBuilder sbErrors = new StringBuilder();
+            string pathToPicturesDirectory = ImagePathManager.GetPicturesDirectory();
+            var medias = _routePointMediaManager.GetMediaObjectsByRouteId(routeRoot.Route.Id).Where(m=>!m.OriginalServerSynced || !m.PreviewServerSynced).Select(m=>new {RoutePointId = m.RoutePointId, RoutePointMediaObjectId  = m.RoutePointMediaObjectId, OriginalServerSynced  = m.OriginalServerSynced, PreviewServerSynced  = m.PreviewServerSynced});
             foreach(var media in medias)
             {
-                bool result = await updateImageAsync(media);
-                
+                if (!media.OriginalServerSynced)
+                {
+                    bool resultUpdateOriginal = await syncImageAsync(media.RoutePointId, media.RoutePointMediaObjectId, pathToPicturesDirectory, false);
+                    if (resultUpdateOriginal)
+                    {
+                        _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, false, true);
+                    }
+                    else
+                    {
+                        sbErrors.AppendLine($"Error sync original mediafile: point[{media.RoutePointId}], media[{media.RoutePointMediaObjectId}]");
+                    }
+                }
+
+                if (!media.PreviewServerSynced)
+                {
+                    bool resultUpdatePreview = await syncImageAsync(media.RoutePointId, media.RoutePointMediaObjectId, pathToPicturesDirectory, true);
+                    if (resultUpdatePreview)
+                    {
+                        _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, true, true);
+                    }
+                    else
+                    {
+                        sbErrors.AppendLine($"Error sync preview mediafile: point[{media.RoutePointId}], media[{media.RoutePointMediaObjectId}]");
+                    }
+                }
             }
-            return true;
+            return (sbErrors.Length == 0);
         }
 
-        private async Task<bool> updateImageAsync(LocalDB.Model.RoutePointMediaObject media)
+        /*private async Task<bool> updateImageAsync(string routePointId, string mediaId, bool OriginalServerSynced, bool PreviewServerSynced)
         {
             bool result = false;
 
             string pathToPicturesDirectory = ImagePathManager.GetPicturesDirectory();
-            if (!media.OriginalServerSynced)
+            if (!OriginalServerSynced)
             {
-                result = await syncImage(media, pathToPicturesDirectory, false);
+                result = await syncImage(routePointId, mediaId, pathToPicturesDirectory, false);
                 if (result)
                 {
-                    _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, false, true);
+                    _routePointMediaManager.SetSyncStatus(mediaId, false, true);
                 }
             }
 
-            if (!media.PreviewServerSynced)
+            if (!PreviewServerSynced)
             {
-                result = await syncImage(media, pathToPicturesDirectory, true);
+                result = await syncImage(routePointId, mediaId, pathToPicturesDirectory, true);
                 if (result)
                 {
-                    _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, true, true);
+                    _routePointMediaManager.SetSyncStatus(mediaId, true, true);
                 }
             }
 
             return result;
-        }
+        }*/
 
-        private async Task<bool> syncImage(LocalDB.Model.RoutePointMediaObject media, string pathToPicturesDirectory, bool isPreview)
+        //private async Task<bool> syncImage(LocalDB.Model.RoutePointMediaObject media, string pathToPicturesDirectory, bool isPreview)
+        private async Task<bool> syncImageAsync(string routePointId, string mediaId, string pathToPicturesDirectory, bool isPreview)
         {
             bool result = false;
 
-            string filename = ImagePathManager.GetImageFilename(media.RoutePointMediaObjectId, isPreview);
-            string pathToMediaFile = ImagePathManager.GetImagePath(media.RoutePointMediaObjectId, isPreview);
+            string filename = ImagePathManager.GetImageFilename(mediaId, isPreview);
+            string pathToMediaFile = ImagePathManager.GetImagePath(mediaId, isPreview);
             if (!File.Exists(pathToMediaFile))
             {
-                result = await _routePointMediaObjectsApi.GetImage(media.RoutePointId, media.RoutePointMediaObjectId, pathToPicturesDirectory, filename);
+                result = await _routePointMediaObjectsApi.GetImage(routePointId, mediaId, pathToPicturesDirectory, filename);
             }
             else
             {
-                result = await _routePointMediaObjectsApi.SendImage(media.RoutePointId, media.RoutePointMediaObjectId, isPreview);
+                result = await _routePointMediaObjectsApi.SendImage(routePointId, mediaId, isPreview);
                 //AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
             }
 

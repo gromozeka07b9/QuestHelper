@@ -60,7 +60,7 @@ namespace QuestHelper.Managers.Sync
             return result;
         }
 
-        private void generateHashForRoutes(List<string> routesForGenerateHash)
+        /*private void generateHashForRoutes(List<string> routesForGenerateHash)
         {
             var routes = _routeManager.GetRoutes(routesForGenerateHash);
             foreach (var route in routes)
@@ -82,7 +82,7 @@ namespace QuestHelper.Managers.Sync
                 route.ObjVerHash = HashManager.Generate(versions.ToString());
                 route.Save();
             }
-        }
+        }*/
 
         /*private async Task<bool> UpdateRoutesAsync(List<Tuple<string, string>> changedRoutes)
         {

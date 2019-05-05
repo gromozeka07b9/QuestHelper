@@ -9,17 +9,25 @@ using Xamarin.Essentials;
 
 namespace QuestHelper.Managers
 {
-    public class RouteManager
+    public class RouteManager : RealmInstanceMaker
     {
-        readonly Realm _realmInstance;
+        //readonly Realm _realmInstance;
         public RouteManager()
         {
-            _realmInstance = RealmAppInstance.GetAppInstance();
+            //_realmInstance = RealmAppInstance.GetAppInstance();
         }
+
+        /*internal Realm RealmInstance
+        {
+            get
+            {
+                return RealmAppInstance.Get(); 
+            }
+        }*/
         internal IEnumerable<ViewRoute> GetRoutes(List<string> iDs)
         {
             List<ViewRoute> vroutes = new List<ViewRoute>();
-            var dbRoutes = _realmInstance.All<Route>().ToList().Where(r => iDs.Contains(r.RouteId));
+            var dbRoutes = RealmInstance.All<Route>().ToList().Where(r => iDs.Contains(r.RouteId));
             if (dbRoutes.Any())
             {
                 foreach (var route in dbRoutes)
@@ -32,7 +40,7 @@ namespace QuestHelper.Managers
         internal IEnumerable<ViewRoute> GetRoutes(string UserId)
         {
             List<ViewRoute> vroutes = new List<ViewRoute>();
-            var routes = _realmInstance.All<Route>().Where(u=>(!u.IsDeleted && !u.IsPublished)||(!u.IsDeleted && u.IsPublished && u.CreatorId == UserId)).OrderByDescending(r => r.CreateDate);
+            var routes = RealmInstance.All<Route>().Where(u=>(!u.IsDeleted && !u.IsPublished)||(!u.IsDeleted && u.IsPublished && u.CreatorId == UserId)).OrderByDescending(r => r.CreateDate);
             if (routes.Any())
             {
                 foreach (var route in routes)
@@ -46,7 +54,7 @@ namespace QuestHelper.Managers
         internal IEnumerable<ViewRoute> GetRoutesForSync()
         {
             List<ViewRoute> vroutes = new List<ViewRoute>();
-            var routes = _realmInstance.All<Route>().OrderByDescending(r => r.CreateDate);
+            var routes = RealmInstance.All<Route>().OrderByDescending(r => r.CreateDate);
             if (routes.Any())
             {
                 foreach (var route in routes)
@@ -64,7 +72,7 @@ namespace QuestHelper.Managers
         internal IEnumerable<ViewRoute> GetPosts()
         {
             List<ViewRoute> vroutes = new List<ViewRoute>();
-            var routes = _realmInstance.All<Route>().Where(r=>r.IsPublished).OrderByDescending(r => r.CreateDate);
+            var routes = RealmInstance.All<Route>().Where(r=>r.IsPublished).OrderByDescending(r => r.CreateDate);
             if (routes.Any())
             {
                 foreach (var route in routes)
@@ -77,7 +85,7 @@ namespace QuestHelper.Managers
 
         public IEnumerable<Route> GetNotSynced()
         {
-            return _realmInstance.All<Route>().Where(item => !item.ServerSynced);
+            return RealmInstance.All<Route>().Where(item => !item.ServerSynced);
         }
 
         public bool Save(ViewRoute viewRoute)
@@ -86,13 +94,13 @@ namespace QuestHelper.Managers
             RouteManager routeManager = new RouteManager();
             try
             {
-                _realmInstance.Write(() =>
+                RealmInstance.Write(() =>
                 {
-                    var route = !string.IsNullOrEmpty(viewRoute.Id) ? _realmInstance.Find<Route>(viewRoute.Id) : null;
+                    var route = !string.IsNullOrEmpty(viewRoute.Id) ? RealmInstance.Find<Route>(viewRoute.Id) : null;
                     if (null == route)
                     {
                         route = string.IsNullOrEmpty(viewRoute.Id) ? new Route() : new Route() { RouteId = viewRoute.Id };
-                        _realmInstance.Add(route);
+                        RealmInstance.Add(route);
                     }
                     route.Name = viewRoute.Name;
                     route.Version = viewRoute.Version;
@@ -115,7 +123,7 @@ namespace QuestHelper.Managers
 
         internal Route GetRouteById(string routeId)
         {
-            return _realmInstance.Find<Route>(routeId);
+            return RealmInstance.Find<Route>(routeId);
         }
         internal ViewRoute GetViewRouteById(string routeId)
         {
@@ -135,7 +143,7 @@ namespace QuestHelper.Managers
             double length = 0;
             if (!string.IsNullOrEmpty(routeId))
             {
-                var route = _realmInstance.Find<Route>(routeId);
+                var route = RealmInstance.Find<Route>(routeId);
                 if (route != null)
                 {
                     int countPoints = route.Points.Count;

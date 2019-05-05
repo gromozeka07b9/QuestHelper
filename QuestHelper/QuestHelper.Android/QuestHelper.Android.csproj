@@ -105,6 +105,7 @@
     <Compile Include="CustomMapRenderer.cs" />
     <Compile Include="InstagramShareService.cs" />
     <Compile Include="NetworkConnectionsService.cs" />
+    <Compile Include="SyncIntentService.cs" />
     <Compile Include="ToastService.cs" />
     <Compile Include="DefaultViewerService.cs" />
     <Compile Include="UsernameService.cs" />

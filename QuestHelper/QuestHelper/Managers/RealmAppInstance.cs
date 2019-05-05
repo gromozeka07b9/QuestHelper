@@ -33,7 +33,28 @@ namespace QuestHelper.Managers
             }
             return _realmInstance;
         }
-            
+        public static Realm Get()
+        {
+            Realm _instance = null;
+            try
+            {
+                var config = new RealmConfiguration()
+                {
+                    //v3 - added Route.ObjVerHash
+                    SchemaVersion = 3,
+                    MigrationCallback = (migration, oldSchemaVersion) =>
+                    {
+
+                    }
+                };
+                _instance = Realm.GetInstance(config);
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RealmAppInstance", "GetAppInstance", e, true);
+            }
+            return _instance;
+        }
 
     }
 }

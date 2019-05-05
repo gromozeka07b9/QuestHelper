@@ -18,7 +18,6 @@ namespace QuestHelper.Droid
     {
         public SyncIntentService() : base("SyncIntentService")
         {
-            Console.WriteLine("SyncIntentService construct");
         }
 
         protected override void OnHandleIntent(Intent intent)
