@@ -93,6 +93,13 @@ namespace QuestHelper.Droid
                 ToolbarService bar  = new ToolbarService();
                 bar.SetVisibilityToolbar(true);
             }
+
+            MessagingCenter.Subscribe<SyncMessage>(this, string.Empty, async (sender) =>
+            {
+                Intent syncIntent = new Intent(this, typeof(SyncIntentService));
+                var result = StartService(syncIntent);
+            });
+
         }
 
         private void StartToolbar(Bundle bundle)

@@ -47,10 +47,10 @@ namespace QuestHelper
 #else
            AppCenter.Start("android=85c4ccc3-f315-427c-adbd-b928e461bcc8;", typeof(Analytics), typeof(Crashes));
 #endif
-            MessagingCenter.Subscribe<SyncMessage>(this, string.Empty, async (sender) =>
+            /*MessagingCenter.Subscribe<SyncMessage>(this, string.Empty, async (sender) =>
 		    {
 		        await startProgressSync(sender.ShowErrorMessageIfExist);
-		    });
+		    });*/
 		    MessagingCenter.Subscribe<MapOpenPointMessage>(this, string.Empty, (sender) =>
 		    {
                 //пока непонятно, как будем открывать точку из карты
@@ -65,7 +65,7 @@ namespace QuestHelper
 
             if (Setup() && !string.IsNullOrEmpty(await token.GetAuthTokenAsync()))
             {
-                await startProgressSync(true);
+                //await startProgressSync(true);
             }
 
         }

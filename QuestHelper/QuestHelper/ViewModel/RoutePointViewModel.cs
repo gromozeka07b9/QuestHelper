@@ -184,8 +184,8 @@ namespace QuestHelper.ViewModel
                             _vpoint.AddImage(mediaId);
                             ApplyChanges();
                             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
-                            Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(){ShowErrorMessageIfExist = false}, string.Empty);
-                            Analytics.TrackEvent("Media: photo added", new Dictionary<string, string> { { "Photo size", originalFileInfo.Length.ToString() } });
+                            //Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(){ShowErrorMessageIfExist = false}, string.Empty);
+                            Analytics.TrackEvent("Media: photo added");
                         }
                         else
                         {
@@ -279,8 +279,8 @@ namespace QuestHelper.ViewModel
                         _vpoint.AddImage(mediaId);
                         ApplyChanges();
                         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
-                        Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(){ShowErrorMessageIfExist = false}, string.Empty);
-                        Analytics.TrackEvent("Media: photo taken", new Dictionary<string, string> { { "Photo size", fileSize.ToString() } });
+                        //Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(){ShowErrorMessageIfExist = false}, string.Empty);
+                        Analytics.TrackEvent("Media: photo taken");
                     }
                     else
                     {
