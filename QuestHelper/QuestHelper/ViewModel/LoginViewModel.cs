@@ -93,7 +93,7 @@ namespace QuestHelper.ViewModel
                         Analytics.TrackEvent("GetToken done", new Dictionary<string, string> { { "Username", _username } });
                         TokenStoreService tokenService = new TokenStoreService();
                         await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId);
-                        Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+                        //Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
                         ShowMainPage();
                     }
                     else

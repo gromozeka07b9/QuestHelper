@@ -20,10 +20,11 @@ namespace QuestHelper.Droid
         {
         }
 
-        protected override void OnHandleIntent(Intent intent)
+        protected override async void OnHandleIntent(Intent intent)
         {
             Console.WriteLine("SyncIntentService sync started");
-            SyncServer.SyncAll_v2();
+            SyncServer syncSrv = new SyncServer();
+            var syncResult = await syncSrv.SyncAll();
             Console.WriteLine("SyncIntentService sync ended");
         }
     }

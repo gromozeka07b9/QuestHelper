@@ -85,7 +85,7 @@ namespace QuestHelper.Model
 
         private void refreshMediaObjects()
         {
-            /*_mediaObjects = mediaManager.GetMediaObjectsByRoutePointId(_id)?.ToList();
+            _mediaObjects = mediaManager.GetMediaObjectsByRoutePointId(_id)?.ToList();
             if ((_mediaObjects != null) && (_mediaObjects.Count > 0))
             {
                 _imagePath = ImagePathManager.GetImagePath(_mediaObjects[0].RoutePointMediaObjectId);
@@ -95,7 +95,7 @@ namespace QuestHelper.Model
             {
                 _imagePath = routePointManager.GetDefaultImageFilename(_id);
                 _imagePreviewPath = routePointManager.GetDefaultImagePreviewFilename(_id);
-            }*/
+            }
         }
 
         internal void Refresh(string routePointId)

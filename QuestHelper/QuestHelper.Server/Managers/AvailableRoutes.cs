@@ -20,7 +20,7 @@ namespace QuestHelper.Server.Managers
             using (var db = new ServerDbContext(_dbOptions))
             {
                 var routeaccess = db.RouteAccess.Where(u => u.UserId == userId).Select(u => u.RouteId).ToList();
-                return db.Route.Where(r => routeaccess.Contains(r.RouteId)).ToList();
+                return db.Route.Where(r => routeaccess.Contains(r.RouteId) || r.IsPublished).ToList();
             }
         }
     }

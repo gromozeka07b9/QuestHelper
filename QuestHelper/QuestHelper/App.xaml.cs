@@ -47,15 +47,9 @@ namespace QuestHelper
 #else
            AppCenter.Start("android=85c4ccc3-f315-427c-adbd-b928e461bcc8;", typeof(Analytics), typeof(Crashes));
 #endif
-            /*MessagingCenter.Subscribe<SyncMessage>(this, string.Empty, async (sender) =>
-		    {
-		        await startProgressSync(sender.ShowErrorMessageIfExist);
-		    });*/
-		    MessagingCenter.Subscribe<MapOpenPointMessage>(this, string.Empty, (sender) =>
-		    {
-                //пока непонятно, как будем открывать точку из карты
-                ShowWarning("Данная функция в разработке");
-		    });
+
+		    SubscribeMessages();
+
 		    MessagingCenter.Subscribe<StartAppMessage>(this, string.Empty, (sender) =>
 		    {
 		        MainPage = new View.MainPage();
@@ -65,103 +59,41 @@ namespace QuestHelper
 
             if (Setup() && !string.IsNullOrEmpty(await token.GetAuthTokenAsync()))
             {
-                await startProgressSync(true);
+                Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
             }
 
         }
 
-	    private async Task startProgressSync(bool showErrorMessageIfExist)
+	    private void SubscribeMessages()
 	    {
-	        bool possibleStartSync = await checkSyncPossibilityAsync(showErrorMessageIfExist);
-            if (possibleStartSync)
+
+	        MessagingCenter.Subscribe<MapOpenPointMessage>(this, string.Empty, (sender) =>
 	        {
-	            await startSyncAll();
-	            /*if (showErrorMessageIfExist)
-                {
-                    using (UserDialogs.Instance.Loading("Синхронизация данных", null, null, true, MaskType.None))
-                    {
-                        await startSyncAll();
-                    }
-                }
-                else
-                {
-                    await startSyncAll();
-                }*/
-            }
-        }
+	            //пока непонятно, как будем открывать точку из карты
+	            ShowWarning("Данная функция в разработке");
+	        });
 
-        private async Task<bool> checkSyncPossibilityAsync(bool showErrorMessageIfExist)
-        {
-            bool possibility = false;
-            bool workInRoaming = false;
-            bool isRoaming = DependencyService.Get<INetworkConnectionsService>().IsRoaming();
-            if (isRoaming)
-            {
-                object storedWorkInRoaming;
-                if (Application.Current.Properties.TryGetValue("WorkInRoaming", out storedWorkInRoaming))
-                {
-                    workInRoaming = (bool)storedWorkInRoaming;
-                    possibility = workInRoaming;
-                }
-                else
-                {
-                    workInRoaming = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig() { Message = "Использовать синхронизацию в роуминге?", Title = "Используется роуминг", OkText = "Да", CancelText = "Нет" });
-                    Application.Current.Properties.Add("WorkInRoaming", workInRoaming);
-                }
-            }
-            if(!isRoaming||((isRoaming)&&(workInRoaming)))
-            {
-                var networkState = Connectivity.NetworkAccess;
-                possibility = networkState == NetworkAccess.Internet;
-                if ((!possibility)&&(showErrorMessageIfExist))
-                    UserDialogs.Instance.Alert("Проверьте ваше подключение к сети", "Ошибка синхронизации", "Ок");
-            }
-
-            return possibility;
-        }
-
-        private async Task startSyncAll()
-	    {
-	        if (!SynchronizeStarted)
-	        {
-	            string statusSyncKey = "SyncStatus";
-	            Analytics.TrackEvent("Sync all");
-	            SynchronizeStarted = true;
-                DateTime startTime = DateTime.Now;
-	            Application.Current.Properties.Remove(statusSyncKey);
-                Application.Current.Properties.Add(statusSyncKey, $"Sync started:{startTime.ToLocalTime().ToString()}");
-
-                //var syncResult = await SyncServer.SyncAllAsync();
-	            var syncResult = await SyncServer.SyncAll_v2();
-	            SynchronizeStarted = false;
-                if (!syncResult.Item1)
+	        MessagingCenter.Subscribe<UIAlertMessage>(this, string.Empty,
+	            (sender) =>
 	            {
-	                if (SyncServer.AuthRequired)
+	                MainThread.BeginInvokeOnMainThread(() =>
 	                {
-	                    var pageCollections = new PagesCollection();
-	                    MainPageMenuItem destinationPage = pageCollections.GetLoginPage();
-	                    Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(
-	                        new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);
-	                }
-	                else ShowWarning(syncResult.Item2);
-	                var diff = DateTime.Now - startTime;
-	                Application.Current.Properties.Remove(statusSyncKey);
-	                Application.Current.Properties.Add(statusSyncKey, $"Sync finished with error:{DateTime.Now.ToLocalTime().ToString()}, due {diff} sec, {syncResult.Item2}");
-	                Analytics.TrackEvent("Sync error", new Dictionary<string, string> { { "Sync error", syncResult.Item2 } });
-	            }
-                else
-                {
-                    var diff = DateTime.Now - startTime;
-                    Application.Current.Properties.Remove(statusSyncKey);
-                    Application.Current.Properties.Add(statusSyncKey, $"Sync finished at {DateTime.Now.ToLocalTime().ToString()}, due {diff} sec");
-                    ShowWarning($"Длительность синхронизации:{diff} сек.");
-	                Analytics.TrackEvent("Sync all done", new Dictionary<string, string>{{"Delay", Math.Round(diff.TotalSeconds).ToString()} });
-	            }
-            }
-	        else ShowWarning($"Синхронизация уже запущена");
-        }
+	                    UserDialogs.Instance.Alert(sender.Message, sender.Title, "Ок");
+	                });
+	            });
 
-        private bool Setup()
+	        MessagingCenter.Subscribe<UIToastMessage>(this, string.Empty, (sender) =>
+	        {
+	            MainThread.BeginInvokeOnMainThread(() =>
+	            {
+	                DependencyService.Get<IToastService>().LongToast(sender.Message);
+	                //ToDo:Непонятно, чего тост не работает
+	                //UserDialogs.Instance.Toast(sender.Message, new TimeSpan(0, 0, 0, 3));
+	            });
+	        });
+	    }
+
+	    private bool Setup()
         {
             bool result = false;
 

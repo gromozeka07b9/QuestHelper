@@ -134,7 +134,16 @@ namespace QuestHelper.Server.Controllers.Medias
                     if ((entity != null) && (!string.IsNullOrEmpty(entity.RoutePointMediaObjectId)))
                     {
                         //ToDo:memory stream не нужен, можно просто отдавать filestream
-                        _mediaManager.DownloadToStream(memStream, fileName);
+                        try
+                        {
+                            _mediaManager.DownloadToStream(memStream, fileName);
+                            memStream.Position = 0;
+                            return File(memStream, "image/jpeg", fileName);
+                        }
+                        catch (Exception e)
+                        {
+                            Response.StatusCode = 404;
+                        }
                     }
                     else
                     {
@@ -148,8 +157,7 @@ namespace QuestHelper.Server.Controllers.Medias
                 }
             }
 
-            memStream.Position = 0;
-            return File(memStream, "image/jpeg", fileName);
+            return new ObjectResult("");
         }
 
         [HttpGet("{fileName}/imageexist")]

@@ -24,6 +24,7 @@ namespace QuestHelper.WS
 
         public async Task<string> HttpRequestGET(string url, string authToken)
         {
+            _lastHttpStatusCode = 0;
             string result = string.Empty;
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(new Uri(url));
             request.Method = "GET";
@@ -58,6 +59,7 @@ namespace QuestHelper.WS
 
         public async Task<bool> HttpRequestGetFile(string url, string fullNameFile, string authToken)
         {
+            _lastHttpStatusCode = 0;
             bool result = false;
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(new Uri(url));
             request.Method = "GET";
@@ -98,6 +100,7 @@ namespace QuestHelper.WS
 
         public async Task<string> HttpRequestPOST(string url, string parameters, string authToken)
         {
+            _lastHttpStatusCode = 0;
             string result = string.Empty;
             var client = new HttpClient();
             if (!string.IsNullOrEmpty(authToken))
@@ -126,6 +129,7 @@ namespace QuestHelper.WS
         }
         public async Task<bool> HttpRequestDELETE(string url, string authToken)
         {
+            _lastHttpStatusCode = 0;
             bool result = false;
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
