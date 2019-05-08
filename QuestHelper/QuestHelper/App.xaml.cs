@@ -21,16 +21,17 @@ namespace QuestHelper
 {
 	public partial class App : Application
 	{
-	    private bool SynchronizeStarted = false;
+	    //private bool SynchronizeStarted = false;
+        private Logger _log = new Logger(true);
 
         public App ()
 		{
 			InitializeComponent();
 
-
-		    MainPage = new View.MainPage();
+		    _log.NewFile();
+            MainPage = new View.MainPage();
 		    Analytics.TrackEvent("Start app");
-		    Application.Current.Properties.Remove("SyncStatus");
+            Application.Current.Properties.Remove("SyncStatus");
 		    Application.Current.Properties.Remove("WorkInRoaming");
 		    ParameterManager par = new ParameterManager();
 		    string showOnboarding = string.Empty;
@@ -42,6 +43,7 @@ namespace QuestHelper
 
         protected override async void OnStart ()
 		{
+
 #if DEBUG
            AppCenter.Start("android=e7661afa-ce82-4b68-b98d-e35a71bb75c1;", typeof(Analytics), typeof(Crashes));
 #else

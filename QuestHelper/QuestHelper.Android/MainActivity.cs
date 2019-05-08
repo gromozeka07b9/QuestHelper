@@ -18,6 +18,7 @@ using ImageCircle.Forms.Plugin.Droid;
 using Acr.UserDialogs;
 using QuestHelper.Managers;
 using Plugin.Permissions;
+using QuestHelper.Managers.Sync;
 
 namespace QuestHelper.Droid
 {
@@ -96,8 +97,12 @@ namespace QuestHelper.Droid
 
             MessagingCenter.Subscribe<SyncMessage>(this, string.Empty, async (sender) =>
             {
-                Intent syncIntent = new Intent(this, typeof(SyncIntentService));
-                var result = StartService(syncIntent);
+                SyncPossibility syncPossibility = new SyncPossibility();
+                if (await syncPossibility.CheckAsync(true))
+                {
+                    Intent syncIntent = new Intent(this, typeof(SyncIntentService));
+                    var result = StartService(syncIntent);
+                }
             });
 
         }

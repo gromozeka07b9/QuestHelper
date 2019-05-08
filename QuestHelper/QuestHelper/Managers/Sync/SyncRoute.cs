@@ -24,6 +24,8 @@ namespace QuestHelper.Managers.Sync
         private readonly RoutePointManager _routePointManager = new RoutePointManager();
         private readonly RoutePointMediaObjectManager _routePointMediaManager = new RoutePointMediaObjectManager();
         private bool _syncImages = false;
+        private Logger _log = new Logger(true);
+
 
         public SyncRoute(string routeId, string authToken)
         {
@@ -51,18 +53,21 @@ namespace QuestHelper.Managers.Sync
                     if ((!AuthRequired) && (routeRoot != null))
                     {
                         bool updateResult = await updateRoute(routeServerHash, routeRoot, localRoute);
+                        //_log.AddStringEvent($"route {_routeId}, update result:{updateResult}");
                         if (!updateResult) return false;
 
                         updateResult = await updatePoints(routeRoot);
+                        //_log.AddStringEvent($"points route {_routeId}, update result:{updateResult}");
                         if (!updateResult) return false;
 
                         updateResult = await updateMedias(routeRoot);
+                        //_log.AddStringEvent($"media route {_routeId}, update result:{updateResult}");
                         if (!updateResult) return false;
 
                         if (_syncImages)
                         {
-                            StringBuilder sbErrors = new StringBuilder();
                             var medias = _routePointMediaManager.GetMediaObjectsByRouteId(routeRoot.Route.Id).Where(m => !m.OriginalServerSynced || !m.PreviewServerSynced).Select(m => new { RoutePointId = m.RoutePointId, RoutePointMediaObjectId = m.RoutePointMediaObjectId, OriginalServerSynced = m.OriginalServerSynced, PreviewServerSynced = m.PreviewServerSynced }).ToList();
+                            _log.AddStringEvent($"images sync,  route {_routeId}, media count:{medias?.Count.ToString()}");
                             foreach (var media in medias)
                             {
                                 if (!media.OriginalServerSynced)
@@ -70,14 +75,14 @@ namespace QuestHelper.Managers.Sync
                                     var httpStatus = await updateImagesAsync(media.RoutePointId, media.RoutePointMediaObjectId, false);
                                     _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, false, httpStatus == HttpStatusCode.OK);
                                     if(httpStatus != HttpStatusCode.OK)
-                                        sbErrors.AppendLine($"Error sync original mediafile: point[{media.RoutePointId}], media[{media.RoutePointMediaObjectId}]");
+                                        _log.AddStringEvent($"image update {media.RoutePointMediaObjectId}, original, http status:{HttpStatusCode.OK}");
                                 }
                                 if (!media.PreviewServerSynced)
                                 {
                                     var httpStatus = await updateImagesAsync(media.RoutePointId, media.RoutePointMediaObjectId, true);
                                     _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, true, httpStatus == HttpStatusCode.OK);
                                     if (httpStatus != HttpStatusCode.OK)
-                                        sbErrors.AppendLine($"Error sync preview mediafile: point[{media.RoutePointId}], media[{media.RoutePointMediaObjectId}]");
+                                        _log.AddStringEvent($"image update {media.RoutePointMediaObjectId}, preview, http status:{HttpStatusCode.OK}");
                                 }
                             }
                         }
@@ -88,6 +93,7 @@ namespace QuestHelper.Managers.Sync
 
             var updatedLocalRoute = _routeManager.GetViewRouteById(_routeId);
             StringBuilder sbVersions = getVersionsForRoute(updatedLocalRoute);
+            _log.AddStringEvent($"set route {_routeId}, versions {sbVersions.ToString()}");
             refreshHashForRoute(updatedLocalRoute, sbVersions);
 
             return true;
@@ -109,10 +115,12 @@ namespace QuestHelper.Managers.Sync
             if (!File.Exists(pathToMediaFile))
             {
                 result = await _routePointMediaObjectsApi.GetImage(routePointId, mediaId, pathToPicturesDirectory, filename);
+                _log.AddStringEvent($"get image point:{routePointId},  media:{mediaId}, filename:{filename}, result http status:{_routePointMediaObjectsApi.LastHttpStatusCode}");
             }
             else
             {
                 result = await _routePointMediaObjectsApi.SendImage(routePointId, mediaId, isPreview);
+                _log.AddStringEvent($"send image point:{routePointId},  media:{mediaId}, filename:{filename}, result http status:{_routePointMediaObjectsApi.LastHttpStatusCode}");
             }
 
             return _routePointMediaObjectsApi.LastHttpStatusCode;

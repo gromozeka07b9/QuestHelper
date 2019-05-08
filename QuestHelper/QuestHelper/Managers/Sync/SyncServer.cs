@@ -18,6 +18,7 @@ namespace QuestHelper.Managers.Sync
     {
         public static bool AuthRequired = false;
         private static bool SynchronizeStarted = false;
+        Logger _log = new Logger(true);
 
         private async System.Threading.Tasks.Task<Tuple<bool, string>> SyncAllRoutes()
         {
@@ -39,43 +40,42 @@ namespace QuestHelper.Managers.Sync
             bool allSynced = false;
             if (!SynchronizeStarted)
             {
-                if (await checkSyncPossibilityAsync(true))
+                string statusSyncKey = "SyncStatus";
+                Analytics.TrackEvent("Sync all");
+                SynchronizeStarted = true;
+                DateTime startTime = DateTime.Now;
+                Application.Current.Properties.Remove(statusSyncKey);
+                Application.Current.Properties.Add(statusSyncKey, $"Sync started:{startTime.ToLocalTime().ToString()}");
+                _log.AddStringEvent($"Sync started:{startTime.ToLocalTime().ToString()}");
+                var syncResult = await SyncAllRoutes();
+                SynchronizeStarted = false;
+                if (!syncResult.Item1)
                 {
-                    string statusSyncKey = "SyncStatus";
-                    Analytics.TrackEvent("Sync all");
-                    SynchronizeStarted = true;
-                    DateTime startTime = DateTime.Now;
+                    if (AuthRequired)
+                    {
+                        var pageCollections = new PagesCollection();
+                        MainPageMenuItem destinationPage = pageCollections.GetLoginPage();
+                        Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(
+                            new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);
+                    }
+                    var diff = DateTime.Now - startTime;
+                    string resultMessage = $"Sync all finished with error:{DateTime.Now.ToLocalTime().ToString()}, due {diff} sec, {syncResult.Item2}";
                     Application.Current.Properties.Remove(statusSyncKey);
-                    Application.Current.Properties.Add(statusSyncKey, $"Sync started:{startTime.ToLocalTime().ToString()}");
-
-                    var syncResult = await SyncAllRoutes();
-                    SynchronizeStarted = false;
-                    if (!syncResult.Item1)
-                    {
-                        if (AuthRequired)
-                        {
-                            var pageCollections = new PagesCollection();
-                            MainPageMenuItem destinationPage = pageCollections.GetLoginPage();
-                            Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(
-                                new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);
-                        }
-                        var diff = DateTime.Now - startTime;
-                        string resultMessage = $"Sync all finished with error:{DateTime.Now.ToLocalTime().ToString()}, due {diff} sec, {syncResult.Item2}";
-                        Application.Current.Properties.Remove(statusSyncKey);
-                        Application.Current.Properties.Add(statusSyncKey, resultMessage);
-                        MessagingCenter.Send<UIToastMessage>(new UIToastMessage() { Delay = 3, Message = resultMessage }, string.Empty);
-                        Analytics.TrackEvent("Sync error", new Dictionary<string, string> { { "Sync error", syncResult.Item2 } });
-                    }
-                    else
-                    {
-                        allSynced = true;
-                        var diff = DateTime.Now - startTime;
-                        string resultMessage = $"Sync finished at {DateTime.Now.ToLocalTime().ToString()}, due {diff} sec";
-                        Application.Current.Properties.Remove(statusSyncKey);
-                        Application.Current.Properties.Add(statusSyncKey, resultMessage);
-                        MessagingCenter.Send<UIToastMessage>(new UIToastMessage() { Delay = 3, Message = resultMessage }, string.Empty);
-                        Analytics.TrackEvent("Sync all done", new Dictionary<string, string> { { "Delay", Math.Round(diff.TotalSeconds).ToString() } });
-                    }
+                    Application.Current.Properties.Add(statusSyncKey, resultMessage);
+                    MessagingCenter.Send<UIToastMessage>(new UIToastMessage() { Delay = 3, Message = resultMessage }, string.Empty);
+                    Analytics.TrackEvent("Sync error", new Dictionary<string, string> { { "Sync error", syncResult.Item2 } });
+                    _log.AddStringEvent(resultMessage);
+                }
+                else
+                {
+                    allSynced = true;
+                    var diff = DateTime.Now - startTime;
+                    string resultMessage = $"Sync finished at {DateTime.Now.ToLocalTime().ToString()}, due {diff} sec";
+                    Application.Current.Properties.Remove(statusSyncKey);
+                    Application.Current.Properties.Add(statusSyncKey, resultMessage);
+                    MessagingCenter.Send<UIToastMessage>(new UIToastMessage() { Delay = 3, Message = resultMessage }, string.Empty);
+                    Analytics.TrackEvent("Sync all done", new Dictionary<string, string> { { "Delay", Math.Round(diff.TotalSeconds).ToString() } });
+                    _log.AddStringEvent(resultMessage);
                 }
             }
             else
@@ -86,7 +86,7 @@ namespace QuestHelper.Managers.Sync
             return allSynced;
         }
 
-        private async Task<bool> checkSyncPossibilityAsync(bool showErrorMessageIfExist)
+        /*private async Task<bool> checkSyncPossibilityAsync(bool showErrorMessageIfExist)
         {
             bool possibility = false;
             bool workInRoaming = false;
@@ -117,7 +117,7 @@ namespace QuestHelper.Managers.Sync
             }
 
             return possibility;
-        }
+        }*/
 
         /*private static async System.Threading.Tasks.Task prepareErrorReportToAppcenterAsync(string errorReport)
         {
