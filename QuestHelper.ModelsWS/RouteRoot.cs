@@ -11,6 +11,7 @@ namespace QuestHelper.SharedModelsWS
 
         public RouteRoot()
         {
+            Route = new Route();
         }
 
     }

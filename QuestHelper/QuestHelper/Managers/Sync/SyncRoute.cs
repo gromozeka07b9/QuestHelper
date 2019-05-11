@@ -39,57 +39,54 @@ namespace QuestHelper.Managers.Sync
         public async Task<bool> SyncAsync(string routeServerHash)
         {
             var localRoute = _routeManager.GetViewRouteById(_routeId);
-            if ((localRoute != null) && (localRoute.ObjVerHash != routeServerHash))
+            //новый маршрут
+            if (string.IsNullOrEmpty(routeServerHash))
             {
-                if (string.IsNullOrEmpty(routeServerHash))
+                bool updateResult = await updateRoute(routeServerHash, new RouteRoot() { Route = new SharedModelsWS.Route() { Version = -1 } }, localRoute);
+                _log.AddStringEvent($"route {_routeId}, create result:{updateResult}");
+            }
+
+            //независимо от того, новый маршрут или нет, проверяем, что изменилось - придется пройтись по всему маршруту и узнать
+            RouteRoot routeRoot = await _routesApi.GetRouteRoot(_routeId);
+            bool AuthRequired = (_routesApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routesApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
+            if ((!AuthRequired) && (routeRoot != null))
+            {
+                bool updateResult = await updateRoute(routeServerHash, routeRoot, localRoute);
+                //_log.AddStringEvent($"route {_routeId}, update result:{updateResult}");
+                if (!updateResult) return false;
+
+                updateResult = await updatePoints(routeRoot);
+                //_log.AddStringEvent($"points route {_routeId}, update result:{updateResult}");
+                if (!updateResult) return false;
+
+                updateResult = await updateMedias(routeRoot);
+                //_log.AddStringEvent($"media route {_routeId}, update result:{updateResult}");
+                if (!updateResult) return false;
+
+                if (_syncImages)
                 {
-                    //новый маршрут, отправить на сервер
-                }
-                else
-                {
-                    //есть изменения, какие - придется пройтись по всему маршруту и узнать
-                    var routeRoot = await _routesApi.GetRouteRoot(_routeId);
-                    bool AuthRequired = (_routesApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routesApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
-                    if ((!AuthRequired) && (routeRoot != null))
+                    var medias = _routePointMediaManager.GetMediaObjectsByRouteId(routeRoot.Route.Id).Where(m => !m.OriginalServerSynced || !m.PreviewServerSynced).Select(m => new { RoutePointId = m.RoutePointId, RoutePointMediaObjectId = m.RoutePointMediaObjectId, OriginalServerSynced = m.OriginalServerSynced, PreviewServerSynced = m.PreviewServerSynced }).ToList();
+                    _log.AddStringEvent($"images sync,  route {_routeId}, media count:{medias?.Count.ToString()}");
+                    foreach (var media in medias)
                     {
-                        bool updateResult = await updateRoute(routeServerHash, routeRoot, localRoute);
-                        //_log.AddStringEvent($"route {_routeId}, update result:{updateResult}");
-                        if (!updateResult) return false;
-
-                        updateResult = await updatePoints(routeRoot);
-                        //_log.AddStringEvent($"points route {_routeId}, update result:{updateResult}");
-                        if (!updateResult) return false;
-
-                        updateResult = await updateMedias(routeRoot);
-                        //_log.AddStringEvent($"media route {_routeId}, update result:{updateResult}");
-                        if (!updateResult) return false;
-
-                        if (_syncImages)
+                        if (!media.OriginalServerSynced)
                         {
-                            var medias = _routePointMediaManager.GetMediaObjectsByRouteId(routeRoot.Route.Id).Where(m => !m.OriginalServerSynced || !m.PreviewServerSynced).Select(m => new { RoutePointId = m.RoutePointId, RoutePointMediaObjectId = m.RoutePointMediaObjectId, OriginalServerSynced = m.OriginalServerSynced, PreviewServerSynced = m.PreviewServerSynced }).ToList();
-                            _log.AddStringEvent($"images sync,  route {_routeId}, media count:{medias?.Count.ToString()}");
-                            foreach (var media in medias)
-                            {
-                                if (!media.OriginalServerSynced)
-                                {
-                                    var httpStatus = await updateImagesAsync(media.RoutePointId, media.RoutePointMediaObjectId, false);
-                                    _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, false, httpStatus == HttpStatusCode.OK);
-                                    if(httpStatus != HttpStatusCode.OK)
-                                        _log.AddStringEvent($"image update {media.RoutePointMediaObjectId}, original, http status:{HttpStatusCode.OK}");
-                                }
-                                if (!media.PreviewServerSynced)
-                                {
-                                    var httpStatus = await updateImagesAsync(media.RoutePointId, media.RoutePointMediaObjectId, true);
-                                    _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, true, httpStatus == HttpStatusCode.OK);
-                                    if (httpStatus != HttpStatusCode.OK)
-                                        _log.AddStringEvent($"image update {media.RoutePointMediaObjectId}, preview, http status:{HttpStatusCode.OK}");
-                                }
-                            }
+                            var httpStatus = await updateImagesAsync(media.RoutePointId, media.RoutePointMediaObjectId, false);
+                            _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, false, httpStatus == HttpStatusCode.OK);
+                            if (httpStatus != HttpStatusCode.OK)
+                                _log.AddStringEvent($"image update {media.RoutePointMediaObjectId}, original, http status:{HttpStatusCode.OK}");
+                        }
+                        if (!media.PreviewServerSynced)
+                        {
+                            var httpStatus = await updateImagesAsync(media.RoutePointId, media.RoutePointMediaObjectId, true);
+                            _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, true, httpStatus == HttpStatusCode.OK);
+                            if (httpStatus != HttpStatusCode.OK)
+                                _log.AddStringEvent($"image update {media.RoutePointMediaObjectId}, preview, http status:{HttpStatusCode.OK}");
                         }
                     }
-                    else return false;
                 }
             }
+            else return false;
 
             var updatedLocalRoute = _routeManager.GetViewRouteById(_routeId);
             StringBuilder sbVersions = getVersionsForRoute(updatedLocalRoute);
@@ -247,7 +244,7 @@ namespace QuestHelper.Managers.Sync
 
         private async Task<bool> updateRoute(string routeServerHash, RouteRoot routeRoot, ViewRoute localRoute)
         {
-            bool updateResult = true;
+            bool updateResult = false;
 
             if ((localRoute == null) || (routeRoot.Route.Version > localRoute.Version))
             {
@@ -255,11 +252,18 @@ namespace QuestHelper.Managers.Sync
                 updateViewRoute.FillFromWSModel(routeRoot, routeServerHash);
                 updateResult = updateViewRoute.Save();
             }
-            else if (routeRoot.Route.Version < localRoute.Version)
+            else if (string.IsNullOrEmpty(routeServerHash))
             {
                 updateResult = await UploadAsync(GetRouteJsonStructure(localRoute), _routesApi);
             }
-
+            else if (routeRoot?.Route?.Version < localRoute?.Version)
+            {
+                updateResult = await UploadAsync(GetRouteJsonStructure(localRoute), _routesApi);
+            }
+            else if (routeRoot?.Route?.Version == localRoute?.Version)
+            {
+                updateResult = true;
+            }
             return updateResult;
         }
 
