@@ -22,6 +22,8 @@ namespace QuestHelper.Server.Controllers.Points
         [HttpPost]
         public IActionResult Post([FromBody]SyncObjectStatus syncObject)
         {
+            DateTime startDate = DateTime.Now;
+
             string userId = IdentityManager.GetUserId(HttpContext);
             SyncObjectStatus report = new SyncObjectStatus();
             if (syncObject.Statuses != null)
@@ -52,6 +54,10 @@ namespace QuestHelper.Server.Controllers.Points
                     }
                 }
             }
+
+            TimeSpan delay = DateTime.Now - startDate;
+            Console.WriteLine($"Points Sync (old): status 200, {userId}, delay:{delay.Milliseconds}");
+
             return new ObjectResult(report);
         }
     }

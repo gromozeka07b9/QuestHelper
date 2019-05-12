@@ -41,9 +41,10 @@ namespace QuestHelper.Server.Controllers.RouteSync
         [HttpGet("version/get")]
         public IActionResult GetRouteData()
         {
+            DateTime startDate = DateTime.Now;
+
             string userId = IdentityManager.GetUserId(HttpContext);
 
-            DateTime startDate = DateTime.Now;
             List<RouteVersion> routeVersions = new List<RouteVersion>();
             AvailableRoutes availRoutes = new AvailableRoutes(_dbOptions);
             var routes = availRoutes.Get(userId);
@@ -74,6 +75,7 @@ namespace QuestHelper.Server.Controllers.RouteSync
             }
 
             TimeSpan delay = DateTime.Now - startDate;
+            Console.WriteLine($"GetRouteData full: status 200, {userId}, delay:{delay.Milliseconds}");
             return new ObjectResult(routeVersions);
         }
 
@@ -81,6 +83,7 @@ namespace QuestHelper.Server.Controllers.RouteSync
         [HttpGet("{routeid}")]
         public IActionResult GetRouteData(string routeId)
         {
+            DateTime startDate = DateTime.Now;
             string userId = IdentityManager.GetUserId(HttpContext);
             RouteRoot routeRoot = new RouteRoot();
 
@@ -105,6 +108,9 @@ namespace QuestHelper.Server.Controllers.RouteSync
                     }
                 }
             }
+
+            TimeSpan delay = DateTime.Now - startDate;
+            Console.WriteLine($"GetRouteData by Id: status 200, {userId}, {routeId}, delay:{delay.Milliseconds}");
             return new ObjectResult(routeRoot);
         }
     }

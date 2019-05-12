@@ -26,16 +26,19 @@ namespace QuestHelper.Server
                     context.HttpContext.Items.Add("UserId", userIdClaim.Value);
                     if (!validateContext.UserIsValid(context.HttpContext.User.Identity.Name))
                     {
+                        Console.WriteLine($"RequestFilter: status 403, {userIdClaim.Value}");
                         context.Result = new StatusCodeResult(403);
                     }
                 }
                 else
                 {
+                    Console.WriteLine($"RequestFilter: status 403, userId null");
                     context.Result = new StatusCodeResult(403);
                 }
             }
             else
             {
+                Console.WriteLine($"RequestFilter: status 401, UserIdentity null");
                 context.Result = new UnauthorizedResult();
             }
             base.OnActionExecuting(context);

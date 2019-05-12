@@ -23,6 +23,8 @@ namespace QuestHelper.Server.Controllers.Routes
         [HttpPost]
         public IActionResult Post([FromBody]SyncObjectStatus syncObject)
         {
+            DateTime startDate = DateTime.Now;
+
             string userId = IdentityManager.GetUserId(HttpContext);
             SyncObjectStatus report = new SyncObjectStatus();
             if (syncObject.Statuses != null)
@@ -57,6 +59,10 @@ namespace QuestHelper.Server.Controllers.Routes
                     }
                 }
             }
+
+            TimeSpan delay = DateTime.Now - startDate;
+            Console.WriteLine($"Route Sync (old): status 200, {userId}, delay:{delay.Milliseconds}");
+
             return new ObjectResult(report);
         }
     }

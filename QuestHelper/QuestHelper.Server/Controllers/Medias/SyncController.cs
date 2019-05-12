@@ -28,6 +28,8 @@ namespace QuestHelper.Server.Controllers.Medias
         [HttpPost]
         public IActionResult Post([FromBody]SyncObjectStatus syncObject)
         {
+            DateTime startDate = DateTime.Now;
+
             string userId = IdentityManager.GetUserId(HttpContext);
             SyncObjectStatus report = new SyncObjectStatus();
             if (syncObject.Statuses != null)
@@ -59,12 +61,18 @@ namespace QuestHelper.Server.Controllers.Medias
                     }
                 }
             }
+
+            TimeSpan delay = DateTime.Now - startDate;
+            Console.WriteLine($"Medias Sync (old): status 200, {userId}, delay:{delay.Milliseconds}");
+
             return new ObjectResult(report);
         }
 
         [HttpPost("imagestatus")]
         public IActionResult ImagesStatus([FromBody]ImagesServerStatus imagesClient)
         {
+            DateTime startDate = DateTime.Now;
+
             string userId = IdentityManager.GetUserId(HttpContext);
             ImagesServerStatus status = new ImagesServerStatus();
             using (var db = new ServerDbContext(_dbOptions))
@@ -101,6 +109,9 @@ namespace QuestHelper.Server.Controllers.Medias
                     }
                 }
             }
+
+            TimeSpan delay = DateTime.Now - startDate;
+            Console.WriteLine($"Image status (old): status 200, {userId}, delay:{delay.Milliseconds}");
 
             return new ObjectResult(status);
         }

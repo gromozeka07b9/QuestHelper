@@ -58,15 +58,18 @@ namespace QuestHelper.Server.Controllers.Account
                         // сериализация ответа
                         Response.ContentType = "application/json";
                         await Response.WriteAsync(JsonConvert.SerializeObject(response, new JsonSerializerSettings { Formatting = Formatting.Indented }));
+                        Console.WriteLine($"Account Token: status 200, {request?.Username}, {request?.Email}");
                     }
                     else
                     {
+                        Console.WriteLine($"Account Token: status 500, {request?.Username}, {request?.Email}");
                         Response.StatusCode = 500;
                         await Response.WriteAsync("Error while generate token.");
                     }
                 }
                 else
                 {
+                    Console.WriteLine($"Account Token: status 400, User not found in DB, {request?.Username}, {request?.Email}");
                     Response.StatusCode = 400;
                     await Response.WriteAsync("Invalid username or password.");
                 }
@@ -88,6 +91,7 @@ namespace QuestHelper.Server.Controllers.Account
                 }
 
                 await MakeJwtResponse(user);
+                Console.WriteLine($"Account Demo Token: status 200, {request?.Email}");
             }
 
             return;
@@ -106,6 +110,7 @@ namespace QuestHelper.Server.Controllers.Account
             user.TokenKey = user.Name;
             _db.User.Add(user);
             _db.SaveChanges();
+            Console.WriteLine($"Created DB user: {user.Name}");
             return user;
         }
 
@@ -123,10 +128,12 @@ namespace QuestHelper.Server.Controllers.Account
                     {
                         AddAccessToDemoRoute(_db, user);
                         await MakeJwtResponse(user);
+                        Console.WriteLine($"Account New: status 200, {request?.Username}, {request?.Email}");
                     }
                 }
                 else
                 {
+                    Console.WriteLine($"Account New: status 403, {request?.Username}, {request?.Email}");
                     Response.StatusCode = 403;
                     await Response.WriteAsync("Error creating new user");
                 }
@@ -145,6 +152,7 @@ namespace QuestHelper.Server.Controllers.Account
             access.UserId = user.UserId;
             _db.RouteAccess.Add(access);
             _db.SaveChanges();
+            Console.WriteLine($"Added DB access: {user.Name}");
         }
 
         private async Task MakeJwtResponse(User user)
@@ -171,6 +179,7 @@ namespace QuestHelper.Server.Controllers.Account
             }
             else
             {
+                Console.WriteLine($"Generate JWT token:status 500, {user.Name}");
                 Response.StatusCode = 500;
                 await Response.WriteAsync("Error while generate token.");
             }

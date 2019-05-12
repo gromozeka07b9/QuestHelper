@@ -121,6 +121,8 @@ namespace QuestHelper.Server.Controllers.Medias
         [HttpGet("{routePointId}/{mediaObjectId}/{fileName}")]
         public IActionResult Get(string routePointId, string mediaObjectId, string fileName)
         {
+            DateTime startDate = DateTime.Now;
+
             string userId = IdentityManager.GetUserId(HttpContext);
             MemoryStream memStream = new MemoryStream();
             using (var db = new ServerDbContext(_dbOptions))
@@ -147,6 +149,7 @@ namespace QuestHelper.Server.Controllers.Medias
                     }
                     else
                     {
+                        Console.WriteLine($"Image GET exception: userid:{userId}, file:{fileName}, not found");
                         if (entity == null) throw new Exception($"Media object {mediaObjectId} not found!");
                         throw new Exception($"Media object does not contain filename {fileName}");
                     }
@@ -157,16 +160,24 @@ namespace QuestHelper.Server.Controllers.Medias
                 }
             }
 
+            TimeSpan delay = DateTime.Now - startDate;
+            Console.WriteLine($"Image GET: status {Response.StatusCode}, {userId}, file:{fileName}, delay:{delay.Milliseconds}");
+
             return new ObjectResult("");
         }
 
         [HttpGet("{fileName}/imageexist")]
         public void ImageExist(string fileName)
         {
+            DateTime startDate = DateTime.Now;
+
             string userId = IdentityManager.GetUserId(HttpContext);
             if (_mediaManager.FileExist(Path.Combine(_pathToMediaCatalog, fileName)))
                 Response.StatusCode = 200;
             else Response.StatusCode = 404;
+
+            TimeSpan delay = DateTime.Now - startDate;
+            Console.WriteLine($"Image exist: status {Response.StatusCode}, {userId}, file:{fileName}, delay:{delay.Milliseconds}");
         }
     }
 }
