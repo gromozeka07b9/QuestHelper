@@ -37,7 +37,7 @@
                 <Label Text="У вас пока нет ни одного маршрута." Style="{StaticResource StandartTextLabel}" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" ></Label>
                 <Label Text="Чтобы добавить новый, нажмите кнопку '+'" Style="{StaticResource StandartTextLabel}" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" ></Label>
             </StackLayout>
-            <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" SeparatorVisibility="None" ItemsSource="{Binding Routes}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshListRoutesCommand}" x:Name="RoutesListView" RowHeight="250"  SelectedItem="{Binding SelectedRouteItem,Mode=TwoWay}">
+            <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" SeparatorVisibility="None" ItemsSource="{Binding Routes}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshListRoutesCommand}" x:Name="RoutesListView" RowHeight="250"  SelectedItem="{Binding SelectedRouteItem,Mode=TwoWay}" CachingStrategy="RecycleElement">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

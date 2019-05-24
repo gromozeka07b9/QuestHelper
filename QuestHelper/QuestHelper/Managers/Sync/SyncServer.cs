@@ -31,6 +31,13 @@ namespace QuestHelper.Managers.Sync
             {
                 SyncRoutes syncRoutes = new SyncRoutes(authToken);
                 syncResult = await syncRoutes.Sync();
+                if (syncRoutes.AuthRequired)
+                {
+                    var pageCollections = new PagesCollection();
+                    MainPageMenuItem destinationPage = pageCollections.GetLoginPage();
+                    Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(
+                        new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);
+                }
             }
             return new Tuple<bool, string>(syncResult, errorMsg);
         }

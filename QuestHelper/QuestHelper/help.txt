@@ -41,3 +41,5 @@ http://www.saatchisynergize.co.za/blog/facebook-users-now-have-more-control-over
 
 transparent navigation bar:
 https://xamgirl.com/transparent-navigation-bar-in-xamarin-forms/
+
+https://docs.microsoft.com/ru-ru/xamarin/xamarin-forms/user-interface/listview/performance

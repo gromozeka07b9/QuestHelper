@@ -39,31 +39,38 @@ namespace QuestHelper.Managers.Sync
             bool result = true;
             var listRoutesVersions = await _routesApi.GetRoutesVersions();
             AuthRequired = (_routesApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routesApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
-            if(AuthRequired) return false;
-            _log.AddStringEvent("GetRoutesVersions, count:" + listRoutesVersions?.Count.ToString());
-            if ((!AuthRequired) && (listRoutesVersions?.Count > 0))
+            if (!AuthRequired)
             {
-                var routesLocal = _routeManager.GetRoutesForSync().Select(x => new {x.RouteId, x.Version, x.ObjVerHash});
-                var differentRoutes = listRoutesVersions.Where(r=>(!routesLocal.Any(l=>(l.RouteId == r.Id && l.ObjVerHash == r.ObjVerHash))));
-                var newClientRoutes = routesLocal.Where(r => !listRoutesVersions.Any(d => d.Id == r.RouteId)).Select(r => r.RouteId).ToList();
-
-                _log.AddStringEvent("differentRoutes, count:" + differentRoutes?.Count().ToString());
-                foreach (var serverRouteVersion in differentRoutes)
+                _log.AddStringEvent("GetRoutesVersions, count:" + listRoutesVersions?.Count.ToString());
+                if ((!AuthRequired) && (listRoutesVersions?.Count > 0))
                 {
-                    SyncRoute syncRouteContext = new SyncRoute(serverRouteVersion.Id, _authToken);
-                    syncRouteContext.SyncImages = true;
-                    result = await syncRouteContext.SyncAsync(serverRouteVersion.ObjVerHash);
-                    _log.AddStringEvent($"diff route result, {serverRouteVersion.Id} :" + result);
-                }
+                    var routesLocal = _routeManager.GetRoutesForSync().Select(x => new { x.RouteId, x.Version, x.ObjVerHash });
+                    var differentRoutes = listRoutesVersions.Where(r => (!routesLocal.Any(l => (l.RouteId == r.Id && l.ObjVerHash == r.ObjVerHash))));
+                    var newClientRoutes = routesLocal.Where(r => !listRoutesVersions.Any(d => d.Id == r.RouteId)).Select(r => r.RouteId).ToList();
 
-                _log.AddStringEvent("newClientRoutes, count:" + newClientRoutes?.Count().ToString());
-                foreach (var localRouteId in newClientRoutes)
-                {
-                    SyncRoute syncRouteContext = new SyncRoute(localRouteId, _authToken);
-                    syncRouteContext.SyncImages = true;
-                    result = await syncRouteContext.SyncAsync(string.Empty);
-                    _log.AddStringEvent($"new route result, {localRouteId} :" + result);
+                    _log.AddStringEvent("differentRoutes, count:" + differentRoutes?.Count().ToString());
+                    foreach (var serverRouteVersion in differentRoutes)
+                    {
+                        SyncRoute syncRouteContext = new SyncRoute(serverRouteVersion.Id, _authToken);
+                        syncRouteContext.SyncImages = true;
+                        result = await syncRouteContext.SyncAsync(serverRouteVersion.ObjVerHash);
+                        _log.AddStringEvent($"diff route result, {serverRouteVersion.Id} :" + result);
+                    }
+
+                    _log.AddStringEvent("newClientRoutes, count:" + newClientRoutes?.Count().ToString());
+                    foreach (var localRouteId in newClientRoutes)
+                    {
+                        SyncRoute syncRouteContext = new SyncRoute(localRouteId, _authToken);
+                        syncRouteContext.SyncImages = true;
+                        result = await syncRouteContext.SyncAsync(string.Empty);
+                        _log.AddStringEvent($"new route result, {localRouteId} :" + result);
+                    }
                 }
+            }
+            else
+            {
+                result = false;
+
             }
             return result;
         }

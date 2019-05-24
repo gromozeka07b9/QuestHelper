@@ -26,7 +26,7 @@ namespace QuestHelper.Server.Auth
                 audience: AuthOptions.AUDIENCE,
                 notBefore: now,
                 claims: identity.Claims,
-                expires: now.Add(TimeSpan.FromDays(10)),
+                expires: now.Add(TimeSpan.FromDays(30)),
                 signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(),
                     SecurityAlgorithms.HmacSha256));
             jwt.Payload["UserKey"] = userKey;
