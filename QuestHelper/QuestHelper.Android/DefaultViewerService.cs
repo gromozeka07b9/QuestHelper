@@ -10,6 +10,7 @@ using Android.Content;
 using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V4.Content;
 using Android.Views;
 using Android.Widget;
 using Microsoft.AppCenter.Crashes;
@@ -29,9 +30,12 @@ namespace QuestHelper.Droid
             intent.SetAction(Intent.ActionView);
             intent.AddFlags(ActivityFlags.NewTask);
             intent.AddFlags(ActivityFlags.MultipleTask);
+            intent.AddFlags(ActivityFlags.GrantReadUriPermission);
             try
             {
-                intent.SetDataAndType(Android.Net.Uri.Parse("file:///" + filename), "image/*");
+                Java.IO.File file = new Java.IO.File(filename);
+                var fileUri = FileProvider.GetUriForFile(Android.App.Application.Context, Android.App.Application.Context.PackageName + ".fileprovider", file);
+                intent.SetDataAndType(fileUri, "image/*");
                 Android.App.Application.Context.StartActivity(intent);
             }
             catch (Exception e)
