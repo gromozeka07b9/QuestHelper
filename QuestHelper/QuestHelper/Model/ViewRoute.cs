@@ -208,7 +208,7 @@ namespace QuestHelper.Model
             }
 
         }
-        public string RoutePhotosCount
+        /*public string RoutePhotosCount
         {
             get
             {
@@ -216,14 +216,24 @@ namespace QuestHelper.Model
                 return $"Фото: {_routePointMediaObjectManager.GetCountByRouteId(RouteId).ToString("N0")}";
             }
 
+        }*/
+        public string RouteLengthSummary
+        {
+            get
+            {
+                return $"Длина маршрута {RouteLengthKm}, {RouteLengthSteps}";
+            }
+
         }
+
         public string RoutePointAndPhotosCount
         {
             get
             {
                 RoutePointManager _routePointManager = new RoutePointManager();
                 RoutePointMediaObjectManager _routePointMediaObjectManager = new RoutePointMediaObjectManager();
-                return $"Точек: {_routePointManager.GetPointsByRouteId(RouteId).Count().ToString("N0")}, фото: {_routePointMediaObjectManager.GetCountByRouteId(RouteId).ToString("N0")}";
+                //return $"Точек: {_routePointManager.GetPointsByRouteId(RouteId).Count().ToString("N0")}, фото: {_routePointMediaObjectManager.GetCountByRouteId(RouteId).ToString("N0")}";
+                return $"Точек: много";
             }
 
         }

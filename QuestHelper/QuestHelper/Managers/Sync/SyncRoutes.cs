@@ -48,20 +48,29 @@ namespace QuestHelper.Managers.Sync
                     var differentRoutes = listRoutesVersions.Where(r => (!routesLocal.Any(l => (l.RouteId == r.Id && l.ObjVerHash == r.ObjVerHash))));
                     var newClientRoutes = routesLocal.Where(r => !listRoutesVersions.Any(d => d.Id == r.RouteId)).Select(r => r.RouteId).ToList();
 
-                    _log.AddStringEvent("differentRoutes, count:" + differentRoutes?.Count().ToString());
+                    _log.AddStringEvent($"--------------------------------------------------------");
+                    foreach (var logRoute in differentRoutes)
+                    {
+                        _log.AddStringEvent($"differentRoute:{logRoute.Id}");
+                    }
                     foreach (var serverRouteVersion in differentRoutes)
                     {
                         SyncRoute syncRouteContext = new SyncRoute(serverRouteVersion.Id, _authToken);
                         syncRouteContext.SyncImages = true;
+                        _log.AddStringEvent($"start sync diff route {serverRouteVersion.Id}");
                         result = await syncRouteContext.SyncAsync(serverRouteVersion.ObjVerHash);
                         _log.AddStringEvent($"diff route result, {serverRouteVersion.Id} :" + result);
                     }
 
-                    _log.AddStringEvent("newClientRoutes, count:" + newClientRoutes?.Count().ToString());
+                    foreach (var logRoute in newClientRoutes)
+                    {
+                        _log.AddStringEvent($"differentRoute:{logRoute}");
+                    }
                     foreach (var localRouteId in newClientRoutes)
                     {
                         SyncRoute syncRouteContext = new SyncRoute(localRouteId, _authToken);
                         syncRouteContext.SyncImages = true;
+                        _log.AddStringEvent($"start sync new route {localRouteId}");
                         result = await syncRouteContext.SyncAsync(string.Empty);
                         _log.AddStringEvent($"new route result, {localRouteId} :" + result);
                     }

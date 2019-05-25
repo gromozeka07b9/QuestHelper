@@ -128,14 +128,6 @@ namespace QuestHelper.Managers
         internal ViewRoute GetViewRouteById(string routeId)
         {
             return new ViewRoute(routeId);
-            /*Route route = _realmInstance.Find<Route>(routeId);
-            if (route != null)
-            {
-                ViewRoute vroute = new ViewRoute();
-                vroute
-                return vroute;
-            }
-            return _realmInstance.Find<Route>(routeId);*/
         }
 
         internal double GetLength(string routeId)
