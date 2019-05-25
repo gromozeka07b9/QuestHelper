@@ -21,6 +21,7 @@ namespace QuestHelper.Model
         private bool _isDeleted = false;
         private DateTimeOffset _serverSyncedDate;
         private int _version = 0;
+        RoutePointMediaObjectManager manager = new RoutePointMediaObjectManager();
 
         public ViewRoutePointMediaObject()
         {
@@ -28,7 +29,6 @@ namespace QuestHelper.Model
 
         public void Load(string mediaId)
         {
-            RoutePointMediaObjectManager manager = new RoutePointMediaObjectManager();
             var mediaObject = manager.GetMediaObjectById(mediaId);
             if (mediaObject != null)
             {
@@ -180,6 +180,18 @@ namespace QuestHelper.Model
             RoutePointMediaObjectManager manager = new RoutePointMediaObjectManager();
             _id = manager.Save(this);
             return !string.IsNullOrEmpty(_id);
+        }
+        internal bool Delete()
+        {
+            bool result = manager.Delete(this.RoutePointMediaObjectId);
+            if (result)
+            {
+                _id = string.Empty;
+                _routePointId = string.Empty;
+                _filename = string.Empty;
+                _filenamePreview = string.Empty;
+            }
+            return result;
         }
     }
 }

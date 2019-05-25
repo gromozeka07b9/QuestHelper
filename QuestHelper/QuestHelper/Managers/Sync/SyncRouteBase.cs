@@ -104,6 +104,11 @@ namespace QuestHelper.Managers.Sync
             viewRoute.Save();
         }
 
+        protected void refreshHashForRouteByString(ViewRoute viewRoute, string hash)
+        {
+            viewRoute.ObjVerHash = hash;
+            viewRoute.Save();
+        }
 
 
     }
