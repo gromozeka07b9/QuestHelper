@@ -17,15 +17,15 @@ namespace QuestHelper.Managers
                 status = await CrossPermissions.Current.CheckPermissionStatusAsync(permission);
                 if (status != PermissionStatus.Granted)
                 {
-                    if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Permission.Location))
+                    if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(permission))
                     {
                         UserDialogs.Instance.Alert(message: warningText, okText: "Ок");
                     }
 
-                    var results = await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
-                    if (results.ContainsKey(Permission.Location))
+                    var results = await CrossPermissions.Current.RequestPermissionsAsync(permission);
+                    if (results.ContainsKey(permission))
                     {
-                        status = results[Permission.Location];
+                        status = results[permission];
                     }
                 }
             }

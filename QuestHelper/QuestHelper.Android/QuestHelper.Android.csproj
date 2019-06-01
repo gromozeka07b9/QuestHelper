@@ -104,6 +104,7 @@
     <Compile Include="CustomEditTextRenderer.cs" />
     <Compile Include="CustomMapRenderer.cs" />
     <Compile Include="InstagramShareService.cs" />
+    <Compile Include="RecordAudioService.cs" />
     <Compile Include="NetworkConnectionsService.cs" />
     <Compile Include="SyncIntentService.cs" />
     <Compile Include="ToastService.cs" />

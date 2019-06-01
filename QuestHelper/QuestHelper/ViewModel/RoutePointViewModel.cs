@@ -35,6 +35,7 @@ namespace QuestHelper.ViewModel
         public ICommand EditDescriptionCommand { get; private set; }
         public ICommand CopyCoordinatesCommand { get; private set; }
         public ICommand AddPhotoCommand { get; private set; }
+        public ICommand AddAudioCommand { get; private set; }
 
         private string defaultImageName = "emptyimg.png";
         private static Random _rnd = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
@@ -83,6 +84,7 @@ namespace QuestHelper.ViewModel
             ViewPhotoCommand = new Command(viewPhotoAsync);
             DeletePhotoCommand = new Command(deletePhotoAsync);
             AddPhotoCommand = new Command(addPhotoAsync);
+            AddAudioCommand = new Command(addAudioAsync);
             EditDescriptionCommand = new Command(editDescriptionCommand);
             CopyCoordinatesCommand = new Command(copyCoordinatesCommand);
             _vpoint = new ViewRoutePoint(routeId, routePointId);
@@ -133,6 +135,41 @@ namespace QuestHelper.ViewModel
                 _vpoint.DeleteImage((string)mediaId);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
             }
+        }
+
+        private async void addAudioAsync(object obj)
+        {
+            _vpoint.Version++;
+            _vpoint.Save();
+            PermissionManager permissions = new PermissionManager();
+            if (await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Microphone, "Разрешение необходимо для записи звука"))
+            {
+                string mediaId = Guid.NewGuid().ToString();
+                string pathAudioFile = Path.Combine(ImagePathManager.GetPicturesDirectory(), "audio_" + mediaId + ".3gp");
+                bool resultRecordInverted = true;
+                try
+                {
+                    DependencyService.Get<IRecordAudioService>().Start(pathAudioFile);
+                    resultRecordInverted = await App.Current.MainPage.DisplayAlert("Аудио", "Идет запись...", "Отмена", "Завершить и сохранить");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+                finally
+                {
+                    DependencyService.Get<IRecordAudioService>().Stop();
+                }
+
+                if (!resultRecordInverted)
+                {
+                    //Надо фильтровать аудио, иначе выводится как картинка
+                    //_vpoint.AddImage(mediaId);
+                    //ApplyChanges();
+                }
+            }
+
         }
 
         private async void addPhotoAsync(object obj)
