@@ -37,7 +37,8 @@ namespace QuestHelper.Droid
                 recorder.SetOutputFormat(OutputFormat.ThreeGpp);
                 recorder.SetAudioEncoder(AudioEncoder.Aac);
                 recorder.SetAudioChannels(1);
-                recorder.SetAudioEncodingBitRate(48000);
+                recorder.SetAudioEncodingBitRate(96000);
+                //recorder.SetAudioSamplingRate(44100);
                 recorder.SetOutputFile(filePath);
                 recorder.Prepare(); // Prepared state
                 //recorder.SetMaxDuration(10000);
