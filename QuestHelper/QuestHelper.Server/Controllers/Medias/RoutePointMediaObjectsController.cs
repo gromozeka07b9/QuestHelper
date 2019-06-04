@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -23,8 +25,11 @@ namespace QuestHelper.Server.Controllers.Medias
     public class RoutePointMediaObjectsController : Controller
     {
         private DbContextOptions<ServerDbContext> _dbOptions = ServerDbContext.GetOptionsContextDbServer();
-        //private string _pathToMediaCatalog = "C:\\gosh\\pics\\pictures";
+#if DEBUG
+        private string _pathToMediaCatalog = "C:\\gosh\\pics\\pictures";
+#else
         private string _pathToMediaCatalog = "/media/goshmedia";
+#endif
         private MediaManager _mediaManager;
 
         public RoutePointMediaObjectsController()
@@ -178,6 +183,46 @@ namespace QuestHelper.Server.Controllers.Medias
 
             TimeSpan delay = DateTime.Now - startDate;
             Console.WriteLine($"Image exist: status {Response.StatusCode}, {userId}, file:{fileName}, delay:{delay.Milliseconds}");
+        }
+
+        [HttpPost("tryspeechparse")]
+        public async Task TrySpeechParseAsync()
+        {
+            DateTime startDate = DateTime.Now;
+
+            string userId = IdentityManager.GetUserId(HttpContext);
+            using (var db = new ServerDbContext(_dbOptions))
+            {
+                var audioObjects = db.RoutePointMediaObject.Where(m=>m.);
+
+            }
+            string yandexFolderId = System.Environment.GetEnvironmentVariable("GoshYandexFolderId");
+            string yandexApiKey = System.Environment.GetEnvironmentVariable("GoshYandexApiKey");
+            string yandexSpeechUrl = $"https://stt.api.cloud.yandex.net/speech/v1/stt:recognize?folderId={ yandexFolderId }";
+            using (Stream audioFile = new FileStream(Path.Combine(_pathToMediaCatalog, "sample.3gp"), FileMode.Open, FileAccess.Read))
+            {
+                using (HttpContent content = new StreamContent(audioFile))
+                {
+                    using (var client = new HttpClient())
+                    {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Api-Key", $"{ yandexApiKey }");
+                        var response = await client.PostAsync($"{ yandexSpeechUrl }", content);
+                        if (response.IsSuccessStatusCode)
+                        {
+                            string parseResultText = await response.Content.ReadAsStringAsync();
+                            Response.StatusCode = 200;
+                        }
+                        else
+                        {
+                            Response.StatusCode = (int)response.StatusCode;
+                        }
+                    }
+                }
+            }
+
+
+            TimeSpan delay = DateTime.Now - startDate;
+            Console.WriteLine($"Yandex speech parse: file:{""}, result:{Response.StatusCode}, delay:{delay.Milliseconds}");
         }
     }
 }
