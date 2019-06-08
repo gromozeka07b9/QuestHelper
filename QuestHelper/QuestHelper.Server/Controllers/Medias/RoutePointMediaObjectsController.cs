@@ -193,7 +193,7 @@ namespace QuestHelper.Server.Controllers.Medias
             string userId = IdentityManager.GetUserId(HttpContext);
             using (var db = new ServerDbContext(_dbOptions))
             {
-                var audioObjects = db.RoutePointMediaObject.Where(m=>m.);
+                var audioObjects = db.RoutePointMediaObject.Where(m=>m.MediaType == MediaObjectTypeEnum.Voice);
 
             }
             string yandexFolderId = System.Environment.GetEnvironmentVariable("GoshYandexFolderId");

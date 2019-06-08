@@ -11,6 +11,7 @@ namespace QuestHelper.Server
         public DbSet<RouteAccess> RouteAccess { get; set; }
         public DbSet<RoutePointMediaObject> RoutePointMediaObject { get; set; }
         public DbSet<User> User { get; set; }
+        public DbSet<VoiceObject> VoiceObject { get; set; }
 
         public static DbContextOptions<ServerDbContext> GetOptionsContextDbServer(bool isFake = false)
         {
