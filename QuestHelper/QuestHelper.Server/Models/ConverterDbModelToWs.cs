@@ -59,6 +59,7 @@ namespace QuestHelper.Server.Models
                 mediaObject.Id = dbMediaObject.RoutePointMediaObjectId;
                 mediaObject.IsDeleted = dbMediaObject.IsDeleted;
                 mediaObject.Version = dbMediaObject.Version;
+                mediaObject.MediaType = (int)dbMediaObject.MediaType;
             }
 
             return mediaObject;

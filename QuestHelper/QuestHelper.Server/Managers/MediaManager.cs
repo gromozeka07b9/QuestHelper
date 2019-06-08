@@ -9,11 +9,22 @@ namespace QuestHelper.Server.Managers
     public class MediaManager
     {
         private string _pathToMediaCatalog;
-        public MediaManager(string pathToMediaCatalog)
+        public MediaManager()
         {
-            _pathToMediaCatalog = pathToMediaCatalog;
+#if DEBUG
+            _pathToMediaCatalog = "C:\\gosh\\pics\\pictures";
+#else
+            _pathToMediaCatalog = "/media/goshmedia";
+#endif
         }
 
+        public string PathToMediaCatalog
+        {
+            get
+            {
+                return _pathToMediaCatalog; 
+            }
+        }
         internal bool FileExist(string filename)
         {
             return File.Exists(Path.Combine(_pathToMediaCatalog, filename));

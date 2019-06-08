@@ -14,6 +14,9 @@ namespace QuestHelper.Server.Models
         public string RoutePointId { get; set; }
         public bool ImageLoadedToServer { get; set; }
         public bool ImagePreviewLoadedToServer { get; set; }
+        public bool NeedProcess { get; set; }
+        public bool Processed { get; set; }
+        public string ProcessResultText { get; set; }
         public MediaObjectTypeEnum MediaType { get; set; }
         /// <summary>
         /// Версия записи

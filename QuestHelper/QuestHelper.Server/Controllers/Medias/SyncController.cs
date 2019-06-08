@@ -22,8 +22,6 @@ namespace QuestHelper.Server.Controllers.Medias
     public class SyncController : Controller
     {
         private DbContextOptions<ServerDbContext> _dbOptions = ServerDbContext.GetOptionsContextDbServer();
-        //private string _pathToMediaCatalog = "C:\\gosh\\pics\\pictures";
-        private string _pathToMediaCatalog = "/media/goshmedia";
 
         [HttpPost]
         public IActionResult Post([FromBody]SyncObjectStatus syncObject)
@@ -77,7 +75,7 @@ namespace QuestHelper.Server.Controllers.Medias
             ImagesServerStatus status = new ImagesServerStatus();
             using (var db = new ServerDbContext(_dbOptions))
             {
-                MediaManager mediaManager = new MediaManager(_pathToMediaCatalog);
+                MediaManager mediaManager = new MediaManager();
                 foreach (var image in imagesClient.Images)
                 {
                     string imageNameOriginal = image.Name.ToLower().Replace("_preview", "").Replace("img_", "").Trim();

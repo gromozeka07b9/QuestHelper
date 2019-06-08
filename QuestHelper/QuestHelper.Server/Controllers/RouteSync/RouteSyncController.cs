@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using QuestHelper.Server.Controllers.Medias;
+using QuestHelper.Server.Integration;
 using QuestHelper.Server.Managers;
 using QuestHelper.Server.Models;
 using QuestHelper.SharedModelsWS;
@@ -39,7 +42,7 @@ namespace QuestHelper.Server.Controllers.RouteSync
         }
 
         [HttpGet("version/get")]
-        public IActionResult GetRouteData()
+        public async System.Threading.Tasks.Task<IActionResult> GetRouteDataAsync()
         {
             DateTime startDate = DateTime.Now;
 
@@ -76,6 +79,15 @@ namespace QuestHelper.Server.Controllers.RouteSync
 
             TimeSpan delay = DateTime.Now - startDate;
             Console.WriteLine($"GetRouteData full: status 200, {userId}, delay:{delay.Milliseconds}");
+
+            //Как придумаю робота, который будет запускать парсер, так и уберу отсюда
+            MediaManager mediaManager = new MediaManager();
+            SpeachToTextProcess speachToTextProcess = new SpeachToTextProcess(mediaManager.PathToMediaCatalog);
+            var resulTrySpeachParse = await speachToTextProcess.TrySpeachParseAsync();
+
+            TimeSpan delayWithSpeachParse = DateTime.Now - startDate;
+            Console.WriteLine($"GetRouteData with speach parse: delay:{delayWithSpeachParse.Milliseconds}");
+
             return new ObjectResult(routeVersions);
         }
 
@@ -113,5 +125,6 @@ namespace QuestHelper.Server.Controllers.RouteSync
             Console.WriteLine($"GetRouteData by Id: status 200, {userId}, {routeId}, delay:{delay.Milliseconds}");
             return new ObjectResult(routeRoot);
         }
+
     }
 }
