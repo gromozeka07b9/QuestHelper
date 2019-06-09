@@ -89,7 +89,8 @@ namespace QuestHelper.Managers.Sync
                         viewMedia.RoutePointMediaObjectId,
                         viewMedia.RoutePointId,
                         viewMedia.Version,
-                        viewMedia.IsDeleted
+                        viewMedia.IsDeleted,
+                        viewMedia.MediaType
                     });
                     jsonStructures.Add(jsonObject.ToString());
                 }

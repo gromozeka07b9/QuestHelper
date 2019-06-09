@@ -15,7 +15,8 @@ namespace QuestHelper.Managers
                     var config = new RealmConfiguration()
                     {
                         //v3 - added Route.ObjVerHash
-                        SchemaVersion = 3,
+                        //v4 - added RoutePointMediaObject.MediaType
+                        SchemaVersion = 4,
                         MigrationCallback = (migration, oldSchemaVersion) =>
                         {
 

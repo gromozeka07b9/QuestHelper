@@ -35,6 +35,11 @@
     <ProjectReference Include="..\..\QuestHelper.ModelsWS\QuestHelper.SharedModelsWS.csproj" />
     <ProjectReference Include="..\QuestHelper.LocalDB\QuestHelper.LocalDB.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Mono.Android">
+      <HintPath>..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\MonoAndroid\v8.1\Mono.Android.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="App.xaml.cs">

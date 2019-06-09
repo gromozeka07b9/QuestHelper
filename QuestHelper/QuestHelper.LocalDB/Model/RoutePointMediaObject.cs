@@ -14,6 +14,7 @@ namespace QuestHelper.LocalDB.Model
         public DateTimeOffset ServerSyncedDate { get; set; }//Дата синхронизации оригинала
         public string RoutePointId { get; set; }
         public RoutePoint Point { get; set; }
+        public int MediaType { get; set; }
 
         /// <summary>
         /// Версия записи

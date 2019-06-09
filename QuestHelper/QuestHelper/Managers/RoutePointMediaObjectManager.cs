@@ -105,7 +105,8 @@ namespace QuestHelper.Managers
                         mediaObject.RoutePointMediaObjectId = vmedia.Id;
                         mediaObject.RoutePointId = vmedia.RoutePointId;
                         mediaObject.Point = pointObject;
-                        mediaObject.IsDeleted = vmedia.IsDeleted;
+                        //mediaObject.IsDeleted = vmedia.IsDeleted;
+                        //mediaObject.MediaType = (int)vmedia.MediaType;
                         RealmInstance.Add(mediaObject);
                     }
 
@@ -122,6 +123,7 @@ namespace QuestHelper.Managers
                     mediaObject.ServerSyncedDate = vmedia.ServerSyncedDate;
                     mediaObject.Version = vmedia.Version;
                     mediaObject.IsDeleted = vmedia.IsDeleted;
+                    mediaObject.MediaType = (int)vmedia.MediaType;
                 });
             }
             catch (Exception e)

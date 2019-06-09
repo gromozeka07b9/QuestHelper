@@ -21,6 +21,7 @@ namespace QuestHelper.Model
         private bool _isDeleted = false;
         private DateTimeOffset _serverSyncedDate;
         private int _version = 0;
+        private MediaObjectTypeEnum _mediaType;
         RoutePointMediaObjectManager manager = new RoutePointMediaObjectManager();
 
         public ViewRoutePointMediaObject()
@@ -41,6 +42,7 @@ namespace QuestHelper.Model
                 _previewServerSynced = mediaObject.PreviewServerSynced;
                 _serverSyncedDate = mediaObject.ServerSyncedDate;
                 _isDeleted = mediaObject.IsDeleted;
+                _mediaType = (MediaObjectTypeEnum)mediaObject.MediaType;
             }
         }
         internal void FillFromWSModel(SharedModelsWS.RoutePointMediaObject mediaObject)
@@ -53,6 +55,7 @@ namespace QuestHelper.Model
                 _filenamePreview = $"img_{_id}_preview.jpg";
                 _version = mediaObject.Version;
                 _isDeleted = mediaObject.IsDeleted;
+                _mediaType = (MediaObjectTypeEnum)mediaObject.MediaType;
             }
         }
 
@@ -163,6 +166,7 @@ namespace QuestHelper.Model
                 _previewServerSynced = value;
             }
         }
+        
         public DateTimeOffset ServerSyncedDate
         {
             get
@@ -172,6 +176,17 @@ namespace QuestHelper.Model
             set
             {
                 _serverSyncedDate = value;
+            }
+        }
+        public MediaObjectTypeEnum MediaType
+        {
+            get
+            {
+                return _mediaType;
+            }
+            set
+            {
+                _mediaType = value;
             }
         }
 

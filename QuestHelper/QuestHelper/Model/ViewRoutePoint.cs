@@ -88,8 +88,8 @@ namespace QuestHelper.Model
             _mediaObjects = mediaManager.GetMediaObjectsByRoutePointId(_id)?.ToList();
             if ((_mediaObjects != null) && (_mediaObjects.Count > 0))
             {
-                _imagePath = ImagePathManager.GetImagePath(_mediaObjects[0].RoutePointMediaObjectId);
-                _imagePreviewPath = ImagePathManager.GetImagePath(_mediaObjects[0].RoutePointMediaObjectId, true);
+                _imagePath = ImagePathManager.GetImagePath(_mediaObjects[0].RoutePointMediaObjectId, MediaObjectTypeEnum.Image);
+                _imagePreviewPath = ImagePathManager.GetImagePath(_mediaObjects[0].RoutePointMediaObjectId, MediaObjectTypeEnum.Image, true);
             }
             else
             {
@@ -291,12 +291,13 @@ namespace QuestHelper.Model
             return result;
         }
 
-        internal void AddImage(string mediaId)
+        internal void AddMediaItem(string mediaId, MediaObjectTypeEnum mediaType)
         {
             ViewRoutePointMediaObject media = new ViewRoutePointMediaObject();
             media.RoutePointMediaObjectId = mediaId;
             media.RoutePointId = Id;
             media.Version = 1;
+            media.MediaType = mediaType;
             mediaManager.Save(media);
             load(Id);
         }
@@ -304,8 +305,8 @@ namespace QuestHelper.Model
         {
             if (mediaManager.Delete(mediaId))
             {
-                string imagePath = ImagePathManager.GetImagePath(mediaId);
-                string imagePreviewPath = ImagePathManager.GetImagePath(mediaId, true);
+                string imagePath = ImagePathManager.GetImagePath(mediaId, MediaObjectTypeEnum.Image);
+                string imagePreviewPath = ImagePathManager.GetImagePath(mediaId, MediaObjectTypeEnum.Image, true);
                 try
                 {
                     File.Delete(imagePath);

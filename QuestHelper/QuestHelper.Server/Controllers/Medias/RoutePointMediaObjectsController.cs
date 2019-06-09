@@ -61,12 +61,15 @@ namespace QuestHelper.Server.Controllers.Medias
                 if (accessGranted)
                 {
                     var entity = db.RoutePointMediaObject.Find(routeMediaObject.RoutePointMediaObjectId);
+                    bool NeedProcess = routeMediaObject.MediaType == MediaObjectTypeEnum.Audio;
                     if (entity == null)
                     {
+                        routeMediaObject.NeedProcess = NeedProcess;
                         db.RoutePointMediaObject.Add(routeMediaObject);
                     }
                     else
                     {
+                        routeMediaObject.NeedProcess = NeedProcess;
                         db.Entry(entity).CurrentValues.SetValues(routeMediaObject);
                     }
                     db.SaveChanges();

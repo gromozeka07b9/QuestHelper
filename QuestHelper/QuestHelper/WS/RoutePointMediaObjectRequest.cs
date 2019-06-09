@@ -45,11 +45,11 @@ namespace QuestHelper.WS
             }
             return result;
         }
-        public async Task<bool> SendImage(string routePointId, string routePointMediaObjectId, bool isPreview = false)
+        public async Task<bool> SendImage(string routePointId, string routePointMediaObjectId, MediaObjectTypeEnum mediaType, bool isPreview = false)
         {
             bool sendResult = false;
-            string nameMediafile = ImagePathManager.GetImageFilename(routePointMediaObjectId, isPreview);
-            string pathToMediaFile = ImagePathManager.GetImagePath(routePointMediaObjectId, isPreview);
+            string nameMediafile = ImagePathManager.GetMediaFilename(routePointMediaObjectId, mediaType, isPreview);
+            string pathToMediaFile = ImagePathManager.GetImagePath(routePointMediaObjectId, mediaType, isPreview);
             if (File.Exists(pathToMediaFile))
             {
                 int triesCount = 0;

@@ -11,6 +11,7 @@ using QuestHelper.Model;
 using System.Net;
 using Microsoft.AppCenter.Analytics;
 using System.IO;
+using Android.OS;
 using Xamarin.Forms;
 using QuestHelper.Model.Messages;
 using QuestHelper.Model.WS;
@@ -73,6 +74,7 @@ namespace QuestHelper.Managers.Sync
         {
             bool syncResult = true;
 
+            throw new Exception("Old sync not used");
             var notSyncedMedias = _routePointMediaManager.GetNotSyncedMediaObjects(IsSyncPreview).Where(m => !m.IsDeleted);
             StringBuilder sbErrors = new StringBuilder();
             foreach (var media in notSyncedMedias)
@@ -84,7 +86,7 @@ namespace QuestHelper.Managers.Sync
             ImagesServerStatus imagesRequestObject = new ImagesServerStatus();
             foreach (var media in notSyncedMedias)
             {
-                string nameMediafile = ImagePathManager.GetImageFilename(media.RoutePointMediaObjectId, IsSyncPreview);
+                string nameMediafile = ImagePathManager.GetMediaFilename(media.RoutePointMediaObjectId, (MediaObjectTypeEnum)media.MediaType, IsSyncPreview);
                 imagesRequestObject.Images.Add(new ImagesServerStatus.Imagefile(){Name = nameMediafile });
             }
             ImagesServerStatus imagesResponseObject = await _routePointMediaObjectsApi.GetImagesStatus(imagesRequestObject);
@@ -121,7 +123,7 @@ namespace QuestHelper.Managers.Sync
                     }
                     else
                     {
-                        bool resultUpload = await _routePointMediaObjectsApi.SendImage(media.RoutePointId, media.RoutePointMediaObjectId, IsSyncPreview);
+                        /*bool resultUpload = await _routePointMediaObjectsApi.SendImage(media.RoutePointId, media.RoutePointMediaObjectId, IsSyncPreview);
                         AuthRequired = (_routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routePointMediaObjectsApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
                         if (AuthRequired) return false;
                         if (resultUpload)
@@ -132,7 +134,7 @@ namespace QuestHelper.Managers.Sync
                         {
                             syncResult = false;
                             sbErrors.AppendLine($"error upload: p:{media.RoutePointId} m:{media.RoutePointMediaObjectId}");
-                        }
+                        }*/
                     }
                 }
             }
@@ -204,7 +206,7 @@ namespace QuestHelper.Managers.Sync
             return new RoutePointMediaObject();
         }
 
-        private async Task<bool> SendImages(IEnumerable<RoutePointMediaObject> notSyncedMedias, bool isPreview)
+        /*private async Task<bool> SendImages(IEnumerable<RoutePointMediaObject> notSyncedMedias, bool isPreview)
         {
             bool result = true;
             StringBuilder sbErrors = new StringBuilder();
@@ -224,7 +226,7 @@ namespace QuestHelper.Managers.Sync
             _errorReport += sbErrors.ToString();
 
             return result;
-        }
+        }*/
 
         private List<string> GetJsonStructures(List<string> mediasForUpload)
         {

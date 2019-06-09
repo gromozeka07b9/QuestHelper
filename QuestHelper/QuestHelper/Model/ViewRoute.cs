@@ -181,7 +181,7 @@ namespace QuestHelper.Model
                     {
                         if (!vMedia.IsDeleted)
                         {
-                            _imagePreviewPathForList = ImagePathManager.GetImagePath(vMedia.RoutePointMediaObjectId, true);
+                            _imagePreviewPathForList = ImagePathManager.GetImagePath(vMedia.RoutePointMediaObjectId, MediaObjectTypeEnum.Image, true);
                         }
                     }
                     else _imagePreviewPathForList = "mount1.png";

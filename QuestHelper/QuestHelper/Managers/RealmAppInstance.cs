@@ -19,7 +19,8 @@ namespace QuestHelper.Managers
                     var config = new RealmConfiguration()
                     {
                         //v3 - added Route.ObjVerHash
-                        SchemaVersion = 3, MigrationCallback = (migration, oldSchemaVersion) =>
+                        //v4 - added RoutePointMediaObject.MediaType
+                        SchemaVersion = 4, MigrationCallback = (migration, oldSchemaVersion) =>
                         {
 
                         }
@@ -33,7 +34,7 @@ namespace QuestHelper.Managers
             }
             return _realmInstance;
         }
-        public static Realm Get()
+        /*public static Realm Get()
         {
             Realm _instance = null;
             try
@@ -54,7 +55,7 @@ namespace QuestHelper.Managers
                 HandleError.Process("RealmAppInstance", "GetAppInstance", e, true);
             }
             return _instance;
-        }
+        }*/
 
     }
 }

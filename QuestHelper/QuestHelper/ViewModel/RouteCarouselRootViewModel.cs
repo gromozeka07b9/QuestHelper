@@ -94,7 +94,7 @@ namespace QuestHelper.ViewModel
                         {
                             foreach (var media in point.MediaObjects)
                             {
-                                items.Add(new CarouselItem(){RouteId = _routeObject.RouteId, RoutePointId = point.RoutePointId, MediaId = media.RoutePointMediaObjectId, ImageSource = ImagePathManager.GetImagePath(media.RoutePointMediaObjectId, false), RoutePointName = point.NameText, RoutePointDescription = point.Description, Latitude = point.Latitude, Longitude = point.Longitude });
+                                items.Add(new CarouselItem(){RouteId = _routeObject.RouteId, RoutePointId = point.RoutePointId, MediaId = media.RoutePointMediaObjectId, ImageSource = ImagePathManager.GetImagePath(media.RoutePointMediaObjectId, MediaObjectTypeEnum.Image, false), RoutePointName = point.NameText, RoutePointDescription = point.Description, Latitude = point.Latitude, Longitude = point.Longitude });
                             }
                         }
                         else

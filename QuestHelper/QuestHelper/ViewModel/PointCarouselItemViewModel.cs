@@ -109,14 +109,14 @@ namespace QuestHelper.ViewModel
         {
             get
             {
-                return ImagePathManager.GetImagePath(_mediaObject.RoutePointMediaObjectId, true);
+                return ImagePathManager.GetImagePath(_mediaObject.RoutePointMediaObjectId, MediaObjectTypeEnum.Image, true);
             }
         }
         public string OneImage
         {
             get
             {
-                return ImagePathManager.GetImagePath(_mediaObject.RoutePointMediaObjectId, false);
+                return ImagePathManager.GetImagePath(_mediaObject.RoutePointMediaObjectId, MediaObjectTypeEnum.Image, false);
             }
         }
     }

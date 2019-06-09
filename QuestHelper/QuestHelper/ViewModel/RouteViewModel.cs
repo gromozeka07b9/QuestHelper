@@ -19,7 +19,6 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Newtonsoft.Json.Linq;
-using Point = System.Drawing.Point;
 using Acr.UserDialogs;
 
 namespace QuestHelper.ViewModel

@@ -164,9 +164,8 @@ namespace QuestHelper.ViewModel
 
                 if (!resultRecordInverted)
                 {
-                    //Надо фильтровать аудио, иначе выводится как картинка
-                    //_vpoint.AddImage(mediaId);
-                    //ApplyChanges();
+                    _vpoint.AddMediaItem(mediaId, MediaObjectTypeEnum.Audio);
+                    ApplyChanges();
                 }
             }
 
@@ -200,11 +199,11 @@ namespace QuestHelper.ViewModel
                     FileInfo originalFileInfo = new FileInfo(photoPicked.Path);
 
                     if (resizedOriginal.CreateImagePreview(originalFileInfo.DirectoryName, originalFileInfo.Name,
-                        imgPathDirectory, ImagePathManager.GetImageFilename(mediaId, false)))
+                        imgPathDirectory, ImagePathManager.GetMediaFilename(mediaId, MediaObjectTypeEnum.Image, false)))
                     {
                         ImagePreviewManager preview = new ImagePreviewManager();
                         if (preview.CreateImagePreview(originalFileInfo.DirectoryName, originalFileInfo.Name,
-                            imgPathDirectory, ImagePathManager.GetImageFilename(mediaId, true)))
+                            imgPathDirectory, ImagePathManager.GetMediaFilename(mediaId, MediaObjectTypeEnum.Image, true)))
                         {
                             ExifManager exif = new ExifManager();
                             var coords = exif.GetCoordinates(photoPicked.Path);
@@ -218,7 +217,7 @@ namespace QuestHelper.ViewModel
                                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Longitude"));
                                 FillAddressByCoordinatesAsync(Latitude, Longitude);
                             }
-                            _vpoint.AddImage(mediaId);
+                            _vpoint.AddMediaItem(mediaId, MediaObjectTypeEnum.Image);
                             ApplyChanges();
                             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
                             //Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(){ShowErrorMessageIfExist = false}, string.Empty);
@@ -284,8 +283,8 @@ namespace QuestHelper.ViewModel
                 }
 
                 string mediaId = Guid.NewGuid().ToString();
-                string photoName = ImagePathManager.GetImageFilename(mediaId);
-                string photoNamePreview = ImagePathManager.GetImageFilename(mediaId, true);
+                string photoName = ImagePathManager.GetMediaFilename(mediaId, MediaObjectTypeEnum.Image);
+                string photoNamePreview = ImagePathManager.GetMediaFilename(mediaId,MediaObjectTypeEnum.Image, true);
 
                 MediaFile file = null;
                 PermissionManager permissions = new PermissionManager();
@@ -313,7 +312,7 @@ namespace QuestHelper.ViewModel
                     ImagePreviewManager preview = new ImagePreviewManager();
                     if (preview.CreateImagePreview(imgPathToDirectory, info.Name, imgPathToDirectory, photoNamePreview))
                     {
-                        _vpoint.AddImage(mediaId);
+                        _vpoint.AddMediaItem(mediaId, MediaObjectTypeEnum.Image);
                         ApplyChanges();
                         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
                         //Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(){ShowErrorMessageIfExist = false}, string.Empty);
@@ -458,7 +457,7 @@ namespace QuestHelper.ViewModel
         {
             get
             {
-                return _vpoint.MediaObjects.Where(x=>!x.IsDeleted).Select(x => new ImagePreview() {Source = ImagePathManager.GetImagePath(x.RoutePointMediaObjectId, true), MediaId = x.RoutePointMediaObjectId}).ToList();
+                return _vpoint.MediaObjects.Where(x=>!x.IsDeleted).Select(x => new ImagePreview() {Source = ImagePathManager.GetImagePath(x.RoutePointMediaObjectId, (MediaObjectTypeEnum)x.MediaType, true), MediaId = x.RoutePointMediaObjectId}).ToList();
             }
         }
 
