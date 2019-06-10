@@ -26,7 +26,7 @@ namespace QuestHelper.Server.Integration
             {
                 using (var db = new ServerDbContext(_dbOptions))
                 {
-                    var audioObjects = db.RoutePointMediaObject.Where(m => m.MediaType == MediaObjectTypeEnum.Audio && m.NeedProcess && !m.Processed);
+                    var audioObjects = db.RoutePointMediaObject.Where(m => m.MediaType == MediaObjectTypeEnum.Audio && m.NeedProcess && !m.Processed && !m.IsDeleted);
                     foreach (var audioObj in audioObjects)
                     {
                         var resultSpeachParsing = await speachToText.GetTextAsync(Path.Combine(_pathToMediaCatalog, $"audio_{audioObj.RoutePointMediaObjectId}.3gp"));
