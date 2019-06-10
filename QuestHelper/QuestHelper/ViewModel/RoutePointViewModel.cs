@@ -31,6 +31,7 @@ namespace QuestHelper.ViewModel
         public ICommand DeleteCommand { get; internal set; }
         public ICommand TakePhotoCommand { get; private set; }
         public ICommand ViewPhotoCommand { get; private set; }
+        public ICommand PlayMediaCommand { get; private set; }
         public ICommand DeletePhotoCommand { get; private set; }
         public ICommand EditDescriptionCommand { get; private set; }
         public ICommand CopyCoordinatesCommand { get; private set; }
@@ -82,6 +83,7 @@ namespace QuestHelper.ViewModel
         {
             TakePhotoCommand = new Command(takePhotoAsync);
             ViewPhotoCommand = new Command(viewPhotoAsync);
+            PlayMediaCommand = new Command(playMediaAsync);
             DeletePhotoCommand = new Command(deletePhotoAsync);
             AddPhotoCommand = new Command(addPhotoAsync);
             AddAudioCommand = new Command(addAudioAsync);
@@ -127,6 +129,11 @@ namespace QuestHelper.ViewModel
                 defaultViewerService.Show(path.Replace("_preview", ""));
             }
         }
+        private void playMediaAsync(object mediaSource)
+        {
+            var defaultViewerService = DependencyService.Get<IDefaultViewer>();
+            defaultViewerService.Show((string)mediaSource);
+        }
         private async void deletePhotoAsync(object mediaId)
         {
             bool delete = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig() { Message = "Вы уверены что хотите удалить фото?", Title = "Удаление фото", OkText = "Да", CancelText = "Нет" });
@@ -166,6 +173,8 @@ namespace QuestHelper.ViewModel
                 {
                     _vpoint.AddMediaItem(mediaId, MediaObjectTypeEnum.Audio);
                     ApplyChanges();
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
+                    Analytics.TrackEvent("Media: audio recorded");
                 }
             }
 
@@ -453,11 +462,11 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        public List<ImagePreview> Images
+        public List<MediaPreview> Images
         {
             get
             {
-                return _vpoint.MediaObjects.Where(x=>!x.IsDeleted).Select(x => new ImagePreview() {Source = ImagePathManager.GetImagePath(x.RoutePointMediaObjectId, (MediaObjectTypeEnum)x.MediaType, true), MediaId = x.RoutePointMediaObjectId}).ToList();
+                return _vpoint.MediaObjects.Where(x=>!x.IsDeleted).Select(x => new MediaPreview() {Source = ImagePathManager.GetImagePath(x.RoutePointMediaObjectId, (MediaObjectTypeEnum)x.MediaType, true), MediaId = x.RoutePointMediaObjectId, MediaType = (MediaObjectTypeEnum)x.MediaType}).ToList();
             }
         }
 
@@ -474,10 +483,11 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        public class ImagePreview
+        public class MediaPreview
         {
             public string Source;
             public string MediaId;
+            public MediaObjectTypeEnum MediaType;
         }
     }
 }

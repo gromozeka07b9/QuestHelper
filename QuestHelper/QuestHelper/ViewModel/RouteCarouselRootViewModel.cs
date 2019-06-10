@@ -90,9 +90,9 @@ namespace QuestHelper.ViewModel
                     foreach (var point in points)
                     {
                         PointsOnMap.Add(new PointForMap() { Name = point.Name, Description = point.Description, PathToPicture = string.Empty,Latitude = point.Latitude, Longitude = point.Longitude});
-                        if (point.MediaObjects.Any())
+                        if (point.MediaObjects.Where(m=>m.MediaType == 0).Any())
                         {
-                            foreach (var media in point.MediaObjects)
+                            foreach (var media in point.MediaObjects.Where(m => m.MediaType == 0))
                             {
                                 items.Add(new CarouselItem(){RouteId = _routeObject.RouteId, RoutePointId = point.RoutePointId, MediaId = media.RoutePointMediaObjectId, ImageSource = ImagePathManager.GetImagePath(media.RoutePointMediaObjectId, MediaObjectTypeEnum.Image, false), RoutePointName = point.NameText, RoutePointDescription = point.Description, Latitude = point.Latitude, Longitude = point.Longitude });
                             }

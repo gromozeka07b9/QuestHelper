@@ -18,6 +18,7 @@ using Plugin.CurrentActivity;
 using QuestHelper.Droid;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
+using Path = System.IO.Path;
 
 [assembly: Xamarin.Forms.Dependency(typeof(DefaultViewer))]
 namespace QuestHelper.Droid
@@ -35,7 +36,10 @@ namespace QuestHelper.Droid
             {
                 Java.IO.File file = new Java.IO.File(filename);
                 var fileUri = FileProvider.GetUriForFile(Android.App.Application.Context, Android.App.Application.Context.PackageName + ".fileprovider", file);
-                intent.SetDataAndType(fileUri, "image/*");
+                if(Path.GetExtension(filename) == ".3gp")
+                    intent.SetDataAndType(fileUri, "audio/*");
+                else
+                    intent.SetDataAndType(fileUri, "image/*");
                 Android.App.Application.Context.StartActivity(intent);
             }
             catch (Exception e)

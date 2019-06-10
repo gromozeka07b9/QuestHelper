@@ -87,18 +87,28 @@ namespace QuestHelper.View
 	            img.GestureRecognizers.Add(new TapGestureRecognizer() { Command = _vm.ViewPhotoCommand, CommandParameter = new FileImageSource(), NumberOfTapsRequired = 2});
                 control.Children.Add(img);
 	        }
-            foreach (var image in _vm.Images)
+            foreach (var mediaPreview in _vm.Images)
 	        {
-	            Image img = new Image()
+	            string iconMediaPreview = mediaPreview.MediaType == MediaObjectTypeEnum.Audio ? "play.png" : mediaPreview.Source;
+                Image img = new Image()
 	            {
-	                Source = image.Source,
+	                Source = iconMediaPreview,
 	                Aspect = Aspect.AspectFill,
                     WidthRequest = _vm.Images.Count == 1?0:200,
 	                HorizontalOptions = LayoutOptions.FillAndExpand,
 	                VerticalOptions = LayoutOptions.FillAndExpand
                 };
-                img.GestureRecognizers.Add(new TapGestureRecognizer() { Command = _vm.ViewPhotoCommand, CommandParameter = img.Source});
-	            img.GestureRecognizers.Add(new TapGestureRecognizer() { Command = _vm.DeletePhotoCommand, CommandParameter = image.MediaId, NumberOfTapsRequired = 2});
+	            if (mediaPreview.MediaType == MediaObjectTypeEnum.Audio)
+	            {
+	                img.GestureRecognizers.Add(new TapGestureRecognizer() { Command = _vm.PlayMediaCommand, CommandParameter = mediaPreview.Source });
+	                /*img.Aspect = Aspect.AspectFit;
+	                img.WidthRequest = 64;
+	                img.Margin = 32;*/
+                    
+	            }
+                else
+	                img.GestureRecognizers.Add(new TapGestureRecognizer() { Command = _vm.ViewPhotoCommand, CommandParameter = img.Source });
+	            img.GestureRecognizers.Add(new TapGestureRecognizer() { Command = _vm.DeletePhotoCommand, CommandParameter = mediaPreview.MediaId, NumberOfTapsRequired = 2});
                 control.Children.Add(img);
 	        }
 	    }

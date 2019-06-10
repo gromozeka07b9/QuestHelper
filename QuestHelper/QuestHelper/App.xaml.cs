@@ -99,7 +99,9 @@ namespace QuestHelper
         {
             bool result = false;
 
-            var realmInstance = RealmAppInstance.GetAppInstance();
+            RealmInstanceMaker realm = new RealmInstanceMaker();
+            var realmInstance = realm.RealmInstance;
+
             if (realmInstance != null)
             {
                 string pathToPicturesDirectory = Path.Combine(DependencyService.Get<IPathService>().PrivateExternalFolder, "pictures");

@@ -36,7 +36,7 @@ namespace QuestHelper.Server.Integration
                             if (entityRoutePoint != null)
                             {
                                 entityRoutePoint.Description +=
-                                    $"{Environment.NewLine}Yandex speach service response:{Environment.NewLine}{resultSpeachParsing.Text}";
+                                    $"{Environment.NewLine}***{Environment.NewLine}{resultSpeachParsing.Text}";
                                 entityRoutePoint.Version++;
                                 db.Entry(entityRoutePoint).CurrentValues.SetValues(entityRoutePoint);
                                 var entityMediaObject = db.RoutePointMediaObject.Find(audioObj.RoutePointMediaObjectId);

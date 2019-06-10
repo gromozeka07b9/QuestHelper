@@ -16,7 +16,8 @@ namespace QuestHelper.Managers
         readonly Realm _realmInstance;
         public ParameterManager()
         {
-            _realmInstance = RealmAppInstance.GetAppInstance();
+            RealmInstanceMaker realm = new RealmInstanceMaker();
+            _realmInstance = realm.RealmInstance;
         }
 
         public bool Set(string key, string value)
