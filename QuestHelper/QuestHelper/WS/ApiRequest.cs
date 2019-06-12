@@ -47,7 +47,7 @@ namespace QuestHelper.WS
             }
             catch (WebException webException)
             {
-                _lastHttpStatusCode = ((HttpWebResponse) webException.Response).StatusCode;
+                _lastHttpStatusCode = ((HttpWebResponse) webException?.Response).StatusCode;
                 HandleError.Process("ApiRequest", "HttpRequestGET", webException, false);
             }
             catch (Exception e)

@@ -33,6 +33,7 @@ namespace QuestHelper.Managers.Sync
                 syncResult = await syncRoutes.Sync();
                 if (syncRoutes.AuthRequired)
                 {
+                    errorMsg = "Auth required";
                     var pageCollections = new PagesCollection();
                     MainPageMenuItem destinationPage = pageCollections.GetLoginPage();
                     Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(
