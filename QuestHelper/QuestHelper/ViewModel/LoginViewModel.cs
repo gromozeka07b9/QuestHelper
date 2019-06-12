@@ -27,19 +27,24 @@ namespace QuestHelper.ViewModel
         public ICommand LoginCommand { get; private set; }
         public ICommand GoToRegisterCommand { get; private set; }
         public ICommand RegisterCommand { get; private set; }
-        public ICommand DemoCommand { get; private set; }
+        public ICommand LoginWithGoogleCommand { get; private set; }
 
         public LoginViewModel()
         {
             LoginCommand = new Command(TryLoginCommandAsync);
             GoToRegisterCommand = new Command(GoToRegisterCommandAsync);
             RegisterCommand = new Command(RegisterCommandAsync);
-            //DemoCommand = new Command(DemoCommandAsync);
+            LoginWithGoogleCommand = new Command(loginWithGoogleCommand);
         }
 
         private async void GoToRegisterCommandAsync()
         {
             await Navigation.PushModalAsync(new NavigationPage(new RegisterPage()));
+        }
+        private void loginWithGoogleCommand()
+        {
+            DependencyService.Get<IOAuthService>().Login();
+            //await Navigation.PushModalAsync(new NavigationPage(new RegisterPage()));
         }
 
         async void RegisterCommandAsync()

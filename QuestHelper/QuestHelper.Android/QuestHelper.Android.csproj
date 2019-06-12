@@ -103,7 +103,9 @@
     <Compile Include="CustomEditorRenderer.cs" />
     <Compile Include="CustomEditTextRenderer.cs" />
     <Compile Include="CustomMapRenderer.cs" />
+    <Compile Include="GoogleAuthInterceptor.cs" />
     <Compile Include="InstagramShareService.cs" />
+    <Compile Include="OAuthService.cs" />
     <Compile Include="RecordAudioService.cs" />
     <Compile Include="NetworkConnectionsService.cs" />
     <Compile Include="SyncIntentService.cs" />
