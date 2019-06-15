@@ -105,6 +105,13 @@ namespace QuestHelper.Droid
                 }
             });
 
+            //Используется дял вывода нативного окна выбора oauth учетки
+            MessagingCenter.Subscribe<OAuthDialogShowRequest>(this, string.Empty, (sender) =>
+            {
+                var intent = AuthenticationState.Authenticator.GetUI(Android.App.Application.Context);
+                Android.App.Application.Context.StartActivity(intent);
+            });
+
         }
 
         private void StartToolbar(Bundle bundle)
