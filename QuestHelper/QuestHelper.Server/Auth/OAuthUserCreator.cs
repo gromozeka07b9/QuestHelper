@@ -27,6 +27,7 @@ namespace QuestHelper.Server.Auth
                     oAuthUser.Name = request.Username;
                     oAuthUser.Email = request.Email;
                     oAuthUser.Locale = request.Locale;
+                    oAuthUser.ImgUrl = request.ImgUrl;
                     oAuthUser.Version = 1;
                     oAuthUser.CreateDate = DateTime.Now;
                     oAuthUser.UserId = user.UserId;

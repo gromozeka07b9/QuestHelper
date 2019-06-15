@@ -27,6 +27,7 @@ namespace QuestHelper.WS
             public string Locale = string.Empty;
             public string ImgUrl = string.Empty;
             public string AuthenticatorUserId = string.Empty;
+            public string AuthToken = string.Empty;
         }
 
         public class TokenResponse
@@ -77,11 +78,11 @@ namespace QuestHelper.WS
             return authData;
         }
 
-        public async System.Threading.Tasks.Task<TokenResponse> LoginByOAuthAsync(string username, string email, string locale, string imgUrl, string authenticatorUserId )
+        public async System.Threading.Tasks.Task<TokenResponse> LoginByOAuthAsync(string username, string email, string locale, string imgUrl, string authenticatorUserId, string authToken )
         {
             TokenResponse authData = new TokenResponse();
 
-            JObject jsonRequestObject = JObject.FromObject(new TokenRequestByOAuth() { Username = username, Email = email, Locale = locale, ImgUrl = imgUrl, AuthenticatorUserId = authenticatorUserId });
+            JObject jsonRequestObject = JObject.FromObject(new TokenRequestByOAuth() { Username = username, Email = email, Locale = locale, ImgUrl = imgUrl, AuthenticatorUserId = authenticatorUserId, AuthToken = authToken });
 
             try
             {

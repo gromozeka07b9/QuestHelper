@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Microsoft.AppCenter.Analytics;
 using Newtonsoft.Json;
 using QuestHelper.Model.Messages;
 using Xamarin.Auth;
@@ -32,6 +34,8 @@ namespace QuestHelper.OAuth
 
         private void Auth_Error(object sender, AuthenticatorErrorEventArgs e)
         {
+            Analytics.TrackEvent("Login OAuth error", new Dictionary<string, string> { { "ExceptionMessage", e.Exception.Message } });
+            Xamarin.Forms.MessagingCenter.Send<OAuthResultMessage>(new OAuthResultMessage() { IsAuthenticated = false }, string.Empty);
         }
 
         private async void Auth_CompletedAsync(object sender, AuthenticatorCompletedEventArgs e)
@@ -45,6 +49,7 @@ namespace QuestHelper.OAuth
                 {
                     string userJson = response.GetResponseText();
                     var user = JsonConvert.DeserializeObject<GoogleUser>(userJson);
+                    Xamarin.Forms.MessagingCenter.Send<OAuthResultMessage>(new OAuthResultMessage() { IsAuthenticated = e.IsAuthenticated, Username = user.Name, AuthenticatorUserId = user.Id, Email = user.Email, ImgUrl = user.Picture, Locale = user.Locale, AuthToken = "111"}, string.Empty);
                 }
             }
         }
@@ -60,6 +65,7 @@ namespace QuestHelper.OAuth
             public string Name = string.Empty;
             public string Picture = string.Empty;
             public string Locale = string.Empty;
+            public string Id = string.Empty;
             /*{
               "id": "111595927184752325457",
               "email": "gromozeka07b9@gmail.com",

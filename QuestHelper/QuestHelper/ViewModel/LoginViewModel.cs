@@ -36,7 +36,7 @@ namespace QuestHelper.ViewModel
             LoginCommand = new Command(TryLoginCommandAsync);
             GoToRegisterCommand = new Command(GoToRegisterCommandAsync);
             RegisterCommand = new Command(RegisterCommandAsync);
-            LoginWithGoogleCommand = new Command(loginWithGoogleCommand);
+            LoginWithGoogleCommand = new Command(startLoginWithGoogleCommand);
         }
 
         private async void GoToRegisterCommandAsync()
@@ -44,17 +44,14 @@ namespace QuestHelper.ViewModel
             await Navigation.PushModalAsync(new NavigationPage(new RegisterPage()));
         }
 
-        private void loginWithGoogleCommand()
+        /// <summary>
+        /// Здесь только старт авторизации, до появления окна Chrome - завершение через отдельное сообщение
+        /// </summary>
+        private void startLoginWithGoogleCommand()
         {
+            UserDialogs.Instance.ShowLoading("Авторизация...", MaskType.Black);
             OAuthGoogleAuthenticator oAuth = new OAuthGoogleAuthenticator();
             oAuth.Login();
-            var accounts = AccountStore.Create().FindAccountsForService("com.sd.gosh");
-            if (accounts != null)
-            {
-                foreach(var account in accounts)
-                {
-                }
-            }
         }
 
         async void RegisterCommandAsync()
@@ -119,41 +116,10 @@ namespace QuestHelper.ViewModel
                 }
             } else await Application.Current.MainPage.DisplayAlert("Внимание!", "Пожалуйста, заполните логин и пароль", "Ok");
         }
-        /*async void DemoCommandAsync()
-        {
-            using (UserDialogs.Instance.Loading("Авторизация...", null, null, true, MaskType.Black))
-            {
-                string username = await DependencyService.Get<IUsernameService>().GetUsername();
-                if (!string.IsNullOrEmpty(username))
-                {
-                    DependencyService.Get<IToastService>().LongToast($"Username:{username}");
-                    Analytics.TrackEvent("GetToken Demo started", new Dictionary<string, string> { { "Username", username } });
-                    AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
-                    //Для демо режима пароль такой же
-                    var authToken = await apiRequest.GetTokenAsync(username, username, true);
-                    if (!string.IsNullOrEmpty(authToken))
-                    {
-                        Analytics.TrackEvent("GetToken Demo done", new Dictionary<string, string> { { "Username", username } });
-                        TokenStoreService tokenService = new TokenStoreService();
-                        await tokenService.SetAuthTokenAsync(authToken);
-                        Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
-                        ShowMainPage();
-                    }
-                    else
-                    {
-                        Analytics.TrackEvent("GetToken Demo error", new Dictionary<string, string> { { "Username", username } });
-                        await Application.Current.MainPage.DisplayAlert("Внимание!", "Неправильный логин или пароль!", "Ok");
-                    }
-                }
-                else
-                {
-                    await Application.Current.MainPage.DisplayAlert("Внимание!", "Не найдена учетная запись gmail для использования в демо-режиме", "Ok");
-                }
-            }
-        }*/
 
         private static void ShowMainPage()
         {
+            UserDialogs.Instance.HideLoading();
             var pageCollections = new PagesCollection();
             MainPageMenuItem destinationPage = pageCollections.GetPageByPosition(0);
             Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(
@@ -238,10 +204,37 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        public async void startDialogAsync()
+        public async void StartRegisterDialogAsync()
         {
             string username = await DependencyService.Get<IUsernameService>().GetUsername();
             Email = username;
+        }
+        public void StartLoginDialog()
+        {
+            MessagingCenter.Subscribe<OAuthResultMessage>(this, string.Empty, async (sender) =>
+            {
+                Username = sender.Username;
+                AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
+                Analytics.TrackEvent("Login OAuth user started", new Dictionary<string, string> { { "Username", _username } });
+                TokenResponse authData = await apiRequest.LoginByOAuthAsync(sender.Username, sender.Email, sender.Locale, sender.ImgUrl, sender.AuthenticatorUserId, sender.AuthToken);
+                if (!string.IsNullOrEmpty(authData?.Access_Token))
+                {
+                    Analytics.TrackEvent("Login OAuth done", new Dictionary<string, string> { { "Username", _username } });
+                    TokenStoreService tokenService = new TokenStoreService();
+                    await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId);
+                    Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+                    ShowMainPage();
+                }
+                else
+                {
+                    Analytics.TrackEvent("Login OAuth error", new Dictionary<string, string> { { "Username", _username } });
+                    await Application.Current.MainPage.DisplayAlert("Внимание!", "Ошибка авторизации пользователя.", "Ok");
+                }
+            });
+        }
+        public void StopLoginDialog()
+        {
+            MessagingCenter.Unsubscribe<OAuthResultMessage>(this, string.Empty);
         }
     }
 }

@@ -24,12 +24,12 @@ namespace QuestHelper.View
 	    {
 	        var toolbarService = DependencyService.Get<IToolbarService>();
 	        toolbarService.SetVisibilityToolbar(false);
+            _vm.StartLoginDialog();
 	    }
 
         private void LoginPage_OnDisappearing(object sender, EventArgs e)
 	    {
-	        //var toolbarService = DependencyService.Get<IToolbarService>();
-	        //toolbarService.SetVisibilityToolbar(true);
+            _vm.StopLoginDialog();
 	    }
     }
 }

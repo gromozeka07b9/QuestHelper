@@ -23,7 +23,7 @@ namespace QuestHelper.View
 
 	    private void RegisterPage_OnAppearing(object sender, EventArgs e)
 	    {
-            _vm.startDialogAsync();
+            _vm.StartRegisterDialogAsync();
 	    }
 	}
 }
