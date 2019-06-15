@@ -7,6 +7,7 @@ using Acr.UserDialogs;
 using Microsoft.AppCenter.Analytics;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
+using QuestHelper.OAuth;
 using QuestHelper.View;
 using QuestHelper.WS;
 using Xamarin.Forms;
@@ -43,8 +44,8 @@ namespace QuestHelper.ViewModel
         }
         private void loginWithGoogleCommand()
         {
-            DependencyService.Get<IOAuthService>().Login();
-            //await Navigation.PushModalAsync(new NavigationPage(new RegisterPage()));
+            OAuthGoogleAuthenticator oAuth = new OAuthGoogleAuthenticator();
+            oAuth.Login();
         }
 
         async void RegisterCommandAsync()
