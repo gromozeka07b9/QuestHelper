@@ -21,12 +21,12 @@ namespace QuestHelper.Server.Controllers.Account
     {
         private DbContextOptions<ServerDbContext> _dbOptions = ServerDbContext.GetOptionsContextDbServer();
 
-        public class TokenRequest
+        /*public class TokenRequest
         {
             public string Username;
             public string Email;
             public string Password;
-        }
+        }*/
 
         [HttpPost]
         public async Task Token([FromBody]TokenRequest request)
@@ -40,7 +40,7 @@ namespace QuestHelper.Server.Controllers.Account
                 }
                 if (user != null)
                 {
-                    IdentityManager identityManager = new IdentityManager();
+                    /*IdentityManager identityManager = new IdentityManager();
                     var identity = identityManager.GetIdentity(user);
                     if (identity != null)
                     {
@@ -65,7 +65,22 @@ namespace QuestHelper.Server.Controllers.Account
                         Console.WriteLine($"Account Token: status 500, {request?.Username}, {request?.Email}");
                         Response.StatusCode = 500;
                         await Response.WriteAsync("Error while generate token.");
+                    }*/
+                    JwtResponseMaker jwtMaker = new JwtResponseMaker();
+                    string response = jwtMaker.GetJwtResponse(user);
+                    if (!string.IsNullOrEmpty(response))
+                    {
+                        Response.ContentType = "application/json";
+                        await Response.WriteAsync(response);
+                        Console.WriteLine($"Account login: status 200, {request?.Username}, {request?.Email}");
                     }
+                    else
+                    {
+                        Response.StatusCode = 500;
+                        await Response.WriteAsync("Error while generate token.");
+                        Console.WriteLine($"Account login: status 500, {request?.Username}, {request?.Email}");
+                    }
+
                 }
                 else
                 {
@@ -87,17 +102,27 @@ namespace QuestHelper.Server.Controllers.Account
                 User user = _db.User.FirstOrDefault(x => x.Name == request.Username && x.Role == "demo");
                 if (user == null)
                 {
-                    user = CreateUser(request, _db, true);
+                    UserCreator userCreator = new UserCreator();
+                    user = userCreator.Create(request, true);
                 }
-
-                await MakeJwtResponse(user);
-                Console.WriteLine($"Account Demo Token: status 200, {request?.Email}");
+                JwtResponseMaker jwtMaker = new JwtResponseMaker();
+                string response = jwtMaker.GetJwtResponse(user);
+                if(!string.IsNullOrEmpty(response))
+                {
+                    Response.ContentType = "application/json";
+                    await Response.WriteAsync(response);
+                }
+                else
+                {
+                    Response.StatusCode = 500;
+                    await Response.WriteAsync("Error while generate token.");
+                }
             }
 
             return;
         }
 
-        private User CreateUser(TokenRequest request, ServerDbContext _db, bool isDemoUser)
+        /*private User CreateUser(TokenRequest request, ServerDbContext _db, bool isDemoUser)
         {
             User user = new User();
             user.UserId = Guid.NewGuid().ToString();
@@ -112,7 +137,7 @@ namespace QuestHelper.Server.Controllers.Account
             _db.SaveChanges();
             Console.WriteLine($"Created DB user: {user.Name}");
             return user;
-        }
+        }*/
 
         [Route("new")]
         [HttpPost]
@@ -123,12 +148,25 @@ namespace QuestHelper.Server.Controllers.Account
                 User user = _db.User.FirstOrDefault(x => x.Email == request.Email);
                 if (user == null)
                 {
-                    user = CreateUser(request, _db, false);
+                    UserCreator userCreator = new UserCreator();
+                    user = userCreator.Create(request, false);
                     if (user != null)
                     {
-                        AddAccessToDemoRoute(_db, user);
-                        await MakeJwtResponse(user);
-                        Console.WriteLine($"Account New: status 200, {request?.Username}, {request?.Email}");
+                        userCreator.AddAccessToDemoRoute(user);
+                        JwtResponseMaker jwtMaker = new JwtResponseMaker();
+                        string response = jwtMaker.GetJwtResponse(user);
+                        if (!string.IsNullOrEmpty(response))
+                        {
+                            Response.ContentType = "application/json";
+                            await Response.WriteAsync(response);
+                            Console.WriteLine($"Account New: status 200, {request?.Username}, {request?.Email}");
+                        }
+                        else
+                        {
+                            Response.StatusCode = 500;
+                            await Response.WriteAsync("Error while generate token.");
+                            Console.WriteLine($"Account New: status 500, {request?.Username}, {request?.Email}");
+                        }
                     }
                 }
                 else
@@ -140,22 +178,9 @@ namespace QuestHelper.Server.Controllers.Account
             }
 
             return;
-        }
+        }              
 
-        private void AddAccessToDemoRoute(ServerDbContext _db, User user)
-        {
-            RouteAccess access = new RouteAccess();
-            access.RouteAccessId = Guid.NewGuid().ToString();
-            access.RouteId = "dfdd6823-a44c-4f1a-8df8-2996deb4185c";//Демо-маршрут. Да, знаю.
-            access.CanChange = false;
-            access.CreateDate = DateTime.Now;
-            access.UserId = user.UserId;
-            _db.RouteAccess.Add(access);
-            _db.SaveChanges();
-            Console.WriteLine($"Added DB access: {user.Name}");
-        }
-
-        private async Task MakeJwtResponse(User user)
+        /*private async Task MakeJwtResponse(User user)
         {
             IdentityManager identityManager = new IdentityManager();
             var identity = identityManager.GetIdentity(user);
@@ -183,7 +208,7 @@ namespace QuestHelper.Server.Controllers.Account
                 Response.StatusCode = 500;
                 await Response.WriteAsync("Error while generate token.");
             }
-        }
+        }*/
 
         [Authorize]
         [HttpGet]

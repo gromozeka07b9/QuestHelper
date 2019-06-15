@@ -10,6 +10,7 @@ using QuestHelper.Model.Messages;
 using QuestHelper.OAuth;
 using QuestHelper.View;
 using QuestHelper.WS;
+using Xamarin.Auth;
 using Xamarin.Forms;
 using static QuestHelper.WS.AccountApiRequest;
 
@@ -42,10 +43,18 @@ namespace QuestHelper.ViewModel
         {
             await Navigation.PushModalAsync(new NavigationPage(new RegisterPage()));
         }
+
         private void loginWithGoogleCommand()
         {
             OAuthGoogleAuthenticator oAuth = new OAuthGoogleAuthenticator();
             oAuth.Login();
+            var accounts = AccountStore.Create().FindAccountsForService("com.sd.gosh");
+            if (accounts != null)
+            {
+                foreach(var account in accounts)
+                {
+                }
+            }
         }
 
         async void RegisterCommandAsync()
