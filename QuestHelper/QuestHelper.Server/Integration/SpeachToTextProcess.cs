@@ -32,11 +32,16 @@ namespace QuestHelper.Server.Integration
                         var resultSpeachParsing = await speachToText.GetTextAsync(Path.Combine(_pathToMediaCatalog, $"audio_{audioObj.RoutePointMediaObjectId}.3gp"));
                         if (resultSpeachParsing.StatusCode == 200)
                         {
+                            RawTextCleaner textCleaner = new RawTextCleaner();
+                            string recognizedText = textCleaner.Clean(resultSpeachParsing.Text);
                             var entityRoutePoint = db.RoutePoint.Find(audioObj.RoutePointId);
                             if (entityRoutePoint != null)
                             {
-                                entityRoutePoint.Description +=
-                                    $"{Environment.NewLine}***{Environment.NewLine}{resultSpeachParsing.Text}";
+                                if (string.IsNullOrEmpty(entityRoutePoint.Description))
+                                    entityRoutePoint.Description = recognizedText;
+                                else
+                                    entityRoutePoint.Description += $"{Environment.NewLine}{recognizedText}";
+
                                 entityRoutePoint.Version++;
                                 db.Entry(entityRoutePoint).CurrentValues.SetValues(entityRoutePoint);
                                 var entityMediaObject = db.RoutePointMediaObject.Find(audioObj.RoutePointMediaObjectId);

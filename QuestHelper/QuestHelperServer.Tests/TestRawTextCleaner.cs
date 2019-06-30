@@ -28,15 +28,45 @@ namespace QuestHelperServer.Tests
         }
 
         [Theory]
-        [InlineData("?????? ??????????? ??????? ? ???????")]
+        [InlineData("Проверка ввода запятая где используются запятые дефис но дефисы так же")]
         public void TestMust_CleanTextWithCyrillicComma(string rawText)
         {
             RawTextCleaner cleaner = new RawTextCleaner();
             string cleanText = cleaner.Clean(rawText);
-            Assert.True(cleanText.StartsWith('?'));
+            Assert.True(cleanText.StartsWith('П'));
             Assert.Contains(",", cleanText);
             Assert.True(cleanText.EndsWith('.'));
         }
+
+        [Theory]
+        [InlineData("Recognize text without do_ts and com_mas")]
+        public void TestMust_CleanTextWithoutDotAndComma(string rawText)
+        {
+            RawTextCleaner cleaner = new RawTextCleaner();
+            string cleanText = cleaner.Clean(rawText);
+            Assert.True(cleanText.StartsWith('R'));
+            Assert.True(cleanText.EndsWith('.'));
+        }
+
+        [Theory]
+        [InlineData("Recognize text with two sentences dot and it second sentece comma with comm")]
+        public void TestMust_CleanTextTwoSentenses(string rawText)
+        {
+            RawTextCleaner cleaner = new RawTextCleaner();
+            string cleanText = cleaner.Clean(rawText);
+            Assert.True(cleanText.StartsWith('R'));
+            Assert.True(cleanText.EndsWith('.'));
+        }
+
+        [Theory]
+        [InlineData("")]
+        public void TestMust_CleanTextWithEmpty(string rawText)
+        {
+            RawTextCleaner cleaner = new RawTextCleaner();
+            string cleanText = cleaner.Clean(rawText);
+            Assert.True(string.IsNullOrEmpty(cleanText));
+        }
+
         [Fact]
         public void TestMust_Work()
         {
