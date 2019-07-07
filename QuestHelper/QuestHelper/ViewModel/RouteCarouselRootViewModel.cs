@@ -1,4 +1,5 @@
-﻿using QuestHelper.LocalDB.Model;
+﻿using Microsoft.AppCenter.Analytics;
+using QuestHelper.LocalDB.Model;
 using QuestHelper.Managers;
 using QuestHelper.Model;
 using QuestHelper.View;
@@ -105,6 +106,11 @@ namespace QuestHelper.ViewModel
                 }
                 return items;
             }
+        }
+
+        public void StartDialog()
+        {
+            Analytics.TrackEvent("Album opened", new Dictionary<string, string> { { "Album", RouteName } });
         }
 
         public class CarouselItem : INotifyPropertyChanged

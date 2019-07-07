@@ -28,7 +28,6 @@ namespace QuestHelper.View
             vm = new MapRouteOverviewViewModel(routeId);
             vm.Navigation = this.Navigation;
             BindingContext = vm;
-            Analytics.TrackEvent("Map route showed");
         }
 
         private void PointPin_Clicked(object sender, EventArgs e)

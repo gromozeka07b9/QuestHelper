@@ -2,6 +2,7 @@
 using Microsoft.AppCenter.Crashes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -82,7 +83,15 @@ namespace QuestHelper.Managers.Sync
                     Application.Current.Properties.Remove(statusSyncKey);
                     Application.Current.Properties.Add(statusSyncKey, resultMessage);
                     MessagingCenter.Send<UIToastMessage>(new UIToastMessage() { Delay = 3, Message = resultMessage }, string.Empty);
-                    Analytics.TrackEvent("Sync all done", new Dictionary<string, string> { { "Delay", Math.Round(diff.TotalSeconds).ToString() } });
+
+                    double seconds = Math.Round(diff.TotalSeconds);
+                    string secondsText = string.Empty;
+                    if (seconds < 10) secondsText = "<10s";
+                        else if (seconds < 20) secondsText = "<20s";
+                            else if (seconds < 50) secondsText = "<50s";
+                                else if (seconds < 120) secondsText = "<120s";
+                                    else if (seconds >= 120) secondsText = ">=120s";
+                    Analytics.TrackEvent("Sync all done", new Dictionary<string, string> { { "Delay", secondsText } });
                     _log.AddStringEvent(resultMessage);
                 }
             }

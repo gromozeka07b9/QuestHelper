@@ -19,6 +19,8 @@ using Acr.UserDialogs;
 using QuestHelper.Managers;
 using Plugin.Permissions;
 using QuestHelper.Managers.Sync;
+using Microsoft.AppCenter.Analytics;
+using System.Collections.Generic;
 
 namespace QuestHelper.Droid
 {
@@ -105,11 +107,22 @@ namespace QuestHelper.Droid
                 }
             });
 
-            //Используется дял вывода нативного окна выбора oauth учетки
+            //Используется для вывода нативного окна выбора oauth учетки
             MessagingCenter.Subscribe<OAuthDialogShowRequest>(this, string.Empty, (sender) =>
             {
                 var intent = AuthenticationState.Authenticator.GetUI(Android.App.Application.Context);
-                Android.App.Application.Context.StartActivity(intent);
+                try
+                {
+                    Android.App.Application.Context.StartActivity(intent);
+                }
+                catch (Exception e)
+                {
+                    Xamarin.Forms.MessagingCenter.Send<UIAlertMessage>(new UIAlertMessage() { Title = "Авторизация Google", Message = "К сожалению, произошла ошибка при попытке использования Google Chrome" }, string.Empty);
+                    Analytics.TrackEvent("Login OAuth error", new Dictionary<string, string> { { "ExceptionMessage", e.Message },{"Google Chrome auth", "error"} });
+                    var pageCollections = new PagesCollection();
+                    MainPageMenuItem destinationPage = pageCollections.GetLoginPage();
+                    Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);
+                }
             });
 
         }

@@ -1,6 +1,6 @@
 ﻿namespace QuestHelper.Model.Messages
 {
-    internal class UIAlertMessage
+    public class UIAlertMessage
     {
         public UIAlertMessage()
         {

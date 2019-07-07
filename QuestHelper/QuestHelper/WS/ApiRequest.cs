@@ -89,11 +89,11 @@ namespace QuestHelper.WS
             catch (WebException webException)
             {
                 _lastHttpStatusCode = ((HttpWebResponse)webException.Response).StatusCode;
-                HandleError.Process("ApiRequest", "HttpRequestGETFile", webException, false);
+                HandleError.Process("ApiRequest", "HttpRequestGETFile", webException, false, $"Fullnamefile:{fullNameFile}");
             }
             catch (Exception e)
             {
-                HandleError.Process("ApiRequest", "HttpRequestGETFile", e, false);
+                HandleError.Process("ApiRequest", "HttpRequestGETFile", e, false, $"Fullnamefile:{fullNameFile}");
             }
             return result;
         }

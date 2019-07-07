@@ -119,7 +119,6 @@ namespace QuestHelper.ViewModel
 
         private static void ShowMainPage()
         {
-            UserDialogs.Instance.HideLoading();
             var pageCollections = new PagesCollection();
             MainPageMenuItem destinationPage = pageCollections.GetPageByPosition(0);
             Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(
@@ -211,6 +210,7 @@ namespace QuestHelper.ViewModel
         }
         public void StartLoginDialog()
         {
+            UserDialogs.Instance.HideLoading();
             MessagingCenter.Subscribe<OAuthResultMessage>(this, string.Empty, async (sender) =>
             {
                 Username = sender.Username;

@@ -29,6 +29,7 @@ namespace QuestHelper.View
             MapRouteOverview.Points = _vm.PointsOnMap;
             var toolbarService = DependencyService.Get<IToolbarService>();
             toolbarService.SetDarkMode(true);
+            _vm.StartDialog();
         }
 
         private void Cards_OnItemAppearing(CardsView view, ItemAppearingEventArgs args)
