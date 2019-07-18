@@ -43,6 +43,8 @@ namespace QuestHelper.View
 
         private async void ContentPage_Appearing(object sender, EventArgs e)
         {
+            var toolbarService = DependencyService.Get<IToolbarService>();
+            toolbarService.SetVisibilityToolbar(false);
             _vm.startDialog();
             if (!ToolbarItems.Where(x => x.Command == _vm.ShareRouteCommand).Any())
             {

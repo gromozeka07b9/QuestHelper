@@ -51,25 +51,6 @@ namespace QuestHelper.View
             }
         }
 
-        private async Task getPositionAndCenterMap(CustomMapView customMap)
-        {
-            if (await customMap.GetPositionAsync())
-            {
-                await centerMap(customMap, customMap.CurrentPosition.Latitude, customMap.CurrentPosition.Longitude);
-            }
-            else
-            {
-                Device.BeginInvokeOnMainThread(async () =>
-                {
-                    bool answerRetry = await DisplayAlert("Ошибка", customMap.LastError + " Повторить поиск?", "Да", "Нет");
-                    if (answerRetry)
-                    {
-                        await centerMap(customMap, customMap.CurrentPosition.Latitude, customMap.CurrentPosition.Longitude);
-                    }
-                });
-            }
-        }
-
         private async Task centerMap(CustomMapView customMap, double Latitude, double Longitude)
         {
             if (!customMap.CenterMapToPosition(Latitude, Longitude, 10))

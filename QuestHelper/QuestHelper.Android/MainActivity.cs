@@ -111,6 +111,7 @@ namespace QuestHelper.Droid
             MessagingCenter.Subscribe<OAuthDialogShowRequest>(this, string.Empty, (sender) =>
             {
                 var intent = AuthenticationState.Authenticator.GetUI(Android.App.Application.Context);
+                intent.SetFlags(ActivityFlags.NewTask);
                 try
                 {
                     Android.App.Application.Context.StartActivity(intent);

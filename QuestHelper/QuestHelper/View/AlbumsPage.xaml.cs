@@ -23,6 +23,8 @@ namespace QuestHelper.View
 
 	    private void AlbumsPage_OnAppearing(object sender, EventArgs e)
 	    {
+	        var toolbarService = DependencyService.Get<IToolbarService>();
+	        toolbarService.SetVisibilityToolbar(true);
 	        _vm.startDialog();
 	    }
 

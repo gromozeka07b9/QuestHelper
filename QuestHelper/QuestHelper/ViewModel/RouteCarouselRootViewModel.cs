@@ -90,7 +90,7 @@ namespace QuestHelper.ViewModel
                 {
                     foreach (var point in points)
                     {
-                        PointsOnMap.Add(new PointForMap() { Name = point.Name, Description = point.Description, PathToPicture = string.Empty,Latitude = point.Latitude, Longitude = point.Longitude});
+                        PointsOnMap.Add(new PointForMap() { Name = point.Name, Description = point.Description, PathToPicture = point.ImagePreviewPathForList, Latitude = point.Latitude, Longitude = point.Longitude});
                         if (point.MediaObjects.Where(m=>m.MediaType == 0).Any())
                         {
                             foreach (var media in point.MediaObjects.Where(m => m.MediaType == 0))

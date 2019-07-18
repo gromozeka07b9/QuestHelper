@@ -21,7 +21,6 @@ namespace QuestHelper.View
         }
         public RouteCreatedPage(string routeId)
         {
-
             InitializeComponent();
             vm = new RouteCreatedViewModel(routeId) { Navigation = this.Navigation };
             BindingContext = vm;
@@ -29,7 +28,17 @@ namespace QuestHelper.View
 
         private void ContentPage_Appearing(object sender, EventArgs e)
         {
-            vm.startDialog();
+            var pages = Navigation.NavigationStack;
+            Page lastpage = pages.LastOrDefault();
+            if (typeof(QuestHelper.View.RoutePointPage) != lastpage.GetType())
+            {
+                vm.startDialog();
+            }
+            else
+            {
+                Navigation.PopToRootAsync();
+                //App.Current.MainPage.Navigation.PopToRootAsync();
+            }
         }
     }
 }

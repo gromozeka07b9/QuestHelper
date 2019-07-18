@@ -66,7 +66,7 @@ namespace QuestHelper.Droid
                         Bitmap bm = BitmapFactory.DecodeFile(point.PathToPicture);
                         if (bm != null)
                         {
-                            infoImg.SetImageBitmap(cropCenter(bm, 500, 400));
+                            infoImg.SetImageBitmap(cropCenter(bm, 300, 300));
                             bm = null;
                         }
                     }
@@ -140,7 +140,7 @@ namespace QuestHelper.Droid
             {
                 base.OnMapReady(map);
                 map.MapClick += Map_MapClick;
-                drawMarkers(250);
+                drawMarkers(150);
                 NativeMap.InfoWindowClick += OnInfoWindowClick;
                 NativeMap.SetInfoWindowAdapter(this);
             }
@@ -210,7 +210,7 @@ namespace QuestHelper.Droid
             }
             return output;
         }
-        public static Bitmap cropCenter(Bitmap bmp, int width = 256, int height = 192)
+        public static Bitmap cropCenter(Bitmap bmp, int width = 160, int height = 120)
         {
             bool portrait = bmp.Width < bmp.Height;
             if (portrait)
@@ -244,7 +244,10 @@ namespace QuestHelper.Droid
         public override bool DispatchTouchEvent(MotionEvent e)
         {
             if (customMap.UseInterceptTouchEvent)
+            {
                 Parent.Parent.Parent.Parent.RequestDisallowInterceptTouchEvent(true);
+                Parent.Parent.Parent.RequestDisallowInterceptTouchEvent(true);
+            }
             var dispatchEvent = base.DispatchTouchEvent(e);
 
             /*int markerSize = getMarkerSizeByZoom(NativeMap.CameraPosition.Zoom);

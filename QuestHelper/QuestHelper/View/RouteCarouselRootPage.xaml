@@ -7,27 +7,12 @@
     <ContentPage.Content>
         <ScrollView Orientation="Vertical">
             <StackLayout>
-                <Grid HeightRequest="500">
+                <Grid HeightRequest="600">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"></RowDefinition>
-                        <RowDefinition Height="7*"></RowDefinition>
-                        <RowDefinition Height="2*"></RowDefinition>
+                        <RowDefinition Height="9*"></RowDefinition>
+                        <!--RowDefinition Height="2*"></-->
                     </Grid.RowDefinitions>
-                    <!--pancardview:CardsView Grid.Row="0" Grid.RowSpan="3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="Cards" AreAnimationsEnabled="False" MoveWidthPercentage="50" SwipeThresholdDistance="50">
-                        <pancardview:CardsView.ItemTemplate>
-                            <DataTemplate>
-                                <ContentView Padding="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-                                    <Frame VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="5" CornerRadius="10" Padding="0">
-                                        <Image Source="{Binding Source}" Aspect="AspectFill" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0">
-                                            <Image.GestureRecognizers>
-                                                <TapGestureRecognizer NumberOfTapsRequired="2" Command="{Binding ChangeImageAspectCommand}"></TapGestureRecognizer>
-                                            </Image.GestureRecognizers>
-                                        </Image>
-                                    </Frame>
-                                </ContentView>
-                            </DataTemplate>
-                        </pancardview:CardsView.ItemTemplate>
-                    </pancardview:CardsView-->
                     <pancardview:CarouselView Grid.Row="0" Grid.RowSpan="3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="Cards" ItemsSource="{Binding CarouselPages}" AreAnimationsEnabled="True" ItemAppearing="Cards_OnItemAppearing">
                         <pancardview:CarouselView.ItemTemplate>
                             <DataTemplate>

@@ -324,7 +324,6 @@ namespace QuestHelper.ViewModel
                         _vpoint.AddMediaItem(mediaId, MediaObjectTypeEnum.Image);
                         ApplyChanges();
                         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
-                        //Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(){ShowErrorMessageIfExist = false}, string.Empty);
                         Analytics.TrackEvent("Media: photo taken");
                     }
                     else
@@ -338,11 +337,21 @@ namespace QuestHelper.ViewModel
         private async void FillCurrentPositionAsync()
         {
             var locator = CrossGeolocator.Current;
-            var position = await locator.GetPositionAsync(TimeSpan.FromSeconds(10));
-            Latitude = position.Latitude;
-            Longitude = position.Longitude;
+            Position currentPosition = new Position();
+            if ((locator.IsGeolocationAvailable) && (locator.IsGeolocationEnabled))
+            {
+                currentPosition = await locator.GetPositionAsync(TimeSpan.FromSeconds(10));
+            }
+            else
+            {
+                UserDialogs.Instance.Alert(title: "Недоступна служба геолокации",
+                    message: "Для определения вашего местоположения службу необходимо включить.", okText: "Ok");
+                Analytics.TrackEvent("Geolocation: off", new Dictionary<string, string> { { "RoutePointViewModel", "FillCurrentPositionAsync" } });
+            }
+            Latitude = currentPosition.Latitude;
+            Longitude = currentPosition.Longitude;
             Coordinates = Latitude + "," + Longitude;
-            Address = await GetPositionAddress(locator, position);
+            Address = await GetPositionAddress(locator, currentPosition);
         }
 
         private async void FillAddressByCoordinatesAsync(double latitude, double longitude)

@@ -119,7 +119,9 @@ namespace QuestHelper.View
 
         private async void ContentPage_AppearingAsync(object sender, EventArgs e)
         {
-            if((_routePoint!=null)&&(_routePoint.Latitude != 0) && (_routePoint.Longitude != 0) && (!string.IsNullOrEmpty(_routePoint.Name)))
+            var toolbarService = DependencyService.Get<IToolbarService>();
+            toolbarService.SetVisibilityToolbar(false);
+            if ((_routePoint!=null)&&(_routePoint.Latitude != 0) && (_routePoint.Longitude != 0) && (!string.IsNullOrEmpty(_routePoint.Name)))
             {
                 await CenterMap(_routePoint.Latitude, _routePoint.Longitude, _routePoint.Name, _routePoint.Address);
             }

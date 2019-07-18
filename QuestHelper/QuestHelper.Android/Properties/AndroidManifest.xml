@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.56" package="com.sd.gosh" android:installLocation="auto" android:versionCode="56">
-	<uses-sdk android:minSdkVersion="15" android:targetSdkVersion="26" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.57" package="com.sd.gosh" android:installLocation="auto" android:versionCode="57">
+	<uses-sdk android:minSdkVersion="15" android:targetSdkVersion="28" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
@@ -15,5 +15,6 @@
 		<provider android:name="android.support.v4.content.FileProvider" android:authorities="${applicationId}.fileprovider" android:exported="false" android:grantUriPermissions="true">
 			<meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths"></meta-data>
 		</provider>
+		<uses-library android:name="org.apache.http.legacy" android:required="false" />
 	</application>
 </manifest>

@@ -43,7 +43,7 @@ namespace QuestHelper.View
             await centerMap(customMapView, customMap.Points.First().Latitude, customMap.Points.First().Longitude);*/
         }
 
-        private async Task getPositionAndCenterMap(CustomMapView customMap)
+        /*private async Task getPositionAndCenterMap(CustomMapView customMap)
         {
             if (await customMap.GetPositionAsync())
             {
@@ -60,7 +60,7 @@ namespace QuestHelper.View
                     }
                 });
             }
-        }
+        }*/
 
         private async Task centerMap(CustomMapView customMap, double Latitude, double Longitude)
         {

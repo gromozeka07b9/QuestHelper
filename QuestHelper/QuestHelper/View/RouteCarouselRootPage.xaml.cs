@@ -28,7 +28,7 @@ namespace QuestHelper.View
         {
             MapRouteOverview.Points = _vm.PointsOnMap;
             var toolbarService = DependencyService.Get<IToolbarService>();
-            toolbarService.SetDarkMode(true);
+            toolbarService.SetVisibilityToolbar(false);
             _vm.StartDialog();
         }
 
