@@ -1,6 +1,7 @@
 ﻿using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using Microsoft.AppCenter.Push;
 using QuestHelper.Managers.Sync;
 using QuestHelper.View;
 using Realms;
@@ -43,11 +44,15 @@ namespace QuestHelper
 
         protected override async void OnStart ()
 		{
+		    if (!AppCenter.Configured)
+		    {
+                Push.PushNotificationReceived += Push_PushNotificationReceived;
+		    }
 
 #if DEBUG
-           AppCenter.Start("android=e7661afa-ce82-4b68-b98d-e35a71bb75c1;", typeof(Analytics), typeof(Crashes));
+            AppCenter.Start("android=e7661afa-ce82-4b68-b98d-e35a71bb75c1;", typeof(Analytics), typeof(Crashes), typeof(Push));
 #else
-           AppCenter.Start("android=85c4ccc3-f315-427c-adbd-b928e461bcc8;", typeof(Analytics), typeof(Crashes));
+            AppCenter.Start("android=85c4ccc3-f315-427c-adbd-b928e461bcc8;", typeof(Analytics), typeof(Crashes), typeof(Push));
 #endif
 
 		    SubscribeMessages();
@@ -66,7 +71,47 @@ namespace QuestHelper
 
         }
 
-	    private void SubscribeMessages()
+        private void Push_PushNotificationReceived(object sender, PushNotificationReceivedEventArgs e)
+        {
+            Analytics.TrackEvent("Push message: received", new Dictionary<string, string> { { "Message", e.Message } });
+            string routeName = string.Empty;
+            if (e.CustomData != null)
+            {
+                foreach (var key in e.CustomData.Keys)
+                {
+                    if (key.ToLower() == "routename")
+                    {
+                        routeName = e.CustomData[key];
+                    }
+                }
+            }
+
+            string questionText = string.Empty;
+            if (!string.IsNullOrEmpty(routeName))
+            {
+                questionText = $"Вам доступен новый альбом: '{routeName}'\n Загрузить его сейчас?";
+            }
+            else
+            {
+                questionText = "Загрузить обновления сейчас?";
+            }
+
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                Analytics.TrackEvent("Push message: show");
+                bool needLoad = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig() { Message = questionText, Title = "Обновление альбомов", OkText = "Да", CancelText = "Нет" });
+                if (needLoad)
+                {
+                    Analytics.TrackEvent("Push message: start sync");
+                    Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+                    var pageCollections = new PagesCollection();
+                    MainPageMenuItem destinationPage = pageCollections.GetSelectAlbumsPage();
+                    Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);
+                }
+            });
+        }
+
+        private void SubscribeMessages()
 	    {
 
 	        MessagingCenter.Subscribe<MapOpenPointMessage>(this, string.Empty, (sender) =>

@@ -51,6 +51,10 @@ namespace QuestHelper.Model
         {
             return Pages.Single(x => x.TargetType == typeof(RoutesPage));
         }
+        public MainPageMenuItem GetSelectAlbumsPage()
+        {
+            return Pages.Single(x => x.TargetType == typeof(AlbumsPage));
+        }
         public MainPageMenuItem GetProcessSharePage()
         {
             return Pages.Single(x => x.TargetType == typeof(ProcessShareIntentPage));

@@ -24,7 +24,7 @@ using System.Collections.Generic;
 
 namespace QuestHelper.Droid
 {
-    [Activity(Label = "QuestHelper", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = false, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "QuestHelper", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = false, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, LaunchMode = LaunchMode.SingleInstance, ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity, BottomNavigationBar.Listeners.IOnTabClickListener
     {
 
@@ -49,21 +49,6 @@ namespace QuestHelper.Droid
             var pageCollections = new PagesCollection();
             MainPageMenuItem destinationPage = pageCollections.GetPageByPosition(position);
             Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>( new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);
-            /*ParameterManager par = new ParameterManager();
-            string NeedShowOnboarding = string.Empty;
-            par.Get("NeedShowOnboarding", out NeedShowOnboarding);
-            var pageCollections = new PagesCollection();
-            if (NeedShowOnboarding.Equals("0"))
-            {
-                MainPageMenuItem destinationPage = pageCollections.GetPageByPosition(position);
-                Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(
-                    new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);
-            }
-            else
-            {
-                Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(
-                    new PageNavigationMessage() { DestinationPageDescription = pageCollections.GetProcessWizardPage()}, string.Empty);
-            }*/
         }
 
         protected override void OnCreate(Bundle bundle)
