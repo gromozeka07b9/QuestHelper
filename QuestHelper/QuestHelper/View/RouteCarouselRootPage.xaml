@@ -7,7 +7,7 @@
     <ContentPage.Content>
         <ScrollView Orientation="Vertical">
             <StackLayout>
-                <Grid HeightRequest="600">
+                <Grid HeightRequest="550">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"></RowDefinition>
                         <RowDefinition Height="9*"></RowDefinition>

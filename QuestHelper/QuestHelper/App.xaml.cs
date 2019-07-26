@@ -63,9 +63,10 @@ namespace QuestHelper
 		    });
 
             TokenStoreService token = new TokenStoreService();
-
             if (Setup() && !string.IsNullOrEmpty(await token.GetAuthTokenAsync()))
             {
+                string userId = await token.GetUserIdAsync();
+                Xamarin.Forms.MessagingCenter.Send<UpdateAppCenterUserIdMessage>(new UpdateAppCenterUserIdMessage() { UserId = userId }, string.Empty);
                 Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
             }
 
@@ -113,6 +114,12 @@ namespace QuestHelper
 
         private void SubscribeMessages()
 	    {
+
+	        MessagingCenter.Subscribe<UpdateAppCenterUserIdMessage>(this, string.Empty, (sender) =>
+	        {
+	            AppCenter.SetUserId(sender.UserId);
+	            AppCenter.SetEnabledAsync(true);
+	        });
 
 	        MessagingCenter.Subscribe<MapOpenPointMessage>(this, string.Empty, (sender) =>
 	        {

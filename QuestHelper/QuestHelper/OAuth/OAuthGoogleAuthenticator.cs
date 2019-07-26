@@ -49,6 +49,7 @@ namespace QuestHelper.OAuth
                 {
                     string userJson = response.GetResponseText();
                     var user = JsonConvert.DeserializeObject<GoogleUser>(userJson);
+                    Xamarin.Forms.MessagingCenter.Send<UpdateAppCenterUserIdMessage>(new UpdateAppCenterUserIdMessage() { UserId = user.Name }, string.Empty);
                     Xamarin.Forms.MessagingCenter.Send<OAuthResultMessage>(new OAuthResultMessage() { IsAuthenticated = e.IsAuthenticated, Username = user.Name, AuthenticatorUserId = user.Id, Email = user.Email, ImgUrl = user.Picture, Locale = user.Locale, AuthToken = "111"}, string.Empty);
                 }
             }
