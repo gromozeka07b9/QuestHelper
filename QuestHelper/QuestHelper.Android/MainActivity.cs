@@ -21,6 +21,7 @@ using Plugin.Permissions;
 using QuestHelper.Managers.Sync;
 using Microsoft.AppCenter.Analytics;
 using System.Collections.Generic;
+using Android.Support.V4.App;
 
 namespace QuestHelper.Droid
 {
@@ -64,6 +65,9 @@ namespace QuestHelper.Droid
             Xamarin.FormsMaps.Init(this, bundle);
             ImageCircleRenderer.Init();
             UserDialogs.Init(this);
+
+            PushReceiverSetup pushReceiverSetup = new PushReceiverSetup(this);
+            pushReceiverSetup.Setup();
 
             string shareSubject = Intent.GetStringExtra("shareSubject") ?? string.Empty;
             string shareDescription = Intent.GetStringExtra("shareDescription") ?? string.Empty;

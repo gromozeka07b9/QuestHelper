@@ -1,7 +1,6 @@
 ﻿using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
-using Microsoft.AppCenter.Push;
 using QuestHelper.Managers.Sync;
 using QuestHelper.View;
 using Realms;
@@ -22,7 +21,6 @@ namespace QuestHelper
 {
 	public partial class App : Application
 	{
-	    //private bool SynchronizeStarted = false;
         private Logger _log = new Logger(true);
 
         public App ()
@@ -44,81 +42,29 @@ namespace QuestHelper
 
         protected override async void OnStart ()
 		{
-		    if (!AppCenter.Configured)
-		    {
-                Push.PushNotificationReceived += Push_PushNotificationReceived;
-		    }
 
 #if DEBUG
-            AppCenter.Start("android=e7661afa-ce82-4b68-b98d-e35a71bb75c1;", typeof(Analytics), typeof(Crashes), typeof(Push));
+            AppCenter.Start("android=e7661afa-ce82-4b68-b98d-e35a71bb75c1;", typeof(Analytics), typeof(Crashes));
 #else
-            AppCenter.Start("android=85c4ccc3-f315-427c-adbd-b928e461bcc8;", typeof(Analytics), typeof(Crashes), typeof(Push));
+            AppCenter.Start("android=85c4ccc3-f315-427c-adbd-b928e461bcc8;", typeof(Analytics), typeof(Crashes));
 #endif
 
 		    SubscribeMessages();
 
-		    MessagingCenter.Subscribe<StartAppMessage>(this, string.Empty, (sender) =>
-		    {
-		        MainPage = new View.MainPage();
-		    });
-
             TokenStoreService token = new TokenStoreService();
             if (Setup() && !string.IsNullOrEmpty(await token.GetAuthTokenAsync()))
             {
-                string userId = await token.GetUserIdAsync();
-                Xamarin.Forms.MessagingCenter.Send<UpdateAppCenterUserIdMessage>(new UpdateAppCenterUserIdMessage() { UserId = userId }, string.Empty);
                 Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
             }
 
         }
 
-        private void Push_PushNotificationReceived(object sender, PushNotificationReceivedEventArgs e)
-        {
-            Analytics.TrackEvent("Push message: received", new Dictionary<string, string> { { "Message", e.Message } });
-            string routeName = string.Empty;
-            if (e.CustomData != null)
-            {
-                foreach (var key in e.CustomData.Keys)
-                {
-                    if (key.ToLower() == "routename")
-                    {
-                        routeName = e.CustomData[key];
-                    }
-                }
-            }
-
-            string questionText = string.Empty;
-            if (!string.IsNullOrEmpty(routeName))
-            {
-                questionText = $"Вам доступен новый альбом: '{routeName}'\n Загрузить его сейчас?";
-            }
-            else
-            {
-                questionText = "Загрузить обновления сейчас?";
-            }
-
-            MainThread.BeginInvokeOnMainThread(async () =>
-            {
-                Analytics.TrackEvent("Push message: show");
-                bool needLoad = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig() { Message = questionText, Title = "Обновление альбомов", OkText = "Да", CancelText = "Нет" });
-                if (needLoad)
-                {
-                    Analytics.TrackEvent("Push message: start sync");
-                    Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
-                    var pageCollections = new PagesCollection();
-                    MainPageMenuItem destinationPage = pageCollections.GetSelectAlbumsPage();
-                    Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);
-                }
-            });
-        }
-
         private void SubscribeMessages()
 	    {
 
-	        MessagingCenter.Subscribe<UpdateAppCenterUserIdMessage>(this, string.Empty, (sender) =>
+	        MessagingCenter.Subscribe<StartAppMessage>(this, string.Empty, (sender) =>
 	        {
-	            AppCenter.SetUserId(sender.UserId);
-	            AppCenter.SetEnabledAsync(true);
+	            MainPage = new View.MainPage();
 	        });
 
 	        MessagingCenter.Subscribe<MapOpenPointMessage>(this, string.Empty, (sender) =>
@@ -145,9 +91,40 @@ namespace QuestHelper
 	                //UserDialogs.Instance.Toast(sender.Message, new TimeSpan(0, 0, 0, 3));
 	            });
 	        });
-	    }
 
-	    private bool Setup()
+	        MessagingCenter.Subscribe<ReceivePushMessage>(this, string.Empty, (sender) =>
+	        {
+	            string messageBody = !string.IsNullOrEmpty(sender.MessageBody) ? sender.MessageBody : "Вам доступны новые маршруты и альбомы";
+	            string messageTitle = sender.MessageTitle;
+	            MainThread.BeginInvokeOnMainThread(() =>
+	            {
+	                UserDialogs.Instance.Alert(messageBody, messageTitle, "Ок");
+	            });
+
+                /*Пока не придумал, как сделать удобный диалог перехода к обновлениям маршрутов
+	            var pageCollections = new PagesCollection();
+	            MainPageMenuItem destinationPage = pageCollections.GetReceivePushPage();
+	            Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);*/
+            });
+
+	        /*MessagingCenter.Subscribe<SyncProgressMessage>(this, string.Empty, (sender) =>
+	        {
+	            MainThread.BeginInvokeOnMainThread(() =>
+	            {
+	                if (sender.SyncInProgress)
+	                    UserDialogs.Instance.Loading("Идет синхронизация данных...", () => { }, "", true,
+	                        MaskType.Gradient);
+	                else
+	                {
+	                    UserDialogs.Instance.Loading(show: false);
+                        UserDialogs.Instance.HideLoading();
+                    }
+                });
+	        });*/
+
+        }
+
+        private bool Setup()
         {
             bool result = false;
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Acr.UserDialogs;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -42,18 +42,35 @@ namespace QuestHelper.Droid
         {
             base.OnCreate(savedInstanceState);
 
-            // Convert Android.Net.Url to Uri
-            var uri = new Uri(Intent.Data.ToString());
+            using (UserDialogs.Instance.Loading("Авторизация...", () => { }, "", true, MaskType.Gradient))
+            {
+                try
+                {
+                    // Convert Android.Net.Url to Uri
+                    var uri = new Uri(Intent.Data.ToString());
 
-            // Load redirectUrl page
-            AuthenticationState.Authenticator?.OnPageLoading(uri);
+                    // Load redirectUrl page
+                    AuthenticationState.Authenticator?.OnPageLoading(uri);
+                }
+                catch (Exception e)
+                {
+                    HandleError.Process("GoogleAuthInterceptor", "OnCreate load redirect page", e, false);
+                }
 
-            //Костыль для обхода ошибки
-            //https://github.com/xamarin/Xamarin.Auth/issues/275
-            var intent = new Intent(this, typeof(MainActivity));
-            intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.SingleTop);
-            StartActivity(intent);
-            //Костыль для обхода ошибки
+                //Костыль для обхода ошибки
+                //https://github.com/xamarin/Xamarin.Auth/issues/275
+                try
+                {
+                    var intent = new Intent(this, typeof(MainActivity));
+                    intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.SingleTop);
+                    StartActivity(intent);
+                }
+                catch (Exception e)
+                {
+                    HandleError.Process("GoogleAuthInterceptor", "OnCreate StartActivity", e, false);
+                }
+                //Костыль для обхода ошибки
+            }
 
             Finish();
 

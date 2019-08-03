@@ -37,6 +37,7 @@ namespace QuestHelper.Managers.Sync
         public async Task<bool> Sync()
         {
             bool result = true;
+            var notify = DependencyService.Get<INotificationService>();
             var listRoutesVersions = await _routesApi.GetRoutesVersions();
             AuthRequired = (_routesApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routesApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
             if (!AuthRequired)
@@ -47,6 +48,10 @@ namespace QuestHelper.Managers.Sync
                     var routesLocal = _routeManager.GetRoutesForSync().Select(x => new { x.RouteId, x.Version, x.ObjVerHash });
                     var differentRoutes = listRoutesVersions.Where(r => (!routesLocal.Any(l => (l.RouteId == r.Id && l.ObjVerHash == r.ObjVerHash))));
                     var newClientRoutes = routesLocal.Where(r => !listRoutesVersions.Any(d => d.Id == r.RouteId)).Select(r => r.RouteId).ToList();
+
+                    int countRoutesForSync = differentRoutes.Count() + newClientRoutes.Count();
+                    int currentCountRoutesForSync = 0;
+                    //notify.ShowProgress(countRoutesForSync, currentCountRoutesForSync);
 
                     _log.AddStringEvent($"--------------------------------------------------------");
                     foreach (var logRoute in differentRoutes)
@@ -60,6 +65,8 @@ namespace QuestHelper.Managers.Sync
                         _log.AddStringEvent($"start sync diff route {serverRouteVersion.Id}");
                         result = await syncRouteContext.SyncAsync(serverRouteVersion.ObjVerHash);
                         _log.AddStringEvent($"diff route result, {serverRouteVersion.Id} :" + result);
+                        currentCountRoutesForSync++;
+                        //notify.ShowProgress(countRoutesForSync, currentCountRoutesForSync);
                     }
 
                     foreach (var logRoute in newClientRoutes)
@@ -73,14 +80,18 @@ namespace QuestHelper.Managers.Sync
                         _log.AddStringEvent($"start sync new route {localRouteId}");
                         result = await syncRouteContext.SyncAsync(string.Empty);
                         _log.AddStringEvent($"new route result, {localRouteId} :" + result);
+                        currentCountRoutesForSync++;
+                        //notify.ShowProgress(countRoutesForSync, currentCountRoutesForSync);
                     }
                 }
             }
             else
             {
                 result = false;
-
             }
+
+            //notify.HideProgress();
+
             return result;
         }
     }

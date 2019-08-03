@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "784308315468",
+    "firebase_url": "https://gosh-test-1f39b.firebaseio.com",
+    "project_id": "gosh-test-1f39b",
+    "storage_bucket": "gosh-test-1f39b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784308315468:android:88b66891ddb8f6c1",
+        "android_client_info": {
+          "package_name": "com.sd.gosh"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "784308315468-t4u6of34ddeue7eevr5o8mgdakm4kpbl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0Mq0ylaRUx3YD_EYWO7XaRZatKcuXgs8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "784308315468-t4u6of34ddeue7eevr5o8mgdakm4kpbl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

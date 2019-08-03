@@ -25,6 +25,7 @@ namespace QuestHelper.Model
                 new MainPageMenuItem { Id = 6, Title = string.Empty, TargetType = typeof(LoginPage)},
                 new MainPageMenuItem { Id = 7, Title = "Обработка выбора", TargetType = typeof(ProcessShareIntentPage), IconName="earth.png"},
                 new MainPageMenuItem { Id = 8, Title = "Описание", TargetType = typeof(SplashWizardPage), IconName = "place_unknown.png", ShowInMenu = true},
+                new MainPageMenuItem { Id = 9, Title = "Обновление доступных маршрутов", TargetType = typeof(ReceivePushPage), IconName = "icon.png", ShowInMenu = false},
 
                 new MainPageMenuItem { Id = 999, Title = "Main page", TargetType = typeof(MainPage)}//старт view с навигацией по страницам
                 });
@@ -62,6 +63,10 @@ namespace QuestHelper.Model
         public MainPageMenuItem GetProcessWizardPage()
         {
             return Pages.Single(x => x.TargetType == typeof(SplashWizardPage));
+        }
+        public MainPageMenuItem GetReceivePushPage()
+        {
+            return Pages.Single(x => x.TargetType == typeof(ReceivePushPage));
         }
 
         public ObservableCollection<MainPageMenuItem> GetPagesForMenu()

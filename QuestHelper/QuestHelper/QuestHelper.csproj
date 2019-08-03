@@ -16,7 +16,6 @@
     <PackageReference Include="Microsoft.AppCenter" Version="2.1.1" />
     <PackageReference Include="Microsoft.AppCenter.Analytics" Version="2.1.1" />
     <PackageReference Include="Microsoft.AppCenter.Crashes" Version="2.1.1" />
-    <PackageReference Include="Microsoft.AppCenter.Push" Version="2.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Plugin.Permissions" Version="3.0.0.12" />
     <PackageReference Include="Realm.Database" Version="3.3.0" />
@@ -51,6 +50,9 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>SplashWizardResource.resx</DependentUpon>
+    </Compile>
+    <Compile Update="View\ReceivePushPage.xaml.cs">
+      <DependentUpon>ReceivePushPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="View\AlbumsPage.xaml.cs">
       <DependentUpon>AlbumsPage.xaml</DependentUpon>

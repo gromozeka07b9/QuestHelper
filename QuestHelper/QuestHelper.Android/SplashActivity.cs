@@ -16,7 +16,7 @@ using Android.Content;
 using Android.Support.V7.App;
 using AlertDialog = Android.App.AlertDialog;
 using QuestHelper.Model.Messages;
-using Microsoft.AppCenter.Push;
+using Android.Gms.Common;
 
 namespace QuestHelper.Droid
 {
@@ -30,10 +30,22 @@ namespace QuestHelper.Droid
         {
             base.OnCreate(bundle);
             UserDialogs.Init(this);
+            if (Intent.Extras != null)
+            {
+                if (Intent.Extras.KeySet().Count > 0)
+                {
+                    //ToDo: несмотря на передачу extra в FirebaseNotificationService они почему-то не передаются
+                    //Актуально когда гош открываешь из сообщения в шторке
+                    string messageBody = Intent.Extras.GetString("messageBodyText");
+                    Xamarin.Forms.MessagingCenter.Send<ReceivePushMessage>(new ReceivePushMessage() { MessageBody = messageBody, MessageTitle = string.Empty }, string.Empty);
+                }
+            }
+
             if (Intent != null)
             {
                 processShareIntent(Intent);
             }
+
         }
 
         private void processShareIntent(Intent shareIntent)
@@ -57,12 +69,6 @@ namespace QuestHelper.Droid
             base.OnResume();
             Task startupWork = new Task(()=> { SimulateStartup(); });
             startupWork.Start();
-        }
-
-        protected override void OnNewIntent(Android.Content.Intent intent)
-        {
-            base.OnNewIntent(intent);
-            Push.CheckLaunchedFromNotification(this, intent);
         }
 
         async void SimulateStartup()

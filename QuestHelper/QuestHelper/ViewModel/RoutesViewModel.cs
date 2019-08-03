@@ -47,18 +47,17 @@ namespace QuestHelper.ViewModel
             //ShowAlbumsCommand = new Command(showAlbumsCommandAsync);
         }
 
-        /*private async void showAlbumsCommandAsync()
-        {
-            await Navigation.PushAsync(new AlbomsPage());
-        }*/
-
         public void startDialog()
         {
-            MessagingCenter.Subscribe<SyncProgressMessage>(this, string.Empty, (sender) =>
+            /*MessagingCenter.Subscribe<SyncProgressMessage>(this, string.Empty, (sender) =>
                 {
                     SyncProgressIsVisible = sender.SyncInProgress;
                     SyncProgressDetailText = sender.SyncDetailText;
-                });
+                    if(SyncProgressIsVisible)
+                        UserDialogs.Instance.Loading("Идет синхронизация данных...", () => { }, "Скрыть", true, MaskType.None);
+                    else
+                        UserDialogs.Instance.HideLoading();
+                });*/
         }
         internal void closeDialog()
         {

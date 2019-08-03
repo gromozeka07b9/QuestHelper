@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Acr.UserDialogs;
 using Microsoft.AppCenter.Analytics;
 using Newtonsoft.Json;
 using QuestHelper.Model.Messages;
+using System;
+using System.Collections.Generic;
 using Xamarin.Auth;
 
 namespace QuestHelper.OAuth
@@ -11,7 +12,7 @@ namespace QuestHelper.OAuth
     {
         public bool Login()
         {
-            var auth = new OAuth2Authenticator
+            var auth = new OAuth2AuthenticatorEx
             (
                 clientId: "649860982729-59s7rkt0vrn4d5pf4vt3tmu8tpc9enn4.apps.googleusercontent.com",
                 scope: "profile email",
@@ -34,23 +35,26 @@ namespace QuestHelper.OAuth
 
         private void Auth_Error(object sender, AuthenticatorErrorEventArgs e)
         {
-            Analytics.TrackEvent("Login OAuth error", new Dictionary<string, string> { { "ExceptionMessage", e.Exception.Message } });
+            Analytics.TrackEvent("Login OAuth error", new Dictionary<string, string> { { "ExceptionMessage", e.Message } });
             Xamarin.Forms.MessagingCenter.Send<OAuthResultMessage>(new OAuthResultMessage() { IsAuthenticated = false }, string.Empty);
         }
 
         private async void Auth_CompletedAsync(object sender, AuthenticatorCompletedEventArgs e)
         {
-            if (e.IsAuthenticated)
+            using (UserDialogs.Instance.Loading("Авторизация...", () => { }, "", true, MaskType.Gradient))
             {
-                AccountStore.Create().Save(e.Account, "com.sd.gosh");
-                var request = new OAuth2Request("GET", new Uri("https://www.googleapis.com/oauth2/v2/userinfo"), null, e.Account);
-                var response = await request.GetResponseAsync();
-                if (response != null)
+                if (e.IsAuthenticated)
                 {
-                    string userJson = response.GetResponseText();
-                    var user = JsonConvert.DeserializeObject<GoogleUser>(userJson);
-                    Xamarin.Forms.MessagingCenter.Send<UpdateAppCenterUserIdMessage>(new UpdateAppCenterUserIdMessage() { UserId = user.Name }, string.Empty);
-                    Xamarin.Forms.MessagingCenter.Send<OAuthResultMessage>(new OAuthResultMessage() { IsAuthenticated = e.IsAuthenticated, Username = user.Name, AuthenticatorUserId = user.Id, Email = user.Email, ImgUrl = user.Picture, Locale = user.Locale, AuthToken = "111"}, string.Empty);
+                    Xamarin.Forms.MessagingCenter.Send<SyncProgressMessage>(new SyncProgressMessage() { SyncInProgress = true }, string.Empty);
+                    AccountStore.Create().Save(e.Account, "com.sd.gosh");
+                    var request = new OAuth2Request("GET", new Uri("https://www.googleapis.com/oauth2/v2/userinfo"), null, e.Account);
+                    var response = await request.GetResponseAsync();
+                    if (response != null)
+                    {
+                        string userJson = response.GetResponseText();
+                        var user = JsonConvert.DeserializeObject<GoogleUser>(userJson);
+                        Xamarin.Forms.MessagingCenter.Send<OAuthResultMessage>(new OAuthResultMessage() { IsAuthenticated = e.IsAuthenticated, Username = user.Name, AuthenticatorUserId = user.Id, Email = user.Email, ImgUrl = user.Picture, Locale = user.Locale, AuthToken = "111" }, string.Empty);
+                    }
                 }
             }
         }
