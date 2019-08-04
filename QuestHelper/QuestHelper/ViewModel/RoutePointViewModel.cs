@@ -161,8 +161,7 @@ namespace QuestHelper.ViewModel
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
-                    throw;
+                    HandleError.Process("RoutePoint", "RecordAudio", e, false);
                 }
                 finally
                 {
@@ -192,7 +191,16 @@ namespace QuestHelper.ViewModel
                 PermissionManager permissions = new PermissionManager();
                 if (await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Photos, "Разрешение необходимо для выбора фото"))
                 {
-                    photoPicked = await CrossMedia.Current.PickPhotoAsync();
+                    try
+                    {
+                        photoPicked = await CrossMedia.Current.PickPhotoAsync();
+                    }
+                    catch(Exception e)
+                    {
+                        photoPicked = null;
+                        HandleError.Process("RoutePoint", "AddPhoto", e, false);
+                    }
+                    
                 }
 
                 if (photoPicked != null)
@@ -299,15 +307,22 @@ namespace QuestHelper.ViewModel
                 PermissionManager permissions = new PermissionManager();
                 if (await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Photos, "Разрешение необходимо для съемки фото"))
                 {
-                    file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+                    try
                     {
-                        PhotoSize = PhotoSize.Large,
-                        Location = new Location() { Latitude = _vpoint.Latitude, Longitude = _vpoint.Longitude, Timestamp = DateTime.Now },
-                        Directory = string.Empty,
-                        Name = photoName,
-                        SaveToAlbum = true,
-                        CompressionQuality = 30
-                    });
+                        file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+                        {
+                            PhotoSize = PhotoSize.Large,
+                            Location = new Location() { Latitude = _vpoint.Latitude, Longitude = _vpoint.Longitude, Timestamp = DateTime.Now },
+                            Directory = string.Empty,
+                            Name = photoName,
+                            SaveToAlbum = true,
+                            CompressionQuality = 30
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        HandleError.Process("RoutePoint", "TakePhoto", e, false);
+                    }
                 }
 
                 long fileSize = 0;
