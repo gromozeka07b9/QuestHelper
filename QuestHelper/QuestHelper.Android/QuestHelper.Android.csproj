@@ -108,6 +108,7 @@
     <Compile Include="CustomMapRenderer.cs" />
     <Compile Include="FirebaseNotificationService.cs" />
     <Compile Include="GoogleAuthInterceptor.cs" />
+    <Compile Include="CommonShareService.cs" />
     <Compile Include="InstagramShareService.cs" />
     <Compile Include="PushReceiverSetup.cs" />
     <Compile Include="NotificationService.cs" />

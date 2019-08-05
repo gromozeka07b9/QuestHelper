@@ -104,6 +104,20 @@ namespace QuestHelper.Model
                 load(routePointId);
         }
 
+        public List<string> MediaObjectPaths
+        {
+            get
+            {
+
+                List<string> paths = new List<string>();
+                foreach (var mediaObject in _mediaObjects)
+                {
+                    paths.Add(ImagePathManager.GetImagePath(mediaObject.RoutePointMediaObjectId, MediaObjectTypeEnum.Image));
+                }
+
+                return paths;
+            }
+        }
         public List<LocalDB.Model.RoutePointMediaObject> MediaObjects
         {
             get

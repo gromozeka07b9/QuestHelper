@@ -37,6 +37,7 @@ namespace QuestHelper.ViewModel
         public ICommand CopyCoordinatesCommand { get; private set; }
         public ICommand AddPhotoCommand { get; private set; }
         public ICommand AddAudioCommand { get; private set; }
+        public ICommand ShareCommand { get; private set; }
 
         private string defaultImageName = "emptyimg.png";
         private static Random _rnd = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
@@ -87,6 +88,7 @@ namespace QuestHelper.ViewModel
             DeletePhotoCommand = new Command(deletePhotoAsync);
             AddPhotoCommand = new Command(addPhotoAsync);
             AddAudioCommand = new Command(addAudioAsync);
+            ShareCommand = new Command(shareCommand);
             EditDescriptionCommand = new Command(editDescriptionCommand);
             CopyCoordinatesCommand = new Command(copyCoordinatesCommand);
             _vpoint = new ViewRoutePoint(routeId, routePointId);
@@ -100,6 +102,12 @@ namespace QuestHelper.ViewModel
 
             Coordinates = Latitude + "," + Longitude;
             Analytics.TrackEvent("Dialog point opened");
+        }
+
+        private void shareCommand(object obj)
+        {
+            ICommonShareService commonShareService = DependencyService.Get<ICommonShareService>();
+            commonShareService.Share(_vpoint);
         }
 
         private async void SetNewCoordinates(double latitude, double longitude)
