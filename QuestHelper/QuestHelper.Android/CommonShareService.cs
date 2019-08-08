@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -11,6 +12,7 @@ using Android.Support.V4.Content;
 using Android.Views;
 using Android.Widget;
 using Java.IO;
+using Microsoft.AppCenter.Analytics;
 using QuestHelper.Droid;
 using QuestHelper.Model;
 using Uri = Android.Net.Uri;
@@ -24,40 +26,47 @@ namespace QuestHelper.Droid
         {
             if ((vpoint != null) && (!string.IsNullOrEmpty(vpoint.Id)))
             {
-                Intent share = new Intent(Intent.ActionSendMultiple);
-                //Intent share = new Intent(Intent.ActionSend);
-                share.SetFlags(ActivityFlags.NewTask);
-                //share.SetAction();
-                //share.SetType("text/plain");
-                share.SetType("image/*");
-                share.PutExtra(Intent.ExtraText, vpoint.Description);
-                share.PutExtra(Intent.ExtraSubject, vpoint.Description);
-                share.PutExtra(Intent.ExtraSplitName, vpoint.Description);
-                share.PutExtra(Intent.ExtraPackageName, vpoint.Description);
-                share.PutExtra(Intent.ExtraHtmlText, vpoint.Description);
-                //share.PutExtra(Intent.ExtraAllowMultiple, true);
-
-                List<Uri> uris = new List<Uri>();
-                foreach (var path in vpoint.MediaObjectPaths)
+                string pointCoordinates = $"{vpoint.Latitude.ToString(CultureInfo.InvariantCulture)},{vpoint.Longitude.ToString(CultureInfo.InvariantCulture)}";
+                Intent share = new Intent();
+                share.SetType("text/plain");
+                if (vpoint.MediaObjectPaths.Count > 1)
                 {
-                    Java.IO.File file = new Java.IO.File(path);
-                    var fileUri = FileProvider.GetUriForFile(Android.App.Application.Context, Android.App.Application.Context.PackageName + ".fileprovider", file);
-                    uris.Add(fileUri);
-                    //share.PutExtra(Intent.ExtraStream, fileUri);
+                    share = new Intent(Intent.ActionSendMultiple);
+                    share.SetType("image/*");
+                    List<Uri> uris = new List<Uri>();
+                    foreach (var path in vpoint.MediaObjectPaths)
+                    {
+                        Java.IO.File file = new Java.IO.File(path);
+                        var fileUri = FileProvider.GetUriForFile(Android.App.Application.Context, Android.App.Application.Context.PackageName + ".fileprovider", file);
+                        uris.Add(fileUri);
+                    }
+                    share.PutParcelableArrayListExtra(Intent.ExtraStream, uris.ToArray());
                 }
+                else if (vpoint.MediaObjectPaths.Count == 1)
+                {
+                    share = new Intent(Intent.ActionSend);
+                    share.SetType("image/*");
+                    Java.IO.File file = new Java.IO.File(vpoint.MediaObjectPaths[0]);
+                    var fileUri = FileProvider.GetUriForFile(Android.App.Application.Context, Android.App.Application.Context.PackageName + ".fileprovider", file);
+                    share.PutExtra(Intent.ExtraStream, fileUri);
+                } else if (vpoint.MediaObjectPaths.Count == 0)
+                {
 
-                share.PutParcelableArrayListExtra(Intent.ExtraStream, uris.ToArray());
+                }
+                share.SetFlags(ActivityFlags.NewTask);
+                share.PutExtra(Intent.ExtraText, $"{pointCoordinates}\n{vpoint.Description}");
+                share.PutExtra(Intent.ExtraSubject, $"{pointCoordinates}\n{vpoint.NameText}");
+                share.PutExtra(Intent.ExtraAllowMultiple, true);
 
-                /*share.SetType("image/*");
-                File file = new File(filePath);
-                Uri uri = Uri.FromFile(file);*/
-                /*IList<IParcelable> uris = new List<IParcelable>();
-                uris.Add(uri);
-                uris.Add(uri);
-                share.PutParcelableArrayListExtra(Intent.ExtraStream, uris);*/
-                //share.PutExtra(Intent.ExtraStream, uri);
-                //Android.App.Application.Context.StartActivity(Intent.CreateChooser(share, "Share..."));
-                Android.App.Application.Context.StartActivity(share);
+                try
+                {
+                    Analytics.TrackEvent("Common share service");
+                    Android.App.Application.Context.StartActivity(share);
+                }
+                catch (Exception e)
+                {
+                    HandleError.Process("CommonShareService", "Share", e, false);
+                }
             }
         }
     }
