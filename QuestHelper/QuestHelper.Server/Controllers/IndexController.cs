@@ -9,8 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace QuestHelper.Server.Controllers
 {
-    [Route("/")]
-    public class IndexController : Controller
+    /*[Route("/")]*/
+    /*public class IndexController : Controller
     {
         [HttpGet]
         public string Get()
@@ -18,5 +18,5 @@ namespace QuestHelper.Server.Controllers
             string version = typeof(Startup).Assembly.GetName().Version.ToString();
             return $"Welcome to GoSh! - I go, I share, I live. Version:{version}";
         }
-    }
+    }*/
 }

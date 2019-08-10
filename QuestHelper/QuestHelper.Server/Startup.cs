@@ -55,6 +55,7 @@ namespace QuestHelper.Server
 
             app.UseAuthentication();
             app.UseMvc();
+            app.UseStaticFiles();
         }
     }
 }
