@@ -54,7 +54,12 @@ namespace QuestHelper.Server
             }
 
             app.UseAuthentication();
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Gallery}/{action=Gallery}/{id?}");
+            });
             app.UseStaticFiles();
         }
     }
