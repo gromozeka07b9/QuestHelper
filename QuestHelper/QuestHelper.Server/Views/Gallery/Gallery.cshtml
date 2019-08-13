@@ -7,8 +7,9 @@
     <title>GoSh! - I go, I share, I live!</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="GoSh! meta description" />
-    <meta property="og:image" content="http://igosh.pro/images/goshphoto.jpg" />
+    <meta name="description" content="GoSh! I go, I share, I live!" />
+    <meta property="og:image" content="@(@Model.Count()>0?"../shared/img_@(@Model[0].ImgId)_preview.jpg":"http://igosh.pro/images/icon.png")" />
+
     <link rel="shortcut icon" href="http://igosh.pro/images/icon.png">
 
     <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300i,400,700" rel="stylesheet">
@@ -47,7 +48,12 @@
                     <div class="col-md-7">
                         <div class="row mb-5">
                             <div class="col-12 ">
-                                <h2 class="site-section-heading text-center">@ViewData["RouteName"]</h2>
+                                <h2 class="site-section-heading text-center">
+                                    <a href="http://goshpro.tilda.ws/" title="GoSh!"><img src="http://igosh.pro/images/icon.png" alt="GoSh!" class="img-fluid"></a>
+                                    <br>
+                                    <br>
+                                    <p>@ViewData["RouteName"]</p>
+                                </h2>
                             </div>
                         </div>
                     </div>
@@ -56,9 +62,8 @@
                 <div class="row" id="lightgallery">
                     @foreach (GalleryItemModel item in @Model)
                     {
-                        <p>@item.PointName</p>
-                        <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 item" data-aos="fade" data-src="@item.ImgUrl" data-sub-html="<h4>Fading Light</h4><p>@item.PointDescription</p>">
-                            <a href="#"><img src="../images/nature_small_1.jpg" alt="IMage" class="img-fluid"></a>
+                        <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 item" data-aos="fade" data-src="../shared/img_@(item.ImgId).jpg" data-sub-html="<h3>@item.PointName</h3><h4>@item.PointDescription</h4>">
+                            <a href="#"><img src="../shared/img_@(item.ImgId)_preview.jpg" alt="GoSh!" class="img-fluid"></a>
                         </div>
                     }
                 </div>

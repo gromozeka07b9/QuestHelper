@@ -9,12 +9,15 @@ namespace QuestHelper.Server.Managers
     public class MediaManager
     {
         private string _pathToMediaCatalog;
+        private string _pathToMediaCatalogShared;
         public MediaManager()
         {
 #if DEBUG
             _pathToMediaCatalog = "C:\\gosh\\pics\\pictures";
+            _pathToMediaCatalogShared = "C:\\gosh\\pics\\pictures\\shared";
 #else
             _pathToMediaCatalog = "/media/goshmedia";
+            _pathToMediaCatalogShared = "/var/www/www-root/data/wwwroot/wwwroot/shared";            
 #endif
         }
 
@@ -25,9 +28,20 @@ namespace QuestHelper.Server.Managers
                 return _pathToMediaCatalog; 
             }
         }
-        internal bool FileExist(string filename)
+        public string PathToSharedMediaCatalog
+        {
+            get
+            {
+                return _pathToMediaCatalogShared;
+            }
+        }
+        internal bool MediaFileExist(string filename)
         {
             return File.Exists(Path.Combine(_pathToMediaCatalog, filename));
+        }
+        internal bool SharedMediaFileExist(string filename)
+        {
+            return File.Exists(Path.Combine(_pathToMediaCatalogShared, filename));
         }
 
         internal void DownloadToStream(MemoryStream memoryStream, string filename)
@@ -36,6 +50,18 @@ namespace QuestHelper.Server.Managers
             {
                 memoryStream.SetLength(fileStream.Length);
                 fileStream.Read(memoryStream.GetBuffer(), 0, (int) fileStream.Length);
+            }
+        }
+
+        internal void CopyMediaFileToSharedCatalog(string filename)
+        {
+            try
+            {
+                System.IO.File.Copy(Path.Combine(_pathToMediaCatalog, filename), Path.Combine(_pathToMediaCatalogShared, filename), true);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
     }

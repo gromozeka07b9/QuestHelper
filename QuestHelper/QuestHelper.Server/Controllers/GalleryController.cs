@@ -30,11 +30,27 @@ namespace QuestHelper.Server.Controllers
                 var query = from media in db.RoutePointMediaObject
                     join point in db.RoutePoint on media.RoutePointId equals point.RoutePointId
                     where point.RouteId == resultRoute.RouteId
-                    select new GalleryItemModel(){ PointName = point.Name, PointDescription = point.Description, ImgUrl = media.RoutePointMediaObjectId};
+                    orderby point.CreateDate
+                    select new GalleryItemModel() { PointName = point.Name, PointDescription = point.Description, ImgId = media.RoutePointMediaObjectId };
+                
                 galleryItems = query.ToList();
             }
             ViewData["RouteName"] = resultRoute.Name;
 
+            MediaManager mediaManager = new MediaManager();
+            foreach (var mediaItem in galleryItems)
+            {
+                string imgFileName = $"img_{mediaItem.ImgId.ToLowerInvariant()}.jpg";
+                string imgPreviewFileName = $"img_{mediaItem.ImgId.ToLowerInvariant()}_preview.jpg";
+                if (!mediaManager.SharedMediaFileExist(imgFileName))
+                {
+                    mediaManager.CopyMediaFileToSharedCatalog(imgFileName);
+                }
+                if (!mediaManager.SharedMediaFileExist(imgPreviewFileName))
+                {
+                    mediaManager.CopyMediaFileToSharedCatalog(imgPreviewFileName);
+                }
+            }
             return View(galleryItems);
         }
     }
@@ -43,7 +59,7 @@ namespace QuestHelper.Server.Controllers
     {
         public string PointName = string.Empty;
         public string PointDescription = string.Empty;
-        public string ImgUrl = string.Empty;
+        public string ImgId = string.Empty;
     }
 
 }

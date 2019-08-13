@@ -179,7 +179,7 @@ namespace QuestHelper.Server.Controllers.Medias
             DateTime startDate = DateTime.Now;
 
             string userId = IdentityManager.GetUserId(HttpContext);
-            if (_mediaManager.FileExist(Path.Combine(_pathToMediaCatalog, fileName)))
+            if (_mediaManager.MediaFileExist(Path.Combine(_pathToMediaCatalog, fileName)))
                 Response.StatusCode = 200;
             else Response.StatusCode = 404;
 

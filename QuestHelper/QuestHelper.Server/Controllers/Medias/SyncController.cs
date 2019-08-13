@@ -91,7 +91,7 @@ namespace QuestHelper.Server.Controllers.Medias
                                 image.OnServer = mediaObject.ImagePreviewLoadedToServer;
                                 if (!mediaObject.ImagePreviewLoadedToServer)
                                 {
-                                    image.OnServer = mediaManager.FileExist(image.Name);
+                                    image.OnServer = mediaManager.MediaFileExist(image.Name);
                                 }
                             }
                             else
@@ -99,7 +99,7 @@ namespace QuestHelper.Server.Controllers.Medias
                                 image.OnServer = mediaObject.ImageLoadedToServer;
                                 if (!mediaObject.ImageLoadedToServer)
                                 {
-                                    image.OnServer = mediaManager.FileExist(image.Name);
+                                    image.OnServer = mediaManager.MediaFileExist(image.Name);
                                 }
                             }
                         }
