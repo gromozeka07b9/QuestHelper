@@ -4,11 +4,11 @@
 <!DOCTYPE html>
 <html lang="en" prefix="og: http://igosh.pro/index.html">
 <head>
-    <title>GoSh! - I go, I share, I live!</title>
+    <title>@(@ViewData["RouteName"])</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="GoSh! I go, I share, I live!" />
-    <meta property="og:image" content="@(@Model.Count()>0?"../shared/img_@(@Model[0].ImgId)_preview.jpg":"http://igosh.pro/images/icon.png")" />
+    <meta name="description" content="GoSh! - I go, I share, I live!" />
+    <meta property="og:image" content="@(@ViewData["RouteDefaultImgUrl"])" />
 
     <link rel="shortcut icon" href="http://igosh.pro/images/icon.png">
 

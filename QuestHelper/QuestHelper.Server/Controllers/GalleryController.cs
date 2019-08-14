@@ -19,7 +19,6 @@ namespace QuestHelper.Server.Controllers
         private DbContextOptions<ServerDbContext> _dbOptions = ServerDbContext.GetOptionsContextDbServer();
         
         [HttpGet("gallery/{SharedRouteRef}")]
-        [HttpGet("gallery/?sharedRouteId={SharedRouteRef}")]
         public IActionResult Gallery(string SharedRouteRef)
         {
             Route resultRoute = new Route();
@@ -55,6 +54,7 @@ namespace QuestHelper.Server.Controllers
                 }
             }
             ViewData["RouteName"] = resultRoute.Name;
+            ViewData["RouteDefaultImgUrl"] = galleryItems.Count > 0 ? $"../shared/img_{galleryItems[0].ImgId}_preview.jpg" : "http://igosh.pro/images/icon.png";
 
             MediaManager mediaManager = new MediaManager();
             foreach (var mediaItem in galleryItems)

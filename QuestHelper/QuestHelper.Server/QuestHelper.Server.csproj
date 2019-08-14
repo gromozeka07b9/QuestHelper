@@ -5,7 +5,7 @@
     <UserSecretsId>b44575da-72f6-41a2-95e3-70f8fa006caf</UserSecretsId>
     <ApplicationInsightsResourceId>/subscriptions/73073e7d-c51d-42a9-bec8-434c3d28c1de/resourcegroups/TranslateHelper/providers/microsoft.insights/components/ServerWeb20171015090425</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/73073e7d-c51d-42a9-bec8-434c3d28c1de/resourcegroups/TranslateHelper/providers/microsoft.insights/components/ServerWeb20171015090425</ApplicationInsightsAnnotationResourceId>
-    <Version>1.1.27</Version>
+    <Version>1.1.28</Version>
     <Configurations>Debug;Release</Configurations>
     <NeutralLanguage>en</NeutralLanguage>
     <AssemblyVersion>1.1.27.0</AssemblyVersion>
@@ -20,10 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="$(AspNetCoreAllRuntimeFrameworkVersion)"><IsImplicitlyDefined>true</IsImplicitlyDefined>
-<PrivateAssets>All</PrivateAssets>
-<Publish>true</Publish>
-</PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
   </ItemGroup>
