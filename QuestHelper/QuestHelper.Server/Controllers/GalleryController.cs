@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -12,28 +13,46 @@ using QuestHelper.Server.Models;
 
 namespace QuestHelper.Server.Controllers
 {
+    
     public class GalleryController : Controller
     {
         private DbContextOptions<ServerDbContext> _dbOptions = ServerDbContext.GetOptionsContextDbServer();
-
-        // GET: /<controller>/
-        public IActionResult Gallery(string sharedRouteId)
+        
+        [HttpGet("gallery/{SharedRouteRef}")]
+        [HttpGet("gallery/?sharedRouteId={SharedRouteRef}")]
+        public IActionResult Gallery(string SharedRouteRef)
         {
             Route resultRoute = new Route();
-            string routeId = sharedRouteId;//будет другой объект
+            string routeId = string.Empty;//будет другой объект
 
             List<GalleryItemModel> galleryItems = new List<GalleryItemModel>();
+
             using (var db = new ServerDbContext(_dbOptions))
             {
-                RouteManager routeManager = new RouteManager(db);
-                resultRoute = routeManager.Get("ed3d1c79-3d21-4f08-8680-6815586003bd", routeId);
-                var query = from media in db.RoutePointMediaObject
-                    join point in db.RoutePoint on media.RoutePointId equals point.RoutePointId
-                    where point.RouteId == resultRoute.RouteId
-                    orderby point.CreateDate
-                    select new GalleryItemModel() { PointName = point.Name, PointDescription = point.Description, ImgId = media.RoutePointMediaObjectId };
-                
-                galleryItems = query.ToList();
+                var routeIds = from share in db.RouteShare
+                          where share.ReferenceHash == SharedRouteRef
+                          select share.RouteId;
+                if(routeIds.Any())
+                {
+                    routeId = routeIds.Single();
+                    var resultRoutes = from route in db.Route
+                                       where route.RouteId == routeId && !route.IsDeleted
+                                       select route;
+                    if(resultRoutes.Any())
+                    {
+                        resultRoute = resultRoutes.Single();
+                    }
+                }
+                if(!string.IsNullOrEmpty(resultRoute.RouteId))
+                {
+                    var query = from media in db.RoutePointMediaObject
+                                join point in db.RoutePoint on media.RoutePointId equals point.RoutePointId
+                                where point.RouteId == resultRoute.RouteId
+                                orderby point.CreateDate
+                                select new GalleryItemModel() { PointName = point.Name, PointDescription = point.Description, ImgId = media.RoutePointMediaObjectId };
+
+                    galleryItems = query.ToList();
+                }
             }
             ViewData["RouteName"] = resultRoute.Name;
 
@@ -52,6 +71,57 @@ namespace QuestHelper.Server.Controllers
                 }
             }
             return View(galleryItems);
+        }
+
+        [Authorize]
+        [ServiceFilter(typeof(RequestFilter))]
+        [HttpPost("gallery/route/{RouteId}/share")]
+        public void MakeRouteShared(string RouteId)
+        {
+            string userId = IdentityManager.GetUserId(HttpContext);
+            using (var db = new ServerDbContext(_dbOptions))
+            {
+                if(db.Route.Where(r=>r.CreatorId == userId && r.RouteId == RouteId).Any())
+                {
+                    if(!db.RouteShare.Where(s=>s.RouteId == RouteId && s.UserId == userId).Any())
+                    {
+                        RouteShare shareObject = new RouteShare();
+                        shareObject.RouteShareId = Guid.NewGuid().ToString();
+                        shareObject.UserId = userId;
+                        shareObject.CreateDate = DateTime.Now;
+                        shareObject.RouteId = RouteId;
+                        shareObject.ReferenceHash = shareObject.RouteShareId.TrimStart().Substring(0, 8);
+                        db.RouteShare.Add(shareObject);
+                        db.SaveChanges();
+                    }
+                }
+                else
+                {
+                    Response.StatusCode = 401;
+                }
+            }
+            Response.StatusCode = 200;
+        }
+
+        [Authorize]
+        [ServiceFilter(typeof(RequestFilter))]
+        [HttpGet("gallery/route/{RouteId}")]
+        public IActionResult GetSharedRouteReferenceHash(string RouteId)
+        {
+            string sharedRouteReferenceHash = string.Empty;
+            string userId = IdentityManager.GetUserId(HttpContext);
+            using (var db = new ServerDbContext(_dbOptions))
+            {
+                if (db.Route.Where(r => r.CreatorId == userId && r.RouteId == RouteId).Any())
+                {
+                    sharedRouteReferenceHash = db.RouteShare.Where(s => s.RouteId == RouteId && s.UserId == userId).Select(s => s.ReferenceHash).SingleOrDefault();
+                }
+                else
+                {
+                    Response.StatusCode = 401;
+                }
+            }
+            return new ObjectResult(sharedRouteReferenceHash);
         }
     }
 

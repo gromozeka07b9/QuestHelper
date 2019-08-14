@@ -10,6 +10,7 @@ namespace QuestHelper.Server
         public DbSet<RoutePoint> RoutePoint { get; set; }
         public DbSet<RouteAccess> RouteAccess { get; set; }
         public DbSet<RoutePointMediaObject> RoutePointMediaObject { get; set; }
+        public DbSet<RouteShare> RouteShare { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<OauthUser> OauthUser { get; set; }
 
