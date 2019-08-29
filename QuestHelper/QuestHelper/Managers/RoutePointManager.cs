@@ -36,7 +36,7 @@ namespace QuestHelper.Managers
             try
             {
                 var collectionRealm = RealmInstance.All<RoutePoint>().Where(point => point.RouteId == routeId && !point.IsDeleted).OrderBy(point=>point.CreateDate);
-                foreach(var item in collectionRealm)
+                foreach (var item in collectionRealm)
                 {
                     collection.Add(new ViewRoutePoint(item.RouteId, item.RoutePointId));
                 }

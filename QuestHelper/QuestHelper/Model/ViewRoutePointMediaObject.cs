@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Android.Provider;
 using Xamarin.Forms;
 
 namespace QuestHelper.Model
@@ -205,6 +206,25 @@ namespace QuestHelper.Model
                 _routePointId = string.Empty;
                 _filename = string.Empty;
                 _filenamePreview = string.Empty;
+            }
+            return result;
+        }
+
+        private void DeleteMediaFile()
+        {
+            MediaFileManager fileManager = new MediaFileManager();
+            fileManager.Delete(_id, _mediaType);
+        }
+
+        internal bool SetDeleteMarkWithDeleteImage()
+        {
+            bool result = false;
+            _isDeleted = true;
+            _version++;
+            result = Save();
+            if (result)
+            {
+                DeleteMediaFile();
             }
             return result;
         }

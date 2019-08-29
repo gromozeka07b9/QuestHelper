@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:QuestHelper.View"
              x:Class="QuestHelper.View.RoutePointPage" Style="{StaticResource ContentPage}" Appearing="ContentPage_AppearingAsync" Disappearing="RoutePointPage_OnDisappearing">
     <ContentPage.ToolbarItems>
-        <!--ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding DeleteCommand}" Icon="delete.png"></-->
+        <ToolbarItem NavigationPage.HasNavigationBar="True" Command="{Binding DeletePointCommand}" Icon="delete.png"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ScrollView Orientation="Vertical">

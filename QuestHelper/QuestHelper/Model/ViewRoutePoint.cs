@@ -339,6 +339,25 @@ namespace QuestHelper.Model
             }
         }
 
+        public bool SetDeleteMarkPointWithDeleteMedias()
+        {
+            bool result = false;
+            _isDeleted = true;
+            _version++;
+            result = Save();
+            if (result)
+            {
+                foreach (var mediaObject in MediaObjects)
+                {
+                    ViewRoutePointMediaObject media = new ViewRoutePointMediaObject();
+                    media.Load(mediaObject.RoutePointMediaObjectId);
+                    result = media.SetDeleteMarkWithDeleteImage();
+                }
+                refreshMediaObjects();
+            }
+            return result;
+        }
+
         public bool Save()
         {
             _id = routePointManager.Save(this);

@@ -137,7 +137,7 @@ namespace QuestHelper.Managers
         internal ViewRoutePointMediaObject GetFirstMediaObjectByRouteId(string routeId)
         {
             ViewRoutePointMediaObject resultMedia = new ViewRoutePointMediaObject();
-            var point = RealmInstance.All<RoutePoint>().Where(p => p.RouteId == routeId).OrderBy(p=>p.CreateDate).ToList().FirstOrDefault();
+            var point = RealmInstance.All<RoutePoint>().Where(p => p.RouteId == routeId&&!p.IsDeleted).OrderBy(p=>p.CreateDate).ToList().FirstOrDefault();
             if (point != null)
             {
                 var media = RealmInstance.All<RoutePointMediaObject>().Where(p => p.RoutePointId == point.RoutePointId&&!p.IsDeleted).FirstOrDefault();

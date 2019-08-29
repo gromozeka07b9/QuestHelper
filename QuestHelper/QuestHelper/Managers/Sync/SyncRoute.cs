@@ -88,11 +88,10 @@ namespace QuestHelper.Managers.Sync
                             else
                             {
                                 _log.AddStringEvent($"image deleted, passed mediaid:{media.RoutePointMediaObjectId}");
-                                if (media.MediaType == MediaObjectTypeEnum.Image)
-                                {
-                                    _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, false, true);
-                                    _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, true, true);
-                                }
+                                _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, false, true);
+                                _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, true, true);
+                                MediaFileManager fileManager = new MediaFileManager();
+                                fileManager.Delete(media.RoutePointMediaObjectId, media.MediaType);
                             }
                         }
                     }

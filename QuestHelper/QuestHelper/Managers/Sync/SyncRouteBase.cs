@@ -68,7 +68,8 @@ namespace QuestHelper.Managers.Sync
                         viewPoint.Longitude,
                         viewPoint.Address,
                         viewPoint.Description,
-                        viewPoint.Version
+                        viewPoint.Version,
+                        viewPoint.IsDeleted
                     });
                     jsonStructures.Add(jsonObject.ToString());
                 }

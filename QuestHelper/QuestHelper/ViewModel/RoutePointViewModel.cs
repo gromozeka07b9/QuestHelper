@@ -33,6 +33,7 @@ namespace QuestHelper.ViewModel
         public ICommand ViewPhotoCommand { get; private set; }
         public ICommand PlayMediaCommand { get; private set; }
         public ICommand DeletePhotoCommand { get; private set; }
+        public ICommand DeletePointCommand { get; private set; }
         public ICommand EditDescriptionCommand { get; private set; }
         public ICommand CopyCoordinatesCommand { get; private set; }
         public ICommand AddPhotoCommand { get; private set; }
@@ -78,14 +79,13 @@ namespace QuestHelper.ViewModel
         string _imageFilePath = string.Empty;
         string _imagePreviewFilePath = string.Empty;
 
-        public Func<bool> OnDeletePoint { get; internal set; }
-
         public RoutePointViewModel(string routeId, string routePointId)
         {
             TakePhotoCommand = new Command(takePhotoAsync);
             ViewPhotoCommand = new Command(viewPhotoAsync);
             PlayMediaCommand = new Command(playMediaAsync);
             DeletePhotoCommand = new Command(deletePhotoAsync);
+            DeletePointCommand = new Command(deletePoint);
             AddPhotoCommand = new Command(addPhotoAsync);
             AddAudioCommand = new Command(addAudioAsync);
             ShareCommand = new Command(shareCommand);
@@ -149,6 +149,22 @@ namespace QuestHelper.ViewModel
             {
                 _vpoint.DeleteImage((string)mediaId);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
+            }
+        }
+        private async void deletePoint()
+        {
+            bool delete = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig() { Message = "Вы уверены, что хотите удалить точку?", Title = "Удаление точки маршрута", OkText = "Да", CancelText = "Нет" });
+            if (delete)
+            {
+                if (_vpoint.SetDeleteMarkPointWithDeleteMedias())
+                {
+                    await Navigation.PopAsync();
+                }
+                else
+                {
+                    await UserDialogs.Instance.AlertAsync("Ошибка удаления точки", "Внимание!");
+                    HandleError.Process("RoutePoint", "DeletePoint", new Exception($"PointId:{_vpoint.Id}, Name:{_vpoint.Name}"), false);
+                }
             }
         }
 
@@ -280,14 +296,6 @@ namespace QuestHelper.ViewModel
         private void copyCoordinatesCommand(object obj)
         {
             //throw new NotImplementedException();
-        }
-
-        internal async void DeletePoint()
-        {
-            if(_vpoint.Delete())
-            {
-                await Navigation.PopAsync();
-            }
         }
 
         private async void editDescriptionCommand(object obj)
