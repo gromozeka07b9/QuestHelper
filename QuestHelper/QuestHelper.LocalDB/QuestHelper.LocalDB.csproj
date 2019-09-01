@@ -5,8 +5,8 @@
     <Configurations>Debug;Release;Gorilla</Configurations>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Realm.Database" Version="3.3.0" />
-    <PackageReference Include="Xamarin.Forms" Version="3.4.0.1008975" />
+    <PackageReference Include="Realm.Database" Version="3.4.0" />
+    <PackageReference Include="Xamarin.Forms" Version="4.2.0.709249" />
   </ItemGroup>
 
 </Project>
