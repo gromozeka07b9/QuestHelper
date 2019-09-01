@@ -135,18 +135,6 @@ namespace QuestHelper.ViewModel
 
         public void startDialog()
         {
-            /*MessagingCenter.Subscribe<ShareFromGoogleMapsMessage>(this, string.Empty, (sender) =>
-            {
-                ViewRoutePoint _vpoint = new ViewRoutePoint(_vroute.RouteId, string.Empty);
-                _vpoint.Name = sender.Subject;
-                _vpoint.Description = sender.Description;
-                if (_vpoint.Save())
-                {
-                    UserDialogs.Instance.Alert($"В маршрут '{_vroute.Name}' успешно добавлена новая точка", "Создание новой точки");
-                }
-                UserDialogs.Instance.Alert($"В маршрут '{_vroute.Name}' успешно добавлена новая точка", "Создание новой точки");
-            });*/
-
             if (!string.IsNullOrEmpty(_vroute.Name))
             {
                 refreshRouteData();
