@@ -103,7 +103,14 @@ namespace QuestHelper.ViewModel
             string userId = await tokenService.GetUserIdAsync();
             return userId.Equals(_vroute.CreatorId);
         }
+
         private async void shareRouteCommandAsync(object obj)
+        {
+            var shareRoutePage = new ShareRoutesServicesPage(_vroute.RouteId);
+            await Navigation.PushAsync(shareRoutePage, true);
+        }
+
+        private async void shareRouteCommandAsyncOld(object obj)
         {
             bool answerYesIsNo = await Application.Current.MainPage.DisplayAlert("Внимание", "После публикации маршрут будет доступен всем пользователям в альбоме. Вы уверены?", "Нет", "Да");
             if (!answerYesIsNo) //порядок кнопок - хардкод, и непонятно, почему именно такой

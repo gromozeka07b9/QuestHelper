@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:QuestHelper.Controls;assembly=QuestHelper"
+             x:Class="QuestHelper.View.ShareRoutesServicesPage" Appearing="ShareRoutesServicesPage_OnAppearing">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem NavigationPage.HasNavigationBar="False" Text="Выберите способ"></ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="4*" />
+            </Grid.RowDefinitions>
+            <controls:ShareServiceView Grid.Column="0" Grid.Row="0" TapCommand="{Binding TapControl}" Text="Добавить доступ" ImgSource="person_add.png"  Margin="5,5,0,0"></controls:ShareServiceView>
+            <controls:ShareServiceView Grid.Column="1" Grid.Row="0" Text="Альбом в GoSh!" ImgSource="icon.png"  Margin="0,5,0,0"></controls:ShareServiceView>
+            <controls:ShareServiceView Grid.Column="2" Grid.Row="0" Text="Создать ссылку" ImgSource="link.png"  Margin="0,5,5,0"></controls:ShareServiceView>
+          
+            <controls:ShareServiceView Grid.Column="0" Grid.Row="1" Text="Instagram" ImgSource="instagram.png"  Margin="5,0,0,0"></controls:ShareServiceView>
+            <controls:ShareServiceView Grid.Column="1" Grid.Row="1" Text="Facebook" ImgSource="facebook.png"  Margin="0,0,0,0"></controls:ShareServiceView>
+            <controls:ShareServiceView Grid.Column="2" Grid.Row="1" Text="Telegram" ImgSource="telegram.png"  Margin="0,0,5,0"></controls:ShareServiceView>
+
+            <controls:ShareServiceView Grid.Column="0" Grid.Row="2" Text="Viber" ImgSource="viber.png"  Margin="5,0,0,0"></controls:ShareServiceView>
+            <controls:ShareServiceView Grid.Column="1" Grid.Row="2" Text="VK" ImgSource="vk.png"  Margin="0,0,0,0"></controls:ShareServiceView>
+            <controls:ShareServiceView Grid.Column="2" Grid.Row="2" Text="Почта" ImgSource="mail.png"  Margin="0,0,5,0"></controls:ShareServiceView>
+
+            <controls:ShareServiceView Grid.Column="0" Grid.Row="3" Text="Другие" ImgSource="apps.png"  Margin="5,0,0,0"></controls:ShareServiceView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

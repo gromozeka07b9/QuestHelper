@@ -1,13 +1,6 @@
 ﻿using QuestHelper.LocalDB.Model;
 using QuestHelper.Managers;
-using QuestHelper.SharedModelsWS;
-using Realms;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using Android.Provider;
-using Xamarin.Forms;
 
 namespace QuestHelper.Model
 {
