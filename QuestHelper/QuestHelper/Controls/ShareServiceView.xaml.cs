@@ -14,7 +14,6 @@ namespace QuestHelper.Controls
     {
         public static readonly BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(ShareServiceView));
         public static readonly BindableProperty ImgSourceProperty = BindableProperty.Create(nameof(ImgSource), typeof(string), typeof(ShareServiceView));
-        public static readonly BindableProperty TapCommandProperty = BindableProperty.Create(nameof(TapCommand), typeof(ICommand), typeof(ShareServiceView));
 
         public ShareServiceView()
         {
@@ -30,11 +29,6 @@ namespace QuestHelper.Controls
         {
             get => (string)GetValue(ImgSourceProperty);
             set => SetValue(ImgSourceProperty, value);
-        }
-        public ICommand TapCommand
-        {
-            get => (ICommand)GetValue(TapCommandProperty);
-            set => SetValue(TapCommandProperty, value);
         }
     }
 }

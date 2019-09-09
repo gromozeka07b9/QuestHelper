@@ -4,9 +4,6 @@
       x:Class="QuestHelper.Controls.ShareServiceView"
       x:Name="RootGrid">
     <Frame CornerRadius="5" BackgroundColor="LightGray" BorderColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-        <Frame.GestureRecognizers>
-            <TapGestureRecognizer Command="{Binding TapCommand, Source={x:Reference RootGrid}}"></TapGestureRecognizer>
-        </Frame.GestureRecognizers>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />

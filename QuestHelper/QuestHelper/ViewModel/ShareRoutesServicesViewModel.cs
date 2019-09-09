@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using QuestHelper.View;
 using Xamarin.Forms;
 
 namespace QuestHelper.ViewModel
@@ -17,25 +18,39 @@ namespace QuestHelper.ViewModel
     {
         private const string _apiUrl = "http://igosh.pro/api";
         public event PropertyChangedEventHandler PropertyChanged;
-        public ICommand TapCommand { get; private set; }
+
+        public ICommand TapAddUserCommand { get; private set; }
+        public ICommand TapPublishAlbumCommand { get; private set; }
+        public ICommand TapMakeReferenceCommand { get; private set; }
+        public ICommand TapOtherCommand { get; private set; }
+
         public INavigation Navigation { get; set; }
-        /*private IEnumerable<ViewUserInfo> _usersForShare;
-        private List<ViewUserInfo> _usersFullList;
-        public event PropertyChangedEventHandler PropertyChanged;
-        public INavigation Navigation { get; set; }
-        public ICommand SearchUsersCommand { get; private set; }
-        public ICommand UpdateUsersCommand { get; private set; }
-        private string _routeId = string.Empty;
-        private bool _isRefreshing = false;*/
+        private readonly string _routeId;
         public ShareRoutesServicesViewModel(string routeId)
         {
-            TapCommand = new Command(tapCommand);
-            //UpdateUsersCommand = new Command(updateUsersCommand);
-            //_routeId = routeId;
+            TapAddUserCommand = new Command(tapAddUserCommandAsync);
+            TapPublishAlbumCommand = new Command(tapPublishAlbumCommand);
+            TapMakeReferenceCommand = new Command(tapMakeReferenceCommand);
+            TapOtherCommand = new Command(tapOtherCommand);
+            _routeId = routeId;
         }
 
-        private void tapCommand(object obj)
+        private void tapOtherCommand(object obj)
         {
+        }
+
+        private void tapMakeReferenceCommand(object obj)
+        {
+        }
+
+        private void tapPublishAlbumCommand(object obj)
+        {
+        }
+
+        private async void tapAddUserCommandAsync(object obj)
+        {
+            var shareRoutePage = new ShareRoutePage(_routeId);
+            await Navigation.PushAsync(shareRoutePage, true);
         }
     }
 }

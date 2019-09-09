@@ -20,19 +20,59 @@
                 <RowDefinition Height="4*" />
                 <RowDefinition Height="4*" />
             </Grid.RowDefinitions>
-            <controls:ShareServiceView Grid.Column="0" Grid.Row="0" TapCommand="{Binding TapControl}" Text="Добавить доступ" ImgSource="person_add.png"  Margin="5,5,0,0"></controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="1" Grid.Row="0" Text="Альбом в GoSh!" ImgSource="icon.png"  Margin="0,5,0,0"></controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="2" Grid.Row="0" Text="Создать ссылку" ImgSource="link.png"  Margin="0,5,5,0"></controls:ShareServiceView>
+            <controls:ShareServiceView Grid.Column="0" Grid.Row="0" Text="Добавить доступ" ImgSource="person_add.png"  Margin="5,5,0,0">
+                <controls:ShareServiceView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding TapAddUserCommand}"></TapGestureRecognizer>
+                </controls:ShareServiceView.GestureRecognizers>
+            </controls:ShareServiceView>
+            <controls:ShareServiceView Grid.Column="1" Grid.Row="0" Text="Альбом в GoSh!" ImgSource="icon.png"  Margin="0,5,0,0">
+                <controls:ShareServiceView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding TapPublishAlbumCommand}"></TapGestureRecognizer>
+                </controls:ShareServiceView.GestureRecognizers>
+            </controls:ShareServiceView>
+            <controls:ShareServiceView Grid.Column="2" Grid.Row="0" Text="Создать ссылку" ImgSource="link.png"  Margin="0,5,5,0">
+                <controls:ShareServiceView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding TapMakeReferenceCommand}"></TapGestureRecognizer>
+                </controls:ShareServiceView.GestureRecognizers>
+            </controls:ShareServiceView>
           
-            <controls:ShareServiceView Grid.Column="0" Grid.Row="1" Text="Instagram" ImgSource="instagram.png"  Margin="5,0,0,0"></controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="1" Grid.Row="1" Text="Facebook" ImgSource="facebook.png"  Margin="0,0,0,0"></controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="2" Grid.Row="1" Text="Telegram" ImgSource="telegram.png"  Margin="0,0,5,0"></controls:ShareServiceView>
+            <controls:ShareServiceView Grid.Column="0" Grid.Row="1" Text="Instagram" ImgSource="instagram.png"  Margin="5,0,0,0">
+                <controls:ShareServiceView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding TapInstagramCommand}"></TapGestureRecognizer>
+                </controls:ShareServiceView.GestureRecognizers>
+            </controls:ShareServiceView>
+            <controls:ShareServiceView Grid.Column="1" Grid.Row="1" Text="Facebook" ImgSource="facebook.png"  Margin="0,0,0,0">
+                <controls:ShareServiceView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding TapFacebookCommand}"></TapGestureRecognizer>
+                </controls:ShareServiceView.GestureRecognizers>
+            </controls:ShareServiceView>
+            <controls:ShareServiceView Grid.Column="2" Grid.Row="1" Text="Telegram" ImgSource="telegram.png"  Margin="0,0,5,0">
+                <controls:ShareServiceView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding TapTelegramCommand}"></TapGestureRecognizer>
+                </controls:ShareServiceView.GestureRecognizers>
+            </controls:ShareServiceView>
 
-            <controls:ShareServiceView Grid.Column="0" Grid.Row="2" Text="Viber" ImgSource="viber.png"  Margin="5,0,0,0"></controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="1" Grid.Row="2" Text="VK" ImgSource="vk.png"  Margin="0,0,0,0"></controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="2" Grid.Row="2" Text="Почта" ImgSource="mail.png"  Margin="0,0,5,0"></controls:ShareServiceView>
+            <controls:ShareServiceView Grid.Column="0" Grid.Row="2" Text="Viber" ImgSource="viber.png"  Margin="5,0,0,0">
+                <controls:ShareServiceView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding TapViberCommand}"></TapGestureRecognizer>
+                </controls:ShareServiceView.GestureRecognizers>
+            </controls:ShareServiceView>
+            <controls:ShareServiceView Grid.Column="1" Grid.Row="2" Text="VK" ImgSource="vk.png"  Margin="0,0,0,0">
+                <controls:ShareServiceView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding TapVkCommand}"></TapGestureRecognizer>
+                </controls:ShareServiceView.GestureRecognizers>
+            </controls:ShareServiceView>
+            <controls:ShareServiceView Grid.Column="2" Grid.Row="2" Text="Почта" ImgSource="mail.png"  Margin="0,0,5,0">
+                <controls:ShareServiceView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding TapMailCommand}"></TapGestureRecognizer>
+                </controls:ShareServiceView.GestureRecognizers>
+            </controls:ShareServiceView>
 
-            <controls:ShareServiceView Grid.Column="0" Grid.Row="3" Text="Другие" ImgSource="apps.png"  Margin="5,0,0,0"></controls:ShareServiceView>
+            <controls:ShareServiceView Grid.Column="0" Grid.Row="3" Text="Другие" ImgSource="apps.png"  Margin="5,0,0,0">
+                <controls:ShareServiceView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding TapOtherCommand}"></TapGestureRecognizer>
+                </controls:ShareServiceView.GestureRecognizers>
+            </controls:ShareServiceView>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
