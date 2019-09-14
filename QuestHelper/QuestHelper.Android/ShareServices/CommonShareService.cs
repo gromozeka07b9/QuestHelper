@@ -13,16 +13,16 @@ using Android.Views;
 using Android.Widget;
 using Java.IO;
 using Microsoft.AppCenter.Analytics;
-using QuestHelper.Droid;
+using QuestHelper.Droid.ShareServices;
 using QuestHelper.Model;
 using Uri = Android.Net.Uri;
 
 [assembly: Xamarin.Forms.Dependency(typeof(CommonShareService))]
-namespace QuestHelper.Droid
+namespace QuestHelper.Droid.ShareServices
 {
     public class CommonShareService : ICommonShareService
     {
-        public void Share(ViewRoutePoint vpoint)
+        public void Share(ViewRoutePoint vpoint, string packageName)
         {
             if ((vpoint != null) && (!string.IsNullOrEmpty(vpoint.Id)))
             {
@@ -58,6 +58,11 @@ namespace QuestHelper.Droid
                 share.PutExtra(Intent.ExtraSubject, $"{pointCoordinates}\n{vpoint.NameText}");
                 share.PutExtra(Intent.ExtraAllowMultiple, true);
 
+                if (!string.IsNullOrEmpty(packageName))
+                {
+                    AddComponentNameToIntent(packageName, share);
+                }
+
                 try
                 {
                     Analytics.TrackEvent("Common share service");
@@ -65,8 +70,49 @@ namespace QuestHelper.Droid
                 }
                 catch (Exception e)
                 {
-                    HandleError.Process("CommonShareService", "Share", e, false);
+                    HandleError.Process("CommonShareService", "Share point", e, false);
                 }
+            }
+        }
+
+        public void Share(ViewRoute vroute, string packageName)
+        {
+
+            Intent share = new Intent(Intent.ActionSend);
+            share.SetType("image/*");
+
+            if (!string.IsNullOrEmpty(packageName))
+            {
+                AddComponentNameToIntent(packageName, share);
+            }
+
+            Java.IO.File file = new Java.IO.File(vroute.ImagePreviewPathForList);
+            var fileUri = FileProvider.GetUriForFile(Android.App.Application.Context, Android.App.Application.Context.PackageName + ".fileprovider", file);
+            share.PutExtra(Intent.ExtraStream, fileUri);
+
+            share.SetFlags(ActivityFlags.NewTask);
+            share.PutExtra(Intent.ExtraText, $"{vroute.Name}");
+            share.PutExtra(Intent.ExtraSubject, $"{vroute.CreateDateText}");
+            share.PutExtra(Intent.ExtraAllowMultiple, true);
+            try
+            {
+                Analytics.TrackEvent("Common share service");
+                Android.App.Application.Context.StartActivity(share);
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("CommonShareService", "Share route", e, false);
+            }
+        }
+
+        public void AddComponentNameToIntent(string packageName, Intent share)
+        {
+            var activities = Android.App.Application.Context.PackageManager.QueryIntentActivities(share, 0);
+            var appActivity = activities.FirstOrDefault(a => a.ActivityInfo.PackageName == packageName);
+            if (appActivity != null)
+            {
+                var componentName = new ComponentName(appActivity.ActivityInfo.PackageName, appActivity.ActivityInfo.Name);
+                share.SetComponent(componentName);
             }
         }
     }

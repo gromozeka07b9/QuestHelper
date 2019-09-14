@@ -107,7 +107,7 @@ namespace QuestHelper.ViewModel
         private void shareCommand(object obj)
         {
             ICommonShareService commonShareService = DependencyService.Get<ICommonShareService>();
-            commonShareService.Share(_vpoint);
+            commonShareService.Share(_vpoint, string.Empty);
         }
 
         private async void SetNewCoordinates(double latitude, double longitude)

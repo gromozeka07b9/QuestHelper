@@ -54,7 +54,9 @@ namespace QuestHelper
             TokenStoreService token = new TokenStoreService();
             if (Setup() && !string.IsNullOrEmpty(await token.GetAuthTokenAsync()))
             {
+#if !DEBUG            
                 Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+#endif
             }
 
         }

@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
       x:Class="QuestHelper.Controls.ShareServiceView"
       x:Name="RootGrid">
-    <Frame CornerRadius="5" BackgroundColor="LightGray" BorderColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+    <Frame CornerRadius="5" Padding="10" BackgroundColor="LightGray" BorderColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -12,8 +12,8 @@
                 <RowDefinition Height="6*"></RowDefinition>
                 <RowDefinition Height="4*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Image Grid.Column="0" Grid.Row="0" Source="{Binding ImgSource, Source={x:Reference RootGrid}}" WidthRequest="160" HeightRequest="160" VerticalOptions="StartAndExpand"></Image>
-            <Label Grid.Column="0" Grid.Row="1" Text="{Binding Text, Source={x:Reference RootGrid}}" FontSize="10" HorizontalTextAlignment="Center" VerticalOptions="StartAndExpand"></Label>
+            <Image Grid.Column="0" Grid.Row="0" Source="{Binding ImgSource, Source={x:Reference RootGrid}}" WidthRequest="160" HeightRequest="160" VerticalOptions="Center"></Image>
+            <Label Grid.Column="0" Grid.Row="1" Text="{Binding Text, Source={x:Reference RootGrid}}" FontSize="14" HorizontalTextAlignment="Center" VerticalOptions="Center"></Label>
         </Grid>
     </Frame>
 </Grid>

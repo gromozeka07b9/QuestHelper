@@ -2,10 +2,17 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:QuestHelper.Controls;assembly=QuestHelper"
+             xmlns:converters="clr-namespace:QuestHelper.View.Converters;assembly=QuestHelper"
              x:Class="QuestHelper.View.ShareRoutesServicesPage" Appearing="ShareRoutesServicesPage_OnAppearing">
     <ContentPage.ToolbarItems>
         <ToolbarItem NavigationPage.HasNavigationBar="False" Text="Выберите способ"></ToolbarItem>
     </ContentPage.ToolbarItems>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:BoolToOpacityConverter  x:Key="boolToOpacity" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -30,45 +37,45 @@
                     <TapGestureRecognizer Command="{Binding TapPublishAlbumCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
             </controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="2" Grid.Row="0" Text="Создать ссылку" ImgSource="link.png"  Margin="0,5,5,0">
+            <controls:ShareServiceView Grid.Column="2" Grid.Row="0" Text="Создать ссылку" ImgSource="link.png"  Margin="0,5,5,0" Opacity="0.4" IsEnabled="False">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapMakeReferenceCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
             </controls:ShareServiceView>
-          
-            <controls:ShareServiceView Grid.Column="0" Grid.Row="1" Text="Instagram" ImgSource="instagram.png"  Margin="5,0,0,0">
+
+            <controls:ShareServiceView Grid.Column="0" Grid.Row="1" Text="Instagram" ImgSource="instagram.png"  Margin="5,0,0,0" Opacity="{Binding IsAppInstagramInstalled, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsAppInstagramInstalled}">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapInstagramCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
             </controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="1" Grid.Row="1" Text="Facebook" ImgSource="facebook.png"  Margin="0,0,0,0">
+            <controls:ShareServiceView Grid.Column="1" Grid.Row="1" Text="Facebook" ImgSource="facebook.png"  Margin="0,0,0,0" Opacity="{Binding IsAppFacebookInstalled, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsAppFacebookInstalled}">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapFacebookCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
             </controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="2" Grid.Row="1" Text="Telegram" ImgSource="telegram.png"  Margin="0,0,5,0">
+            <controls:ShareServiceView Grid.Column="2" Grid.Row="1" Text="Telegram" ImgSource="telegram.png"  Margin="0,0,5,0" Opacity="{Binding IsAppTelegramInstalled, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsAppTelegramInstalled}">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapTelegramCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
             </controls:ShareServiceView>
 
-            <controls:ShareServiceView Grid.Column="0" Grid.Row="2" Text="Viber" ImgSource="viber.png"  Margin="5,0,0,0">
+            <controls:ShareServiceView Grid.Column="0" Grid.Row="2" Text="Viber" ImgSource="viber.png"  Margin="5,0,0,0" Opacity="{Binding IsAppViberInstalled, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsAppViberInstalled}">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapViberCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
             </controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="1" Grid.Row="2" Text="VK" ImgSource="vk.png"  Margin="0,0,0,0">
+            <controls:ShareServiceView Grid.Column="1" Grid.Row="2" Text="VK" ImgSource="vk.png"  Margin="0,0,0,0" Opacity="{Binding IsAppVkInstalled, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsAppVkInstalled}">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapVkCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
             </controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="2" Grid.Row="2" Text="Почта" ImgSource="mail.png"  Margin="0,0,5,0">
+            <controls:ShareServiceView Grid.Column="2" Grid.Row="2" Text="Почта" ImgSource="mail.png"  Margin="0,0,5,0" Opacity="0.4" IsEnabled="False">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapMailCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
             </controls:ShareServiceView>
 
-            <controls:ShareServiceView Grid.Column="0" Grid.Row="3" Text="Другие" ImgSource="apps.png"  Margin="5,0,0,0">
+            <controls:ShareServiceView Grid.Column="1" Grid.Row="3" Text="Другие" ImgSource="apps.png"  Margin="5,0,0,0">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapOtherCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>

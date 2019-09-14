@@ -36,7 +36,16 @@ namespace QuestHelper.Droid
         {
             get
             {
-                return Application.Context.GetExternalFilesDir(null).AbsolutePath;
+                string absPath = string.Empty;
+                try
+                {
+                    //ToDo: Что это?
+                    absPath = Application.Context.GetExternalFilesDir(null).AbsolutePath;
+                }
+                catch (Exception)
+                {
+                }
+                return absPath;
             }
         }
     }
