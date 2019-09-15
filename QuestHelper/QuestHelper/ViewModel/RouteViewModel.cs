@@ -47,7 +47,6 @@ namespace QuestHelper.ViewModel
         public ICommand StartDialogCommand { get; private set; }
 
         public ICommand EditRouteCommand { get; private set; }
-        public ICommand AddPersonCommand { get; private set; }
         public ICommand ShareRouteCommand { get; private set; }
         public ICommand FullScreenMapCommand { get; private set; }
         public ICommand PhotoAlbumCommand { get; private set; }
@@ -60,7 +59,6 @@ namespace QuestHelper.ViewModel
             AddNewRoutePointCommand = new Command(addNewRoutePointAsync);
             StartDialogCommand = new Command(startDialog);
             EditRouteCommand = new Command(editRouteCommandAsync);
-            AddPersonCommand = new Command(addPersonCommandAsync);
             ShareRouteCommand = new Command(shareRouteCommandAsync);
             FullScreenMapCommand = new Command(fullScreenMapCommandAsync);
             PhotoAlbumCommand = new Command(photoAlbumCommandAsync);
@@ -92,11 +90,6 @@ namespace QuestHelper.ViewModel
 
             }
         }
-        private async void addPersonCommandAsync(object obj)
-        {
-            var shareRoutePage = new ShareRoutePage(_vroute.RouteId);
-            await Navigation.PushAsync(shareRoutePage, true);
-        }
         internal async Task<bool> UserCanShareAsync()
         {
             TokenStoreService tokenService = new TokenStoreService();
@@ -108,26 +101,6 @@ namespace QuestHelper.ViewModel
         {
             var shareRoutePage = new ShareRoutesServicesPage(_vroute.RouteId);
             await Navigation.PushAsync(shareRoutePage, true);
-        }
-
-        private async void shareRouteCommandAsyncOld(object obj)
-        {
-            bool answerYesIsNo = await Application.Current.MainPage.DisplayAlert("Внимание", "После публикации маршрут будет доступен всем пользователям в альбоме. Вы уверены?", "Нет", "Да");
-            if (!answerYesIsNo) //порядок кнопок - хардкод, и непонятно, почему именно такой
-            {
-                if (await UserCanShareAsync())
-                {
-                    _vroute.IsPublished = true;
-                    _vroute.Version++;
-                    _vroute.Save();
-                    await Application.Current.MainPage.DisplayAlert("Внимание!", "После синхронизации маршрут будет опубликован", "Ok");
-                    Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage() { ShowErrorMessageIfExist = false }, string.Empty);
-                }
-                else
-                {
-                    await Application.Current.MainPage.DisplayAlert("Внимание!", "Публиковать можно только созданные вами маршруты", "Ok");
-                }
-            }
         }
 
         private void fullScreenMapCommandAsync(object obj)

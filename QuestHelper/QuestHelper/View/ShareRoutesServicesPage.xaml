@@ -64,14 +64,14 @@
                     <TapGestureRecognizer Command="{Binding TapViberCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
             </controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="1" Grid.Row="2" Text="VK" ImgSource="vk.png"  Margin="0,0,0,0" Opacity="{Binding IsAppVkInstalled, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsAppVkInstalled}">
+            <controls:ShareServiceView Grid.Column="1" Grid.Row="2" Text="Whatsapp" ImgSource="whatsapp.png"  Margin="0,0,0,0" Opacity="{Binding IsAppWhatsappInstalled, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsAppWhatasppInstalled}">
                 <controls:ShareServiceView.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding TapVkCommand}"></TapGestureRecognizer>
+                    <TapGestureRecognizer Command="{Binding TapWhatsappCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
             </controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="2" Grid.Row="2" Text="Почта" ImgSource="mail.png"  Margin="0,0,5,0" Opacity="0.4" IsEnabled="False">
+            <controls:ShareServiceView Grid.Column="2" Grid.Row="2" Text="Почта" ImgSource="mail.png"  Margin="0,0,5,0" Opacity="{Binding IsAppGMailInstalled, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsAppGMailInstalled}">
                 <controls:ShareServiceView.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding TapMailCommand}"></TapGestureRecognizer>
+                    <TapGestureRecognizer Command="{Binding TapGMailCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
             </controls:ShareServiceView>
 

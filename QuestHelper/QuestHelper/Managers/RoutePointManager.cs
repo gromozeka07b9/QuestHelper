@@ -10,27 +10,16 @@ namespace QuestHelper.Managers
 {
     public class RoutePointManager : RealmInstanceMaker
     {
-        //Realm _realmInstance;
         public RoutePointManager()
         {
-            //_realmInstance = RealmAppInstance.GetAppInstance();
-            //_realmInstance.Error += _realmInstance_Error;
         }
 
-        /*private void _realmInstance_Error(object sender, ErrorEventArgs e)
-        {
-        }*/
-
-        /*internal static Realm GetRealmInstance()
-        {
-            return RealmAppInstance.GetAppInstance();
-        }*/
         internal RoutePoint GetPointById(string id)
         {
             return !string.IsNullOrEmpty(id)? RealmInstance.Find<RoutePoint>(id):null;
         }
 
-        internal IEnumerable<ViewRoutePoint> GetPointsByRouteId(string routeId)
+        public IEnumerable<ViewRoutePoint> GetPointsByRouteId(string routeId)
         {
             List<ViewRoutePoint> collection = new List<ViewRoutePoint>();
             try
