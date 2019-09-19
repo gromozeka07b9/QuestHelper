@@ -46,6 +46,12 @@ namespace QuestHelper.ViewModel
             { "gmail", "com.google.android.gm" },
             { "vk", "com.vk" },
         };
+        private readonly Dictionary<string, string> _actionsForPopupMenu = new Dictionary<string, string>()
+        {
+            { "onlyPhotos", "Выгрузить только фотографии" },
+            { "onlyTexts", "Выгрузить только описания"},
+            { "cancel", "Отмена" }
+        };
         public ShareRoutesServicesViewModel(string routeId)
         {
             if (!string.IsNullOrEmpty(routeId))
@@ -118,9 +124,31 @@ namespace QuestHelper.ViewModel
         }
         private async void tapTelegramCommand(object obj)
         {
-            var shareService = DependencyService.Get<ITelegramShareService>();
-            shareService.Share(_vroute, _namesForShareApps["telegram"]);
-            await Navigation.PopAsync(false);
+            if (_vroute.IsHaveAnyPhotos)
+            {
+                var result = await Application.Current.MainPage.DisplayActionSheet(null, _actionsForPopupMenu["cancel"], null, new[] { _actionsForPopupMenu["onlyPhotos"], _actionsForPopupMenu["onlyTexts"] });
+                if (result != null)
+                {
+                    if (result.Equals(_actionsForPopupMenu["onlyPhotos"]))
+                    {
+                        var shareService = DependencyService.Get<ITelegramShareService>();
+                        shareService.ShareRouteOnlyPhotos(_vroute, _namesForShareApps["telegram"]);
+                        await Navigation.PopAsync(false);
+                    }
+                    else if (result.Equals(_actionsForPopupMenu["onlyTexts"]))
+                    {
+                        var shareService = DependencyService.Get<ITelegramShareService>();
+                        shareService.ShareRouteOnlyPointsDescription(_vroute, _namesForShareApps["telegram"]);
+                        await Navigation.PopAsync(false);
+                    }
+                }
+            }
+            else
+            {
+                var shareService = DependencyService.Get<ITelegramShareService>();
+                shareService.ShareRouteOnlyPointsDescription(_vroute, _namesForShareApps["telegram"]);
+                await Navigation.PopAsync(false);
+            }
         }
         private async void tapFacebookCommand(object obj)
         {

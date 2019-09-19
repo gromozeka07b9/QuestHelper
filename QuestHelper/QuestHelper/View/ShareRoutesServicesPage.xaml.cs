@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using QuestHelper.Model.Messages;
 using QuestHelper.ViewModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -18,7 +19,7 @@ namespace QuestHelper.View
 			InitializeComponent ();
             _vm = new ShareRoutesServicesViewModel(routeId) { Navigation = this.Navigation };
             BindingContext = _vm;
-        }
+		}
 
         private void ShareRoutesServicesPage_OnAppearing(object sender, EventArgs e)
         {

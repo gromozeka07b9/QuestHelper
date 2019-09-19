@@ -149,14 +149,14 @@ namespace QuestHelper.Managers
             return resultMedia;
         }
 
-        internal IEnumerable<RoutePointMediaObject> GetAllMediaObjects()
+        /*internal IEnumerable<RoutePointMediaObject> GetAllMediaObjects()
         {
             var deletedRoutes = RealmInstance.All<Route>().Where(r => r.IsDeleted).ToList().Select(d => d.RouteId);
             var pointsInDeletedRoutes = RealmInstance.All<RoutePoint>().ToList().Where(r => (deletedRoutes.Any(d => d == r.RouteId))).Select(p=>p.RoutePointId);
             //return _realmInstance.All<RoutePoint>().ToList().Where(r => (!deletedRoutes.Any(d => d == r.RouteId)));
             var objects = RealmInstance.All<RoutePointMediaObject>().ToList().Where(m=> (!pointsInDeletedRoutes.Any(p=>p==m.RoutePointId)));
             return objects;
-        }
+        }*/
         internal IEnumerable<RoutePointMediaObject> GetMediaObjectsByRouteId(string routeId)
         {
             //var deletedRoutes = _realmInstance.All<Route>().Where(r => r.IsDeleted).ToList().Select(d => d.RouteId);
@@ -182,7 +182,7 @@ namespace QuestHelper.Managers
         {
             return RealmInstance.All<RoutePointMediaObject>().Where(x=>x.RoutePointId == routePointId&&!x.IsDeleted);
         }
-        internal int GetCountByRouteId(string routeId)
+        /*internal int GetCountByRouteId(string routeId)
         {
             int count = 0;
             var route = RealmInstance.All<Route>().Where(x => x.RouteId == routeId&&!x.IsDeleted).FirstOrDefault();
@@ -195,6 +195,6 @@ namespace QuestHelper.Managers
             }
 
             return count;
-        }
+        }*/
     }
 }

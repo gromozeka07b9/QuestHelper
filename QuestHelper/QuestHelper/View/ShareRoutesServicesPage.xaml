@@ -69,7 +69,7 @@
                     <TapGestureRecognizer Command="{Binding TapWhatsappCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
             </controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="2" Grid.Row="2" Text="Почта" ImgSource="mail.png"  Margin="0,0,5,0" Opacity="{Binding IsAppGMailInstalled, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsAppGMailInstalled}">
+            <controls:ShareServiceView Grid.Column="2" Grid.Row="2" Text="Gmail" ImgSource="mail.png"  Margin="0,0,5,0" Opacity="{Binding IsAppGMailInstalled, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsAppGMailInstalled}">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapGMailCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>

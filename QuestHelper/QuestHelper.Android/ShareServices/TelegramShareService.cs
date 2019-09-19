@@ -23,12 +23,12 @@ namespace QuestHelper.Droid.ShareServices
 {
     public class TelegramShareService : CommonShareService, ITelegramShareService
     {
-        public void Share(ViewRoutePoint vpoint, string packageName)
+        /*public void Share(ViewRoutePoint vpoint, string packageName)
         {
             base.Share(vpoint, packageName);
-        }
+        }*/
 
-        public void Share(ViewRoute vroute, string packageName)
+        public void ShareRouteOnlyPhotos(ViewRoute vroute, string packageName)
         {
             if ((vroute != null) && (!string.IsNullOrEmpty(vroute.Id)))
             {
@@ -69,6 +69,11 @@ namespace QuestHelper.Droid.ShareServices
                 }
 
             }
+
+        }
+        public void ShareRouteOnlyPointsDescription(ViewRoute vroute, string packageName)
+        {
+
         }
     }
 }

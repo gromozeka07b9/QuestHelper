@@ -297,6 +297,16 @@ namespace QuestHelper.Model
             }
         }
 
+        public bool IsHaveAnyPhotos
+        {
+            get
+            {
+                RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
+                ViewRoutePointMediaObject vMedia = mediaManager.GetFirstMediaObjectByRouteId(RouteId);
+                return (!string.IsNullOrEmpty(vMedia.FileName) && !vMedia.IsDeleted);
+            }
+        }
+
         public bool Save()
         {
             RouteManager routeManager = new RouteManager();
