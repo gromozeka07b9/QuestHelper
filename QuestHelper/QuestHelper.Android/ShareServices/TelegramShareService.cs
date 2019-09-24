@@ -37,7 +37,7 @@ namespace QuestHelper.Droid.ShareServices
                 Intent share = new Intent(Intent.ActionSendMultiple);
                 share.SetType("image/*");
                 List<Uri> uris = new List<Uri>();
-                if (routePoints.Count() > 0)
+                if (routePoints.Any())
                 {
                     foreach (var point in routePoints)
                     {
@@ -60,7 +60,7 @@ namespace QuestHelper.Droid.ShareServices
 
                 try
                 {
-                    Analytics.TrackEvent("Telegram share service");
+                    Analytics.TrackEvent("Telegram share service photos");
                     Android.App.Application.Context.StartActivity(share);
                 }
                 catch (Exception e)
@@ -73,6 +73,51 @@ namespace QuestHelper.Droid.ShareServices
         }
         public void ShareRouteOnlyPointsDescription(ViewRoute vroute, string packageName)
         {
+            if ((vroute != null) && (!string.IsNullOrEmpty(vroute.Id)))
+            {
+                RoutePointManager pointManager = new RoutePointManager();
+                var routePoints = pointManager.GetPointsByRouteId(vroute.RouteId);
+                Intent share = new Intent(Intent.ActionSend);
+                share.SetType("text/*");
+                List<Uri> uris = new List<Uri>();
+                StringBuilder sbRoute = new StringBuilder();
+                sbRoute.AppendLine($"Маршрут: {vroute.Name}");
+                sbRoute.AppendLine($"Дата: {vroute.CreateDateText}");
+                if (routePoints.Any())
+                {
+                    foreach (var point in routePoints)
+                    {
+                        sbRoute.AppendLine("");
+                        sbRoute.AppendLine($"Дата: {point.CreateDateText}");
+                        sbRoute.AppendLine($"Точка: {point.Name}");
+                        if((!point.Latitude.Equals(0d))&&(!point.Longitude.Equals(0d)))
+                            sbRoute.AppendLine($"Координаты: {point.Latitude}.{point.Longitude}");
+                        if(!string.IsNullOrEmpty(point.Address))
+                            sbRoute.AppendLine($"Адрес: {point.Address}");
+                        if (!string.IsNullOrEmpty(point.Description))
+                            sbRoute.AppendLine($"Описание: {point.Description}");
+                    }
+                }
+
+                share.PutExtra(Intent.ExtraText, $"{sbRoute.ToString()}");
+                share.SetFlags(ActivityFlags.NewTask);
+
+                if (!string.IsNullOrEmpty(packageName))
+                {
+                    AddComponentNameToIntent(packageName, share);
+                }
+
+                try
+                {
+                    Analytics.TrackEvent("Telegram share service texts");
+                    Android.App.Application.Context.StartActivity(share);
+                }
+                catch (Exception e)
+                {
+                    HandleError.Process("TelegramShareService", "Share route", e, false);
+                }
+
+            }
 
         }
     }
