@@ -48,8 +48,8 @@ namespace QuestHelper.ViewModel
         };
         private readonly Dictionary<string, string> _actionsForPopupMenu = new Dictionary<string, string>()
         {
-            { "onlyPhotos", "Выгрузить только фотографии" },
-            { "onlyTexts", "Выгрузить только описания"},
+            { "onlyPhotos", "Выгрузить фотографии" },
+            { "onlyTexts", "Выгрузить описания"},
             { "cancel", "Отмена" }
         };
         public ShareRoutesServicesViewModel(string routeId)
@@ -159,13 +159,13 @@ namespace QuestHelper.ViewModel
         private async void tapViberCommand(object obj)
         {
             var shareService = DependencyService.Get<IViberShareService>();
-            shareService.Share(_vroute, _namesForShareApps["viber"]);
+            shareService.ShareRouteOnlyPhotos(_vroute, _namesForShareApps["viber"]);
             await Navigation.PopAsync(false);
         }
         private async void tapWhatsappCommand(object obj)
         {
             var shareService = DependencyService.Get<IWhatsappShareService>();
-            shareService.Share(_vroute, _namesForShareApps["whatsapp"]);
+            shareService.ShareRouteOnlyPhotos(_vroute, _namesForShareApps["whatsapp"]);
             await Navigation.PopAsync(false);
         }
 
