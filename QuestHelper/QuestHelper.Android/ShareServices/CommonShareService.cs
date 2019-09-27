@@ -78,8 +78,49 @@ namespace QuestHelper.Droid.ShareServices
 
         public void Share(ViewRoute vroute, string packageName)
         {
+            if ((vroute != null) && (!string.IsNullOrEmpty(vroute.Id)))
+            {
+                RoutePointManager pointManager = new RoutePointManager();
+                var routePoints = pointManager.GetPointsByRouteId(vroute.RouteId);
+                Intent share = new Intent(Intent.ActionSendMultiple);
+                share.SetType("image/*");
+                List<Uri> uris = new List<Uri>();
+                if (routePoints.Any())
+                {
+                    foreach (var point in routePoints)
+                    {
+                        foreach (var path in point.MediaObjectPaths)
+                        {
+                            Java.IO.File file = new Java.IO.File(path);
+                            var fileUri = FileProvider.GetUriForFile(Android.App.Application.Context, Android.App.Application.Context.PackageName + ".fileprovider", file);
+                            uris.Add(fileUri);
+                        }
+                    }
+                    share.PutParcelableArrayListExtra(Intent.ExtraStream, uris.ToArray());
+                }
+                StringBuilder sbRoute = GetRouteText(vroute);
+                share.PutExtra(Intent.ExtraText, $"{sbRoute.ToString()}");
+                share.PutExtra(Intent.ExtraAllowMultiple, true);
+                share.SetFlags(ActivityFlags.NewTask);
 
-            Intent share = new Intent(Intent.ActionSend);
+                if (!string.IsNullOrEmpty(packageName))
+                {
+                    AddComponentNameToIntent(packageName, share);
+                }
+
+                try
+                {
+                    Analytics.TrackEvent("Common share service");
+                    Android.App.Application.Context.StartActivity(share);
+                }
+                catch (Exception e)
+                {
+                    HandleError.Process("CommonShareService", "Share route", e, false);
+                }
+
+            }
+
+            /*Intent share = new Intent(Intent.ActionSend);
             share.SetType("image/*");
 
             if (!string.IsNullOrEmpty(packageName))
@@ -103,12 +144,12 @@ namespace QuestHelper.Droid.ShareServices
             catch (Exception e)
             {
                 HandleError.Process("CommonShareService", "Share route", e, false);
-            }
+            }*/
         }
 
         public void ShareRouteOnlyPhotos(ViewRoute vroute, string packageName)
         {
-            if ((vroute != null) && (!string.IsNullOrEmpty(vroute.Id)))
+            /*if ((vroute != null) && (!string.IsNullOrEmpty(vroute.Id)))
             {
                 RoutePointManager pointManager = new RoutePointManager();
                 var routePoints = pointManager.GetPointsByRouteId(vroute.RouteId);
@@ -148,9 +189,10 @@ namespace QuestHelper.Droid.ShareServices
                     HandleError.Process("CommonShareService", "Share route", e, false);
                 }
 
-            }
+            }*/
 
         }
+
         public void ShareRouteOnlyPointsDescription(ViewRoute vroute, string packageName)
         {
             Intent share = new Intent(Intent.ActionSend);

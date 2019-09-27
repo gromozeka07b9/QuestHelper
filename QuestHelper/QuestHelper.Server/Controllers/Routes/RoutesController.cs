@@ -49,20 +49,6 @@ namespace QuestHelper.Server.Controllers.Routes
                 RouteManager routeManager = new RouteManager(db);
                 resultRoute = routeManager.Get(userId, RouteId);
             }
-            /*Route resultRoute = new Route();
-                using (var db = new ServerDbContext(_dbOptions))
-                {
-                    bool accessGranted = db.RouteAccess.Where(u => u.UserId == userId && u.RouteId == RouteId).Any();
-                    Route route = db.Route.Find(RouteId);
-                    if ((accessGranted)||(route.IsPublished)||(route.IsDeleted))
-                    {
-                        resultRoute = route;
-                    }
-                    else
-                    {
-                        return new ObjectResult(null);
-                    }
-                }*/
             return new ObjectResult(resultRoute);
         }
 

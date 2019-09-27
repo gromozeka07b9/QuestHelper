@@ -9,11 +9,13 @@ using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V4.Content;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
 using Java.IO;
 using Microsoft.AppCenter.Analytics;
 using QuestHelper.Droid.ShareServices;
+using QuestHelper.Managers;
 using QuestHelper.Model;
 using Uri = Android.Net.Uri;
 
@@ -33,11 +35,42 @@ namespace QuestHelper.Droid.ShareServices
         //https://guides.codepath.com/android/Sharing-Content-with-Intents
             if ((vroute != null) && (!string.IsNullOrEmpty(vroute.Id)))
             {
-                /*waIntent.putExtra(Intent.EXTRA_TEXT, text);
-                waIntent.putExtra(Intent.EXTRA_SUBJECT, "My subject");
-                waIntent.putExtra(Intent.EXTRA_TITLE, "My subject");
-                waIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID);
-                waIntent.putExtra(Intent.EXTRA_STREAM, attachment);*/
+                RoutePointManager pointManager = new RoutePointManager();
+                var routePoints = pointManager.GetPointsByRouteId(vroute.RouteId);
+                Intent share = new Intent(Intent.ActionSendMultiple);
+                share.SetType("image/*");
+                List<Uri> uris = new List<Uri>();
+                if (routePoints.Any())
+                {
+                    foreach (var point in routePoints)
+                    {
+                        foreach (var path in point.MediaObjectPaths)
+                        {
+                            Java.IO.File file = new Java.IO.File(path);
+                            var fileUri = FileProvider.GetUriForFile(Android.App.Application.Context, Android.App.Application.Context.PackageName + ".fileprovider", file);
+                            uris.Add(fileUri);
+                        }
+                    }
+
+                    share.PutParcelableArrayListExtra(Intent.ExtraStream, uris.ToArray());
+                }
+                share.PutExtra(Intent.ExtraAllowMultiple, true);
+                share.SetFlags(ActivityFlags.NewTask);
+
+                if (!string.IsNullOrEmpty(packageName))
+                {
+                    AddComponentNameToIntent(packageName, share);
+                }
+
+                try
+                {
+                    Analytics.TrackEvent("Whatsapp share service");
+                    Android.App.Application.Context.StartActivity(share);
+                }
+                catch (Exception e)
+                {
+                    HandleError.Process("Whatsapp", "Share route", e, false);
+                }
             }
         }
     }

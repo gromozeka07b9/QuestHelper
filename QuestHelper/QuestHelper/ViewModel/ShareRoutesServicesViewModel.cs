@@ -132,7 +132,7 @@ namespace QuestHelper.ViewModel
                     if (result.Equals(_actionsForPopupMenu["onlyPhotos"]))
                     {
                         var shareService = DependencyService.Get<ITelegramShareService>();
-                        shareService.ShareRouteOnlyPhotos(_vroute, _namesForShareApps["telegram"]);
+                        shareService.Share(_vroute, _namesForShareApps["telegram"]);
                         await Navigation.PopAsync(false);
                     }
                     else if (result.Equals(_actionsForPopupMenu["onlyTexts"]))
@@ -159,13 +159,13 @@ namespace QuestHelper.ViewModel
         private async void tapViberCommand(object obj)
         {
             var shareService = DependencyService.Get<IViberShareService>();
-            shareService.ShareRouteOnlyPhotos(_vroute, _namesForShareApps["viber"]);
+            shareService.Share(_vroute, _namesForShareApps["viber"]);
             await Navigation.PopAsync(false);
         }
         private async void tapWhatsappCommand(object obj)
         {
             var shareService = DependencyService.Get<IWhatsappShareService>();
-            shareService.ShareRouteOnlyPhotos(_vroute, _namesForShareApps["whatsapp"]);
+            shareService.Share(_vroute, _namesForShareApps["whatsapp"]);
             await Navigation.PopAsync(false);
         }
 
