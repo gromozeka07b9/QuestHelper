@@ -21,6 +21,8 @@ namespace QuestHelper.ViewModel
         private const string _apiUrl = "http://igosh.pro/api";
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private bool _isUserCanMakeLink = false;
+
         public ICommand TapAddUserCommand { get; private set; }
         public ICommand TapPublishAlbumCommand { get; private set; }
         public ICommand TapMakeReferenceCommand { get; private set; }
@@ -89,6 +91,8 @@ namespace QuestHelper.ViewModel
 
         private void tapMakeReferenceCommand(object obj)
         {
+            var page = new MakeRouteLinkPage(_vroute.RouteId);
+            Navigation.PushAsync(page);
         }
 
         private async void tapPublishAlbumCommand(object obj)
@@ -169,12 +173,31 @@ namespace QuestHelper.ViewModel
             await Navigation.PopAsync(false);
         }
 
-        public void StartDialog()
+        public async void StartDialogAsync()
         {
+            TokenStoreService tokenService = new TokenStoreService();
+            string currentUserId = await tokenService.GetUserIdAsync();
+            IsUserCanMakeLink = _vroute.CreatorId.Equals(currentUserId);
         }
 
         public void CloseDialog()
         {
+        }
+
+        public bool IsUserCanMakeLink
+        {
+            get
+            {
+                return _isUserCanMakeLink;
+            }
+            set
+            {
+                if (!_isUserCanMakeLink.Equals(value))
+                {
+                    _isUserCanMakeLink = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsUserCanMakeLink"));
+                }
+            }
         }
 
         public bool IsAppInstagramInstalled

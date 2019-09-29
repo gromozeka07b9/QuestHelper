@@ -267,5 +267,26 @@ namespace QuestHelper.Droid.ShareServices
             return sbRoute;
         }
 
+        public void ShareWebLink(System.Uri link, string packageName)
+        {
+            if (link != null)
+            {
+                Intent share = new Intent(Intent.ActionSend);
+                share.SetType("text/*");
+                share.PutExtra(Intent.ExtraText, $"{link.ToString()}");
+                share.SetFlags(ActivityFlags.NewTask);
+
+                try
+                {
+                    Analytics.TrackEvent("Common share web link");
+                    Android.App.Application.Context.StartActivity(share);
+                }
+                catch (Exception e)
+                {
+                    HandleError.Process("CommonShareService", "ShareWebLink", e, false);
+                }
+
+            }
+        }
     }
 }

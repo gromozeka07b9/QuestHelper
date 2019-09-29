@@ -218,14 +218,22 @@ namespace QuestHelper.Server.Controllers.Routes
                 {
                     if (!db.RouteShare.Where(s => s.RouteId == RouteId && s.UserId == userId).Any())
                     {
-                        RouteShare shareObject = new RouteShare();
-                        shareObject.RouteShareId = Guid.NewGuid().ToString();
-                        shareObject.UserId = userId;
-                        shareObject.CreateDate = DateTime.Now;
-                        shareObject.RouteId = RouteId;
-                        shareObject.ReferenceHash = shareObject.RouteShareId.TrimStart().Substring(0, 8);
-                        db.RouteShare.Add(shareObject);
-                        db.SaveChanges();
+                        string shareShortId = IdGenerator.Generate(7);
+                        if (!string.IsNullOrEmpty(shareShortId))
+                        {
+                            if (!db.RouteShare.Where(rs => rs.ReferenceHash.Equals(shareShortId)).Any())
+                            {
+                                RouteShare shareObject = new RouteShare();
+                                shareObject.RouteShareId = Guid.NewGuid().ToString();
+                                shareObject.UserId = userId;
+                                shareObject.CreateDate = DateTime.Now;
+                                shareObject.RouteId = RouteId;
+                                shareObject.ReferenceHash = shareShortId;
+                                db.RouteShare.Add(shareObject);
+                                db.SaveChanges();
+                            }
+                            else Response.StatusCode = 500;
+                        } else Response.StatusCode = 500;
                     }
                 }
                 else

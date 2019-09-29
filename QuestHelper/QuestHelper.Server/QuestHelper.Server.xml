@@ -6,7 +6,7 @@
     <members>
         <member name="M:QuestHelper.Server.Controllers.Routes.RoutesController.Get">
             <summary>
-            Return list of available routes
+            Returns list of available routes
             </summary>
             <returns>List routes</returns>
         </member>
@@ -27,6 +27,18 @@
             <summary>
             Чтение/запись Identity
             </summary>
+        </member>
+        <member name="T:QuestHelper.Server.Managers.IdGenerator">
+            <summary>
+            Генерация id из словаря, может быть неуникален.
+            </summary>
+        </member>
+        <member name="M:QuestHelper.Server.Managers.IdGenerator.Generate(System.Int32)">
+            <summary>
+            Генерация Id
+            </summary>
+            <param name="length">длина итогой строки идентификатора</param>
+            <returns></returns>
         </member>
         <member name="P:QuestHelper.Server.Models.OauthUser.Version">
             <summary>

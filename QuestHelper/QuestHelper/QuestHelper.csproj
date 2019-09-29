@@ -73,6 +73,9 @@
     <Compile Update="View\RoutePage.xaml.cs">
       <DependentUpon>RoutePage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="View\MakeRouteLinkPage.xaml.cs">
+      <DependentUpon>MakeRouteLinkPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

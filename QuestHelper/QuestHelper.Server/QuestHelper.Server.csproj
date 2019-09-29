@@ -91,4 +91,10 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="QuestHelper.Server.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -81,12 +81,12 @@ namespace QuestHelper.Server.Controllers.RouteSync
             Console.WriteLine($"GetRouteData full: status 200, {userId}, delay:{delay.Milliseconds}");
 
             //Как придумаю робота, который будет запускать парсер, так и уберу отсюда
-            MediaManager mediaManager = new MediaManager();
+            /*MediaManager mediaManager = new MediaManager();
             SpeachToTextProcess speachToTextProcess = new SpeachToTextProcess(mediaManager.PathToMediaCatalog);
             var resulTrySpeachParse = await speachToTextProcess.TrySpeachParseAsync();
 
             TimeSpan delayWithSpeachParse = DateTime.Now - startDate;
-            Console.WriteLine($"GetRouteData with speach parse: delay:{delayWithSpeachParse.Milliseconds}");
+            Console.WriteLine($"GetRouteData with speach parse: delay:{delayWithSpeachParse.Milliseconds}");*/
 
             return new ObjectResult(routeVersions);
         }

@@ -15,6 +15,8 @@ namespace QuestHelper
         /// <param name="packageName">Название приложения назначения</param>
         void Share(ViewRoute vroute, string packageName);
 
+        void ShareWebLink(Uri link, string packageName);
+
         /// <summary>
         /// Выгрузка только фотографий маршрута
         /// </summary>

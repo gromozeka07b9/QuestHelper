@@ -2,7 +2,7 @@
 {
     internal interface IDialogEvents
     {
-        void StartDialog();
+        void StartDialogAsync();
         void CloseDialog();
     }
 }

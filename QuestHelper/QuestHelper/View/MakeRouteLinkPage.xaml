@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:QuestHelper.Controls;assembly=QuestHelper"
+             xmlns:converters="clr-namespace:QuestHelper.View.Converters;assembly=QuestHelper"
+             x:Class="QuestHelper.View.MakeRouteLinkPage" Appearing="MakeRouteLinkPage_OnAppearing" Disappearing="MakeRouteLinkPage_OnDisappearing">
+    <ContentPage.ToolbarItems>
+        <!--ToolbarItem NavigationPage.HasNavigationBar="False" Text="Выберите способ"></-->
+    </ContentPage.ToolbarItems>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:NegativeBoolConverter  x:Key="inverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="6*" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" FontSize="Medium" Text="{Binding CaptionText}" VerticalTextAlignment="End" HorizontalTextAlignment="Center" Margin="20"></Label>
+            <StackLayout Grid.Row="1" Orientation="Vertical" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Margin="20" IsVisible="{Binding MakeLinkIsVisible, Converter={StaticResource inverter}}">
+                <Label FontSize="14" Text="{Binding UrlPresentationText}" TextDecorations="Underline">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding UrlTappedCommand}"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+                <!--Image Source="link" HeightRequest="24" WidthRequest="24" Margin="5">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer  Command="{Binding UrlTappedCommand}"></TapGestureRecognizer>
+                    </Image.GestureRecognizers>
+                </-->
+                <Image Source="apps" Margin="5">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer  Command="{Binding ShareRouteCommand}"></TapGestureRecognizer>
+                    </Image.GestureRecognizers>
+                </Image>
+            </StackLayout>
+            <StackLayout Grid.Row="1" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Margin="20" IsVisible="{Binding MakeLinkIsVisible}">
+                <Button Padding="15" WidthRequest="200" HeightRequest="64" Text="Включить общий доступ" Command="{Binding MakeSharedLinkCommand}"></Button>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

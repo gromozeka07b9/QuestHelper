@@ -180,6 +180,46 @@ namespace QuestHelper.WS
             return addResult;
         }
 
+        public async Task<string> GetShortLinkId(string routeId)
+        {
+            string routeShortId = string.Empty;
+
+            try
+            {
+                ApiRequest api = new ApiRequest();
+                var resultRequest = await api.HttpRequestGET($"{_hostUrl}/routes/{routeId}/linkhash", _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
+                if (LastHttpStatusCode == HttpStatusCode.OK)
+                {
+                    routeShortId = resultRequest;
+                }
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RoutesApiRequest", "GetShortLinkId", e, false);
+            }
+
+            return routeShortId;
+        }
+
+        public async Task<bool> CreateShortLinkIdAsync(string routeId)
+        {
+            bool createResult = false;
+            try
+            {
+                ApiRequest api = new ApiRequest();
+                await api.HttpRequestPOST($"{_hostUrl}/routes/{routeId}/createshortlink", string.Empty, _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
+                createResult = LastHttpStatusCode == HttpStatusCode.OK;
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RoutesApiRequest", "CreateShortLinkIdAsync", e, false);
+            }
+            return createResult;
+        }
+
+
         public HttpStatusCode GetLastHttpStatusCode()
         {
             return LastHttpStatusCode;

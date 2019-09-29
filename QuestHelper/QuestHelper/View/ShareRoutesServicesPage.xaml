@@ -37,7 +37,7 @@
                     <TapGestureRecognizer Command="{Binding TapPublishAlbumCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
             </controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="2" Grid.Row="0" Text="Создать ссылку" ImgSource="link.png"  Margin="0,5,5,0" Opacity="0.4" IsEnabled="False">
+            <controls:ShareServiceView Grid.Column="2" Grid.Row="0" Text="Общий доступ" ImgSource="link.png"  Margin="0,5,5,0" Opacity="{Binding IsUserCanMakeLink, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsUserCanMakeLink}">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapMakeReferenceCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
