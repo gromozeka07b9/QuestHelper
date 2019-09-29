@@ -26,6 +26,10 @@ namespace QuestHelper.Server.Controllers.Routes
             public bool CanChangeRoute;
         }
 
+        /// <summary>
+        /// Returns list of available routes
+        /// </summary>
+        /// <returns>List routes</returns>
         [HttpGet]
         public IActionResult Get()
         {
@@ -196,7 +200,15 @@ namespace QuestHelper.Server.Controllers.Routes
             return new ObjectResult(sharedRouteReferenceHash);
         }
 
+        /// <summary>
+        /// Create short id for route (only if short id is absent yet)
+        /// </summary>
+        /// <param name="RouteId">Full route Id </param>
+        /// <response code="200">Returns short id</response>
+        /// <response code="401">Returns if user has no access to route</response>
         [HttpPost("{RouteId}/createshortlink")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(401)]
         public void MakeRouteShared(string RouteId)
         {
             string userId = IdentityManager.GetUserId(HttpContext);

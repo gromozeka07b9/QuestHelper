@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>QuestHelper.Server</name>
+    </assembly>
+    <members>
+        <member name="M:QuestHelper.Server.Controllers.Routes.RoutesController.Get">
+            <summary>
+            Return list of available routes
+            </summary>
+            <returns>List routes</returns>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.Routes.RoutesController.MakeRouteShared(System.String)">
+            <summary>
+            Create short id for route (only if short id is absent yet)
+            </summary>
+            <param name="RouteId">Full route Id </param>
+            <response code="200">Returns short id</response>
+            <response code="401">Returns if user has no access to route</response>
+        </member>
+        <member name="T:QuestHelper.Server.Integration.RawTextCleaner">
+            <summary>
+            Преобразователь сырого распознанного текста в текст с предложениями и пунктуацией
+            </summary>
+        </member>
+        <member name="T:QuestHelper.Server.Managers.IdentityManager">
+            <summary>
+            Чтение/запись Identity
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.Models.OauthUser.Version">
+            <summary>
+            Версия записи
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.Models.Route.Version">
+            <summary>
+            Версия записи
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.Models.RoutePoint.Version">
+            <summary>
+            Версия записи
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.Models.RoutePointMediaObject.Version">
+            <summary>
+            Версия записи
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.Models.User.Version">
+            <summary>
+            Версия записи
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using QuestHelper.Server.Auth;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace QuestHelper.Server
 {
@@ -43,6 +45,19 @@ namespace QuestHelper.Server
             services.AddMvc();
             services.AddDbContext<ServerDbContext>();
             services.AddScoped<RequestFilter>();
+            services.AddSwaggerGen(
+                sw =>
+                {
+                    sw.SwaggerDoc("v1",
+                        new Info()
+ {
+                            Title = "GoSh! API", Version = "v1", Description = "Api for GoSh! applications",
+                            Contact = new Contact() {Name = "Sergey Dyachenko", Email = "sdyachenko1977@gmail.com"}
+                        });
+                    var filePath = Path.Combine(System.AppContext.BaseDirectory, "QuestHelper.Server.xml");
+                    sw.IncludeXmlComments(filePath);
+                }
+           );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,6 +76,8 @@ namespace QuestHelper.Server
                     template: "{controller=Gallery}/{action=Gallery}/{id?}");
             });
             app.UseStaticFiles();
+            app.UseSwagger();
+            app.UseSwaggerUI(sw => sw.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
         }
     }
 }
