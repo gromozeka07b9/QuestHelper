@@ -72,57 +72,6 @@ namespace QuestHelper.Server.Controllers
             }
             return View(galleryItems);
         }
-
-        [Authorize]
-        [ServiceFilter(typeof(RequestFilter))]
-        [HttpPost("gallery/route/{RouteId}/share")]
-        public void MakeRouteShared(string RouteId)
-        {
-            string userId = IdentityManager.GetUserId(HttpContext);
-            using (var db = new ServerDbContext(_dbOptions))
-            {
-                if(db.Route.Where(r=>r.CreatorId == userId && r.RouteId == RouteId).Any())
-                {
-                    if(!db.RouteShare.Where(s=>s.RouteId == RouteId && s.UserId == userId).Any())
-                    {
-                        RouteShare shareObject = new RouteShare();
-                        shareObject.RouteShareId = Guid.NewGuid().ToString();
-                        shareObject.UserId = userId;
-                        shareObject.CreateDate = DateTime.Now;
-                        shareObject.RouteId = RouteId;
-                        shareObject.ReferenceHash = shareObject.RouteShareId.TrimStart().Substring(0, 8);
-                        db.RouteShare.Add(shareObject);
-                        db.SaveChanges();
-                    }
-                }
-                else
-                {
-                    Response.StatusCode = 401;
-                }
-            }
-            Response.StatusCode = 200;
-        }
-
-        [Authorize]
-        [ServiceFilter(typeof(RequestFilter))]
-        [HttpGet("gallery/route/{RouteId}")]
-        public IActionResult GetSharedRouteReferenceHash(string RouteId)
-        {
-            string sharedRouteReferenceHash = string.Empty;
-            string userId = IdentityManager.GetUserId(HttpContext);
-            using (var db = new ServerDbContext(_dbOptions))
-            {
-                if (db.Route.Where(r => r.CreatorId == userId && r.RouteId == RouteId).Any())
-                {
-                    sharedRouteReferenceHash = db.RouteShare.Where(s => s.RouteId == RouteId && s.UserId == userId).Select(s => s.ReferenceHash).SingleOrDefault();
-                }
-                else
-                {
-                    Response.StatusCode = 401;
-                }
-            }
-            return new ObjectResult(sharedRouteReferenceHash);
-        }
     }
 
     public class GalleryItemModel
