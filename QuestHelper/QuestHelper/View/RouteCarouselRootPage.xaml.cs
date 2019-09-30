@@ -29,7 +29,7 @@ namespace QuestHelper.View
             MapRouteOverview.Points = _vm.PointsOnMap;
             var toolbarService = DependencyService.Get<IToolbarService>();
             toolbarService.SetVisibilityToolbar(false);
-            _vm.StartDialog();
+            _vm.StartDialogAsync();
         }
 
         private void Cards_OnItemAppearing(CardsView view, ItemAppearingEventArgs args)

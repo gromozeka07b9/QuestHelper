@@ -66,7 +66,6 @@ namespace QuestHelper.Droid.ShareServices
 
                 try
                 {
-                    Analytics.TrackEvent("Common share service");
                     Android.App.Application.Context.StartActivity(share);
                 }
                 catch (Exception e)
@@ -110,7 +109,6 @@ namespace QuestHelper.Droid.ShareServices
 
                 try
                 {
-                    Analytics.TrackEvent("Common share service");
                     Android.App.Application.Context.StartActivity(share);
                 }
                 catch (Exception e)
@@ -119,77 +117,10 @@ namespace QuestHelper.Droid.ShareServices
                 }
 
             }
-
-            /*Intent share = new Intent(Intent.ActionSend);
-            share.SetType("image/*");
-
-            if (!string.IsNullOrEmpty(packageName))
-            {
-                AddComponentNameToIntent(packageName, share);
-            }
-
-            Java.IO.File file = new Java.IO.File(vroute.ImagePreviewPathForList);
-            var fileUri = FileProvider.GetUriForFile(Android.App.Application.Context, Android.App.Application.Context.PackageName + ".fileprovider", file);
-            share.PutExtra(Intent.ExtraStream, fileUri);
-
-            share.SetFlags(ActivityFlags.NewTask);
-            share.PutExtra(Intent.ExtraText, $"{vroute.Name}");
-            share.PutExtra(Intent.ExtraSubject, $"{vroute.CreateDateText}");
-            share.PutExtra(Intent.ExtraAllowMultiple, true);
-            try
-            {
-                Analytics.TrackEvent("Common share service");
-                Android.App.Application.Context.StartActivity(share);
-            }
-            catch (Exception e)
-            {
-                HandleError.Process("CommonShareService", "Share route", e, false);
-            }*/
         }
 
         public void ShareRouteOnlyPhotos(ViewRoute vroute, string packageName)
         {
-            /*if ((vroute != null) && (!string.IsNullOrEmpty(vroute.Id)))
-            {
-                RoutePointManager pointManager = new RoutePointManager();
-                var routePoints = pointManager.GetPointsByRouteId(vroute.RouteId);
-                Intent share = new Intent(Intent.ActionSendMultiple);
-                share.SetType("image/*");
-                List<Uri> uris = new List<Uri>();
-                if (routePoints.Any())
-                {
-                    foreach (var point in routePoints)
-                    {
-                        foreach (var path in point.MediaObjectPaths)
-                        {
-                            Java.IO.File file = new Java.IO.File(path);
-                            var fileUri = FileProvider.GetUriForFile(Android.App.Application.Context, Android.App.Application.Context.PackageName + ".fileprovider", file);
-                            uris.Add(fileUri);
-                        }
-                    }
-                    share.PutParcelableArrayListExtra(Intent.ExtraStream, uris.ToArray());
-                }
-                StringBuilder sbRoute = GetRouteText(vroute);
-                share.PutExtra(Intent.ExtraText, $"{sbRoute.ToString()}");
-                share.PutExtra(Intent.ExtraAllowMultiple, true);
-                share.SetFlags(ActivityFlags.NewTask);
-
-                if (!string.IsNullOrEmpty(packageName))
-                {
-                    AddComponentNameToIntent(packageName, share);
-                }
-
-                try
-                {
-                    Analytics.TrackEvent("Common share service photos");
-                    Android.App.Application.Context.StartActivity(share);
-                }
-                catch (Exception e)
-                {
-                    HandleError.Process("CommonShareService", "Share route", e, false);
-                }
-
-            }*/
 
         }
 
@@ -211,7 +142,6 @@ namespace QuestHelper.Droid.ShareServices
 
                 try
                 {
-                    Analytics.TrackEvent("Common share service texts");
                     Android.App.Application.Context.StartActivity(share);
                 }
                 catch (Exception e)
@@ -226,6 +156,7 @@ namespace QuestHelper.Droid.ShareServices
         public void AddComponentNameToIntent(string packageName, Intent share)
         {
             var activities = Android.App.Application.Context.PackageManager.QueryIntentActivities(share, 0);
+            var test = activities.FirstOrDefault(a => a.ActivityInfo.PackageName.Contains("instagram"));
             var appActivity = activities.FirstOrDefault(a => a.ActivityInfo.PackageName == packageName);
             if (appActivity != null)
             {
@@ -278,7 +209,6 @@ namespace QuestHelper.Droid.ShareServices
 
                 try
                 {
-                    Analytics.TrackEvent("Common share web link");
                     Android.App.Application.Context.StartActivity(share);
                 }
                 catch (Exception e)

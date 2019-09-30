@@ -4,8 +4,7 @@ using System.Text;
 
 namespace QuestHelper
 {
-    public interface IInstagramShareService
+    public interface IInstagramShareService : ICommonShareService
     {
-        void Share(string filePath);
     }
 }

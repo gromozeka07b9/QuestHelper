@@ -22,12 +22,12 @@ namespace QuestHelper.Droid.ShareServices
 {
     public class ViberShareService : CommonShareService, IViberShareService
     {
-        public void Share(ViewRoutePoint vpoint, string packageName)
+        public new void Share(ViewRoutePoint vpoint, string packageName)
         {
             base.Share(vpoint, packageName);
         }
 
-        public void Share(ViewRoute vroute, string packageName)
+        public new void Share(ViewRoute vroute, string packageName)
         {
             base.Share(vroute, packageName);
         }

@@ -106,12 +106,12 @@
     <Compile Include="CustomMapRenderer.cs" />
     <Compile Include="FirebaseNotificationService.cs" />
     <Compile Include="GoogleAuthInterceptor.cs" />
+    <Compile Include="ShareServices\InstagramShareService.cs" />
     <Compile Include="ShareServices\WhatsappShareService.cs" />
     <Compile Include="ShareServices\ViberShareService.cs" />
     <Compile Include="ShareServices\FacebookShareService.cs" />
     <Compile Include="ShareServices\TelegramShareService.cs" />
     <Compile Include="ShareServices\CommonShareService.cs" />
-    <Compile Include="InstagramShareService.cs" />
     <Compile Include="PushReceiverSetup.cs" />
     <Compile Include="NotificationService.cs" />
     <Compile Include="RecordAudioService.cs" />

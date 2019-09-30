@@ -66,30 +66,10 @@ namespace QuestHelper.ViewModel
 
         private void photoAlbumCommandAsync(object obj)
         {
-            //var page = new RoutePointCarouselPage(_vroute.RouteId, string.Empty);
             var page = new RouteCarouselRootPage(_vroute.RouteId);
             Navigation.PushAsync(page);
         }
 
-        private void shareRouteCommandAsyncOLD(object obj)
-        {
-            var points = _routePointManager.GetPointsByRouteId(_vroute.RouteId);
-            if (points.Any())
-            {
-                ViewRoutePoint vp = new ViewRoutePoint(_vroute.RouteId,points.First().RoutePointId);
-                var instagramShareService = DependencyService.Get<IInstagramShareService>();
-                instagramShareService.Share(vp.ImagePath);
-
-                /*Share.RequestAsync(new ShareTextRequest()
-                {
-                    //Text = $"Маршрут:{_vroute.Name}",
-                    Text = (new Uri($"{vp.ImagePath}")).AbsoluteUri,
-                    //Text = "http://mediad.publicbroadcasting.net/p/wunc/files/styles/x_large/public/201705/standardized_test.jpg",
-                    Subject = "Название маршрута из GoSh!"
-                });*/
-
-            }
-        }
         internal async Task<bool> UserCanShareAsync()
         {
             TokenStoreService tokenService = new TokenStoreService();

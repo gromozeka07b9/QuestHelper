@@ -108,9 +108,16 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        public void StartDialog()
+        public async void StartDialogAsync()
         {
-            Analytics.TrackEvent("Album opened", new Dictionary<string, string> { { "Album", RouteName } });
+            TokenStoreService token = new TokenStoreService();
+            string _userId = await token.GetUserIdAsync();
+
+            //Автора альбома пока не считаем за просмотр
+            if (!_routeObject.CreatorId.Equals(_userId))
+            {
+                Analytics.TrackEvent("Album opened", new Dictionary<string, string> { { "Album", RouteName } });
+            }
         }
 
         public class CarouselItem : INotifyPropertyChanged

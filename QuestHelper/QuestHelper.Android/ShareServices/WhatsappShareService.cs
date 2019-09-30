@@ -24,12 +24,12 @@ namespace QuestHelper.Droid.ShareServices
 {
     public class WhatsappShareService : CommonShareService, IWhatsappShareService
     {
-        public void Share(ViewRoutePoint vpoint, string packageName)
+        public new void Share(ViewRoutePoint vpoint, string packageName)
         {
             base.Share(vpoint, packageName);
         }
 
-        public void Share(ViewRoute vroute, string packageName)
+        public new void Share(ViewRoute vroute, string packageName)
         {
         //https://stackoverflow.com/questions/30196530/share-image-plain-text-and-html-text-via-intent
         //https://guides.codepath.com/android/Sharing-Content-with-Intents
@@ -64,7 +64,6 @@ namespace QuestHelper.Droid.ShareServices
 
                 try
                 {
-                    Analytics.TrackEvent("Whatsapp share service");
                     Android.App.Application.Context.StartActivity(share);
                 }
                 catch (Exception e)

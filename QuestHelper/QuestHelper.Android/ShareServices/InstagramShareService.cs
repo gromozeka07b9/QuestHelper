@@ -18,47 +18,44 @@ using QuestHelper.Managers;
 using QuestHelper.Model;
 using Uri = Android.Net.Uri;
 
-[assembly: Xamarin.Forms.Dependency(typeof(FacebookShareService))]
+[assembly: Xamarin.Forms.Dependency(typeof(InstagramShareService))]
 namespace QuestHelper.Droid.ShareServices
 {
-    public class FacebookShareService : CommonShareService, IFacebookShareService
+    public class InstagramShareService : CommonShareService, IInstagramShareService
     {
-        public void Share(ViewRoutePoint vpoint, string packageName)
+        public new void Share(ViewRoutePoint vpoint, string packageName)
         {
             base.Share(vpoint, packageName);
         }
 
-        public void Share(ViewRoute vroute, string packageName)
+        public new void Share(ViewRoute vroute, string packageName)
         {
             if ((vroute != null) && (!string.IsNullOrEmpty(vroute.Id)))
             {
                 RoutePointManager pointManager = new RoutePointManager();
                 var routePoints = pointManager.GetPointsByRouteId(vroute.RouteId);
-                Intent share = new Intent(Intent.ActionSendMultiple);
+                Intent share = new Intent(Intent.ActionSend);
                 share.SetType("image/*");
-                List<Uri> uris = new List<Uri>();
                 if (routePoints.Any())
                 {
                     Java.IO.File file = new Java.IO.File(vroute.ImagePreviewPathForList);
                     var fileUri = FileProvider.GetUriForFile(Android.App.Application.Context, Android.App.Application.Context.PackageName + ".fileprovider", file);
                     share.PutExtra(Intent.ExtraStream, fileUri);
-                    uris.Add(fileUri);
-                    share.PutParcelableArrayListExtra(Intent.ExtraStream, uris.ToArray());
+                    share.AddFlags(ActivityFlags.GrantReadUriPermission);
                 }
-                share.SetFlags(ActivityFlags.NewTask);
 
-                if (!string.IsNullOrEmpty(packageName))
-                {
-                    AddComponentNameToIntent(packageName, share);
-                }
+                var componentName = new ComponentName("com.instagram.android", "com.instagram.share.handleractivity.ShareHandlerActivity");
+                share.SetComponent(componentName);
 
                 try
                 {
-                    Android.App.Application.Context.StartActivity(share);
+                    var intentNew = Intent.CreateChooser(share, "Share to");
+                    intentNew.SetFlags(ActivityFlags.NewTask);
+                    Android.App.Application.Context.StartActivity(intentNew);
                 }
                 catch (Exception e)
                 {
-                    HandleError.Process("Facebook", "Share route", e, false);
+                    HandleError.Process("Instagram", "Share route", e, false);
                 }
             }
         }
