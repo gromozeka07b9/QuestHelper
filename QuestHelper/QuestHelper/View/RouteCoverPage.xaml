@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="QuestHelper.View.RouteCoverPage">
+    <ContentPage.ToolbarItems>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="1" Text="Название маршрута" HorizontalOptions="CenterAndExpand" Style="{StaticResource StandartTextLabel}"></Label>
+            <Label Grid.Row="2" Text="Дата маршрута" HorizontalOptions="CenterAndExpand" Style="{StaticResource StandartTextLabel}"></Label>
+            <Label Grid.Row="3" Text="Автор маршрута" HorizontalOptions="CenterAndExpand" Style="{StaticResource StandartTextLabel}"></Label>
+            <Label Grid.Row="4" Text="Название маршрута" HorizontalOptions="CenterAndExpand" Style="{StaticResource StandartTextLabel}"></Label>
+            <Label Grid.Row="5" Text="Описание маршрута" Style="{StaticResource RouteTextLabel}" TextColor="Gray" LineBreakMode="WordWrap" VerticalTextAlignment="Start" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

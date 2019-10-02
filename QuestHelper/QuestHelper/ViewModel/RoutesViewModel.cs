@@ -204,8 +204,10 @@ namespace QuestHelper.ViewModel
                 {
                     _routeItem = value;
 
-                    var routePage = new RoutePage(value.RouteId, false);
-                    Navigation.PushAsync(routePage);
+                    //var routePage = new RoutePage(value.RouteId, false);
+                    //Navigation.PushAsync(routePage);
+                    var coverPage = new RouteCoverPage();
+                    Navigation.PushAsync(coverPage);
                     PropertyChanged(this, new PropertyChangedEventArgs("SelectedRouteItem"));
                     addNewPointFromShareAsync(_routeItem.Name);
                     _routeItem = null;

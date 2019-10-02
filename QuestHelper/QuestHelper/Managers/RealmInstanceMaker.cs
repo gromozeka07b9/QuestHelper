@@ -16,7 +16,8 @@ namespace QuestHelper.Managers
                     {
                         //v3 - added Route.ObjVerHash
                         //v4 - added RoutePointMediaObject.MediaType
-                        SchemaVersion = 4,
+                        //v5 - added Route.ImgFilename & Route.Description
+                        SchemaVersion = 5,
                         MigrationCallback = (migration, oldSchemaVersion) =>
                         {
 

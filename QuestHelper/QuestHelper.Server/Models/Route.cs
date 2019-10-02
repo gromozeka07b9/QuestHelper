@@ -20,5 +20,7 @@ namespace QuestHelper.Server.Models
         public bool IsDeleted { get; set; }
         public bool IsShared { get; set; }
         public bool IsPublished { get; set; }
+        public string ImgFilename { get; set; }
+        public string Description { get; set; }
     }
 }

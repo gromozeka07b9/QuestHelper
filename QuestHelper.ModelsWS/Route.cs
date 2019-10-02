@@ -17,5 +17,7 @@ namespace QuestHelper.SharedModelsWS
         public DateTimeOffset CreateDate { get; set; }
         public int Version { get; set; }
         public bool IsDeleted { get; set; }
+        public string ImgFilename { get; set; }
+        public string Description { get; set; }
     }
 }

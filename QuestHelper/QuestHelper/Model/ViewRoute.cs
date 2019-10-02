@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Xamarin.Forms;
+using Route = QuestHelper.LocalDB.Model.Route;
 
 namespace QuestHelper.Model
 {
@@ -24,6 +25,8 @@ namespace QuestHelper.Model
         private bool _isDeleted = false;
         private string _imagePreviewPathForList = string.Empty;
         private string _objVerHash = string.Empty;
+        private string _imgFilename = string.Empty;
+        private string _description = string.Empty;
 
         public ViewRoute(string routeId)
         {
@@ -56,6 +59,8 @@ namespace QuestHelper.Model
                 _isPublished = route.IsPublished;
                 _isDeleted = route.IsDeleted;
                 _creatorId = route.CreatorId;
+                _description = route.Description;
+                _imgFilename = route.ImgFilename;
                 _objVerHash = route.ObjVerHash;
             }
         }
@@ -71,6 +76,8 @@ namespace QuestHelper.Model
                 _isPublished = routeRoot.Route.IsPublished;
                 _isDeleted = routeRoot.Route.IsDeleted;
                 _creatorId = routeRoot.Route.CreatorId;
+                _description = routeRoot.Route.Description;
+                _imgFilename = routeRoot.Route.ImgFilename;
                 _objVerHash = routeHash;
             }
         }
