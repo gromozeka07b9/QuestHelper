@@ -72,7 +72,9 @@ namespace QuestHelper.ViewModel
                                 Analytics.TrackEvent("Register new user done", new Dictionary<string, string> { { "Username", _username } });
                                 TokenStoreService tokenService = new TokenStoreService();
                                 await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId);
+#if !DEBUG
                                 Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+#endif
                                 var page = await Navigation.PopModalAsync();
                                 ShowMainPage();
                             }
@@ -105,7 +107,9 @@ namespace QuestHelper.ViewModel
                         Analytics.TrackEvent("GetToken done", new Dictionary<string, string> { { "Username", _username } });
                         TokenStoreService tokenService = new TokenStoreService();
                         await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId);
+#if !DEBUG
                         Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+#endif
                         ShowMainPage();
                     }
                     else
@@ -222,7 +226,9 @@ namespace QuestHelper.ViewModel
                     Analytics.TrackEvent("Login OAuth done", new Dictionary<string, string> { { "Username", _username } });
                     TokenStoreService tokenService = new TokenStoreService();
                     await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId);
+#if !DEBUG
                     Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+#endif
                     ShowMainPage();
                 }
                 else
