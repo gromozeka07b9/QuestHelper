@@ -289,6 +289,15 @@ jQuery(document).ready(function($) {
 
 	  })
 	}
-	swiperSetting();
+    swiperSetting();
 
+    var showGooglePlayAppPage = function () {
+        var isAndroid = navigator.userAgent.search('(droid)');
+        if (isAndroid != -1) {
+            if (confirm("Download app?")) {
+                window.location.href = "http://play.google.com/store/apps/details?id=com.sd.gosh";
+            }        }
+    }
+
+    showGooglePlayAppPage();
 });
