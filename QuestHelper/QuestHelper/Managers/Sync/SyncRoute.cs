@@ -64,36 +64,19 @@ namespace QuestHelper.Managers.Sync
 
                     if (_syncMediaFiles)
                     {
-                        var medias = _routePointMediaManager.GetMediaObjectsByRouteId(routeRoot.Route.Id).Where(m => !m.OriginalServerSynced || !m.PreviewServerSynced).Select(m => new { RoutePointId = m.RoutePointId, RoutePointMediaObjectId = m.RoutePointMediaObjectId, OriginalServerSynced = m.OriginalServerSynced, PreviewServerSynced = m.PreviewServerSynced, IsDeleted = m.IsDeleted, MediaType = (MediaObjectTypeEnum)m.MediaType }).ToList();
+                        var medias = _routePointMediaManager.GetMediaObjectsByRouteId(routeRoot.Route.Id).Where(m => !m.OriginalServerSynced || !m.PreviewServerSynced).Select(m => new MediaForUpdate{ RoutePointId = m.RoutePointId, RoutePointMediaObjectId = m.RoutePointMediaObjectId, OriginalServerSynced = m.OriginalServerSynced, PreviewServerSynced = m.PreviewServerSynced, IsDeleted = m.IsDeleted, MediaType = (MediaObjectTypeEnum)m.MediaType }).ToList();
                         _log.AddStringEvent($"media files sync,  route {_routeId}, media count:{medias?.Count.ToString()}");
+
+                        List<Task> tasks = new List<Task>();
                         foreach (var media in medias)
                         {
-                            if (!media.IsDeleted)
-                            {
-                                if (!media.OriginalServerSynced)
-                                {
-                                    var httpStatus = await updateMediaFileAsync(media.RoutePointId, media.RoutePointMediaObjectId, media.MediaType, false);
-                                    _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, false, httpStatus == HttpStatusCode.OK);
-                                    if (httpStatus != HttpStatusCode.OK)
-                                        _log.AddStringEvent($"media file update {media.RoutePointMediaObjectId}, original, http status:{HttpStatusCode.OK}");
-                                }
-                                if ((!media.PreviewServerSynced) && (media.MediaType == MediaObjectTypeEnum.Image))
-                                {
-                                    var httpStatus = await updateMediaFileAsync(media.RoutePointId, media.RoutePointMediaObjectId, media.MediaType, true);
-                                    _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, true, httpStatus == HttpStatusCode.OK);
-                                    if (httpStatus != HttpStatusCode.OK)
-                                        _log.AddStringEvent($"media file update {media.RoutePointMediaObjectId}, preview, http status:{HttpStatusCode.OK}");
-                                }
-                            }
-                            else
-                            {
-                                _log.AddStringEvent($"image deleted, passed mediaid:{media.RoutePointMediaObjectId}");
-                                _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, false, true);
-                                _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, true, true);
-                                MediaFileManager fileManager = new MediaFileManager();
-                                fileManager.Delete(media.RoutePointMediaObjectId, media.MediaType);
-                            }
+                            var task = new Task(async () => { await updateImages(media); });
+                            task.Start();
+                            tasks.Add(task);
                         }
+
+                        Task.WaitAll(tasks.ToArray());
+                        tasks.Clear();
                     }
                 }
             }
@@ -114,6 +97,41 @@ namespace QuestHelper.Managers.Sync
             }
 
             return true;
+        }
+
+        private async Task updateImages(MediaForUpdate media)
+        {
+            if (!media.IsDeleted)
+            {
+                if (!media.OriginalServerSynced)
+                {
+                    var httpStatus = await updateMediaFileAsync(media.RoutePointId, media.RoutePointMediaObjectId,
+                        media.MediaType, false);
+                    _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, false,
+                        httpStatus == HttpStatusCode.OK);
+                    if (httpStatus != HttpStatusCode.OK)
+                        _log.AddStringEvent(
+                            $"media file update {media.RoutePointMediaObjectId}, original, http status:{HttpStatusCode.OK}");
+                }
+
+                if ((!media.PreviewServerSynced) && (media.MediaType == MediaObjectTypeEnum.Image))
+                {
+                    var httpStatus = await updateMediaFileAsync(media.RoutePointId, media.RoutePointMediaObjectId,
+                        media.MediaType, true);
+                    _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, true, httpStatus == HttpStatusCode.OK);
+                    if (httpStatus != HttpStatusCode.OK)
+                        _log.AddStringEvent(
+                            $"media file update {media.RoutePointMediaObjectId}, preview, http status:{HttpStatusCode.OK}");
+                }
+            }
+            else
+            {
+                _log.AddStringEvent($"image deleted, passed mediaid:{media.RoutePointMediaObjectId}");
+                _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, false, true);
+                _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, true, true);
+                MediaFileManager fileManager = new MediaFileManager();
+                fileManager.Delete(media.RoutePointMediaObjectId, media.MediaType);
+            }
         }
 
         private void deleteRouteContain(ViewRoute route)
@@ -335,6 +353,16 @@ namespace QuestHelper.Managers.Sync
             {
                 return _syncMediaFiles;
             }
+        }
+
+        private class MediaForUpdate
+        {
+            public string RoutePointId { get; set; }
+            public string RoutePointMediaObjectId { get; set; }
+            public bool OriginalServerSynced { get; set; }
+            public bool PreviewServerSynced { get; set; }
+            public bool IsDeleted { get; set; }
+            public MediaObjectTypeEnum MediaType { get; set; }
         }
     }
 }
