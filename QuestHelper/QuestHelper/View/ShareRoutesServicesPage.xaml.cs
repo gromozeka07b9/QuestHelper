@@ -23,7 +23,7 @@ namespace QuestHelper.View
 
         private void ShareRoutesServicesPage_OnAppearing(object sender, EventArgs e)
         {
-            _vm.StartDialogAsync();
+            _vm.StartDialog();
         }
     }
 }

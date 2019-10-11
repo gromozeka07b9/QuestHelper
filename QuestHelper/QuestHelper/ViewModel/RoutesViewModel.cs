@@ -1,4 +1,5 @@
 ﻿using QuestHelper.Managers;
+using QuestHelper.Managers;
 using QuestHelper.LocalDB.Model;
 using QuestHelper.View;
 using QuestHelper.WS;
@@ -206,7 +207,7 @@ namespace QuestHelper.ViewModel
 
                     //var routePage = new RoutePage(value.RouteId, false);
                     //Navigation.PushAsync(routePage);
-                    var coverPage = new RouteCoverPage();
+                    var coverPage = new RouteCoverPage(value.RouteId);
                     Navigation.PushAsync(coverPage);
                     PropertyChanged(this, new PropertyChangedEventArgs("SelectedRouteItem"));
                     addNewPointFromShareAsync(_routeItem.Name);

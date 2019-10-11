@@ -1,26 +1,65 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="QuestHelper.View.RouteCoverPage">
+             xmlns:circle="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             x:Class="QuestHelper.View.RouteCoverPage" NavigationPage.HasNavigationBar="False" Appearing="RouteCoverPage_OnAppearing" Disappearing="RouteCoverPage_OnDisappearing">
     <ContentPage.ToolbarItems>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Label Grid.Row="1" Text="Название маршрута" HorizontalOptions="CenterAndExpand" Style="{StaticResource StandartTextLabel}"></Label>
-            <Label Grid.Row="2" Text="Дата маршрута" HorizontalOptions="CenterAndExpand" Style="{StaticResource StandartTextLabel}"></Label>
-            <Label Grid.Row="3" Text="Автор маршрута" HorizontalOptions="CenterAndExpand" Style="{StaticResource StandartTextLabel}"></Label>
-            <Label Grid.Row="4" Text="Название маршрута" HorizontalOptions="CenterAndExpand" Style="{StaticResource StandartTextLabel}"></Label>
-            <Label Grid.Row="5" Text="Описание маршрута" Style="{StaticResource RouteTextLabel}" TextColor="Gray" LineBreakMode="WordWrap" VerticalTextAlignment="Start" />
-        </Grid>
+        <ScrollView Orientation="Vertical">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <!--RowDefinition Height="32" />
+                    <RowDefinition Height="32" /-->
+                    <RowDefinition Height="300" />
+                    <RowDefinition Height="48" />
+                    <RowDefinition Height="128" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Image Grid.Row="0" Grid.RowSpan="2" Source="{Binding RouteCoverImage}" Aspect="AspectFill" HeightRequest="300" WidthRequest="256" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
+
+                <StackLayout Orientation="Vertical" Padding="10" Grid.Row="0" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand">
+                    <Label Text="{Binding Name}" HorizontalOptions="Center" Style="{StaticResource ImageBigTextLabel}" TextColor="White" FontSize="30" HorizontalTextAlignment="Center" Margin="30"></Label>
+                    <circle:CircleImage Source="account.png" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="64" HeightRequest="64" BorderColor="White" Aspect="AspectFill" BorderThickness="2" Margin="5">
+                    </circle:CircleImage>
+                    <Label Text="{Binding Author}" HorizontalOptions="Center" FontSize="12" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"></Label>
+                </StackLayout>
+
+                <StackLayout Grid.Row="1" Grid.RowSpan="2" Padding="10" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" BackgroundColor="#FFFFFF">
+                    <Label Text="{Binding Description}" FontSize="17" LineBreakMode="WordWrap" VerticalTextAlignment="End" VerticalOptions="Start" HorizontalTextAlignment="Start" HorizontalOptions="FillAndExpand" />
+                </StackLayout>
+
+                <StackLayout Grid.Row="1" Grid.RowSpan="1" Padding="10" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" BackgroundColor="#FFFFFF">
+                    <Label Text="{Binding CreateDateText}" FontSize="16" FontAttributes="Bold" LineBreakMode="WordWrap" VerticalTextAlignment="Start" VerticalOptions="Start" HorizontalTextAlignment="Start" HorizontalOptions="StartAndExpand" />
+                </StackLayout>
+
+                <circle:CircleImage Grid.Row="0" Grid.RowSpan="2" Source="play2.png" HorizontalOptions="EndAndExpand" VerticalOptions="EndAndExpand" WidthRequest="64" HeightRequest="64" BorderColor="#FFFFFF" BorderThickness="2" Margin="5">
+                    <circle:CircleImage.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding StartRouteCommand}"></TapGestureRecognizer>
+                    </circle:CircleImage.GestureRecognizers>
+                </circle:CircleImage>
+
+                <ListView Grid.Row="3" VerticalOptions="StartAndExpand" SeparatorVisibility="Default" RowHeight="96" HasUnevenRows="True" ItemsSource="{Binding PointsOfRoute}" SelectedItem="{Binding SelectedRoutePointItem,Mode=TwoWay}" IsPullToRefreshEnabled="False" RefreshCommand="{Binding StartDialogCommand}" CachingStrategy="RecycleElementAndDataTemplate">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                    <circle:CircleImage Source="{Binding ImagePreviewPathForList}" HorizontalOptions="Start" VerticalOptions="CenterAndExpand" WidthRequest="64" HeightRequest="64" BorderColor="Blue" BorderThickness="2" Margin="5" Aspect="Fill">
+                                    </circle:CircleImage>
+                                    <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
+                                        <Label Text="{Binding NameText}" FontSize="14" FontAttributes="Bold" TextColor="Blue" Margin="5,10,0,0" LineBreakMode="WordWrap" HorizontalOptions="StartAndExpand" HorizontalTextAlignment="Start" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center"></Label>
+                                        <Label Text="{Binding CreateDateText}" FontSize="12" FontAttributes="Bold" Margin="5,0,0,10" LineBreakMode="WordWrap" HorizontalOptions="StartAndExpand" HorizontalTextAlignment="Start" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center"></Label>
+                                    </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

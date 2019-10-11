@@ -23,7 +23,7 @@ namespace QuestHelper.View
 
         private void MakeRouteLinkPage_OnAppearing(object sender, EventArgs e)
         {
-            _vm.StartDialogAsync();
+            _vm.StartDialog();
         }
 
         private void MakeRouteLinkPage_OnDisappearing(object sender, EventArgs e)
