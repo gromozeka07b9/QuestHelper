@@ -17,10 +17,10 @@ namespace QuestHelper.View
     public partial class RouteCarouselRootPage : ContentPage
     {
         private RouteCarouselRootViewModel _vm;
-        public RouteCarouselRootPage(string routeId)
+        public RouteCarouselRootPage(string routeId, string routePointId = "")
         {
             InitializeComponent();
-            _vm = new RouteCarouselRootViewModel(routeId) { Navigation = this.Navigation };
+            _vm = new RouteCarouselRootViewModel(routeId, routePointId) { Navigation = this.Navigation };
             BindingContext = _vm;
         }
 

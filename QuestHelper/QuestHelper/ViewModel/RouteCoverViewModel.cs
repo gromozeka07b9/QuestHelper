@@ -20,6 +20,7 @@ namespace QuestHelper.ViewModel
 
         private RoutePointManager _routePointManager = new RoutePointManager();
         private ViewRoute _vroute;
+        private ViewRoutePoint _pointItem;
         private readonly string _routeId;
         private ObservableCollection<ViewRoutePoint> _viewPointsOfRoute = new ObservableCollection<ViewRoutePoint>();
 
@@ -76,6 +77,21 @@ namespace QuestHelper.ViewModel
             get
             {
                 return _viewPointsOfRoute;
+            }
+        }
+
+        public ViewRoutePoint SelectedRoutePointItem
+        {
+            set
+            {
+                if (_pointItem != value)
+                {
+                    _pointItem = value;
+                    var page = new RouteCarouselRootPage(_vroute.RouteId, _pointItem.Id);
+                    Navigation.PushAsync(page);
+                    PropertyChanged(this, new PropertyChangedEventArgs("SelectedRoutePointItem"));
+                    _pointItem = null;
+                }
             }
         }
 

@@ -87,14 +87,9 @@ namespace QuestHelper.ViewModel
                 if (_routeItem != value)
                 {
                     _routeItem = value;
-
-                    var page = new RouteCarouselRootPage(_routeItem.RouteId);
-                    Navigation.PushAsync(page);
+                    var coverPage = new RouteCoverPage(_routeItem.RouteId);
+                    Navigation.PushAsync(coverPage);
                     PropertyChanged(this, new PropertyChangedEventArgs("SelectedRouteItem"));
-                    /*var routePage = new RoutePage(value.RouteId, false);
-                    Navigation.PushAsync(routePage);
-                    PropertyChanged(this, new PropertyChangedEventArgs("SelectedRouteItem"));
-                    addNewPointFromShareAsync(_routeItem.Name);*/
                     _routeItem = null;
                 }
             }

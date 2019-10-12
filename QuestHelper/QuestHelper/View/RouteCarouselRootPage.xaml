@@ -11,7 +11,6 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"></RowDefinition>
                         <RowDefinition Height="9*"></RowDefinition>
-                        <!--RowDefinition Height="2*"></-->
                     </Grid.RowDefinitions>
                     <pancardview:CarouselView Grid.Row="0" Grid.RowSpan="3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="Cards" ItemsSource="{Binding CarouselPages}" AreAnimationsEnabled="True" ItemAppearing="Cards_OnItemAppearing">
                         <pancardview:CarouselView.ItemTemplate>

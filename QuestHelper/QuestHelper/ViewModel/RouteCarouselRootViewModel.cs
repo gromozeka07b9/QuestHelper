@@ -19,20 +19,15 @@ namespace QuestHelper.ViewModel
         private RouteManager _routeManager = new RouteManager();
         private RoutePointManager _routePointManager = new RoutePointManager();
         private CarouselItem _currentItem;
+        private string _routePointId = string.Empty;
 
         public INavigation Navigation { get; set; }
-        public event PropertyChangedEventHandler PropertyChanged;
-        
-        //public ICommand EditRoutePointCommand { get; private set; }
-        
+        public event PropertyChangedEventHandler PropertyChanged;             
 
-
-        public RouteCarouselRootViewModel(string routeId)
+        public RouteCarouselRootViewModel(string routeId, string routePointId = "")
         {
             _routeObject = new ViewRoute(routeId);
-
-            //EditRoutePointCommand = new Command(editRoutePointCommand);
-
+            _routePointId = routePointId;
         }
 
         public string RouteName
@@ -80,12 +75,21 @@ namespace QuestHelper.ViewModel
                 }
             }
         }
+
         public List<CarouselItem> CarouselPages
         {
             get
             {
                 List<CarouselItem> items = new List<CarouselItem>();
-                var points = _routePointManager.GetPointsByRouteId(_routeObject.RouteId);
+                IEnumerable<ViewRoutePoint> points = new List<ViewRoutePoint>();
+                if (!string.IsNullOrEmpty(_routePointId))
+                {
+                    points = _routePointManager.GetPointsByRouteId(_routeObject.RouteId).Where(p=>p.Id.Equals(_routePointId));
+                }
+                else
+                {
+                    points = _routePointManager.GetPointsByRouteId(_routeObject.RouteId);
+                }
                 if (points.Any())
                 {
                     foreach (var point in points)
