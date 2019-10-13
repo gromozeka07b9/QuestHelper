@@ -13,7 +13,7 @@ using QuestHelper.Model;
 
 namespace QuestHelper.WS
 {
-    public class RoutePointsApiRequest : IRoutePointsApiRequest, IDownloadable<ViewRoute>, IUploadable<ViewRoute>
+    public class RoutePointsApiRequest : IRoutePointsApiRequest, IHTTPStatusCode, IUploadable<ViewRoute>
     {
         private string _hostUrl = string.Empty;
         private string _authToken = string.Empty;
@@ -65,23 +65,6 @@ namespace QuestHelper.WS
             catch (Exception e)
             {
                 HandleError.Process("RoutePointsApiRequest", "GetRoutePoints", e, false);
-            }
-            return deserializedValue;
-        }
-
-        public async Task<ISaveable> DownloadFromServerAsync(string routePointId)
-        {
-            ViewRoutePoint deserializedValue = new ViewRoutePoint();
-            try
-            {
-                ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{this._hostUrl}/routepoints/{routePointId}", _authToken);
-                LastHttpStatusCode = api.LastHttpStatusCode;
-                deserializedValue = JsonConvert.DeserializeObject<ViewRoutePoint>(response);
-            }
-            catch (Exception e)
-            {
-                HandleError.Process("RoutePointsApiRequest", "GetRoutePoint", e, false);
             }
             return deserializedValue;
         }

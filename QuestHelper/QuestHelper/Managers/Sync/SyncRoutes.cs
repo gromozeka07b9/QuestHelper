@@ -14,7 +14,7 @@ using Route = QuestHelper.SharedModelsWS.Route;
 
 namespace QuestHelper.Managers.Sync
 {
-    public class SyncRoutes : SyncBase
+    public class SyncRoutes //: SyncBase
     {
         private const string _apiUrl = "http://igosh.pro/api";
         private readonly RoutesApiRequest _routesApi;
@@ -24,6 +24,7 @@ namespace QuestHelper.Managers.Sync
         private readonly RoutePointManager _routePointManager = new RoutePointManager();
         private readonly RoutePointMediaObjectManager _routePointMediaManager = new RoutePointMediaObjectManager();
         private readonly string _authToken = string.Empty;
+        public bool AuthRequired { get; internal set; }
         private Logger _log = new Logger(true);
 
         public SyncRoutes(string authToken)
@@ -61,7 +62,7 @@ namespace QuestHelper.Managers.Sync
                     foreach (var serverRouteVersion in differentRoutes)
                     {
                         SyncRoute syncRouteContext = new SyncRoute(serverRouteVersion.Id, _authToken);
-                        syncRouteContext.SyncImages = true;
+                        syncRouteContext.SyncImages = false;
                         _log.AddStringEvent($"start sync diff route {serverRouteVersion.Id}");
                         result = await syncRouteContext.SyncAsync(serverRouteVersion.ObjVerHash);
                         _log.AddStringEvent($"diff route result, {serverRouteVersion.Id} :" + result);
@@ -76,7 +77,7 @@ namespace QuestHelper.Managers.Sync
                     foreach (var localRouteId in newClientRoutes)
                     {
                         SyncRoute syncRouteContext = new SyncRoute(localRouteId, _authToken);
-                        syncRouteContext.SyncImages = true;
+                        syncRouteContext.SyncImages = false;
                         _log.AddStringEvent($"start sync new route {localRouteId}");
                         result = await syncRouteContext.SyncAsync(string.Empty);
                         _log.AddStringEvent($"new route result, {localRouteId} :" + result);

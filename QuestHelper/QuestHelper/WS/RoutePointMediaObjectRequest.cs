@@ -19,7 +19,7 @@ using Xamarin.Forms.PlatformConfiguration;
 
 namespace QuestHelper.WS
 {
-    public class RoutePointMediaObjectRequest : IRoutePointMediaObjectRequest, IDownloadable<ViewRoute>, IUploadable<ViewRoute>
+    public class RoutePointMediaObjectRequest : IRoutePointMediaObjectRequest, IHTTPStatusCode, IUploadable<ViewRoute>
     {
         private string _hostUrl = string.Empty;
         private string _authToken = string.Empty;
@@ -188,23 +188,6 @@ namespace QuestHelper.WS
             return addResult;
         }
 
-        public async Task<ISaveable> DownloadFromServerAsync(string routePointMediaObjectId)
-        {
-            ViewRoutePointMediaObject deserializedValue = new ViewRoutePointMediaObject();
-            try
-            {
-                ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{this._hostUrl}/routepointmediaobjects/{routePointMediaObjectId}", _authToken);
-                LastHttpStatusCode = api.LastHttpStatusCode;
-                deserializedValue = JsonConvert.DeserializeObject<ViewRoutePointMediaObject>(response);
-                //deserializedValue.ServerSynced = true;
-            }
-            catch (Exception e)
-            {
-                HandleError.Process("RoutePointMediaObjectApiRequest", "GetRoutePointMediaObject", e, false);
-            }
-            return deserializedValue;
-        }
         public HttpStatusCode GetLastHttpStatusCode()
         {
             return LastHttpStatusCode;

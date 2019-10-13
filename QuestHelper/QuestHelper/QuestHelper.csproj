@@ -11,7 +11,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Acr.UserDialogs" Version="7.0.4" />
-    <PackageReference Include="CardsView" Version="2.2.0" />
+    <PackageReference Include="CardsView" Version="2.3.4" />
     <PackageReference Include="ExifLib.Standard" Version="1.7.0" />
     <PackageReference Include="Microsoft.AppCenter" Version="2.1.1" />
     <PackageReference Include="Microsoft.AppCenter.Analytics" Version="2.1.1" />

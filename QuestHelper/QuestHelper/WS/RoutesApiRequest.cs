@@ -15,7 +15,7 @@ using QuestHelper.SharedModelsWS;
 namespace QuestHelper.WS
 {
     //public class RoutesApiRequest : IRoutesApiRequest, IDownloadable<ViewRoute>, IUploadable<ViewRoute>
-    public class RoutesApiRequest : IDownloadable<ViewRoute>, IUploadable<ViewRoute>
+    public class RoutesApiRequest : IHTTPStatusCode, IUploadable<ViewRoute>
     {
         private string _hostUrl = string.Empty;
         private string _authToken = string.Empty;
@@ -127,23 +127,6 @@ namespace QuestHelper.WS
                 HandleError.Process("RoutesApiRequest", "DeleteRoute", e, false);
             }
             return deleteResult;
-        }
-
-        public async Task<ISaveable> DownloadFromServerAsync(string id)
-        {
-            ViewRoute deserializedValue = new ViewRoute(id);
-            try
-            {
-                ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{this._hostUrl}/routes/{id}", _authToken);
-                LastHttpStatusCode = api.LastHttpStatusCode;
-                deserializedValue = JsonConvert.DeserializeObject<ViewRoute>(response);
-            }
-            catch (Exception e)
-            {
-                HandleError.Process("RoutesApiRequest", "GetRoute", e, false);
-            }
-            return deserializedValue;
         }
 
         internal async Task<bool> ShareRouteAsync(string jsonStructure)

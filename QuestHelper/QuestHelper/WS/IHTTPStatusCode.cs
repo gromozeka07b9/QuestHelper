@@ -7,9 +7,8 @@ using QuestHelper.Model;
 
 namespace QuestHelper.WS
 {
-    public interface IDownloadable<T>
+    public interface IHTTPStatusCode
     {
-        Task<ISaveable> DownloadFromServerAsync(string id);
         HttpStatusCode GetLastHttpStatusCode();
     }
 }

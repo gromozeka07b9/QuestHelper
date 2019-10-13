@@ -1790,6 +1790,10 @@ namespace QuestHelper.Droid
 			global::PanCardView.Droid.Resource.Animation.design_bottom_sheet_slide_out = global::QuestHelper.Droid.Resource.Animation.design_bottom_sheet_slide_out;
 			global::PanCardView.Droid.Resource.Animation.design_snackbar_in = global::QuestHelper.Droid.Resource.Animation.design_snackbar_in;
 			global::PanCardView.Droid.Resource.Animation.design_snackbar_out = global::QuestHelper.Droid.Resource.Animation.design_snackbar_out;
+			global::PanCardView.Droid.Resource.Animation.EnterFromLeft = global::QuestHelper.Droid.Resource.Animation.EnterFromLeft;
+			global::PanCardView.Droid.Resource.Animation.EnterFromRight = global::QuestHelper.Droid.Resource.Animation.EnterFromRight;
+			global::PanCardView.Droid.Resource.Animation.ExitToLeft = global::QuestHelper.Droid.Resource.Animation.ExitToLeft;
+			global::PanCardView.Droid.Resource.Animation.ExitToRight = global::QuestHelper.Droid.Resource.Animation.ExitToRight;
 			global::PanCardView.Droid.Resource.Animator.design_appbar_state_list_animator = global::QuestHelper.Droid.Resource.Animator.design_appbar_state_list_animator;
 			global::PanCardView.Droid.Resource.Attribute.actionBarDivider = global::QuestHelper.Droid.Resource.Attribute.actionBarDivider;
 			global::PanCardView.Droid.Resource.Attribute.actionBarItemBackground = global::QuestHelper.Droid.Resource.Attribute.actionBarItemBackground;
@@ -2552,6 +2556,8 @@ namespace QuestHelper.Droid
 			global::PanCardView.Droid.Resource.Id.beginning = global::QuestHelper.Droid.Resource.Id.beginning;
 			global::PanCardView.Droid.Resource.Id.blocking = global::QuestHelper.Droid.Resource.Id.blocking;
 			global::PanCardView.Droid.Resource.Id.bottom = global::QuestHelper.Droid.Resource.Id.bottom;
+			global::PanCardView.Droid.Resource.Id.bottomtab_navarea = global::QuestHelper.Droid.Resource.Id.bottomtab_navarea;
+			global::PanCardView.Droid.Resource.Id.bottomtab_tabbar = global::QuestHelper.Droid.Resource.Id.bottomtab_tabbar;
 			global::PanCardView.Droid.Resource.Id.buttonPanel = global::QuestHelper.Droid.Resource.Id.buttonPanel;
 			global::PanCardView.Droid.Resource.Id.cancel_action = global::QuestHelper.Droid.Resource.Id.cancel_action;
 			global::PanCardView.Droid.Resource.Id.center = global::QuestHelper.Droid.Resource.Id.center;
@@ -2587,6 +2593,8 @@ namespace QuestHelper.Droid
 			global::PanCardView.Droid.Resource.Id.fill_horizontal = global::QuestHelper.Droid.Resource.Id.fill_horizontal;
 			global::PanCardView.Droid.Resource.Id.fill_vertical = global::QuestHelper.Droid.Resource.Id.fill_vertical;
 			global::PanCardView.Droid.Resource.Id.@fixed = global::QuestHelper.Droid.Resource.Id.@fixed;
+			global::PanCardView.Droid.Resource.Id.flyoutcontent_appbar = global::QuestHelper.Droid.Resource.Id.flyoutcontent_appbar;
+			global::PanCardView.Droid.Resource.Id.flyoutcontent_recycler = global::QuestHelper.Droid.Resource.Id.flyoutcontent_recycler;
 			global::PanCardView.Droid.Resource.Id.forever = global::QuestHelper.Droid.Resource.Id.forever;
 			global::PanCardView.Droid.Resource.Id.ghost_view = global::QuestHelper.Droid.Resource.Id.ghost_view;
 			global::PanCardView.Droid.Resource.Id.home = global::QuestHelper.Droid.Resource.Id.home;
@@ -2604,6 +2612,10 @@ namespace QuestHelper.Droid
 			global::PanCardView.Droid.Resource.Id.line3 = global::QuestHelper.Droid.Resource.Id.line3;
 			global::PanCardView.Droid.Resource.Id.listMode = global::QuestHelper.Droid.Resource.Id.listMode;
 			global::PanCardView.Droid.Resource.Id.list_item = global::QuestHelper.Droid.Resource.Id.list_item;
+			global::PanCardView.Droid.Resource.Id.main_appbar = global::QuestHelper.Droid.Resource.Id.main_appbar;
+			global::PanCardView.Droid.Resource.Id.main_tablayout = global::QuestHelper.Droid.Resource.Id.main_tablayout;
+			global::PanCardView.Droid.Resource.Id.main_toolbar = global::QuestHelper.Droid.Resource.Id.main_toolbar;
+			global::PanCardView.Droid.Resource.Id.main_viewpager = global::QuestHelper.Droid.Resource.Id.main_viewpager;
 			global::PanCardView.Droid.Resource.Id.masked = global::QuestHelper.Droid.Resource.Id.masked;
 			global::PanCardView.Droid.Resource.Id.media_actions = global::QuestHelper.Droid.Resource.Id.media_actions;
 			global::PanCardView.Droid.Resource.Id.message = global::QuestHelper.Droid.Resource.Id.message;
@@ -2647,6 +2659,8 @@ namespace QuestHelper.Droid
 			global::PanCardView.Droid.Resource.Id.search_src_text = global::QuestHelper.Droid.Resource.Id.search_src_text;
 			global::PanCardView.Droid.Resource.Id.search_voice_btn = global::QuestHelper.Droid.Resource.Id.search_voice_btn;
 			global::PanCardView.Droid.Resource.Id.select_dialog_listview = global::QuestHelper.Droid.Resource.Id.select_dialog_listview;
+			global::PanCardView.Droid.Resource.Id.shellcontent_appbar = global::QuestHelper.Droid.Resource.Id.shellcontent_appbar;
+			global::PanCardView.Droid.Resource.Id.shellcontent_toolbar = global::QuestHelper.Droid.Resource.Id.shellcontent_toolbar;
 			global::PanCardView.Droid.Resource.Id.shortcut = global::QuestHelper.Droid.Resource.Id.shortcut;
 			global::PanCardView.Droid.Resource.Id.showCustom = global::QuestHelper.Droid.Resource.Id.showCustom;
 			global::PanCardView.Droid.Resource.Id.showHome = global::QuestHelper.Droid.Resource.Id.showHome;
@@ -2728,6 +2742,7 @@ namespace QuestHelper.Droid
 			global::PanCardView.Droid.Resource.Layout.abc_search_dropdown_item_icons_2line = global::QuestHelper.Droid.Resource.Layout.abc_search_dropdown_item_icons_2line;
 			global::PanCardView.Droid.Resource.Layout.abc_search_view = global::QuestHelper.Droid.Resource.Layout.abc_search_view;
 			global::PanCardView.Droid.Resource.Layout.abc_select_dialog_material = global::QuestHelper.Droid.Resource.Layout.abc_select_dialog_material;
+			global::PanCardView.Droid.Resource.Layout.BottomTabLayout = global::QuestHelper.Droid.Resource.Layout.BottomTabLayout;
 			global::PanCardView.Droid.Resource.Layout.design_bottom_navigation_item = global::QuestHelper.Droid.Resource.Layout.design_bottom_navigation_item;
 			global::PanCardView.Droid.Resource.Layout.design_bottom_sheet_dialog = global::QuestHelper.Droid.Resource.Layout.design_bottom_sheet_dialog;
 			global::PanCardView.Droid.Resource.Layout.design_layout_snackbar = global::QuestHelper.Droid.Resource.Layout.design_layout_snackbar;
@@ -2742,6 +2757,7 @@ namespace QuestHelper.Droid
 			global::PanCardView.Droid.Resource.Layout.design_navigation_menu = global::QuestHelper.Droid.Resource.Layout.design_navigation_menu;
 			global::PanCardView.Droid.Resource.Layout.design_navigation_menu_item = global::QuestHelper.Droid.Resource.Layout.design_navigation_menu_item;
 			global::PanCardView.Droid.Resource.Layout.design_text_input_password_icon = global::QuestHelper.Droid.Resource.Layout.design_text_input_password_icon;
+			global::PanCardView.Droid.Resource.Layout.FlyoutContent = global::QuestHelper.Droid.Resource.Layout.FlyoutContent;
 			global::PanCardView.Droid.Resource.Layout.notification_action = global::QuestHelper.Droid.Resource.Layout.notification_action;
 			global::PanCardView.Droid.Resource.Layout.notification_action_tombstone = global::QuestHelper.Droid.Resource.Layout.notification_action_tombstone;
 			global::PanCardView.Droid.Resource.Layout.notification_media_action = global::QuestHelper.Droid.Resource.Layout.notification_media_action;
@@ -2757,9 +2773,11 @@ namespace QuestHelper.Droid
 			global::PanCardView.Droid.Resource.Layout.notification_template_media_custom = global::QuestHelper.Droid.Resource.Layout.notification_template_media_custom;
 			global::PanCardView.Droid.Resource.Layout.notification_template_part_chronometer = global::QuestHelper.Droid.Resource.Layout.notification_template_part_chronometer;
 			global::PanCardView.Droid.Resource.Layout.notification_template_part_time = global::QuestHelper.Droid.Resource.Layout.notification_template_part_time;
+			global::PanCardView.Droid.Resource.Layout.RootLayout = global::QuestHelper.Droid.Resource.Layout.RootLayout;
 			global::PanCardView.Droid.Resource.Layout.select_dialog_item_material = global::QuestHelper.Droid.Resource.Layout.select_dialog_item_material;
 			global::PanCardView.Droid.Resource.Layout.select_dialog_multichoice_material = global::QuestHelper.Droid.Resource.Layout.select_dialog_multichoice_material;
 			global::PanCardView.Droid.Resource.Layout.select_dialog_singlechoice_material = global::QuestHelper.Droid.Resource.Layout.select_dialog_singlechoice_material;
+			global::PanCardView.Droid.Resource.Layout.ShellContent = global::QuestHelper.Droid.Resource.Layout.ShellContent;
 			global::PanCardView.Droid.Resource.Layout.support_simple_spinner_dropdown_item = global::QuestHelper.Droid.Resource.Layout.support_simple_spinner_dropdown_item;
 			global::PanCardView.Droid.Resource.String.abc_action_bar_home_description = global::QuestHelper.Droid.Resource.String.abc_action_bar_home_description;
 			global::PanCardView.Droid.Resource.String.abc_action_bar_up_description = global::QuestHelper.Droid.Resource.String.abc_action_bar_up_description;
@@ -3175,6 +3193,7 @@ namespace QuestHelper.Droid
 			global::PanCardView.Droid.Resource.Style.Widget_Design_Snackbar = global::QuestHelper.Droid.Resource.Style.Widget_Design_Snackbar;
 			global::PanCardView.Droid.Resource.Style.Widget_Design_TabLayout = global::QuestHelper.Droid.Resource.Style.Widget_Design_TabLayout;
 			global::PanCardView.Droid.Resource.Style.Widget_Design_TextInputLayout = global::QuestHelper.Droid.Resource.Style.Widget_Design_TextInputLayout;
+			global::PanCardView.Droid.Resource.Style.collectionViewStyle = global::QuestHelper.Droid.Resource.Style.collectionViewStyle;
 			global::PanCardView.Droid.Resource.Styleable.ActionBar = global::QuestHelper.Droid.Resource.Styleable.ActionBar;
 			global::PanCardView.Droid.Resource.Styleable.ActionBar_background = global::QuestHelper.Droid.Resource.Styleable.ActionBar_background;
 			global::PanCardView.Droid.Resource.Styleable.ActionBar_backgroundSplit = global::QuestHelper.Droid.Resource.Styleable.ActionBar_backgroundSplit;
