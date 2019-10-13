@@ -110,6 +110,8 @@ namespace QuestHelper.Managers
                     route.IsDeleted = viewRoute.IsDeleted;
                     route.CreatorId = viewRoute.CreatorId;
                     route.ObjVerHash = viewRoute.ObjVerHash;
+                    route.ImgFilename = viewRoute.ImgFilename;
+                    route.Description = viewRoute.Description;
                     viewRoute.Refresh(route.RouteId);
                 });
                 result = true;

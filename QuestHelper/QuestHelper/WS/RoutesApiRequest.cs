@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using QuestHelper.Model;
 using System.Threading;
 using QuestHelper.SharedModelsWS;
+using QuestHelper.Managers;
 
 namespace QuestHelper.WS
 {
@@ -202,6 +203,22 @@ namespace QuestHelper.WS
             return createResult;
         }
 
+        public async Task<bool> DownloadCoverImage(string routeId, string imgFilename)
+        {
+            bool result = false;
+            try
+            {
+                ApiRequest api = new ApiRequest();
+                string pathToMediaFile = Path.Combine(ImagePathManager.GetPicturesDirectory(), imgFilename);
+                result = await api.HttpRequestGetFile($"{this._hostUrl}/route/{routeId}/cover", pathToMediaFile, _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RoutesApiRequest", "DownloadCoverImage", e, false);
+            }
+            return result;
+        }
 
         public HttpStatusCode GetLastHttpStatusCode()
         {

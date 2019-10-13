@@ -21,6 +21,8 @@ namespace QuestHelper.Server.Models
                 route.Id = dbRoute.RouteId;
                 route.CreateDate = dbRoute.CreateDate;
                 route.Version = dbRoute.Version;
+                route.ImgFilename = dbRoute.ImgFilename;
+                route.Description = dbRoute.Description;
             }
 
             return route;

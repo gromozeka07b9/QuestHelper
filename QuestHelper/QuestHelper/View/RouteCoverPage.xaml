@@ -46,7 +46,7 @@
                     <DataTemplate>
                         <ViewCell>
                             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                                <circle:CircleImage Source="{Binding ImagePreviewPathForList}" HorizontalOptions="Start" VerticalOptions="CenterAndExpand" WidthRequest="64" HeightRequest="64" BorderColor="Blue" BorderThickness="2" Margin="5" Aspect="Fill">
+                                <circle:CircleImage Source="{Binding CoverImage}" HorizontalOptions="Start" VerticalOptions="CenterAndExpand" WidthRequest="64" HeightRequest="64" BorderColor="Blue" BorderThickness="2" Margin="5" Aspect="Fill">
                                 </circle:CircleImage>
                                 <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
                                     <Label Text="{Binding NameText}" FontSize="14" FontAttributes="Bold" TextColor="Blue" Margin="5,10,0,0" LineBreakMode="WordWrap" HorizontalOptions="StartAndExpand" HorizontalTextAlignment="Start" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center"></Label>

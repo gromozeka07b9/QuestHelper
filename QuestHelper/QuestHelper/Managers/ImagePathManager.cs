@@ -11,7 +11,6 @@ namespace QuestHelper.Managers
     {
         public static string GetImagePath(string mediaId, LocalDB.Model.MediaObjectTypeEnum mediaType, bool isPreview = false)
         {
-            //string filename = isPreview?$"img_{mediaId}_preview.jpg": $"img_{mediaId}.jpg";
             string filename = GetMediaFilename(mediaId, mediaType, isPreview);
             return Path.Combine(DependencyService.Get<IPathService>().PrivateExternalFolder, "pictures", filename);
         }

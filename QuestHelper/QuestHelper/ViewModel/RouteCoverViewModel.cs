@@ -49,7 +49,7 @@ namespace QuestHelper.ViewModel
         {
         }
 
-        public void StartDialog()
+        public async void StartDialog()
         {
             var toolbarService = DependencyService.Get<IToolbarService>();
             toolbarService.SetVisibilityToolbar(false);
@@ -99,12 +99,12 @@ namespace QuestHelper.ViewModel
         {
             get
             {
-                return _vroute.ImagePreviewPathForList;
+                return _vroute.CoverImage;
             }
         }
         public string Description
         {
-            get { return "Длинное тестовое описание маршрута. Зачем его создали, кто создал, короткая справка о чем маршрут, а то может я и не захочу его загружать."; }
+            get { return _vroute.Description; }
         }
         public string Name
         {

@@ -327,6 +327,10 @@ namespace QuestHelper.Managers.Sync
                 ViewRoute updateViewRoute = new ViewRoute(_routeId);
                 updateViewRoute.FillFromWSModel(routeRoot, routeServerHash);
                 updateResult = updateViewRoute.Save();
+                if ((updateResult)&&(!string.IsNullOrEmpty(updateViewRoute.ImgFilename)))
+                {
+                    updateResult = await _routesApi.DownloadCoverImage(_routeId, updateViewRoute.ImgFilename);
+                }
             }
             else if (string.IsNullOrEmpty(routeServerHash))
             {

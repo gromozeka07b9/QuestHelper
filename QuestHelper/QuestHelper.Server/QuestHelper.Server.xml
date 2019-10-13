@@ -4,6 +4,18 @@
         <name>QuestHelper.Server</name>
     </assembly>
     <members>
+        <member name="M:QuestHelper.Server.Controllers.RouteSync.RouteSyncController.GetCoverImage(System.String)">
+            <summary>
+            Get image cover for selected route
+            </summary>
+            <param name="routeId">route Id</param>
+            <returns></returns>
+        </member>
+        <member name="T:QuestHelper.Server.Controllers.Routes.RoutesController">
+            <summary>
+            Obsolete!
+            </summary>
+        </member>
         <member name="M:QuestHelper.Server.Controllers.Routes.RoutesController.Get">
             <summary>
             Returns list of available routes

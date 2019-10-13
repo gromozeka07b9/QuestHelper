@@ -14,7 +14,7 @@ using Route = QuestHelper.SharedModelsWS.Route;
 
 namespace QuestHelper.Managers.Sync
 {
-    public class SyncRoutes //: SyncBase
+    public class SyncRoutes
     {
         private const string _apiUrl = "http://igosh.pro/api";
         private readonly RoutesApiRequest _routesApi;

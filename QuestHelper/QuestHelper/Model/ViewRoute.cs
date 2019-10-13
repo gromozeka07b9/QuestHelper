@@ -1,6 +1,7 @@
 ﻿using QuestHelper.LocalDB.Model;
 using QuestHelper.Managers;
 using QuestHelper.SharedModelsWS;
+using QuestHelper.WS;
 using Realms;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Route = QuestHelper.LocalDB.Model.Route;
 
@@ -165,6 +167,30 @@ namespace QuestHelper.Model
             }
         }
 
+        public string ImgFilename
+        {
+            set
+            {
+                _imgFilename = value;
+            }
+            get
+            {
+                return _imgFilename;
+            }
+        }
+
+        public string Description
+        {
+            set
+            {
+                _description = value;
+            }
+            get
+            {
+                return _description;
+            }
+        }
+
         public int Version
         {
             get
@@ -176,11 +202,22 @@ namespace QuestHelper.Model
                 _version = value;
             }
         }
-        public string ImagePreviewPathForList
+
+        public string CoverImage
         {
             get
             {
-                if (string.IsNullOrEmpty(_imagePreviewPathForList))
+                string imgCover = string.Empty;
+                if (!string.IsNullOrEmpty(_imgFilename))
+                {
+                    string imgPath = Path.Combine(ImagePathManager.GetPicturesDirectory(), _imgFilename);
+                    if (File.Exists(imgPath))
+                    {
+                        imgCover = imgPath;
+                    }
+                }
+
+                if (string.IsNullOrEmpty(imgCover))
                 {
                     RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
                     ViewRoutePointMediaObject vMedia = mediaManager.GetFirstMediaObjectByRouteId(RouteId);
@@ -188,14 +225,46 @@ namespace QuestHelper.Model
                     {
                         if (!vMedia.IsDeleted)
                         {
-                            _imagePreviewPathForList = ImagePathManager.GetImagePath(vMedia.RoutePointMediaObjectId, MediaObjectTypeEnum.Image, true);
+                            imgCover = ImagePathManager.GetImagePath(vMedia.RoutePointMediaObjectId, MediaObjectTypeEnum.Image, true);
                         }
                     }
-                    else _imagePreviewPathForList = "mount1.png";
+                    else imgCover = "mount1.png";
                 }
-                return _imagePreviewPathForList;
+                return imgCover;
             }
         }
+
+        /*public string CoverImage
+        {
+            get
+            {
+                string imgCover = string.Empty;
+                if (!string.IsNullOrEmpty(_imgFilename))
+                {
+                    string imgPath = Path.Combine(ImagePathManager.GetPicturesDirectory(), _imgFilename);
+                    if (File.Exists(imgPath))
+                    {
+                        imgCover = imgPath;
+                    }
+                }
+
+                if(string.IsNullOrEmpty(imgCover))
+                {
+                    RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
+                    ViewRoutePointMediaObject vMedia = mediaManager.GetFirstMediaObjectByRouteId(RouteId);
+                    if (!string.IsNullOrEmpty(vMedia.Id))
+                    {
+                        if (!vMedia.IsDeleted)
+                        {
+                            imgCover = ImagePathManager.GetImagePath(vMedia.RoutePointMediaObjectId, MediaObjectTypeEnum.Image, true);
+                        }
+                    }
+                    else imgCover = "mount1.png";
+                }
+                return imgCover;
+            }
+        }*/
+
         public string RouteLengthKm
         {
             get

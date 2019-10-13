@@ -12,7 +12,8 @@ namespace QuestHelper.View.Converters
             {
                 return Aspect.AspectFit;
             }
-            else return Aspect.AspectFill;
+            //else return Aspect.AspectFill;
+            else return Aspect.Fill;
         }
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {

@@ -39,7 +39,7 @@ namespace QuestHelper.Droid.ShareServices
                 List<Uri> uris = new List<Uri>();
                 if (routePoints.Any())
                 {
-                    Java.IO.File file = new Java.IO.File(vroute.ImagePreviewPathForList);
+                    Java.IO.File file = new Java.IO.File(vroute.CoverImage);
                     var fileUri = FileProvider.GetUriForFile(Android.App.Application.Context, Android.App.Application.Context.PackageName + ".fileprovider", file);
                     share.PutExtra(Intent.ExtraStream, fileUri);
                     uris.Add(fileUri);

@@ -13,6 +13,9 @@ using QuestHelper.Server.Models;
 
 namespace QuestHelper.Server.Controllers.Routes
 {
+    /// <summary>
+    /// Obsolete!
+    /// </summary>
     [Authorize]
     [ServiceFilter(typeof(RequestFilter))]
     [Route("api/[controller]")]

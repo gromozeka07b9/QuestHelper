@@ -126,5 +126,36 @@ namespace QuestHelper.Server.Controllers.RouteSync
             return new ObjectResult(routeRoot);
         }
 
+        /// <summary>
+        /// Get image cover for selected route
+        /// </summary>
+        /// <param name="routeId">route Id</param>
+        /// <returns></returns>
+        [HttpGet("{routeid}/cover")]
+        public IActionResult GetCoverImage(string routeId)
+        {
+            DateTime startDate = DateTime.Now;
+            string userId = IdentityManager.GetUserId(HttpContext);
+            AvailableRoutes availRoutes = new AvailableRoutes(_dbOptions);
+            var dbRoute = availRoutes.Get(userId).FirstOrDefault(r => r.RouteId == routeId);
+            if (dbRoute != null)
+            {
+                if (!string.IsNullOrEmpty(dbRoute.ImgFilename))
+                {
+                    MediaManager _mediaManager = new MediaManager();
+                    MemoryStream memStream = new MemoryStream();
+                    _mediaManager.DownloadToStream(memStream, dbRoute.ImgFilename);
+                    memStream.Position = 0;
+                    return File(memStream, "image/jpeg", dbRoute.ImgFilename);
+                }
+                else Response.StatusCode = 404;
+
+            }
+            else Response.StatusCode = 204;
+            TimeSpan delay = DateTime.Now - startDate;
+            Console.WriteLine($"GetCoverImage by Id: status 200, {userId}, {routeId}, delay:{delay.Milliseconds}");
+            return new ObjectResult("");
+        }
+
     }
 }

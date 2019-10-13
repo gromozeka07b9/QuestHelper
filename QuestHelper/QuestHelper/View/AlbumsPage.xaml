@@ -42,7 +42,7 @@
                                         <RowDefinition Height="1*"/>
                                         <RowDefinition Height="1*"/>
                                     </Grid.RowDefinitions>
-                                    <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="{Binding ImagePreviewPathForList}" Margin="0,0,0,0" Aspect="{Binding ImagePreviewPathForList, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                                    <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="{Binding CoverImage}" Margin="0,0,0,0" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
 
                                     <Label Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding RouteLengthKm}" FontSize="10" FontAttributes="Bold" LineBreakMode="NoWrap" Margin="0,0,10,0" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Start" HorizontalTextAlignment="End"></Label>
                                     <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding RouteLengthSteps}" FontSize="10" FontAttributes="Bold" LineBreakMode="NoWrap" Margin="0,0,10,0" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Start" HorizontalTextAlignment="End"></Label>
