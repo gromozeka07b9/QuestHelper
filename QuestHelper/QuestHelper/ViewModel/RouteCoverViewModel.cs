@@ -1,5 +1,6 @@
 ﻿using QuestHelper.LocalDB.Model;
 using QuestHelper.Managers;
+using QuestHelper.Managers.Sync;
 using QuestHelper.Model;
 using QuestHelper.View;
 using System;
@@ -49,10 +50,13 @@ namespace QuestHelper.ViewModel
         {
         }
 
-        public async void StartDialog()
+        public async void StartDialogAsync()
         {
             var toolbarService = DependencyService.Get<IToolbarService>();
             toolbarService.SetVisibilityToolbar(false);
+
+            SyncServer syncSrv = new SyncServer();
+            var syncResult = await syncSrv.Sync(_vroute.Id);
 
             var points = _routePointManager.GetPointsByRouteId(_vroute.Id);
             if (points.Any())

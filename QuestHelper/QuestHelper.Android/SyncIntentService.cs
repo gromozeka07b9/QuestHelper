@@ -27,7 +27,7 @@ namespace QuestHelper.Droid
             {
                 Console.WriteLine("SyncIntentService sync started");
                 SyncServer syncSrv = new SyncServer();
-                var syncResult = await syncSrv.SyncAll();
+                var syncResult = await syncSrv.Sync();
                 Console.WriteLine("SyncIntentService sync ended");
             }
         }

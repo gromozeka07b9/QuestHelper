@@ -105,7 +105,7 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        public void StartDialog()
+        public void StartDialogAsync()
         {
             updateUrlCommandAsync();
         }

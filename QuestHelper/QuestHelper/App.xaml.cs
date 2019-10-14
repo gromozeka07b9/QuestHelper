@@ -11,6 +11,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
+using Autofac;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using QuestHelper.Managers;
 using Xamarin.Forms;
 using QuestHelper.Model;
@@ -21,7 +24,21 @@ namespace QuestHelper
 {
 	public partial class App : Application
 	{
+        public static IContainer Container { get; set; }
+
         private Logger _log = new Logger(true);
+
+	    static App()
+	    {
+	        InitializeIOCContainer();
+	    }
+
+	    private static void InitializeIOCContainer()
+	    {
+	        var builder = new ContainerBuilder();
+            builder.RegisterInstance(new MemoryCache(new MemoryCacheOptions())).As<IMemoryCache>();
+            Container = builder.Build();
+	    }
 
         public App ()
 		{

@@ -10,37 +10,50 @@ using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using QuestHelper.Model;
 using System.Threading;
+using Autofac;
 using QuestHelper.SharedModelsWS;
 using QuestHelper.Managers;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace QuestHelper.WS
 {
-    //public class RoutesApiRequest : IRoutesApiRequest, IDownloadable<ViewRoute>, IUploadable<ViewRoute>
     public class RoutesApiRequest : IHTTPStatusCode, IUploadable<ViewRoute>
     {
+        private IMemoryCache _memoryCache;
         private string _hostUrl = string.Empty;
         private string _authToken = string.Empty;
+
+        private const string routesVersionsCacheId = "routesVersions";
         public HttpStatusCode LastHttpStatusCode;
+
 
         public RoutesApiRequest(string hostUrl, string authToken)
         {
             _hostUrl = hostUrl;
             _authToken = authToken;
+            _memoryCache = App.Container.Resolve<IMemoryCache>();
         }
 
         public async Task<List<RouteVersion>> GetRoutesVersions()
         {
             List<RouteVersion> deserializedValue = new List<RouteVersion>();
-            try
+            if (!_memoryCache.TryGetValue(routesVersionsCacheId, out deserializedValue))
             {
-                ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{this._hostUrl}/route/version/get", _authToken);
-                LastHttpStatusCode = api.LastHttpStatusCode;
-                deserializedValue = JsonConvert.DeserializeObject<List<RouteVersion>>(response);
-            }
-            catch (Exception e)
-            {
-                HandleError.Process("RoutesApiRequest", "GetRoutesVersions", e, false);
+                try
+                {
+                    ApiRequest api = new ApiRequest();
+                    var response = await api.HttpRequestGET($"{this._hostUrl}/route/version/get", _authToken);
+                    LastHttpStatusCode = api.LastHttpStatusCode;
+                    deserializedValue = JsonConvert.DeserializeObject<List<RouteVersion>>(response);
+                    _memoryCache.Set(routesVersionsCacheId, deserializedValue, new MemoryCacheEntryOptions()
+                    {
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(20)
+                    });
+                }
+                catch (Exception e)
+                {
+                    HandleError.Process("RoutesApiRequest", "GetRoutesVersions", e, false);
+                }
             }
             return deserializedValue;
         }

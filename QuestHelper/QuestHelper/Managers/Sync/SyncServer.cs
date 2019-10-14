@@ -21,7 +21,7 @@ namespace QuestHelper.Managers.Sync
         private static bool SynchronizeStarted = false;
         Logger _log = new Logger(true);
 
-        private async System.Threading.Tasks.Task<Tuple<bool, string>> SyncAllRoutes()
+        private async System.Threading.Tasks.Task<Tuple<bool, string>> SyncRoute(string routeId = "")
         {
             string errorMsg = string.Empty;
             bool syncResult = false;
@@ -31,7 +31,10 @@ namespace QuestHelper.Managers.Sync
             if (!string.IsNullOrEmpty(authToken))
             {
                 SyncRoutes syncRoutes = new SyncRoutes(authToken);
-                syncResult = await syncRoutes.Sync();
+                syncResult = string.IsNullOrEmpty(routeId)
+                    ? await syncRoutes.Sync()
+                    : await syncRoutes.Sync(routeId);
+                //syncResult = await syncRoutes.Sync(routeId);
                 if (syncRoutes.AuthRequired)
                 {
                     errorMsg = "Auth required";
@@ -44,7 +47,30 @@ namespace QuestHelper.Managers.Sync
             return new Tuple<bool, string>(syncResult, errorMsg);
         }
 
-        public async Task<bool> SyncAll()
+        /*public async Task<bool> SyncRoute(string routeId)
+        {
+            if (!SynchronizeStarted)
+            {
+                string statusSyncKey = "SyncStatus";
+                Analytics.TrackEvent("Sync route");
+                SynchronizeStarted = true;
+                DateTime startTime = DateTime.Now;
+                Application.Current.Properties.Remove(statusSyncKey);
+                Application.Current.Properties.Add(statusSyncKey, $"Sync started:{startTime.ToLocalTime().ToString()}");
+                _log.AddStringEvent($"Sync route started:{startTime.ToLocalTime().ToString()}");
+
+                var syncResult = await SyncAllRoutes();
+
+                SynchronizeStarted = false;
+                var diff = DateTime.Now - startTime;
+                string resultMessage = $"Sync route finished at {DateTime.Now.ToLocalTime().ToString()}, due {diff} sec";
+                Application.Current.Properties.Remove(statusSyncKey);
+                Application.Current.Properties.Add(statusSyncKey, resultMessage);
+                MessagingCenter.Send<UIToastMessage>(new UIToastMessage() { Delay = 3, Message = resultMessage }, string.Empty);
+            }
+        }*/
+
+        public async Task<bool> Sync(string routeId = "")
         {
             bool allSynced = false;
             if (!SynchronizeStarted)
@@ -56,7 +82,10 @@ namespace QuestHelper.Managers.Sync
                 Application.Current.Properties.Remove(statusSyncKey);
                 Application.Current.Properties.Add(statusSyncKey, $"Sync started:{startTime.ToLocalTime().ToString()}");
                 _log.AddStringEvent($"Sync started:{startTime.ToLocalTime().ToString()}");
-                var syncResult = await SyncAllRoutes();
+                Tuple<bool, string> syncResult = new Tuple<bool, string>(false, string.Empty);
+                syncResult = string.IsNullOrEmpty(routeId)
+                    ? await SyncRoute()
+                    : await SyncRoute(routeId);
                 SynchronizeStarted = false;
                 if (!syncResult.Item1)
                 {

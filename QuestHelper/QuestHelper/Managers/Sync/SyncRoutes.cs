@@ -52,7 +52,6 @@ namespace QuestHelper.Managers.Sync
 
                     int countRoutesForSync = differentRoutes.Count() + newClientRoutes.Count();
                     int currentCountRoutesForSync = 0;
-                    //notify.ShowProgress(countRoutesForSync, currentCountRoutesForSync);
 
                     _log.AddStringEvent($"--------------------------------------------------------");
                     foreach (var logRoute in differentRoutes)
@@ -67,7 +66,6 @@ namespace QuestHelper.Managers.Sync
                         result = await syncRouteContext.SyncAsync(serverRouteVersion.ObjVerHash);
                         _log.AddStringEvent($"diff route result, {serverRouteVersion.Id} :" + result);
                         currentCountRoutesForSync++;
-                        //notify.ShowProgress(countRoutesForSync, currentCountRoutesForSync);
                     }
 
                     foreach (var logRoute in newClientRoutes)
@@ -82,7 +80,6 @@ namespace QuestHelper.Managers.Sync
                         result = await syncRouteContext.SyncAsync(string.Empty);
                         _log.AddStringEvent($"new route result, {localRouteId} :" + result);
                         currentCountRoutesForSync++;
-                        //notify.ShowProgress(countRoutesForSync, currentCountRoutesForSync);
                     }
                 }
             }
@@ -91,7 +88,30 @@ namespace QuestHelper.Managers.Sync
                 result = false;
             }
 
-            //notify.HideProgress();
+            return result;
+        }
+        public async Task<bool> Sync(string routeId)
+        {
+            bool result = true;
+            var notify = DependencyService.Get<INotificationService>();
+            var serverRouteVersion = (await _routesApi.GetRoutesVersions()).Where(r => r.Id.Equals(routeId)).FirstOrDefault();
+            AuthRequired = (_routesApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routesApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
+            if (!AuthRequired)
+            {
+                var localRoute = _routeManager.GetRouteById(routeId);
+                //if (!serverRouteVersion.ObjVerHash.Equals(localRoute.ObjVerHash))
+                {
+                    SyncRoute syncRouteContext = new SyncRoute(serverRouteVersion.Id, _authToken);
+                    syncRouteContext.SyncImages = true;
+                    _log.AddStringEvent($"start sync diff route {serverRouteVersion.Id}");
+                    result = await syncRouteContext.SyncAsync(serverRouteVersion.ObjVerHash);
+                    _log.AddStringEvent($"diff route result, {serverRouteVersion.Id} :" + result);
+                }
+            }
+            else
+            {
+                result = false;
+            }
 
             return result;
         }

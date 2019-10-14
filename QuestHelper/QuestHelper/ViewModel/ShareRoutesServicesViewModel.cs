@@ -194,7 +194,7 @@ namespace QuestHelper.ViewModel
             await Navigation.PopAsync(false);
         }
 
-        public async void StartDialog()
+        public async void StartDialogAsync()
         {
             TokenStoreService tokenService = new TokenStoreService();
             string currentUserId = await tokenService.GetUserIdAsync();
