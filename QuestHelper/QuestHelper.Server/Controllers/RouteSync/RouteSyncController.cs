@@ -50,32 +50,9 @@ namespace QuestHelper.Server.Controllers.RouteSync
 
             List<RouteVersion> routeVersions = new List<RouteVersion>();
             AvailableRoutes availRoutes = new AvailableRoutes(_dbOptions);
-            var routes = availRoutes.Get(userId);
-            using (var db = new ServerDbContext(_dbOptions))
-            {
-                routeVersions = routes.Select(r => new RouteVersion() {Id = r.RouteId, Version = r.Version}).ToList();
-                var pointIds = db.RoutePoint.Where(p => routeVersions.Where(r => r.Id == p.RouteId).Any()).Select(p => new {p.RouteId, p.RoutePointId, p.Version}).ToList();
-                var mediaIds = db.RoutePointMediaObject
-                    .Where(m => pointIds.Where(p => p.RoutePointId == m.RoutePointId).Any()).Select(m => new {m.RoutePointMediaObjectId, m.Version, m.RoutePointId})
-                    .ToList();
-                foreach (var route in routeVersions)
-                {
-                    StringBuilder versions = new StringBuilder();
-                    versions.Append(route.Version.ToString());
-                    var routePoints = pointIds.Where(p => p.RouteId == route.Id).Select(p=>new {p.Version, p.RoutePointId}).OrderBy(p=>p.RoutePointId);
-                    foreach (var item in routePoints)
-                    {
-                        versions.Append(item.Version.ToString());
-                    }
-                    var mediaVersions = mediaIds.Where(m => routePoints.Any(p=>p.RoutePointId == m.RoutePointId)).OrderBy(m => m.RoutePointMediaObjectId).Select(m => m.Version);
-                    foreach (int version in mediaVersions)
-                    {
-                        versions.Append(version.ToString());
-                    }
-                    route.ObjVer = versions.ToString();
-                    route.ObjVerHash = HashGenerator.Generate(route.ObjVer);
-                }
-            }
+            var routes = availRoutes.GetByUserId(userId);
+
+            routeVersions = makeRoutesVersion(routeVersions, routes);
 
             TimeSpan delay = DateTime.Now - startDate;
             Console.WriteLine($"GetRouteData full: status 200, {userId}, delay:{delay.Milliseconds}");
@@ -91,6 +68,77 @@ namespace QuestHelper.Server.Controllers.RouteSync
             return new ObjectResult(routeVersions);
         }
 
+        /// <summary>
+        /// Get route hash
+        /// </summary>
+        /// <param name="routeId"></param>
+        /// <returns>Route hash structure</returns>
+        [HttpGet("{routeId}/version")]
+        public IActionResult GetRouteVersion(string routeId)
+        {
+            DateTime startDate = DateTime.Now;
+
+            string userId = IdentityManager.GetUserId(HttpContext);
+
+            List<RouteVersion> routeVersions = new List<RouteVersion>();
+            AvailableRoutes availRoutes = new AvailableRoutes(_dbOptions);
+            var route = availRoutes.GetByUserIdAndRouteId(userId, routeId);
+            List<Models.Route> routes = new List<Models.Route>();
+            routes.Add(route);
+
+            routeVersions = makeRoutesVersion(routeVersions, routes);
+
+            TimeSpan delay = DateTime.Now - startDate;
+            Console.WriteLine($"GetRouteVersion: status 200, {userId}, delay:{delay.Milliseconds}");
+
+            //Как придумаю робота, который будет запускать парсер, так и уберу отсюда
+            /*MediaManager mediaManager = new MediaManager();
+            SpeachToTextProcess speachToTextProcess = new SpeachToTextProcess(mediaManager.PathToMediaCatalog);
+            var resulTrySpeachParse = await speachToTextProcess.TrySpeachParseAsync();
+
+            TimeSpan delayWithSpeachParse = DateTime.Now - startDate;
+            Console.WriteLine($"GetRouteData with speach parse: delay:{delayWithSpeachParse.Milliseconds}");*/
+
+            return new ObjectResult(routeVersions);
+        }
+
+        private List<RouteVersion> makeRoutesVersion(List<RouteVersion> routeVersions, List<Models.Route> routes)
+        {
+            using (var db = new ServerDbContext(_dbOptions))
+            {
+                routeVersions = routes.Select(r => new RouteVersion() {Id = r.RouteId, Version = r.Version}).ToList();
+                var pointIds = db.RoutePoint.Where(p => routeVersions.Where(r => r.Id == p.RouteId).Any())
+                    .Select(p => new {p.RouteId, p.RoutePointId, p.Version}).ToList();
+                var mediaIds = db.RoutePointMediaObject
+                    .Where(m => pointIds.Where(p => p.RoutePointId == m.RoutePointId).Any())
+                    .Select(m => new {m.RoutePointMediaObjectId, m.Version, m.RoutePointId})
+                    .ToList();
+                foreach (var route in routeVersions)
+                {
+                    StringBuilder versions = new StringBuilder();
+                    versions.Append(route.Version.ToString());
+                    var routePoints = pointIds.Where(p => p.RouteId == route.Id).Select(p => new {p.Version, p.RoutePointId})
+                        .OrderBy(p => p.RoutePointId);
+                    foreach (var item in routePoints)
+                    {
+                        versions.Append(item.Version.ToString());
+                    }
+
+                    var mediaVersions = mediaIds.Where(m => routePoints.Any(p => p.RoutePointId == m.RoutePointId))
+                        .OrderBy(m => m.RoutePointMediaObjectId).Select(m => m.Version);
+                    foreach (int version in mediaVersions)
+                    {
+                        versions.Append(version.ToString());
+                    }
+
+                    route.ObjVer = versions.ToString();
+                    route.ObjVerHash = HashGenerator.Generate(route.ObjVer);
+                }
+            }
+
+            return routeVersions;
+        }
+
 
         [HttpGet("{routeid}")]
         public IActionResult GetRouteData(string routeId)
@@ -100,7 +148,7 @@ namespace QuestHelper.Server.Controllers.RouteSync
             RouteRoot routeRoot = new RouteRoot();
 
             AvailableRoutes availRoutes = new AvailableRoutes(_dbOptions);
-            var dbRoute = availRoutes.Get(userId).FirstOrDefault(r=>r.RouteId == routeId);
+            var dbRoute = availRoutes.GetByUserId(userId).FirstOrDefault(r=>r.RouteId == routeId);
             if (dbRoute != null)
             {                
                 routeRoot.Route = ConverterDbModelToWs.RouteConvert(dbRoute);
@@ -137,7 +185,7 @@ namespace QuestHelper.Server.Controllers.RouteSync
             DateTime startDate = DateTime.Now;
             string userId = IdentityManager.GetUserId(HttpContext);
             AvailableRoutes availRoutes = new AvailableRoutes(_dbOptions);
-            var dbRoute = availRoutes.Get(userId).FirstOrDefault(r => r.RouteId == routeId);
+            var dbRoute = availRoutes.GetByUserId(userId).FirstOrDefault(r => r.RouteId == routeId);
             if (dbRoute != null)
             {
                 if (!string.IsNullOrEmpty(dbRoute.ImgFilename))

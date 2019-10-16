@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -22,6 +23,9 @@ namespace QuestHelper.Server.Controllers.Routes
     public class RoutesController : Controller
     {
         private DbContextOptions<ServerDbContext> _dbOptions = ServerDbContext.GetOptionsContextDbServer();
+        private MediaManager _mediaManager;
+        private string _pathToMediaCatalog = string.Empty;
+
         public class ShareRequest
         {
             public string RouteIdForShare;
@@ -29,6 +33,17 @@ namespace QuestHelper.Server.Controllers.Routes
             public bool CanChangeRoute;
         }
 
+        public class PreviewsArray
+        {
+            //public string Filename;
+            //public string ImgBase64;
+            public Dictionary<string, string> ImgDictionary;
+        }
+        public RoutesController()
+        {
+            _mediaManager = new MediaManager();
+            _pathToMediaCatalog = _mediaManager.PathToMediaCatalog;
+        }
         /// <summary>
         /// Returns list of available routes
         /// </summary>
@@ -246,6 +261,66 @@ namespace QuestHelper.Server.Controllers.Routes
             }
             Response.StatusCode = 200;
         }
+
+        [HttpGet("preview/{routeId}")]
+        public IActionResult GetPreviews(string routeId)
+        {
+            DateTime startDate = DateTime.Now;
+
+            string userId = IdentityManager.GetUserId(HttpContext);
+            //MemoryStream memStream = new MemoryStream();
+            PreviewsArray previews = new PreviewsArray() { ImgDictionary = new Dictionary<string, string>() };
+            using (var db = new ServerDbContext(_dbOptions))
+            {
+                var publishRoutes = db.Route.Where(r => r.IsPublished && r.IsDeleted == false && r.RouteId.Equals(routeId)).Select(r => r.RouteId).ToList();
+                var routeAccess = db.RouteAccess.Where(u => u.UserId.Equals(userId) && u.RouteId.Equals(routeId)).Select(u => u.RouteId).ToList();
+
+                var points = db.RoutePoint.Where(p => (routeAccess.Contains(p.RouteId) || publishRoutes.Contains(p.RouteId)) && p.RouteId.Equals(routeId)).Select(p=>p.RoutePointId).ToList();
+                if (points.Count() > 0)
+                {
+                    var medias = db.RoutePointMediaObject.Where(m => (points.Contains(m.RoutePointId)));
+                    //int index = 0;
+                    foreach (var media in medias)
+                    {
+                        if (media.ImagePreviewLoadedToServer)
+                        {
+                            string mediaFileName = $"img_{media.RoutePointMediaObjectId}_preview.jpg";
+                            //mediaFileName = "img_890022d6-62a8-48e9-b6ef-c9e9b4a7e6c0_preview.jpg";//отладка
+                            string imgPath = Path.Combine(_pathToMediaCatalog, mediaFileName);
+                            if (System.IO.File.Exists(imgPath))
+                            {
+                                try
+                                {
+                                    byte[] imgBytes = System.IO.File.ReadAllBytes(imgPath);
+                                    string imgBase64String = Convert.ToBase64String(imgBytes);
+                                    previews.ImgDictionary.Add(mediaFileName, imgBase64String);
+                                    //previews.ImgDictionary.Add(index.ToString() + mediaFileName, imgBase64String);
+                                    //index++;
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine($"Route Get previews: image file read error {e.InnerException}");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Route Get previews: image file does not exist {imgPath}");
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Response.StatusCode = 204;
+                }
+            }
+
+            TimeSpan delay = DateTime.Now - startDate;
+            Console.WriteLine($"Route Get previews: status {Response.StatusCode}, {userId}, delay:{delay.Milliseconds}");
+
+            return new ObjectResult(previews);
+        }
+
 
     }
 }

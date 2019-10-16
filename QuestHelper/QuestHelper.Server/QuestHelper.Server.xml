@@ -4,6 +4,24 @@
         <name>QuestHelper.Server</name>
     </assembly>
     <members>
+        <member name="T:QuestHelper.Server.Controllers.FeedController">
+            <summary>
+            Getting routes feed
+            </summary>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.FeedController.Get(QuestHelper.SharedModelsWS.FeedFilter)">
+            <summary>
+            Get feed with filter
+            </summary>
+            <returns>List of routes</returns>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.RouteSync.RouteSyncController.GetRouteVersion(System.String)">
+            <summary>
+            Get route hash
+            </summary>
+            <param name="routeId"></param>
+            <returns>Route hash structure</returns>
+        </member>
         <member name="M:QuestHelper.Server.Controllers.RouteSync.RouteSyncController.GetCoverImage(System.String)">
             <summary>
             Get image cover for selected route
@@ -34,6 +52,14 @@
             <summary>
             Преобразователь сырого распознанного текста в текст с предложениями и пунктуацией
             </summary>
+        </member>
+        <member name="M:QuestHelper.Server.Managers.AvailableRoutes.GetByUserIdAndRouteId(System.String,System.String)">
+            <summary>
+            Get route by user id and route id
+            </summary>
+            <param name="userId"></param>
+            <param name="routeId"></param>
+            <returns></returns>
         </member>
         <member name="T:QuestHelper.Server.Managers.IdentityManager">
             <summary>
