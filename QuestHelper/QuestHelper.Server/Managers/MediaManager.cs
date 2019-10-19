@@ -58,6 +58,7 @@ namespace QuestHelper.Server.Managers
             try
             {
                 System.IO.File.Copy(Path.Combine(_pathToMediaCatalog, filename), Path.Combine(_pathToMediaCatalogShared, filename), true);
+                Console.WriteLine($"Copied preview: imgFileName:{filename}");
             }
             catch (Exception e)
             {

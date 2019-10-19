@@ -5,10 +5,10 @@
     <UserSecretsId>b44575da-72f6-41a2-95e3-70f8fa006caf</UserSecretsId>
     <ApplicationInsightsResourceId>/subscriptions/73073e7d-c51d-42a9-bec8-434c3d28c1de/resourcegroups/TranslateHelper/providers/microsoft.insights/components/ServerWeb20171015090425</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/73073e7d-c51d-42a9-bec8-434c3d28c1de/resourcegroups/TranslateHelper/providers/microsoft.insights/components/ServerWeb20171015090425</ApplicationInsightsAnnotationResourceId>
-    <Version>1.1.31</Version>
+    <Version>1.1.32</Version>
     <Configurations>Debug;Release</Configurations>
     <NeutralLanguage>en</NeutralLanguage>
-    <AssemblyVersion>1.1.31.0</AssemblyVersion>
+    <AssemblyVersion>1.1.32.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -17,10 +17,7 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\.DS_Store" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\shared\" />
+    <Content Remove="wwwroot\shared\default.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +33,9 @@
 
   <ItemGroup>
     <None Include="wwwroot\.DS_Store" />
+    <None Include="wwwroot\shared\default.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

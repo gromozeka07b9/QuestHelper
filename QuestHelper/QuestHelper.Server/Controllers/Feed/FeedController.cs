@@ -29,7 +29,7 @@ namespace QuestHelper.Server.Controllers
             DateTime startDate = DateTime.Now;
             string userId = IdentityManager.GetUserId(HttpContext);
 
-            string imageBaseUrl = $"{Request.Scheme}://{Request.Host.Value}/gallery";
+            string imageBaseUrl = $"{Request.Scheme}://{Request.Host.Value}/shared";
             List<FeedItem> routes = new List<FeedItem>();
             using (var db = new ServerDbContext(_dbOptions))
             {
@@ -44,7 +44,7 @@ namespace QuestHelper.Server.Controllers
                         CreateDate = n.r.CreateDate,
                         CreatorId = n.r.CreatorId,
                         CreatorName = n.u.Name,
-                        ImgUrl = string.IsNullOrEmpty(n.r.ImgFilename) ? $"{imageBaseUrl}/default.jpg" : $"{imageBaseUrl}/{n.r.ImgFilename}",
+                        ImgUrl = string.IsNullOrEmpty(n.r.ImgFilename) ? tryToMakePreviewFromFirstPoint(n.r.RouteId, imageBaseUrl) : $"{imageBaseUrl}/{n.r.ImgFilename}",
                         Description = n.r.Description,
                         ItemType = FeedItemType.Route
                     }).ToList();
@@ -54,6 +54,32 @@ namespace QuestHelper.Server.Controllers
             Console.WriteLine($"Get Feed: status 200, {userId}, delay:{delay.Milliseconds}");
 
             return new ObjectResult(routes);
+        }
+
+        private string tryToMakePreviewFromFirstPoint(string routeId, string imageBaseUrl)
+        {
+            Console.WriteLine($"Try to make preview: routeId:{routeId}");
+            string previewUrl = $"{imageBaseUrl}/default.png";
+            using (var db = new ServerDbContext(_dbOptions))
+            {
+                var firstPoint = db.RoutePoint.Where(p => p.RouteId.Equals(routeId)).OrderBy(p => p.CreateDate).FirstOrDefault();
+                if (firstPoint != null)
+                {
+                    var firstMedia = db.RoutePointMediaObject.Where(m => m.RoutePointId.Equals(firstPoint.RoutePointId) && m.ImagePreviewLoadedToServer && !m.IsDeleted).FirstOrDefault();
+                    if (firstMedia != null)
+                    {
+                        string imgFileName = $"img_{firstMedia.RoutePointMediaObjectId}_preview.jpg";
+                        MediaManager mediaManager = new MediaManager();
+                        if(!mediaManager.SharedMediaFileExist(imgFileName))
+                        {
+                            Console.WriteLine($"Try to copy preview: imgFileName:{imgFileName}");
+                            mediaManager.CopyMediaFileToSharedCatalog(imgFileName);
+                        }
+                        previewUrl = $"{imageBaseUrl}/{imgFileName}";
+                    }
+                }
+            }
+            return previewUrl;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace QuestHelper.Tests
 {
     public class TestSyncServer
     {
-        class TestSync : SyncBase
+        class TestSync //: SyncBase
         {
 
         }
