@@ -10,7 +10,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding RefreshFeedCommand}" Icon="loop.png"></ToolbarItem>
+        <!--ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding RefreshFeedCommand}" Icon="loop.png"></-->
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid>
@@ -29,7 +29,7 @@
                 </Image>
                 <Label Text="Лента загружается..." Style="{StaticResource StandartTextLabel}" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" ></Label>
             </StackLayout>
-            <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" SeparatorVisibility="None" ItemsSource="{Binding FeedItems}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshFeedCommand}" x:Name="FeedListView" RowHeight="250"  SelectedItem="{Binding SelectedFeedItem,Mode=TwoWay}" CachingStrategy="RecycleElement">
+            <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" SeparatorVisibility="None" ItemsSource="{Binding FeedItems}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshFeedCommand}" x:Name="FeedListView" RowHeight="250"  SelectedItem="{Binding SelectedFeedItem,Mode=TwoWay}" CachingStrategy="RecycleElementAndDataTemplate">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -48,7 +48,7 @@
                                     <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="{Binding CoverImage}" Margin="0,0,0,0" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
                                     <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Text="{Binding CreatorName}" Style="{StaticResource RouteTextLabel}" FontSize="14" FontAttributes="Bold" TextColor="LightGray" Margin="10,5,0,0" LineBreakMode="WordWrap" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Start"></Label>
                                     <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Text="{Binding Name}" Style="{StaticResource RouteTextLabel}" FontSize="22" FontAttributes="Bold" TextColor="LightGray" Margin="10,0,0,5" LineBreakMode="WordWrap" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand" VerticalTextAlignment="End"></Label>
-                                    <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Text="{Binding Description}" Style="{StaticResource RouteTextLabel}" FontSize="17" FontAttributes="None" TextColor="DarkGray" Margin="10,0,0,5" LineBreakMode="WordWrap" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand" VerticalTextAlignment="End"></Label>
+                                    <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Text="{Binding Description}" Style="{StaticResource RouteTextLabel}" FontSize="15" FontAttributes="None" TextColor="Black" Margin="10,0,10,5" MaxLines="3" LineBreakMode="TailTruncation" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center"></Label>
                                 </Grid>
                             </Frame>
                         </ViewCell>

@@ -2,6 +2,7 @@
 using QuestHelper.Managers;
 using QuestHelper.Managers.Sync;
 using QuestHelper.Model;
+using QuestHelper.Model.Messages;
 using QuestHelper.View;
 using System;
 using System.Collections.Generic;
@@ -48,16 +49,44 @@ namespace QuestHelper.ViewModel
 
         public void CloseDialog()
         {
+            MessagingCenter.Unsubscribe<SyncRouteCompleteMessage>(this, string.Empty);
         }
 
-        public async void StartDialogAsync()
+        public void StartDialog()
         {
             var toolbarService = DependencyService.Get<IToolbarService>();
             toolbarService.SetVisibilityToolbar(false);
+            MessagingCenter.Subscribe<SyncRouteCompleteMessage>(this, string.Empty, (sender) =>
+            {
+                if (sender.RouteId.Equals(_vroute.Id) && sender.SuccessSync)
+                {
+                    _vroute = new ViewRoute(_vroute.Id);
+                    updatePoints();
+                    PropertyChanged(this, new PropertyChangedEventArgs("PointsOfRoute"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("Description"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("RouteCoverImage"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("Name"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("CreateDateText"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("Author"));
+                }
+            });
 
-            SyncServer syncSrv = new SyncServer();
-            var syncResult = await syncSrv.Sync(_vroute.Id);
+            if (string.IsNullOrEmpty(_vroute.ObjVerHash))
+            {
+                //Это не существующий или не до конца синхронизированный маршрут, синкать в любом случае
+                Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage() { RouteId = _vroute.Id, NeedCheckVersionRoute = false}, string.Empty);
+            }
+            else
+            {
+                //Тут возможны варианты - либо это актуальный маршрут, либо нет, но это надо еще проверить
+                //Но показываем точки, и в фоне проверяем версию, только если она отличается, запускаем синхронизацию
+                updatePoints();
+                Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage() { RouteId = _vroute.Id, NeedCheckVersionRoute = true}, string.Empty);
+            }
+        }
 
+        private void updatePoints()
+        {
             var points = _routePointManager.GetPointsByRouteId(_vroute.Id);
             if (points.Any())
             {

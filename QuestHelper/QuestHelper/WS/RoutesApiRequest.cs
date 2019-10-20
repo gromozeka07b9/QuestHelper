@@ -74,6 +74,26 @@ namespace QuestHelper.WS
             }
             return deserializedValue;
         }
+        public async Task<RouteVersion> GetRouteVersion(string routeId)
+        {
+            RouteVersion routeVersion = new RouteVersion();
+            try
+            {
+                ApiRequest api = new ApiRequest();
+                var response = await api.HttpRequestGET($"{this._hostUrl}/route/{routeId}/version", _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
+                var deserializedValue = JsonConvert.DeserializeObject<List<RouteVersion>>(response);
+                if (deserializedValue.Any())
+                {
+                    routeVersion = deserializedValue.FirstOrDefault();
+                }
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RoutesApiRequest", "GetRouteVersion", e, false);
+            }
+            return routeVersion;
+        }
 
         public async Task<SyncObjectStatus> GetSyncStatus(IEnumerable<Tuple<string, int>> routes)
         {

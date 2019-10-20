@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using QuestHelper.Model;
+using QuestHelper.Model.Messages;
 using Xamarin.Forms;
 using Route = QuestHelper.SharedModelsWS.Route;
 
@@ -61,7 +62,7 @@ namespace QuestHelper.Managers.Sync
                     foreach (var serverRouteVersion in differentRoutes)
                     {
                         SyncRoute syncRouteContext = new SyncRoute(serverRouteVersion.Id, _authToken);
-                        syncRouteContext.SyncImages = false;
+                        syncRouteContext.SyncImages = true;
                         _log.AddStringEvent($"start sync diff route {serverRouteVersion.Id}");
                         result = await syncRouteContext.SyncAsync(serverRouteVersion.ObjVerHash);
                         _log.AddStringEvent($"diff route result, {serverRouteVersion.Id} :" + result);
@@ -99,13 +100,14 @@ namespace QuestHelper.Managers.Sync
             if (!AuthRequired)
             {
                 var localRoute = _routeManager.GetRouteById(routeId);
-                //if (!serverRouteVersion.ObjVerHash.Equals(localRoute.ObjVerHash))
+                if ((localRoute == null) || !serverRouteVersion.ObjVerHash.Equals(localRoute.ObjVerHash))
                 {
                     SyncRoute syncRouteContext = new SyncRoute(serverRouteVersion.Id, _authToken);
                     syncRouteContext.SyncImages = true;
                     _log.AddStringEvent($"start sync diff route {serverRouteVersion.Id}");
                     result = await syncRouteContext.SyncAsync(serverRouteVersion.ObjVerHash);
                     _log.AddStringEvent($"diff route result, {serverRouteVersion.Id} :" + result);
+                    Xamarin.Forms.MessagingCenter.Send<SyncRouteCompleteMessage>(new SyncRouteCompleteMessage() { RouteId = routeId, SuccessSync = result }, string.Empty);
                 }
             }
             else

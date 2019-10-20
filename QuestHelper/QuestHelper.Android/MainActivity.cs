@@ -92,6 +92,8 @@ namespace QuestHelper.Droid
                 if (await syncPossibility.CheckAsync(true))
                 {
                     Intent syncIntent = new Intent(this, typeof(SyncIntentService));
+                    syncIntent.PutExtra("RouteId", sender.RouteId);
+                    syncIntent.PutExtra("NeedCheckVersionRoute", sender.NeedCheckVersionRoute);
                     var result = StartService(syncIntent);
                 }
             });

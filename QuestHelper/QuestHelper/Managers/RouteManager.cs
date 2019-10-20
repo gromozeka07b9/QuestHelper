@@ -11,32 +11,10 @@ namespace QuestHelper.Managers
 {
     public class RouteManager : RealmInstanceMaker
     {
-        //readonly Realm _realmInstance;
         public RouteManager()
         {
-            //_realmInstance = RealmAppInstance.GetAppInstance();
         }
 
-        /*internal Realm RealmInstance
-        {
-            get
-            {
-                return RealmAppInstance.Get(); 
-            }
-        }*/
-        internal IEnumerable<ViewRoute> GetRoutes(List<string> iDs)
-        {
-            List<ViewRoute> vroutes = new List<ViewRoute>();
-            var dbRoutes = RealmInstance.All<Route>().ToList().Where(r => iDs.Contains(r.RouteId));
-            if (dbRoutes.Any())
-            {
-                foreach (var route in dbRoutes)
-                {
-                    vroutes.Add(new ViewRoute(route.RouteId));
-                }
-            }
-            return vroutes;
-        }
         internal IEnumerable<ViewRoute> GetRoutes(string UserId)
         {
             List<ViewRoute> vroutes = new List<ViewRoute>();

@@ -1,28 +1,28 @@
-﻿using System;
+﻿using Autofac;
+using Microsoft.Extensions.Caching.Memory;
+using QuestHelper.Model;
+using QuestHelper.SharedModelsWS;
+using QuestHelper.WS;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Net;
-using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using QuestHelper.Managers;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-using QuestHelper.Model.Messages;
-using QuestHelper.Model;
-using Acr.UserDialogs;
-using QuestHelper.WS;
-using Xamarin.Essentials;
+using QuestHelper.View;
 
 namespace QuestHelper.ViewModel
 {
     class FeedRoutesViewModel : INotifyPropertyChanged
     {
+        private const string _feedCacheId = "FeedApiCache";
+        private IMemoryCache _memoryCache;
         private string _feedItemId;
         private IEnumerable<ViewFeedItem> _feedItems = new List<ViewFeedItem>();
         private ViewFeedItem _feedItem = new ViewFeedItem();
-        //private RouteManager _routeManager = new RouteManager();
-
-        //private RoutesApiRequest _api = new RoutesApiRequest("http://questhelperserver.azurewebsites.net");
         private int _countOfUpdateListByTimer = 0;
         private bool _noItemsWarningIsVisible = false;
         private bool _isRefreshing = false;
@@ -34,10 +34,13 @@ namespace QuestHelper.ViewModel
         public FeedRoutesViewModel()
         {
             RefreshFeedCommand = new Command(refreshFeedCommandAsync);
+            _memoryCache = App.Container.Resolve<IMemoryCache>();
         }
 
         public void startDialog()
         {
+            var toolbarService = DependencyService.Get<IToolbarService>();
+            toolbarService.SetVisibilityToolbar(true);
             refreshFeedCommandAsync();
         }
 
@@ -48,34 +51,65 @@ namespace QuestHelper.ViewModel
         async void refreshFeedCommandAsync()
         {
             IsRefreshing = true;
-            TokenStoreService tokenService = new TokenStoreService();
-            FeedApiRequest feedApi = new FeedApiRequest(await tokenService.GetAuthTokenAsync());
-            var listFeedItems = await feedApi.GetFeed();
-            if (feedApi.LastHttpStatusCode == HttpStatusCode.OK)
+            List<FeedItem> feed = new List<FeedItem>();
+            if (!_memoryCache.TryGetValue(_feedCacheId, out feed))
             {
-                var items = new List<ViewFeedItem>();
-                foreach (var item in listFeedItems)
-                {
-                    items.Add(new ViewFeedItem(item.Id)
-                    {
-                        Name = item.Name,
-                        CreatorId = item.CreatorId,
-                        CreateDate = item.CreateDate,
-                        Description = item.Description,
-                        CreatorName = item.CreatorName,
-                        ImgUrl = item.ImgUrl
-                    });
-                    await feedApi.GetCoverImage(item.ImgUrl);
-                }
-                FeedItems = items.OrderByDescending(i=>i.CreateDate);
-                PropertyChanged(this, new PropertyChangedEventArgs("FeedItems"));
+                feed = await getFeedFromApi();
             }
+            FeedItems = getSortedViewFeed(feed);
+
+            PropertyChanged(this, new PropertyChangedEventArgs("FeedItems"));
             if (FeedItems?.Count() == 0)
             {
                 Device.StartTimer(TimeSpan.FromSeconds(3), OnTimerForUpdate);
             }
             NoItemsWarningIsVisible = FeedItems?.Count() == 0;
             IsRefreshing = false;
+        }
+
+        private IEnumerable<ViewFeedItem> getSortedViewFeed(List<FeedItem> feed)
+        {
+            var items = new List<ViewFeedItem>();
+            foreach (var item in feed)
+            {
+                items.Add(new ViewFeedItem(item.Id)
+                {
+                    Name = item.Name,
+                    CreatorId = item.CreatorId,
+                    CreateDate = item.CreateDate,
+                    Description = item.Description,
+                    CreatorName = item.CreatorName,
+                    ImgUrl = item.ImgUrl
+                });
+            }
+
+            //FeedItems = items.OrderByDescending(i => i.CreateDate);
+            return items.OrderByDescending(i => i.CreateDate);
+        }
+
+        private async Task<List<FeedItem>> getFeedFromApi()
+        {
+            List<FeedItem> feed;
+            TokenStoreService tokenService = new TokenStoreService();
+            FeedApiRequest feedApi = new FeedApiRequest(await tokenService.GetAuthTokenAsync());
+            feed = await feedApi.GetFeed();
+            if (feedApi.LastHttpStatusCode == HttpStatusCode.OK)
+            {
+                _memoryCache.Set(_feedCacheId, feed, new MemoryCacheEntryOptions()
+                {
+#if DEBUG
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10)
+#else
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(120)
+#endif
+                });
+                foreach (var item in feed)
+                {
+                    await feedApi.GetCoverImage(item.ImgUrl);
+                }
+            }
+
+            return feed;
         }
 
         private bool OnTimerForUpdate()
@@ -135,11 +169,9 @@ namespace QuestHelper.ViewModel
                 if (_feedItem != value)
                 {
                     _feedItem = value;
-
-                    /*var routePage = new RoutePage(value.RouteId, false);
-                    Navigation.PushAsync(routePage);
+                    var coverPage = new RouteCoverPage(_feedItem.Id);
+                    Navigation.PushAsync(coverPage);
                     PropertyChanged(this, new PropertyChangedEventArgs("SelectedRouteItem"));
-                    addNewPointFromShareAsync(_routeItem.Name);*/
                     _feedItem = null;
                 }
             }

@@ -1,20 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net;
-using System.IO;
-using Newtonsoft.Json;
-using System.Net.Http;
-using Newtonsoft.Json.Linq;
-using QuestHelper.Model;
-using System.Threading;
-using Autofac;
-using QuestHelper.SharedModelsWS;
+﻿using Newtonsoft.Json;
 using QuestHelper.Managers;
-using Microsoft.Extensions.Caching.Memory;
+using QuestHelper.SharedModelsWS;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace QuestHelper.WS
 {
@@ -22,7 +13,7 @@ namespace QuestHelper.WS
     {
         private const string _apiUrl = "http://igosh.pro/api";
         private const string _feedCacheId = "FeedApiCache";
-        private IMemoryCache _memoryCache;
+        //private IMemoryCache _memoryCache;
         private string _authToken = string.Empty;
 
         public HttpStatusCode LastHttpStatusCode;
@@ -31,39 +22,19 @@ namespace QuestHelper.WS
         public FeedApiRequest(string authToken)
         {
             _authToken = authToken;
-            _memoryCache = App.Container.Resolve<IMemoryCache>();
+            //_memoryCache = App.Container.Resolve<IMemoryCache>();
         }
 
         public async Task<List<FeedItem>> GetFeed()
         {
             List<FeedItem> feed = new List<FeedItem>();
-            if (!_memoryCache.TryGetValue(_feedCacheId, out feed))
+            try
             {
-                try
-                {
-                    feed = await tryToRequestFeedAsync();
-                    if (LastHttpStatusCode == HttpStatusCode.OK)
-                    {
-                        _memoryCache.Set(_feedCacheId, feed, new MemoryCacheEntryOptions()
-                        {
-#if DEBUG
-                            AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10)
-#else
-                            AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(120)
-#endif
-                        });
-                    }
-                }
-                catch (Exception e)
-                {
-                    HandleError.Process("FeedApiRequest", "GetFeed", e, false);
-                }
+                feed = await tryToRequestFeedAsync();
             }
-            else
+            catch (Exception e)
             {
-                //если вытащили из кэша то нужен корректный http статус
-                //ToDo: похоже на косяк, судя по всему часть БЛ переползла сюда, а не надо
-                LastHttpStatusCode = HttpStatusCode.OK;
+                HandleError.Process("FeedApiRequest", "GetFeed", e, false);
             }
             return feed;
         }
