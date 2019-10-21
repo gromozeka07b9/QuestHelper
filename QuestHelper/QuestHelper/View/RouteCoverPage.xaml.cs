@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using QuestHelper.Model;
 using QuestHelper.ViewModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -19,14 +20,21 @@ namespace QuestHelper.View
 			InitializeComponent ();
     	}
 
-	    public RouteCoverPage(string routeId)
+	    public RouteCoverPage(ViewRoute vRoute)
 	    {
 	        InitializeComponent();
-	        _vm = new RouteCoverViewModel(routeId) { Navigation = this.Navigation };
+	        _vm = new RouteCoverViewModel(vRoute) { Navigation = this.Navigation };
 	        BindingContext = _vm;
 	    }
 
-	    private void RouteCoverPage_OnAppearing(object sender, EventArgs e)
+	    public RouteCoverPage(ViewFeedItem vFeedItem)
+	    {
+	        InitializeComponent();
+	        _vm = new RouteCoverViewModel(vFeedItem) { Navigation = this.Navigation };
+	        BindingContext = _vm;
+	    }
+
+        private void RouteCoverPage_OnAppearing(object sender, EventArgs e)
 	    {
             _vm.StartDialog();
 	    }

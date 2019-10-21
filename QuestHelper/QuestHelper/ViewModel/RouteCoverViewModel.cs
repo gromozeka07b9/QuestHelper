@@ -24,20 +24,51 @@ namespace QuestHelper.ViewModel
         private ViewRoute _vroute;
         private ViewRoutePoint _pointItem;
         private readonly string _routeId;
+        private string _creatorName;
         private ObservableCollection<ViewRoutePoint> _viewPointsOfRoute = new ObservableCollection<ViewRoutePoint>();
 
         public ICommand StartRouteCommand { get; private set; }
 
-        public RouteCoverViewModel(string routeId)
+        /// <summary>
+        /// Вызывается при открытии обложки из страницы альбомов, когда маршрут уже существует в локальной БД
+        /// </summary>
+        /// <param name="viewRoute"></param>
+        public RouteCoverViewModel(ViewRoute viewRoute)
+        {
+            init();
+
+            if (!string.IsNullOrEmpty(viewRoute.Id))
+            {
+                _routeId = viewRoute.Id;
+                _vroute = new ViewRoute(viewRoute.Id);
+            }
+            else throw new Exception("viewRoute.Id is empty!");
+        }
+
+        /// <summary>
+        /// Вызывается при открытии обложки из ленты, в этом случае не все элементы маршрута еще могут быть загружены
+        /// </summary>
+        /// <param name="viewFeedItem"></param>
+        public RouteCoverViewModel(ViewFeedItem viewFeedItem)
+        {
+            init();
+
+            if (!string.IsNullOrEmpty(viewFeedItem.Id))
+            {
+                _routeId = viewFeedItem.Id;
+                _vroute = new ViewRoute(viewFeedItem.Id);
+                _vroute.CreateDate = viewFeedItem.CreateDate;
+                _vroute.Description = viewFeedItem.Description;
+                _vroute.Name = viewFeedItem.Name;
+                _vroute.ImgFilename = viewFeedItem.CoverImage;
+                _creatorName = viewFeedItem.CreatorName;
+            }
+            else throw new Exception("viewFeedItem.Id is empty!");
+        }
+
+        private void init()
         {
             StartRouteCommand = new Command(startRouteCommand);
-
-            if (!string.IsNullOrEmpty(routeId))
-            {
-                _routeId = routeId;
-                _vroute = new ViewRoute(routeId);
-            }
-            else throw new Exception("routeId is empty!");
             PointsOfRoute = new ObservableCollection<ViewRoutePoint>();
         }
 
@@ -137,7 +168,19 @@ namespace QuestHelper.ViewModel
         }
         public string Description
         {
-            get { return _vroute.Description; }
+            get
+            {
+                string description = _vroute.Description;
+                if (string.IsNullOrEmpty(description))
+                {
+                    var coupleOfPoints = _routePointManager.GetFirstAndLastPoints(_vroute.RouteId);
+                    if (coupleOfPoints.Item1 != null)
+                    {
+                        description = coupleOfPoints.Item1.Description;
+                    }
+                }
+                return description; 
+            }
         }
         public string Name
         {
@@ -149,7 +192,7 @@ namespace QuestHelper.ViewModel
         }
         public string Author
         {
-            get { return "Sergey Dyachenko"; }
+            get { return _creatorName; }
         }
     }
 }
