@@ -40,7 +40,7 @@ namespace QuestHelper.Managers.Sync
         {
             bool result = true;
             var notify = DependencyService.Get<INotificationService>();
-            var listRoutesVersions = await _routesApi.GetRoutesVersions();
+            var listRoutesVersions = await _routesApi.GetRoutesVersions(true);
             AuthRequired = (_routesApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routesApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
             if (!AuthRequired)
             {
@@ -95,7 +95,7 @@ namespace QuestHelper.Managers.Sync
         {
             bool result = true;
             var notify = DependencyService.Get<INotificationService>();
-            var serverRouteVersion = (await _routesApi.GetRoutesVersions()).Where(r => r.Id.Equals(routeId)).FirstOrDefault();
+            var serverRouteVersion = (await _routesApi.GetRoutesVersions(false)).Where(r => r.Id.Equals(routeId)).FirstOrDefault();
             AuthRequired = (_routesApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routesApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
             if (!AuthRequired)
             {

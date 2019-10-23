@@ -42,7 +42,7 @@ namespace QuestHelper.Server.Controllers.RouteSync
         }
 
         [HttpGet("version/get")]
-        public async System.Threading.Tasks.Task<IActionResult> GetRouteDataAsync()
+        public async System.Threading.Tasks.Task<IActionResult> GetRouteDataAsync([FromQuery]bool onlyPersonal)
         {
             DateTime startDate = DateTime.Now;
 
@@ -50,7 +50,16 @@ namespace QuestHelper.Server.Controllers.RouteSync
 
             List<RouteVersion> routeVersions = new List<RouteVersion>();
             AvailableRoutes availRoutes = new AvailableRoutes(_dbOptions);
-            var routes = availRoutes.GetByUserId(userId);
+
+            List<Models.Route> routes = new List<Models.Route>();
+            if (onlyPersonal)
+            {
+                routes = availRoutes.GetByUserIdOnlyPersonal(userId);
+            }
+            else
+            {
+                routes = availRoutes.GetByUserIdWithPublished(userId);
+            }
 
             routeVersions = makeRoutesVersion(routeVersions, routes);
 
@@ -148,7 +157,7 @@ namespace QuestHelper.Server.Controllers.RouteSync
             RouteRoot routeRoot = new RouteRoot();
 
             AvailableRoutes availRoutes = new AvailableRoutes(_dbOptions);
-            var dbRoute = availRoutes.GetByUserId(userId).FirstOrDefault(r=>r.RouteId == routeId);
+            var dbRoute = availRoutes.GetByUserIdWithPublished(userId).FirstOrDefault(r=>r.RouteId == routeId);
             if (dbRoute != null)
             {                
                 routeRoot.Route = ConverterDbModelToWs.RouteConvert(dbRoute);
@@ -185,7 +194,7 @@ namespace QuestHelper.Server.Controllers.RouteSync
             DateTime startDate = DateTime.Now;
             string userId = IdentityManager.GetUserId(HttpContext);
             AvailableRoutes availRoutes = new AvailableRoutes(_dbOptions);
-            var dbRoute = availRoutes.GetByUserId(userId).FirstOrDefault(r => r.RouteId == routeId);
+            var dbRoute = availRoutes.GetByUserIdWithPublished(userId).FirstOrDefault(r => r.RouteId == routeId);
             if (dbRoute != null)
             {
                 if (!string.IsNullOrEmpty(dbRoute.ImgFilename))

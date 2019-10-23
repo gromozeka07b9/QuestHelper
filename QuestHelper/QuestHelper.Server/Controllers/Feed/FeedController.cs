@@ -45,7 +45,8 @@ namespace QuestHelper.Server.Controllers
                         CreatorId = n.r.CreatorId,
                         CreatorName = n.u.Name,
                         ImgUrl = string.IsNullOrEmpty(n.r.ImgFilename) ? tryToMakePreviewFromFirstPoint(n.r.RouteId, imageBaseUrl) : $"{imageBaseUrl}/{n.r.ImgFilename}",
-                        Description = n.r.Description,
+                        Description = string.IsNullOrEmpty(n.r.Description) ? getDescriptionFromFirstPoint(n.r.RouteId) : n.r.Description,
+                        //Description = n.r.Description,
                         ItemType = FeedItemType.Route
                     }).ToList();
             }
@@ -62,10 +63,10 @@ namespace QuestHelper.Server.Controllers
             string previewUrl = $"{imageBaseUrl}/default.png";
             using (var db = new ServerDbContext(_dbOptions))
             {
-                var firstPoint = db.RoutePoint.Where(p => p.RouteId.Equals(routeId)).OrderBy(p => p.CreateDate).FirstOrDefault();
+                var firstPoint = db.RoutePoint.Where(p => p.RouteId.Equals(routeId) && !p.IsDeleted).OrderBy(p => p.CreateDate).FirstOrDefault();
                 if (firstPoint != null)
                 {
-                    var firstMedia = db.RoutePointMediaObject.Where(m => m.RoutePointId.Equals(firstPoint.RoutePointId) && m.ImagePreviewLoadedToServer && !m.IsDeleted).FirstOrDefault();
+                    var firstMedia = db.RoutePointMediaObject.Where(m => m.RoutePointId.Equals(firstPoint.RoutePointId) && !m.IsDeleted).FirstOrDefault();
                     if (firstMedia != null)
                     {
                         string imgFileName = $"img_{firstMedia.RoutePointMediaObjectId}_preview.jpg";
@@ -80,6 +81,20 @@ namespace QuestHelper.Server.Controllers
                 }
             }
             return previewUrl;
+        }
+        private string getDescriptionFromFirstPoint(string routeId)
+        {
+            string description = string.Empty;
+
+            using (var db = new ServerDbContext(_dbOptions))
+            {
+                var firstPoint = db.RoutePoint.Where(p => p.RouteId.Equals(routeId) && !p.IsDeleted).OrderBy(p => p.CreateDate).FirstOrDefault();
+                if (firstPoint != null)
+                {
+                    description = firstPoint.Description;
+                }
+            }
+            return description;
         }
     }
 }
