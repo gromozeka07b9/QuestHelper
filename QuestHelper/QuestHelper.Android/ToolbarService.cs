@@ -30,7 +30,7 @@ namespace QuestHelper.Droid
         {
             _activity = activity;
             _bottomBar = BottomBar.Attach(activity, bundle);
-            _bottomBar.UseFixedMode();
+            //_bottomBar.UseFixedMode();
             //_bottomBar.SetFixedInactiveIconColor("#000000");
             _bottomBar.SetActiveTabColor("#3A3A9C");
             _bottomBar.SetItems(Resource.Menu.bottombar_menu);

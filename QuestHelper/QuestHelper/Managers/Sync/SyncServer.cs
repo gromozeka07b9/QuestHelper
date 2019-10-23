@@ -131,7 +131,7 @@ namespace QuestHelper.Managers.Sync
                 else
                 {
                     allSynced = true;
-                    processSuccess(startTime, statusSyncKey);
+                    processRouteSuccess(startTime, statusSyncKey, routeId);
                 }
             }
             else
@@ -157,6 +157,7 @@ namespace QuestHelper.Managers.Sync
             string resultMessage = $"Sync finished at {DateTime.Now.ToLocalTime().ToString()}, due {diff} sec";
             Application.Current.Properties.Remove(statusSyncKey);
             Application.Current.Properties.Add(statusSyncKey, resultMessage);
+
             MessagingCenter.Send<UIToastMessage>(new UIToastMessage() {Delay = 3, Message = resultMessage}, string.Empty);
 
             double seconds = Math.Round(diff.TotalSeconds);
@@ -167,6 +168,26 @@ namespace QuestHelper.Managers.Sync
             else if (seconds < 120) secondsText = "<120s";
             else if (seconds >= 120) secondsText = ">=120s";
             Analytics.TrackEvent("Sync all done", new Dictionary<string, string> {{"Delay", secondsText}});
+            _log.AddStringEvent(resultMessage);
+        }
+        private void processRouteSuccess(DateTime startTime, string statusSyncKey, string routeId)
+        {
+            var diff = DateTime.Now - startTime;
+            string resultMessage = $"Sync route {routeId} finished at {DateTime.Now.ToLocalTime().ToString()}, due {diff} sec";
+            Application.Current.Properties.Remove(statusSyncKey);
+            Application.Current.Properties.Add(statusSyncKey, resultMessage);
+
+            if (string.IsNullOrEmpty(routeId))
+                MessagingCenter.Send<UIToastMessage>(new UIToastMessage() { Delay = 3, Message = resultMessage }, string.Empty);
+
+            double seconds = Math.Round(diff.TotalSeconds);
+            string secondsText = string.Empty;
+            if (seconds < 10) secondsText = "<10s";
+            else if (seconds < 20) secondsText = "<20s";
+            else if (seconds < 50) secondsText = "<50s";
+            else if (seconds < 120) secondsText = "<120s";
+            else if (seconds >= 120) secondsText = ">=120s";
+            Analytics.TrackEvent("Sync route done", new Dictionary<string, string> { { "Delay", secondsText } });
             _log.AddStringEvent(resultMessage);
         }
 

@@ -67,16 +67,18 @@ namespace QuestHelper.Managers.Sync
                         var medias = _routePointMediaManager.GetMediaObjectsByRouteId(routeRoot.Route.Id).Where(m => !m.OriginalServerSynced || !m.PreviewServerSynced).Select(m => new MediaForUpdate{ RoutePointId = m.RoutePointId, RoutePointMediaObjectId = m.RoutePointMediaObjectId, OriginalServerSynced = m.OriginalServerSynced, PreviewServerSynced = m.PreviewServerSynced, IsDeleted = m.IsDeleted, MediaType = (MediaObjectTypeEnum)m.MediaType }).ToList();
                         _log.AddStringEvent($"media files sync,  route {_routeId}, media count:{medias?.Count.ToString()}");
 
-                        List<Task> tasks = new List<Task>();
+                        //List<Task> tasks = new List<Task>();
                         foreach (var media in medias)
                         {
-                            var task = new Task(async () => { await updateImages(media); });
-                            task.Start();
-                            tasks.Add(task);
+                            await updateImages(media);
+                            //var task = new Task(async () => { await updateImages(media); });
+                            //task.Start();
+                            Console.WriteLine($"load img {media.RoutePointMediaObjectId}");
+                            //tasks.Add(task);
                         }
 
-                        Task.WaitAll(tasks.ToArray());
-                        tasks.Clear();
+                        //Task.WaitAll(tasks.ToArray());
+                        //tasks.Clear();
                     }
                 }
             }

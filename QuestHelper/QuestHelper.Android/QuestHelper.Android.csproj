@@ -541,6 +541,28 @@
   <ItemGroup>
     <Content Include="Properties\AndroidManifestDebug.xml" />
     <AndroidResource Include="Resources\drawable\play2.png" />
+    <AndroidResource Include="Resources\drawable\account_circle.png" />
+    <AndroidResource Include="Resources\drawable\emptystate.png" />
+    <AndroidResource Include="Resources\drawable\person.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\account_circle.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\apps.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\link.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\mail.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\person.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\account_circle.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\apps.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\link.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\mail.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\person.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\account_circle.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\apps.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\link.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\mail.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\person.png" />
+    <AndroidResource Include="Resources\drawable\cloud_upload.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\cloud_upload.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\cloud_upload.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\cloud_upload.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

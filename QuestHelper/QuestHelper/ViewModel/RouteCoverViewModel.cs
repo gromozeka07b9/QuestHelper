@@ -99,6 +99,7 @@ namespace QuestHelper.ViewModel
                     PropertyChanged(this, new PropertyChangedEventArgs("Name"));
                     PropertyChanged(this, new PropertyChangedEventArgs("CreateDateText"));
                     PropertyChanged(this, new PropertyChangedEventArgs("Author"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("RowHeightForDescription"));                    
                 }
             });
 
@@ -159,6 +160,13 @@ namespace QuestHelper.ViewModel
             }
         }
 
+        public int RowHeightForDescription
+        {
+            get
+            {
+                return string.IsNullOrEmpty(Description) ? 20 : 128;
+            }
+        }
         public string RouteCoverImage
         {
             get

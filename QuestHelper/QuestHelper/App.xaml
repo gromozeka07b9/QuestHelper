@@ -6,7 +6,8 @@
         <ResourceDictionary>
             
             <Style x:Key="ContentPage" TargetType="ContentPage">
-                <Setter Property="BackgroundColor" Value="#F5F5F5"/>
+                <!--Setter Property="BackgroundColor" Value="#F5F5F5"/-->
+                <Setter Property="BackgroundColor" Value="#FFFFFF"/>
             </Style>
 
             <Style x:Key="StandartTextLabel" TargetType="Label">

@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:QuestHelper.View.Converters"
-             x:Class="QuestHelper.View.AlbumsPage" Appearing="AlbumsPage_OnAppearing" Disappearing="AlbumsPage_OnDisappearing">
+             x:Class="QuestHelper.View.AlbumsPage" Appearing="AlbumsPage_OnAppearing" Disappearing="AlbumsPage_OnDisappearing" Style="{StaticResource ContentPage}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:AspectImageConverter  x:Key="aspectimage" />
@@ -21,10 +21,10 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="96" />
             </Grid.RowDefinitions>
-            <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Vertical" IsVisible="{Binding NoPostsWarningIsVisible}" HorizontalOptions="CenterAndExpand">
-                <Image Source="smile_dissatisfied.png" Aspect="AspectFit" HorizontalOptions="CenterAndExpand">
-                </Image>
-                <Label Text="У вас пока нет ни одного маршрута" Style="{StaticResource StandartTextLabel}" HorizontalOptions="CenterAndExpand" ></Label>
+            <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Orientation="Vertical" IsVisible="{Binding NoPostsWarningIsVisible}" HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
+                <Label Text="У вас пока нет загруженных маршрутов" Style="{StaticResource StandartTextLabel}" FontSize="16" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" Margin="20,0,20,0"></Label>
+                <Image Source="emptystate.png" HeightRequest="150" WidthRequest="300" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                <!--Label Text="Вы можете загрузить ранее сохраненные маршруты, либо создать новые." Style="{StaticResource StandartTextLabel}" FontSize="16" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" Margin="20,0,20,0"></-->
             </StackLayout>
             <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" SeparatorVisibility="None" ItemsSource="{Binding Routes}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshListPostsCommand}" RowHeight="250"  SelectedItem="{Binding SelectedRouteItem,Mode=TwoWay}">
                 <ListView.ItemTemplate>
@@ -56,9 +56,10 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <StackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
-                <Label Text="Пока что не загружено ни одной публикации" Style="{StaticResource StandartTextLabel}" HorizontalOptions="EndAndExpand" IsVisible="{Binding NoPostsWarningIsVisible}" ></Label>
-            </StackLayout>
+            <!--StackLayout Orientation="Vertical" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="FillAndExpand" VerticalOptions="Center" IsVisible="{Binding NoPostsWarningIsVisible}">
+                <Image Source="emptystate.png" HeightRequest="200" WidthRequest="400" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                <Label Text="Пока что не загружено ни одной публикации" Style="{StaticResource StandartTextLabel}" HorizontalOptions="EndAndExpand" ></Label>
+            </-->
         </Grid>
     </ContentPage.Content>
 </ContentPage>

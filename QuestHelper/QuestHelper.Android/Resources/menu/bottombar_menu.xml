@@ -6,7 +6,7 @@
     android:title="Лента" />
   <item
     android:id="@+id/bottomBarAlbomsPage"
-    android:icon="@drawable/list"
+    android:icon="@drawable/map"
     android:title="Загруженные" />
   <item
       android:id="@+id/bottomBarRoutesPage"
