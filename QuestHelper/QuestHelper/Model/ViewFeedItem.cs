@@ -17,6 +17,7 @@ namespace QuestHelper.Model
 {
     public class ViewFeedItem
     {
+        private RoutePointManager _routePointManager = new RoutePointManager();
         private string _id = string.Empty;
         private string _name = string.Empty;
         private DateTimeOffset _createDate;
@@ -126,7 +127,7 @@ namespace QuestHelper.Model
         {
             get
             {
-                return _createDate.ToLocalTime().ToString();
+                return _createDate.ToString("MMMM yyyy", CultureInfo.InvariantCulture);
             }
         }
 
@@ -147,6 +148,14 @@ namespace QuestHelper.Model
             set
             {
                 _description = value;
+                if (string.IsNullOrEmpty(_description))
+                {
+                    var coupleOfPoints = _routePointManager.GetFirstAndLastPoints(_id);
+                    if (coupleOfPoints.Item1 != null)
+                    {
+                        _description = coupleOfPoints.Item1.Description;
+                    }
+                }
             }
             get
             {

@@ -30,7 +30,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Frame CornerRadius="10" Padding="0" IsClippedToBounds="False" BackgroundColor="White" HasShadow="True" BorderColor="Accent" OutlineColor="#CAECFF"  Margin="10,10,10,5">
+                            <Frame CornerRadius="10" Padding="0" IsClippedToBounds="False" BackgroundColor="#e3f2fd" HasShadow="True" BorderColor="Accent" OutlineColor="#CAECFF"  Margin="10,10,10,5">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="2*"/>

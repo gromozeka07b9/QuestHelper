@@ -39,7 +39,7 @@
                             </Label>
                         </StackLayout>
 
-                        <StackLayout Grid.Row="1" Grid.RowSpan="1" Padding="10" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand">
+                        <StackLayout Grid.Row="1" Grid.RowSpan="1" Padding="5" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand">
                             <Label Text="{Binding CreateDateText}" FontSize="16" FontAttributes="Bold" LineBreakMode="WordWrap" VerticalTextAlignment="Start" VerticalOptions="Start" HorizontalTextAlignment="Start" HorizontalOptions="StartAndExpand" />
                         </StackLayout>
 
