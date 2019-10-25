@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
   <item
     android:id="@+id/bottomBarAlbomsPage"
-    android:icon="@drawable/list"
+    android:icon="@drawable/feed"
     android:title="Лента" />
   <item
     android:id="@+id/bottomBarAlbomsPage"
-    android:icon="@drawable/map"
+    android:icon="@drawable/loaded"
     android:title="Загруженные" />
   <item
       android:id="@+id/bottomBarRoutesPage"
-      android:icon="@drawable/map"
+      android:icon="@drawable/personal"
       android:title="Личные" />
   <!--item
       android:id="@+id/bottomBarOverviewPage"

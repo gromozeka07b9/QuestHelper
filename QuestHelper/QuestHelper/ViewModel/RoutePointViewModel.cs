@@ -40,7 +40,7 @@ namespace QuestHelper.ViewModel
         public ICommand AddAudioCommand { get; private set; }
         public ICommand ShareCommand { get; private set; }
 
-        private string defaultImageName = "emptyimg.png";
+        private string defaultImageName = "emptylist.png";
         private static Random _rnd = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
         private List<string> _pointNames = new List<string>()
         {

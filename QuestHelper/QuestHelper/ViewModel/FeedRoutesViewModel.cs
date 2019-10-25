@@ -37,11 +37,11 @@ namespace QuestHelper.ViewModel
             _memoryCache = App.Container.Resolve<IMemoryCache>();
         }
 
-        public void startDialog()
+        public async void startDialogAsync()
         {
             var toolbarService = DependencyService.Get<IToolbarService>();
             toolbarService.SetVisibilityToolbar(true);
-            refreshFeedCommandAsync();
+            await refreshFeed(false);
         }
 
         internal void closeDialog()
@@ -50,12 +50,25 @@ namespace QuestHelper.ViewModel
 
         async void refreshFeedCommandAsync()
         {
+            await refreshFeed(true);
+        }
+
+        private async Task refreshFeed(bool force)
+        {
             IsRefreshing = true;
             List<FeedItem> feed = new List<FeedItem>();
-            if (!_memoryCache.TryGetValue(_feedCacheId, out feed))
+            if (!force)
+            {
+                if (!_memoryCache.TryGetValue(_feedCacheId, out feed))
+                {
+                    feed = await getFeedFromApi();
+                }
+            }
+            else
             {
                 feed = await getFeedFromApi();
             }
+
             FeedItems = getSortedViewFeed(feed);
 
             PropertyChanged(this, new PropertyChangedEventArgs("FeedItems"));
@@ -63,6 +76,7 @@ namespace QuestHelper.ViewModel
             {
                 Device.StartTimer(TimeSpan.FromSeconds(3), OnTimerForUpdate);
             }
+
             NoItemsWarningIsVisible = FeedItems?.Count() == 0;
             IsRefreshing = false;
         }
@@ -100,7 +114,7 @@ namespace QuestHelper.ViewModel
 #if DEBUG
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10)
 #else
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(120)
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(600)
 #endif
                 });
                 foreach (var item in feed)
@@ -141,7 +155,8 @@ namespace QuestHelper.ViewModel
             }
             get
             {
-                return _isRefreshing;
+                //return _isRefreshing;
+                return false;
             }
         }
         public string FeedItemId

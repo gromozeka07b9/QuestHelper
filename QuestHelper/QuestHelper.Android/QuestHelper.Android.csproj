@@ -542,7 +542,7 @@
     <Content Include="Properties\AndroidManifestDebug.xml" />
     <AndroidResource Include="Resources\drawable\play2.png" />
     <AndroidResource Include="Resources\drawable\account_circle.png" />
-    <AndroidResource Include="Resources\drawable\emptystate.png" />
+    <AndroidResource Include="Resources\drawable\emptyphoto.png" />
     <AndroidResource Include="Resources\drawable\person.png" />
     <AndroidResource Include="Resources\drawable-hdpi\account_circle.png" />
     <AndroidResource Include="Resources\drawable-hdpi\apps.png" />
@@ -563,6 +563,28 @@
     <AndroidResource Include="Resources\drawable-hdpi\cloud_upload.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\cloud_upload.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\cloud_upload.png" />
+    <AndroidResource Include="Resources\drawable\face_black.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\face_black.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\face_black.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\face_black.png" />
+    <AndroidResource Include="Resources\drawable\emptylist.png" />
+    <AndroidResource Include="Resources\drawable\emptysearch.png" />
+    <AndroidResource Include="Resources\drawable\person2.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\person2.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\person2.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\person2.png" />
+    <AndroidResource Include="Resources\drawable\personal.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\personal.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\personal.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\personal.png" />
+    <AndroidResource Include="Resources\drawable\feed.png" />
+    <AndroidResource Include="Resources\drawable\loaded.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\feed.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\loaded.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\feed.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\loaded.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\feed.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\loaded.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

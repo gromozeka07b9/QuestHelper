@@ -16,7 +16,7 @@ namespace QuestHelper.ViewModel
     public class ShareRouteViewModel : INotifyPropertyChanged
     {
         private const string _apiUrl = "http://igosh.pro/api";
-        private IEnumerable<ViewUserInfo> _usersForShare;
+        private IEnumerable<ViewUserInfo> _usersForShare = new List<ViewUserInfo>();
         private List<ViewUserInfo> _usersFullList;
         public event PropertyChangedEventHandler PropertyChanged;
         public INavigation Navigation { get; set; }
@@ -80,6 +80,7 @@ namespace QuestHelper.ViewModel
                 {
                     _usersForShare = value;
                     PropertyChanged(this, new PropertyChangedEventArgs("FoundedUsers"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("NoContactWarningIsVisible"));
                 }
             }
             get
@@ -103,6 +104,13 @@ namespace QuestHelper.ViewModel
             get
             {
                 return _isRefreshing;
+            }
+        }
+        public bool NoContactWarningIsVisible
+        {
+            get
+            {
+                return !FoundedUsers.Any();
             }
         }
 

@@ -22,7 +22,7 @@ namespace QuestHelper.View
 
         private void FeedRoutesPage_OnAppearing(object sender, EventArgs e)
         {
-            _vm.startDialog();
+            _vm.startDialogAsync();
         }
 
         private void FeedRoutesPage_OnDisappearing(object sender, EventArgs e)

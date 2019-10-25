@@ -40,8 +40,8 @@ namespace QuestHelper.Model
             else
             {
                 _createDate = DateTimeOffset.Now;
-                _imagePreviewPath = "emptyimg.png";
-                _imagePath = "emptyimg.png";
+                _imagePreviewPath = "emptylist.png";
+                _imagePath = "emptylist.png";
             }
         }
 
@@ -229,7 +229,7 @@ namespace QuestHelper.Model
                 if (!string.IsNullOrEmpty(_imagePreviewPath) && File.Exists(_imagePreviewPath))
                     return _imagePreviewPath;
                 else
-                    return "camera1.png";
+                    return "emptyphoto.png";
             }
         }        
 

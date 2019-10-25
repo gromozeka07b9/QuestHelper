@@ -169,7 +169,7 @@ namespace QuestHelper.Managers
             }
             else
             {
-                filename = "emptyimg.png";
+                filename = "emptyphoto.png";
             }
 
             return filename;
@@ -185,7 +185,7 @@ namespace QuestHelper.Managers
             }
             else
             {
-                filename = "emptyimg.png";
+                filename = "emptylist.png";
             }
 
             return filename;

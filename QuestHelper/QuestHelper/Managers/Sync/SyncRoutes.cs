@@ -76,7 +76,7 @@ namespace QuestHelper.Managers.Sync
                     foreach (var localRouteId in newClientRoutes)
                     {
                         SyncRoute syncRouteContext = new SyncRoute(localRouteId, _authToken);
-                        syncRouteContext.SyncImages = false;
+                        syncRouteContext.SyncImages = true;
                         _log.AddStringEvent($"start sync new route {localRouteId}");
                         result = await syncRouteContext.SyncAsync(string.Empty);
                         _log.AddStringEvent($"new route result, {localRouteId} :" + result);

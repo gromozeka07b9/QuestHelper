@@ -68,10 +68,12 @@ namespace QuestHelper.View
 	        {
 	            Image img = new Image()
 	            {
-	                Source = "camera1.png",
+	                Source = "emptyphoto.png",
 	                Aspect = Aspect.AspectFill,
 	                HorizontalOptions = LayoutOptions.CenterAndExpand,
-	                VerticalOptions = LayoutOptions.CenterAndExpand
+	                VerticalOptions = LayoutOptions.CenterAndExpand,
+                    HeightRequest = 150,
+                    WidthRequest = 200
 	            };
 	            img.GestureRecognizers.Add(new TapGestureRecognizer() { Command = _vm.ViewPhotoCommand, CommandParameter = new FileImageSource() });
 	            img.GestureRecognizers.Add(new TapGestureRecognizer() { Command = _vm.ViewPhotoCommand, CommandParameter = new FileImageSource(), NumberOfTapsRequired = 2});

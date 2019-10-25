@@ -28,10 +28,10 @@
                         </StackLayout>
                     </ScrollView>
                     <StackLayout Grid.Column="1" Orientation="Vertical" VerticalOptions="EndAndExpand" WidthRequest="48">
-                        <ImageButton WidthRequest="48" BackgroundColor="#F5F5F5" Source="share.png" Command="{Binding ShareCommand}"></ImageButton>
-                        <ImageButton WidthRequest="48" BackgroundColor="#F5F5F5" Source="rec.png" Command="{Binding AddAudioCommand}"></ImageButton>
-                        <ImageButton WidthRequest="48" BackgroundColor="#F5F5F5" Source="add_photo.png" Command="{Binding AddPhotoCommand}"></ImageButton>
-                        <ImageButton WidthRequest="48" BackgroundColor="#F5F5F5" Source="take_photo.png" Command="{Binding TakePhotoCommand}"></ImageButton>
+                        <ImageButton WidthRequest="48" BackgroundColor="#FFFFFF" Source="share.png" Command="{Binding ShareCommand}"></ImageButton>
+                        <ImageButton WidthRequest="48" BackgroundColor="#FFFFFF" Source="rec.png" Command="{Binding AddAudioCommand}"></ImageButton>
+                        <ImageButton WidthRequest="48" BackgroundColor="#FFFFFF" Source="add_photo.png" Command="{Binding AddPhotoCommand}"></ImageButton>
+                        <ImageButton WidthRequest="48" BackgroundColor="#FFFFFF" Source="take_photo.png" Command="{Binding TakePhotoCommand}"></ImageButton>
                     </StackLayout>
                 </StackLayout>
 
