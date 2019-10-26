@@ -10,6 +10,7 @@ https://habr.com/ru/post/458272/
 https://play.google.com/store/apps/details?id=com.sd.gosh&hl=ru
 
 Endpoint backend:
+http://igosh.pro/api
 http://igosh.pro/api/swagger/index.html
 
 Солюшен содержит решение как серверной части, так и мобильное приложение.
