@@ -1,16 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using QuestHelper.Server.Managers;
+using QuestHelper.Server.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using QuestHelper.Server.Managers;
-using QuestHelper.Server.Models;
 
 namespace QuestHelper.Server.Controllers.Routes
 {
@@ -20,6 +16,7 @@ namespace QuestHelper.Server.Controllers.Routes
     [Authorize]
     [ServiceFilter(typeof(RequestFilter))]
     [Route("api/[controller]")]
+    [Obsolete]
     public class RoutesController : Controller
     {
         private DbContextOptions<ServerDbContext> _dbOptions = ServerDbContext.GetOptionsContextDbServer();

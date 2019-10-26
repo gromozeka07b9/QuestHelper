@@ -1,17 +1,14 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using QuestHelper.Server.Managers;
+using QuestHelper.Server.Models;
+using QuestHelper.SharedModelsWS;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using QuestHelper.Server.Controllers.Medias;
-using QuestHelper.Server.Integration;
-using QuestHelper.Server.Managers;
-using QuestHelper.Server.Models;
-using QuestHelper.SharedModelsWS;
 using Route = QuestHelper.SharedModelsWS.Route;
 using RoutePoint = QuestHelper.SharedModelsWS.RoutePoint;
 
@@ -34,10 +31,6 @@ namespace QuestHelper.Server.Controllers.RouteSync
             sb.AppendLine("Получение данных о маршруте через методы:");
             sb.AppendLine("GET api/route/version/get - получение версий всех, доступных пользователю, маршрутов");
             sb.AppendLine("GET api/route/{routeid} - получение данных всех точек и медиаобъектов, входящих в конкретный маршрут");
-            /*sb.AppendLine("POST api/route/{routeid} - добавление/обновление данных по конкретному маршруту");
-            sb.AppendLine("POST api/route/{routeid}/adduser - добавление прав доступа к маршруту конкретному пользователю");
-            sb.AppendLine("POST api/route/{routeid}/share - поделиться маршрутов всем пользователям");
-            sb.AppendLine("DELETE api/route/{routeid} - удаление маршрута");*/
             return Content(sb.ToString());
         }
 

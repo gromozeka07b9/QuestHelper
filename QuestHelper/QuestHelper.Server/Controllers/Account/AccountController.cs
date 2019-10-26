@@ -21,13 +21,6 @@ namespace QuestHelper.Server.Controllers.Account
     {
         private DbContextOptions<ServerDbContext> _dbOptions = ServerDbContext.GetOptionsContextDbServer();
 
-        /*public class TokenRequest
-        {
-            public string Username;
-            public string Email;
-            public string Password;
-        }*/
-
         [HttpPost]
         public async Task Token([FromBody]TokenRequest request)
         {
@@ -40,32 +33,6 @@ namespace QuestHelper.Server.Controllers.Account
                 }
                 if (user != null)
                 {
-                    /*IdentityManager identityManager = new IdentityManager();
-                    var identity = identityManager.GetIdentity(user);
-                    if (identity != null)
-                    {
-                        JwtManager jwt = new JwtManager();
-                        var encodedJwt = jwt.GetEncodedJwt(identity, user.TokenKey);
-
-                        var response = new
-                        {
-                            access_token = encodedJwt,
-                            username = user.Name,
-                            email = user.Email,
-                            userid = user.UserId
-                        };
-
-                        // сериализация ответа
-                        Response.ContentType = "application/json";
-                        await Response.WriteAsync(JsonConvert.SerializeObject(response, new JsonSerializerSettings { Formatting = Formatting.Indented }));
-                        Console.WriteLine($"Account Token: status 200, {request?.Username}, {request?.Email}");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Account Token: status 500, {request?.Username}, {request?.Email}");
-                        Response.StatusCode = 500;
-                        await Response.WriteAsync("Error while generate token.");
-                    }*/
                     JwtResponseMaker jwtMaker = new JwtResponseMaker();
                     string response = jwtMaker.GetJwtResponse(user);
                     if (!string.IsNullOrEmpty(response))
@@ -122,23 +89,6 @@ namespace QuestHelper.Server.Controllers.Account
             return;
         }
 
-        /*private User CreateUser(TokenRequest request, ServerDbContext _db, bool isDemoUser)
-        {
-            User user = new User();
-            user.UserId = Guid.NewGuid().ToString();
-            user.Role = isDemoUser ? "demo" : "user";
-            user.Name = request.Username;
-            user.Email = request.Email;
-            user.Password = isDemoUser ? user.Name : request.Password;
-            user.Version = 1;
-            user.CreateDate = DateTime.Now;
-            user.TokenKey = user.Name;
-            _db.User.Add(user);
-            _db.SaveChanges();
-            Console.WriteLine($"Created DB user: {user.Name}");
-            return user;
-        }*/
-
         [Route("new")]
         [HttpPost]
         public async Task New([FromBody]TokenRequest request)
@@ -179,36 +129,6 @@ namespace QuestHelper.Server.Controllers.Account
 
             return;
         }              
-
-        /*private async Task MakeJwtResponse(User user)
-        {
-            IdentityManager identityManager = new IdentityManager();
-            var identity = identityManager.GetIdentity(user);
-            if (identity != null)
-            {
-                JwtManager jwt = new JwtManager();
-                var encodedJwt = jwt.GetEncodedJwt(identity, user.TokenKey);
-
-                var response = new
-                {
-                    access_token = encodedJwt,
-                    username = identity.Name,
-                    email = user.Email,
-                    userid = user.UserId
-                };
-
-                // сериализация ответа
-                Response.ContentType = "application/json";
-                await Response.WriteAsync(JsonConvert.SerializeObject(response,
-                    new JsonSerializerSettings {Formatting = Formatting.Indented}));
-            }
-            else
-            {
-                Console.WriteLine($"Generate JWT token:status 500, {user.Name}");
-                Response.StatusCode = 500;
-                await Response.WriteAsync("Error while generate token.");
-            }
-        }*/
 
         [Authorize]
         [HttpGet]

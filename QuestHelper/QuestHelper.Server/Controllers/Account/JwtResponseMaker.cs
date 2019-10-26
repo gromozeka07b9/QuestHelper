@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using QuestHelper.Server.Auth;
 using QuestHelper.Server.Managers;
 using QuestHelper.Server.Models;
@@ -33,15 +31,7 @@ namespace QuestHelper.Server.Controllers.Account
 
                 // сериализация ответа
                 serializedResponse = JsonConvert.SerializeObject(response, new JsonSerializerSettings { Formatting = Formatting.Indented });
-                //Response.ContentType = "application/json";
-                //await Response.WriteAsync(JsonConvert.SerializeObject(response, new JsonSerializerSettings { Formatting = Formatting.Indented }));
             }
-            /*else
-            {
-                Console.WriteLine($"Generate JWT token:status 500, {user.Name}");
-                Response.StatusCode = 500;
-                await Response.WriteAsync("Error while generate token.");
-            }*/
             return serializedResponse;
         }
     }

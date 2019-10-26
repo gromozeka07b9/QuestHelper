@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
-using Newtonsoft.Json;
 using QuestHelper.Server.Integration;
 using QuestHelper.Server.Managers;
 using QuestHelper.Server.Models;
+using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace QuestHelper.Server.Controllers.Medias
 {
