@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using QuestHelper.LocalDB.Model;
@@ -10,10 +11,8 @@ namespace QuestHelper.Managers
 {
     public class RoutePointMediaObjectManager : RealmInstanceMaker
     {
-        //Realm _realmInstance;
         public RoutePointMediaObjectManager()
         {
-            //_realmInstance = RealmAppInstance.GetAppInstance();
         }
 
         public bool SetSyncStatus(string Id, bool IsSyncPreview, bool Status)
@@ -39,26 +38,6 @@ namespace QuestHelper.Managers
             return result;
         }
 
-        /*private bool Add(RoutePoint point, RoutePointMediaObject mediaObject)
-        {
-            bool result = false;
-            try
-            {
-                _realmInstance.Write(() =>
-                {
-                    point.MediaObjects.Clear();
-                    point.MediaObjects.Add(mediaObject);
-                    _realmInstance.Add(point, true);
-                }
-                );
-                result = true;
-            }
-            catch (Exception e)
-            {
-                HandleError.Process("RoutePointMediaObjectManager", "Add", e, false);
-            }
-            return result;
-        }*/
         internal bool Delete(string mediaObjectId)
         {
             bool result = false;
@@ -134,6 +113,28 @@ namespace QuestHelper.Managers
             return returnId;
         }
 
+        internal void DeleteObjectFromLocalStorage(ViewRoutePointMediaObject vmedia)
+        {
+            if (vmedia != null)
+            {
+                try
+                {
+                    RoutePointMediaObject media = !string.IsNullOrEmpty(vmedia.Id) ? RealmInstance.Find<RoutePointMediaObject>(vmedia.Id) : null;
+                    if (media != null)
+                    {
+                        RealmInstance.Write(() =>
+                        {
+                            RealmInstance.Remove(media);
+                        });
+                    }
+                }
+                catch (Exception e)
+                {
+                    HandleError.Process("RoutePointMediaObjectManager", "DeleteObjectFromLocalStorage", e, false);
+                }
+            }
+        }
+
         internal ViewRoutePointMediaObject GetFirstMediaObjectByRouteId(string routeId)
         {
             ViewRoutePointMediaObject resultMedia = new ViewRoutePointMediaObject();
@@ -149,22 +150,13 @@ namespace QuestHelper.Managers
             return resultMedia;
         }
 
-        /*internal IEnumerable<RoutePointMediaObject> GetAllMediaObjects()
-        {
-            var deletedRoutes = RealmInstance.All<Route>().Where(r => r.IsDeleted).ToList().Select(d => d.RouteId);
-            var pointsInDeletedRoutes = RealmInstance.All<RoutePoint>().ToList().Where(r => (deletedRoutes.Any(d => d == r.RouteId))).Select(p=>p.RoutePointId);
-            //return _realmInstance.All<RoutePoint>().ToList().Where(r => (!deletedRoutes.Any(d => d == r.RouteId)));
-            var objects = RealmInstance.All<RoutePointMediaObject>().ToList().Where(m=> (!pointsInDeletedRoutes.Any(p=>p==m.RoutePointId)));
-            return objects;
-        }*/
         internal IEnumerable<RoutePointMediaObject> GetMediaObjectsByRouteId(string routeId)
         {
-            //var deletedRoutes = _realmInstance.All<Route>().Where(r => r.IsDeleted).ToList().Select(d => d.RouteId);
-            //var pointsInDeletedRoutes = _realmInstance.All<RoutePoint>().ToList().Where(r => (deletedRoutes.Any(d => d == r.RouteId))).Select(p => p.RoutePointId);
             var points = RealmInstance.All<RoutePoint>().Where(p=>p.RouteId == routeId);
             var objects = RealmInstance.All<RoutePointMediaObject>().ToList().Where(m => (points.Any(p => p.RoutePointId == m.RoutePointId)));
             return objects;
         }
+
         internal IEnumerable<RoutePointMediaObject> GetNotSyncedMediaObjects(bool OnlyPreview)
         {
             if(OnlyPreview)
@@ -182,19 +174,20 @@ namespace QuestHelper.Managers
         {
             return RealmInstance.All<RoutePointMediaObject>().Where(x=>x.RoutePointId == routePointId&&!x.IsDeleted);
         }
-        /*internal int GetCountByRouteId(string routeId)
+        public void TryDeleteFile(string routePointMediaObjectId, MediaObjectTypeEnum mediaType, bool isPreview = false)
         {
-            int count = 0;
-            var route = RealmInstance.All<Route>().Where(x => x.RouteId == routeId&&!x.IsDeleted).FirstOrDefault();
-            if (route != null)
+            string filename = ImagePathManager.GetImagePath(routePointMediaObjectId, mediaType, isPreview);
+            if (File.Exists(filename))
             {
-                foreach (var point in route.Points)
+                try
                 {
-                    count += RealmInstance.All<RoutePointMediaObject>().Where(x => x.RoutePointId == point.RoutePointId && !point.IsDeleted).Count();
+                    File.Delete(filename);
+                }
+                catch (Exception e)
+                {
+                    HandleError.Process("RoutePointMediaObjectManager", "TryDeleteFile", e, false);
                 }
             }
-
-            return count;
-        }*/
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using QuestHelper.LocalDB.Model;
@@ -50,7 +51,7 @@ namespace QuestHelper.Managers
         internal IEnumerable<ViewRoute> GetPosts()
         {
             List<ViewRoute> vroutes = new List<ViewRoute>();
-            var routes = RealmInstance.All<Route>().Where(r=>r.IsPublished).OrderByDescending(r => r.CreateDate);
+            var routes = RealmInstance.All<Route>().Where(r=>r.IsPublished && !r.IsDeleted).OrderByDescending(r => r.CreateDate);
             if (routes.Any())
             {
                 foreach (var route in routes)
@@ -59,6 +60,72 @@ namespace QuestHelper.Managers
                 }
             }
             return vroutes;
+        }
+
+        /// <summary>
+        /// Возвращает список маршрутов, созданных и опубликованных не текущим пользователем
+        /// </summary>
+        /// <param name="currentUserId"></param>
+        /// <returns></returns>
+        internal IEnumerable<ViewRoute> GetPostsOtherCreators(string currentUserId)
+        {
+            List<ViewRoute> vroutes = new List<ViewRoute>();
+            var routes = RealmInstance.All<Route>().Where(r => r.IsPublished && !r.CreatorId.Equals(currentUserId)).OrderByDescending(r => r.CreateDate);
+            if (routes.Any())
+            {
+                foreach (var route in routes)
+                {
+                    vroutes.Add(new ViewRoute(route.RouteId));
+                }
+            }
+            return vroutes;
+        }
+
+        internal void DeleteRoutesDataFromStorage(IEnumerable<ViewRoute> routes)
+        {
+            RoutePointManager pointManager = new RoutePointManager();
+            RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
+            foreach (var vRoute in routes)
+            {
+                var points = pointManager.GetPointsByRouteId(vRoute.RouteId);
+                foreach (var vPoint in points)
+                {
+                    var medias = mediaManager.GetMediaObjectsByRoutePointId(vPoint.RoutePointId);
+                    foreach (var media in medias)
+                    {
+                        mediaManager.TryDeleteFile(media.RoutePointMediaObjectId, MediaObjectTypeEnum.Image, false);
+                        mediaManager.TryDeleteFile(media.RoutePointMediaObjectId, MediaObjectTypeEnum.Image, true);
+                        mediaManager.TryDeleteFile(media.RoutePointMediaObjectId, MediaObjectTypeEnum.Audio);
+                        var vMedia = new ViewRoutePointMediaObject();
+                        vMedia.Load(media.RoutePointMediaObjectId);
+                        mediaManager.DeleteObjectFromLocalStorage(vMedia);
+                    }
+                    pointManager.DeleteObjectFromLocalStorage(vPoint);
+                }
+                DeleteObjectFromLocalStorage(vRoute);
+            }
+        }
+
+        internal void DeleteObjectFromLocalStorage(ViewRoute vRoute)
+        {
+            if (vRoute != null)
+            {
+                try
+                {
+                    Route route = !string.IsNullOrEmpty(vRoute.Id) ? RealmInstance.Find<Route>(vRoute.Id) : null;
+                    if (route != null)
+                    {
+                        RealmInstance.Write(() =>
+                        {
+                            RealmInstance.Remove(route);
+                        });
+                    }
+                }
+                catch (Exception e)
+                {
+                    HandleError.Process("RouteManager", "DeleteObjectFromLocalStorage", e, false);
+                }
+            }
         }
 
         public IEnumerable<Route> GetNotSynced()

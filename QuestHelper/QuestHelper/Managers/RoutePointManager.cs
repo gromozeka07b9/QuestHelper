@@ -103,6 +103,29 @@ namespace QuestHelper.Managers
             }
             return returnid;
         }
+
+        internal void DeleteObjectFromLocalStorage(ViewRoutePoint vpoint)
+        {
+            if (vpoint != null)
+            {
+                try
+                {
+                    RoutePoint point = !string.IsNullOrEmpty(vpoint.Id) ? RealmInstance.Find<RoutePoint>(vpoint.Id) : null;
+                    if (point != null)
+                    {
+                        RealmInstance.Write(() =>
+                        {
+                            RealmInstance.Remove(point);
+                        });
+                    }
+                }
+                catch (Exception e)
+                {
+                    HandleError.Process("RoutePointManager", "DeleteObjectFromLocalStorage", e, false);
+                }
+            }
+        }
+
         internal bool Delete(ViewRoutePoint viewRoutePoint)
         {
             bool result = false;

@@ -9,6 +9,9 @@
             <local:LockImageConverter  x:Key="lockimage" />
         </ResourceDictionary>
     </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding DeleteDataAllAlbumsCommand}" Icon="delete.png"></ToolbarItem>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid>
             <Grid.ColumnDefinitions>

@@ -11,6 +11,9 @@ using Xamarin.Forms;
 
 namespace QuestHelper.ViewModel
 {
+    /// <summary>
+    /// Альбомы - список уже загруженных публикаций
+    /// </summary>
     internal class AlbumsViewModel: INotifyPropertyChanged
     {
         private IEnumerable<ViewRoute> _routes;
@@ -22,24 +25,42 @@ namespace QuestHelper.ViewModel
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand RefreshListPostsCommand { get; private set; }
+        public ICommand DeleteDataAllAlbumsCommand { get; private set; }
 
         internal AlbumsViewModel()
         {
-            RefreshListPostsCommand = new Command(refreshListPostsCommand);
-
+            RefreshListPostsCommand = new Command(refreshListPostsCommandAsync);
+            DeleteDataAllAlbumsCommand = new Command(deleteDataAllAlbumsCommandAsync);
         }
 
-        private void refreshListPostsCommand()
+        private async void deleteDataAllAlbumsCommandAsync()
+        {
+            bool answerYesIsNo = await Application.Current.MainPage.DisplayAlert("Внимание", "Вы уверены, что хотите удалить загруженные маршруты? При необходимости, вы сможете загрузить их повторно из ленты.", "Нет", "Да");
+            if (!answerYesIsNo) //порядок кнопок - хардкод, и непонятно, почему именно такой
+            {
+                IsRefreshing = true;
+                TokenStoreService token = new TokenStoreService();
+                string userId = await token.GetUserIdAsync();
+                var routesForDelete = _routeManager.GetPostsOtherCreators(userId);
+                _routeManager.DeleteRoutesDataFromStorage(routesForDelete);
+                PropertyChanged(this, new PropertyChangedEventArgs("Routes"));
+                IsRefreshing = false;
+            }
+        }
+
+        private async void refreshListPostsCommandAsync()
         {
             IsRefreshing = true;
-            Routes = _routeManager.GetPosts();
+            TokenStoreService token = new TokenStoreService();
+            string userId = await token.GetUserIdAsync();
+            Routes = _routeManager.GetPostsOtherCreators(userId);
             NoPostsWarningIsVisible = Routes.Count() == 0;
             IsRefreshing = false;
         }
 
         internal void startDialog()
         {
-            refreshListPostsCommand();
+            refreshListPostsCommandAsync();
         }
         internal void closeDialog()
         {

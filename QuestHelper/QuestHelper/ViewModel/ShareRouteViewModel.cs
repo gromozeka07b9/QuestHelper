@@ -35,7 +35,6 @@ namespace QuestHelper.ViewModel
         private void updateUsersCommand()
         {
             IsRefreshing = true;
-            //_usersFullList = getUsersFromServerAsync();
             IsRefreshing = false;
         }
 
