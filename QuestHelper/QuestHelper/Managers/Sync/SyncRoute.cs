@@ -67,18 +67,18 @@ namespace QuestHelper.Managers.Sync
                         var medias = _routePointMediaManager.GetMediaObjectsByRouteId(routeRoot.Route.Id).Where(m => !m.OriginalServerSynced || !m.PreviewServerSynced).Select(m => new MediaForUpdate{ RoutePointId = m.RoutePointId, RoutePointMediaObjectId = m.RoutePointMediaObjectId, OriginalServerSynced = m.OriginalServerSynced, PreviewServerSynced = m.PreviewServerSynced, IsDeleted = m.IsDeleted, MediaType = (MediaObjectTypeEnum)m.MediaType }).ToList();
                         _log.AddStringEvent($"media files sync,  route {_routeId}, media count:{medias?.Count.ToString()}");
 
-                        //List<Task> tasks = new List<Task>();
+                        /*int imgCount = medias.Count();
+                        int countInThread = imgCount / 20;
+                        for (int i = 0; i < imgCount; i += countInThread)
+                        {
+                            int maxRange = (i + countInThread) < imgCount ? countInThread : imgCount - i;
+                            List<MediaForUpdate> list = medias.GetRange(i, maxRange);
+                            loadImg(list);
+                        }*/
                         foreach (var media in medias)
                         {
                             await updateImages(media);
-                            //var task = new Task(async () => { await updateImages(media); });
-                            //task.Start();
-                            Console.WriteLine($"load img {media.RoutePointMediaObjectId}");
-                            //tasks.Add(task);
                         }
-
-                        //Task.WaitAll(tasks.ToArray());
-                        //tasks.Clear();
                     }
                 }
             }
@@ -99,6 +99,21 @@ namespace QuestHelper.Managers.Sync
             }
 
             return true;
+        }
+
+        private void loadImg(List<MediaForUpdate> medias)
+        {
+            List<Task> tasks = new List<Task>();
+            foreach (var media in medias)
+            {
+                var task = new Task(async () => { await updateImages(media); });
+                //task.Start();
+                tasks.Add(task);
+                Console.WriteLine($"async load img {media.RoutePointMediaObjectId}");
+            }
+
+            Task.WaitAll(tasks.ToArray());
+            tasks.Clear();
         }
 
         private async Task updateImages(MediaForUpdate media)

@@ -38,13 +38,11 @@ namespace QuestHelper.ViewModel
             bool answerYesIsNo = await Application.Current.MainPage.DisplayAlert("Внимание", "Вы уверены, что хотите удалить загруженные маршруты? При необходимости, вы сможете загрузить их повторно из ленты.", "Нет", "Да");
             if (!answerYesIsNo) //порядок кнопок - хардкод, и непонятно, почему именно такой
             {
-                IsRefreshing = true;
                 TokenStoreService token = new TokenStoreService();
                 string userId = await token.GetUserIdAsync();
                 var routesForDelete = _routeManager.GetPostsOtherCreators(userId);
                 _routeManager.DeleteRoutesDataFromStorage(routesForDelete);
-                PropertyChanged(this, new PropertyChangedEventArgs("Routes"));
-                IsRefreshing = false;
+                refreshListPostsCommandAsync();
             }
         }
 

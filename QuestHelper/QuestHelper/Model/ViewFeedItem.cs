@@ -46,36 +46,6 @@ namespace QuestHelper.Model
         {
         }
 
-        /*public void Load(string routeId)
-        {
-            RouteManager manager = new RouteManager();
-            LocalDB.Model.Route route = manager.GetRouteById(routeId);
-            if (route != null)
-            {
-                _id = route.RouteId;
-                _name = route.Name;
-                _createDate = route.CreateDate;
-                _version = route.Version;
-                _creatorId = route.CreatorId;
-                _description = route.Description;
-                _objVerHash = route.ObjVerHash;
-            }
-        }*/
-        /*internal void FillFromWSModel(RouteRoot routeRoot, string routeHash)
-        {
-            if (routeRoot != null)
-            {
-                _id = routeRoot.Route.Id;
-                _name = routeRoot.Route.Name;
-                _createDate = routeRoot.Route.CreateDate;
-                _version = routeRoot.Route.Version;
-                _isDeleted = routeRoot.Route.IsDeleted;
-                _creatorId = routeRoot.Route.CreatorId;
-                _description = routeRoot.Route.Description;
-                _objVerHash = routeHash;
-            }
-        }*/
-
         public string Id
         {
             set
@@ -148,6 +118,9 @@ namespace QuestHelper.Model
             set
             {
                 _description = value;
+            }
+            get
+            {
                 if (string.IsNullOrEmpty(_description))
                 {
                     var coupleOfPoints = _routePointManager.GetFirstAndLastPoints(_id);
@@ -155,10 +128,23 @@ namespace QuestHelper.Model
                     {
                         _description = coupleOfPoints.Item1.Description;
                     }
+
+                    if (string.IsNullOrEmpty(_description))
+                    {
+                        var points = _routePointManager.GetPointsByRouteId(_id);
+                        StringBuilder sb = new StringBuilder();
+                        foreach (var point in points)
+                        {
+                            sb.Append($"{point.Name}-");
+                        }
+
+                        string fullString = sb.ToString();
+                        if (!string.IsNullOrEmpty(fullString))
+                        {
+                            _description = fullString.Substring(0, fullString.Length - 2);
+                        }
+                    }
                 }
-            }
-            get
-            {
                 return _description;
             }
         }
