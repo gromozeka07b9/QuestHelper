@@ -66,17 +66,19 @@ namespace QuestHelper
             AppCenter.Start("android=85c4ccc3-f315-427c-adbd-b928e461bcc8;", typeof(Analytics), typeof(Crashes));
 #endif
 
-		    SubscribeMessages();
+		    Setup();
 
-            TokenStoreService token = new TokenStoreService();
+		    SubscribeMessages();
+		    
+		    /*TokenStoreService token = new TokenStoreService();
             if (Setup() && !string.IsNullOrEmpty(await token.GetAuthTokenAsync()))
             {
 #if !DEBUG
                 Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
 #endif
-            }
+            }*/
 
-        }
+		}
 
         private void SubscribeMessages()
 	    {

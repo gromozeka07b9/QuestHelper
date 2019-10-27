@@ -47,6 +47,7 @@ namespace QuestHelper.Managers.Sync
             }
 
             //независимо от того, новый маршрут или нет, проверяем, что изменилось - придется пройтись по всему маршруту и узнать
+            bool syncImgHasErrors = false;
             RouteRoot routeRoot = await _routesApi.GetRouteRoot(_routeId);
             bool AuthRequired = (_routesApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routesApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
             if ((!AuthRequired) && (routeRoot != null))
@@ -77,7 +78,8 @@ namespace QuestHelper.Managers.Sync
                         }*/
                         foreach (var media in medias)
                         {
-                            await updateImages(media);
+                            bool result = await updateImages(media);
+                            if (!result) syncImgHasErrors = !result;
                         }
                     }
                 }
@@ -87,9 +89,13 @@ namespace QuestHelper.Managers.Sync
             var updatedLocalRoute = _routeManager.GetViewRouteById(_routeId);
             if (!updatedLocalRoute.IsDeleted)
             {
-                StringBuilder sbVersions = getVersionsForRoute(updatedLocalRoute);
-                _log.AddStringEvent($"set route {_routeId}, versions {sbVersions.ToString()}");
-                refreshHashForRoute(updatedLocalRoute, sbVersions);
+                //ToDo: Пока не придумал, как быть, если был сбой загрузки картинки - повторно ее уже хрен загрузишь
+                //if (!syncImgHasErrors)
+                {
+                    StringBuilder sbVersions = getVersionsForRoute(updatedLocalRoute);
+                    _log.AddStringEvent($"set route {_routeId}, versions {sbVersions.ToString()}");
+                    refreshHashForRoute(updatedLocalRoute, sbVersions);
+                }
             }
             else
             {
@@ -116,17 +122,19 @@ namespace QuestHelper.Managers.Sync
             tasks.Clear();
         }
 
-        private async Task updateImages(MediaForUpdate media)
+        private async Task<bool> updateImages(MediaForUpdate media)
         {
+            bool result = false;
             if (!media.IsDeleted)
             {
                 if (!media.OriginalServerSynced)
                 {
                     var httpStatus = await updateMediaFileAsync(media.RoutePointId, media.RoutePointMediaObjectId,
                         media.MediaType, false);
+                    result = httpStatus == HttpStatusCode.OK;
                     _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, false,
-                        httpStatus == HttpStatusCode.OK);
-                    if (httpStatus != HttpStatusCode.OK)
+                        result);
+                    if (!result)
                         _log.AddStringEvent(
                             $"media file update {media.RoutePointMediaObjectId}, original, http status:{HttpStatusCode.OK}");
                 }
@@ -135,10 +143,12 @@ namespace QuestHelper.Managers.Sync
                 {
                     var httpStatus = await updateMediaFileAsync(media.RoutePointId, media.RoutePointMediaObjectId,
                         media.MediaType, true);
-                    _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, true, httpStatus == HttpStatusCode.OK);
-                    if (httpStatus != HttpStatusCode.OK)
+                    bool resultPreview = httpStatus == HttpStatusCode.OK;
+                    _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, true, resultPreview);
+                    if (!resultPreview)
                         _log.AddStringEvent(
                             $"media file update {media.RoutePointMediaObjectId}, preview, http status:{HttpStatusCode.OK}");
+                    if (result) result = resultPreview;
                 }
             }
             else
@@ -148,7 +158,10 @@ namespace QuestHelper.Managers.Sync
                 _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, true, true);
                 MediaFileManager fileManager = new MediaFileManager();
                 fileManager.Delete(media.RoutePointMediaObjectId, media.MediaType);
+                result = true;
             }
+
+            return result;
         }
 
         private void deleteRouteContain(ViewRoute route)
@@ -222,7 +235,7 @@ namespace QuestHelper.Managers.Sync
 
             versions.Append(updatedLocalRoute.Version);
 
-            var points = _routePointManager.GetPointsByRouteId(updatedLocalRoute.RouteId).OrderBy(p => p.RoutePointId);
+            var points = _routePointManager.GetPointsByRouteId(updatedLocalRoute.RouteId, true).OrderBy(p => p.RoutePointId);
             foreach (var point in points)
             {
                 versions.Append(point.Version);

@@ -1,5 +1,6 @@
 ﻿using QuestHelper.Managers;
 using QuestHelper.Model;
+using QuestHelper.Model.Messages;
 using QuestHelper.View;
 using System;
 using System.Collections.Generic;
@@ -59,9 +60,17 @@ namespace QuestHelper.ViewModel
         internal void startDialog()
         {
             refreshListPostsCommandAsync();
+            MessagingCenter.Subscribe<SyncRouteCompleteMessage>(this, string.Empty, (sender) =>
+            {
+                if (string.IsNullOrEmpty(sender.RouteId) && sender.SuccessSync)
+                {
+                    refreshListPostsCommandAsync();
+                }
+            });
         }
         internal void closeDialog()
         {
+            MessagingCenter.Unsubscribe<SyncRouteCompleteMessage>(this, string.Empty);
         }
         public bool IsRefreshing
         {

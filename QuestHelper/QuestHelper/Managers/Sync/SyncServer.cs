@@ -148,6 +148,7 @@ namespace QuestHelper.Managers.Sync
             Application.Current.Properties.Remove(statusSyncKey);
             Application.Current.Properties.Add(statusSyncKey, $"Sync started:{startTime.ToLocalTime().ToString()}");
             _log.AddStringEvent($"Sync started:{startTime.ToLocalTime().ToString()}");
+            Xamarin.Forms.MessagingCenter.Send<SyncRouteStartMessage>(new SyncRouteStartMessage(), string.Empty);
             return startTime;
         }
 

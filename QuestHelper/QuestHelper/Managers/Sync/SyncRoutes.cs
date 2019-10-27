@@ -47,7 +47,7 @@ namespace QuestHelper.Managers.Sync
                 _log.AddStringEvent("GetRoutesVersions, count:" + listRoutesVersions?.Count.ToString());
                 if ((!AuthRequired) && (listRoutesVersions?.Count > 0))
                 {
-                    var routesLocal = _routeManager.GetRoutesForSync().Select(x => new { x.RouteId, x.Version, x.ObjVerHash });
+                    var routesLocal = _routeManager.GetRoutesForSync().Where(x=>!x.IsPublished).Select(x => new { x.RouteId, x.Version, x.ObjVerHash });
                     var differentRoutes = listRoutesVersions.Where(r => (!routesLocal.Any(l => (l.RouteId == r.Id && l.ObjVerHash == r.ObjVerHash))));
                     var newClientRoutes = routesLocal.Where(r => !listRoutesVersions.Any(d => d.Id == r.RouteId)).Select(r => r.RouteId).ToList();
 
@@ -71,7 +71,7 @@ namespace QuestHelper.Managers.Sync
 
                     foreach (var logRoute in newClientRoutes)
                     {
-                        _log.AddStringEvent($"differentRoute:{logRoute}");
+                        _log.AddStringEvent($"newRoute:{logRoute}");
                     }
                     foreach (var localRouteId in newClientRoutes)
                     {
@@ -82,6 +82,7 @@ namespace QuestHelper.Managers.Sync
                         _log.AddStringEvent($"new route result, {localRouteId} :" + result);
                         currentCountRoutesForSync++;
                     }
+                    Xamarin.Forms.MessagingCenter.Send<SyncRouteCompleteMessage>(new SyncRouteCompleteMessage() { RouteId = string.Empty, SuccessSync = result }, string.Empty);
                 }
             }
             else
@@ -95,7 +96,8 @@ namespace QuestHelper.Managers.Sync
         {
             bool result = true;
             var notify = DependencyService.Get<INotificationService>();
-            var serverRouteVersion = (await _routesApi.GetRoutesVersions(false)).Where(r => r.Id.Equals(routeId)).FirstOrDefault();
+            var serverRoutesVersionsFull = await _routesApi.GetRoutesVersions(false);
+            var serverRouteVersion = serverRoutesVersionsFull?.Where(r => r.Id.Equals(routeId)).FirstOrDefault();
             AuthRequired = (_routesApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routesApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
             if (!AuthRequired)
             {

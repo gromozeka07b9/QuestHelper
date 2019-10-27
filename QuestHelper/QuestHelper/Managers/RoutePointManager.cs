@@ -19,12 +19,16 @@ namespace QuestHelper.Managers
             return !string.IsNullOrEmpty(id)? RealmInstance.Find<RoutePoint>(id):null;
         }
 
-        public IEnumerable<ViewRoutePoint> GetPointsByRouteId(string routeId)
+        public IEnumerable<ViewRoutePoint> GetPointsByRouteId(string routeId, bool withDeleted = false)
         {
             List<ViewRoutePoint> collection = new List<ViewRoutePoint>();
             try
             {
-                var collectionRealm = RealmInstance.All<RoutePoint>().Where(point => point.RouteId == routeId && !point.IsDeleted).OrderBy(point=>point.CreateDate);
+                var collectionRealm = withDeleted
+                    ? RealmInstance.All<RoutePoint>().Where(point => point.RouteId == routeId)
+                        .OrderBy(point => point.CreateDate)
+                    : RealmInstance.All<RoutePoint>().Where(point => point.RouteId == routeId && !point.IsDeleted)
+                        .OrderBy(point => point.CreateDate);
                 foreach (var item in collectionRealm)
                 {
                     collection.Add(new ViewRoutePoint(item.RouteId, item.RoutePointId));

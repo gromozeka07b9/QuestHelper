@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using QuestHelper.ViewModel;
 using Xamarin.Forms;
 
 namespace QuestHelper.View
@@ -23,9 +24,18 @@ namespace QuestHelper.View
             NavigationPage.SetHasNavigationBar(this, false);
         }
 
+        private void MasterMainPage_OnAppearing(object sender, EventArgs e)
+        {
+            vm.StartDialog();
+        }
+
+        private void MasterMainPage_OnDisappearing(object sender, EventArgs e)
+        {
+            vm.CloseDialog();
+        }
     }
 
-    class MasterMainPageViewModel : INotifyPropertyChanged
+    class MasterMainPageViewModel : INotifyPropertyChanged, IDialogEvents
     {
         public ObservableCollection<MainPageMenuItem> MenuItems { get; set; }
         public ICommand GetSyncStatusCommand { get; private set; }
@@ -58,8 +68,6 @@ namespace QuestHelper.View
                 {
                     status = (string) objectStatus;
                 }
-                //ParameterManager par = new ParameterManager();
-                //par.Get(statusSyncKey, out status);
                 return status;
             }
         }
@@ -72,6 +80,23 @@ namespace QuestHelper.View
                 return;
 
             PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void StartDialog()
+        {
+            MessagingCenter.Subscribe<SyncRouteStartMessage>(this, string.Empty, (msgSender) =>
+                {
+                    UpdateSyncStatus();
+                });
+            MessagingCenter.Subscribe<SyncRouteCompleteMessage>(this, string.Empty, (msgSender) =>
+                {
+                    UpdateSyncStatus();
+                });
+        }
+
+        public void CloseDialog()
+        {
+            MessagingCenter.Unsubscribe<SyncRouteCompleteMessage>(this, string.Empty);
         }
         #endregion
     }

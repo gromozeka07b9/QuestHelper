@@ -37,7 +37,8 @@ namespace QuestHelper.WS
         public async Task<List<RouteVersion>> GetRoutesVersions(bool onlyPersonal)
         {
             List<RouteVersion> deserializedValue = new List<RouteVersion>();
-            if (!_memoryCache.TryGetValue(routesVersionsCacheId, out deserializedValue))
+            string cacheKey = $"{routesVersionsCacheId}-{onlyPersonal}";
+            if (!_memoryCache.TryGetValue(cacheKey, out deserializedValue))
             {
                 try
                 {
@@ -45,7 +46,7 @@ namespace QuestHelper.WS
                     var response = await api.HttpRequestGET($"{this._hostUrl}/route/version/get?onlyPersonal={onlyPersonal}", _authToken);
                     LastHttpStatusCode = api.LastHttpStatusCode;
                     deserializedValue = JsonConvert.DeserializeObject<List<RouteVersion>>(response);
-                    _memoryCache.Set(routesVersionsCacheId, deserializedValue, new MemoryCacheEntryOptions()
+                    _memoryCache.Set(cacheKey, deserializedValue, new MemoryCacheEntryOptions()
                     {
                         AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(20)
                     });

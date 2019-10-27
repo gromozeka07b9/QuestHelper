@@ -29,7 +29,7 @@
                 <Label Text="Лента не загружена, пожалуйста, проверьте ваше подключение к сети" Style="{StaticResource StandartTextLabel}" FontSize="16" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" Margin="20,0,20,0"></Label>
                 <Image Source="emptylist.png" HeightRequest="150" WidthRequest="300" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
             </StackLayout>
-            <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" SeparatorVisibility="None" ItemsSource="{Binding FeedItems}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshFeedCommand}" x:Name="FeedListView" RowHeight="330"  SelectedItem="{Binding SelectedFeedItem,Mode=TwoWay}" CachingStrategy="RecycleElementAndDataTemplate">
+            <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" SeparatorVisibility="None" ItemsSource="{Binding FeedItems}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshFeedCommand}" x:Name="FeedListView" RowHeight="360"  SelectedItem="{Binding SelectedFeedItem,Mode=TwoWay}" CachingStrategy="RecycleElementAndDataTemplate">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
