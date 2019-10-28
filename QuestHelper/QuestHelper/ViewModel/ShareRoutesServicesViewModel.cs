@@ -118,9 +118,10 @@ namespace QuestHelper.ViewModel
                 {
                     _vroute.IsPublished = true;
                     _vroute.Version++;
+                    _vroute.ObjVerHash = string.Empty;
                     _vroute.Save();
                     await Application.Current.MainPage.DisplayAlert("Внимание!", "После синхронизации маршрут будет опубликован", "Ok");
-                    Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage() { ShowErrorMessageIfExist = false }, string.Empty);
+                    Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage() { RouteId = _vroute.Id, ShowErrorMessageIfExist = false }, string.Empty);
                 }
                 else
                 {

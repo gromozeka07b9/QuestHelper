@@ -41,6 +41,8 @@ namespace QuestHelper.Managers.Sync
         public async Task<bool> Sync()
         {
             bool result = true;
+            TokenStoreService tokenService = new TokenStoreService();
+            string _userId = await tokenService.GetUserIdAsync();
             var notify = DependencyService.Get<INotificationService>();
             var listRoutesVersions = await _routesApi.GetRoutesVersions(true);
             AuthRequired = (_routesApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routesApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
@@ -49,9 +51,10 @@ namespace QuestHelper.Managers.Sync
                 _log.AddStringEvent("GetRoutesVersions, count:" + listRoutesVersions?.Count.ToString());
                 if ((!AuthRequired) && (listRoutesVersions?.Count > 0))
                 {
-                    var routesLocal = _routeManager.GetRoutesForSync().Where(x=>!x.IsPublished).Select(x => new { x.RouteId, x.Version, x.ObjVerHash });
+                    //var routesLocal = _routeManager.GetRoutesForSync().Where(x=>!x.IsPublished).Select(x => new { x.RouteId, x.Version, x.ObjVerHash });
+                    var routesLocal = _routeManager.GetRoutesForSync().Select(x => new { x.RouteId, x.Version, x.ObjVerHash, x.IsPublished });
                     var differentRoutes = listRoutesVersions.Where(r => (!routesLocal.Any(l => (l.RouteId == r.Id && l.ObjVerHash == r.ObjVerHash))));
-                    var newClientRoutes = routesLocal.Where(r => !listRoutesVersions.Any(d => d.Id == r.RouteId)).Select(r => r.RouteId).ToList();
+                    var newClientRoutes = routesLocal.Where(r => !r.IsPublished && !listRoutesVersions.Any(d => d.Id == r.RouteId)).Select(r => r.RouteId).ToList();
 
                     int countRoutesForSync = differentRoutes.Count() + newClientRoutes.Count();
                     int currentCountRoutesForSync = 0;

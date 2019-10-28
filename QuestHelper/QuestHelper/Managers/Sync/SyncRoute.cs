@@ -25,7 +25,6 @@ namespace QuestHelper.Managers.Sync
         private readonly RoutePointManager _routePointManager = new RoutePointManager();
         private readonly RoutePointMediaObjectManager _routePointMediaManager = new RoutePointMediaObjectManager();
         private bool _syncMediaFiles = false;
-        //private Logger _log = new Logger(true);
         private ITextfileLogger _log;
 
 
