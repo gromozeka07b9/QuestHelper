@@ -26,7 +26,7 @@ namespace QuestHelper
 	{
         public static IContainer Container { get; set; }
 
-        private Logger _log = new Logger(true);
+        private ITextfileLogger _log;
 
 	    static App()
 	    {
@@ -37,14 +37,16 @@ namespace QuestHelper
 	    {
 	        var builder = new ContainerBuilder();
             builder.RegisterInstance(new MemoryCache(new MemoryCacheOptions())).As<IMemoryCache>();
+	        builder.RegisterInstance(new Logger(true)).As<ITextfileLogger>();
             Container = builder.Build();
 	    }
 
         public App ()
 		{
 			InitializeComponent();
+		    _log = App.Container.Resolve<ITextfileLogger>();
 
-		    _log.NewFile();
+            _log.NewFile();
             MainPage = new View.MainPage();
 		    Analytics.TrackEvent("Start app");
             Application.Current.Properties.Remove("SyncStatus");
@@ -70,14 +72,6 @@ namespace QuestHelper
 
 		    SubscribeMessages();
 		    
-		    /*TokenStoreService token = new TokenStoreService();
-            if (Setup() && !string.IsNullOrEmpty(await token.GetAuthTokenAsync()))
-            {
-#if !DEBUG
-                Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
-#endif
-            }*/
-
 		}
 
         private void SubscribeMessages()
@@ -122,26 +116,7 @@ namespace QuestHelper
 	                UserDialogs.Instance.Alert(messageBody, messageTitle, "Ок");
 	            });
 
-                /*Пока не придумал, как сделать удобный диалог перехода к обновлениям маршрутов
-	            var pageCollections = new PagesCollection();
-	            MainPageMenuItem destinationPage = pageCollections.GetReceivePushPage();
-	            Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);*/
             });
-
-	        /*MessagingCenter.Subscribe<SyncProgressMessage>(this, string.Empty, (sender) =>
-	        {
-	            MainThread.BeginInvokeOnMainThread(() =>
-	            {
-	                if (sender.SyncInProgress)
-	                    UserDialogs.Instance.Loading("Идет синхронизация данных...", () => { }, "", true,
-	                        MaskType.Gradient);
-	                else
-	                {
-	                    UserDialogs.Instance.Loading(show: false);
-                        UserDialogs.Instance.HideLoading();
-                    }
-                });
-	        });*/
 
         }
 

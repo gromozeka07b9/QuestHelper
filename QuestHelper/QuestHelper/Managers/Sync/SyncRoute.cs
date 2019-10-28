@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Text;
 using QuestHelper.LocalDB.Model;
 using System.IO;
+using Autofac;
 
 namespace QuestHelper.Managers.Sync
 {
@@ -24,7 +25,8 @@ namespace QuestHelper.Managers.Sync
         private readonly RoutePointManager _routePointManager = new RoutePointManager();
         private readonly RoutePointMediaObjectManager _routePointMediaManager = new RoutePointMediaObjectManager();
         private bool _syncMediaFiles = false;
-        private Logger _log = new Logger(true);
+        //private Logger _log = new Logger(true);
+        private ITextfileLogger _log;
 
 
         public SyncRoute(string routeId, string authToken)
@@ -34,6 +36,7 @@ namespace QuestHelper.Managers.Sync
             _routesApi = new RoutesApiRequest(_apiUrl, _authToken);
             _routePointsApi = new RoutePointsApiRequest(_apiUrl, _authToken);
             _routePointMediaObjectsApi = new RoutePointMediaObjectRequest(_apiUrl, _authToken);
+            _log = App.Container.Resolve<ITextfileLogger>();
         }
 
         public async Task<bool> SyncAsync(string routeServerHash)

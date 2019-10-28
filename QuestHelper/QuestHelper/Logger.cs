@@ -6,7 +6,7 @@ using System.Text;
 
 namespace QuestHelper
 {
-    public class Logger
+    public class Logger : ITextfileLogger
     {
         StringBuilder _sb = new StringBuilder();
         private string _pathToLog = Path.Combine(ImagePathManager.GetPicturesDirectory(), "sync.log");
@@ -32,6 +32,7 @@ namespace QuestHelper
             try
             {
                 File.AppendAllText(_pathToLog, _sb.ToString(), Encoding.UTF8);
+                _sb = new StringBuilder();
             }
             catch (Exception e)
             {

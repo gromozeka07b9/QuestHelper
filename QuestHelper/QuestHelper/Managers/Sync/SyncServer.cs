@@ -13,6 +13,7 @@ using Xamarin.Essentials;
 using System.Threading.Tasks;
 using QuestHelper.Model;
 using QuestHelper.WS;
+using Autofac;
 
 namespace QuestHelper.Managers.Sync
 {
@@ -21,8 +22,13 @@ namespace QuestHelper.Managers.Sync
         private const string _apiUrl = "http://igosh.pro/api";
         public static bool AuthRequired = false;
         private static bool SynchronizeStarted = false;
-        Logger _log = new Logger(true);
 
+        private ITextfileLogger _log;
+
+        public SyncServer()
+        {
+            _log = App.Container.Resolve<ITextfileLogger>();
+        }
         private async System.Threading.Tasks.Task<Tuple<bool, string>> SyncRoute(string routeId = "")
         {
             string errorMsg = string.Empty;
