@@ -19,6 +19,7 @@ using Xamarin.Forms;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
 using Xamarin.Essentials;
+using QuestHelper.Resources;
 
 namespace QuestHelper
 {
