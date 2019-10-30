@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pancardview="clr-namespace:PanCardView;assembly=PanCardView"
              xmlns:view="clr-namespace:QuestHelper.View;assembly=QuestHelper"
-             x:Class="QuestHelper.View.RouteCarouselRootPage" BackgroundColor="Black" NavigationPage.HasNavigationBar="False" Appearing="RouteCarouselRootPage_OnAppearing" Disappearing="RouteCarouselRootPage_OnDisappearing">
+             x:Class="QuestHelper.View.RouteCarouselRootPage" BackgroundColor="Black" NavigationPage.HasNavigationBar="False" Appearing="RouteCarouselRootPage_OnAppearingAsync" Disappearing="RouteCarouselRootPage_OnDisappearing">
     <ContentPage.Content>
         <ScrollView Orientation="Vertical">
             <StackLayout>
@@ -19,6 +19,7 @@
                                     <Frame VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0" CornerRadius="0" Padding="0">
                                         <Image Source="{Binding ImageSource}" Aspect="{Binding PhotoImageAspect}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0" BackgroundColor="Black">
                                             <Image.GestureRecognizers>
+                                                <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding ViewPhotoCommand}"></TapGestureRecognizer>
                                                 <TapGestureRecognizer NumberOfTapsRequired="2" Command="{Binding ChangeImageAspectCommand}"></TapGestureRecognizer>
                                             </Image.GestureRecognizers>
                                         </Image>

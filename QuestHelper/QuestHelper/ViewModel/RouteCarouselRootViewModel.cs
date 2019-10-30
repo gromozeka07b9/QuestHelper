@@ -6,6 +6,7 @@ using QuestHelper.View;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
@@ -22,7 +23,7 @@ namespace QuestHelper.ViewModel
         private string _routePointId = string.Empty;
 
         public INavigation Navigation { get; set; }
-        public event PropertyChangedEventHandler PropertyChanged;             
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public RouteCarouselRootViewModel(string routeId, string routePointId = "")
         {
@@ -99,7 +100,7 @@ namespace QuestHelper.ViewModel
                         {
                             foreach (var media in point.MediaObjects.Where(m => m.MediaType == 0))
                             {
-                                items.Add(new CarouselItem(){RouteId = _routeObject.RouteId, RoutePointId = point.RoutePointId, MediaId = media.RoutePointMediaObjectId, ImageSource = ImagePathManager.GetImagePath(media.RoutePointMediaObjectId, MediaObjectTypeEnum.Image, false), RoutePointName = point.NameText, RoutePointDescription = point.Description, Latitude = point.Latitude, Longitude = point.Longitude });
+                                items.Add(new CarouselItem(){RouteId = _routeObject.RouteId, RoutePointId = point.RoutePointId, MediaId = media.RoutePointMediaObjectId, ImageSource = ImagePathManager.GetImagePath(media.RoutePointMediaObjectId, MediaObjectTypeEnum.Image, true), RoutePointName = point.NameText, RoutePointDescription = point.Description, Latitude = point.Latitude, Longitude = point.Longitude });
                             }
                         }
                         else
@@ -128,11 +129,14 @@ namespace QuestHelper.ViewModel
         {
             public event PropertyChangedEventHandler PropertyChanged;
             private Aspect _imageAspect = Aspect.AspectFill;
+            private string _imageSource = string.Empty;
             public ICommand ChangeImageAspectCommand { get; private set; }
+            public ICommand ViewPhotoCommand { get; private set; }
 
             public CarouselItem()
             {
                 ChangeImageAspectCommand = new Command(changeImageAspectCommand);
+                ViewPhotoCommand = new Command(viewPhotoAsync);
             }
             private void changeImageAspectCommand(object obj)
             {
@@ -145,8 +149,34 @@ namespace QuestHelper.ViewModel
                     PhotoImageAspect = Aspect.AspectFit;
                 }
             }
+            private void viewPhotoAsync()
+            {
+                var defaultViewerService = DependencyService.Get<IDefaultViewer>();
+                string path = (FileImageSource)_imageSource;
+                if (!string.IsNullOrEmpty(path))
+                {
+                    string filePath = File.Exists(path) ? path : path.Replace("_preview", "");
+                    defaultViewerService.Show(filePath);
+                }
+            }
 
-            public string ImageSource { get; set; }
+            public bool IsFullImage { get; set; }
+
+            public string ImageSource
+            {
+                get
+                {
+                    return _imageSource;
+                }
+                set
+                {
+                    if (_imageSource != value)
+                    {
+                        _imageSource = value;
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImageSource"));
+                    }
+                }
+            }
             public string RouteId { get; set; }
             public string RoutePointId { get; set; }
             public string MediaId { get; set; }

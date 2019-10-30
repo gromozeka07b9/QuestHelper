@@ -24,9 +24,10 @@
                 <ColumnDefinition Width="96" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="96" />
+                <RowDefinition Height="85*" />
+                <!--RowDefinition Height="*" /-->
+                <RowDefinition Height="14*" />
+                <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Orientation="Vertical" IsVisible="{Binding NoRoutesWarningIsVisible}" HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
                 <Label Text="Сохраненные маршруты не найдены" Style="{StaticResource StandartTextLabel}" FontSize="16" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" Margin="20,0,20,0"></Label>
@@ -63,21 +64,19 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <AbsoluteLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" VerticalOptions="StartAndExpand" IsVisible="{Binding SyncProgressIsVisible}">
+            <!--AbsoluteLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" VerticalOptions="StartAndExpand" IsVisible="{Binding SyncProgressIsVisible}">
                 <Frame BackgroundColor="Gray" Opacity="0.8" CornerRadius="10" Margin="10" Padding="10,5,10,5">
                     <Label Text="{Binding SyncProgressDetailText}" TextColor="White" FontSize="12"></Label>
                 </Frame>
-            </AbsoluteLayout>
-            <AbsoluteLayout Grid.Row="2" Grid.Column="2" VerticalOptions="Center">
+            </-->
+            <AbsoluteLayout Grid.Row="1" Grid.Column="2" VerticalOptions="Center">
                 <Image Source="additem.png" WidthRequest="96" HeightRequest="96" HorizontalOptions="EndAndExpand" AbsoluteLayout.LayoutBounds=".6,.0,0.6, 1." AbsoluteLayout.LayoutFlags="All">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding AddNewRouteCommand}" />
                     </Image.GestureRecognizers>
                 </Image>
             </AbsoluteLayout>
-            <!--StackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
-                <Label Text="Нажмите, чтобы добавить новый:" Style="{StaticResource StandartTextLabel}" HorizontalOptions="EndAndExpand" IsVisible="{Binding NoRoutesWarningIsVisible}" ></Label>
-            </-->
+            <ProgressBar Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="FillAndExpand" ProgressColor="Blue" BackgroundColor="White" Progress="{Binding ProgressValue}" Margin="0" IsVisible="{Binding IsVisibleProgress}" ></ProgressBar>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -72,6 +72,7 @@ namespace QuestHelper.Managers.Sync
                         result = await syncRouteContext.SyncAsync(serverRouteVersion.ObjVerHash);
                         _log.AddStringEvent($"diff route result, {serverRouteVersion.Id} :" + result);
                         currentCountRoutesForSync++;
+                        sendProgress(currentCountRoutesForSync, countRoutesForSync);
                     }
 
                     foreach (var logRoute in newClientRoutes)
@@ -86,6 +87,7 @@ namespace QuestHelper.Managers.Sync
                         result = await syncRouteContext.SyncAsync(string.Empty);
                         _log.AddStringEvent($"new route result, {localRouteId} :" + result);
                         currentCountRoutesForSync++;
+                        sendProgress(currentCountRoutesForSync, countRoutesForSync);
                     }
                     Xamarin.Forms.MessagingCenter.Send<SyncRouteCompleteMessage>(new SyncRouteCompleteMessage() { RouteId = string.Empty, SuccessSync = result }, string.Empty);
                 }
@@ -97,6 +99,14 @@ namespace QuestHelper.Managers.Sync
 
             return result;
         }
+
+        private static void sendProgress(int currentCountRoutesForSync, int countRoutesForSync)
+        {
+            double percent = (double) currentCountRoutesForSync * 100 / (double) countRoutesForSync / 100;
+            MessagingCenter.Send<SyncProgressRouteLoadingMessage>(
+                new SyncProgressRouteLoadingMessage() {RouteId = string.Empty, ProgressValue = percent}, string.Empty);
+        }
+
         public async Task<bool> Sync(string routeId)
         {
             bool result = true;
@@ -112,7 +122,7 @@ namespace QuestHelper.Managers.Sync
                     SyncRoute syncRouteContext = new SyncRoute(serverRouteVersion.Id, _authToken);
                     syncRouteContext.SyncImages = true;
                     _log.AddStringEvent($"start sync diff route {serverRouteVersion.Id}");
-                    result = await syncRouteContext.SyncAsync(serverRouteVersion.ObjVerHash);
+                    result = await syncRouteContext.SyncAsync(serverRouteVersion.ObjVerHash, true);
                     _log.AddStringEvent($"diff route result, {serverRouteVersion.Id} :" + result);
                     Xamarin.Forms.MessagingCenter.Send<SyncRouteCompleteMessage>(new SyncRouteCompleteMessage() { RouteId = routeId, SuccessSync = result }, string.Empty);
                 }

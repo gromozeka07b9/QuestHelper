@@ -45,7 +45,7 @@ namespace QuestHelper.OAuth
             {
                 if (e.IsAuthenticated)
                 {
-                    Xamarin.Forms.MessagingCenter.Send<SyncProgressMessage>(new SyncProgressMessage() { SyncInProgress = true }, string.Empty);
+                    Xamarin.Forms.MessagingCenter.Send<SyncProgressRouteLoadingMessage>(new SyncProgressRouteLoadingMessage() { SyncInProgress = true }, string.Empty);
                     AccountStore.Create().Save(e.Account, "com.sd.gosh");
                     var request = new OAuth2Request("GET", new Uri("https://www.googleapis.com/oauth2/v2/userinfo"), null, e.Account);
                     var response = await request.GetResponseAsync();

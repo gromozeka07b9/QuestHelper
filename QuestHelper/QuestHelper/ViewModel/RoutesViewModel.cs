@@ -28,10 +28,12 @@ namespace QuestHelper.ViewModel
         //private RoutesApiRequest _api = new RoutesApiRequest("http://questhelperserver.azurewebsites.net");
         private bool _noRoutesWarningIsVisible = false;
         private bool _isRefreshing = false;
+        private bool _isVisibleProgress = false;
         private int _countOfUpdateListByTimer = 0;
         private ShareFromGoogleMapsMessage _sharePointMessage;
         private bool _syncProgressIsVisible = false;
         private string _syncProgressDetailText = string.Empty;
+        private double _progressValue = 0;
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -50,19 +52,28 @@ namespace QuestHelper.ViewModel
 
         public void startDialog()
         {
-            /*MessagingCenter.Subscribe<SyncProgressMessage>(this, string.Empty, (sender) =>
+            MessagingCenter.Subscribe<SyncProgressRouteLoadingMessage>(this, string.Empty, (sender) =>
+            {
+                if (string.IsNullOrEmpty(sender.RouteId))
                 {
-                    SyncProgressIsVisible = sender.SyncInProgress;
-                    SyncProgressDetailText = sender.SyncDetailText;
-                    if(SyncProgressIsVisible)
-                        UserDialogs.Instance.Loading("Идет синхронизация данных...", () => { }, "Скрыть", true, MaskType.None);
-                    else
-                        UserDialogs.Instance.HideLoading();
-                });*/
+                    if (!IsVisibleProgress) IsVisibleProgress = true;
+                    ProgressValue = sender.ProgressValue;
+                    refreshListRoutesCommandAsync();
+                }
+            });
+
+            MessagingCenter.Subscribe<SyncRouteCompleteMessage>(this, string.Empty, (sender) =>
+            {
+                if (string.IsNullOrEmpty(sender.RouteId))
+                {
+                    if (IsVisibleProgress) IsVisibleProgress = false;
+                }
+            });
         }
         internal void closeDialog()
         {
-            MessagingCenter.Unsubscribe<SyncProgressMessage>(this, string.Empty);
+            MessagingCenter.Unsubscribe<SyncProgressRouteLoadingMessage>(this, string.Empty);
+            MessagingCenter.Unsubscribe<SyncRouteCompleteMessage>(this, string.Empty);
         }
 
         internal void AddSharedPoint(ShareFromGoogleMapsMessage msg)
@@ -72,7 +83,6 @@ namespace QuestHelper.ViewModel
 
         async void refreshListRoutesCommandAsync()
         {
-            IsRefreshing = true;
             TokenStoreService tokenService = new TokenStoreService();
             string currentUserId = await tokenService.GetUserIdAsync();
             Routes = _routeManager.GetRoutes(currentUserId);
@@ -81,7 +91,6 @@ namespace QuestHelper.ViewModel
                 Device.StartTimer(TimeSpan.FromSeconds(3), OnTimerForUpdate);
             }
             NoRoutesWarningIsVisible = Routes.Count() == 0;
-            IsRefreshing = false;
         }
 
         private bool OnTimerForUpdate()
@@ -125,24 +134,45 @@ namespace QuestHelper.ViewModel
                 }
             }
         }
-        public string SyncProgressDetailText
+
+        public double ProgressValue
         {
-            get
-            {
-                return _syncProgressDetailText;
-            }
             set
             {
-                if (_syncProgressDetailText != value)
+                if (_progressValue != value)
                 {
-                    _syncProgressDetailText = value;
+                    _progressValue = value;
                     if (PropertyChanged != null)
                     {
-                        PropertyChanged(this, new PropertyChangedEventArgs("SyncProgressDetailText"));
+                        PropertyChanged(this, new PropertyChangedEventArgs("ProgressValue"));
                     }
                 }
             }
+            get
+            {
+                return _progressValue;
+            }
         }
+
+        public bool IsVisibleProgress
+        {
+            set
+            {
+                if (_isVisibleProgress != value)
+                {
+                    _isVisibleProgress = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("IsVisibleProgress"));
+                    }
+                }
+            }
+            get
+            {
+                return _isVisibleProgress;
+            }
+        }
+
         public bool IsRefreshing
         {
             set

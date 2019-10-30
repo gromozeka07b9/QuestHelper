@@ -49,7 +49,7 @@ namespace QuestHelper.Droid
 
         private static async Task startSync(string routeId)
         {
-            using (UserDialogs.Instance.Loading("Идет синхронизация данных...", () => { }, "", true, MaskType.Gradient))
+            //using (UserDialogs.Instance.Loading("Идет синхронизация данных...", () => { }, "", true, MaskType.Gradient))
             {
                 Console.WriteLine("SyncIntentService sync started");
                 SyncServer syncSrv = new SyncServer();

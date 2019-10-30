@@ -37,6 +37,7 @@ namespace QuestHelper.View
         private void RouteCoverPage_OnAppearing(object sender, EventArgs e)
 	    {
             _vm.StartDialog();
+
 	    }
 
 	    private void RouteCoverPage_OnDisappearing(object sender, EventArgs e)

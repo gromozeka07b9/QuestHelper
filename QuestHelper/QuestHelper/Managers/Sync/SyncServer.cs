@@ -165,7 +165,7 @@ namespace QuestHelper.Managers.Sync
             Application.Current.Properties.Remove(statusSyncKey);
             Application.Current.Properties.Add(statusSyncKey, resultMessage);
 
-            MessagingCenter.Send<UIToastMessage>(new UIToastMessage() {Delay = 3, Message = resultMessage}, string.Empty);
+            //MessagingCenter.Send<UIToastMessage>(new UIToastMessage() {Delay = 3, Message = resultMessage}, string.Empty);
 
             double seconds = Math.Round(diff.TotalSeconds);
             string secondsText = string.Empty;
@@ -184,8 +184,8 @@ namespace QuestHelper.Managers.Sync
             Application.Current.Properties.Remove(statusSyncKey);
             Application.Current.Properties.Add(statusSyncKey, resultMessage);
 
-            if (string.IsNullOrEmpty(routeId))
-                MessagingCenter.Send<UIToastMessage>(new UIToastMessage() { Delay = 3, Message = resultMessage }, string.Empty);
+            //if (string.IsNullOrEmpty(routeId))
+            //    MessagingCenter.Send<UIToastMessage>(new UIToastMessage() { Delay = 3, Message = resultMessage }, string.Empty);
 
             double seconds = Math.Round(diff.TotalSeconds);
             string secondsText = string.Empty;

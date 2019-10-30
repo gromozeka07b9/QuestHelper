@@ -4,9 +4,10 @@ using System.Text;
 
 namespace QuestHelper.Model.Messages
 {
-    public class SyncProgressMessage
+    public class SyncProgressRouteLoadingMessage
     {
+        public string RouteId;
         public bool SyncInProgress = false;
-        public string SyncDetailText = string.Empty;
+        public double ProgressValue = 0;
     }
 }

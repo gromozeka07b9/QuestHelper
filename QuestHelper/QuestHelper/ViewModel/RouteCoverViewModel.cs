@@ -25,6 +25,10 @@ namespace QuestHelper.ViewModel
         private ViewRoutePoint _pointItem;
         private readonly string _routeId;
         private string _creatorName;
+        private double _progressValue;
+        private bool _isVisibleProgress;
+        private bool _isVisibleStartRoute;
+        private bool _isVisibleList;
         private ObservableCollection<ViewRoutePoint> _viewPointsOfRoute = new ObservableCollection<ViewRoutePoint>();
 
         public ICommand StartRouteCommand { get; private set; }
@@ -81,6 +85,7 @@ namespace QuestHelper.ViewModel
         public void CloseDialog()
         {
             MessagingCenter.Unsubscribe<SyncRouteCompleteMessage>(this, string.Empty);
+            MessagingCenter.Unsubscribe<SyncProgressImageLoadingMessage>(this, string.Empty);
         }
 
         public void StartDialog()
@@ -93,13 +98,27 @@ namespace QuestHelper.ViewModel
                 {
                     _vroute = new ViewRoute(_vroute.Id);
                     updatePoints();
+                    IsVisibleList = true;
+                    IsVisibleProgress = false;
+                    IsVisibleStartRoute = !IsVisibleProgress;
                     PropertyChanged(this, new PropertyChangedEventArgs("PointsOfRoute"));
                     PropertyChanged(this, new PropertyChangedEventArgs("Description"));
                     PropertyChanged(this, new PropertyChangedEventArgs("RouteCoverImage"));
                     PropertyChanged(this, new PropertyChangedEventArgs("Name"));
                     PropertyChanged(this, new PropertyChangedEventArgs("CreateDateText"));
                     PropertyChanged(this, new PropertyChangedEventArgs("Author"));
-                    PropertyChanged(this, new PropertyChangedEventArgs("RowHeightForDescription"));                    
+                    PropertyChanged(this, new PropertyChangedEventArgs("RowHeightForDescription"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("RowHeightForImage"));
+                }
+            });
+            MessagingCenter.Subscribe<SyncProgressImageLoadingMessage>(this, string.Empty, (sender) =>
+            {
+                if (sender.RouteId.Equals(_vroute.Id))
+                {
+                    ProgressValue = sender.ProgressValue;
+                    PropertyChanged(this, new PropertyChangedEventArgs("PointsOfRoute"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("RowHeightForDescription"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("PointsOfRoute"));
                 }
             });
 
@@ -107,14 +126,21 @@ namespace QuestHelper.ViewModel
             {
                 //Это не существующий или не до конца синхронизированный маршрут, синкать в любом случае
                 Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage() { RouteId = _vroute.Id, NeedCheckVersionRoute = false}, string.Empty);
+                IsVisibleProgress = true;
+                IsVisibleList = false;
             }
             else
             {
                 //Тут возможны варианты - либо это актуальный маршрут, либо нет, но это надо еще проверить
                 //Но показываем точки, и в фоне проверяем версию, только если она отличается, запускаем синхронизацию
                 updatePoints();
+                IsVisibleProgress = false;
+                IsVisibleList = true;
                 Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage() { RouteId = _vroute.Id, NeedCheckVersionRoute = true}, string.Empty);
             }
+
+            IsVisibleStartRoute = IsVisibleList;
+
         }
 
         private void updatePoints()
@@ -123,6 +149,80 @@ namespace QuestHelper.ViewModel
             if (points.Any())
             {
                 PointsOfRoute = new ObservableCollection<ViewRoutePoint>(points);
+            }
+        }
+
+        public double ProgressValue
+        {
+            set
+            {
+                if (_progressValue != value)
+                {
+                    _progressValue = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("ProgressValue"));
+                    }
+                }
+            }
+            get
+            {
+                return _progressValue;
+            }
+        }
+        public bool IsVisibleList
+        {
+            set
+            {
+                if (_isVisibleList != value)
+                {
+                    _isVisibleList = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("IsVisibleList"));
+                    }
+                }
+            }
+            get
+            {
+                return _isVisibleList;
+            }
+        }
+
+        public bool IsVisibleProgress
+        {
+            set
+            {
+                if (_isVisibleProgress != value)
+                {
+                    _isVisibleProgress = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("IsVisibleProgress"));
+                    }
+                }
+            }
+            get
+            {
+                return _isVisibleProgress;
+            }
+        }
+        public bool IsVisibleStartRoute
+        {
+            set
+            {
+                if (_isVisibleStartRoute != value)
+                {
+                    _isVisibleStartRoute = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("IsVisibleStartRoute"));
+                    }
+                }
+            }
+            get
+            {
+                return _isVisibleStartRoute;
             }
         }
 
@@ -167,6 +267,14 @@ namespace QuestHelper.ViewModel
                 return string.IsNullOrEmpty(Description) ? 20 : 128;
             }
         }
+        public int RowHeightForImage
+        {
+            get
+            {
+                return _isVisibleProgress ? 600 : 400;
+            }
+        }
+
         public string RouteCoverImage
         {
             get

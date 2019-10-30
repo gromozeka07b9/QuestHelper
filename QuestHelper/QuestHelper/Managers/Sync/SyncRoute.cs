@@ -10,6 +10,7 @@ using System.Text;
 using QuestHelper.LocalDB.Model;
 using System.IO;
 using Autofac;
+using QuestHelper.Model.Messages;
 
 namespace QuestHelper.Managers.Sync
 {
@@ -38,7 +39,7 @@ namespace QuestHelper.Managers.Sync
             _log = App.Container.Resolve<ITextfileLogger>();
         }
 
-        public async Task<bool> SyncAsync(string routeServerHash)
+        public async Task<bool> SyncAsync(string routeServerHash, bool loadOnlyPreviewImg = false)
         {
             var localRoute = _routeManager.GetViewRouteById(_routeId);
             //новый маршрут
@@ -70,18 +71,15 @@ namespace QuestHelper.Managers.Sync
                         var medias = _routePointMediaManager.GetMediaObjectsByRouteId(routeRoot.Route.Id).Where(m => !m.OriginalServerSynced || !m.PreviewServerSynced).Select(m => new MediaForUpdate{ RoutePointId = m.RoutePointId, RoutePointMediaObjectId = m.RoutePointMediaObjectId, OriginalServerSynced = m.OriginalServerSynced, PreviewServerSynced = m.PreviewServerSynced, IsDeleted = m.IsDeleted, MediaType = (MediaObjectTypeEnum)m.MediaType }).ToList();
                         _log.AddStringEvent($"media files sync,  route {_routeId}, media count:{medias?.Count.ToString()}");
 
-                        /*int imgCount = medias.Count();
-                        int countInThread = imgCount / 20;
-                        for (int i = 0; i < imgCount; i += countInThread)
-                        {
-                            int maxRange = (i + countInThread) < imgCount ? countInThread : imgCount - i;
-                            List<MediaForUpdate> list = medias.GetRange(i, maxRange);
-                            loadImg(list);
-                        }*/
+                        int count = medias.Count;
+                        int index = 0;
                         foreach (var media in medias)
                         {
-                            bool result = await updateImages(media);
+                            bool result = await updateImages(media, loadOnlyPreviewImg);
                             if (!result) syncImgHasErrors = !result;
+                            index++;
+                            double percent = (double)index * 100 / (double)count / 100;
+                            Xamarin.Forms.MessagingCenter.Send<SyncProgressImageLoadingMessage>(new SyncProgressImageLoadingMessage() { RouteId = _routeId, ProgressValue = percent}, string.Empty);
                         }
                     }
                 }
@@ -109,7 +107,7 @@ namespace QuestHelper.Managers.Sync
             return true;
         }
 
-        private void loadImg(List<MediaForUpdate> medias)
+        /*private void loadImg(List<MediaForUpdate> medias)
         {
             List<Task> tasks = new List<Task>();
             foreach (var media in medias)
@@ -122,14 +120,14 @@ namespace QuestHelper.Managers.Sync
 
             Task.WaitAll(tasks.ToArray());
             tasks.Clear();
-        }
+        }*/
 
-        private async Task<bool> updateImages(MediaForUpdate media)
+        private async Task<bool> updateImages(MediaForUpdate media, bool loadOnlyPreviewImg)
         {
             bool result = false;
             if (!media.IsDeleted)
             {
-                if (!media.OriginalServerSynced)
+                if ((!loadOnlyPreviewImg) && (!media.OriginalServerSynced))
                 {
                     var httpStatus = await updateMediaFileAsync(media.RoutePointId, media.RoutePointMediaObjectId,
                         media.MediaType, false);
