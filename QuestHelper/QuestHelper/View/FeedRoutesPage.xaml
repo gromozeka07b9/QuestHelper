@@ -27,7 +27,7 @@
                 <RowDefinition Height="96" />
             </Grid.RowDefinitions>
             <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Orientation="Vertical" IsVisible="{Binding NoItemsWarningIsVisible}" HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
-                <Label Text="Лента не загружена, пожалуйста, проверьте ваше подключение к сети" Style="{StaticResource StandartTextLabel}" FontSize="16" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" Margin="20,0,20,0"></Label>
+                <Label Text="{lang:Translation ErrorLoadingFeed}" Style="{StaticResource StandartTextLabel}" FontSize="16" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" Margin="20,0,20,0"></Label>
                 <Image Source="emptylist.png" HeightRequest="150" WidthRequest="300" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
             </StackLayout>
             <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" SeparatorVisibility="None" ItemsSource="{Binding FeedItems}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshFeedCommand}" x:Name="FeedListView" RowHeight="360"  SelectedItem="{Binding SelectedFeedItem,Mode=TwoWay}" CachingStrategy="RecycleElementAndDataTemplate">
@@ -48,8 +48,6 @@
                                         <RowDefinition Height="2*"/>
                                     </Grid.RowDefinitions>
                                     <StackLayout Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                                        <Label Text="{lang:Translation ScreenPrivateName}"></Label>
-                                        <Label Text="{lang:Translation NewString}"></Label>
                                         <Label Text="{Binding CreatorName}" Style="{StaticResource RouteTextLabel}" FontSize="12" FontAttributes="Bold" TextColor="Black" Margin="10,5,0,0" LineBreakMode="WordWrap" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Start"></Label>
                                         <Label Text="{Binding CreateDateText}" Style="{StaticResource RouteTextLabel}" FontSize="12" FontAttributes="Bold" TextColor="Black" Margin="10,0,0,5" LineBreakMode="WordWrap" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand" VerticalTextAlignment="End"></Label>
                                     </StackLayout>

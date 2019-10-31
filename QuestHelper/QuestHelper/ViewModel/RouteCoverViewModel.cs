@@ -118,7 +118,15 @@ namespace QuestHelper.ViewModel
                     ProgressValue = sender.ProgressValue;
                     PropertyChanged(this, new PropertyChangedEventArgs("PointsOfRoute"));
                     PropertyChanged(this, new PropertyChangedEventArgs("RowHeightForDescription"));
+                }
+            });
+            MessagingCenter.Subscribe<SyncProgressRouteLoadingMessage>(this, string.Empty, (sender) =>
+            {
+                if (sender.RouteId.Equals(_vroute.Id))
+                {
+                    ProgressValue = sender.ProgressValue;
                     PropertyChanged(this, new PropertyChangedEventArgs("PointsOfRoute"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("RowHeightForDescription"));
                 }
             });
 

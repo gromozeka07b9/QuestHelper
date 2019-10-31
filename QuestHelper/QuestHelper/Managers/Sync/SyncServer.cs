@@ -121,28 +121,19 @@ namespace QuestHelper.Managers.Sync
         public async Task<bool> Sync(string routeId)
         {
             bool allSynced = false;
-            if (!SynchronizeStarted)
+            string statusSyncKey = "SyncRouteStatus";
+            Analytics.TrackEvent("Sync route");
+            var startTime = prepareProcessSync(statusSyncKey);
+            Tuple<bool, string> syncResult = new Tuple<bool, string>(false, string.Empty);
+            syncResult = await SyncRoute(routeId);
+            if (!syncResult.Item1)
             {
-                string statusSyncKey = "SyncStatus";
-                Analytics.TrackEvent("Sync route");
-                SynchronizeStarted = true;
-                var startTime = prepareProcessSync(statusSyncKey);
-                Tuple<bool, string> syncResult = new Tuple<bool, string>(false, string.Empty);
-                syncResult = await SyncRoute(routeId);
-                SynchronizeStarted = false;
-                if (!syncResult.Item1)
-                {
-                    processError(startTime, syncResult, statusSyncKey);
-                }
-                else
-                {
-                    allSynced = true;
-                    processRouteSuccess(startTime, statusSyncKey, routeId);
-                }
+                processError(startTime, syncResult, statusSyncKey);
             }
             else
             {
-                MessagingCenter.Send<UIToastMessage>(new UIToastMessage() { Delay = 3, Message = "Синхронизация уже запущена" }, string.Empty);
+                allSynced = true;
+                processRouteSuccess(startTime, statusSyncKey, routeId);
             }
 
             return allSynced;
@@ -164,8 +155,6 @@ namespace QuestHelper.Managers.Sync
             string resultMessage = $"Sync finished at {DateTime.Now.ToLocalTime().ToString()}, due {diff} sec";
             Application.Current.Properties.Remove(statusSyncKey);
             Application.Current.Properties.Add(statusSyncKey, resultMessage);
-
-            //MessagingCenter.Send<UIToastMessage>(new UIToastMessage() {Delay = 3, Message = resultMessage}, string.Empty);
 
             double seconds = Math.Round(diff.TotalSeconds);
             string secondsText = string.Empty;

@@ -61,6 +61,15 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Feed not available, please check your connection to Internet.
+        /// </summary>
+        public static string ErrorLoadingFeed {
+            get {
+                return ResourceManager.GetString("ErrorLoadingFeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Feed.
         /// </summary>
         public static string ScreenFeedName {

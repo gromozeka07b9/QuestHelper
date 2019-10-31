@@ -118,15 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ErrorLoadingFeed" xml:space="preserve">
-    <value>Feed not available, please check your connection to Internet</value>
+    <value>Лента не загружена, пожалуйста, проверьте ваше подключение к сети</value>
   </data>
   <data name="ScreenFeedName" xml:space="preserve">
-    <value>Feed</value>
+    <value>Лента</value>
   </data>
   <data name="ScreenLoadedAlbumsName" xml:space="preserve">
-    <value>Loaded</value>
+    <value>Загруженные</value>
   </data>
   <data name="ScreenPrivateName" xml:space="preserve">
-    <value>Private</value>
+    <value>Личные</value>
   </data>
 </root>
