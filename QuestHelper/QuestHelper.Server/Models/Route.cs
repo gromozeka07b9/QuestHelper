@@ -22,5 +22,7 @@ namespace QuestHelper.Server.Models
         public bool IsPublished { get; set; }
         public string ImgFilename { get; set; }
         public string Description { get; set; }
+        public string VersionsHash { get; set; }
+        public string VersionsList { get; set; }
     }
 }

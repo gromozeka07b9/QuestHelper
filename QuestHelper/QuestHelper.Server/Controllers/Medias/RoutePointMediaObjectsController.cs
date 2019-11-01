@@ -64,6 +64,15 @@ namespace QuestHelper.Server.Controllers.Medias
                         routeMediaObject.NeedProcess = NeedProcess;
                         db.Entry(entity).CurrentValues.SetValues(routeMediaObject);
                     }
+
+                    var entityPoint = db.RoutePoint.Find(routeMediaObject.RoutePointId);
+                    var entityRoute = db.Route.Find(entityPoint.RouteId);
+                    if (entityRoute != null)
+                    {
+                        entityRoute.VersionsHash = string.Empty;
+                        entityRoute.VersionsList = string.Empty;
+                        db.Entry(entityRoute).CurrentValues.SetValues(entityRoute);
+                    }
                     db.SaveChanges();
                 }
                 else

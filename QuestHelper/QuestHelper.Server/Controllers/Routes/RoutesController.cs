@@ -65,7 +65,7 @@ namespace QuestHelper.Server.Controllers.Routes
             string userId = IdentityManager.GetUserId(HttpContext);
             using (var db = new ServerDbContext(_dbOptions))
             {
-                RouteManager routeManager = new RouteManager(db);
+                RouteManager routeManager = new RouteManager(_dbOptions);
                 resultRoute = routeManager.Get(userId, RouteId);
             }
             return new ObjectResult(resultRoute);
@@ -81,6 +81,8 @@ namespace QuestHelper.Server.Controllers.Routes
                 if (entity == null)
                 {
                     routeObject.CreatorId = userId;
+                    routeObject.VersionsHash = string.Empty;
+                    routeObject.VersionsList = string.Empty;
                     db.Route.Add(routeObject);
                     RouteAccess accessObject = new RouteAccess();
                     accessObject.UserId = userId;
@@ -100,6 +102,8 @@ namespace QuestHelper.Server.Controllers.Routes
                             routeObject.CreatorId = entity.CreatorId;
                         }
                     }
+                    routeObject.VersionsHash = string.Empty;
+                    routeObject.VersionsList = string.Empty;
                     db.Entry(entity).CurrentValues.SetValues(routeObject);
                 }
                 db.SaveChanges();
@@ -122,6 +126,8 @@ namespace QuestHelper.Server.Controllers.Routes
                         if (entity != null)
                         {
                             entity.IsDeleted = true;
+                            entity.VersionsHash = string.Empty;
+                            entity.VersionsList = string.Empty;
                             db.Entry(entity).CurrentValues.SetValues(entity);
                             //db.Remove(entity);
                         }
@@ -171,6 +177,8 @@ namespace QuestHelper.Server.Controllers.Routes
                                     if (!routeEntity.IsShared)
                                     {
                                         routeEntity.IsShared = true;
+                                        routeEntity.VersionsHash = string.Empty;
+                                        routeEntity.VersionsList = string.Empty;
                                         routeEntity.Version++;
                                         db.Entry(routeEntity).CurrentValues.SetValues(routeEntity);
                                     }

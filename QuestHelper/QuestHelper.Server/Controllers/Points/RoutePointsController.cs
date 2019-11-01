@@ -50,6 +50,13 @@ namespace QuestHelper.Server.Controllers.Points
                     {
                         db.Entry(entity).CurrentValues.SetValues(routePointObject);
                     }
+                    var entityRoute = db.Route.Find(routePointObject.RouteId);
+                    if (entityRoute != null)
+                    {
+                        entityRoute.VersionsHash = string.Empty;
+                        entityRoute.VersionsList = string.Empty;
+                        db.Entry(entityRoute).CurrentValues.SetValues(entityRoute);
+                    }
                     db.SaveChanges();
                 }
                 else
