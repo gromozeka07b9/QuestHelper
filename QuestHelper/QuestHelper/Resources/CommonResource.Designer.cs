@@ -61,11 +61,20 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на You have no albums yet.
+        /// </summary>
+        public static string Albums_ListRouteIsEmpty {
+            get {
+                return ResourceManager.GetString("Albums_ListRouteIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Feed not available, please check your connection to Internet.
         /// </summary>
-        public static string ErrorLoadingFeed {
+        public static string Feed_ErrorLoadingFeed {
             get {
-                return ResourceManager.GetString("ErrorLoadingFeed", resourceCulture);
+                return ResourceManager.GetString("Feed_ErrorLoadingFeed", resourceCulture);
             }
         }
         
@@ -93,6 +102,33 @@ namespace QuestHelper.Resources {
         public static string ScreenPrivateName {
             get {
                 return ResourceManager.GetString("ScreenPrivateName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Choose route which you want add new point.
+        /// </summary>
+        public static string ShareMsg_ChooseRouteForAddPoint {
+            get {
+                return ResourceManager.GetString("ShareMsg_ChooseRouteForAddPoint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Your choose.
+        /// </summary>
+        public static string ShareMsg_ChooseWorker {
+            get {
+                return ResourceManager.GetString("ShareMsg_ChooseWorker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Making new point.
+        /// </summary>
+        public static string ShareMsg_MakingNewPoint {
+            get {
+                return ResourceManager.GetString("ShareMsg_MakingNewPoint", resourceCulture);
             }
         }
     }

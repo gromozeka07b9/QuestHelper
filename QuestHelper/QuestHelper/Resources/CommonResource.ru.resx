@@ -117,7 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ErrorLoadingFeed" xml:space="preserve">
+  <data name="Albums_ListRouteIsEmpty" xml:space="preserve">
+    <value>У вас пока нет загруженных маршрутов</value>
+  </data>
+  <data name="Feed_ErrorLoadingFeed" xml:space="preserve">
     <value>Лента не загружена, пожалуйста, проверьте ваше подключение к сети</value>
   </data>
   <data name="ScreenFeedName" xml:space="preserve">
@@ -128,5 +131,14 @@
   </data>
   <data name="ScreenPrivateName" xml:space="preserve">
     <value>Личные</value>
+  </data>
+  <data name="ShareMsg_ChooseRouteForAddPoint" xml:space="preserve">
+    <value>Выберите маршрут для добавления точки</value>
+  </data>
+  <data name="ShareMsg_ChooseWorker" xml:space="preserve">
+    <value>Обработка выбора</value>
+  </data>
+  <data name="ShareMsg_MakingNewPoint" xml:space="preserve">
+    <value>Создание новой точки</value>
   </data>
 </root>

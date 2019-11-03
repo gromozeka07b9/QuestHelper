@@ -3,11 +3,9 @@ using QuestHelper.Managers;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xamarin.Essentials;
+using System.Globalization;
+using System.Threading;
+using QuestHelper.Resources;
 using Xamarin.Forms;
 
 namespace QuestHelper.View
@@ -17,14 +15,17 @@ namespace QuestHelper.View
         public MainPage()
         {
             InitializeComponent();
+#if DEBUG
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+#endif
+
             var pageCollections = new PagesCollection();
             MasterPage.ListView.ItemSelected += ListView_ItemSelected;
-            //var pageCollections = new PagesCollection();
             MessagingCenter.Subscribe<PageNavigationMessage>(this, string.Empty, async (senderMsg) =>
             {
                 if (senderMsg.DestinationPageDescription.TargetType == typeof(SplashWizardPage))
                 {
-                    //DependencyService.Get<IToolbarService>().SetVisibilityToolbar(false);
                     await Navigation.PushModalAsync(new NavigationPage(new SplashWizardPage()));
                 }
                 else
@@ -32,23 +33,23 @@ namespace QuestHelper.View
                     TokenStoreService token = new TokenStoreService();
                     if (!string.IsNullOrEmpty(await token.GetAuthTokenAsync()))
                     {
-                        //DependencyService.Get<IToolbarService>().SetVisibilityToolbar(true);
                         navigateToPage(senderMsg);
                     }
                     else
                     {
-                        //DependencyService.Get<IToolbarService>().SetVisibilityToolbar(false);
                         navigateToPage(new PageNavigationMessage() { DestinationPageDescription = pageCollections.GetLoginPage() });
                     }
                 }
             });
             MessagingCenter.Subscribe<ShareFromGoogleMapsMessage>(this, string.Empty, (senderMsg) =>
             {
-                UserDialogs.Instance.Alert($"Выберите маршрут, в который планируете добавить точку", "Создание новой точки");
+                //UserDialogs.Instance.Alert($"Выберите маршрут, в который планируете добавить точку", "Создание новой точки");
+                UserDialogs.Instance.Alert(CommonResource.ShareMsg_ChooseRouteForAddPoint, CommonResource.ShareMsg_MakingNewPoint);
                 MessagingCenter.Unsubscribe<ShareFromGoogleMapsMessage>(this, string.Empty);
                 var pageParameters = pageCollections.GetSelectRoutesPage();
                 var page = (RoutesPage)Activator.CreateInstance(pageParameters.TargetType, args: senderMsg);
-                openContentPage(page, "Обработка выбора", "");
+                //openContentPage(page, "Обработка выбора", "");
+                openContentPage(page, CommonResource.ShareMsg_ChooseWorker, "");
             });
         }
 
@@ -66,14 +67,14 @@ namespace QuestHelper.View
             MainPageMenuItem item = e.SelectedItem as MainPageMenuItem;
             if (item != null)
                 MessagingCenter.Send<PageNavigationMessage>(new PageNavigationMessage() { DestinationPageDescription = item }, string.Empty);
-            //item = null;
             MasterPage.ListView.SelectedItem = null;
         }
 
         private void openContentPage(Page page, string title, string iconName)
         {
             page.Title = title;
-            page.Icon = new FileImageSource() { File = iconName };
+            //page.Icon = new FileImageSource() { File = iconName };
+            page.IconImageSource = new FileImageSource() { File = iconName };
             Detail = new NavigationPage(page);
             IsPresented = false;
 
