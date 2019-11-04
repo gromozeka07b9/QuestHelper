@@ -14,6 +14,7 @@ using QuestHelper.View;
 using Xamarin.Forms;
 using QuestHelper.Model.Messages;
 using Microsoft.AppCenter.Analytics;
+using QuestHelper.Resources;
 
 namespace QuestHelper.ViewModel
 {
@@ -52,9 +53,9 @@ namespace QuestHelper.ViewModel
         };
         private readonly Dictionary<string, string> _actionsForPopupMenu = new Dictionary<string, string>()
         {
-            { "onlyPhotos", "Выгрузить фотографии" },
-            { "onlyTexts", "Выгрузить описания"},
-            { "cancel", "Отмена" }
+            { "onlyPhotos", CommonResource.ShareRoutes_ExportPhotos },
+            { "onlyTexts", CommonResource.ShareRoutes_ExportDescriptions},
+            { "cancel", CommonResource.CommonMsg_Cancel }
         };
         public ShareRoutesServicesViewModel(string routeId)
         {
@@ -111,7 +112,7 @@ namespace QuestHelper.ViewModel
         private async void tapPublishAlbumCommand(object obj)
         {
             Analytics.TrackEvent("Share service", new Dictionary<string, string> { { "TypeShare", "publish" } });
-            bool answerYesIsNo = await Application.Current.MainPage.DisplayAlert("Внимание", "После публикации маршрут будет доступен всем пользователям в альбоме. Вы уверены?", "Нет", "Да");
+            bool answerYesIsNo = await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.ShareRoute_AreYouSureToPublishRoute, CommonResource.CommonMsg_No, CommonResource.CommonMsg_Yes);
             if (!answerYesIsNo) //порядок кнопок - хардкод, и непонятно, почему именно такой
             {
                 if (await UserCanShareAsync())
@@ -120,12 +121,12 @@ namespace QuestHelper.ViewModel
                     _vroute.Version++;
                     _vroute.ObjVerHash = string.Empty;
                     _vroute.Save();
-                    await Application.Current.MainPage.DisplayAlert("Внимание!", "После синхронизации маршрут будет опубликован", "Ok");
+                    await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.ShareRoute_RouteWillBePublishAfterSync, CommonResource.CommonMsg_Ok);
                     Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage() { RouteId = _vroute.Id, ShowErrorMessageIfExist = false }, string.Empty);
                 }
                 else
                 {
-                    await Application.Current.MainPage.DisplayAlert("Внимание!", "Публиковать можно только созданные вами маршруты", "Ok");
+                    await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.ShareRoute_PublishOnlyYourRoutes, CommonResource.CommonMsg_Ok);
                 }
             }
         }

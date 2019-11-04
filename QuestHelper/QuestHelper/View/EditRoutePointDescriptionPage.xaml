@@ -2,9 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:QuestHelper.ViewModel;assembly=QuestHelper"
+             xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
              xmlns:local="clr-namespace:QuestHelper.View.Converters"
              xmlns:view="clr-namespace:QuestHelper.View"
-             x:Class="QuestHelper.View.EditRoutePointDescriptionPage" Appearing="ContentPage_Appearing" Title="Описание точки" Style="{StaticResource ContentPage}">
+             x:Class="QuestHelper.View.EditRoutePointDescriptionPage" Appearing="ContentPage_Appearing" Title="{lang:Translation RoutePointDescription_Caption}" Style="{StaticResource ContentPage}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:NegativeBoolConverter  x:Key="inverter" />
@@ -19,7 +20,7 @@
                             <TapGestureRecognizer Command="{Binding EditDescriptionCommand}" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <view:CustomEditor IsVisible="{Binding IsEditMode}" x:Name="EditorElement" Placeholder="Здесь можно указать описание данного места" AutoSize="Disabled" Completed="Editor_OnCompleted"  Text="{Binding Description}" FontSize="Small" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Focused="EditorElement_OnFocused" Unfocused="EditorElement_OnUnfocused">
+                    <view:CustomEditor IsVisible="{Binding IsEditMode}" x:Name="EditorElement" Placeholder="{lang:Translation RoutePointDescription_Text}" AutoSize="Disabled" Completed="Editor_OnCompleted"  Text="{Binding Description}" FontSize="Small" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Focused="EditorElement_OnFocused" Unfocused="EditorElement_OnUnfocused">
                     </view:CustomEditor>
                 </StackLayout>
             </ScrollView>

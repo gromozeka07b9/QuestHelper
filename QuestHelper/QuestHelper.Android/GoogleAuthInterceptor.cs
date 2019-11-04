@@ -11,6 +11,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using QuestHelper;
+using QuestHelper.Resources;
 
 namespace QuestHelper.Droid
 {
@@ -42,7 +43,7 @@ namespace QuestHelper.Droid
         {
             base.OnCreate(savedInstanceState);
 
-            using (UserDialogs.Instance.Loading("Авторизация...", () => { }, "", true, MaskType.Gradient))
+            using (UserDialogs.Instance.Loading(CommonResource.Login_AuthorizationProcess, () => { }, "", true, MaskType.Gradient))
             {
                 try
                 {

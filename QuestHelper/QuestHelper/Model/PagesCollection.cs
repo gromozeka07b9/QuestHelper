@@ -1,4 +1,5 @@
-﻿using QuestHelper.View;
+﻿using QuestHelper.Resources;
+using QuestHelper.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,15 +18,15 @@ namespace QuestHelper.Model
         {
             Pages = new ObservableCollection<MainPageMenuItem>(new[]
             {
-                new MainPageMenuItem { Id = 0, Title = "Лента", TargetType = typeof(FeedRoutesPage), IconName="feed.png", ShowInMenu = true},
-                new MainPageMenuItem { Id = 1, Title = "Загруженные", TargetType = typeof(AlbumsPage), IconName="loaded.png", ShowInMenu = true},
-                new MainPageMenuItem { Id = 2, Title = "Личные", TargetType = typeof(RoutesPage), IconName="personal.png", ShowInMenu = true},
+                new MainPageMenuItem { Id = 0, Title = CommonResource.ScreenFeedName, TargetType = typeof(FeedRoutesPage), IconName="feed.png", ShowInMenu = true},
+                new MainPageMenuItem { Id = 1, Title = CommonResource.ScreenLoadedAlbumsName, TargetType = typeof(AlbumsPage), IconName="loaded.png", ShowInMenu = true},
+                new MainPageMenuItem { Id = 2, Title = CommonResource.ScreenPrivateName, TargetType = typeof(RoutesPage), IconName="personal.png", ShowInMenu = true},
 
-                new MainPageMenuItem { Id = 5, Title = "О нас", TargetType = typeof(AboutPage), IconName="about.png", ShowInMenu = true},
+                new MainPageMenuItem { Id = 5, Title = CommonResource.ScreenAboutUsName, TargetType = typeof(AboutPage), IconName="about.png", ShowInMenu = true},
                 new MainPageMenuItem { Id = 6, Title = string.Empty, TargetType = typeof(LoginPage)},
-                new MainPageMenuItem { Id = 7, Title = "Обработка выбора", TargetType = typeof(ProcessShareIntentPage), IconName="earth.png"},
-                new MainPageMenuItem { Id = 8, Title = "Описание", TargetType = typeof(SplashWizardPage), IconName = "onboarding.png", ShowInMenu = true},
-                new MainPageMenuItem { Id = 9, Title = "Обновление доступных маршрутов", TargetType = typeof(ReceivePushPage), IconName = "icon.png", ShowInMenu = false},
+                new MainPageMenuItem { Id = 7, Title = CommonResource.ScreenChooseWorkerName, TargetType = typeof(ProcessShareIntentPage), IconName="earth.png"},
+                new MainPageMenuItem { Id = 8, Title = CommonResource.ScreenOnBoardingName, TargetType = typeof(SplashWizardPage), IconName = "onboarding.png", ShowInMenu = true},
+                //new MainPageMenuItem { Id = 9, Title = "Обновление доступных маршрутов", TargetType = typeof(ReceivePushPage), IconName = "icon.png", ShowInMenu = false},
 
                 new MainPageMenuItem { Id = 999, Title = "Main page", TargetType = typeof(MainPage)}//старт view с навигацией по страницам
                 });

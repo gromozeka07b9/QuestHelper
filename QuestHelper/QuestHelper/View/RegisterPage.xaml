@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModel="clr-namespace:QuestHelper.ViewModel"
+             xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
              x:Class="QuestHelper.View.RegisterPage" NavigationPage.HasNavigationBar="False" BackgroundColor="#3A3A9C" Appearing="RegisterPage_OnAppearing">
     <ContentPage.BindingContext>
         <viewModel:LoginViewModel />
@@ -24,16 +25,16 @@
                         <Image HorizontalOptions="Center" Source="icon" WidthRequest="40" HeightRequest="40" VerticalOptions="Center"></Image>
                         <Label Text="GoSh!" TextColor="Black" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center"></Label>
                     </StackLayout>
-                    <Label Text="Регистрация" TextColor="Black" FontSize="25" HorizontalTextAlignment="Center" Margin="0,10,0,20"></Label>
-                    <Entry Placeholder="Имя" Text="{Binding Username}" HorizontalOptions="Fill" Style="{StaticResource LoginEntryCaption}" Margin="10,0,10,0" Keyboard="Keyboard.Default">
+                    <Label Text="{lang:Translation Registration_Caption}" TextColor="Black" FontSize="25" HorizontalTextAlignment="Center" Margin="0,10,0,20"></Label>
+                    <Entry Placeholder="{lang:Translation Registration_Name}" Text="{Binding Username}" HorizontalOptions="Fill" Style="{StaticResource LoginEntryCaption}" Margin="10,0,10,0" Keyboard="Keyboard.Default">
                     </Entry>
-                    <Entry Placeholder="Email" Text="{Binding Email}" HorizontalOptions="Fill" Style="{StaticResource LoginEntryCaption}" Margin="10,0,10,0" Keyboard="Keyboard.Default">
+                    <Entry Placeholder="{lang:Translation Registration_Email}" Text="{Binding Email}" HorizontalOptions="Fill" Style="{StaticResource LoginEntryCaption}" Margin="10,0,10,0" Keyboard="Keyboard.Default">
                     </Entry>
-                    <Entry Placeholder="Пароль" Text="{Binding Password}" IsPassword="True" HorizontalOptions="Fill" Style="{StaticResource LoginEntryCaption}" Margin="10,0,10,0" Keyboard="Keyboard.Text">
+                    <Entry Placeholder="{lang:Translation Registration_Password}" Text="{Binding Password}" IsPassword="True" HorizontalOptions="Fill" Style="{StaticResource LoginEntryCaption}" Margin="10,0,10,0" Keyboard="Keyboard.Text">
                     </Entry>
-                    <Entry Placeholder="Подтверждение пароля" Text="{Binding PasswordConfirm}" IsPassword="True" HorizontalOptions="Fill" Style="{StaticResource LoginEntryCaption}" Margin="10,0,10,0" TextColor="#3A3A9C" Keyboard="Keyboard.Text">
+                    <Entry Placeholder="{lang:Translation Registration_PasswordRepeat}" Text="{Binding PasswordConfirm}" IsPassword="True" HorizontalOptions="Fill" Style="{StaticResource LoginEntryCaption}" Margin="10,0,10,0" TextColor="#3A3A9C" Keyboard="Keyboard.Text">
                     </Entry>
-                    <Button HorizontalOptions="Center" Text="Зарегистрироваться" CornerRadius="5" WidthRequest="200" BackgroundColor="Red" TextColor="White" Command="{Binding RegisterCommand}" Margin="0,30,0,20">
+                    <Button HorizontalOptions="Center" Text="{lang:Translation Registration_RegistrationSubmit}" CornerRadius="5" WidthRequest="200" BackgroundColor="Red" TextColor="White" Command="{Binding RegisterCommand}" Margin="0,30,0,20">
                     </Button>
                 </StackLayout>
             </ScrollView>

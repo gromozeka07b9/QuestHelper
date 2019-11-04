@@ -16,6 +16,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using QuestHelper.Model;
 using Microsoft.AppCenter.Analytics;
+using QuestHelper.Resources;
 
 namespace QuestHelper.ViewModel
 {
@@ -34,8 +35,6 @@ namespace QuestHelper.ViewModel
         public NewRouteViewModel(bool isFirstRoute)
         {
             _vroute = new ViewRoute(string.Empty);
-            //_vroute.CreateDate = DateTimeOffset.Now;
-            //_vroute.Version = 1;
             _isFirstRoute = isFirstRoute;
             ShowNewRouteDialogCommand = new Command(showNewRouteData);
             OpenRoutePointDialogCommand = new Command(openRoutePointDialogAsync);
@@ -45,7 +44,7 @@ namespace QuestHelper.ViewModel
         {
             if(string.IsNullOrEmpty(_vroute.Name))
             {
-                await App.Current.MainPage.DisplayAlert("Внимание!", "Необходимо заполнить название маршрута", "Ok");
+                await App.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.NewRoute_NeedToFillNameRoute, "Ok");
             } else
             {
                 Analytics.TrackEvent("Route created", new Dictionary<string, string> { { "Route", _vroute.Name } });

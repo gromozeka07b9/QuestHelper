@@ -1,6 +1,7 @@
 ﻿using QuestHelper.Managers;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
+using QuestHelper.Resources;
 using QuestHelper.View;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace QuestHelper.ViewModel
 
         private async void deleteDataAllAlbumsCommandAsync()
         {
-            bool answerYesIsNo = await Application.Current.MainPage.DisplayAlert("Внимание", "Вы уверены, что хотите удалить загруженные маршруты? При необходимости, вы сможете загрузить их повторно из ленты.", "Нет", "Да");
+            bool answerYesIsNo = await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.Albums_AreYourSureToDeleteLoadedRoutes, CommonResource.CommonMsg_No, CommonResource.CommonMsg_Yes);
             if (!answerYesIsNo) //порядок кнопок - хардкод, и непонятно, почему именно такой
             {
                 TokenStoreService token = new TokenStoreService();

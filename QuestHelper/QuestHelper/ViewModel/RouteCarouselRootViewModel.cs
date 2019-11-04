@@ -2,13 +2,17 @@
 using QuestHelper.LocalDB.Model;
 using QuestHelper.Managers;
 using QuestHelper.Model;
+using QuestHelper.Model.Messages;
+using QuestHelper.Resources;
 using QuestHelper.View;
+using QuestHelper.WS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -16,11 +20,15 @@ namespace QuestHelper.ViewModel
 {
     public class RouteCarouselRootViewModel : INotifyPropertyChanged
     {
+        private const string _apiUrl = "http://igosh.pro/api";
         private readonly ViewRoute _routeObject;
         private RouteManager _routeManager = new RouteManager();
         private RoutePointManager _routePointManager = new RoutePointManager();
+        private RoutePointMediaObjectRequest _routePointMediaObjectsApi;
         private CarouselItem _currentItem;
         private string _routePointId = string.Empty;
+        private bool _isMaximumQualityPhoto = true;
+        private bool _isVisibleQualityImageSelector = false;
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -35,10 +43,12 @@ namespace QuestHelper.ViewModel
         {
             get { return _routeObject?.Name.ToUpper(); }
         }
+
         public string RoutePointName
         {
             get { return _currentItem?.RoutePointName.ToUpper(); }
         }
+
         public string RoutePointDescription
         {
             get
@@ -46,7 +56,7 @@ namespace QuestHelper.ViewModel
                 string text = string.Empty;
                 if (string.IsNullOrEmpty(_currentItem?.RoutePointDescription))
                 {
-                    text = "Описание не заполнено";
+                    text = "";
                 }
                 else text = _currentItem?.RoutePointDescription;
                 return text;
@@ -57,6 +67,43 @@ namespace QuestHelper.ViewModel
             get
             {
                 return !string.IsNullOrEmpty(_currentItem?.RoutePointDescription);
+            }
+        }
+
+        public bool IsVisibleQualityImageSelector
+        {
+            set 
+            {
+                if (_isVisibleQualityImageSelector != value)
+                {
+                    _isVisibleQualityImageSelector = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsVisibleQualityImageSelector"));
+                }
+            }
+            get
+            {
+                return _isVisibleQualityImageSelector;
+            }
+        }
+
+        public bool IsMaximumQualityPhoto
+        {
+            set
+            {
+                if(_isMaximumQualityPhoto != value)
+                {
+                    _isMaximumQualityPhoto = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsMaximumQualityPhoto"));
+                    string fullImgPath = ImagePathManager.GetImagePath(CurrentItem.MediaId, MediaObjectTypeEnum.Image, false);
+                    if ((_isMaximumQualityPhoto) && (!File.Exists(fullImgPath)))
+                    {
+                        LoadFullImage(fullImgPath);
+                    }
+                }
+            }
+            get
+            {
+                return _isMaximumQualityPhoto;
             }
         }
 
@@ -74,6 +121,34 @@ namespace QuestHelper.ViewModel
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RoutePointDescription"));
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DescriptionIsVisible"));
                 }
+            }
+        }
+
+        internal void LoadFullImage(string fullImgPath)
+        {
+            DateTime dtStartLoad = DateTime.Now;
+            var task = Task.Run(async () =>
+                {
+                    string imgName = ImagePathManager.GetMediaFilename(CurrentItem.MediaId, MediaObjectTypeEnum.Image, false);
+                    return await _routePointMediaObjectsApi.GetImage(CurrentItem.RoutePointId, CurrentItem.MediaId, ImagePathManager.GetPicturesDirectory(), imgName);
+                });
+            bool result = task.Result;
+            if (File.Exists(fullImgPath))
+            {
+                CurrentItem.ImageSource = fullImgPath;
+                CurrentItem.IsFullImage = true;
+            }
+            int maxTimeoutSecondsForLoad = 3;
+            int loadTimeInSeconds = (DateTime.Now - dtStartLoad).Seconds;
+            if (loadTimeInSeconds > maxTimeoutSecondsForLoad)
+            {
+                MessagingCenter.Send<UIToastMessage>(new UIToastMessage() { Delay = 1, Message = CommonResource.CommonMsg_HiImageQualityDisabled }, string.Empty);
+                IsMaximumQualityPhoto = false;
+                IsVisibleQualityImageSelector = true;
+            }
+            else
+            {
+                IsVisibleQualityImageSelector = false;
             }
         }
 
@@ -117,6 +192,8 @@ namespace QuestHelper.ViewModel
         {
             TokenStoreService token = new TokenStoreService();
             string _userId = await token.GetUserIdAsync();
+            string _authToken = await token.GetAuthTokenAsync();
+            _routePointMediaObjectsApi = new RoutePointMediaObjectRequest(_apiUrl, _authToken);
 
             //Автора альбома пока не считаем за просмотр
             if (!_routeObject.CreatorId.Equals(_userId))

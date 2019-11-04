@@ -16,7 +16,9 @@ namespace QuestHelper.View
         {
             InitializeComponent();
 #if DEBUG
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            //Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            //Thread.CurrentThread.CurrentCulture = new CultureInfo("ru-RU");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
 #endif
 
@@ -43,12 +45,10 @@ namespace QuestHelper.View
             });
             MessagingCenter.Subscribe<ShareFromGoogleMapsMessage>(this, string.Empty, (senderMsg) =>
             {
-                //UserDialogs.Instance.Alert($"Выберите маршрут, в который планируете добавить точку", "Создание новой точки");
                 UserDialogs.Instance.Alert(CommonResource.ShareMsg_ChooseRouteForAddPoint, CommonResource.ShareMsg_MakingNewPoint);
                 MessagingCenter.Unsubscribe<ShareFromGoogleMapsMessage>(this, string.Empty);
                 var pageParameters = pageCollections.GetSelectRoutesPage();
                 var page = (RoutesPage)Activator.CreateInstance(pageParameters.TargetType, args: senderMsg);
-                //openContentPage(page, "Обработка выбора", "");
                 openContentPage(page, CommonResource.ShareMsg_ChooseWorker, "");
             });
         }

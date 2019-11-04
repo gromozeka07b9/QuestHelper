@@ -119,16 +119,6 @@
                                 <TapGestureRecognizer Command="{TemplateBinding Parent.BindingContext.MapOverviewCommand}"></TapGestureRecognizer>
                             </Image.GestureRecognizers>
                         </Image>
-                        <!--Button Text="Map" Image="earth.png" Style="{StaticResource NavigationButton}" Command="{TemplateBinding Parent.BindingContext.MapOverviewCommand}">
-                        </-->
-                        <!--Button Text="List" Style="{StaticResource NavigationButton}"  Command="{TemplateBinding Parent.BindingContext.RoutesCommand}">
-                        </>
-                        <Button Text="New" Style="{StaticResource NavigationButton}" Command="{TemplateBinding Parent.BindingContext.NewRouteCommand}">
-                        </Button>
-                        <Button Text="Around" Style="{StaticResource NavigationButton}" Command="{TemplateBinding Parent.BindingContext.AroundMeCommand}">
-                        </Button>
-                        <Button Text="Profile" Style="{StaticResource NavigationButton}" Command="{TemplateBinding Parent.BindingContext.MyProfileCommand}">
-                        </Button-->
                     </StackLayout>
                 </Grid>
             </ControlTemplate>

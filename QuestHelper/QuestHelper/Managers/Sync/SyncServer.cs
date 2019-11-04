@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using QuestHelper.Model;
 using QuestHelper.WS;
 using Autofac;
+using QuestHelper.Resources;
 
 namespace QuestHelper.Managers.Sync
 {
@@ -108,7 +109,7 @@ namespace QuestHelper.Managers.Sync
             }
             else
             {
-                MessagingCenter.Send<UIToastMessage>(new UIToastMessage() { Delay = 3, Message = "Синхронизация уже запущена" }, string.Empty);
+                MessagingCenter.Send<UIToastMessage>(new UIToastMessage() { Delay = 3, Message = CommonResource.Sync_SyncAlreadyStarted }, string.Empty);
             }
             return allSynced;
         }

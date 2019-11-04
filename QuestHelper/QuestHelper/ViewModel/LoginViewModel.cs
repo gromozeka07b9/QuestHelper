@@ -8,6 +8,7 @@ using Microsoft.AppCenter.Analytics;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
 using QuestHelper.OAuth;
+using QuestHelper.Resources;
 using QuestHelper.View;
 using QuestHelper.WS;
 using Xamarin.Auth;
@@ -49,7 +50,7 @@ namespace QuestHelper.ViewModel
         /// </summary>
         private void startLoginWithGoogleCommand()
         {
-            UserDialogs.Instance.ShowLoading("Авторизация...", MaskType.Black);
+            UserDialogs.Instance.ShowLoading(CommonResource.Login_AuthorizationProcess, MaskType.Black);
             OAuthGoogleAuthenticator oAuth = new OAuthGoogleAuthenticator();
             oAuth.Login();
         }
@@ -62,7 +63,7 @@ namespace QuestHelper.ViewModel
                 {
                     if (_password.Equals(_passwordConfirm))
                     {
-                        using (UserDialogs.Instance.Loading("Регистрация...", null, null, true, MaskType.Black))
+                        using (UserDialogs.Instance.Loading(CommonResource.Login_RegistrationProcess, null, null, true, MaskType.Black))
                         {
                             AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
                             Analytics.TrackEvent("Register user started", new Dictionary<string, string> { { "Username", _username } });
@@ -81,22 +82,22 @@ namespace QuestHelper.ViewModel
                             else
                             {
                                 Analytics.TrackEvent("Register new user error", new Dictionary<string, string> { { "Username", _username } });
-                                await Application.Current.MainPage.DisplayAlert("Внимание!", "Ошибка регистрации пользователя. Возможно, указанное имя или адрес e-mail уже заняты", "Ok");
+                                await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.Login_RegistrationError, "Ok");
                             }
                         }
                     }
-                    else await Application.Current.MainPage.DisplayAlert("Внимание!", "Пожалуйста, введите одинаковые пароли", "Ok");
+                    else await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.Login_EnterSamePasswords, "Ok");
                 }
-                else await Application.Current.MainPage.DisplayAlert("Внимание!", "Пожалуйста, укажите корректный электронный адрес", "Ok");
+                else await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.Login_EnterCorrectEmail, "Ok");
             }
-            else await Application.Current.MainPage.DisplayAlert("Внимание!", "Пожалуйста, заполните все поля", "Ok");
+            else await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.Login_FillAllFields, "Ok");
         }
 
         async void TryLoginCommandAsync()
         {
             if ((!string.IsNullOrEmpty(_username) && !string.IsNullOrEmpty(_password)))
             {
-                using (UserDialogs.Instance.Loading("Авторизация...", null, null, true, MaskType.Black))
+                using (UserDialogs.Instance.Loading(CommonResource.Login_AuthorizationProcess, null, null, true, MaskType.Black))
                 {
                     string username = await DependencyService.Get<IUsernameService>().GetUsername();
                     AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
@@ -115,10 +116,10 @@ namespace QuestHelper.ViewModel
                     else
                     {
                         Analytics.TrackEvent("GetToken error", new Dictionary<string, string> { { "Username", _username } });
-                        await Application.Current.MainPage.DisplayAlert("Внимание!", "Неправильный логин или пароль!", "Ok");
+                        await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.Login_IncorrectLoginOrPassword, "Ok");
                     }
                 }
-            } else await Application.Current.MainPage.DisplayAlert("Внимание!", "Пожалуйста, заполните логин и пароль", "Ok");
+            } else await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.Login_FillLoginAndPassword, "Ok");
         }
 
         private static void ShowMainPage()
@@ -234,7 +235,7 @@ namespace QuestHelper.ViewModel
                 else
                 {
                     Analytics.TrackEvent("Login OAuth error", new Dictionary<string, string> { { "Username", _username } });
-                    await Application.Current.MainPage.DisplayAlert("Внимание!", "Ошибка авторизации пользователя.", "Ok");
+                    await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.Login_AuthError, "Ok");
                 }
             });
         }

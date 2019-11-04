@@ -12,7 +12,7 @@
             <StackLayout Grid.Row="0" Orientation="Vertical" Margin="10">
                 <Image Source="icon" HorizontalOptions="Center" HeightRequest="40" WidthRequest="40"></Image>
                 <Label Text="GoSh!" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
-                <Label Text="Версия 1.0" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
+                <Label Text="Версия 2.0" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
             </StackLayout>
             <Label Grid.Row="1" Text="Команда:&#10;Исследования - Ольга&#10;Разработка - Сергей&#10;Дизайн - Клим&#10;Поддержка - Вероника" HorizontalTextAlignment="Center" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
             <StackLayout Grid.Row="2" Orientation="Vertical">

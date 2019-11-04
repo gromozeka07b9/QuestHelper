@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:QuestHelper.ViewModel;assembly=QuestHelper"
+             xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
              xmlns:local="clr-namespace:QuestHelper.View.Converters"
              x:Class="QuestHelper.View.RouteCreatedPage" Appearing="ContentPage_Appearing" Title="Новый маршрут">
     <ContentPage.Resources>
@@ -24,9 +25,9 @@
                     <Label Text="{Binding Name}" TextColor="Gray" Style="{StaticResource StandartTextLabel}" FontSize="18">
                     </Label>
                 </StackLayout>
-                <Label Text="Теперь вы можете добавить первую запись в ваш маршрут." FontSize="18" HorizontalOptions="CenterAndExpand" Style="{StaticResource StandartTextLabel}">
+                <Label Text="{lang:Translation RouteCreated_NowYouCanAddNewPoint}" FontSize="18" HorizontalOptions="CenterAndExpand" Style="{StaticResource StandartTextLabel}">
                 </Label>
-                <Button HorizontalOptions="EndAndExpand" VerticalOptions="EndAndExpand" Image="plus.png" WidthRequest="150" Command="{Binding OpenRoutePointDialogCommand}" Text="Добавить" Style="{StaticResource StandartButton}">
+                <Button HorizontalOptions="EndAndExpand" VerticalOptions="EndAndExpand" Image="plus.png" WidthRequest="150" Command="{Binding OpenRoutePointDialogCommand}" Text="{lang:Translation RouteCreated_AddNewPoint}" Style="{StaticResource StandartButton}">
                 </Button>
             </StackLayout>
         </Grid>

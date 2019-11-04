@@ -7,6 +7,7 @@ using Acr.UserDialogs;
 using Microsoft.AppCenter.Analytics;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
+using QuestHelper.Resources;
 using Xamarin.Forms;
 
 namespace QuestHelper.ViewModel
@@ -77,7 +78,7 @@ namespace QuestHelper.ViewModel
                 toolbarService.SetVisibilityToolbar(false);
             }
 
-            MessageTitle = "Вам доступны новые маршруты";
+            MessageTitle = CommonResource.ReceivePush_YouHaveNewRoutes;
             MessageBody = "";
         }
         public void StopDialog()

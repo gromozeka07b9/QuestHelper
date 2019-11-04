@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="QuestHelper.View.MasterMainPage" Title="GoSh!" Appearing="MasterMainPage_OnAppearing" Disappearing="MasterMainPage_OnDisappearing">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="QuestHelper.View.MasterMainPage" Title="GoSh!" Appearing="MasterMainPage_OnAppearing" Disappearing="MasterMainPage_OnDisappearing">
     <ContentPage.Content>
         <Grid HorizontalOptions="FillAndExpand">
             <Grid.ColumnDefinitions>
@@ -35,7 +38,7 @@
                 </ListView.ItemTemplate>
             </ListView>
             <StackLayout Orientation="Vertical" Grid.Row="1" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                <Label Text="Текущий статус синхронизации:" TextColor="DarkBlue" FontSize="12" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="Center" />
+                <Label Text="{lang:Translation MainPage_CurrentSyncStatus}" TextColor="DarkBlue" FontSize="12" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="Center" />
                 <Label Text="{Binding SyncStatusText}" TextColor="DarkBlue" FontSize="12" Margin="5" HorizontalTextAlignment="Center">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding GetSyncStatusCommand}"></TapGestureRecognizer>

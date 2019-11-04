@@ -71,23 +71,12 @@ namespace QuestHelper.View
             }
             else
             {
-                var task = Task.Run(async () =>
-                    await loadImageAsync(ImagePathManager.GetMediaFilename(_vm.CurrentItem.MediaId, MediaObjectTypeEnum.Image, false)));
-                bool result = task.Result;
-                if (File.Exists(fullImgPath))
+                if (_vm.IsMaximumQualityPhoto)
                 {
-                    _vm.CurrentItem.ImageSource = fullImgPath;
-                    _vm.CurrentItem.IsFullImage = true;
+                    _vm.LoadFullImage(fullImgPath);
                 }
             }
             return false;
-        }
-
-        private async Task<bool> loadImageAsync(string imgName)
-        {
-            var routePointMediaObjectsApi = new RoutePointMediaObjectRequest(_apiUrl, _authToken);
-
-            return await routePointMediaObjectsApi.GetImage(_vm.CurrentItem.RoutePointId, _vm.CurrentItem.MediaId, ImagePathManager.GetPicturesDirectory(), imgName);
         }
     }
 }

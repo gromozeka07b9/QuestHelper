@@ -1,5 +1,6 @@
 ﻿using QuestHelper.Model;
 using QuestHelper.Model.Messages;
+using QuestHelper.Resources;
 using QuestHelper.WS;
 using System;
 using System.Collections.Generic;
@@ -26,8 +27,8 @@ namespace QuestHelper.ViewModel
         private string _authToken = string.Empty;
         private RoutesApiRequest _routesApi;
 
-        private const string _accessByLink = "Общий доступ к маршруту включен";
-        private const string _makeLink = "Общий доступ по ссылке пока отключен";
+        private string _accessByLink = CommonResource.MakeRouteLink_PublicAccessEnabled;
+        private string _makeLink = CommonResource.MakeRouteLink_PublicAccessDisabled;
 
         public ICommand UrlTappedCommand { get; private set; }
         public ICommand MakeSharedLinkCommand { get; private set; }
@@ -65,11 +66,11 @@ namespace QuestHelper.ViewModel
             if (makeResult)
             {
                 updateUrlCommandAsync();
-                MessagingCenter.Send<UIToastMessage>(new UIToastMessage() { Delay = 3, Message = "Создана ссылка для общего доступа к маршруту" }, string.Empty);
+                MessagingCenter.Send<UIToastMessage>(new UIToastMessage() { Delay = 3, Message = CommonResource.MakeRouteLink_PublicReferenceCreated }, string.Empty);
             }
             else
             {
-                MessagingCenter.Send<UIToastMessage>(new UIToastMessage() { Delay = 3, Message = "Ошибка включения общего доступа к маршруту. Проверьте ваше подключение к сети." }, string.Empty);
+                MessagingCenter.Send<UIToastMessage>(new UIToastMessage() { Delay = 3, Message = CommonResource.MakeRouteLink_ErrorWhileCreatedReference }, string.Empty);
             }
         }
 
@@ -78,7 +79,7 @@ namespace QuestHelper.ViewModel
             if (!string.IsNullOrEmpty(UrlPresentationText))
             {
                 await Clipboard.SetTextAsync(UrlPresentationText);
-                MessagingCenter.Send<UIToastMessage>(new UIToastMessage() { Delay = 3, Message = "Ссылка скопирована в буфер обмена" }, string.Empty);
+                MessagingCenter.Send<UIToastMessage>(new UIToastMessage() { Delay = 3, Message = CommonResource.MakeRouteLink_ReferenceCopiedToClipboard }, string.Empty);
             }
             else
             {

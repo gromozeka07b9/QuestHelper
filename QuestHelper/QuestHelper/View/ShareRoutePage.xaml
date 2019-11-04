@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:QuestHelper.View.Converters"
-             x:Class="QuestHelper.View.ShareRoutePage" Title="Доступ к маршруту" Style="{StaticResource ContentPage}">
+             xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
+             x:Class="QuestHelper.View.ShareRoutePage" Title="{lang:Translation ShareRoute_Caption}" Style="{StaticResource ContentPage}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:AspectImageConverter  x:Key="aspectimage" />
@@ -18,7 +19,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Vertical" IsVisible="{Binding NoContactWarningIsVisible}" HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
-                <Label Text="Контакты не найдены" Style="{StaticResource StandartTextLabel}" FontSize="16" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" Margin="20,0,20,0"></Label>
+                <Label Text="{lang:Translation ShareRoute_ContactsNotFound}" Style="{StaticResource StandartTextLabel}" FontSize="16" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" Margin="20,0,20,0"></Label>
                 <Image Source="emptysearch.png" HeightRequest="150" WidthRequest="300" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
             </StackLayout>
             <StackLayout Grid.Column="0" Grid.Row="0" Orientation="Vertical" HorizontalOptions="FillAndExpand">
@@ -26,7 +27,7 @@
                     <ListView.Header>
                         <Frame CornerRadius="5" HasShadow="True" Padding="0" BorderColor="Accent" OutlineColor="#CAECFF" IsClippedToBounds="False" Margin="5">
                             <StackLayout Orientation="Vertical">
-                                <Label Text="Пригласите друзей, чтобы поделиться с ними впечатлениями:" Style="{StaticResource RouteTextLabel}" Margin="10" FontSize="12"></Label>
+                                <Label Text="{lang:Translation ShareRoute_InviteFriends}" Style="{StaticResource RouteTextLabel}" Margin="10" FontSize="12"></Label>
                                 <SearchBar x:Name="SearchBar" SearchCommand="{Binding SearchUserCommand}" SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}" TextChanged="SearchBar_OnTextChanged"></SearchBar>
                             </StackLayout>
                         </Frame>

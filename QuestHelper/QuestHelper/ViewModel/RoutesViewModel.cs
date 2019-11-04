@@ -273,7 +273,7 @@ namespace QuestHelper.ViewModel
                 if (newPoint.Save())
                 {
                     _sharePointMessage = null;
-                    UserDialogs.Instance.Alert($"Новая точка '{newPoint.Name}' в маршрут '{routeName}' добавлена", "Добавление точки");
+                    //UserDialogs.Instance.Alert($"Новая точка '{newPoint.Name}' в маршрут '{routeName}' добавлена", "Добавление точки");
                 }
             }
         }

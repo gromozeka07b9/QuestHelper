@@ -33,15 +33,6 @@
                 <Label Text="{Binding RoutePointName}" Style="{StaticResource ImageBigTextLabel}" HorizontalOptions="FillAndExpand" Margin="10"></Label>
             </StackLayout>
             <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" Text="{Binding RoutePointDescription}" Style="{StaticResource ImageSmallTextLabel}" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" Margin="10" LineBreakMode="WordWrap"></Label>
-            <!--AbsoluteLayout Grid.Row="0" Grid.Column="1" HorizontalOptions="EndAndExpand" Margin="5,5,0,0" IsVisible="{Binding FullscreenButtonIsVisible}">
-                <circle:CircleImage HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="50" HeightRequest="40" BorderColor="LightGray" BorderThickness="2" Margin="0" FillColor="Gray">
-                </circle:CircleImage>
-                <Image Source="fullscreen" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="50" HeightRequest="40">
-                    <Image.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ChangeImageAspectCommand}"></TapGestureRecognizer>
-                    </Image.GestureRecognizers>
-                </Image>
-            </-->
             <AbsoluteLayout Grid.Row="0" Grid.Column="1" HorizontalOptions="Center" Margin="5">
                 <circle:CircleImage HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="50" HeightRequest="40" BorderColor="LightGray" BorderThickness="2" Margin="0" FillColor="Gray">
                 </circle:CircleImage>

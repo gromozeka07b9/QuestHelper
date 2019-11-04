@@ -101,7 +101,7 @@ namespace QuestHelper.ViewModel
             }
             else
             {
-                _vroute.Name = "Неизвестный маршрут";
+                _vroute.Name = "";
                 if (_isFirstRoute)
                     showNewRouteWarningDialog();
                 else showNewRouteData();
@@ -172,11 +172,6 @@ namespace QuestHelper.ViewModel
             {
                 if (_vroute.Name != value)
                 {
-                    /*var realm = RoutePointManager.GetRealmInstance();
-                    realm.Write(() =>
-                    {
-                        _vroute.Name = value;
-                    });*/
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
                 }
             }

@@ -21,6 +21,7 @@ using QuestHelper.Model.Messages;
 using Microsoft.AppCenter.Analytics;
 using System.Collections.ObjectModel;
 using Acr.UserDialogs;
+using QuestHelper.Resources;
 
 namespace QuestHelper.ViewModel
 {
@@ -112,7 +113,7 @@ namespace QuestHelper.ViewModel
 
         private async void SetNewCoordinates(double latitude, double longitude)
         {
-            var notCancel = await Application.Current.MainPage.DisplayAlert("Изменение координат точки", "Вы уверены, что хотите установить новые координаты?", "Нет", "Да");
+            var notCancel = await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.RoutePoint_AreYouSureToSetNewCoordinates, CommonResource.CommonMsg_No, CommonResource.CommonMsg_Yes);
             if (!notCancel)
             {
                 _vpoint.Latitude = latitude;
@@ -144,7 +145,7 @@ namespace QuestHelper.ViewModel
         }
         private async void deletePhotoAsync(object mediaId)
         {
-            bool delete = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig() { Message = "Вы уверены что хотите удалить фото?", Title = "Удаление фото", OkText = "Да", CancelText = "Нет" });
+            bool delete = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig() { Message = CommonResource.RoutePoint_AreYouSureToDeletePhoto, Title = CommonResource.RoutePoint_DeletingPhoto, OkText = CommonResource.CommonMsg_Yes, CancelText = CommonResource.CommonMsg_No });
             if (delete)
             {
                 _vpoint.DeleteImage((string)mediaId);
@@ -153,7 +154,7 @@ namespace QuestHelper.ViewModel
         }
         private async void deletePoint()
         {
-            bool delete = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig() { Message = "Вы уверены, что хотите удалить точку?", Title = "Удаление точки маршрута", OkText = "Да", CancelText = "Нет" });
+            bool delete = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig() { Message = CommonResource.RoutePoint_AreYouSureToDeletePoint, Title = CommonResource.RoutePoint_DeletingPoint, OkText = CommonResource.CommonMsg_Yes, CancelText = CommonResource.CommonMsg_No });
             if (delete)
             {
                 if (_vpoint.SetDeleteMarkPointWithDeleteMedias())
@@ -162,7 +163,7 @@ namespace QuestHelper.ViewModel
                 }
                 else
                 {
-                    await UserDialogs.Instance.AlertAsync("Ошибка удаления точки", "Внимание!");
+                    await UserDialogs.Instance.AlertAsync(CommonResource.RoutePoint_ErrorWhileDeletingPoint, CommonResource.CommonMsg_Warning);
                     HandleError.Process("RoutePoint", "DeletePoint", new Exception($"PointId:{_vpoint.Id}, Name:{_vpoint.Name}"), false);
                 }
             }
@@ -173,7 +174,7 @@ namespace QuestHelper.ViewModel
             _vpoint.Version++;
             _vpoint.Save();
             PermissionManager permissions = new PermissionManager();
-            if (await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Microphone, "Разрешение необходимо для записи звука"))
+            if (await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Microphone, CommonResource.RoutePoint_RightNeedToRecordAudio))
             {
                 string mediaId = Guid.NewGuid().ToString();
                 string pathAudioFile = Path.Combine(ImagePathManager.GetPicturesDirectory(), "audio_" + mediaId + ".3gp");
@@ -181,7 +182,7 @@ namespace QuestHelper.ViewModel
                 try
                 {
                     DependencyService.Get<IRecordAudioService>().Start(pathAudioFile);
-                    resultRecordInverted = await App.Current.MainPage.DisplayAlert("Аудио", "Идет запись...", "Отмена", "Завершить и сохранить");
+                    resultRecordInverted = await App.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Audio, CommonResource.RoutePoint_AudioRecording, CommonResource.CommonMsg_Cancel, CommonResource.CommonMsg_OkAndSave);
                 }
                 catch (Exception e)
                 {
@@ -213,7 +214,7 @@ namespace QuestHelper.ViewModel
                 MediaFile photoPicked = null;
 
                 PermissionManager permissions = new PermissionManager();
-                if (await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Photos, "Разрешение необходимо для выбора фото"))
+                if (await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Photos, CommonResource.RoutePoint_RightNeedToPickPhoto))
                 {
                     try
                     {
@@ -248,8 +249,8 @@ namespace QuestHelper.ViewModel
                         {
                             ExifManager exif = new ExifManager();
                             var coords = exif.GetCoordinates(photoPicked.Path);
-                            if ((coords.Latitude > 0 && coords.Longitude > 0) && await App.Current.MainPage.DisplayAlert("Доступны координаты съемки",
-                                    "Использовать их для данной точки?", "Да", "Нет"))
+                            if ((coords.Latitude > 0 && coords.Longitude > 0) && await App.Current.MainPage.DisplayAlert(CommonResource.RoutePoint_GeotagsExists,
+                                    CommonResource.RoutePoint_UseGeotagsForPoint, CommonResource.CommonMsg_Yes, CommonResource.CommonMsg_No))
                             {
                                 Latitude = coords.Latitude;
                                 Longitude = coords.Longitude;
@@ -261,7 +262,6 @@ namespace QuestHelper.ViewModel
                             _vpoint.AddMediaItem(mediaId, MediaObjectTypeEnum.Image);
                             ApplyChanges();
                             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
-                            //Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(){ShowErrorMessageIfExist = false}, string.Empty);
                             Analytics.TrackEvent("Media: photo added");
                         }
                         else
@@ -321,7 +321,7 @@ namespace QuestHelper.ViewModel
 
                 MediaFile file = null;
                 PermissionManager permissions = new PermissionManager();
-                if (await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Photos, "Разрешение необходимо для съемки фото"))
+                if (await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Photos, CommonResource.RoutePoint_RightNeedToTakePhoto))
                 {
                     try
                     {
@@ -375,8 +375,8 @@ namespace QuestHelper.ViewModel
             }
             else
             {
-                UserDialogs.Instance.Alert(title: "Недоступна служба геолокации",
-                    message: "Для определения вашего местоположения службу необходимо включить.", okText: "Ok");
+                UserDialogs.Instance.Alert(title: CommonResource.CommonMsg_GeolocationNotEnabled,
+                    message: CommonResource.CommonMsg_ForGettingCoordinatesNeedGeolocationEnabled, okText: "Ok");
                 Analytics.TrackEvent("Geolocation: off", new Dictionary<string, string> { { "RoutePointViewModel", "FillCurrentPositionAsync" } });
             }
             Latitude = currentPosition.Latitude;
@@ -519,7 +519,7 @@ namespace QuestHelper.ViewModel
             }
             else
             {
-                UserDialogs.Instance.Alert(new AlertConfig() { Title = "Внимание!", Message = "Название точки должно быть заполнено", OkText = "Ok" });
+                UserDialogs.Instance.Alert(new AlertConfig() { Title = CommonResource.CommonMsg_Warning, Message = CommonResource.RoutePoint_RouteNameMustBeFill, OkText = "Ok" });
             }
         }
 

@@ -22,6 +22,7 @@ using QuestHelper.Managers.Sync;
 using Microsoft.AppCenter.Analytics;
 using System.Collections.Generic;
 using Android.Support.V4.App;
+using QuestHelper.Resources;
 
 namespace QuestHelper.Droid
 {
@@ -109,7 +110,7 @@ namespace QuestHelper.Droid
                 }
                 catch (Exception e)
                 {
-                    Xamarin.Forms.MessagingCenter.Send<UIAlertMessage>(new UIAlertMessage() { Title = "Авторизация Google", Message = "К сожалению, произошла ошибка при попытке использования Google Chrome" }, string.Empty);
+                    Xamarin.Forms.MessagingCenter.Send<UIAlertMessage>(new UIAlertMessage() { Title = CommonResource.Login_GoogleAuthCaption, Message = CommonResource.Login_GoogleAuthError }, string.Empty);
                     Analytics.TrackEvent("Login OAuth error", new Dictionary<string, string> { { "ExceptionMessage", e.Message },{"Google Chrome auth", "error"} });
                     var pageCollections = new PagesCollection();
                     MainPageMenuItem destinationPage = pageCollections.GetLoginPage();

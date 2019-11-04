@@ -1,5 +1,6 @@
 ﻿using Acr.UserDialogs;
 using QuestHelper.Model.Messages;
+using QuestHelper.Resources;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,7 +28,7 @@ namespace QuestHelper.Managers.Sync
                 else
                 {
                     //ToDo:в фоне не работает!
-                    workInRoaming = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig() { Message = "Использовать синхронизацию в роуминге?", Title = "Используется роуминг", OkText = "Да", CancelText = "Нет" });
+                    workInRoaming = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig() { Message = CommonResource.Sync_UseSyncInRoaming, Title = CommonResource.CommonMsg_Warning, OkText = CommonResource.CommonMsg_Yes, CancelText = CommonResource.CommonMsg_No });
                     Application.Current.Properties.Add("WorkInRoaming", workInRoaming);
                 }
             }
@@ -37,7 +38,7 @@ namespace QuestHelper.Managers.Sync
                 possibility = networkState == NetworkAccess.Internet;
                 if ((!possibility) && (showErrorMessageIfExist))
                 {
-                    Xamarin.Forms.MessagingCenter.Send<UIAlertMessage>(new UIAlertMessage() { Title = "Ошибка синхронизации", Message = "Проверьте ваше подключение к сети" }, string.Empty);
+                    Xamarin.Forms.MessagingCenter.Send<UIAlertMessage>(new UIAlertMessage() { Title = CommonResource.Sync_Error, Message = CommonResource.Sync_CheckYourConnection }, string.Empty);
                 }
             }
 

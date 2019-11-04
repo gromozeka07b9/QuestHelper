@@ -24,10 +24,8 @@ namespace QuestHelper.ViewModel
         IEnumerable<RoutePoint> _pointsForOverview;
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
-        //public ICommand StartDialogCommand { get; private set; }
         public ICommand OpenPointPropertiesCommand { get; private set; }
 
-        //public IEnumerable<Route> VisibleRoutes = new List<Route>();
         public MapOverviewViewModel()
         {
             OpenPointPropertiesCommand = new Command(openPointPropertiesCommand);
@@ -48,38 +46,5 @@ namespace QuestHelper.ViewModel
                 await Navigation.PushAsync(routePointPage, true);
             }
         }
-
-        /*internal IEnumerable<ViewRoutePoint> GetPointsForOverviewRoute(string routeId)
-        {
-            var resultPoints = new List<ViewRoutePoint>();
-            IEnumerable<Route> routes;
-            if (string.IsNullOrEmpty(routeId))
-            {
-                routes = _routeManager.GetRoutes();
-            }
-            else
-            {
-                Route route = _routeManager.GetRouteById(routeId);
-                if (route != null)
-                {
-                    var routesList = new List<Route>();
-                    routesList.Add(route);
-                    routes = routesList;
-                }
-                else
-                {
-                    routes = new List<Route>();
-                }
-            }
-            foreach (var route in routes)
-            {
-                var points = _routePointManager.GetPointsByRouteId(route.RouteId);
-                foreach (var point in points)
-                {
-                    resultPoints.Add(point);
-                }
-            }
-            return resultPoints;
-        }*/
     }
 }

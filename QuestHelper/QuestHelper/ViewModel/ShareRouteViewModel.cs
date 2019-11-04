@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using QuestHelper.Model;
 using QuestHelper.Model.WS;
+using QuestHelper.Resources;
 using QuestHelper.WS;
 using System;
 using System.Collections.Generic;
@@ -120,7 +121,7 @@ namespace QuestHelper.ViewModel
 
         private async void inviteUserAsync(ViewUserInfo user)
         {
-            bool answerYesIsNo = await Application.Current.MainPage.DisplayAlert("Внимание", "После того, как пригласите друзей, вы не сможете удалить маршрут. Вы уверены?", "Нет", "Да");
+            bool answerYesIsNo = await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.ShareRoute_AreYouSureAfterPublishYouCantDelete, CommonResource.CommonMsg_No, CommonResource.CommonMsg_Yes);
             if (!answerYesIsNo)//порядок кнопок - хардкод, и непонятно, почему именно такой
             {
                 TokenStoreService token = new TokenStoreService();
@@ -136,7 +137,7 @@ namespace QuestHelper.ViewModel
                 JObject jsonRequestObject = JObject.FromObject(shareRequest);
 
                 bool result = await routesApi.ShareRouteAsync(jsonRequestObject.ToString());
-                string resultShareText = result ? "Маршрут теперь доступен выбранным пользователям" : "Не получилось поделиться маршрутом";
+                string resultShareText = result ? CommonResource.ShareRoute_RouteSharedToSelectedUsers : CommonResource.ShareRoute_ErrorShareRoute;
                 DependencyService.Get<IToastService>().ShortToast(resultShareText);
 
                 await Navigation.PopAsync(true);

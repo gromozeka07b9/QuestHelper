@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pancardview="clr-namespace:PanCardView;assembly=PanCardView"
+             xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
              xmlns:view="clr-namespace:QuestHelper.View;assembly=QuestHelper"
              x:Class="QuestHelper.View.RouteCarouselRootPage" BackgroundColor="Black" NavigationPage.HasNavigationBar="False" Appearing="RouteCarouselRootPage_OnAppearingAsync" Disappearing="RouteCarouselRootPage_OnDisappearing">
     <ContentPage.Content>
@@ -28,6 +29,19 @@
                             </DataTemplate>
                         </pancardview:CarouselView.ItemTemplate>
                     </pancardview:CarouselView>
+                    <StackLayout Grid.Row="0" Grid.Column="0" VerticalOptions="Center" Orientation="Horizontal" HorizontalOptions="EndAndExpand" Margin="10" IsVisible="{Binding  IsVisibleQualityImageSelector}">
+                        <Label FontSize="12" Style="{StaticResource ImageBigTextLabel}" Text="{lang:Translation CommonMsg_UseOriginalQuality}" VerticalOptions="Center">
+                            <!--Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference cbLoadOriginals}, Path=IsChecked}" Value="true">
+                                    <Setter Property="Text" Value="{lang:Translation CommonMsg_UseOriginalQuality}" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference cbLoadOriginals}, Path=IsChecked}" Value="false">
+                                    <Setter Property="Text" Value="{lang:Translation CommonMsg_UseOriginalQuality}" />
+                                </DataTrigger>
+                            </-->
+                        </Label>
+                        <CheckBox x:Name="cbLoadOriginals" Color="White" IsChecked="{Binding IsMaximumQualityPhoto}" VerticalOptions="Center"/>
+                    </StackLayout>
                     <Label Grid.Row="0" Text="{Binding RouteName}" Style="{StaticResource ImageBigTextLabel}" FontSize="12" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" Margin="10"></Label>
                     <Label Grid.Row="1" Grid.RowSpan="2" Text="{Binding RoutePointName}" Style="{StaticResource ImageBigTextLabel}" VerticalOptions="EndAndExpand" HorizontalOptions="StartAndExpand" Margin="10"></Label>
                 </Grid>

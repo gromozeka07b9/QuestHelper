@@ -31,28 +31,6 @@ namespace QuestHelper.Droid
         protected override void OnElementChanged(ElementChangedEventArgs<Editor> e)
         {
             base.OnElementChanged(e);
-            /*if (this.Control != null)
-            {
-                if (!_inititialized)
-                {
-                    this.Control.FocusChange += ((sender, evt) => {
-                        if (evt.HasFocus)
-                        {
-                            System.Threading.ThreadPool.QueueUserWorkItem(s =>
-                            {
-                                Thread.Sleep(100); // For some reason, a short delay is required here.
-                                Device.BeginInvokeOnMainThread(() =>
-                                {
-                                    var inputMethodManager = (InputMethodManager)Control.Context.GetSystemService(Android.Content.Context.InputMethodService);
-                                    inputMethodManager.ShowSoftInputFromInputMethod(Control.WindowToken, ShowFlags.Forced);
-                                });
-                                //InvokeOnMainThread(() => ((Android.Views.InputMethods.InputMethodManager)GetUIContext().GetSystemService(Android.Content.Context.InputMethodService)).ShowSoftInput(this.Control, Android.Views.InputMethods.ShowFlags.Implicit));
-                            });
-                        }
-                    });
-                    _inititialized = true;
-                }
-            }*/
 
             if (e.OldElement == null)
             {

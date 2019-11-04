@@ -3,9 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:QuestHelper.Controls;assembly=QuestHelper"
              xmlns:converters="clr-namespace:QuestHelper.View.Converters;assembly=QuestHelper"
+             xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
              x:Class="QuestHelper.View.ShareRoutesServicesPage" Appearing="ShareRoutesServicesPage_OnAppearing">
     <ContentPage.ToolbarItems>
-        <ToolbarItem NavigationPage.HasNavigationBar="False" Text="Выберите способ"></ToolbarItem>
+        <ToolbarItem NavigationPage.HasNavigationBar="False" Text="{lang:Translation ShareRoutes_ChooseCase}"></ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -27,17 +28,17 @@
                 <RowDefinition Height="4*" />
                 <RowDefinition Height="4*" />
             </Grid.RowDefinitions>
-            <controls:ShareServiceView Grid.Column="0" Grid.Row="0" Text="Добавить доступ" ImgSource="person_add.png"  Margin="5,5,0,0">
+            <controls:ShareServiceView Grid.Column="0" Grid.Row="0" Text="{lang:Translation ShareRoutes_AddPersonAccess}" ImgSource="person_add.png"  Margin="5,5,0,0">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapAddUserCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
             </controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="1" Grid.Row="0" Text="Альбом в GoSh!" ImgSource="icon.png"  Margin="0,5,0,0">
+            <controls:ShareServiceView Grid.Column="1" Grid.Row="0" Text="{lang:Translation ShareRoutes_AlbumInGosh}" ImgSource="icon.png"  Margin="0,5,0,0">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapPublishAlbumCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
             </controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="2" Grid.Row="0" Text="Общий доступ" ImgSource="link.png"  Margin="0,5,5,0" Opacity="{Binding IsUserCanMakeLink, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsUserCanMakeLink}">
+            <controls:ShareServiceView Grid.Column="2" Grid.Row="0" Text="{lang:Translation ShareRoutes_PublicAccess}" ImgSource="link.png"  Margin="0,5,5,0" Opacity="{Binding IsUserCanMakeLink, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsUserCanMakeLink}">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapMakeReferenceCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
@@ -75,7 +76,7 @@
                 </controls:ShareServiceView.GestureRecognizers>
             </controls:ShareServiceView>
 
-            <controls:ShareServiceView Grid.Column="1" Grid.Row="3" Text="Другие" ImgSource="apps.png"  Margin="5,0,0,0">
+            <controls:ShareServiceView Grid.Column="1" Grid.Row="3" Text="{lang:Translation ShareRoutes_Other}" ImgSource="apps.png"  Margin="5,0,0,0">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapOtherCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>

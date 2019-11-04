@@ -15,6 +15,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using QuestHelper.Model;
+using QuestHelper.Resources;
 
 namespace QuestHelper.ViewModel
 {
@@ -47,7 +48,7 @@ namespace QuestHelper.ViewModel
         {
             get
             {
-                return "Маршрут '" + _vroute.Name + "' создан.";
+                return CommonResource.RouteCreated_RouteCreatedSuccessful.Replace("[routeName]", _vroute.Name);
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
              xmlns:viewModel="clr-namespace:QuestHelper.ViewModel"
              x:Class="QuestHelper.View.LoginPage" NavigationPage.HasNavigationBar="False" BackgroundColor="#3A3A9C" Appearing="LoginPage_OnAppearing" Disappearing="LoginPage_OnDisappearing">
     <ContentPage.BindingContext>
@@ -24,16 +25,16 @@
                         <Image HorizontalOptions="Center" Source="icon" WidthRequest="40" HeightRequest="40" VerticalOptions="Center"></Image>
                         <Label Text="GoSh!" TextColor="Black" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center"></Label>
                     </StackLayout>
-                    <Entry Placeholder="Имя или E-mail" Text="{Binding Username}" HorizontalOptions="Fill" Style="{StaticResource LoginEntryCaption}" Margin="10,0,10,0" Keyboard="Keyboard.Default">
+                    <Entry Placeholder="{lang:Translation Login_YourLogin}" Text="{Binding Username}" HorizontalOptions="Fill" Style="{StaticResource LoginEntryCaption}" Margin="10,0,10,0" Keyboard="Keyboard.Default">
                     </Entry>
-                    <Entry Placeholder="Пароль" Text="{Binding Password}" IsPassword="True" HorizontalOptions="Fill" Style="{StaticResource LoginEntryCaption}" Margin="10,0,10,0" Keyboard="Keyboard.Text">
+                    <Entry Placeholder="{lang:Translation Login_Password}" Text="{Binding Password}" IsPassword="True" HorizontalOptions="Fill" Style="{StaticResource LoginEntryCaption}" Margin="10,0,10,0" Keyboard="Keyboard.Text">
                     </Entry>
-                    <Button HorizontalOptions="Fill" FontFamily="Verdana" Text="Войти" FontSize="Small" CornerRadius="5" BackgroundColor="#2196f3" TextColor="White" Command="{Binding LoginCommand}" Margin="10,10,10,0">
+                    <Button HorizontalOptions="Fill" FontFamily="Verdana" Text="{lang:Translation Login_Enter}" FontSize="Small" CornerRadius="5" BackgroundColor="#2196f3" TextColor="White" Command="{Binding LoginCommand}" Margin="10,10,10,0">
                     </Button>
-                    <Button HorizontalOptions="Fill" FontFamily="Verdana" Text="Зарегистрироваться" FontSize="Small" CornerRadius="5" BackgroundColor="Red" TextColor="White" Command="{Binding GoToRegisterCommand}" Margin="10,10,10,0">
+                    <Button HorizontalOptions="Fill" FontFamily="Verdana" Text="{lang:Translation Login_Registration}" FontSize="Small" CornerRadius="5" BackgroundColor="Red" TextColor="White" Command="{Binding GoToRegisterCommand}" Margin="10,10,10,0">
                     </Button>
-                    <Label Text="ИЛИ" TextColor="Black" FontFamily="Verdana" FontSize="Small" HorizontalTextAlignment="Center" Margin="0,10,0,10"></Label>
-                    <Button HorizontalOptions="Fill" FontFamily="Verdana" Text="Продолжить с Google" FontSize="Small" CornerRadius="5" BackgroundColor="#1a237e" TextColor="White" Command="{Binding LoginWithGoogleCommand}" Margin="10,0,10,10">
+                    <Label Text="{lang:Translation Login_Or}" TextColor="Black" FontFamily="Verdana" FontSize="Small" HorizontalTextAlignment="Center" Margin="0,10,0,10"></Label>
+                    <Button HorizontalOptions="Fill" FontFamily="Verdana" Text="{lang:Translation Login_GoogleAuth}" FontSize="Small" CornerRadius="5" BackgroundColor="#1a237e" TextColor="White" Command="{Binding LoginWithGoogleCommand}" Margin="10,0,10,10">
                     </Button>
                 </StackLayout>
             </ScrollView>

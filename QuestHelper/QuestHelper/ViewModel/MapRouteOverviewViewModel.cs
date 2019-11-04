@@ -21,27 +21,18 @@ namespace QuestHelper.ViewModel
     {
         RoutePointManager _routePointManager;
         RouteManager _routeManager;
-        IEnumerable<RoutePoint> _pointsForOverview;
+        //IEnumerable<RoutePoint> _pointsForOverview;
         string _routeId = string.Empty;
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        //public ICommand StartDialogCommand { get; private set; }
-        //public ICommand OpenPointPropertiesCommand { get; private set; }
-
-        //public IEnumerable<Route> VisibleRoutes = new List<Route>();
         public MapRouteOverviewViewModel(string routeId)
         {
-            //OpenPointPropertiesCommand = new Command(openPointPropertiesCommand);
             _routePointManager = new RoutePointManager();
             _routeManager = new RouteManager();
             _routeId = routeId;
         }
 
-        /*internal void openPointPropertiesCommand()
-        {
-
-        }*/
         internal async void OpenPointPropertiesAsync(double latitude, double longitude)
         {
             RoutePoint point = _routePointManager.GetPointByCoordinates(latitude, longitude);
