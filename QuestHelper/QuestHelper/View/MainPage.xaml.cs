@@ -16,9 +16,9 @@ namespace QuestHelper.View
         {
             InitializeComponent();
 #if DEBUG
-            //Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             //Thread.CurrentThread.CurrentCulture = new CultureInfo("ru-RU");
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
+            //Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
 #endif
 

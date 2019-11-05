@@ -244,7 +244,8 @@
     <value>Add access</value>
   </data>
   <data name="Onboarding_Hello" xml:space="preserve">
-    <value>Welcome to&amp;#10;GoSh!</value>
+    <value>Welcome to
+GoSh!</value>
   </data>
   <data name="Onboarding_Skip" xml:space="preserve">
     <value>Skip</value>
@@ -446,5 +447,14 @@
   </data>
   <data name="ScreenOnBoardingName" xml:space="preserve">
     <value>Description</value>
+  </data>
+  <data name="CommonMsg_PointCount" xml:space="preserve">
+    <value>Waypoints: [pointCount]</value>
+  </data>
+  <data name="CommonMsg_StepsCount" xml:space="preserve">
+    <value>Steps: [stepCount]</value>
+  </data>
+  <data name="RoutePoint_DescriptionAbsent" xml:space="preserve">
+    <value>Description not specified</value>
   </data>
 </root>

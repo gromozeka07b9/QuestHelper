@@ -110,7 +110,7 @@
     <value>Niedrige Netzwerkgeschwindigkeit, niedrige Bildqualität</value>
   </data>
   <data name="ScreenPrivateName" xml:space="preserve">
-    <value>persönlich</value>
+    <value>Persönlich</value>
   </data>
   <data name="Feed_ErrorLoadingFeed" xml:space="preserve">
     <value>Der Feed wird nicht geladen, bitte überprüfen Sie Ihre Netzwerkverbindung</value>
@@ -426,5 +426,14 @@
   </data>
   <data name="ScreenOnBoardingName" xml:space="preserve">
     <value>Beschreibung</value>
+  </data>
+  <data name="CommonMsg_PointCount" xml:space="preserve">
+    <value>Wegpunkte: [pointCount]</value>
+  </data>
+  <data name="CommonMsg_StepsCount" xml:space="preserve">
+    <value>Schritte: [stepCount]</value>
+  </data>
+  <data name="RoutePoint_DescriptionAbsent" xml:space="preserve">
+    <value>Beschreibung nicht angegeben</value>
   </data>
 </root>

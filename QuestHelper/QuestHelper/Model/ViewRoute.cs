@@ -1,5 +1,6 @@
 ﻿using QuestHelper.LocalDB.Model;
 using QuestHelper.Managers;
+using QuestHelper.Resources;
 using QuestHelper.SharedModelsWS;
 using QuestHelper.WS;
 using Realms;
@@ -29,6 +30,10 @@ namespace QuestHelper.Model
         private string _objVerHash = string.Empty;
         private string _imgFilename = string.Empty;
         private string _description = string.Empty;
+        private string _routeLengthKmText = string.Empty;
+        private string _routePointCountText = string.Empty;
+        private string _routeLengthStepsText = string.Empty;
+        
 
         public ViewRoute(string routeId)
         {
@@ -269,18 +274,34 @@ namespace QuestHelper.Model
         {
             get
             {
-                RouteManager _routeManager = new RouteManager();
-                double routeLength = _routeManager.GetLength(RouteId);
-                return $"{routeLength.ToString("F1")} км";
+                if(string.IsNullOrEmpty(_routeLengthKmText))
+                {
+                    fillRouteLengthData();
+                }
+                return _routeLengthKmText;
             }
 
         }
+
+        private void fillRouteLengthData()
+        {
+            RouteManager _routeManager = new RouteManager();
+            (int pointCount, double routeLength) = _routeManager.GetLengthRouteData(RouteId);
+            _routeLengthKmText = $"{routeLength.ToString("F1")} Km";
+            _routePointCountText = CommonResource.CommonMsg_PointCount.Replace("[pointCount]", pointCount.ToString("N0"));
+            _routeLengthStepsText = CommonResource.CommonMsg_StepsCount.Replace("[stepCount]", (routeLength * 1000 * 1.3).ToString("N0"));
+
+        }
+
         public string RoutePointsCount
         {
             get
             {
-                RoutePointManager _routePointManager = new RoutePointManager();
-                return $"Точек: {_routePointManager.GetPointsByRouteId(RouteId).Count().ToString("N0")}";
+                if (string.IsNullOrEmpty(_routePointCountText))
+                {
+                    fillRouteLengthData();
+                }
+                return _routePointCountText;
             }
 
         }
@@ -293,16 +314,16 @@ namespace QuestHelper.Model
             }
 
         }*/
-        public string RouteLengthSummary
+        /*public string RouteLengthSummary
         {
             get
             {
                 return $"Длина маршрута {RouteLengthKm}, {RouteLengthSteps}";
             }
 
-        }
+        }*/
 
-        public string RoutePointAndPhotosCount
+        /*public string RoutePointAndPhotosCount
         {
             get
             {
@@ -312,7 +333,7 @@ namespace QuestHelper.Model
                 return $"Точек: много";
             }
 
-        }
+        }*/
         public string RouteDays
         {
             get
@@ -334,9 +355,11 @@ namespace QuestHelper.Model
         {
             get
             {
-                RouteManager _routeManager = new RouteManager();
-                double routeLength = _routeManager.GetLength(RouteId);
-                return $"{(routeLength * 1000 * 1.3).ToString("N0")} шагов";
+                if (string.IsNullOrEmpty(_routeLengthStepsText))
+                {
+                    fillRouteLengthData();
+                }
+                return _routeLengthStepsText;
             }
 
         }

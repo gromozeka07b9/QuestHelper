@@ -53,7 +53,7 @@
 
                                     <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Text="{Binding Name}" Style="{StaticResource RouteTextLabel}" FontSize="22" FontAttributes="Bold" TextColor="LightGray" Margin="10,0,0,5" LineBreakMode="WordWrap" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand" VerticalTextAlignment="End"></Label>
                                     <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" Text="{Binding RouteDays}" FontSize="12" FontAttributes="Bold" TextColor="Gray" Margin="10,0,0,10" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Start"></Label>
-                                    <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding RoutePointAndPhotosCount}" FontSize="10" FontAttributes="Bold" LineBreakMode="NoWrap" Margin="10,0,0,0" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Start" HorizontalTextAlignment="End"></Label>
+                                    <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding RoutePointsCount}" FontSize="10" FontAttributes="Bold" LineBreakMode="NoWrap" Margin="10,0,0,0" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Start" HorizontalTextAlignment="End"></Label>
                                 </Grid>
                             </Frame>
                         </ViewCell>

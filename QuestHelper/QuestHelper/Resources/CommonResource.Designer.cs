@@ -151,6 +151,24 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Waypoints: [pointCount].
+        /// </summary>
+        public static string CommonMsg_PointCount {
+            get {
+                return ResourceManager.GetString("CommonMsg_PointCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Steps: [stepCount].
+        /// </summary>
+        public static string CommonMsg_StepsCount {
+            get {
+                return ResourceManager.GetString("CommonMsg_StepsCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Full.
         /// </summary>
         public static string CommonMsg_UseOriginalQuality {
@@ -484,7 +502,8 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Welcome to&amp;#10;GoSh!.
+        ///   Ищет локализованную строку, похожую на Welcome to
+        ///GoSh!.
         /// </summary>
         public static string Onboarding_Hello {
             get {
@@ -696,6 +715,15 @@ namespace QuestHelper.Resources {
         public static string RoutePoint_DeletingPoint {
             get {
                 return ResourceManager.GetString("RoutePoint_DeletingPoint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Description not specified.
+        /// </summary>
+        public static string RoutePoint_DescriptionAbsent {
+            get {
+                return ResourceManager.GetString("RoutePoint_DescriptionAbsent", resourceCulture);
             }
         }
         

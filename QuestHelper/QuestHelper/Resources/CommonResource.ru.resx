@@ -447,4 +447,13 @@
   <data name="ScreenOnBoardingName" xml:space="preserve">
     <value>Описание</value>
   </data>
+  <data name="CommonMsg_PointCount" xml:space="preserve">
+    <value>Точек: [pointCount]</value>
+  </data>
+  <data name="CommonMsg_StepsCount" xml:space="preserve">
+    <value>[stepCount] шагов</value>
+  </data>
+  <data name="RoutePoint_DescriptionAbsent" xml:space="preserve">
+    <value>Описание не указано</value>
+  </data>
 </root>

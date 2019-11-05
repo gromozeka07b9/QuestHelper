@@ -17,6 +17,11 @@ using Android.Support.V7.App;
 using AlertDialog = Android.App.AlertDialog;
 using QuestHelper.Model.Messages;
 using Android.Gms.Common;
+using System.Globalization;
+using System.Threading;
+using Android.Preferences;
+using Java.Util;
+using Android.Content.Res;
 
 namespace QuestHelper.Droid
 {

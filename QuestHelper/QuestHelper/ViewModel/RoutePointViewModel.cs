@@ -42,6 +42,7 @@ namespace QuestHelper.ViewModel
         public ICommand ShareCommand { get; private set; }
 
         private string defaultImageName = "emptylist.png";
+        private string _pointNameFromAddress = string.Empty;
         private static Random _rnd = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
         private List<string> _pointNames = new List<string>()
         {
@@ -95,8 +96,8 @@ namespace QuestHelper.ViewModel
             _vpoint = new ViewRoutePoint(routeId, routePointId);
             if (string.IsNullOrEmpty(routePointId))
             {
-                int index = _rnd.Next(0, _pointNames.Count() - 1);
-                Name = _pointNames[index];
+                //int index = _rnd.Next(0, _pointNames.Count() - 1);
+                //Name = _pointNames[index];
                 //if ((_vpoint.Latitude == 0) && (_vpoint.Longitude == 0))
                 FillCurrentPositionAsync();
             }
@@ -120,6 +121,7 @@ namespace QuestHelper.ViewModel
                 _vpoint.Longitude = longitude;
                 ApplyChanges();
                 FillAddressByCoordinatesAsync(Latitude, Longitude);
+                Name = _pointNameFromAddress;
                 Coordinates = Latitude + "," + Longitude;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Longitude"));
             }
@@ -383,6 +385,7 @@ namespace QuestHelper.ViewModel
             Longitude = currentPosition.Longitude;
             Coordinates = Latitude + "," + Longitude;
             Address = await GetPositionAddress(locator, currentPosition);
+            Name = _pointNameFromAddress;
         }
 
         private async void FillAddressByCoordinatesAsync(double latitude, double longitude)
@@ -401,6 +404,21 @@ namespace QuestHelper.ViewModel
                 if (addressItem != null)
                 {
                     address = $"{addressItem.SubThoroughfare}, {addressItem.Thoroughfare}, {addressItem.Locality}, {addressItem.CountryName}";
+                    if (!string.IsNullOrEmpty(addressItem.SubLocality))
+                    {
+                        _pointNameFromAddress = $"{addressItem?.SubLocality}";
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(addressItem.Locality))
+                        {
+                            _pointNameFromAddress = $"{addressItem.CountryName},{addressItem.Locality}";
+                        }
+                        else
+                        {
+                            _pointNameFromAddress = $"{addressItem.CountryName},{addressItem.SubAdminArea}";
+                        }
+                    }
                 }
             }
             catch (Exception exception)
@@ -494,7 +512,7 @@ namespace QuestHelper.ViewModel
             {
                 if (!string.IsNullOrEmpty(_vpoint.Description))
                     return _vpoint.Description;
-                else return "Описание не указано";
+                else return CommonResource.RoutePoint_DescriptionAbsent;
             }
             set
             {
@@ -512,7 +530,9 @@ namespace QuestHelper.ViewModel
 
         public void ApplyChanges()
         {
-            if (!string.IsNullOrEmpty(_vpoint.Name))
+            _vpoint.Version++;
+            _vpoint.Save();
+            /*if (!string.IsNullOrEmpty(_vpoint.Name))
             {
                 _vpoint.Version++;
                 _vpoint.Save();
@@ -520,7 +540,7 @@ namespace QuestHelper.ViewModel
             else
             {
                 UserDialogs.Instance.Alert(new AlertConfig() { Title = CommonResource.CommonMsg_Warning, Message = CommonResource.RoutePoint_RouteNameMustBeFill, OkText = "Ok" });
-            }
+            }*/
         }
 
         public class MediaPreview

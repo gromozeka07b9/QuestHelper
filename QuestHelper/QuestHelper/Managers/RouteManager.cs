@@ -177,15 +177,16 @@ namespace QuestHelper.Managers
             return new ViewRoute(routeId);
         }
 
-        internal double GetLength(string routeId)
+        internal (int pointCountInRoute, double length) GetLengthRouteData(string routeId)
         {
             double length = 0;
+            int countPoints = 0;
             if (!string.IsNullOrEmpty(routeId))
             {
                 var route = RealmInstance.Find<Route>(routeId);
                 if (route != null)
                 {
-                    int countPoints = route.Points.Count;
+                    countPoints = route.Points.Count;
                     for (int index = 0; index < countPoints; index++)
                     {
                         if (index + 1 < countPoints)
@@ -207,7 +208,7 @@ namespace QuestHelper.Managers
                 }
             }
 
-            return length;
+            return (countPoints, length);
         }
     }
 }

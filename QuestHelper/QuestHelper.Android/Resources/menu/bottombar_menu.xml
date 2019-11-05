@@ -3,15 +3,15 @@
   <item
     android:id="@+id/bottomBarAlbomsPage"
     android:icon="@drawable/feed"
-    android:title="Лента" />
+    android:title="@string/pageFeed" />
   <item
     android:id="@+id/bottomBarAlbomsPage"
     android:icon="@drawable/loaded"
-    android:title="Загруженные" />
+    android:title="@string/pageLoadedAlbums" />
   <item
       android:id="@+id/bottomBarRoutesPage"
       android:icon="@drawable/personal"
-      android:title="Личные" />
+      android:title="@string/pagePrivate" />
   <!--item
       android:id="@+id/bottomBarOverviewPage"
       android:icon="@drawable/map"
