@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodel="clr-namespace:QuestHelper.ViewModel"
+             xmlns:circle="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             xmlns:local="clr-namespace:QuestHelper.View"
+             mc:Ignorable="d"
+             x:Class="QuestHelper.View.RoutePointV2Page" NavigationPage.HasNavigationBar="False" NavigationPage.BackButtonTitle="Back" Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing" Style="{StaticResource ContentPage}">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <ScrollView Grid.Row="0" Grid.Column="0">
+                <StackLayout Orientation="Vertical" VerticalOptions="Start">
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                        <Image Source="zoom_out_map.png" WidthRequest="32" HeightRequest="32" Margin="5,5,0,0" VerticalOptions="Start" HorizontalOptions="Start"></Image>
+                        <StackLayout HorizontalOptions="FillAndExpand"></StackLayout>
+                        <Image Source="delete.png" WidthRequest="32" HeightRequest="32" Margin="0,5,5,0" VerticalOptions="Start" HorizontalOptions="End"></Image>
+                    </StackLayout>
+                    <Frame  CornerRadius="5" Margin="10,5,10,0" Padding="5">
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                            <Label Text="Тестовое название точки, оно может быть вполне даже длинным" FontSize="18" TextColor="Black" HorizontalTextAlignment="Start"></Label>
+                            <Image Source="edit.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start"></Image>
+                        </StackLayout>
+                    </Frame>
+                    <StackLayout Orientation="Vertical" VerticalOptions="Start" HeightRequest="300">
+                        <CarouselView ItemsSource="{Binding Images}" HorizontalOptions="FillAndExpand" Margin="0,0,0,0" VerticalOptions="StartAndExpand">
+                            <CarouselView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout Padding="3">
+                                        <Frame HasShadow="True"
+                               BorderColor="DarkGray"
+                               CornerRadius="5"
+                               Margin="5,0,0,0"
+                               WidthRequest="250"
+                                HeightRequest="300"
+                                Padding="4"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Start">
+                                            <Image Source="{Binding SourceImg}" Margin="0"
+                                           Aspect="AspectFill"
+                                           VerticalOptions="FillAndExpand"
+                                           HorizontalOptions="FillAndExpand" />
+                                        </Frame>
+                                    </StackLayout>
+                                </DataTemplate>
+                            </CarouselView.ItemTemplate>
+                        </CarouselView>
+                    </StackLayout>
+                    <Frame CornerRadius="5" Padding="5" Margin="10,-5,10,0" VerticalOptions="Start">
+                        <StackLayout  Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0,5,0,5">
+                            <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Center"></Image>
+                            <Label Text="{Binding Address}" FontSize="16" Margin="0" Style="{StaticResource RouteTextLabel}" VerticalTextAlignment="Start" HorizontalOptions="FillAndExpand"/>
+                            <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Center"></Image>
+                        </StackLayout>
+                    </Frame>
+                    <Frame CornerRadius="5" Padding="5" Margin="10,0,10,0">
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0,5,0,5">
+                            <Image Source="place_unknown.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Center" HorizontalOptions="Start"></Image>
+                            <Label Text="23.234234234,54.23423423" FontSize="16" Style="{StaticResource RouteTextLabel}" VerticalTextAlignment="Center" HorizontalOptions="FillAndExpand">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding CopyCoordinatesCommand}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <Image Source="link.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Center" HorizontalOptions="End"></Image>
+                        </StackLayout>
+                    </Frame>
+                    <Frame CornerRadius="5" Padding="5" Margin="10,0,10,0">
+                        <StackLayout  Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="5">
+                            <Label Text="Длинное длинное тестовое описание точки, бла бла бла ывафолыпрв длплфо офыдво фжыдв аождлфоы вжда фожывд аофждыв олажфдыв ажфдыв оажфылов ажфдлвыо ажфы вжфды ваожф дывло жфыдв ажфдыв а ывпалфо ып вало пфлоывр палфыов паф ывалф впфл ыовпр флыова пфлоыв  ывпа флывоапр лфывп флыов ап" FontSize="16" Margin="0" Style="{StaticResource RouteTextLabel}" TextColor="Gray" LineBreakMode="WordWrap" VerticalTextAlignment="Start" HorizontalOptions="FillAndExpand">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding EditDescriptionCommand}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <Image Source="edit.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start"></Image>
+                        </StackLayout>
+                    </Frame>
+                    <Frame CornerRadius="5" Padding="5" Margin="10,0,10,0">
+                        <StackLayout  Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="5">
+                            <local:CustomMap HeightRequest="300"
+                                x:Name="PointMapOverview"
+                                IsShowingUser="true"
+                                UseInterceptTouchEvent="true"
+                                MapType="Street" 
+                                />
+                        </StackLayout>
+                    </Frame>
+                </StackLayout>
+            </ScrollView>
+            <AbsoluteLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" VerticalOptions="End">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                    <Image Source="share.png" WidthRequest="64" HeightRequest="64" Aspect="AspectFill" Margin="0">
+                    </Image>
+                    <Image Source="rec.png" WidthRequest="64" HeightRequest="64" Aspect="AspectFill" Margin="0">
+                    </Image>
+                    <Image Source="add_photo.png" WidthRequest="64" HeightRequest="64" Aspect="AspectFill" Margin="0">
+                    </Image>
+                    <Image Source="take_photo.png" WidthRequest="64" HeightRequest="64" Aspect="AspectFill" Margin="0">
+                    </Image>
+
+                </StackLayout>
+                <!--Image Source="additem.png" WidthRequest="96" HeightRequest="96" HorizontalOptions="End" VerticalOptions="End" AbsoluteLayout.LayoutBounds=".6,.0,0.6, 1." AbsoluteLayout.LayoutFlags="All">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding AddNewRouteCommand}" />
+                    </Image.GestureRecognizers>
+                </-->
+            </AbsoluteLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

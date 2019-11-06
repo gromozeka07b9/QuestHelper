@@ -62,6 +62,7 @@ namespace QuestHelper.Droid
 
             CrossCurrentActivity.Current.Init(this, bundle);
 
+            Forms.SetFlags("CollectionView_Experimental");
             global::Xamarin.Forms.Forms.Init(this, bundle);
             Xamarin.FormsMaps.Init(this, bundle);
             ImageCircleRenderer.Init();
