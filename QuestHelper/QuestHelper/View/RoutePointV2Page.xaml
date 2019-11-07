@@ -95,13 +95,13 @@
             </ScrollView>
             <AbsoluteLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" VerticalOptions="End">
                 <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                    <Image Source="share.png" WidthRequest="64" HeightRequest="64" Aspect="AspectFill" Margin="0">
+                    <Image Source="point_share.png" WidthRequest="64" HeightRequest="64" Aspect="AspectFill" Margin="0">
                     </Image>
-                    <Image Source="rec.png" WidthRequest="64" HeightRequest="64" Aspect="AspectFill" Margin="0">
+                    <Image Source="point_recordaudio.png" WidthRequest="64" HeightRequest="64" Aspect="AspectFill" Margin="0">
                     </Image>
-                    <Image Source="add_photo.png" WidthRequest="64" HeightRequest="64" Aspect="AspectFill" Margin="0">
+                    <Image Source="point_gallery.png" WidthRequest="64" HeightRequest="64" Aspect="AspectFill" Margin="0">
                     </Image>
-                    <Image Source="take_photo.png" WidthRequest="64" HeightRequest="64" Aspect="AspectFill" Margin="0">
+                    <Image Source="point_takephoto.png" WidthRequest="64" HeightRequest="64" Aspect="AspectFill" Margin="0">
                     </Image>
 
                 </StackLayout>
