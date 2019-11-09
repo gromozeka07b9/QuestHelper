@@ -69,7 +69,14 @@ namespace QuestHelper.ViewModel
                 feed = await getFeedFromApi();
             }
 
-            FeedItems = getSortedViewFeed(feed);
+            if(feed != null)
+            {
+                FeedItems = getSortedViewFeed(feed);
+            }
+            else
+            {
+                HandleError.Process("FeedRoutesViewModel", "GetFeed", new Exception("feed is null"), false);
+            }
 
             PropertyChanged(this, new PropertyChangedEventArgs("FeedItems"));
             if (FeedItems?.Count() == 0)

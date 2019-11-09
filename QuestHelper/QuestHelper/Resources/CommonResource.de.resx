@@ -436,4 +436,16 @@
   <data name="RoutePoint_DescriptionAbsent" xml:space="preserve">
     <value>Beschreibung nicht angegeben</value>
   </data>
+  <data name="RoutePoint_GeoCoordinatesCopiedToClipboard" xml:space="preserve">
+    <value>Koordinaten in die Zwischenablage kopiert</value>
+  </data>
+  <data name="RoutePoint_AddressCopiedToClipboard" xml:space="preserve">
+    <value>Adresse in die Zwischenablage kopiert</value>
+  </data>
+  <data name="RoutePoint_AddressAbsent" xml:space="preserve">
+    <value>Adresse nicht definiert</value>
+  </data>
+  <data name="RoutePoint_NameAbsent" xml:space="preserve">
+    <value>Name nicht angegeben</value>
+  </data>
 </root>

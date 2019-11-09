@@ -456,4 +456,16 @@
   <data name="RoutePoint_DescriptionAbsent" xml:space="preserve">
     <value>Описание не указано</value>
   </data>
+  <data name="RoutePoint_GeoCoordinatesCopiedToClipboard" xml:space="preserve">
+    <value>Координаты скопированы в буфер обмена</value>
+  </data>
+  <data name="RoutePoint_AddressCopiedToClipboard" xml:space="preserve">
+    <value>Адрес скопирован в буфер обмена</value>
+  </data>
+  <data name="RoutePoint_AddressAbsent" xml:space="preserve">
+    <value>Адрес не определен</value>
+  </data>
+  <data name="RoutePoint_NameAbsent" xml:space="preserve">
+    <value>Название не указано</value>
+  </data>
 </root>

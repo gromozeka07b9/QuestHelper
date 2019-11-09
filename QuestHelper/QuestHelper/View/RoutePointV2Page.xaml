@@ -6,8 +6,14 @@
              xmlns:viewmodel="clr-namespace:QuestHelper.ViewModel"
              xmlns:circle="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
              xmlns:local="clr-namespace:QuestHelper.View"
+             xmlns:local1="clr-namespace:QuestHelper.View.Converters"
              mc:Ignorable="d"
              x:Class="QuestHelper.View.RoutePointV2Page" NavigationPage.HasNavigationBar="False" NavigationPage.BackButtonTitle="Back" Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing" Style="{StaticResource ContentPage}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local1:NegativeBoolConverter  x:Key="inverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -19,34 +25,58 @@
             <ScrollView Grid.Row="0" Grid.Column="0">
                 <StackLayout Orientation="Vertical" VerticalOptions="Start">
                     <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                        <Image Source="zoom_out_map.png" WidthRequest="32" HeightRequest="32" Margin="5,5,0,0" VerticalOptions="Start" HorizontalOptions="Start"></Image>
+                        <Image Source="zoom_out_map.png" WidthRequest="32" HeightRequest="32" Margin="5,5,0,0" VerticalOptions="Start" HorizontalOptions="Start">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding BackNavigationCommand}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
                         <StackLayout HorizontalOptions="FillAndExpand"></StackLayout>
-                        <Image Source="delete.png" WidthRequest="32" HeightRequest="32" Margin="0,5,5,0" VerticalOptions="Start" HorizontalOptions="End"></Image>
+                        <Image Source="delete.png" WidthRequest="32" HeightRequest="32" Margin="0,5,5,0" VerticalOptions="Start" HorizontalOptions="End">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding DeletePointCommand}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
                     </StackLayout>
                     <Frame  CornerRadius="5" Margin="10,5,10,0" Padding="5">
                         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                            <Label Text="Тестовое название точки, оно может быть вполне даже длинным" FontSize="18" TextColor="Black" HorizontalTextAlignment="Start"></Label>
-                            <Image Source="edit.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start"></Image>
+                            <Label Text="{Binding Name}" FontSize="18" TextColor="Black" HorizontalTextAlignment="Start"></Label>
+                            <StackLayout HorizontalOptions="FillAndExpand"></StackLayout>
+                            <Image Source="edit.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding EditNameCommand}"/>
+                                </Image.GestureRecognizers>
+                            </Image>
                         </StackLayout>
                     </Frame>
-                    <StackLayout Orientation="Vertical" VerticalOptions="Start" HeightRequest="300">
+                    <Frame  CornerRadius="5" Margin="10,5,10,0" Padding="5" IsVisible="{Binding IsImagesPresent, Converter={StaticResource inverter}}">
+                        <StackLayout Orientation="Vertical" VerticalOptions="Start" HeightRequest="300">
+                            <Image Source="emptyphoto" Margin="0" Aspect="AspectFit" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ViewPhotoCommand}"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </StackLayout>
+                    </Frame>
+                    <StackLayout Orientation="Vertical" VerticalOptions="Start" HeightRequest="300" IsVisible="{Binding IsImagesPresent}">
                         <CarouselView ItemsSource="{Binding Images}" HorizontalOptions="FillAndExpand" Margin="0,0,0,0" VerticalOptions="StartAndExpand">
                             <CarouselView.ItemTemplate>
                                 <DataTemplate>
                                     <StackLayout Padding="3">
                                         <Frame HasShadow="True"
-                               BorderColor="DarkGray"
-                               CornerRadius="5"
-                               Margin="5,0,0,0"
-                               WidthRequest="250"
-                                HeightRequest="300"
-                                Padding="4"
-                               HorizontalOptions="Center"
-                               VerticalOptions="Start">
-                                            <Image Source="{Binding SourceImg}" Margin="0"
-                                           Aspect="AspectFill"
-                                           VerticalOptions="FillAndExpand"
-                                           HorizontalOptions="FillAndExpand" />
+                                           BorderColor="DarkGray"
+                                           CornerRadius="5"
+                                           Margin="5,0,0,0"
+                                           WidthRequest="250"
+                                            HeightRequest="300"
+                                            Padding="4"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Start">
+                                            <Image Source="{Binding SourceImg}" Margin="0" Aspect="AspectFill" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                                <Image.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding ViewPhotoCommand}"/>
+                                                    <TapGestureRecognizer Command="{Binding DeletePhotoCommand}" NumberOfTapsRequired="2"/>
+                                                </Image.GestureRecognizers>
+                                            </Image>
                                         </Frame>
                                     </StackLayout>
                                 </DataTemplate>
@@ -56,60 +86,80 @@
                     <Frame CornerRadius="5" Padding="5" Margin="10,-5,10,0" VerticalOptions="Start">
                         <StackLayout  Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0,5,0,5">
                             <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Center"></Image>
-                            <Label Text="{Binding Address}" FontSize="16" Margin="0" Style="{StaticResource RouteTextLabel}" VerticalTextAlignment="Start" HorizontalOptions="FillAndExpand"/>
-                            <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Center"></Image>
+                            <Label Text="{Binding Address}" FontSize="16" Margin="0" Style="{StaticResource RouteTextLabel}" VerticalTextAlignment="Start" HorizontalOptions="FillAndExpand">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding CopyAddressCommand}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Center">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding CopyAddressCommand}" />
+                                </Image.GestureRecognizers>
+                            </Image>
                         </StackLayout>
                     </Frame>
                     <Frame CornerRadius="5" Padding="5" Margin="10,0,10,0">
                         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0,5,0,5">
                             <Image Source="place_unknown.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Center" HorizontalOptions="Start"></Image>
-                            <Label Text="23.234234234,54.23423423" FontSize="16" Style="{StaticResource RouteTextLabel}" VerticalTextAlignment="Center" HorizontalOptions="FillAndExpand">
+                            <Label Text="{Binding Coordinates}" FontSize="16" Style="{StaticResource RouteTextLabel}" VerticalTextAlignment="Center" HorizontalOptions="FillAndExpand">
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding CopyCoordinatesCommand}" />
                                 </Label.GestureRecognizers>
                             </Label>
-                            <Image Source="link.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Center" HorizontalOptions="End"></Image>
+                            <Image Source="link.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Center" HorizontalOptions="End">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding CopyCoordinatesCommand}" />
+                                </Image.GestureRecognizers>
+                            </Image>
                         </StackLayout>
                     </Frame>
                     <Frame CornerRadius="5" Padding="5" Margin="10,0,10,0">
                         <StackLayout  Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="5">
-                            <Label Text="Длинное длинное тестовое описание точки, бла бла бла ывафолыпрв длплфо офыдво фжыдв аождлфоы вжда фожывд аофждыв олажфдыв ажфдыв оажфылов ажфдлвыо ажфы вжфды ваожф дывло жфыдв ажфдыв а ывпалфо ып вало пфлоывр палфыов паф ывалф впфл ыовпр флыова пфлоыв  ывпа флывоапр лфывп флыов ап" FontSize="16" Margin="0" Style="{StaticResource RouteTextLabel}" TextColor="Gray" LineBreakMode="WordWrap" VerticalTextAlignment="Start" HorizontalOptions="FillAndExpand">
+                            <Label Text="{Binding Description}" FontSize="16" Margin="0" Style="{StaticResource RouteTextLabel}" TextColor="Gray" LineBreakMode="WordWrap" VerticalTextAlignment="Start" HorizontalOptions="FillAndExpand">
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding EditDescriptionCommand}" />
                                 </Label.GestureRecognizers>
                             </Label>
-                            <Image Source="edit.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start"></Image>
+                            <Image Source="edit.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding EditDescriptionCommand}" />
+                                </Image.GestureRecognizers>
+                            </Image>
                         </StackLayout>
                     </Frame>
-                    <Frame CornerRadius="5" Padding="5" Margin="10,0,10,0">
-                        <StackLayout  Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="5">
-                            <local:CustomMap HeightRequest="300"
+                    <StackLayout Orientation="Horizontal" Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0,5,0,0">
+                        <local:CustomMap HeightRequest="300"
                                 x:Name="PointMapOverview"
                                 IsShowingUser="true"
                                 UseInterceptTouchEvent="true"
                                 MapType="Street" 
                                 />
-                        </StackLayout>
-                    </Frame>
+                    </StackLayout>
                 </StackLayout>
             </ScrollView>
             <AbsoluteLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" VerticalOptions="End">
                 <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
                     <Image Source="point_share.png" WidthRequest="64" HeightRequest="64" Aspect="AspectFill" Margin="0">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShareCommand}" />
+                        </Image.GestureRecognizers>
                     </Image>
                     <Image Source="point_recordaudio.png" WidthRequest="64" HeightRequest="64" Aspect="AspectFill" Margin="0">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding AddAudioCommand}" />
+                        </Image.GestureRecognizers>
                     </Image>
                     <Image Source="point_gallery.png" WidthRequest="64" HeightRequest="64" Aspect="AspectFill" Margin="0">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding AddPhotoCommand}" />
+                        </Image.GestureRecognizers>
                     </Image>
                     <Image Source="point_takephoto.png" WidthRequest="64" HeightRequest="64" Aspect="AspectFill" Margin="0">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding TakePhotoCommand}" />
+                        </Image.GestureRecognizers>
                     </Image>
-
                 </StackLayout>
-                <!--Image Source="additem.png" WidthRequest="96" HeightRequest="96" HorizontalOptions="End" VerticalOptions="End" AbsoluteLayout.LayoutBounds=".6,.0,0.6, 1." AbsoluteLayout.LayoutFlags="All">
-                    <Image.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding AddNewRouteCommand}" />
-                    </Image.GestureRecognizers>
-                </-->
             </AbsoluteLayout>
         </Grid>
     </ContentPage.Content>

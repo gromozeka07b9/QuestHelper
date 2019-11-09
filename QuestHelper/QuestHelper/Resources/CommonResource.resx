@@ -457,4 +457,16 @@ GoSh!</value>
   <data name="RoutePoint_DescriptionAbsent" xml:space="preserve">
     <value>Description not specified</value>
   </data>
+  <data name="RoutePoint_GeoCoordinatesCopiedToClipboard" xml:space="preserve">
+    <value>Coordinates copied to clipboard</value>
+  </data>
+  <data name="RoutePoint_AddressCopiedToClipboard" xml:space="preserve">
+    <value>Address copied to clipboard</value>
+  </data>
+  <data name="RoutePoint_AddressAbsent" xml:space="preserve">
+    <value>Address not defined</value>
+  </data>
+  <data name="RoutePoint_NameAbsent" xml:space="preserve">
+    <value>Name not specified</value>
+  </data>
 </root>

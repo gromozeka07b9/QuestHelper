@@ -1,4 +1,5 @@
 ﻿using QuestHelper.LocalDB.Model;
+using QuestHelper.Model.Messages;
 using QuestHelper.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace QuestHelper.View
     public partial class EditRoutePointDescriptionPage : ContentPage
 	{
         EditRoutePointDescriptionViewModel vm;
+        string _routePointId = string.Empty;
         public EditRoutePointDescriptionPage()
 		{
             InitializeComponent ();
@@ -28,6 +30,7 @@ namespace QuestHelper.View
         {
 
             InitializeComponent();
+            _routePointId = routePointId;
             vm = new EditRoutePointDescriptionViewModel(routePointId) { Navigation = this.Navigation };
             BindingContext = vm;
             var editor = this.FindByName<Editor>("EditorElement");
@@ -42,9 +45,10 @@ namespace QuestHelper.View
 	    private void Editor_OnCompleted(object sender, EventArgs e)
 	    {
 	        vm.ApplyChanges();
-	    }
+            MessagingCenter.Send<RoutePointDescriptionModifiedMessage>(new RoutePointDescriptionModifiedMessage() { RoutePointId = _routePointId }, string.Empty);
+        }
 
-	    private void EditorElement_OnFocused(object sender, FocusEventArgs e)
+        private void EditorElement_OnFocused(object sender, FocusEventArgs e)
 	    {
 	        /*var editor = (CustomEditor) sender;
 	        if (editor.Text.Equals(editor.Placeholder))

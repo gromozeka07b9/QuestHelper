@@ -665,6 +665,24 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Address not defined.
+        /// </summary>
+        public static string RoutePoint_AddressAbsent {
+            get {
+                return ResourceManager.GetString("RoutePoint_AddressAbsent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Address copied to clipboard.
+        /// </summary>
+        public static string RoutePoint_AddressCopiedToClipboard {
+            get {
+                return ResourceManager.GetString("RoutePoint_AddressCopiedToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Are you sure you want to delete the photo?.
         /// </summary>
         public static string RoutePoint_AreYouSureToDeletePhoto {
@@ -737,11 +755,29 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Coordinates copied to clipboard.
+        /// </summary>
+        public static string RoutePoint_GeoCoordinatesCopiedToClipboard {
+            get {
+                return ResourceManager.GetString("RoutePoint_GeoCoordinatesCopiedToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Shooting coordinates available.
         /// </summary>
         public static string RoutePoint_GeotagsExists {
             get {
                 return ResourceManager.GetString("RoutePoint_GeotagsExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Name not specified.
+        /// </summary>
+        public static string RoutePoint_NameAbsent {
+            get {
+                return ResourceManager.GetString("RoutePoint_NameAbsent", resourceCulture);
             }
         }
         
