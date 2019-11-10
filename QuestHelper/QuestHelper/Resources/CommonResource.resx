@@ -469,4 +469,7 @@ GoSh!</value>
   <data name="RoutePoint_NameAbsent" xml:space="preserve">
     <value>Name not specified</value>
   </data>
+  <data name="RoutePoint_PointNameEditCaption" xml:space="preserve">
+    <value>Waypoint's name:</value>
+  </data>
 </root>

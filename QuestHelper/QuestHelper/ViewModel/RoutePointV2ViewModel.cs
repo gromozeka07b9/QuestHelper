@@ -1,5 +1,7 @@
 ﻿using Acr.UserDialogs;
 using Microsoft.AppCenter.Analytics;
+using Plugin.Media;
+using Plugin.Media.Abstractions;
 using QuestHelper.LocalDB.Model;
 using QuestHelper.Managers;
 using QuestHelper.Model;
@@ -31,6 +33,8 @@ namespace QuestHelper.ViewModel
         public ICommand PlayMediaCommand { get; private set; }
         public ICommand DeletePhotoCommand { get; private set; }
         public ICommand DeletePointCommand { get; private set; }
+        public ICommand EditNameCommand { get; private set; }
+        public ICommand EditNameCompleteCommand { get; private set; }
         public ICommand EditDescriptionCommand { get; private set; }
         public ICommand CopyCoordinatesCommand { get; private set; }
         public ICommand CopyAddressCommand { get; private set; }
@@ -39,6 +43,8 @@ namespace QuestHelper.ViewModel
         public ICommand ShareCommand { get; private set; }
 
         ViewRoutePoint _vpoint;
+        private bool _isVisibleModalNameEdit;
+        private string _nameForEdit;
 
         public RoutePointV2ViewModel(string routeId, string routePointId)
         {
@@ -51,11 +57,33 @@ namespace QuestHelper.ViewModel
             AddPhotoCommand = new Command(addPhotoAsync);
             AddAudioCommand = new Command(addAudioAsync);
             ShareCommand = new Command(shareCommand);
+            EditNameCommand = new Command(editNameCommand);
+            EditNameCompleteCommand = new Command(editNameCompleteCommand);
             EditDescriptionCommand = new Command(editDescriptionCommand);
             CopyCoordinatesCommand = new Command(copyCoordinatesCommand);
             CopyAddressCommand = new Command(copyAddressCommand);
             _vpoint = new ViewRoutePoint(routeId, routePointId);
             Analytics.TrackEvent("Dialog point opened");
+        }
+
+        private void editNameCompleteCommand(object obj)
+        {
+            if (!Name.Equals(_nameForEdit))
+            {
+                Name = _nameForEdit;
+                ApplyChanges();
+            }
+            _nameForEdit = string.Empty;
+            IsVisibleModalNameEdit = !IsVisibleModalNameEdit;
+        }
+
+        private void editNameCommand(object obj)
+        {
+            IsVisibleModalNameEdit = !IsVisibleModalNameEdit;
+            if (IsVisibleModalNameEdit)
+            {
+                NameForEdit = _vpoint.Name;
+            }
         }
 
         private void backNavigationCommand(object obj)
@@ -102,14 +130,36 @@ namespace QuestHelper.ViewModel
                 {
                     _vpoint.AddMediaItem(mediaId, MediaObjectTypeEnum.Audio);
                     ApplyChanges();
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("OneImagePath"));
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
                     Analytics.TrackEvent("Media: audio recorded");
                 }
             }
         }
 
-        private void addPhotoAsync(object obj)
+        private async void addPhotoAsync(object obj)
         {
+            ApplyChanges();
+            ImageManager imageManager = new ImageManager();
+            var pickPhotoResult = await imageManager.PickPhotoAsync();
+            if (pickPhotoResult.pickPhotoResult)
+            {
+                if ((pickPhotoResult.imageGpsCoordinates.Latitude > 0 && pickPhotoResult.imageGpsCoordinates.Longitude > 0) && await App.Current.MainPage.DisplayAlert(CommonResource.RoutePoint_GeotagsExists,
+                        CommonResource.RoutePoint_UseGeotagsForPoint, CommonResource.CommonMsg_Yes, CommonResource.CommonMsg_No))
+                {
+                    Latitude = pickPhotoResult.imageGpsCoordinates.Latitude;
+                    Longitude = pickPhotoResult.imageGpsCoordinates.Longitude;
+                    _vpoint.Address = string.Empty;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Latitude"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Longitude"));
+                    //FillAddressByCoordinatesAsync(Latitude, Longitude);
+                }
+                _vpoint.AddMediaItem(pickPhotoResult.newMediaId, MediaObjectTypeEnum.Image);
+                ApplyChanges();
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("OneImagePath"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
+                Analytics.TrackEvent("Media: photo added");
+            }
         }
 
         private void deletePhotoAsync(object obj)
@@ -152,9 +202,40 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        private void takePhotoAsync(object obj)
+        private async void takePhotoAsync(object obj)
         {
-            //throw new NotImplementedException();
+            await CrossMedia.Current.Initialize();
+
+            if (CrossMedia.Current.IsCameraAvailable && CrossMedia.Current.IsTakePhotoSupported)
+            {
+                if (string.IsNullOrEmpty(_vpoint.Id))
+                {
+                    ApplyChanges();
+                }
+
+                ImageManager imageManager = new ImageManager();
+                var takePhotoResult = await imageManager.TakePhotoAsync(_vpoint.Latitude, _vpoint.Longitude);
+                if(takePhotoResult.result)
+                {
+                    ImagePreviewManager preview = new ImagePreviewManager();
+                    if (preview.CreateImagePreview(takePhotoResult.newMediaId))
+                    {
+                        _vpoint.AddMediaItem(takePhotoResult.newMediaId, MediaObjectTypeEnum.Image);
+                        ApplyChanges();
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("OneImagePath"));
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
+                        Analytics.TrackEvent("Media: photo taken");
+                    }
+                    else
+                    {
+                        Analytics.TrackEvent("Media: new photo error create preview", new Dictionary<string, string> { { "mediaId", takePhotoResult.newMediaId } });
+                    }
+                }
+                else
+                {
+                    Analytics.TrackEvent("Media: new take photo error", new Dictionary<string, string> { { "mediaId", takePhotoResult.newMediaId } });
+                }
+            }
         }
 
         public void ApplyChanges()
@@ -168,10 +249,6 @@ namespace QuestHelper.ViewModel
             get
             {
                 var list = _vpoint.MediaObjects.Where(x => !x.IsDeleted).Select(x => new MediaPreview() { SourceImg = ImagePathManager.GetImagePath(x.RoutePointMediaObjectId, (MediaObjectTypeEnum)x.MediaType, true), MediaId = x.RoutePointMediaObjectId, MediaType = (MediaObjectTypeEnum)x.MediaType }).ToList();
-                /*if(list.Count == 0)
-                {
-                    list.Add(new MediaPreview() { MediaId = string.Empty, MediaType = MediaObjectTypeEnum.Image, SourceImg = "emptyphoto.png" });
-                }*/
                 return list;
             }
         }
@@ -237,11 +314,47 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        public bool IsImagesPresent
+        public bool IsVisibleModalNameEdit
+        {
+            set
+            {
+                if(_isVisibleModalNameEdit != value)
+                {
+                    _isVisibleModalNameEdit = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsVisibleModalNameEdit"));
+                }
+            }
+            get
+            {
+                return _isVisibleModalNameEdit;
+            }
+        }
+        /// <summary>
+        /// В случае если медиа нет - это тоже одна картинка, поскольку показать надо будет заглушку
+        /// </summary>
+        public bool IsOneImagesPresent
         {
             get
             {
-                return Images.Count() > 0;
+                int count = Images.Count();
+                return count == 0 || count == 1;
+            }
+        }
+
+        /// <summary>
+        /// Возвращает картинку если она одна в данной точке, либо заглушку для пустого фото
+        /// </summary>
+        public string OneImagePath
+        {
+            get
+            {
+                string pathToSingleImage = "emptyphoto.png";
+                var listObjects = _vpoint.MediaObjects.Where(x => !x.IsDeleted).ToList();
+                if(listObjects.Count == 1)
+                {
+                    pathToSingleImage = ImagePathManager.GetImagePath(listObjects[0].RoutePointMediaObjectId, (MediaObjectTypeEnum)listObjects[0].MediaType, true);
+                }
+                return pathToSingleImage;
             }
         }
 
@@ -268,6 +381,21 @@ namespace QuestHelper.ViewModel
             }
         }
 
+        public string NameForEdit
+        {
+            set
+            {
+                if (_nameForEdit != value)
+                {
+                    _nameForEdit = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NameForEdit"));
+                }
+            }
+            get
+            {
+                return _nameForEdit;
+            }
+        }
 
         public void StartDialog()
         {

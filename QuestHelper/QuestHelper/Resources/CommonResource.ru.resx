@@ -468,4 +468,7 @@
   <data name="RoutePoint_NameAbsent" xml:space="preserve">
     <value>Название не указано</value>
   </data>
+  <data name="RoutePoint_PointNameEditCaption" xml:space="preserve">
+    <value>Название точки:</value>
+  </data>
 </root>

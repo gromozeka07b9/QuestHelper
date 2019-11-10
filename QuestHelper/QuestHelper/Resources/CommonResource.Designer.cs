@@ -782,6 +782,15 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Waypoint&apos;s name:.
+        /// </summary>
+        public static string RoutePoint_PointNameEditCaption {
+            get {
+                return ResourceManager.GetString("RoutePoint_PointNameEditCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Resolution is required to select a photo.
         /// </summary>
         public static string RoutePoint_RightNeedToPickPhoto {
