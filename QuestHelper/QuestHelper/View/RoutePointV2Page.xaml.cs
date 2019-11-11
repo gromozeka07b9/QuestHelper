@@ -65,5 +65,9 @@ namespace QuestHelper.View
         {
         }
 
+        private void Image_Unfocused(object sender, FocusEventArgs e)
+        {
+            NameEditorCtrl.Unfocus();
+        }
     }
 }

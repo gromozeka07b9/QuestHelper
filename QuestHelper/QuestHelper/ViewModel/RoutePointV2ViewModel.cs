@@ -156,14 +156,38 @@ namespace QuestHelper.ViewModel
                 }
                 _vpoint.AddMediaItem(pickPhotoResult.newMediaId, MediaObjectTypeEnum.Image);
                 ApplyChanges();
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("OneImagePath"));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsOneImagesPresent"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("OneImagePath"));
                 Analytics.TrackEvent("Media: photo added");
             }
         }
 
-        private void deletePhotoAsync(object obj)
+        private async void deletePhotoAsync(object imageSource)
         {
+            string mediaId = string.Empty;
+            if (imageSource is MediaPreview)
+            {
+                mediaId = ((MediaPreview)imageSource).MediaId;
+            }
+            else
+            {
+                if (Images.Count() > 0)
+                {
+                    mediaId = Images.FirstOrDefault()?.MediaId;
+                }
+            }
+            if (!string.IsNullOrEmpty(mediaId))
+            {
+                bool delete = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig() { Message = CommonResource.RoutePoint_AreYouSureToDeletePhoto, Title = CommonResource.RoutePoint_DeletingPhoto, OkText = CommonResource.CommonMsg_Yes, CancelText = CommonResource.CommonMsg_No });
+                if (delete)
+                {
+                    _vpoint.DeleteImage(mediaId);
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsOneImagesPresent"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("OneImagePath"));
+                }
+            }
         }
         private async void deletePoint(object obj)
         {
@@ -190,13 +214,20 @@ namespace QuestHelper.ViewModel
 
         private void viewPhotoAsync(object imageSource)
         {
+            string path = string.Empty;
             var defaultViewerService = DependencyService.Get<IDefaultViewer>();
-            string path = (FileImageSource)imageSource;
-            if (string.IsNullOrEmpty(path))
+            if(imageSource is MediaPreview)
             {
-                //takePhotoAsync();
+                path = ((MediaPreview)imageSource).SourceImg;
             }
             else
+            {
+                if (Images.Count() > 0)
+                {
+                    path = Images.FirstOrDefault()?.SourceImg;
+                }
+            }
+            if (!string.IsNullOrEmpty(path))
             {
                 defaultViewerService.Show(path.Replace("_preview", ""));
             }
@@ -222,8 +253,9 @@ namespace QuestHelper.ViewModel
                     {
                         _vpoint.AddMediaItem(takePhotoResult.newMediaId, MediaObjectTypeEnum.Image);
                         ApplyChanges();
-                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("OneImagePath"));
                         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsOneImagesPresent"));
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("OneImagePath"));
                         Analytics.TrackEvent("Media: photo taken");
                     }
                     else

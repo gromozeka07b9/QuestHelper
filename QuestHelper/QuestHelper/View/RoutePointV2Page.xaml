@@ -41,7 +41,7 @@
                     </StackLayout>
                     <Frame  CornerRadius="5" Margin="10,5,10,0" Padding="5">
                         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                            <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" TextColor="Black" HorizontalTextAlignment="Start">
+                            <Label Text="{Binding Name}" FontSize="18" FontAttributes="None" TextColor="Black" HorizontalTextAlignment="Start">
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding EditNameCommand}"/>
                                 </Label.GestureRecognizers>
@@ -62,13 +62,14 @@
                         <StackLayout Orientation="Vertical" VerticalOptions="Start" HeightRequest="300">
                             <Image Source="{Binding OneImagePath}" Margin="0" Aspect="{Binding OneImagePath, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                                 <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding ViewPhotoCommand}"/>
+                                    <TapGestureRecognizer Command="{Binding ViewPhotoCommand}" CommandParameter="{Binding}"/>
+                                    <TapGestureRecognizer Command="{Binding DeletePhotoCommand}" NumberOfTapsRequired="2"/>
                                 </Image.GestureRecognizers>
                             </Image>
                         </StackLayout>
                     </Frame>
                     <StackLayout Orientation="Vertical" VerticalOptions="Start" HeightRequest="300" IsVisible="{Binding IsOneImagesPresent, Converter={StaticResource inverter}}">
-                        <CarouselView ItemsSource="{Binding Images}" HorizontalOptions="FillAndExpand" Margin="0,0,0,0" VerticalOptions="StartAndExpand">
+                        <CarouselView x:Name="myCarouselViewCtrl" ItemsSource="{Binding Images}" HorizontalOptions="FillAndExpand" Margin="0,0,0,0" VerticalOptions="StartAndExpand">
                             <CarouselView.ItemTemplate>
                                 <DataTemplate>
                                     <StackLayout Padding="3">
@@ -81,11 +82,15 @@
                                             Padding="4"
                                            HorizontalOptions="Center"
                                            VerticalOptions="Start">
-                                            <Image Source="{Binding SourceImg}" Margin="0" Aspect="AspectFill" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-                                                <Image.GestureRecognizers>
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Path=BindingContext.ViewPhotoCommand, Source={x:Reference Name=myCarouselViewCtrl}}" CommandParameter="{Binding}"/>
+                                                <TapGestureRecognizer Command="{Binding Path=BindingContext.DeletePhotoCommand, Source={x:Reference Name=myCarouselViewCtrl}}" NumberOfTapsRequired="2"/>
+                                            </Frame.GestureRecognizers>
+                                            <Image x:Name="imgCtrl" Source="{Binding SourceImg}" Margin="0" Aspect="AspectFill" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                                <!--Image.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding ViewPhotoCommand}"/>
                                                     <TapGestureRecognizer Command="{Binding DeletePhotoCommand}" NumberOfTapsRequired="2"/>
-                                                </Image.GestureRecognizers>
+                                                </-->
                                             </Image>
                                         </Frame>
                                     </StackLayout>
@@ -161,8 +166,8 @@
                             </Label.GestureRecognizers>
                         </Label>
                         <StackLayout Orientation="Horizontal">
-                            <Editor Margin="0" Text="{Binding NameForEdit}" FontSize="16" WidthRequest="250" HeightRequest="60" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand"></Editor>
-                            <Image Source="edit.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start">
+                            <Editor x:Name="NameEditorCtrl" Margin="0" Text="{Binding NameForEdit}" FontSize="16" WidthRequest="250" HeightRequest="60" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand"></Editor>
+                            <Image Source="edit.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start" Unfocused="Image_Unfocused">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding EditNameCompleteCommand}"/>
                                 </Image.GestureRecognizers>
