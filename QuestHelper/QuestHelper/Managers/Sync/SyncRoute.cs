@@ -307,7 +307,7 @@ namespace QuestHelper.Managers.Sync
             bool updateResult = true;
 
             List<string> pointsToUpload = new List<string>();
-            var pointsByRoute = _routePointManager.GetPointsByRouteId(_routeId);
+            var pointsByRoute = _routePointManager.GetPointsByRouteId(_routeId, true);
             //если есть новые точки, на отправку
             pointsToUpload.AddRange(pointsByRoute
                 .Where(p => !routeRoot.Route.Points.Any(sp => sp.Id == p.RoutePointId)).Select(p => p.Id)

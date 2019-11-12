@@ -31,7 +31,22 @@ namespace QuestHelper.View
             { 
                 Navigation = this.Navigation 
             };
+            _vm.PropertyChanged += Vm_PropertyChanged;
             BindingContext = _vm;
+        }
+        private async void Vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "Coordinates":
+                    {
+                        if ((_vm.Latitude != 0) && (_vm.Longitude != 0))
+                        {
+                            await CenterMap(_vm.Latitude, _vm.Longitude, _vm.Name, _vm.Address);
+                            _vm.ApplyChanges();
+                        }
+                    }; break;
+            }
         }
 
         private async void ContentPage_Appearing(object sender, EventArgs e)

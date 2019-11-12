@@ -27,7 +27,7 @@
             <ScrollView Grid.Row="0" Grid.Column="0">
                 <StackLayout Orientation="Vertical" VerticalOptions="Start">
                     <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                        <Image Source="zoom_out_map.png" WidthRequest="32" HeightRequest="32" Margin="5,5,0,0" VerticalOptions="Start" HorizontalOptions="Start">
+                        <Image Source="baseline_arrow_back_black_48.png" WidthRequest="32" HeightRequest="32" Margin="5,5,0,0" VerticalOptions="Start" HorizontalOptions="Start">
                             <Image.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding BackNavigationCommand}"/>
                             </Image.GestureRecognizers>
@@ -51,7 +51,7 @@
                                     <TapGestureRecognizer Command="{Binding EditNameCommand}"/>
                                 </StackLayout.GestureRecognizers>
                             </StackLayout>
-                            <Image Source="edit.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start">
+                            <Image Source="edit.png" WidthRequest="28" HeightRequest="28" VerticalOptions="Start">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding EditNameCommand}"/>
                                 </Image.GestureRecognizers>
@@ -100,13 +100,13 @@
                     </StackLayout>
                     <Frame CornerRadius="5" Padding="5" Margin="10,-5,10,0" VerticalOptions="Start">
                         <StackLayout  Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0,5,0,5">
-                            <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Center"></Image>
+                            <Image Source="baseline_apartment_black_48.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Center"></Image>
                             <Label Text="{Binding Address}" FontSize="16" Margin="0" Style="{StaticResource RouteTextLabel}" VerticalTextAlignment="Center" HorizontalOptions="FillAndExpand">
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding CopyAddressCommand}" />
                                 </Label.GestureRecognizers>
                             </Label>
-                            <Image Source="triple.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Center">
+                            <Image Source="baseline_file_copy_black_48.png" WidthRequest="28" HeightRequest="28" VerticalOptions="Center">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding CopyAddressCommand}" />
                                 </Image.GestureRecognizers>
@@ -115,13 +115,13 @@
                     </Frame>
                     <Frame CornerRadius="5" Padding="5" Margin="10,0,10,0">
                         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0,5,0,5">
-                            <Image Source="place_unknown.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Center" HorizontalOptions="Start"></Image>
+                            <Image Source="baseline_gps_fixed_black_48.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Center" HorizontalOptions="Start"></Image>
                             <Label Text="{Binding Coordinates}" FontSize="16" Style="{StaticResource RouteTextLabel}" VerticalTextAlignment="Center" HorizontalOptions="FillAndExpand">
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding CopyCoordinatesCommand}" />
                                 </Label.GestureRecognizers>
                             </Label>
-                            <Image Source="link.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Center" HorizontalOptions="End">
+                            <Image Source="baseline_file_copy_black_48.png" WidthRequest="28" HeightRequest="28" VerticalOptions="Center" HorizontalOptions="End">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding CopyCoordinatesCommand}" />
                                 </Image.GestureRecognizers>
@@ -129,13 +129,13 @@
                         </StackLayout>
                     </Frame>
                     <Frame CornerRadius="5" Padding="5" Margin="10,0,10,0">
-                        <StackLayout  Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="5">
+                        <StackLayout  Orientation="Horizontal" Padding="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0">
                             <Label Text="{Binding Description}" FontSize="16" Margin="0" Style="{StaticResource RouteTextLabel}" TextColor="Gray" LineBreakMode="WordWrap" VerticalTextAlignment="Start" HorizontalOptions="FillAndExpand">
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding EditDescriptionCommand}" />
                                 </Label.GestureRecognizers>
                             </Label>
-                            <Image Source="edit.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start">
+                            <Image Source="edit.png" WidthRequest="28" HeightRequest="28" VerticalOptions="Start">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding EditDescriptionCommand}" />
                                 </Image.GestureRecognizers>
@@ -143,11 +143,11 @@
                         </StackLayout>
                     </Frame>
                     <StackLayout Orientation="Horizontal" Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0,5,0,0">
-                        <local:CustomMap HeightRequest="300"
+                        <local:CustomMap HeightRequest="350" HasZoomEnabled="True"
                                 x:Name="PointMapOverview"
-                                IsShowingUser="true"
+                                IsShowingUser="True"
                                 UseInterceptTouchEvent="true"
-                                MapType="Street" 
+                                MapType="Street"  HasScrollEnabled="True" 
                                 />
                     </StackLayout>
                 </StackLayout>
@@ -167,7 +167,7 @@
                         </Label>
                         <StackLayout Orientation="Horizontal">
                             <Editor x:Name="NameEditorCtrl" Margin="0" Text="{Binding NameForEdit}" FontSize="16" WidthRequest="250" HeightRequest="60" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand"></Editor>
-                            <Image Source="edit.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start" Unfocused="Image_Unfocused">
+                            <Image Source="baseline_done_black_48.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start" Unfocused="Image_Unfocused">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding EditNameCompleteCommand}"/>
                                 </Image.GestureRecognizers>
@@ -177,7 +177,7 @@
                 </Frame>
             </AbsoluteLayout>
             <AbsoluteLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" VerticalOptions="End" IsVisible="{Binding IsVisibleModalNameEdit, Converter={StaticResource inverter}}">
-                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,0,0,5">
                     <Image Source="point_share.png" WidthRequest="64" HeightRequest="64" Aspect="AspectFill" Margin="0">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ShareCommand}" />

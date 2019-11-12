@@ -42,8 +42,10 @@ namespace QuestHelper.ViewModel
         public ICommand AddAudioCommand { get; private set; }
         public ICommand ShareCommand { get; private set; }
 
+        GeolocatorManager _geolocatorManager = new GeolocatorManager();
         ViewRoutePoint _vpoint;
         private bool _isVisibleModalNameEdit;
+        private bool _newPoint;
         private string _nameForEdit;
 
         public RoutePointV2ViewModel(string routeId, string routePointId)
@@ -64,6 +66,7 @@ namespace QuestHelper.ViewModel
             CopyAddressCommand = new Command(copyAddressCommand);
             _vpoint = new ViewRoutePoint(routeId, routePointId);
             Analytics.TrackEvent("Dialog point opened");
+            _newPoint = string.IsNullOrEmpty(routePointId);
         }
 
         private void editNameCompleteCommand(object obj)
@@ -147,12 +150,14 @@ namespace QuestHelper.ViewModel
                 if ((pickPhotoResult.imageGpsCoordinates.Latitude > 0 && pickPhotoResult.imageGpsCoordinates.Longitude > 0) && await App.Current.MainPage.DisplayAlert(CommonResource.RoutePoint_GeotagsExists,
                         CommonResource.RoutePoint_UseGeotagsForPoint, CommonResource.CommonMsg_Yes, CommonResource.CommonMsg_No))
                 {
+                    _vpoint.Address = string.Empty;
                     Latitude = pickPhotoResult.imageGpsCoordinates.Latitude;
                     Longitude = pickPhotoResult.imageGpsCoordinates.Longitude;
-                    _vpoint.Address = string.Empty;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Latitude"));
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Longitude"));
-                    //FillAddressByCoordinatesAsync(Latitude, Longitude);
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Coordinates"));
+                    ApplyChanges();
+                    await fillAddressAndPointName(Latitude, Longitude);
+                    ApplyChanges();
+
                 }
                 _vpoint.AddMediaItem(pickPhotoResult.newMediaId, MediaObjectTypeEnum.Image);
                 ApplyChanges();
@@ -429,7 +434,7 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        public void StartDialog()
+        public async void StartDialog()
         {
             _vpoint.Refresh(_vpoint.Id);
             //Пока не знаю как поймать событие того, редактировалось описание на другой странице и вернулись на текущую уже с модифицированным описанием
@@ -446,6 +451,35 @@ namespace QuestHelper.ViewModel
             {
                 setNewCoordinates(sender.Latitude, sender.Longitude);
             });
+
+            if ((_newPoint) && (_vpoint.Latitude == 0) && (_vpoint.Longitude == 0))
+            {
+                var coordinates = await _geolocatorManager.GetCurrentLocationAsync();
+                if((coordinates.Latitude != 0) && (coordinates.Longtitude != 0))
+                {
+                    Latitude = coordinates.Latitude;
+                    Longitude = coordinates.Longtitude;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Coordinates"));
+                    ApplyChanges();
+                    await fillAddressAndPointName(Latitude, Longitude);
+                    ApplyChanges();
+                }
+            }
+        }
+
+        private async Task fillAddressAndPointName(double latitude, double longitude)
+        {
+            var address = await _geolocatorManager.GetPositionAddress(new Plugin.Geolocator.Abstractions.Position(latitude, longitude));
+            if (!string.IsNullOrEmpty(address.PositionAddress))
+            {
+                _vpoint.Address = address.PositionAddress;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Address"));
+            }
+            if (!string.IsNullOrEmpty(address.PointName) && (string.IsNullOrEmpty(_vpoint.Name)))
+            {
+                _vpoint.Name = address.PointName;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
+            }
         }
 
         public void CloseDialog()
@@ -459,13 +493,15 @@ namespace QuestHelper.ViewModel
             var notCancel = await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.RoutePoint_AreYouSureToSetNewCoordinates, CommonResource.CommonMsg_No, CommonResource.CommonMsg_Yes);
             if (!notCancel)
             {
-                _vpoint.Latitude = latitude;
-                _vpoint.Longitude = longitude;
-                ApplyChanges();
-                /*FillAddressByCoordinatesAsync(Latitude, Longitude);
-                Name = _pointNameFromAddress;
-                Coordinates = Latitude + "," + Longitude;*/
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Coordinates"));
+                if((latitude != Latitude) || (longitude != Longitude))
+                {
+                    Latitude = latitude;
+                    Longitude = longitude;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Coordinates"));
+                    ApplyChanges();
+                    await fillAddressAndPointName(Latitude, Longitude);
+                    ApplyChanges();
+                }
             }
         }
 
