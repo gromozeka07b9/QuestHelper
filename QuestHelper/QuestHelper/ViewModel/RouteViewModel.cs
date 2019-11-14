@@ -39,6 +39,10 @@ namespace QuestHelper.ViewModel
         private bool _listIsRefreshing;
         private bool _noPointWarningIsVisible;
         private bool _isRefreshing;
+        private bool _isVisibleModalRouteEdit = false;
+        private string _descriptionForEdit;
+        private string _nameForEdit;
+        private string _description;
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -91,6 +95,12 @@ namespace QuestHelper.ViewModel
 
         private void editRouteCommandAsync(object obj)
         {
+            IsVisibleModalRouteEdit = !IsVisibleModalRouteEdit;
+            if (IsVisibleModalRouteEdit)
+            {
+                NameForEdit = Name;
+                DescriptionForEdit = Description;
+            }
         }
 
         public void startDialog()
@@ -181,6 +191,52 @@ namespace QuestHelper.ViewModel
                 return _vroute.Name;
             }
         }
+        public string NameForEdit
+        {
+            set
+            {
+                if (_nameForEdit != value)
+                {
+                    _nameForEdit = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NameForEdit"));
+                }
+            }
+            get
+            {
+                return _nameForEdit;
+            }
+        }
+        public string DescriptionForEdit
+        {
+            set
+            {
+                if (_descriptionForEdit != value)
+                {
+                    _descriptionForEdit = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DescriptionForEdit"));
+                }
+            }
+            get
+            {
+                return _descriptionForEdit;
+            }
+        }
+        public string Description
+        {
+            set
+            {
+                if (_description != value)
+                {
+                    _description = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Description"));
+                }
+            }
+            get
+            {
+                return _description;
+            }
+        }
+
         /*public string RouteLength
         {
             set
@@ -294,6 +350,23 @@ namespace QuestHelper.ViewModel
                 return _noPointWarningIsVisible;
             }
         }
+
+        public bool IsVisibleModalRouteEdit
+        {
+            set
+            {
+                if (_isVisibleModalRouteEdit != value)
+                {
+                    _isVisibleModalRouteEdit = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsVisibleModalRouteEdit"));
+                }
+            }
+            get
+            {
+                return _isVisibleModalRouteEdit;
+            }
+        }
+
         public bool SplashStartScreenIsVisible
         {
             set

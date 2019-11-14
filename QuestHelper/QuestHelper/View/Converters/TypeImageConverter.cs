@@ -3,17 +3,16 @@ using Xamarin.Forms;
 
 namespace QuestHelper.View.Converters
 {
-    public class AspectImageConverter : IValueConverter
+    public class TypeImageConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            string imageName = value.ToString();
-            if ((imageName == "camera1.png") || (imageName == "mount1.png") || (imageName == "emptyphoto.png") || (imageName == "emptylist.png") || (imageName.Contains(".3gp")))
+            string imgPath = value.ToString();
+            if (!string.IsNullOrEmpty(imgPath))
             {
-                return Aspect.AspectFit;
+                if(imgPath.Contains(".3gp")) return "sound.png";
             }
-            
-            return Aspect.AspectFill;
+            return value;
         }
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {

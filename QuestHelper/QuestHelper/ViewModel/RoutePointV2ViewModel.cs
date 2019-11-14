@@ -34,9 +34,12 @@ namespace QuestHelper.ViewModel
         public ICommand DeletePhotoCommand { get; private set; }
         public ICommand DeletePointCommand { get; private set; }
         public ICommand EditNameCommand { get; private set; }
+        public ICommand CancelNameCommand { get; private set; }
+        public ICommand ClearNameCommand { get; private set; }
         public ICommand EditNameCompleteCommand { get; private set; }
         public ICommand EditDescriptionCommand { get; private set; }
         public ICommand CopyCoordinatesCommand { get; private set; }
+        public ICommand UpdateAddressCommand { get; private set; }
         public ICommand CopyAddressCommand { get; private set; }
         public ICommand AddPhotoCommand { get; private set; }
         public ICommand AddAudioCommand { get; private set; }
@@ -60,13 +63,35 @@ namespace QuestHelper.ViewModel
             AddAudioCommand = new Command(addAudioAsync);
             ShareCommand = new Command(shareCommand);
             EditNameCommand = new Command(editNameCommand);
+            CancelNameCommand = new Command(cancelNameCommand);
             EditNameCompleteCommand = new Command(editNameCompleteCommand);
+            ClearNameCommand = new Command(clearNameCommand);
             EditDescriptionCommand = new Command(editDescriptionCommand);
             CopyCoordinatesCommand = new Command(copyCoordinatesCommand);
+            UpdateAddressCommand = new Command(updateAddressCommand);
             CopyAddressCommand = new Command(copyAddressCommand);
             _vpoint = new ViewRoutePoint(routeId, routePointId);
             Analytics.TrackEvent("Dialog point opened");
             _newPoint = string.IsNullOrEmpty(routePointId);
+        }
+
+        private async void updateAddressCommand(object obj)
+        {
+            if ((Latitude != 0)&& (Longitude != 0))
+            {
+                await fillAddressAndPointName(Latitude, Longitude);
+                ApplyChanges();
+            }
+        }
+
+        private void cancelNameCommand(object obj)
+        {
+            IsVisibleModalNameEdit = !IsVisibleModalNameEdit;
+        }
+
+        private void clearNameCommand(object obj)
+        {
+            NameForEdit = string.Empty;
         }
 
         private void editNameCompleteCommand(object obj)
@@ -389,6 +414,7 @@ namespace QuestHelper.ViewModel
                 var listObjects = _vpoint.MediaObjects.Where(x => !x.IsDeleted).ToList();
                 if(listObjects.Count == 1)
                 {
+
                     pathToSingleImage = ImagePathManager.GetImagePath(listObjects[0].RoutePointMediaObjectId, (MediaObjectTypeEnum)listObjects[0].MediaType, true);
                 }
                 return pathToSingleImage;
@@ -465,6 +491,14 @@ namespace QuestHelper.ViewModel
                     ApplyChanges();
                 }
             }
+
+            Device.StartTimer(TimeSpan.FromMilliseconds(100), OnTimerForUpdateLocation);
+        }
+
+        private bool OnTimerForUpdateLocation()
+        {
+            MessagingCenter.Send<MapUpdateLocationPointMessage>(new MapUpdateLocationPointMessage() { }, string.Empty);
+            return false;
         }
 
         private async Task fillAddressAndPointName(double latitude, double longitude)

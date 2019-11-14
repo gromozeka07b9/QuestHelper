@@ -12,10 +12,11 @@
             <local:NegativeBoolConverter  x:Key="inverter" />
             <local:EmptyImageConverter  x:Key="emptyimage" />
             <local:AspectImageConverter  x:Key="aspectimage" />
+            <local:TypeImageConverter  x:Key="typeImageConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <!--ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding EditRouteCommand}" Icon="edit.png"></-->
+        <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding EditRouteCommand}" Icon="edit.png"></ToolbarItem>
         <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding FullScreenMapCommand}" Icon="map1.png"></ToolbarItem>
         <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding PhotoAlbumCommand}" Icon="photo.png"></ToolbarItem>
         <!--ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding ShareRouteCommand}" Icon="share.png"></-->
@@ -45,13 +46,17 @@
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="15*"></RowDefinition>
-                                            <RowDefinition Height="2*"></RowDefinition>
+                                            <RowDefinition Height="3*"></RowDefinition>
+                                            <RowDefinition Height="11*"></RowDefinition>
+                                            <RowDefinition Height="3*"></RowDefinition>
                                         </Grid.RowDefinitions>
-                                        <Image Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="1" Opacity="1" Source="{Binding ImagePreviewPathForList}" IsVisible="{Binding IsNew, Converter={StaticResource inverter}}" Aspect="{Binding ImagePreviewPathForList, Converter={StaticResource aspectimage}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
-
-                                        <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="1" Text="{Binding NameText}" Style="{StaticResource ImageBigTextLabel}" FontSize="16" Margin="10,0,10,5" LineBreakMode="TailTruncation" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand" VerticalTextAlignment="End"></Label>
-                                        <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Text="{Binding CreateDateText}" Style="{StaticResource RouteTextLabel}" TextColor="Gray" Margin="10,0,0,10" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand" VerticalTextAlignment="Center"></Label>
+                                        <Image Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="2" Opacity="1" Source="{Binding ImagePreviewPathForList, Converter={StaticResource typeImageConverter}}" IsVisible="{Binding IsNew, Converter={StaticResource inverter}}" Aspect="{Binding ImagePreviewPathForList, Converter={StaticResource aspectimage}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+                                        <StackLayout BackgroundColor="Blue" Opacity="0.3" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePointName}">
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                            <Label Text="{Binding NameText}" Style="{StaticResource ImageBigTextLabel}" TextColor="White" FontSize="16" Margin="10,0,10,5" LineBreakMode="TailTruncation" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand" VerticalTextAlignment="Center"></Label>
+                                        </StackLayout>
+                                        <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="1" Text="{Binding CreateDateText}" Style="{StaticResource RouteTextLabel}" TextColor="Black" Margin="10,0,0,10" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand" VerticalTextAlignment="Center"></Label>
 
                                     </Grid>
                                 </Frame>
@@ -62,13 +67,63 @@
             </StackLayout>
             <AbsoluteLayout Grid.Column="0" Grid.Row="0" IsVisible="{Binding RouteScreenIsVisible}" HorizontalOptions="End" VerticalOptions="End">
                 <StackLayout Orientation="Horizontal" HorizontalOptions="End" Margin="10">
-                    <Image Source="additem.png" WidthRequest="80" HeightRequest="80" Margin="0">
+                    <Image Source="additem.png" WidthRequest="60" HeightRequest="60" Margin="0">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding AddNewRoutePointCommand}" />
                         </Image.GestureRecognizers>
                     </Image>
                 </StackLayout>
             </AbsoluteLayout>
+
+            <AbsoluteLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="0.7" BackgroundColor="Black" IsVisible="{Binding IsVisibleModalRouteEdit}">
+                <AbsoluteLayout.GestureRecognizers>
+                    <TapGestureRecognizer/>
+                </AbsoluteLayout.GestureRecognizers>
+            </AbsoluteLayout>
+            <AbsoluteLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Center" IsVisible="{Binding IsVisibleModalRouteEdit}">
+                <Frame CornerRadius="5" Padding="5" Margin="0" BackgroundColor="LightGray">
+                    <StackLayout Orientation="Vertical">
+                        <Label Text="Name" FontSize="14" FontAttributes="Bold" Margin="5" Style="{StaticResource RouteTextLabel}" TextColor="Black" LineBreakMode="WordWrap" VerticalTextAlignment="Start" HorizontalOptions="FillAndExpand">
+                            <Label.GestureRecognizers>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <StackLayout Orientation="Horizontal">
+                            <Editor x:Name="NameEditorCtrl" Margin="0" Text="test" FontSize="16" WidthRequest="220" HeightRequest="40" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand"></Editor>
+                        </StackLayout>
+                        <Label Text="Description" FontSize="14" FontAttributes="Bold" Margin="5" Style="{StaticResource RouteTextLabel}" TextColor="Black" LineBreakMode="WordWrap" VerticalTextAlignment="Start" HorizontalOptions="FillAndExpand">
+                            <Label.GestureRecognizers>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <StackLayout Orientation="Horizontal">
+                            <Editor Margin="0" Text="asdkjh asdlfakhs dlfajksd hlfajkds hflkajs dhlkash dfl;aksd ;lakjs d;lfakj sd;lfa jks;dlf ja;lsd fj;alkdsj;ksd f'h ';asldfh ;alkds hf;alsd khflsd kflasd kfl;aksd hf;lasdh f;alkds f;lakds jf;alsdkj " FontSize="12" WidthRequest="250" HeightRequest="140" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand"></Editor>
+                        </StackLayout>
+                        <Label Text="Cover image" FontSize="14" FontAttributes="Bold" Margin="5" Style="{StaticResource RouteTextLabel}" TextColor="Black" LineBreakMode="WordWrap" VerticalTextAlignment="Start" HorizontalOptions="FillAndExpand">
+                            <Label.GestureRecognizers>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                            <Frame CornerRadius="0" Padding="1" Margin="0" BackgroundColor="Blue">
+                                <Image Source="emptyphoto.png" Aspect="AspectFill" WidthRequest="220" HeightRequest="150" VerticalOptions="Start" HorizontalOptions="CenterAndExpand">
+                                    <Image.GestureRecognizers>
+                                    </Image.GestureRecognizers>
+                                </Image>
+                            </Frame>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+                            <Image Source="baseline_done_black_48.png" WidthRequest="32" HeightRequest="32" Margin="5" VerticalOptions="Start">
+                                <Image.GestureRecognizers>
+                                </Image.GestureRecognizers>
+                            </Image>
+                            <Image Source="baseline_clear_black_48.png" WidthRequest="32" HeightRequest="32" Margin="5" VerticalOptions="Start">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding CancelNameCommand}"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+            </AbsoluteLayout>
+
         </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -4,6 +4,7 @@ using QuestHelper.SharedModelsWS;
 using Realms;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -88,8 +89,8 @@ namespace QuestHelper.Model
             _mediaObjects = mediaManager.GetMediaObjectsByRoutePointId(_id)?.ToList();
             if ((_mediaObjects != null) && (_mediaObjects.Count > 0))
             {
-                _imagePath = ImagePathManager.GetImagePath(_mediaObjects[0].RoutePointMediaObjectId, MediaObjectTypeEnum.Image);
-                _imagePreviewPath = ImagePathManager.GetImagePath(_mediaObjects[0].RoutePointMediaObjectId, MediaObjectTypeEnum.Image, true);
+                _imagePath = ImagePathManager.GetImagePath(_mediaObjects[0].RoutePointMediaObjectId, (MediaObjectTypeEnum)_mediaObjects[0].MediaType);
+                _imagePreviewPath = ImagePathManager.GetImagePath(_mediaObjects[0].RoutePointMediaObjectId, (MediaObjectTypeEnum)_mediaObjects[0].MediaType, true);
             }
             else
             {
@@ -152,6 +153,13 @@ namespace QuestHelper.Model
             get
             {
                 return _routeId;
+            }
+        }
+        public bool IsVisiblePointName
+        {
+            get
+            {
+                return Name.Trim().Length > 0;
             }
         }
         public string Name
@@ -227,9 +235,10 @@ namespace QuestHelper.Model
             get
             {
                 if (!string.IsNullOrEmpty(_imagePreviewPath) && File.Exists(_imagePreviewPath))
+                {
                     return _imagePreviewPath;
-                else
-                    return "emptyphoto.png";
+                }
+                return "emptyphoto.png";
             }
         }        
 

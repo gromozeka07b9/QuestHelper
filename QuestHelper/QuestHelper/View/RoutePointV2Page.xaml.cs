@@ -49,17 +49,20 @@ namespace QuestHelper.View
             }
         }
 
-        private async void ContentPage_Appearing(object sender, EventArgs e)
+        private void ContentPage_Appearing(object sender, EventArgs e)
         {
             _toolbarService.SetVisibilityToolbar(false);
             _vm.StartDialog();
-            await CenterMap(_vm.Latitude, _vm.Longitude, _vm.Name, _vm.Address);
+            MessagingCenter.Subscribe<MapUpdateLocationPointMessage>(this, string.Empty, async (msgSender) =>
+            {
+                await CenterMap(_vm.Latitude, _vm.Longitude, _vm.Name, _vm.Address);
+            });
         }
 
         private void ContentPage_Disappearing(object sender, EventArgs e)
         {
             _vm.CloseDialog();
-            //MessagingCenter.Unsubscribe<MapUpdateLocationPointMessage>(this, string.Empty);
+            MessagingCenter.Unsubscribe<MapUpdateLocationPointMessage>(this, string.Empty);
         }
 
         private async Task CenterMap(double latitude, double longitude, string name, string address)
