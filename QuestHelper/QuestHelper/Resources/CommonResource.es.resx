@@ -118,358 +118,358 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Albums_ListRouteIsEmpty" xml:space="preserve">
-    <value>You have no albums yet</value>
+    <value>Aún no has subido ninguna ruta</value>
   </data>
   <data name="CommonMsg_HiImageQualityDisabled" xml:space="preserve">
-    <value>Low network speed, hi image quality disabled</value>
+    <value>Baja velocidad de red, baja calidad de imagen</value>
   </data>
   <data name="CommonMsg_UseOriginalQuality" xml:space="preserve">
-    <value>Full</value>
+    <value>Calidad</value>
   </data>
   <data name="Feed_ErrorLoadingFeed" xml:space="preserve">
-    <value>Feed not available, please check your connection to Internet</value>
+    <value>El feed no está cargado, verifique su conexión de red</value>
   </data>
   <data name="ScreenFeedName" xml:space="preserve">
-    <value>Feed</value>
+    <value>Feed de</value>
   </data>
   <data name="ScreenLoadedAlbumsName" xml:space="preserve">
-    <value>Uploaded</value>
+    <value>Subido</value>
   </data>
   <data name="ScreenPrivateName" xml:space="preserve">
-    <value>Private</value>
+    <value>Privado</value>
   </data>
   <data name="ShareMsg_ChooseRouteForAddPoint" xml:space="preserve">
-    <value>Choose route which you want add new point</value>
+    <value>Elija una ruta para agregar un punto</value>
   </data>
   <data name="ShareMsg_ChooseWorker" xml:space="preserve">
-    <value>Your choose</value>
+    <value>Tu elección</value>
   </data>
   <data name="ShareMsg_MakingNewPoint" xml:space="preserve">
-    <value>Making new point</value>
+    <value>Crea un nuevo punto</value>
   </data>
   <data name="RoutePointDescription_Caption" xml:space="preserve">
-    <value>Point's description</value>
+    <value>Descripción del punto</value>
   </data>
   <data name="RoutePointDescription_Text" xml:space="preserve">
-    <value>Describe this place ...</value>
+    <value>Describe este lugar ...</value>
   </data>
   <data name="Login_YourLogin" xml:space="preserve">
-    <value>Name or E-Mail</value>
+    <value>Nombre o Email</value>
   </data>
   <data name="Login_Password" xml:space="preserve">
-    <value>Password</value>
+    <value>Contraseña</value>
   </data>
   <data name="Login_Or" xml:space="preserve">
-    <value>OR</value>
+    <value>O</value>
   </data>
   <data name="Login_Enter" xml:space="preserve">
-    <value>Enter</value>
+    <value>Entrar</value>
   </data>
   <data name="Login_Registration" xml:space="preserve">
-    <value>Registration</value>
+    <value>Registro</value>
   </data>
   <data name="Login_GoogleAuth" xml:space="preserve">
-    <value>Continue with Google</value>
+    <value>Continuar con google</value>
   </data>
   <data name="MakeRouteLink_EnableShareAccess" xml:space="preserve">
-    <value>Enable public access by link</value>
+    <value>Habilitar el acceso público por enlace</value>
   </data>
   <data name="MainPage_CurrentSyncStatus" xml:space="preserve">
-    <value>Current state synchronization:</value>
+    <value>Sincronización del estado actual:</value>
   </data>
   <data name="NewRoute_Caption" xml:space="preserve">
-    <value>New route</value>
+    <value>Nueva ruta</value>
   </data>
   <data name="NewRoute_Name" xml:space="preserve">
-    <value>Route name:</value>
+    <value>Nombre de ruta:</value>
   </data>
   <data name="NewRoute_FirstRouteHelper" xml:space="preserve">
-    <value>You create your first route. It can be represented in the form of photos, videos, your text notes, and simply as a specific place that you want to remember.</value>
+    <value>Creas tu primera ruta. Se puede representar en forma de fotos, videos, sus notas de texto y simplemente como un lugar específico que desea recordar.</value>
   </data>
   <data name="NewRoute_FirstRouteHelperMore" xml:space="preserve">
-    <value>After you create a route, you can share it by creating a link to it, or through any channel convenient for you - GoSh !, Telegram, Whatsapp, Facebook, Instagram</value>
+    <value>Después de crear una ruta, puede compartirla creando un enlace o a través de cualquier canal conveniente para usted: GoSh!, Telegram, Whatsapp, Facebook, Instagram</value>
   </data>
   <data name="Registration_Caption" xml:space="preserve">
-    <value>Registration</value>
+    <value>Registro</value>
   </data>
   <data name="Registration_Name" xml:space="preserve">
-    <value>Name</value>
+    <value>Nombre </value>
   </data>
   <data name="Registration_Email" xml:space="preserve">
     <value>Email</value>
   </data>
   <data name="Registration_Password" xml:space="preserve">
-    <value>Password</value>
+    <value>Contraseña</value>
   </data>
   <data name="Registration_PasswordRepeat" xml:space="preserve">
-    <value>Repeat password</value>
+    <value>Repite la contraseña</value>
   </data>
   <data name="Registration_RegistrationSubmit" xml:space="preserve">
-    <value>Submit</value>
+    <value>Registro</value>
   </data>
   <data name="RouteCreated_NowYouCanAddNewPoint" xml:space="preserve">
-    <value>Now you can add first point into your route</value>
+    <value>Ahora puedes agregar el primer punto a tu ruta</value>
   </data>
   <data name="RouteCreated_AddNewPoint" xml:space="preserve">
-    <value>Add</value>
+    <value>Añadir</value>
   </data>
   <data name="Route_FirstPoint" xml:space="preserve">
-    <value>You have no points yet, you can add a new one.</value>
+    <value>Aún no tiene puntos, puede agregar uno nuevo</value>
   </data>
   <data name="Routes_RoutesNotFound" xml:space="preserve">
-    <value>No routes found</value>
+    <value>No se encontraron rutas</value>
   </data>
   <data name="ShareRoute_Caption" xml:space="preserve">
-    <value>Route access</value>
+    <value>Acceso a la ruta</value>
   </data>
   <data name="ShareRoute_ContactsNotFound" xml:space="preserve">
-    <value>Contacts not found</value>
+    <value>Contactos no encontrados</value>
   </data>
   <data name="ShareRoute_InviteFriends" xml:space="preserve">
-    <value>Invite your friends to share your impressions with them:</value>
+    <value>Invita a tus amigos a compartir tus impresiones con ellos:</value>
   </data>
   <data name="ShareRoutes_ChooseCase" xml:space="preserve">
-    <value>Choose a way</value>
+    <value>Elige un camino</value>
   </data>
   <data name="ShareRoutes_Other" xml:space="preserve">
-    <value>Other</value>
+    <value>Más</value>
   </data>
   <data name="ShareRoutes_PublicAccess" xml:space="preserve">
-    <value>General access</value>
+    <value>Acceso general</value>
   </data>
   <data name="ShareRoutes_AlbumInGosh" xml:space="preserve">
-    <value>GoSh! album</value>
+    <value>GoSh! álbum</value>
   </data>
   <data name="ShareRoutes_AddPersonAccess" xml:space="preserve">
-    <value>Add access</value>
+    <value>Agregar acceso</value>
   </data>
   <data name="Onboarding_Hello" xml:space="preserve">
-    <value>Welcome to
-GoSh!</value>
+    <value>¡Bienvenido a
+Gosh!</value>
   </data>
   <data name="Onboarding_Skip" xml:space="preserve">
-    <value>Skip</value>
+    <value>Omitir</value>
   </data>
   <data name="Onboarding_Begin" xml:space="preserve">
-    <value>Start</value>
+    <value>Comienzo</value>
   </data>
   <data name="Onboarding_SaveYourImpression" xml:space="preserve">
-    <value>Save your impressions by combining them by topic, for example: Holidays in Cyprus; Free parking; Conferences</value>
+    <value>Guarde sus impresiones combinándolas por tema, por ejemplo: vacaciones en Chipre; Estacionamiento gratis; Conferencias</value>
   </data>
   <data name="Onboarding_AllYourNotes" xml:space="preserve">
-    <value>In this piggy bank all your photos, text notes with descriptions of interesting places and events, tied to a position on the map</value>
+    <value>En esta hucha todas sus fotos, notas de texto con descripciones de lugares y eventos interesantes relacionados con la posición en el mapa.</value>
   </data>
   <data name="Onboarding_PlanningRoutes" xml:space="preserve">
-    <value>You can plan routes by adding points with places from other applications, for example, Google maps or Yandex.Maps</value>
+    <value>Puede planificar rutas agregando puntos con lugares de otras aplicaciones, por ejemplo, mapas de Google o Yandex.</value>
   </data>
   <data name="Onboarding_AddYourPhotos" xml:space="preserve">
-    <value>Add photos from the gallery or take photos right away in GoSh! If the photo contains geotag, you can see it on the map.</value>
+    <value>¡Agregue fotos de la galería o tome fotos de inmediato en GoSh! Si la foto contiene geoetiquetas, puede verla en el mapa.</value>
   </data>
   <data name="Onboarding_WorksOffline" xml:space="preserve">
-    <value>Gosh! works where there is no Internet. Record your impressions anywhere, when the network appears, data can be synchronized.</value>
+    <value>Gosh! funciona donde no hay internet. Registre sus impresiones en cualquier lugar, cuando aparezca la red, los datos se pueden sincronizar.</value>
   </data>
   <data name="Onboarding_Share" xml:space="preserve">
-    <value>Share your impressions with your friends!</value>
+    <value>¡Comparte tus impresiones con tus amigos!</value>
   </data>
   <data name="Onboarding_TogetherBetter" xml:space="preserve">
-    <value>Together is better - take a photo, record impressions with friends in one route!</value>
+    <value>Juntos es mejor: ¡tome una foto, grabe impresiones con amigos en una ruta!</value>
   </data>
   <data name="Onboarding_GoToStart" xml:space="preserve">
-    <value>Let's get started soon!</value>
+    <value>¡Comencemos pronto!</value>
   </data>
   <data name="CommonMsg_Warning" xml:space="preserve">
-    <value>Warning!</value>
+    <value>¡Advertencia!</value>
   </data>
   <data name="CommonMsg_Yes" xml:space="preserve">
-    <value>Yes</value>
+    <value>Si</value>
   </data>
   <data name="CommonMsg_No" xml:space="preserve">
     <value>No</value>
   </data>
   <data name="Albums_AreYourSureToDeleteLoadedRoutes" xml:space="preserve">
-    <value>Are you sure you want to delete the downloaded routes? If necessary, you can download them again from the feed.</value>
+    <value>¿Estás seguro de que deseas eliminar las rutas descargadas? Si es necesario, puede descargarlos nuevamente desde el feed de.</value>
   </data>
   <data name="Login_RegistrationProcess" xml:space="preserve">
-    <value>Registrations...</value>
+    <value>Inscripciones ...</value>
   </data>
   <data name="Login_AuthorizationProcess" xml:space="preserve">
-    <value>Authorizations...</value>
+    <value>Autorizaciones ...</value>
   </data>
   <data name="Login_RegistrationError" xml:space="preserve">
-    <value>User registration error. The indicated name or email address may already be taken.</value>
+    <value>Error de registro de usuario. El nombre o la dirección de correo electrónico indicados ya pueden estar tomados</value>
   </data>
   <data name="Login_EnterSamePasswords" xml:space="preserve">
-    <value>Please enter the same password</value>
+    <value>Por favor ingrese la misma contraseña</value>
   </data>
   <data name="Login_EnterCorrectEmail" xml:space="preserve">
-    <value>Please enter a valid email address</value>
+    <value>Por favor, introduce una dirección de correo electrónico válida</value>
   </data>
   <data name="Login_FillAllFields" xml:space="preserve">
-    <value>Please fill in all fields</value>
+    <value>Por favor rellena todos los campos</value>
   </data>
   <data name="Login_IncorrectLoginOrPassword" xml:space="preserve">
-    <value>Incorrect login or password!</value>
+    <value>¡Usuario o contraseña incorrecta!</value>
   </data>
   <data name="Login_FillLoginAndPassword" xml:space="preserve">
-    <value>Please fill in the username and password</value>
+    <value>Por favor complete el nombre de usuario y contraseña</value>
   </data>
   <data name="Login_AuthError" xml:space="preserve">
-    <value>User authorization failed.</value>
+    <value>Autorización de usuario fallida.</value>
   </data>
   <data name="MakeRouteLink_PublicAccessEnabled" xml:space="preserve">
-    <value>Route sharing enabled</value>
+    <value>Intercambio de enlaces activado</value>
   </data>
   <data name="MakeRouteLink_PublicAccessDisabled" xml:space="preserve">
-    <value>Link sharing disabled</value>
+    <value>Intercambio de enlaces desactivado</value>
   </data>
   <data name="MakeRouteLink_PublicReferenceCreated" xml:space="preserve">
-    <value>Link created for sharing the route</value>
+    <value>Enlace creado para compartir la ruta</value>
   </data>
   <data name="MakeRouteLink_ErrorWhileCreatedReference" xml:space="preserve">
-    <value>Error enabling route sharing. Check your network connection.</value>
+    <value>Error al habilitar la ruta compartida. Verifica tu conexión de red.</value>
   </data>
   <data name="MakeRouteLink_ReferenceCopiedToClipboard" xml:space="preserve">
-    <value>Link copied to clipboard</value>
+    <value>Enlace copiado al portapapeles</value>
   </data>
   <data name="NewRoute_NeedToFillNameRoute" xml:space="preserve">
-    <value>Need to fill route name</value>
+    <value>Necesita completar el nombre de la ruta</value>
   </data>
   <data name="ReceivePush_YouHaveNewRoutes" xml:space="preserve">
-    <value>New routes are available to you</value>
+    <value>Nuevas rutas están disponibles para usted</value>
   </data>
   <data name="RouteCreated_RouteCreatedSuccessful" xml:space="preserve">
-    <value>The route '[routeName]' has been created.</value>
+    <value>La ruta '[routeName]' ha sido creada.</value>
   </data>
   <data name="RoutePoint_AreYouSureToSetNewCoordinates" xml:space="preserve">
-    <value>Are you sure you want to set new coordinates?</value>
+    <value>¿Estás seguro de que deseas establecer nuevas coordenadas?</value>
   </data>
   <data name="RoutePoint_DeletingPhoto" xml:space="preserve">
-    <value>Delete photo</value>
-  </data>
-  <data name="RoutePoint_DeletingPoint" xml:space="preserve">
-    <value>Deleting a Waypoint</value>
-  </data>
-  <data name="RoutePoint_AreYouSureToDeletePhoto" xml:space="preserve">
-    <value>Are you sure you want to delete the photo?</value>
-  </data>
-  <data name="RoutePoint_AreYouSureToDeletePoint" xml:space="preserve">
-    <value>Are you sure you want to delete the point?</value>
-  </data>
-  <data name="RoutePoint_ErrorWhileDeletingPoint" xml:space="preserve">
-    <value>Error deleting point</value>
-  </data>
-  <data name="RoutePoint_RightNeedToRecordAudio" xml:space="preserve">
-    <value>Resolution is required for sound recording.</value>
-  </data>
-  <data name="CommonMsg_Audio" xml:space="preserve">
-    <value>Audio</value>
-  </data>
-  <data name="CommonMsg_Cancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="CommonMsg_OkAndSave" xml:space="preserve">
-    <value>Complete and save</value>
-  </data>
-  <data name="RoutePoint_AudioRecording" xml:space="preserve">
-    <value>Recording in progress ...</value>
-  </data>
-  <data name="RoutePoint_RightNeedToPickPhoto" xml:space="preserve">
-    <value>Resolution is required to select a photo</value>
-  </data>
-  <data name="RoutePoint_GeotagsExists" xml:space="preserve">
-    <value>Shooting coordinates available</value>
-  </data>
-  <data name="RoutePoint_UseGeotagsForPoint" xml:space="preserve">
-    <value>Use them for a given point?</value>
-  </data>
-  <data name="RoutePoint_RightNeedToTakePhoto" xml:space="preserve">
-    <value>Resolution is necessary for taking photos</value>
-  </data>
-  <data name="CommonMsg_GeolocationNotEnabled" xml:space="preserve">
-    <value>Geolocation service not available</value>
-  </data>
-  <data name="CommonMsg_ForGettingCoordinatesNeedGeolocationEnabled" xml:space="preserve">
-    <value>To determine your location, you must enable the service.</value>
-  </data>
-  <data name="RoutePoint_RouteNameMustBeFill" xml:space="preserve">
-    <value>Point name must be filled</value>
-  </data>
-  <data name="ShareRoutes_ExportPhotos" xml:space="preserve">
-    <value>Upload photos</value>
-  </data>
-  <data name="ShareRoutes_ExportDescriptions" xml:space="preserve">
-    <value>Upload descriptions</value>
-  </data>
-  <data name="ShareRoute_AreYouSureToPublishRoute" xml:space="preserve">
-    <value>After publication, the route will be available to all users in the album. Are you sure?</value>
+    <value>Borrar foto</value>
   </data>
   <data name="CommonMsg_Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
-  <data name="ShareRoute_RouteWillBePublishAfterSync" xml:space="preserve">
-    <value>After synchronization, the route will be published</value>
-  </data>
-  <data name="ShareRoute_PublishOnlyYourRoutes" xml:space="preserve">
-    <value>Only routes you have created can be published.</value>
-  </data>
-  <data name="ShareRoute_AreYouSureAfterPublishYouCantDelete" xml:space="preserve">
-    <value>After you invite your friends, you cannot delete the route. Are you sure?</value>
-  </data>
-  <data name="ShareRoute_ErrorShareRoute" xml:space="preserve">
-    <value>Could not share route</value>
-  </data>
-  <data name="ShareRoute_RouteSharedToSelectedUsers" xml:space="preserve">
-    <value>The route is now available to selected users.</value>
-  </data>
-  <data name="Login_GoogleAuthCaption" xml:space="preserve">
-    <value>Google Authorization</value>
-  </data>
-  <data name="Login_GoogleAuthError" xml:space="preserve">
-    <value>Sorry, an error occurred while trying to use Google Chrome</value>
-  </data>
-  <data name="Sync_UseSyncInRoaming" xml:space="preserve">
-    <value>Use sync when roaming?</value>
-  </data>
-  <data name="Sync_Error" xml:space="preserve">
-    <value>Sync error</value>
-  </data>
-  <data name="Sync_CheckYourConnection" xml:space="preserve">
-    <value>Check your network connection</value>
-  </data>
-  <data name="Sync_SyncAlreadyStarted" xml:space="preserve">
-    <value>Sync is already running.</value>
-  </data>
-  <data name="ScreenAboutUsName" xml:space="preserve">
-    <value>About us</value>
-  </data>
-  <data name="ScreenChooseWorkerName" xml:space="preserve">
-    <value>Selection processing</value>
-  </data>
-  <data name="ScreenOnBoardingName" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="CommonMsg_PointCount" xml:space="preserve">
-    <value>Waypoints: [pointCount]</value>
-  </data>
-  <data name="CommonMsg_StepsCount" xml:space="preserve">
-    <value>Steps: [stepCount]</value>
-  </data>
-  <data name="RoutePoint_DescriptionAbsent" xml:space="preserve">
-    <value>Description not specified</value>
-  </data>
-  <data name="RoutePoint_GeoCoordinatesCopiedToClipboard" xml:space="preserve">
-    <value>Coordinates copied to clipboard</value>
-  </data>
-  <data name="RoutePoint_AddressCopiedToClipboard" xml:space="preserve">
-    <value>Address copied to clipboard</value>
-  </data>
-  <data name="RoutePoint_AddressAbsent" xml:space="preserve">
-    <value>Address not defined</value>
+  <data name="RoutePoint_PointNameEditCaption" xml:space="preserve">
+    <value>Nombre del waypoint:</value>
   </data>
   <data name="RoutePoint_NameAbsent" xml:space="preserve">
-    <value>Name not specified</value>
+    <value>Nombre no especificado</value>
   </data>
-  <data name="RoutePoint_PointNameEditCaption" xml:space="preserve">
-    <value>Waypoint's name:</value>
+  <data name="RoutePoint_AddressAbsent" xml:space="preserve">
+    <value>Dirección no definida</value>
+  </data>
+  <data name="RoutePoint_AddressCopiedToClipboard" xml:space="preserve">
+    <value>Dirección copiada al portapapeles</value>
+  </data>
+  <data name="RoutePoint_GeoCoordinatesCopiedToClipboard" xml:space="preserve">
+    <value>Coordenadas copiadas al portapapeles</value>
+  </data>
+  <data name="RoutePoint_DescriptionAbsent" xml:space="preserve">
+    <value>Descripción no especificada</value>
+  </data>
+  <data name="CommonMsg_StepsCount" xml:space="preserve">
+    <value>Pasos: [stepCount]</value>
+  </data>
+  <data name="CommonMsg_PointCount" xml:space="preserve">
+    <value>Puntos: [pointCount]</value>
+  </data>
+  <data name="ScreenOnBoardingName" xml:space="preserve">
+    <value>Descripción</value>
+  </data>
+  <data name="ScreenChooseWorkerName" xml:space="preserve">
+    <value>Procesamiento de selección</value>
+  </data>
+  <data name="ScreenAboutUsName" xml:space="preserve">
+    <value>Sobre nosotros</value>
+  </data>
+  <data name="Sync_SyncAlreadyStarted" xml:space="preserve">
+    <value>La sincronización ya se está ejecutando</value>
+  </data>
+  <data name="Sync_CheckYourConnection" xml:space="preserve">
+    <value>Comprueba tu conexión de red</value>
+  </data>
+  <data name="Sync_Error" xml:space="preserve">
+    <value>Error de sincronización</value>
+  </data>
+  <data name="Sync_UseSyncInRoaming" xml:space="preserve">
+    <value>¿Usar sincronización en itinerancia?</value>
+  </data>
+  <data name="Login_GoogleAuthError" xml:space="preserve">
+    <value>Lo sentimos, se produjo un error al intentar usar Google Chrome</value>
+  </data>
+  <data name="Login_GoogleAuthCaption" xml:space="preserve">
+    <value>Autorización de Google</value>
+  </data>
+  <data name="ShareRoute_RouteSharedToSelectedUsers" xml:space="preserve">
+    <value>La ruta ahora está disponible para usuarios seleccionados.</value>
+  </data>
+  <data name="ShareRoute_ErrorShareRoute" xml:space="preserve">
+    <value>No se pudo compartir la ruta</value>
+  </data>
+  <data name="ShareRoute_AreYouSureAfterPublishYouCantDelete" xml:space="preserve">
+    <value>Después de invitar a tus amigos, no puedes eliminar la ruta. ¿Estás seguro?</value>
+  </data>
+  <data name="ShareRoute_PublishOnlyYourRoutes" xml:space="preserve">
+    <value>Sólo puede publicar rutas que haya creado.</value>
+  </data>
+  <data name="ShareRoute_RouteWillBePublishAfterSync" xml:space="preserve">
+    <value>Después de la sincronización, se publicará la ruta.</value>
+  </data>
+  <data name="ShareRoute_AreYouSureToPublishRoute" xml:space="preserve">
+    <value>Después de la publicación, la ruta estará disponible para todos los usuarios en el álbum. ¿Estás seguro?</value>
+  </data>
+  <data name="ShareRoutes_ExportDescriptions" xml:space="preserve">
+    <value>Subir descripciones</value>
+  </data>
+  <data name="ShareRoutes_ExportPhotos" xml:space="preserve">
+    <value>Subir fotos</value>
+  </data>
+  <data name="RoutePoint_RouteNameMustBeFill" xml:space="preserve">
+    <value>El nombre del punto debe completarse</value>
+  </data>
+  <data name="CommonMsg_ForGettingCoordinatesNeedGeolocationEnabled" xml:space="preserve">
+    <value>Para determinar su ubicación, debe habilitar el servicio.</value>
+  </data>
+  <data name="CommonMsg_GeolocationNotEnabled" xml:space="preserve">
+    <value>Servicio de geolocalización no disponible</value>
+  </data>
+  <data name="RoutePoint_RightNeedToTakePhoto" xml:space="preserve">
+    <value>La resolución es necesaria para tomar fotos</value>
+  </data>
+  <data name="RoutePoint_UseGeotagsForPoint" xml:space="preserve">
+    <value>¿Usarlos para un punto dado?</value>
+  </data>
+  <data name="RoutePoint_GeotagsExists" xml:space="preserve">
+    <value>Coordenadas de tiro disponibles</value>
+  </data>
+  <data name="RoutePoint_RightNeedToPickPhoto" xml:space="preserve">
+    <value>Se requiere resolución para seleccionar una foto</value>
+  </data>
+  <data name="RoutePoint_AudioRecording" xml:space="preserve">
+    <value>Grabación en progreso ...</value>
+  </data>
+  <data name="CommonMsg_OkAndSave" xml:space="preserve">
+    <value>Completa y guarda</value>
+  </data>
+  <data name="CommonMsg_Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="CommonMsg_Audio" xml:space="preserve">
+    <value>Audio</value>
+  </data>
+  <data name="RoutePoint_RightNeedToRecordAudio" xml:space="preserve">
+    <value>Se requiere resolución para la grabación de sonido.</value>
+  </data>
+  <data name="RoutePoint_ErrorWhileDeletingPoint" xml:space="preserve">
+    <value>Error al eliminar el punto</value>
+  </data>
+  <data name="RoutePoint_AreYouSureToDeletePoint" xml:space="preserve">
+    <value>¿Seguro que quieres eliminar el punto?</value>
+  </data>
+  <data name="RoutePoint_AreYouSureToDeletePhoto" xml:space="preserve">
+    <value>¿Seguro que quieres eliminar la foto?</value>
+  </data>
+  <data name="RoutePoint_DeletingPoint" xml:space="preserve">
+    <value>Eliminar un waypoint</value>
   </data>
 </root>

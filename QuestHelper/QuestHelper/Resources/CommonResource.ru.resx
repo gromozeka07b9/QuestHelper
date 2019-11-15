@@ -244,7 +244,7 @@
     <value>Другие</value>
   </data>
   <data name="Onboarding_Hello" xml:space="preserve">
-    <value>Добро пожаловать в&amp;#10;GoSh!</value>
+    <value>Добро пожаловать GoSh!</value>
   </data>
   <data name="Onboarding_Skip" xml:space="preserve">
     <value>Пропустить</value>
@@ -253,7 +253,7 @@
     <value>Начать</value>
   </data>
   <data name="Onboarding_SaveYourImpression" xml:space="preserve">
-    <value>Сохраняйте свои впечатления, объединяя их по темам, например:&amp;#10; - отпуск на Кипре&amp;#10; - бесплатные парковки&amp;#10; - заметки с конференции</value>
+    <value>Сохраните свои впечатления, объединив их по темам, например: Отдых на Кипре; Бесплатная парковка; Конференции</value>
   </data>
   <data name="Onboarding_AllYourNotes" xml:space="preserve">
     <value>В этой копилке все ваши фотографии, текстовые заметки с описаниями интересных мест и событий, привязанных к позиции на карте</value>

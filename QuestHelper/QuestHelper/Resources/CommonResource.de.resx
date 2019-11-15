@@ -245,7 +245,7 @@
     <value>In diesem Sparschwein sind alle Ihre Fotos, Textnotizen mit Beschreibungen von interessanten Orten und Ereignissen an eine Position auf der Karte gebunden</value>
   </data>
   <data name="Onboarding_SaveYourImpression" xml:space="preserve">
-    <value>Behalten Sie Ihre Eindrücke bei, indem Sie sie nach Themen kombinieren, zum Beispiel:&amp;#10; - Urlaub auf Zypern&amp;#10; - Kostenloses Parken&amp;#10; - Notizen von der Konferenz</value>
+    <value>Speichern Sie Ihre Eindrücke, indem Sie sie thematisch zusammenfassen, zum Beispiel: Urlaub auf Zypern; Kostenlose Parkplätze; Konferenzen</value>
   </data>
   <data name="Onboarding_Begin" xml:space="preserve">
     <value>Starten Sie</value>
@@ -254,7 +254,7 @@
     <value>Überspringen</value>
   </data>
   <data name="Onboarding_Hello" xml:space="preserve">
-    <value>Willkommen bei&amp;#10;GoSh!</value>
+    <value>Willkommen zu GoSh!</value>
   </data>
   <data name="Albums_AreYourSureToDeleteLoadedRoutes" xml:space="preserve">
     <value>Möchten Sie die heruntergeladenen Routen wirklich löschen? Bei Bedarf können Sie sie erneut vom Band herunterladen.</value>

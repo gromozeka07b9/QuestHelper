@@ -178,7 +178,7 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Warning.
+        ///   Ищет локализованную строку, похожую на Warning!.
         /// </summary>
         public static string CommonMsg_Warning {
             get {
@@ -521,7 +521,7 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Keep your impressions by combining them by topics, for example:&amp;#10; - Holidays in Cyprus&amp;#10; - Free parking&amp;#10; - Notes from the conference.
+        ///   Ищет локализованную строку, похожую на Save your impressions by combining them by topic, for example: Holidays in Cyprus; Free parking; Conferences.
         /// </summary>
         public static string Onboarding_SaveYourImpression {
             get {
@@ -890,7 +890,7 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Loaded.
+        ///   Ищет локализованную строку, похожую на Uploaded.
         /// </summary>
         public static string ScreenLoadedAlbumsName {
             get {
