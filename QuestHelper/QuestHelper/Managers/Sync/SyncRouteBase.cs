@@ -28,7 +28,7 @@ namespace QuestHelper.Managers.Sync
             return result;
         }
 
-        protected List<string> GetRouteJsonStructure(ViewRoute viewRoute)
+        protected List<string> GetRouteJsonStructure(ViewRoute viewRoute, string coverImgBase64)
         {
             List<string> jsonStructures = new List<string>();
             if (viewRoute != null)
@@ -41,6 +41,9 @@ namespace QuestHelper.Managers.Sync
                     Version = viewRoute.Version,
                     IsPublished = viewRoute.IsPublished,
                     CreatorId = viewRoute.CreatorId,
+                    Description = viewRoute.Description,
+                    ImgFilename = viewRoute.ImgFilename,
+                    CoverImgBase64 = string.IsNullOrEmpty(coverImgBase64) ? null : coverImgBase64,
                     UserId = 0
                 });
                 jsonStructures.Add(jsonObject.ToString());

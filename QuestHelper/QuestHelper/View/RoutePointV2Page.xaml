@@ -172,7 +172,7 @@
                                     <TapGestureRecognizer Command="{Binding ClearNameCommand}"/>
                                 </Image.GestureRecognizers>
                             </Image>
-                            <Editor x:Name="NameEditorCtrl" Margin="0" Text="{Binding NameForEdit}" FontSize="16" WidthRequest="200" HeightRequest="40" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand"></Editor>
+                            <Editor x:Name="NameEditorCtrl" Margin="0" AutoSize="TextChanges" Text="{Binding NameForEdit}" FontSize="16" WidthRequest="200" HeightRequest="40" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand"></Editor>
                             <Image Source="baseline_done_black_48.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Start" Unfocused="Image_Unfocused">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding EditNameCompleteCommand}"/>

@@ -105,6 +105,19 @@ namespace QuestHelper.Server.Controllers.Routes
                     routeObject.VersionsHash = string.Empty;
                     routeObject.VersionsList = string.Empty;
                     db.Entry(entity).CurrentValues.SetValues(routeObject);
+                    if (!string.IsNullOrEmpty(routeObject.CoverImgBase64))
+                    {
+                        var bytes = Convert.FromBase64String(routeObject.CoverImgBase64);
+                        try
+                        {
+                            System.IO.File.WriteAllBytes(Path.Combine(_pathToMediaCatalog, routeObject.ImgFilename), bytes);
+                        }
+                        catch (Exception e)
+                        {
+                            throw new Exception($"Error writing route cover: {routeObject.ImgFilename}", e);
+                        }
+                    }
+
                 }
                 db.SaveChanges();
             }

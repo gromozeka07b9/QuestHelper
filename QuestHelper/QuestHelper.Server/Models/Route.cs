@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QuestHelper.Server.Models
 {
@@ -24,5 +25,8 @@ namespace QuestHelper.Server.Models
         public string Description { get; set; }
         public string VersionsHash { get; set; }
         public string VersionsList { get; set; }
+        
+        [NotMapped]
+        public string CoverImgBase64 { get; set; }
     }
 }

@@ -20,6 +20,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Newtonsoft.Json.Linq;
 using Acr.UserDialogs;
+using System.IO;
 
 namespace QuestHelper.ViewModel
 {
@@ -40,17 +41,23 @@ namespace QuestHelper.ViewModel
         private bool _noPointWarningIsVisible;
         private bool _isRefreshing;
         private bool _isVisibleModalRouteEdit = false;
+        private bool _isVisibleNavigationToolbar = true;
         private string _descriptionForEdit;
         private string _nameForEdit;
-        private string _description;
+        private string _coverImagePathForEdit;
+        private string _imgFilenameForEdit;
 
         public INavigation Navigation { get; set; }
+        
         public event PropertyChangedEventHandler PropertyChanged;
+        public ICommand ChooseImageForCoverCommand { get; private set; }
         public ICommand ShowNewRouteDialogCommand { get; private set; }
         public ICommand AddNewRoutePointCommand { get; private set; }
         public ICommand StartDialogCommand { get; private set; }
 
         public ICommand EditRouteCommand { get; private set; }
+        public ICommand EditRouteCompleteCommand { get; private set; }
+        public ICommand CancelEditRouteCommand { get; private set; }
         public ICommand ShareRouteCommand { get; private set; }
         public ICommand FullScreenMapCommand { get; private set; }
         public ICommand PhotoAlbumCommand { get; private set; }
@@ -59,13 +66,52 @@ namespace QuestHelper.ViewModel
         {
             _vroute = new ViewRoute(routeId);
             _isFirstRoute = isFirstRoute;
+            ChooseImageForCoverCommand = new Command(chooseImageForCoverCommand);
             ShowNewRouteDialogCommand = new Command(showNewRouteData);
             AddNewRoutePointCommand = new Command(addNewRoutePointAsync);
             StartDialogCommand = new Command(startDialog);
             EditRouteCommand = new Command(editRouteCommandAsync);
+            EditRouteCompleteCommand = new Command(editRouteCompleteCommand);
+            CancelEditRouteCommand = new Command(cancelEditRouteCommand);
             ShareRouteCommand = new Command(shareRouteCommandAsync);
             FullScreenMapCommand = new Command(fullScreenMapCommandAsync);
             PhotoAlbumCommand = new Command(photoAlbumCommandAsync);
+        }
+
+        private async void chooseImageForCoverCommand(object obj)
+        {
+            ImageManager imageManager = new ImageManager();
+            var pickPhoto = await imageManager.PickPhotoAsync();
+            if (pickPhoto.pickPhotoResult)
+            {
+                ImgFilenameForEdit = ImagePathManager.GetMediaFilename(pickPhoto.newMediaId, MediaObjectTypeEnum.Image, false);
+                CoverImagePathForEdit = Path.Combine(ImagePathManager.GetPicturesDirectory(), ImgFilenameForEdit);
+                //ImgFilename = pickPhoto.newMediaId;
+                //CoverImagePathForEdit = 
+            }
+        }
+
+        private void cancelEditRouteCommand(object obj)
+        {
+            IsVisibleModalRouteEdit = !IsVisibleModalRouteEdit;
+            IsVisibleNavigationToolbar = !IsVisibleModalRouteEdit;
+        }
+
+        private void editRouteCompleteCommand(object obj)
+        {
+            string newCoverImagePath = Path.Combine(ImagePathManager.GetPicturesDirectory(), string.IsNullOrEmpty(ImgFilenameForEdit) ? string.Empty : ImgFilenameForEdit);
+            if(!NameForEdit.Equals(Name) || !DescriptionForEdit.Equals(Description) || !newCoverImagePath.Equals(CoverImage))
+            {
+                _vroute.Name = NameForEdit;
+                _vroute.Description = DescriptionForEdit;
+                _vroute.ImgFilename = ImgFilenameForEdit;
+                _vroute.Version++;
+                _vroute.ObjVerHash = string.Empty;
+                _vroute.Save();
+                Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage() { RouteId = _vroute.Id, NeedCheckVersionRoute = true }, string.Empty);
+            }
+            IsVisibleModalRouteEdit = !IsVisibleModalRouteEdit;
+            IsVisibleNavigationToolbar = !IsVisibleModalRouteEdit;
         }
 
         private void photoAlbumCommandAsync(object obj)
@@ -96,10 +142,13 @@ namespace QuestHelper.ViewModel
         private void editRouteCommandAsync(object obj)
         {
             IsVisibleModalRouteEdit = !IsVisibleModalRouteEdit;
+            IsVisibleNavigationToolbar = !IsVisibleModalRouteEdit;
             if (IsVisibleModalRouteEdit)
             {
                 NameForEdit = Name;
                 DescriptionForEdit = Description;
+                CoverImagePathForEdit = CoverImage;
+                ImgFilenameForEdit = ImgFilename;
             }
         }
 
@@ -177,6 +226,25 @@ namespace QuestHelper.ViewModel
                 return _isRefreshing;
             }
         }
+
+        public bool IsVisibleNavigationToolbar
+        {
+            set
+            {
+                if (_isVisibleNavigationToolbar != value)
+                {
+                    _isVisibleNavigationToolbar = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("IsVisibleNavigationToolbar"));
+                    }
+                }
+            }
+            get
+            {
+                return _isVisibleNavigationToolbar;
+            }
+        }
         public string Name
         {
             set
@@ -225,78 +293,134 @@ namespace QuestHelper.ViewModel
         {
             set
             {
-                if (_description != value)
+                if (_vroute.Description != value)
                 {
-                    _description = value;
+                    _vroute.Description = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Description"));
                 }
             }
             get
             {
-                return _description;
+                return _vroute.Description;
+            }
+        }
+
+        public string CoverImagePathForEdit
+        {
+            set
+            {
+                if (_coverImagePathForEdit != value)
+                {
+                    _coverImagePathForEdit = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CoverImagePathForEdit"));
+                }
+            }
+            get
+            {
+                return _coverImagePathForEdit;
+            }
+        }
+
+        public string CoverImage
+        {
+            get
+            {
+                return _vroute.CoverImage;
+            }
+        }
+        
+        public string ImgFilename
+        {
+            set
+            {
+                if (_vroute.ImgFilename != value)
+                {
+                    _vroute.ImgFilename = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImgFilename"));
+                }
+            }
+            get
+            {
+                return _vroute.ImgFilename;
+            }
+        }
+        
+        public string ImgFilenameForEdit
+        {
+            set
+            {
+                if (_imgFilenameForEdit != value)
+                {
+                    _imgFilenameForEdit = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImgFilenameForEdit"));
+                }
+            }
+            get
+            {
+                return _imgFilenameForEdit;
             }
         }
 
         /*public string RouteLength
-        {
-            set
-            {
-                if (_routeLength != value)
-                {
-                    _routeLength = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RouteLength"));
-                }
-            }
-            get
-            {
-                return _routeLength;
-            }
-        }
-        public string RouteLengthSteps
-        {
-            set
-            {
-                if (_routeLengthSteps != value)
-                {
-                    _routeLengthSteps = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RouteLengthSteps"));
-                }
-            }
-            get
-            {
-                return _routeLengthSteps;
-            }
-        }
-        public int CountOfPhotos
-        {
-            set
-            {
-                if (_countOfPhotos != value)
-                {
-                    _countOfPhotos = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountOfPhotos"));
-                }
-            }
-            get
-            {
-                return _countOfPhotos;
-            }
-        }
-        public int CountOfPoints
-        {
-            set
-            {
-                if (_countOfPoints != value)
-                {
-                    _countOfPoints = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountOfPoints"));
-                }
-            }
-            get
-            {
-                return _countOfPoints;
-            }
-        }*/
+      {
+          set
+          {
+              if (_routeLength != value)
+              {
+                  _routeLength = value;
+                  PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RouteLength"));
+              }
+          }
+          get
+          {
+              return _routeLength;
+          }
+      }
+      public string RouteLengthSteps
+      {
+          set
+          {
+              if (_routeLengthSteps != value)
+              {
+                  _routeLengthSteps = value;
+                  PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RouteLengthSteps"));
+              }
+          }
+          get
+          {
+              return _routeLengthSteps;
+          }
+      }
+      public int CountOfPhotos
+      {
+          set
+          {
+              if (_countOfPhotos != value)
+              {
+                  _countOfPhotos = value;
+                  PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountOfPhotos"));
+              }
+          }
+          get
+          {
+              return _countOfPhotos;
+          }
+      }
+      public int CountOfPoints
+      {
+          set
+          {
+              if (_countOfPoints != value)
+              {
+                  _countOfPoints = value;
+                  PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountOfPoints"));
+              }
+          }
+          get
+          {
+              return _countOfPoints;
+          }
+      }*/
 
         public ViewRoutePoint SelectedRoutePointItem
         {

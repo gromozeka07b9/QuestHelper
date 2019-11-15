@@ -13,17 +13,17 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <Frame CornerRadius="10" HasShadow="True" Padding="0" BorderColor="Accent" OutlineColor="#CAECFF" BackgroundColor="#C8FFFF" IsClippedToBounds="False" Margin="5">
-            <ScrollView Orientation="Vertical">
-                <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0">
-                    <Label IsVisible="{Binding IsEditMode, Converter={StaticResource inverter}}" Text="{Binding Description}" Margin="5" Style="{StaticResource RouteTextLabel}" TextColor="Gray" FontSize="Small" LineBreakMode="WordWrap" VerticalTextAlignment="Start" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding EditDescriptionCommand}" />
-                        </Label.GestureRecognizers>
-                    </Label>
-                    <view:CustomEditor IsVisible="{Binding IsEditMode}" x:Name="EditorElement" Placeholder="{lang:Translation RoutePointDescription_Text}" AutoSize="Disabled" Completed="Editor_OnCompleted"  Text="{Binding Description}" FontSize="Small" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Focused="EditorElement_OnFocused" Unfocused="EditorElement_OnUnfocused">
-                    </view:CustomEditor>
-                </StackLayout>
-            </ScrollView>
+            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0">
+                <!--Label IsVisible="{Binding IsEditMode, Converter={StaticResource inverter}}" Text="{Binding Description}" Margin="5" Style="{StaticResource RouteTextLabel}" TextColor="Gray" FontSize="Small" LineBreakMode="WordWrap" VerticalTextAlignment="Start" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding EditDescriptionCommand}" />
+                    </Label.GestureRecognizers>
+                </-->
+                <!--view:CustomEditor IsVisible="{Binding IsEditMode}" x:Name="EditorElement" Placeholder="{lang:Translation RoutePointDescription_Text}" AutoSize="Disabled" Completed="Editor_OnCompleted"  Text="{Binding Description}" FontSize="Small" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Focused="EditorElement_OnFocused" Unfocused="EditorElement_OnUnfocused">
+                    </-->
+                <Editor IsVisible="True" x:Name="EditorElement" HeightRequest="300" Placeholder="{lang:Translation RoutePointDescription_Text}" AutoSize="Disabled" Completed="Editor_OnCompleted"  Text="{Binding Description}" FontSize="16" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Focused="EditorElement_OnFocused" Unfocused="EditorElement_OnUnfocused">
+                </Editor>
+            </StackLayout>
         </Frame>
     </ContentPage.Content>
 </ContentPage>

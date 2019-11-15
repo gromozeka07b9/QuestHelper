@@ -364,11 +364,25 @@ namespace QuestHelper.Managers.Sync
             }
             else if (string.IsNullOrEmpty(routeServerHash))
             {
-                updateResult = await UploadAsync(GetRouteJsonStructure(localRoute), _routesApi);
+                updateResult = await UploadAsync(GetRouteJsonStructure(localRoute, ""), _routesApi);
             }
             else if (routeRoot?.Route?.Version < localRoute?.Version)
             {
-                updateResult = await UploadAsync(GetRouteJsonStructure(localRoute), _routesApi);
+
+                string coverImgBase64 = string.Empty;
+                if (!string.IsNullOrEmpty(localRoute.ImgFilename))
+                {
+                    RoutePointMediaObjectRequest mediaRequest = new RoutePointMediaObjectRequest(_apiUrl, _authToken);
+                    var httpResult = await mediaRequest.ImageExist(localRoute.ImgFilename);
+                    if(httpResult == HttpStatusCode.NotFound)
+                    {
+                        string pathToCoverImg = Path.Combine(ImagePathManager.GetPicturesDirectory(), localRoute.ImgFilename);
+                        var bytes = File.ReadAllBytes(pathToCoverImg);
+                        coverImgBase64 = Convert.ToBase64String(bytes);
+                    }
+                }
+
+                updateResult = await UploadAsync(GetRouteJsonStructure(localRoute, coverImgBase64), _routesApi);
             }
             else if (routeRoot?.Route?.Version == localRoute?.Version)
             {
