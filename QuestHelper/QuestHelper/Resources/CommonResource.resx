@@ -472,4 +472,7 @@ GoSh!</value>
   <data name="RoutePoint_PointNameEditCaption" xml:space="preserve">
     <value>Waypoint's name:</value>
   </data>
+  <data name="Permission_Position" xml:space="preserve">
+    <value>Right need for get your position</value>
+  </data>
 </root>

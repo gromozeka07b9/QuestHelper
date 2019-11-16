@@ -566,6 +566,15 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Right need for get your position.
+        /// </summary>
+        public static string Permission_Position {
+            get {
+                return ResourceManager.GetString("Permission_Position", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на New routes are available to you.
         /// </summary>
         public static string ReceivePush_YouHaveNewRoutes {

@@ -279,7 +279,7 @@ namespace QuestHelper.ViewModel
         {
             get
             {
-                return _isVisibleProgress ? 600 : 400;
+                return _isVisibleProgress ? 600 : 500;
             }
         }
 

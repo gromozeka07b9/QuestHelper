@@ -19,7 +19,7 @@ namespace QuestHelper.View
             //Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             //Thread.CurrentThread.CurrentCulture = new CultureInfo("ru-RU");
             //Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
-            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+            //Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
 #endif
 
             var pageCollections = new PagesCollection();

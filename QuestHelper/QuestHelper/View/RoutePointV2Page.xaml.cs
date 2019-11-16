@@ -1,5 +1,6 @@
 ﻿using QuestHelper.Managers;
 using QuestHelper.Model.Messages;
+using QuestHelper.Resources;
 using QuestHelper.View.Geo;
 using QuestHelper.ViewModel;
 using System;

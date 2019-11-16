@@ -472,4 +472,7 @@ Gosh!</value>
   <data name="RoutePoint_DeletingPoint" xml:space="preserve">
     <value>Eliminar un waypoint</value>
   </data>
+  <data name="Permission_Position" xml:space="preserve">
+    <value>La resolución es necesaria para obtener las coordenadas del punto.</value>
+  </data>
 </root>

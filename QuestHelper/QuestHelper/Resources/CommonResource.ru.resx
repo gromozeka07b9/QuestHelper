@@ -471,4 +471,7 @@
   <data name="RoutePoint_PointNameEditCaption" xml:space="preserve">
     <value>Название точки:</value>
   </data>
+  <data name="Permission_Position" xml:space="preserve">
+    <value>Разрешение необходимо для получения координат точки</value>
+  </data>
 </root>

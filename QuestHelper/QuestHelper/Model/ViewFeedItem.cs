@@ -177,7 +177,7 @@ namespace QuestHelper.Model
                 }
                 else
                 {
-                    imgCover = "mount1.png";
+                    imgCover = "emptyphoto.png";
                 }
                 return imgCover;
             }

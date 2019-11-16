@@ -16,8 +16,8 @@ namespace QuestHelper.Managers
     {
         public async Task<(double Latitude, double Longtitude)> GetCurrentLocationAsync()
         {
-            var locator = CrossGeolocator.Current;
             Position currentPosition = new Position();
+            var locator = CrossGeolocator.Current;
             if ((locator.IsGeolocationAvailable) && (locator.IsGeolocationEnabled))
             {
                 currentPosition = await locator.GetPositionAsync(TimeSpan.FromSeconds(10));

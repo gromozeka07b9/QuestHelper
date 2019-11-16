@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="pageFeed">Feed de</string>
+	<string name="pageLoadedAlbums">Subido</string>
+  <string name="pagePrivate">Privado</string>
+</resources>

@@ -451,4 +451,7 @@
   <data name="RoutePoint_PointNameEditCaption" xml:space="preserve">
     <value>Punktname:</value>
   </data>
+  <data name="Permission_Position" xml:space="preserve">
+    <value>Die Auflösung ist erforderlich, um die Koordinaten des Punktes zu erhalten</value>
+  </data>
 </root>

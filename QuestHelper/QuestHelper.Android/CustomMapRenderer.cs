@@ -22,6 +22,7 @@ using QuestHelper.Droid;
 using QuestHelper.Managers;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
+using QuestHelper.Resources;
 using QuestHelper.View;
 using QuestHelper.View.Geo;
 using Refractored.Controls;
@@ -136,7 +137,7 @@ namespace QuestHelper.Droid
         protected override async void OnMapReady(Android.Gms.Maps.GoogleMap map)
         {
             PermissionManager permissions = new PermissionManager();
-            if (await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, "Разрешение необходимо для получения координат точки"))
+            if (await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position))
             {
                 base.OnMapReady(map);
                 map.MapClick += Map_MapClick;
