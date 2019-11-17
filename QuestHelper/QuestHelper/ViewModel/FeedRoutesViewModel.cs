@@ -13,6 +13,7 @@ using System.Windows.Input;
 using QuestHelper.Managers;
 using Xamarin.Forms;
 using QuestHelper.View;
+using QuestHelper.Model.Messages;
 
 namespace QuestHelper.ViewModel
 {
@@ -128,6 +129,13 @@ namespace QuestHelper.ViewModel
                 {
                     await feedApi.GetCoverImage(item.ImgUrl);
                 }
+            }
+            bool AuthRequired = (feedApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || feedApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
+            if (AuthRequired)
+            {
+                var pageCollections = new PagesCollection();
+                MainPageMenuItem destinationPage = pageCollections.GetLoginPage();
+                Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);
             }
 
             return feed;
