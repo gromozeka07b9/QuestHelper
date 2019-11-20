@@ -66,8 +66,8 @@
                 </ListView>
             </StackLayout>
             <AbsoluteLayout Grid.Column="0" Grid.Row="0" IsVisible="{Binding RouteScreenIsVisible}" HorizontalOptions="End" VerticalOptions="End">
-                <StackLayout Orientation="Horizontal" HorizontalOptions="End" Margin="10">
-                    <Image Source="additem.png" WidthRequest="60" HeightRequest="60" Margin="0">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="End" Margin="15">
+                    <Image Source="additem2.png" WidthRequest="70" HeightRequest="70" Margin="0">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding AddNewRoutePointCommand}" />
                         </Image.GestureRecognizers>

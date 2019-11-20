@@ -8,7 +8,7 @@
     android:height="144dp"
     android:gravity="center">
     <bitmap
-        android:src="@drawable/icon"
+        android:src="@drawable/icon2"
         android:tileMode="disabled"
         android:gravity="fill_horizontal|fill_vertical"
         />

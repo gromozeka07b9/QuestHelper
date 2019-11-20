@@ -480,8 +480,17 @@ namespace QuestHelper.ViewModel
 
             if ((_newPoint) && (_vpoint.Latitude == 0) && (_vpoint.Longitude == 0))
             {
+
+                var cacheCoordinates = await _geolocatorManager.GetLastKnownPosition();
+                if ((cacheCoordinates.Latitude != 0) && (cacheCoordinates.Longtitude != 0))
+                {
+                    Latitude = cacheCoordinates.Latitude;
+                    Longitude = cacheCoordinates.Longtitude;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Coordinates"));
+                }
+
                 var coordinates = await _geolocatorManager.GetCurrentLocationAsync();
-                if((coordinates.Latitude != 0) && (coordinates.Longtitude != 0))
+                if ((coordinates.Latitude != 0) && (coordinates.Longtitude != 0))
                 {
                     Latitude = coordinates.Latitude;
                     Longitude = coordinates.Longtitude;
@@ -490,6 +499,7 @@ namespace QuestHelper.ViewModel
                     await fillAddressAndPointName(Latitude, Longitude);
                     ApplyChanges();
                 }
+
             }
 
             Device.StartTimer(TimeSpan.FromMilliseconds(100), OnTimerForUpdateLocation);

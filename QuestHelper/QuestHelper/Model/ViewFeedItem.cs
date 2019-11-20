@@ -27,7 +27,9 @@ namespace QuestHelper.Model
         //private string _imagePreviewPathForList = string.Empty;
         private string _imgFilename = string.Empty;
         private string _description = string.Empty;
-        private FeedItemType _feedType = FeedItemType.Unknown;
+        //private FeedItemType _feedType = FeedItemType.Unknown;
+        private bool _favorite;
+        private int _favoritesCount = 0;
 
         /// <summary>
         /// Создание элемента ленты, пока поддерживается только тип Route
@@ -182,5 +184,27 @@ namespace QuestHelper.Model
                 return imgCover;
             }
         }
+
+        public string FavoriteImage
+        {
+            get
+            {
+                return _favorite ? "baseline_favorite_black_48" : "baseline_favorite_border_black_48";
+            }
+        }
+        public string FavoritesCount
+        {
+            get
+            {
+                return _favoritesCount.ToString();
+            }
+        }
+
+        public void SetFavorite()
+        {
+            _favorite = true;
+            _favoritesCount++;
+        }
+
     }
 }

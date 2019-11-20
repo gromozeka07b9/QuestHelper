@@ -31,6 +31,14 @@ namespace QuestHelper.Managers
             return (currentPosition.Latitude, currentPosition.Longitude);
         }
 
+        public async Task<(double Latitude, double Longtitude)> GetLastKnownPosition()
+        {
+            Position cachePosition = new Position();
+            var locator = CrossGeolocator.Current;
+            cachePosition = await locator.GetLastKnownLocationAsync();
+            return (cachePosition.Latitude, cachePosition.Longitude);
+        }
+
         public async Task<(string PositionAddress, string PointName)> GetPositionAddress(Position position)
         {
             var locator = CrossGeolocator.Current;

@@ -37,9 +37,9 @@
                             <Frame CornerRadius="10" Padding="0" IsClippedToBounds="False" BackgroundColor="#e3f2fd" HasShadow="True" BorderColor="Accent" OutlineColor="#CAECFF"  Margin="10,10,10,5">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="1*"/>
                                         <ColumnDefinition Width="6*"/>
-                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="3*"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="2*"/>
@@ -47,14 +47,25 @@
                                         <RowDefinition Height="1*"/>
                                         <RowDefinition Height="1*"/>
                                     </Grid.RowDefinitions>
-                                    <StackLayout Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                                        <Label Text="{Binding CreatorName}" Style="{StaticResource RouteTextLabel}" FontSize="12" FontAttributes="Bold" TextColor="Black" Margin="10,5,0,0" LineBreakMode="WordWrap" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Start"></Label>
-                                        <Label Text="{Binding CreateDateText}" Style="{StaticResource RouteTextLabel}" FontSize="12" FontAttributes="Bold" TextColor="Black" Margin="10,0,0,5" LineBreakMode="WordWrap" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand" VerticalTextAlignment="End"></Label>
+                                    <StackLayout Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                        <Label Text="{Binding Name}" Style="{StaticResource RouteTextLabel}" FontSize="18" FontAttributes="Bold" TextColor="Black" Margin="10,0,0,5" LineBreakMode="WordWrap" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center"></Label>
                                     </StackLayout>
-                                    <circle:CircleImage Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="face_black.png" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="50" HeightRequest="50" BorderColor="Black" Aspect="AspectFill" BorderThickness="2" Margin="5,10,5,5">
-                                    </circle:CircleImage>
+                                    <StackLayout Grid.Column="2" Grid.Row="0" Orientation="Horizontal" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand" Margin="0,0,10,0">
+                                        <StackLayout.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding BindingContext.SetLikeCommand, Source={x:Reference FeedListView}}" CommandParameter="{Binding .}"/>
+                                        </StackLayout.GestureRecognizers>
+                                        <circle:CircleImage Source="{Binding FavoriteImage}" WidthRequest="25" HeightRequest="25" BorderColor="Wheat" Aspect="AspectFit" BorderThickness="0" Margin="0">
+                                        </circle:CircleImage>
+                                        <Label Text="{Binding FavoritesCount}" Style="{StaticResource RouteTextLabel}" FontSize="14" FontAttributes="Bold" TextColor="Black" Margin="0" LineBreakMode="WordWrap" VerticalTextAlignment="Center" HorizontalOptions="Center">
+                                        </Label>
+                                    </StackLayout>
                                     <Image Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Source="{Binding CoverImage}" Margin="0,0,0,0" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
-                                    <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Text="{Binding Name}" Style="{StaticResource RouteTextLabel}" FontSize="26" FontAttributes="Bold" TextColor="White" Margin="10,0,0,5" LineBreakMode="WordWrap" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand" VerticalTextAlignment="End"></Label>
+                                    <StackLayout Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="2" Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="Center">
+                                        <Label Text="{Binding CreatorName}" Style="{StaticResource RouteTextLabel}" FontSize="16" FontAttributes="Bold" TextColor="White" Margin="10,5,0,0" LineBreakMode="WordWrap" VerticalTextAlignment="Center" HorizontalOptions="Center"></Label>
+                                        <Label Text="{Binding CreateDateText}" Style="{StaticResource RouteTextLabel}" FontSize="14" FontAttributes="Bold" TextColor="White" Margin="10,0,0,5" LineBreakMode="WordWrap" VerticalTextAlignment="Center" HorizontalOptions="Center"></Label>
+                                        <!--circle:CircleImage Source="face_black.png" WidthRequest="50" HeightRequest="50" BorderColor="Wheat" Aspect="AspectFit" BorderThickness="0" Margin="5,10,5,5">
+                                        </-->
+                                    </StackLayout>
                                     <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" Text="{Binding Description}" Style="{StaticResource RouteTextLabel}" FontSize="13" FontAttributes="None" TextColor="Black" Margin="10,0,10,5" MaxLines="3" LineBreakMode="TailTruncation" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center"></Label>
                                 </Grid>
                             </Frame>

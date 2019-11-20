@@ -99,8 +99,7 @@ namespace QuestHelper.ViewModel
 
         private void editRouteCompleteCommand(object obj)
         {
-            string newCoverImagePath = Path.Combine(ImagePathManager.GetPicturesDirectory(), string.IsNullOrEmpty(ImgFilenameForEdit) ? string.Empty : ImgFilenameForEdit);
-            if(!NameForEdit.Equals(Name) || !DescriptionForEdit.Equals(Description) || !newCoverImagePath.Equals(CoverImage))
+            if (!NameForEdit.Equals(Name) || !DescriptionForEdit.Equals(Description) || (!string.IsNullOrEmpty(ImgFilename) && !ImgFilename.Equals(ImgFilenameForEdit)))
             {
                 _vroute.Name = NameForEdit;
                 _vroute.Description = DescriptionForEdit;

@@ -29,7 +29,7 @@ namespace QuestHelper.Droid
             var pendingIntent = PendingIntent.GetActivity(Application.Context, 0, intent, PendingIntentFlags.UpdateCurrent);
 
             var notificationBuilder = new NotificationCompat.Builder(Application.Context)
-                .SetSmallIcon(Resource.Drawable.icon)
+                .SetSmallIcon(Resource.Drawable.icon2)
                 .SetContentTitle("Gosh!")
                 .SetContentText(textMessage)
                 .SetContentIntent(pendingIntent)
@@ -51,7 +51,7 @@ namespace QuestHelper.Droid
             if (progressBuilder == null)
             {
                 progressBuilder = new NotificationCompat.Builder(Application.Context)
-                    .SetSmallIcon(Resource.Drawable.icon)
+                    .SetSmallIcon(Resource.Drawable.icon2)
                     .SetContentTitle("Gosh!")
                     .SetContentText("Обновление")
                     .SetContentIntent(pendingIntent)

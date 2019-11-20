@@ -31,11 +31,20 @@ namespace QuestHelper.ViewModel
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand RefreshFeedCommand { get; private set; }
+        public ICommand SetLikeCommand { get; private set; }
 
         public FeedRoutesViewModel()
         {
             RefreshFeedCommand = new Command(refreshFeedCommandAsync);
+            SetLikeCommand = new Command(setLikeCommand);
             _memoryCache = App.Container.Resolve<IMemoryCache>();
+        }
+
+        private void setLikeCommand(object obj)
+        {
+            var item = obj as ViewFeedItem;
+            item.SetFavorite();
+            PropertyChanged(this, new PropertyChangedEventArgs("FeedItems"));
         }
 
         public async void startDialogAsync()
@@ -192,6 +201,7 @@ namespace QuestHelper.ViewModel
                 return _feedItemId;
             }
         }
+
         public ViewFeedItem SelectedFeedItem
         {
             set

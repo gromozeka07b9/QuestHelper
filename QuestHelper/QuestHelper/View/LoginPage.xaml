@@ -22,7 +22,7 @@
             <ScrollView Orientation="Vertical" Grid.Row="1" Grid.Column="1">
                 <StackLayout Orientation="Vertical" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="LightGray">
                     <StackLayout Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Center" Margin="0,20,0,10">
-                        <Image HorizontalOptions="Center" Source="icon" WidthRequest="40" HeightRequest="40" VerticalOptions="Center"></Image>
+                        <Image HorizontalOptions="Center" Source="icon2" WidthRequest="40" HeightRequest="40" VerticalOptions="Center"></Image>
                         <Label Text="GoSh!" TextColor="Black" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center"></Label>
                     </StackLayout>
                     <Entry Placeholder="{lang:Translation Login_YourLogin}" Text="{Binding Username}" HorizontalOptions="Fill" Style="{StaticResource LoginEntryCaption}" Margin="10,0,10,0" Keyboard="Keyboard.Default">

@@ -33,7 +33,7 @@
                     <TapGestureRecognizer Command="{Binding TapAddUserCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
             </controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="1" Grid.Row="0" Text="{lang:Translation ShareRoutes_AlbumInGosh}" ImgSource="icon.png"  Margin="0,5,0,0">
+            <controls:ShareServiceView Grid.Column="1" Grid.Row="0" Text="{lang:Translation ShareRoutes_AlbumInGosh}" ImgSource="icon2.png"  Margin="0,5,0,0">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapPublishAlbumCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
