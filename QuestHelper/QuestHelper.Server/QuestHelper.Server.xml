@@ -15,6 +15,11 @@
             </summary>
             <returns>List of routes</returns>
         </member>
+        <member name="T:QuestHelper.Server.Controllers.Likes.LikesController">
+            <summary>
+            Like and dislike for routes/points
+            </summary>
+        </member>
         <member name="M:QuestHelper.Server.Controllers.RouteSync.RouteSyncController.GetRouteVersion(System.String)">
             <summary>
             Get route hash
@@ -78,6 +83,11 @@
             <param name="length">длина итогой строки идентификатора</param>
             <returns></returns>
         </member>
+        <member name="P:QuestHelper.Server.Models.FeedItem.Version">
+            <summary>
+            Версия записи
+            </summary>
+        </member>
         <member name="P:QuestHelper.Server.Models.OauthUser.Version">
             <summary>
             Версия записи
@@ -98,9 +108,24 @@
             Версия записи
             </summary>
         </member>
+        <member name="T:QuestHelper.Server.Models.RouteView">
+            <summary>
+            Данные о количестве просмотров маршрутов
+            </summary>
+        </member>
         <member name="P:QuestHelper.Server.Models.User.Version">
             <summary>
             Версия записи
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.ServerDbContext.RouteLike">
+            <summary>
+            Таблица с лайками маршрутов
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.ServerDbContext.RouteView">
+            <summary>
+            Просмотры маршрутов
             </summary>
         </member>
     </members>

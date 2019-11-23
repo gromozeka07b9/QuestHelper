@@ -13,7 +13,9 @@ namespace QuestHelper.SharedModelsWS
         public string CreatorName { get; set; }
         public string ImgUrl { get; set; }
         public string Description { get; set; }
-        //public string RouteHash { get; set; }//ToDo: Возможно и не нужен, надо подумать
+        public int LikeCount { get; set; }
+        public int DislikeCount { get; set; }
+        public int ViewCount { get; set; }
         public FeedItemType ItemType { get; set; }
     }
 }

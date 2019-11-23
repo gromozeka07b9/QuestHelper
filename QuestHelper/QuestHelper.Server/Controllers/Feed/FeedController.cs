@@ -33,22 +33,45 @@ namespace QuestHelper.Server.Controllers
             List<FeedItem> routes = new List<FeedItem>();
             using (var db = new ServerDbContext(_dbOptions))
             {
-                routes = db.Route.Where(r => r.IsPublished && !r.IsDeleted)
-                    .OrderBy(r=>r.CreateDate)
-                    .Join(db.User, r=>r.CreatorId, u=>u.UserId, (r, u) => new {r,u})
-                    .Select(n=>new FeedItem()
-                    {
-                        Id = n.r.RouteId,
-                        Version = n.r.Version,
-                        Name = n.r.Name,
-                        CreateDate = n.r.CreateDate,
-                        CreatorId = n.r.CreatorId,
-                        CreatorName = n.u.Name,
-                        ImgUrl = string.IsNullOrEmpty(n.r.ImgFilename) ? tryToMakePreviewFromFirstPoint(n.r.RouteId, imageBaseUrl) : $"{imageBaseUrl}/{n.r.ImgFilename}",
-                        Description = string.IsNullOrEmpty(n.r.Description) ? getDescriptionFromFirstPoint(n.r.RouteId) : n.r.Description,
-                        //Description = n.r.Description,
-                        ItemType = FeedItemType.Route
-                    }).ToList();
+                string queryText = @"select r.RouteId, r.Name, r.Version, r.ImgFilename, r.CreateDate, r.CreatorId, u.Name as CreatorName, r.Description, ifnull(views.ViewCount, 0) as ViewCount, ifnull(likes.LikeCount,0) as LikeCount from questhelper.Route as r 
+                                        left join
+                                        (
+	                                        select l.RouteId, count(l.IsLike) as LikeCount from
+	                                        (
+	                                        SELECT RouteId, UserId, max(SetDate) as SetLikeDate FROM questhelper.RouteLike
+	                                        group by RouteId, UserId
+	                                        ) as q
+	                                        left join questhelper.RouteLike as l
+	                                        on q.RouteId = l.RouteId and q.UserId = l.UserId and q.SetLikeDate = l.SetDate
+	                                        where l.IsLike = 1
+	                                        group by l.RouteId
+                                        ) likes
+                                        on r.RouteId = likes.RouteId
+                                        left join (
+	                                        SELECT RouteId, count(ViewDate) as ViewCount FROM questhelper.RouteView
+	                                        group by RouteId
+                                        ) as views
+                                        on r.RouteId = views.RouteId
+                                        inner join questhelper.User as u
+                                        on r.CreatorId = u.UserId
+                                        where r.IsDeleted = 0 and r.IsPublished";
+                var routesDbResult = db.FeedItem.FromSql(queryText);
+                var wsRoutes = from r in routesDbResult select new FeedItem() 
+                { 
+                    Id = r.RouteId,
+                    CreatorId = r.CreatorId,
+                    CreatorName = r.CreatorName,
+                    CreateDate = r.CreateDate,
+                    ImgUrl = string.IsNullOrEmpty(r.ImgFilename) ? tryToMakePreviewFromFirstPoint(r.RouteId, imageBaseUrl) : $"{imageBaseUrl}/{r.ImgFilename}",
+                    Description = string.IsNullOrEmpty(r.Description) ? getDescriptionFromFirstPoint(r.RouteId) : r.Description,
+                    LikeCount = r.LikeCount,
+                    DislikeCount = 0,
+                    ItemType = FeedItemType.Route,
+                    ViewCount = r.ViewCount,
+                    Name = r.Name,
+                    Version = r.Version
+                };
+                routes = wsRoutes.ToList();
             }
 
             TimeSpan delay = DateTime.Now - startDate;

@@ -11,6 +11,18 @@ namespace QuestHelper.Server
         public DbSet<RouteAccess> RouteAccess { get; set; }
         public DbSet<RoutePointMediaObject> RoutePointMediaObject { get; set; }
         public DbSet<RouteShare> RouteShare { get; set; }
+
+        /// <summary>
+        /// Таблица с лайками маршрутов
+        /// </summary>
+        public DbSet<RouteLike> RouteLike { get; set; }
+        
+        public DbSet<FeedItem> FeedItem { get; set; }
+
+        /// <summary>
+        /// Просмотры маршрутов
+        /// </summary>
+        public DbSet<RouteView> RouteView { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<OauthUser> OauthUser { get; set; }
 
