@@ -299,5 +299,5 @@ jQuery(document).ready(function($) {
             }        }
     }
 
-    showGooglePlayAppPage();
+    //showGooglePlayAppPage();
 });

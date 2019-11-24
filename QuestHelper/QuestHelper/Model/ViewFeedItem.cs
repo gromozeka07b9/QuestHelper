@@ -189,7 +189,7 @@ namespace QuestHelper.Model
         {
             get
             {
-                return _favorite ? "baseline_favorite_black_48" : "baseline_favorite_border_black_48";
+                return _favorite ? "ic_like_on_1" : "ic_like_off_1";
             }
         }
         public string FavoritesCount
