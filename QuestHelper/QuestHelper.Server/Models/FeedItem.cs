@@ -23,5 +23,7 @@ namespace QuestHelper.Server.Models
         public string Description { get; set; }
         public int ViewCount { get; set; }
         public int LikeCount { get; set; }
+        public int IsUserLikes { get; set; }
+        public int IsUserViewed { get; set; }
     }
 }

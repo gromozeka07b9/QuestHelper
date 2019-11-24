@@ -113,6 +113,8 @@
     <Compile Include="CustomMapRenderer.cs" />
     <Compile Include="FirebaseNotificationService.cs" />
     <Compile Include="GoogleAuthInterceptor.cs" />
+    <Compile Include="Intents\SetEmotionRouteIntentService.cs" />
+    <Compile Include="Intents\SendRouteViewedIntentService.cs" />
     <Compile Include="ShareServices\InstagramShareService.cs" />
     <Compile Include="ShareServices\WhatsappShareService.cs" />
     <Compile Include="ShareServices\ViberShareService.cs" />
@@ -123,7 +125,7 @@
     <Compile Include="NotificationService.cs" />
     <Compile Include="RecordAudioService.cs" />
     <Compile Include="NetworkConnectionsService.cs" />
-    <Compile Include="SyncIntentService.cs" />
+    <Compile Include="Intents\SyncIntentService.cs" />
     <Compile Include="ToastService.cs" />
     <Compile Include="DefaultViewerService.cs" />
     <Compile Include="UsernameService.cs" />

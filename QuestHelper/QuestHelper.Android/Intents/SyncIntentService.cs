@@ -14,7 +14,7 @@ using QuestHelper.Managers.Sync;
 using QuestHelper.Model.Messages;
 using Xamarin.Forms.Platform.Android;
 
-namespace QuestHelper.Droid
+namespace QuestHelper.Droid.Intents
 {
     [Service]
     public class SyncIntentService : IntentService
@@ -49,21 +49,18 @@ namespace QuestHelper.Droid
 
         private static async Task startSync(string routeId)
         {
-            //using (UserDialogs.Instance.Loading("Идет синхронизация данных...", () => { }, "", true, MaskType.Gradient))
+            Console.WriteLine("SyncIntentService sync started");
+            SyncServer syncSrv = new SyncServer();
+            bool syncResult;
+            if (string.IsNullOrEmpty(routeId))
             {
-                Console.WriteLine("SyncIntentService sync started");
-                SyncServer syncSrv = new SyncServer();
-                bool syncResult;
-                if (string.IsNullOrEmpty(routeId))
-                {
-                    syncResult = await syncSrv.Sync();
-                }
-                else
-                {
-                    syncResult = await syncSrv.Sync(routeId);
-                }
-                Console.WriteLine("SyncIntentService sync ended");
+                syncResult = await syncSrv.Sync();
             }
+            else
+            {
+                syncResult = await syncSrv.Sync(routeId);
+            }
+            Console.WriteLine("SyncIntentService sync ended");
         }
     }
 }

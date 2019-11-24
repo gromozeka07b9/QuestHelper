@@ -16,6 +16,8 @@ namespace QuestHelper.SharedModelsWS
         public int LikeCount { get; set; }
         public int DislikeCount { get; set; }
         public int ViewCount { get; set; }
+        public int IsUserLiked { get; set; }
+        public int IsUserViewed { get; set; }
         public FeedItemType ItemType { get; set; }
     }
 }

@@ -26,18 +26,19 @@ namespace QuestHelper.Server.Controllers.Likes
             return new ObjectResult(routeId);
         }
 
-        [HttpPost("/route/emotion")]
-        public void AddEmotion([FromBody]Emotion emotion)
+        [HttpPost("{RouteId}/addemotion")]
+        [ProducesResponseType(200)]
+        public void AddEmotion([FromBody]Emotion EmotionStructure, string RouteId)
         {
             DateTime startDate = DateTime.Now;
             string userId = IdentityManager.GetUserId(HttpContext);
 
             using (var db = new ServerDbContext(_dbOptions))
             {
-                var lastEmotion = db.RouteLike.Where(r => r.RouteId.Equals(emotion.RouteId) && r.UserId.Equals(userId)).OrderByDescending(r => r.SetDate).FirstOrDefault();
-                if ((lastEmotion == null) || (( lastEmotion != null ) && ( !lastEmotion.IsLike.Equals(emotion.IsLike))))
+                var lastEmotion = db.RouteLike.Where(r => r.RouteId.Equals(RouteId) && r.UserId.Equals(userId)).OrderByDescending(r => r.SetDate).FirstOrDefault();
+                if ((lastEmotion == null) || (( lastEmotion != null ) && ( !lastEmotion.IsLike.Equals(EmotionStructure.EmotionNum))))
                 {
-                    db.RouteLike.Add(new Models.RouteLike() { IsLike = emotion.IsLike, RouteId = emotion.RouteId, UserId = userId, SetDate = DateTime.Now });
+                    db.RouteLike.Add(new Models.RouteLike() { IsLike = EmotionStructure.EmotionNum, RouteId = RouteId, UserId = userId, SetDate = DateTime.Now });
                     db.SaveChanges();
                 }
             }
@@ -48,8 +49,10 @@ namespace QuestHelper.Server.Controllers.Likes
 
         public class Emotion
         {
-            public string RouteId { get; set; }
-            public int IsLike { get; set; }
+            /// <summary>
+            /// 0 - dislike, 1 - like
+            /// </summary>
+            public int EmotionNum { get; set; }
         }
     }
 }

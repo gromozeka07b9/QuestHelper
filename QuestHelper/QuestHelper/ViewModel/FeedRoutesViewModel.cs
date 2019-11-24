@@ -40,11 +40,12 @@ namespace QuestHelper.ViewModel
             _memoryCache = App.Container.Resolve<IMemoryCache>();
         }
 
-        private void setLikeCommand(object obj)
+        private void setLikeCommand(object routeObject)
         {
-            var item = obj as ViewFeedItem;
-            item.SetFavorite();
-            PropertyChanged(this, new PropertyChangedEventArgs("FeedItems"));
+            var item = routeObject as ViewFeedItem;
+            item.IsUserLiked = !item.IsUserLiked;
+            item.FavoritesCount = item.IsUserLiked ? ++item.FavoritesCount : --item.FavoritesCount;
+            MessagingCenter.Send(new SetEmotionRouteMessage() { RouteId = item.Id, Emotion = item.IsUserLiked }, string.Empty);
         }
 
         public async void startDialogAsync()
@@ -110,7 +111,11 @@ namespace QuestHelper.ViewModel
                     CreateDate = item.CreateDate,
                     Description = item.Description,
                     CreatorName = item.CreatorName,
-                    ImgUrl = item.ImgUrl
+                    ImgUrl = item.ImgUrl,
+                    FavoritesCount = item.LikeCount,
+                    ViewsCount = item.ViewCount,
+                    IsUserViewed = item.IsUserViewed > 0,
+                    IsUserLiked = item.IsUserLiked > 0
                 });
             }
 
@@ -212,6 +217,10 @@ namespace QuestHelper.ViewModel
                     var coverPage = new RouteCoverPage(value);
                     Navigation.PushAsync(coverPage);
                     PropertyChanged(this, new PropertyChangedEventArgs("SelectedRouteItem"));
+                    if (!_feedItem.IsUserViewed)
+                    {
+                        Xamarin.Forms.MessagingCenter.Send<AddRouteViewedMessage>(new AddRouteViewedMessage() { RouteId = _feedItem.Id }, string.Empty);
+                    }
                     _feedItem = null;
                 }
             }

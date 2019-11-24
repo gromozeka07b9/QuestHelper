@@ -339,25 +339,5 @@ namespace QuestHelper.Server.Controllers.Routes
             return new ObjectResult(previews);
         }
 
-        [HttpPost("{RouteId}/addview")]
-        [ProducesResponseType(200)]
-        public void AddView(string RouteId)
-        {
-            DateTime startDate = DateTime.Now;
-            string userId = IdentityManager.GetUserId(HttpContext);
-
-            using (var db = new ServerDbContext(_dbOptions))
-            {
-                if (!db.RouteView.Any(v=>v.RouteId.Equals(RouteId) && v.UserId.Equals(userId)))
-                {
-                    db.RouteView.Add(new Models.RouteView() { RouteId = RouteId, UserId = userId, ViewDate = DateTime.Now });
-                    db.SaveChanges();
-                }
-            }
-
-            TimeSpan delay = DateTime.Now - startDate;
-            Console.WriteLine($"Add route view: status 200, {userId}, delay:{delay.Milliseconds}");
-        }
-
     }
 }

@@ -20,6 +20,11 @@
             Like and dislike for routes/points
             </summary>
         </member>
+        <member name="P:QuestHelper.Server.Controllers.Likes.LikesController.Emotion.EmotionNum">
+            <summary>
+            0 - dislike, 1 - like
+            </summary>
+        </member>
         <member name="M:QuestHelper.Server.Controllers.RouteSync.RouteSyncController.GetRouteVersion(System.String)">
             <summary>
             Get route hash
@@ -33,6 +38,12 @@
             </summary>
             <param name="routeId">route Id</param>
             <returns></returns>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.RouteSync.RouteSyncController.AddViewed(System.String)">
+            <summary>
+            Route is viewed
+            </summary>
+            <param name="RouteId">Id</param>
         </member>
         <member name="T:QuestHelper.Server.Controllers.Routes.RoutesController">
             <summary>

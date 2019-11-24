@@ -237,6 +237,44 @@ namespace QuestHelper.WS
             return createResult;
         }
 
+        public async Task<bool> AddUserViewAsync(string routeId)
+        {
+            bool result = false;
+            try
+            {
+                ApiRequest api = new ApiRequest();
+                await api.HttpRequestPOST($"{_hostUrl}/route/{routeId}/addviewed", string.Empty, _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
+                result = LastHttpStatusCode == HttpStatusCode.OK;
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RoutesApiRequest", "AddUserViewAsync", e, false);
+            }
+            return result;
+        }
+        public async Task<bool> SetEmotionAsync(string RouteId, bool Emotion)
+        {
+            bool result = false;
+            try
+            {
+                var emotionStructure = new
+                {
+                    EmotionNum = Emotion ? 1 : 0
+                };
+                string body = JsonConvert.SerializeObject(emotionStructure);
+                ApiRequest api = new ApiRequest();
+                await api.HttpRequestPOST($"{this._hostUrl}/likes/{RouteId}/addemotion", body, _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
+                result = LastHttpStatusCode == HttpStatusCode.OK;
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RoutesApiRequest", "SetEmotionAsync", e, false);
+            }
+            return result;
+        }
+
         public async Task<bool> DownloadCoverImage(string routeId, string imgFilename)
         {
             bool result = false;

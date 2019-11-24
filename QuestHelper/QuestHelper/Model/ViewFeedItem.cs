@@ -5,6 +5,7 @@ using QuestHelper.WS;
 using Realms;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -15,7 +16,7 @@ using Route = QuestHelper.LocalDB.Model.Route;
 
 namespace QuestHelper.Model
 {
-    public class ViewFeedItem
+    public class ViewFeedItem : INotifyPropertyChanged
     {
         private RoutePointManager _routePointManager = new RoutePointManager();
         private string _id = string.Empty;
@@ -24,12 +25,15 @@ namespace QuestHelper.Model
         private string _creatorId = string.Empty;
         private string _creatorName = string.Empty;
         private string _imgUrl = string.Empty;
-        //private string _imagePreviewPathForList = string.Empty;
         private string _imgFilename = string.Empty;
         private string _description = string.Empty;
-        //private FeedItemType _feedType = FeedItemType.Unknown;
-        private bool _favorite;
+        private string _favoriteImage = string.Empty;
+        private int _viewsCount = 0;
+        private bool _isUserLiked;
+        private bool _isUserViewed;
         private int _favoritesCount = 0;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// Создание элемента ленты, пока поддерживается только тип Route
@@ -189,22 +193,68 @@ namespace QuestHelper.Model
         {
             get
             {
-                return _favorite ? "ic_like_on_1" : "ic_like_off_1";
+                return _isUserLiked ? "ic_like_on_1" : "ic_like_off_1";
             }
         }
-        public string FavoritesCount
+        public int FavoritesCount
         {
+            set
+            {
+                if (_favoritesCount != value)
+                {
+                    _favoritesCount = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("FavoritesCount"));
+                    }
+                }
+            }
             get
             {
-                return _favoritesCount.ToString();
+                return _favoritesCount;
+            }
+        }
+        public int ViewsCount
+        {
+            set
+            {
+                if(_viewsCount != value)
+                {
+                    _viewsCount = value;
+                }
+            }
+            get
+            {
+                return _viewsCount;
             }
         }
 
-        public void SetFavorite()
+        public bool IsUserLiked
         {
-            _favorite = true;
-            _favoritesCount++;
+            set
+            {
+                _isUserLiked = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("FavoriteImage"));
+                }
+            }
+            get
+            {
+                return _isUserLiked;
+            }
         }
 
+        public bool IsUserViewed
+        {
+            set
+            {
+                _isUserViewed = value;
+            }
+            get
+            {
+                return _isUserViewed;
+            }
+        }
     }
 }

@@ -23,12 +23,15 @@ using Microsoft.AppCenter.Analytics;
 using System.Collections.Generic;
 using Android.Support.V4.App;
 using QuestHelper.Resources;
+using QuestHelper.Droid.Intents;
 
 namespace QuestHelper.Droid
 {
     [Activity(Label = "QuestHelper", Icon = "@drawable/icon2", Theme = "@style/MainTheme", MainLauncher = false, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity, BottomNavigationBar.Listeners.IOnTabClickListener
     {
+        
+        SyncPossibility _syncPossibility = new SyncPossibility();
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
@@ -90,13 +93,33 @@ namespace QuestHelper.Droid
 
             MessagingCenter.Subscribe<SyncMessage>(this, string.Empty, async (sender) =>
             {
-                SyncPossibility syncPossibility = new SyncPossibility();
-                if (await syncPossibility.CheckAsync(true))
+                if (await _syncPossibility.CheckAsync(true))
                 {
                     Intent syncIntent = new Intent(this, typeof(SyncIntentService));
                     syncIntent.PutExtra("RouteId", sender.RouteId);
                     syncIntent.PutExtra("NeedCheckVersionRoute", sender.NeedCheckVersionRoute);
                     var result = StartService(syncIntent);
+                }
+            });
+
+            MessagingCenter.Subscribe<AddRouteViewedMessage>(this, string.Empty, async (sender) =>
+            {
+                if (await _syncPossibility.CheckAsync(true))
+                {
+                    Intent intent = new Intent(this, typeof(SendRouteViewedIntentService));
+                    intent.PutExtra("RouteId", sender.RouteId);
+                    StartService(intent);
+                }
+            });
+
+            MessagingCenter.Subscribe<SetEmotionRouteMessage>(this, string.Empty, async (sender) =>
+            {
+                if (await _syncPossibility.CheckAsync(true))
+                {
+                    Intent intent = new Intent(this, typeof(SetEmotionRouteIntentService));
+                    intent.PutExtra("RouteId", sender.RouteId);
+                    intent.PutExtra("Emotion", sender.Emotion);
+                    StartService(intent);
                 }
             });
 
