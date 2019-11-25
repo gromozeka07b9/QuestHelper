@@ -21,7 +21,7 @@ namespace QuestHelper.ViewModel
     {
         RoutePointManager _routePointManager;
         RouteManager _routeManager;
-        IEnumerable<RoutePoint> _pointsForOverview;
+        //IEnumerable<RoutePoint> _pointsForOverview;
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand OpenPointPropertiesCommand { get; private set; }

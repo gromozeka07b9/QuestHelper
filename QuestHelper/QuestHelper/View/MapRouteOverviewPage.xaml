@@ -2,20 +2,31 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:local="clr-namespace:QuestHelper.View"
-             x:Class="QuestHelper.View.MapRouteOverviewPage" Appearing="ContentPage_AppearingAsync">
+             x:Class="QuestHelper.View.MapRouteOverviewPage" Appearing="ContentPage_AppearingAsync" NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False">
     <ContentPage.Content>
         <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="2*"></RowDefinition>
-                <RowDefinition Height="8*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <local:CustomMap
-                Grid.Row="0" Grid.RowSpan="2"
+                Grid.Row="0" Grid.Column="0"
                 x:Name="MapRouteOverview"
                 IsShowingUser="true"
                 MapType="Street" 
             />
-            <Label Grid.Row="0" Text="{Binding RouteName}" FontSize="25" HorizontalTextAlignment="Start" Margin="10" VerticalOptions="FillAndExpand"></Label>
+            <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Vertical" VerticalOptions="Start">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Image Source="baseline_arrow_back_black_48.png" WidthRequest="40" HeightRequest="40" Margin="10,10,0,0" VerticalOptions="Start" HorizontalOptions="Start">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding BackNavigationCommand}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                </StackLayout>
+                <Label Text="{Binding RouteName}" FontAttributes="Bold" TextColor="Black" FontSize="20" HorizontalTextAlignment="Center" Margin="10" VerticalOptions="Start"></Label>
+            </StackLayout>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

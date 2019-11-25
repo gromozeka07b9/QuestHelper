@@ -16,6 +16,7 @@ using Android.Support.V4.App;
 using Android.Views;
 using Android.Widget;
 using ImageCircle.Forms.Plugin.Abstractions;
+using Java.Lang;
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
 using QuestHelper.Droid;
@@ -149,10 +150,13 @@ namespace QuestHelper.Droid
 
         private void drawMarkers(int markerSize)
         {
+            LatLngBounds.Builder bounds = new LatLngBounds.Builder();
             NativeMap.Clear();
+            List<LatLng> latLngList = new List<LatLng>();
             foreach (var point in customMap.Points)
             {
                 var latlng = new LatLng(point.Latitude, point.Longitude);
+                latLngList.Add(latlng);
                 var marker = new MarkerOptions();
                 marker.SetPosition(latlng);
                 BitmapDescriptor pic = null;
@@ -177,8 +181,24 @@ namespace QuestHelper.Droid
 
                 marker.SetIcon(pic);
                 NativeMap.AddMarker(marker);
-                //NativeMap.AddCircle(new CircleOptions().InvokeCenter(latlng).InvokeRadius(100));
+                bounds.Include(latlng);
             }
+            /*List<PatternItem> pattern_lines = new List<PatternItem>();
+            pattern_lines.Add(new Gap(20));
+            pattern_lines.Add(new Dash(20));*/
+            /*PolylineOptions lineOptions = new PolylineOptions();
+            foreach(var point in latLngList)
+            {
+                lineOptions.Add(point);
+            }
+            lineOptions.InvokePattern(pattern_lines);
+            lineOptions.InvokeWidth(10);
+            NativeMap.AddPolyline(lineOptions);*/
+            if(customMap.Points.Count > 0)
+            {
+                NativeMap.MoveCamera(CameraUpdateFactory.NewLatLngBounds(bounds.Build(), 120));
+            }
+            bounds.Dispose();
         }
 
         public static Bitmap getCroppedBitmap(Bitmap bmp, int radius)
@@ -206,7 +226,7 @@ namespace QuestHelper.Droid
             {
                 canvas.DrawBitmap(sbmp, rect, rect, paint);
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
             }
             return output;
@@ -226,7 +246,7 @@ namespace QuestHelper.Droid
             {
                 result = ThumbnailUtils.ExtractThumbnail(bmp, width, height);
             }
-            catch (Exception)
+            catch (System.Exception)
             {
 
             }

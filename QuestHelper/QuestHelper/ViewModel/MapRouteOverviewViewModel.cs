@@ -21,16 +21,22 @@ namespace QuestHelper.ViewModel
     {
         RoutePointManager _routePointManager;
         RouteManager _routeManager;
-        //IEnumerable<RoutePoint> _pointsForOverview;
         string _routeId = string.Empty;
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
+        public ICommand BackNavigationCommand { get; private set; }
 
         public MapRouteOverviewViewModel(string routeId)
         {
+            BackNavigationCommand = new Command(backNavigationCommand);
             _routePointManager = new RoutePointManager();
             _routeManager = new RouteManager();
             _routeId = routeId;
+        }
+
+        private void backNavigationCommand(object obj)
+        {
+            Navigation.PopAsync();
         }
 
         internal async void OpenPointPropertiesAsync(double latitude, double longitude)

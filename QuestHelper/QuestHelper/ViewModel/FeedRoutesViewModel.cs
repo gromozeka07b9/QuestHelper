@@ -46,6 +46,24 @@ namespace QuestHelper.ViewModel
             item.IsUserLiked = !item.IsUserLiked;
             item.FavoritesCount = item.IsUserLiked ? ++item.FavoritesCount : --item.FavoritesCount;
             MessagingCenter.Send(new SetEmotionRouteMessage() { RouteId = item.Id, Emotion = item.IsUserLiked }, string.Empty);
+            List<FeedItem> feed = new List<FeedItem>();
+            if (_memoryCache.TryGetValue(_feedCacheId, out feed))
+            {
+                var itemInCache = feed.Where(f => f.Id.Equals(item.Id)).FirstOrDefault();
+                if (itemInCache != null)
+                {
+                    itemInCache.IsUserLiked = item.IsUserLiked ? 1 : 0 ;
+                    itemInCache.LikeCount = item.FavoritesCount;
+                }
+                _memoryCache.Set(_feedCacheId, feed, new MemoryCacheEntryOptions()
+                {
+#if DEBUG
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10)
+#else
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(600)
+#endif
+                });
+            }
         }
 
         public async void startDialogAsync()
