@@ -158,16 +158,15 @@ namespace QuestHelper.Droid
                 var latlng = new LatLng(point.Latitude, point.Longitude);
                 latLngList.Add(latlng);
                 var marker = new MarkerOptions();
+                marker.Anchor(0.5f, 0.5f);
                 marker.SetPosition(latlng);
                 BitmapDescriptor pic = null;
                 if (!string.IsNullOrEmpty(point.PathToPicture))
                 {
-                    CircleImageView circleView = new CircleImageView(Context);
                     Bitmap bm = BitmapFactory.DecodeFile(point.PathToPicture);
                     if (bm != null)
                     {
                         var croppedBitmap = getCroppedBitmap(bm, markerSize);
-                        //pic = BitmapDescriptorFactory.FromBitmap(cropCenter(bm));
                         pic = BitmapDescriptorFactory.FromBitmap(croppedBitmap);
                         bm = null;
                         croppedBitmap = null;
@@ -183,18 +182,18 @@ namespace QuestHelper.Droid
                 NativeMap.AddMarker(marker);
                 bounds.Include(latlng);
             }
-            /*List<PatternItem> pattern_lines = new List<PatternItem>();
+            List<PatternItem> pattern_lines = new List<PatternItem>();
             pattern_lines.Add(new Gap(20));
-            pattern_lines.Add(new Dash(20));*/
-            /*PolylineOptions lineOptions = new PolylineOptions();
+            pattern_lines.Add(new Dash(20));
+            PolylineOptions lineOptions = new PolylineOptions();
             foreach(var point in latLngList)
             {
                 lineOptions.Add(point);
             }
             lineOptions.InvokePattern(pattern_lines);
             lineOptions.InvokeWidth(10);
-            NativeMap.AddPolyline(lineOptions);*/
-            if(customMap.Points.Count > 0)
+            NativeMap.AddPolyline(lineOptions);
+            if(customMap.Points.Count > 1)
             {
                 NativeMap.MoveCamera(CameraUpdateFactory.NewLatLngBounds(bounds.Build(), 120));
             }
@@ -212,18 +211,22 @@ namespace QuestHelper.Droid
             Bitmap output = Bitmap.CreateBitmap(sbmp.Width, sbmp.Height, Bitmap.Config.Argb8888);
             Canvas canvas = new Canvas(output);
             Paint paint = new Paint();
-            Rect rect = new Rect(0, 0, sbmp.Width, sbmp.Height);
-
             paint.AntiAlias = true;
             paint.FilterBitmap = true;
             paint.Dither = true;
             canvas.DrawARGB(0, 0, 0, 0);
             paint.Color = Android.Graphics.Color.ParseColor("#000000");
 
+            //Paint paintBack = new Paint();
+            //paintBack.Color = Android.Graphics.Color.Blue;
+            //paintBack.SetShadowLayer(sbmp.Width / 2 + 0.0f, sbmp.Width / 2 + 0.0f, sbmp.Height / 2 + 0.0f, Android.Graphics.Color.Black);
+            //canvas.DrawCircle(sbmp.Width / 2 + 0.0f, sbmp.Height / 2 + 0.0f, sbmp.Width / 2 + 0.0f, paintBack);
             canvas.DrawCircle(sbmp.Width / 2 + 0.0f, sbmp.Height / 2 + 0.0f, sbmp.Width / 2 + 0.0f, paint);
             paint.SetXfermode(new PorterDuffXfermode(PorterDuff.Mode.SrcIn));
             try
             {
+                Rect rect = new Rect(0, 0, sbmp.Width, sbmp.Height);
+                //Rect rectDest = new Rect(0, 0, sbmp.Width, sbmp.Height);
                 canvas.DrawBitmap(sbmp, rect, rect, paint);
             }
             catch (System.Exception ex)

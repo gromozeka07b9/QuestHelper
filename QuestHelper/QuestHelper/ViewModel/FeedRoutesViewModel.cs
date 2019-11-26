@@ -14,6 +14,7 @@ using QuestHelper.Managers;
 using Xamarin.Forms;
 using QuestHelper.View;
 using QuestHelper.Model.Messages;
+using Microsoft.AppCenter.Analytics;
 
 namespace QuestHelper.ViewModel
 {
@@ -52,18 +53,24 @@ namespace QuestHelper.ViewModel
                 var itemInCache = feed.Where(f => f.Id.Equals(item.Id)).FirstOrDefault();
                 if (itemInCache != null)
                 {
-                    itemInCache.IsUserLiked = item.IsUserLiked ? 1 : 0 ;
+                    itemInCache.IsUserLiked = item.IsUserLiked ? 1 : 0;
                     itemInCache.LikeCount = item.FavoritesCount;
                 }
-                _memoryCache.Set(_feedCacheId, feed, new MemoryCacheEntryOptions()
-                {
-#if DEBUG
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10)
-#else
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(600)
-#endif
-                });
+                addFeedToCache(feed);
             }
+            Analytics.TrackEvent($"Set route emotion: {item.IsUserLiked}");
+        }
+
+        private void addFeedToCache(List<FeedItem> feed)
+        {
+            _memoryCache.Set(_feedCacheId, feed, new MemoryCacheEntryOptions()
+            {
+#if DEBUG
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10)
+#else
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(600)
+#endif
+            });
         }
 
         public async void startDialogAsync()
@@ -149,18 +156,7 @@ namespace QuestHelper.ViewModel
             feed = await feedApi.GetFeed();
             if (feedApi.LastHttpStatusCode == HttpStatusCode.OK)
             {
-                _memoryCache.Set(_feedCacheId, feed, new MemoryCacheEntryOptions()
-                {
-#if DEBUG
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10)
-#else
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(600)
-#endif
-                });
-                foreach (var item in feed)
-                {
-                    await feedApi.GetCoverImage(item.ImgUrl);
-                }
+                addFeedToCache(feed);
             }
             bool AuthRequired = (feedApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || feedApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
             if (AuthRequired)
@@ -238,6 +234,7 @@ namespace QuestHelper.ViewModel
                     if (!_feedItem.IsUserViewed)
                     {
                         Xamarin.Forms.MessagingCenter.Send<AddRouteViewedMessage>(new AddRouteViewedMessage() { RouteId = _feedItem.Id }, string.Empty);
+                        Analytics.TrackEvent($"Set route viewed");
                     }
                     _feedItem = null;
                 }
