@@ -58,18 +58,21 @@ namespace QuestHelper
 		    {
 		        par.Set("NeedShowOnboarding", "1");
 		    }
-		}
+        }
 
         protected override async void OnStart ()
 		{
 
 #if DEBUG
             AppCenter.Start("android=e7661afa-ce82-4b68-b98d-e35a71bb75c1;", typeof(Analytics), typeof(Crashes));
+            TokenStoreService tokenService = new TokenStoreService();
+            await tokenService.SetAuthDataAsync("", "");
 #else
             AppCenter.Start("android=85c4ccc3-f315-427c-adbd-b928e461bcc8;", typeof(Analytics), typeof(Crashes));
 #endif
 
-		    Setup();
+
+            Setup();
 
 		    SubscribeMessages();
 		    

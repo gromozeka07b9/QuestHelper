@@ -215,6 +215,7 @@ namespace QuestHelper.ViewModel
         }
         public void StartLoginDialog()
         {
+            Analytics.TrackEvent("Login dialog start", new Dictionary<string, string> { });
             UserDialogs.Instance.HideLoading();
             MessagingCenter.Subscribe<OAuthResultMessage>(this, string.Empty, async (sender) =>
             {

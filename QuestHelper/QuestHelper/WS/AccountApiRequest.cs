@@ -38,10 +38,11 @@ namespace QuestHelper.WS
             public string UserId = string.Empty;
         }
 
-        public async System.Threading.Tasks.Task<TokenResponse> GetTokenAsync(string login, string password, bool demomode = false)
+        public async Task<TokenResponse> GetTokenAsync(string login, string password, bool demomode = false)
         {
             TokenResponse authData = new TokenResponse();
-            JObject jsonRequestObject = JObject.FromObject(new TokenRequest(){Username = login, Password = password});
+            var tokenRequest = new TokenRequest() { Username = login, Password = password };
+            JObject jsonRequestObject = JObject.FromObject(tokenRequest);
 
             try
             {
@@ -58,7 +59,7 @@ namespace QuestHelper.WS
             return authData;
         }
 
-        public async System.Threading.Tasks.Task<TokenResponse> RegisterNewUserAsync(string username, string password, string email)
+        public async Task<TokenResponse> RegisterNewUserAsync(string username, string password, string email)
         {
             TokenResponse authData = new TokenResponse();
 
@@ -78,7 +79,7 @@ namespace QuestHelper.WS
             return authData;
         }
 
-        public async System.Threading.Tasks.Task<TokenResponse> LoginByOAuthAsync(string username, string email, string locale, string imgUrl, string authenticatorUserId, string authToken )
+        public async Task<TokenResponse> LoginByOAuthAsync(string username, string email, string locale, string imgUrl, string authenticatorUserId, string authToken )
         {
             TokenResponse authData = new TokenResponse();
 

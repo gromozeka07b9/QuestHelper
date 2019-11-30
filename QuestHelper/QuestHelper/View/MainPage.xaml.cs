@@ -7,6 +7,10 @@ using System.Globalization;
 using System.Threading;
 using QuestHelper.Resources;
 using Xamarin.Forms;
+using QuestHelper.WS;
+using static QuestHelper.WS.AccountApiRequest;
+using Newtonsoft.Json.Linq;
+using Xamarin.Essentials;
 
 namespace QuestHelper.View
 {
@@ -39,7 +43,8 @@ namespace QuestHelper.View
                     }
                     else
                     {
-                        navigateToPage(new PageNavigationMessage() { DestinationPageDescription = pageCollections.GetLoginPage() });
+                        //navigateToPage(new PageNavigationMessage() { DestinationPageDescription = pageCollections.GetLoginPage() });
+                        navigateToPage(new PageNavigationMessage() { DestinationPageDescription = pageCollections.GetFeedPage() });
                     }
                 }
             });

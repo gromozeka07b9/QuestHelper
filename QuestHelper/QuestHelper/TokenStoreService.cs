@@ -56,14 +56,16 @@ namespace QuestHelper
             return userId;
         }
 
-        public async Task SetAuthDataAsync(string authToken, string userId)
+        public async Task<bool> SetAuthDataAsync(string authToken, string userId)
         {
+            bool setResult = false;
             try
             {
                 SecureStorage.Remove(_tokenNameKey);
                 await SecureStorage.SetAsync(_tokenNameKey, authToken);
                 SecureStorage.Remove(_userIdKey);
                 await SecureStorage.SetAsync(_userIdKey, userId);
+                setResult = true;
             }
             catch (Exception e)
             {
@@ -72,6 +74,8 @@ namespace QuestHelper
                 par.Set(_tokenNameKey, authToken);
                 par.Set(_userIdKey, userId);
             }
+
+            return setResult;
         }
     }
 }

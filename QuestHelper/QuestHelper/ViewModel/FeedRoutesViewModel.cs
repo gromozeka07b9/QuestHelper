@@ -152,11 +152,23 @@ namespace QuestHelper.ViewModel
         {
             List<FeedItem> feed;
             TokenStoreService tokenService = new TokenStoreService();
-            FeedApiRequest feedApi = new FeedApiRequest(await tokenService.GetAuthTokenAsync());
+            string token = await tokenService.GetAuthTokenAsync();
+            if (string.IsNullOrEmpty(token))
+            {
+                GuestAuthHelper guestHelper = new GuestAuthHelper();
+                token = await guestHelper.TryGetGuestTokenAsync();
+                if (string.IsNullOrEmpty(token)) return new List<FeedItem>();
+            }
+
+            FeedApiRequest feedApi = new FeedApiRequest(token);
             feed = await feedApi.GetFeed();
             if (feedApi.LastHttpStatusCode == HttpStatusCode.OK)
             {
                 addFeedToCache(feed);
+                foreach (var item in feed)
+                {
+                    await feedApi.GetCoverImage(item.ImgUrl);
+                }
             }
             bool AuthRequired = (feedApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || feedApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
             if (AuthRequired)

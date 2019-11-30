@@ -8,6 +8,6 @@ namespace QuestHelper
     public interface IAuthService
     {
         Task<string> GetAuthTokenAsync();
-        Task SetAuthDataAsync(string authToken, string userId);
+        Task<bool> SetAuthDataAsync(string authToken, string userId);
     }
 }

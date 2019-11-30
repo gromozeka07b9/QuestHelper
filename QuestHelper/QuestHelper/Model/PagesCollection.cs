@@ -69,6 +69,10 @@ namespace QuestHelper.Model
         {
             return Pages.Single(x => x.TargetType == typeof(ReceivePushPage));
         }
+        public MainPageMenuItem GetFeedPage()
+        {
+            return Pages.Single(x => x.TargetType == typeof(FeedRoutesPage));
+        }
 
         public ObservableCollection<MainPageMenuItem> GetPagesForMenu()
         {
