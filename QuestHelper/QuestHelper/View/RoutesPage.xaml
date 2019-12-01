@@ -4,13 +4,14 @@
              xmlns:viewmodel="clr-namespace:QuestHelper.ViewModel;assembly=QuestHelper"
              xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
              xmlns:local="clr-namespace:QuestHelper.View.Converters"
-             x:Class="QuestHelper.View.RoutesPage" Appearing="ContentPage_Appearing" Disappearing="RoutesPage_OnDisappearing" Style="{StaticResource ContentPage}">
+             x:Class="QuestHelper.View.RoutesPage" Appearing="ContentPage_Appearing" NavigationPage.HasNavigationBar="{Binding IsAutorizedMode}" Disappearing="RoutesPage_OnDisappearing" Style="{StaticResource ContentPage}">
     <ContentPage.BindingContext>
         <viewmodel:RoutesViewModel />
     </ContentPage.BindingContext>
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:AspectImageConverter  x:Key="aspectimage" />
+            <local:NegativeBoolConverter  x:Key="inverter" />
             <local:LockImageConverter  x:Key="lockimage" />
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -72,7 +73,21 @@
                     </Image.GestureRecognizers>
                 </Image>
             </-->
-            <AbsoluteLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="3" VerticalOptions="End" HorizontalOptions="End">
+            <AbsoluteLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="3" VerticalOptions="Fill" HorizontalOptions="Fill" Opacity="1" BackgroundColor="#CAECFF" IsVisible="{Binding IsAutorizedMode, Converter={StaticResource inverter}}">
+            </AbsoluteLayout>
+            <AbsoluteLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="3" VerticalOptions="Center" HorizontalOptions="Center" Opacity="1" IsVisible="{Binding IsAutorizedMode, Converter={StaticResource inverter}}">
+                <Frame CornerRadius="5" Padding="15" Margin="20" BackgroundColor="White" VerticalOptions="Center">
+                    <StackLayout Orientation="Vertical" VerticalOptions="Center" HorizontalOptions="Center">
+                        <Label Text="Для того, чтобы создавать маршруты и загружать их в облако, необходимо зарегистрироваться." TextColor="Black" FontSize="18" HorizontalTextAlignment="Center"></Label>
+                        <Image Source="lock_key.png" WidthRequest="70" HeightRequest="70" Margin="15">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding AuthorizationCommand}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </StackLayout>
+                </Frame>
+            </AbsoluteLayout>
+            <AbsoluteLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="3" VerticalOptions="End" HorizontalOptions="End" IsVisible="{Binding IsAutorizedMode}">
                 <Image Source="additem2.png" WidthRequest="70" HeightRequest="70" HorizontalOptions="End" Margin="15">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding AddNewRouteCommand}" />

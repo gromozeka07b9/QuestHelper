@@ -31,7 +31,7 @@ namespace QuestHelper.View
 
         private void ContentPage_Appearing(object sender, EventArgs e)
         {
-            var toolbarService = DependencyService.Get<IToolbarService>();
+            var toolbarService = DependencyService.Get<IToolbarService>();            
             toolbarService.SetVisibilityToolbar(true);
             _vm.startDialog();
             _vm.RefreshListRoutesCommand.Execute(new object());

@@ -75,6 +75,7 @@ namespace QuestHelper.ViewModel
 
         public async void startDialogAsync()
         {
+            Analytics.TrackEvent("Feed started", new Dictionary<string, string> { });
             var toolbarService = DependencyService.Get<IToolbarService>();
             toolbarService.SetVisibilityToolbar(true);
             await refreshFeed(false);
@@ -157,7 +158,15 @@ namespace QuestHelper.ViewModel
             {
                 GuestAuthHelper guestHelper = new GuestAuthHelper();
                 token = await guestHelper.TryGetGuestTokenAsync();
-                if (string.IsNullOrEmpty(token)) return new List<FeedItem>();
+                if(!string.IsNullOrEmpty(token))
+                {
+                    ParameterManager par = new ParameterManager();
+                    par.Set("GuestMode", "1");
+                }
+                else
+                {
+                    return new List<FeedItem>();
+                }
             }
 
             FeedApiRequest feedApi = new FeedApiRequest(token);

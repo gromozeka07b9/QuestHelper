@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Input;
 using Acr.UserDialogs;
 using Microsoft.AppCenter.Analytics;
+using QuestHelper.Managers;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
 using QuestHelper.OAuth;
@@ -73,6 +74,8 @@ namespace QuestHelper.ViewModel
                                 Analytics.TrackEvent("Register new user done", new Dictionary<string, string> { { "Username", _username } });
                                 TokenStoreService tokenService = new TokenStoreService();
                                 await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId);
+                                ParameterManager par = new ParameterManager();
+                                par.Set("GuestMode", "0");
 #if !DEBUG
                                 Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
 #endif
@@ -108,6 +111,8 @@ namespace QuestHelper.ViewModel
                         Analytics.TrackEvent("GetToken done", new Dictionary<string, string> { { "Username", _username } });
                         TokenStoreService tokenService = new TokenStoreService();
                         await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId);
+                        ParameterManager par = new ParameterManager();
+                        par.Set("GuestMode", "0");
 #if !DEBUG
                         Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
 #endif
@@ -228,6 +233,8 @@ namespace QuestHelper.ViewModel
                     Analytics.TrackEvent("Login OAuth done", new Dictionary<string, string> { { "Username", _username } });
                     TokenStoreService tokenService = new TokenStoreService();
                     await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId);
+                    ParameterManager par = new ParameterManager();
+                    par.Set("GuestMode", "0");
 #if !DEBUG
                     Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
 #endif

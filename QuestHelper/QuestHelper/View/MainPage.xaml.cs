@@ -43,7 +43,6 @@ namespace QuestHelper.View
                     }
                     else
                     {
-                        //navigateToPage(new PageNavigationMessage() { DestinationPageDescription = pageCollections.GetLoginPage() });
                         navigateToPage(new PageNavigationMessage() { DestinationPageDescription = pageCollections.GetFeedPage() });
                     }
                 }
@@ -58,9 +57,9 @@ namespace QuestHelper.View
             });
         }
 
-        private void navigateToPage(PageNavigationMessage msg)
+        private async void navigateToPage(PageNavigationMessage msg)
         {
-            if(msg.DestinationPageDescription!=null)
+            if (msg.DestinationPageDescription != null)
             {
                 var page = (Page)Activator.CreateInstance(msg.DestinationPageDescription.TargetType);
                 openContentPage(page, msg.DestinationPageDescription.Title, msg.DestinationPageDescription.IconName);
@@ -93,20 +92,27 @@ namespace QuestHelper.View
             {
                 var pageParameters = pageCollections.GetOverviewMapPage();
                 var page = (MapOverviewPage)Activator.CreateInstance(pageParameters.TargetType);
-                //page.CurrentRouteId = sender.RouteId;
                 openContentPage(page, pageParameters.Title, pageParameters.IconName);
             });
+            /*if (!IsNeedShowOnboarding())
+            {
+            }
+            else
+            {
+                DependencyService.Get<IToolbarService>().SetVisibilityToolbar(false);
+                await Navigation.PushModalAsync(new NavigationPage(new SplashWizardPage()));
+            }*/
+        }
 
+        private bool IsNeedShowOnboarding()
+        {
             ParameterManager par = new ParameterManager();
             string showOnboarding = string.Empty;
             if (par.Get("NeedShowOnboarding", out showOnboarding))
             {
-                if (showOnboarding == "1")
-                {
-                    DependencyService.Get<IToolbarService>().SetVisibilityToolbar(false);
-                    await Navigation.PushModalAsync(new NavigationPage(new SplashWizardPage()));
-                }
+                return showOnboarding.Equals("1");
             }
+            return false;
         }
 
         private void MainPage_OnDisappearing(object sender, EventArgs e)

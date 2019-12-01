@@ -40,14 +40,19 @@ namespace QuestHelper.ViewModel
         public ICommand AddNewRouteCommand { get; private set; }
         public ICommand RefreshListRoutesCommand { get; private set; }
         public ICommand SyncStartCommand { get; private set; }
-        //public ICommand ShowAlbumsCommand { get; private set; }
+        public ICommand AuthorizationCommand { get; private set; }
 
         public RoutesViewModel()
         {
             AddNewRouteCommand = new Command(addNewRouteCommandAsync);
             RefreshListRoutesCommand = new Command(refreshListRoutesCommandAsync);
             SyncStartCommand = new Command(syncStartCommand);
-            //ShowAlbumsCommand = new Command(showAlbumsCommandAsync);
+            AuthorizationCommand = new Command(authorizationCommand);
+        }
+
+        private void authorizationCommand(object obj)
+        {
+            Navigation.PushAsync(new LoginPage());
         }
 
         public void startDialog()
@@ -189,6 +194,21 @@ namespace QuestHelper.ViewModel
             get
             {
                 return _isRefreshing;
+            }
+        }
+
+        public bool IsAutorizedMode
+        {
+            get
+            {
+                bool authorizedMode = true;
+                ParameterManager par = new ParameterManager();
+                string guestMode = string.Empty;
+                if (par.Get("GuestMode", out guestMode))
+                {
+                    authorizedMode = !guestMode.Equals("1");
+                }
+                return authorizedMode;
             }
         }
         public bool NoRoutesWarningIsVisible
