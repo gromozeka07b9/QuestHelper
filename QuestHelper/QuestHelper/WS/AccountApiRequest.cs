@@ -41,7 +41,7 @@ namespace QuestHelper.WS
         public async Task<TokenResponse> GetTokenAsync(string login, string password, bool demomode = false)
         {
             TokenResponse authData = new TokenResponse();
-            var tokenRequest = new TokenRequest() { Username = login, Password = password };
+            var tokenRequest = new TokenRequest() { Username = login, Password = password, Email = login };
             JObject jsonRequestObject = JObject.FromObject(tokenRequest);
 
             try

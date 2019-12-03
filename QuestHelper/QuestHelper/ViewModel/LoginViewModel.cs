@@ -102,7 +102,6 @@ namespace QuestHelper.ViewModel
             {
                 using (UserDialogs.Instance.Loading(CommonResource.Login_AuthorizationProcess, null, null, true, MaskType.Black))
                 {
-                    string username = await DependencyService.Get<IUsernameService>().GetUsername();
                     AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
                     Analytics.TrackEvent("GetToken started", new Dictionary<string, string> { { "Username", _username } });
                     TokenResponse authData = await apiRequest.GetTokenAsync(_username, _password);

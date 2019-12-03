@@ -1,4 +1,5 @@
 ﻿using Microsoft.AppCenter.Analytics;
+using QuestHelper.Managers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,7 +23,17 @@ namespace QuestHelper.WS
         {
             string token = string.Empty;
 
+            ParameterManager par = new ParameterManager();
+            string demoUsername = string.Empty;
+            if (!par.Get("DemoUsername", out demoUsername))
+            {
+                demoUsername = generateDemoUsername();
+                par.Set("DemoUsername", demoUsername);
+            }
+
             AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
+            _username = demoUsername;
+            _password = demoUsername;
             TokenResponse authData = await apiRequest.GetTokenAsync(_username, _password, true);
             if (!string.IsNullOrEmpty(authData?.Access_Token))
             {
@@ -36,6 +47,12 @@ namespace QuestHelper.WS
             }
 
             return token;
+        }
+
+        private string generateDemoUsername()
+        {
+            var dt = DateTime.Now;
+            return $"demo-{dt.Year}-{dt.Month}-{dt.Day}-{dt.Hour}-{dt.Minute}-{dt.Second}-{dt.Millisecond}";
         }
     }
 }

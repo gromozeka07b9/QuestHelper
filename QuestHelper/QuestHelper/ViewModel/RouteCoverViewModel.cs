@@ -122,7 +122,7 @@ namespace QuestHelper.ViewModel
             });
             MessagingCenter.Subscribe<SyncProgressRouteLoadingMessage>(this, string.Empty, (sender) =>
             {
-                if (sender.RouteId.Equals(_vroute.Id))
+                if (!string.IsNullOrEmpty(sender.RouteId) && (sender.RouteId.Equals(_vroute.Id)))
                 {
                     ProgressValue = sender.ProgressValue;
                     PropertyChanged(this, new PropertyChangedEventArgs("PointsOfRoute"));

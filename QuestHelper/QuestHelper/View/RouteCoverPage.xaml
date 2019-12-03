@@ -36,6 +36,14 @@
                     </Label>
                 </StackLayout>
                 <ProgressBar Grid.Row="2" HorizontalOptions="FillAndExpand" ProgressColor="Blue" BackgroundColor="White" Progress="{Binding ProgressValue}" Margin="0" IsVisible="{Binding IsVisibleProgress}" ></ProgressBar>
+                <AbsoluteLayout Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" HorizontalOptions="Center" VerticalOptions="Center">
+                    <Frame CornerRadius="10" Padding="10" HasShadow="True">
+                        <StackLayout Orientation="Vertical" Margin="10,0,10,0">
+                            <Label Text="Загрузка..." FontSize="15" TextColor="Black"></Label>
+                            <Image Source="loop"></Image>
+                        </StackLayout>
+                    </Frame>
+                </AbsoluteLayout>
             </Grid>
 
             <ListView VerticalOptions="StartAndExpand" SeparatorVisibility="Default" HasUnevenRows="True" RowHeight="96" ItemsSource="{Binding PointsOfRoute}" SelectedItem="{Binding SelectedRoutePointItem,Mode=TwoWay}" IsPullToRefreshEnabled="False" RefreshCommand="{Binding StartDialogCommand}" IsVisible="{Binding IsVisibleList}" CachingStrategy="RecycleElementAndDataTemplate">
