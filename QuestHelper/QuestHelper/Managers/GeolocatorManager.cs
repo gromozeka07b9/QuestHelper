@@ -3,6 +3,7 @@ using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
+using QuestHelper.Managers.Sync;
 using QuestHelper.Resources;
 using System;
 using System.Collections.Generic;
@@ -36,42 +37,47 @@ namespace QuestHelper.Managers
             Position cachePosition = new Position();
             var locator = CrossGeolocator.Current;
             cachePosition = await locator.GetLastKnownLocationAsync();
-            return (cachePosition.Latitude, cachePosition.Longitude);
+            return (cachePosition != null ? cachePosition.Latitude:0, cachePosition != null ? cachePosition.Longitude : 0);
         }
 
         public async Task<(string PositionAddress, string PointName)> GetPositionAddress(Position position)
         {
-            var locator = CrossGeolocator.Current;
             string address = string.Empty;
             string pointName = string.Empty;
-            try
+            SyncPossibility possibility = new SyncPossibility();
+            bool networkAvailable = await possibility.CheckAsync(false);
+            if (networkAvailable)
             {
-                IEnumerable<Address> addresses = await locator.GetAddressesForPositionAsync(position);
-                var addressItem = addresses.FirstOrDefault();
-                if (addressItem != null)
+                var locator = CrossGeolocator.Current;
+                try
                 {
-                    address = $"{addressItem.SubThoroughfare}, {addressItem.Thoroughfare}, {addressItem.Locality}, {addressItem.CountryName}";
-                    if (!string.IsNullOrEmpty(addressItem.SubLocality))
+                    IEnumerable<Address> addresses = await locator.GetAddressesForPositionAsync(position);
+                    var addressItem = addresses.FirstOrDefault();
+                    if (addressItem != null)
                     {
-                        pointName = $"{addressItem?.SubLocality}";
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrEmpty(addressItem.Locality))
+                        address = $"{addressItem.SubThoroughfare}, {addressItem.Thoroughfare}, {addressItem.Locality}, {addressItem.CountryName}";
+                        if (!string.IsNullOrEmpty(addressItem.SubLocality))
                         {
-                            pointName = $"{addressItem.CountryName},{addressItem.Locality}";
+                            pointName = $"{addressItem?.SubLocality}";
                         }
                         else
                         {
-                            pointName = $"{addressItem.CountryName},{addressItem.SubAdminArea}";
+                            if (!string.IsNullOrEmpty(addressItem.Locality))
+                            {
+                                pointName = $"{addressItem.CountryName},{addressItem.Locality}";
+                            }
+                            else
+                            {
+                                pointName = $"{addressItem.CountryName},{addressItem.SubAdminArea}";
+                            }
                         }
                     }
                 }
-            }
-            catch (Exception exception)
-            {
-                var properties = new Dictionary<string, string> { { "GeolocatorManager", "GetPositionAddress" } };
-                Crashes.TrackError(exception, properties);
+                catch (Exception exception)
+                {
+                    var properties = new Dictionary<string, string> { { "GeolocatorManager", "GetPositionAddress" } };
+                    Crashes.TrackError(exception, properties);
+                }
             }
             return (address, pointName);
         }
