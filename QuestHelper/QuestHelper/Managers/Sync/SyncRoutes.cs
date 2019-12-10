@@ -13,6 +13,7 @@ using QuestHelper.Model.Messages;
 using Xamarin.Forms;
 using Route = QuestHelper.SharedModelsWS.Route;
 using Autofac;
+using Microsoft.AppCenter.Analytics;
 
 namespace QuestHelper.Managers.Sync
 {
@@ -116,6 +117,12 @@ namespace QuestHelper.Managers.Sync
 
         public async Task<bool> Sync(string routeId)
         {
+            if (string.IsNullOrEmpty(routeId))
+            {
+                Analytics.TrackEvent("Sync by routeId error");
+                return false;
+            }
+
             bool result = true;
             int mainIndex = 3;//количество этапов
             int currentIndex = 0;

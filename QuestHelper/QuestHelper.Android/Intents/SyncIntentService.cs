@@ -27,7 +27,7 @@ namespace QuestHelper.Droid.Intents
         {
             string routeId = intent.GetStringExtra("RouteId") ?? string.Empty;
             bool needCheckVersion = intent.GetBooleanExtra("NeedCheckVersionRoute", false);
-            if (needCheckVersion)
+            if ((needCheckVersion) && !string.IsNullOrEmpty(routeId))
             {
                 bool needSyncRoute = await updateRouteIsNeeded(routeId);
                 if (needSyncRoute)
