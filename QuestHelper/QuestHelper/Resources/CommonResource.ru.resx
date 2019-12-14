@@ -250,7 +250,7 @@
     <value>Пропустить</value>
   </data>
   <data name="Onboarding_Begin" xml:space="preserve">
-    <value>Начать</value>
+    <value>Перейти в ленту</value>
   </data>
   <data name="Onboarding_SaveYourImpression" xml:space="preserve">
     <value>Сохраните свои впечатления, объединив их по темам, например: Отдых на Кипре; Бесплатная парковка; Конференции</value>
@@ -268,7 +268,7 @@
     <value>Gosh! работает там, где нет сети Интернет. Записывайте впечатления в любом месте, при появлении сети данные можно синхронизировать.</value>
   </data>
   <data name="Onboarding_Share" xml:space="preserve">
-    <value>Поделитесь впечатлениями с друзьями!</value>
+    <value>Публикуйте ваши маршруты в интернет с помощью создания ссылки!</value>
   </data>
   <data name="Onboarding_TogetherBetter" xml:space="preserve">
     <value>Вдвоем лучше - снимайте фото, записывайте впечатления вместе с друзьями в одном маршруте!</value>

@@ -484,7 +484,7 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Start.
+        ///   Ищет локализованную строку, похожую на Go to feed.
         /// </summary>
         public static string Onboarding_Begin {
             get {
@@ -530,7 +530,7 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Share your impressions with your friends!.
+        ///   Ищет локализованную строку, похожую на Share your route with web link!.
         /// </summary>
         public static string Onboarding_Share {
             get {

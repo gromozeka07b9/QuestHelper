@@ -30,7 +30,7 @@ namespace QuestHelper.View
 	    {
 	        //var toolbarService = DependencyService.Get<IToolbarService>();
 	        //toolbarService.SetVisibilityToolbar(true);
-            _vm.SetStatusNoNeedShowOnboarding();
+            //_vm.SetStatusNoNeedShowOnboarding();
 	    }
     }
 }

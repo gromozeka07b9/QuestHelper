@@ -94,10 +94,7 @@ namespace QuestHelper.View
                 var page = (MapOverviewPage)Activator.CreateInstance(pageParameters.TargetType);
                 openContentPage(page, pageParameters.Title, pageParameters.IconName);
             });
-            /*if (!IsNeedShowOnboarding())
-            {
-            }
-            else
+            /*if (IsNeedShowOnboarding())
             {
                 DependencyService.Get<IToolbarService>().SetVisibilityToolbar(false);
                 await Navigation.PushModalAsync(new NavigationPage(new SplashWizardPage()));

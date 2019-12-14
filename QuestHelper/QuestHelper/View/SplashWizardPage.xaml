@@ -21,7 +21,7 @@
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
                 </Label.GestureRecognizers>
-            </Label>    
+            </Label>
         </Grid>
     </ContentPage>
     <ContentPage>
@@ -36,8 +36,8 @@
                 <RowDefinition Height="3*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></Image>
-            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2" Text="{lang:Translation Onboarding_SaveYourImpression}" Style="{StaticResource WizardMainTextLabel}" />
+            <!--Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></-->
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Text="{lang:Translation Onboarding_SaveYourImpression}" Style="{StaticResource WizardMainTextLabel}" VerticalOptions="Center" />
             <Label Grid.Column="1" Grid.Row="3" Text="{lang:Translation Onboarding_Skip}" Style="{StaticResource WizardBottomTextLabel}" >
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
@@ -57,8 +57,8 @@
                 <RowDefinition Height="3*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_all" Style="{StaticResource WizardImage}"></Image>
-            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2" Text="{lang:Translation Onboarding_AllYourNotes}" Style="{StaticResource WizardMainTextLabel}" />
+            <!--Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_all" Style="{StaticResource WizardImage}"></-->
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Text="{lang:Translation Onboarding_AllYourNotes}" Style="{StaticResource WizardMainTextLabel}" VerticalOptions="Center" />
             <Label Grid.Column="1" Grid.Row="3" Text="{lang:Translation Onboarding_Skip}" Style="{StaticResource WizardBottomTextLabel}" >
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
@@ -78,8 +78,8 @@
                 <RowDefinition Height="3*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></Image>
-            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2" Text="{lang:Translation Onboarding_PlanningRoutes}" Style="{StaticResource WizardMainTextLabel}" />
+            <!--Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></-->
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Text="{lang:Translation Onboarding_PlanningRoutes}" Style="{StaticResource WizardMainTextLabel}" VerticalOptions="Center" />
             <Label Grid.Column="1" Grid.Row="3" Text="{lang:Translation Onboarding_Skip}" Style="{StaticResource WizardBottomTextLabel}" >
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
@@ -99,8 +99,8 @@
                 <RowDefinition Height="3*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></Image>
-            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2" Text="{lang:Translation Onboarding_AddYourPhotos}" Style="{StaticResource WizardMainTextLabel}" />
+            <!--Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></-->
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Text="{lang:Translation Onboarding_AddYourPhotos}" Style="{StaticResource WizardMainTextLabel}" VerticalOptions="Center" />
             <Label Grid.Column="1" Grid.Row="3" Text="{lang:Translation Onboarding_Skip}" Style="{StaticResource WizardBottomTextLabel}" >
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
@@ -120,8 +120,8 @@
                 <RowDefinition Height="3*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></Image>
-            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2" Text="{lang:Translation Onboarding_WorksOffline}" Style="{StaticResource WizardMainTextLabel}" />
+            <!--Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></-->
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Text="{lang:Translation Onboarding_WorksOffline}" Style="{StaticResource WizardMainTextLabel}" VerticalOptions="Center" />
             <Label Grid.Column="1" Grid.Row="3" Text="{lang:Translation Onboarding_Skip}" Style="{StaticResource WizardBottomTextLabel}" >
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
@@ -141,8 +141,8 @@
                 <RowDefinition Height="3*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></Image>
-            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2" Text="{lang:Translation Onboarding_Share}" Style="{StaticResource WizardMainTextLabel}" />
+            <!--Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></-->
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Text="{lang:Translation Onboarding_Share}" Style="{StaticResource WizardMainTextLabel}" VerticalOptions="Center" />
             <Label Grid.Column="1" Grid.Row="3" Text="{lang:Translation Onboarding_Skip}" Style="{StaticResource WizardBottomTextLabel}" >
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
@@ -150,6 +150,27 @@
             </Label>
         </Grid>
     </ContentPage>
+    <!--ContentPage>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="6*"></RowDefinition>
+                <RowDefinition Height="3*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></>
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Text="{lang:Translation Onboarding_TogetherBetter}" Style="{StaticResource WizardMainTextLabel}" VerticalOptions="Center" />
+            <Label Grid.Column="1" Grid.Row="3" Text="{lang:Translation Onboarding_Skip}" Style="{StaticResource WizardBottomTextLabel}" >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
+                </Label.GestureRecognizers>
+            </Label>
+        </Grid>
+    </-->
     <ContentPage>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -162,30 +183,9 @@
                 <RowDefinition Height="3*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></Image>
-            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2" Text="{lang:Translation Onboarding_TogetherBetter}" Style="{StaticResource WizardMainTextLabel}" />
-            <Label Grid.Column="1" Grid.Row="3" Text="{lang:Translation Onboarding_Skip}" Style="{StaticResource WizardBottomTextLabel}" >
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
-                </Label.GestureRecognizers>
-            </Label>
-        </Grid>
-    </ContentPage>
-    <ContentPage>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="6*"></RowDefinition>
-                <RowDefinition Height="3*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></Image>
-            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="3" Text="{lang:Translation Onboarding_GoToStart}" Style="{StaticResource WizardMainTextLabel}" />
-            <Label Grid.Column="1" Grid.Row="3" Text="{lang:Translation Onboarding_Begin}" Style="{StaticResource WizardBottomTextLabel}" >
+            <!--Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></-->
+            <!--Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Text="{lang:Translation Onboarding_GoToStart}" Style="{StaticResource WizardMainTextLabel}" VerticalOptions="Center" /-->
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Text="{lang:Translation Onboarding_Begin}" Style="{StaticResource WizardBottomTextLabel}" FontSize="20" TextColor="Yellow" >
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
                 </Label.GestureRecognizers>

@@ -251,7 +251,7 @@ GoSh!</value>
     <value>Skip</value>
   </data>
   <data name="Onboarding_Begin" xml:space="preserve">
-    <value>Start</value>
+    <value>Go to feed</value>
   </data>
   <data name="Onboarding_SaveYourImpression" xml:space="preserve">
     <value>Save your impressions by combining them by topic, for example: Holidays in Cyprus; Free parking; Conferences</value>
@@ -269,7 +269,7 @@ GoSh!</value>
     <value>Gosh! works where there is no Internet. Record your impressions anywhere, when the network appears, data can be synchronized.</value>
   </data>
   <data name="Onboarding_Share" xml:space="preserve">
-    <value>Share your impressions with your friends!</value>
+    <value>Share your route with web link!</value>
   </data>
   <data name="Onboarding_TogetherBetter" xml:space="preserve">
     <value>Together is better - take a photo, record impressions with friends in one route!</value>
