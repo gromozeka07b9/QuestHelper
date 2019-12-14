@@ -22,7 +22,6 @@ namespace QuestHelper.Droid
         {
             ConnectivityManager connectivity = ConnectivityManager.FromContext(Application.Context);
             return connectivity.ActiveNetworkInfo != null ? connectivity.ActiveNetworkInfo.IsRoaming : false;
-            //return true;
         }
 
     }

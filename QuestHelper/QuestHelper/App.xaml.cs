@@ -83,10 +83,10 @@ namespace QuestHelper
         private void SubscribeMessages()
 	    {
 
-	        MessagingCenter.Subscribe<StartAppMessage>(this, string.Empty, (sender) =>
+	        /*MessagingCenter.Subscribe<StartAppMessage>(this, string.Empty, (sender) =>
 	        {
 	            MainPage = new View.MainPage();
-	        });
+	        });*/
 
 	        MessagingCenter.Subscribe<MapOpenPointMessage>(this, string.Empty, (sender) =>
 	        {
@@ -124,7 +124,15 @@ namespace QuestHelper
 
             });
 
-        }
+			/*switch (Xamarin.Forms.Device.RuntimePlatform)
+			{
+				case Xamarin.Forms.Device.iOS:
+					Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+					break;
+				default:
+					break;
+			}*/
+		}
 
         private bool Setup()
         {

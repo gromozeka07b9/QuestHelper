@@ -124,8 +124,10 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        internal void LoadFullImage(string fullImgPath)
+        internal async void LoadFullImage(string fullImgPath)
         {
+            if(_routePointMediaObjectsApi == null) await initApi();
+
             DateTime dtStartLoad = DateTime.Now;
             var task = Task.Run(async () =>
                 {
@@ -190,16 +192,33 @@ namespace QuestHelper.ViewModel
 
         public async void StartDialogAsync()
         {
-            TokenStoreService token = new TokenStoreService();
-            string _userId = await token.GetUserIdAsync();
-            string _authToken = await token.GetAuthTokenAsync();
-            _routePointMediaObjectsApi = new RoutePointMediaObjectRequest(_apiUrl, _authToken);
+            await initApi();
+            string _userId = await getUserId();
 
             //Автора альбома пока не считаем за просмотр
             if (!_routeObject.CreatorId.Equals(_userId))
             {
                 Analytics.TrackEvent("Album opened", new Dictionary<string, string> { { "Album", RouteName } });
             }
+        }
+
+        private async Task<bool> initApi()
+        {
+            TokenStoreService token = new TokenStoreService();
+            string _authToken = await token.GetAuthTokenAsync();
+            if(!string.IsNullOrEmpty(_authToken))
+            {
+                _routePointMediaObjectsApi = new RoutePointMediaObjectRequest(_apiUrl, _authToken);
+            }
+
+            return !(_routePointMediaObjectsApi == null);
+        }
+
+        private async Task<string> getUserId()
+        {
+            TokenStoreService token = new TokenStoreService();
+            string _userId = await token.GetUserIdAsync();
+            return _userId;
         }
 
         public class CarouselItem : INotifyPropertyChanged
