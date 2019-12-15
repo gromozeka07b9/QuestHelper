@@ -29,14 +29,23 @@ namespace QuestHelper.Managers
                     message: CommonResource.CommonMsg_ForGettingCoordinatesNeedGeolocationEnabled, okText: "Ok");
                 Analytics.TrackEvent("Geolocation: off", new Dictionary<string, string> { { "GeolocatorManager", "GetCurrentLocationAsync" } });
             }
-            return (currentPosition.Latitude, currentPosition.Longitude);
+            return (currentPosition != null ? currentPosition.Latitude : 0, currentPosition != null ? currentPosition.Longitude : 0);
         }
 
         public async Task<(double Latitude, double Longtitude)> GetLastKnownPosition()
         {
             Position cachePosition = new Position();
             var locator = CrossGeolocator.Current;
-            cachePosition = await locator.GetLastKnownLocationAsync();
+            if ((locator.IsGeolocationAvailable) && (locator.IsGeolocationEnabled))
+            {
+                cachePosition = await locator.GetLastKnownLocationAsync();
+            }
+            else
+            {
+                UserDialogs.Instance.Alert(title: CommonResource.CommonMsg_GeolocationNotEnabled,
+                    message: CommonResource.CommonMsg_ForGettingCoordinatesNeedGeolocationEnabled, okText: "Ok");
+                Analytics.TrackEvent("Geolocation: off", new Dictionary<string, string> { { "GeolocatorManager", "GetLastKnownPosition" } });
+            }
             return (cachePosition != null ? cachePosition.Latitude:0, cachePosition != null ? cachePosition.Longitude : 0);
         }
 

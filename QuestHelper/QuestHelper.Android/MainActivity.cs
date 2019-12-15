@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using Android.Support.V4.App;
 using QuestHelper.Resources;
 using QuestHelper.Droid.Intents;
+using Lottie.Forms.Droid;
 
 namespace QuestHelper.Droid
 {
@@ -67,6 +68,8 @@ namespace QuestHelper.Droid
 
             Forms.SetFlags("CollectionView_Experimental");
             global::Xamarin.Forms.Forms.Init(this, bundle);
+
+            AnimationViewRenderer.Init();
             Xamarin.FormsMaps.Init(this, bundle);
             ImageCircleRenderer.Init();
             UserDialogs.Init(this);

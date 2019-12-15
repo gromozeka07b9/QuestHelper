@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:circle="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
              xmlns:local="clr-namespace:QuestHelper.View.Converters"
+             xmlns:animationForms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              x:Class="QuestHelper.View.RouteCoverPage" NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="True" Appearing="RouteCoverPage_OnAppearing" Disappearing="RouteCoverPage_OnDisappearing">
     <ContentPage.ToolbarItems>
     </ContentPage.ToolbarItems>
@@ -37,12 +38,16 @@
                 </StackLayout>
                 <ProgressBar Grid.Row="2" HorizontalOptions="FillAndExpand" ProgressColor="Blue" BackgroundColor="White" Progress="{Binding ProgressValue}" Margin="0" IsVisible="{Binding IsVisibleProgress}" ></ProgressBar>
                 <AbsoluteLayout Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" HorizontalOptions="Center" VerticalOptions="Center">
-                    <Frame CornerRadius="10" Padding="10" HasShadow="True">
-                        <StackLayout Orientation="Vertical" Margin="10,0,10,0">
-                            <Label Text="Загрузка..." FontSize="15" TextColor="Black"></Label>
-                            <Image Source="loop"></Image>
-                        </StackLayout>
-                    </Frame>
+                    <animationForms:AnimationView
+                                Animation="{Binding AnimationName}"
+                                Loop="{Binding IsVisibleProgress}"
+                                AutoPlay="{Binding IsVisibleProgress}"
+                                IsEnabled="{Binding IsVisibleProgress}"
+                                IsPlaying="{Binding IsVisibleProgress}"
+                                WidthRequest="{Binding AnimationSize}"
+                                HeightRequest="{Binding AnimationSize}"
+                                VerticalOptions="Center" HorizontalOptions="Center"
+                                />
                 </AbsoluteLayout>
             </Grid>
 

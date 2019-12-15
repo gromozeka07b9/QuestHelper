@@ -25,10 +25,10 @@ namespace QuestHelper.ViewModel
         private ViewRoute _routeItem;
         private RouteManager _routeManager = new RouteManager();
 
-        //private RoutesApiRequest _api = new RoutesApiRequest("http://questhelperserver.azurewebsites.net");
         private bool _noRoutesWarningIsVisible = false;
         private bool _isRefreshing = false;
         private bool _isVisibleProgress = false;
+        private bool _isFireworksMode = false;
         private int _countOfUpdateListByTimer = 0;
         private ShareFromGoogleMapsMessage _sharePointMessage;
         private bool _syncProgressIsVisible = false;
@@ -74,7 +74,15 @@ namespace QuestHelper.ViewModel
                     if (IsVisibleProgress) IsVisibleProgress = false;
                 }
             });
+
         }
+
+        private bool OnTimerForUpdateFireworks()
+        {
+            IsFireworksMode = false;
+            return false;
+        }
+
         internal void closeDialog()
         {
             MessagingCenter.Unsubscribe<SyncProgressRouteLoadingMessage>(this, string.Empty);
@@ -193,10 +201,29 @@ namespace QuestHelper.ViewModel
             }
             get
             {
-                return _isRefreshing;
+                //return _isRefreshing;
+                return false;
             }
         }
 
+        public bool IsFireworksMode
+        {
+            set
+            {
+                if (_isFireworksMode != value)
+                {
+                    _isFireworksMode = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("IsFireworksMode"));
+                    }
+                }
+            }
+            get
+            {
+                return _isFireworksMode;
+            }
+        }
         public bool IsAutorizedMode
         {
             get
@@ -221,6 +248,11 @@ namespace QuestHelper.ViewModel
                     if (PropertyChanged != null)
                     {
                         PropertyChanged(this, new PropertyChangedEventArgs("NoRoutesWarningIsVisible"));
+                        if ((_noRoutesWarningIsVisible) && (IsAutorizedMode))
+                        {
+                            IsFireworksMode = true;
+                            Device.StartTimer(TimeSpan.FromSeconds(10), OnTimerForUpdateFireworks);
+                        }
                     }
                 }
             }
@@ -293,7 +325,6 @@ namespace QuestHelper.ViewModel
                 if (newPoint.Save())
                 {
                     _sharePointMessage = null;
-                    //UserDialogs.Instance.Alert($"Новая точка '{newPoint.Name}' в маршрут '{routeName}' добавлена", "Добавление точки");
                 }
             }
         }
@@ -308,7 +339,7 @@ namespace QuestHelper.ViewModel
                     if (PropertyChanged != null)
                     {
                         PropertyChanged(this, new PropertyChangedEventArgs("Routes"));
-                        NoRoutesWarningIsVisible = _routes.Count() > 0;
+                        NoRoutesWarningIsVisible = _routes.Count() == 0;
                     }
                 }
             }

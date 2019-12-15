@@ -4,6 +4,7 @@
              xmlns:viewmodel="clr-namespace:QuestHelper.ViewModel;assembly=QuestHelper"
              xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
              xmlns:local="clr-namespace:QuestHelper.View.Converters"
+             xmlns:animationForms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              x:Class="QuestHelper.View.RoutesPage" Appearing="ContentPage_Appearing" NavigationPage.HasNavigationBar="{Binding IsAutorizedMode}" Disappearing="RoutesPage_OnDisappearing" Style="{StaticResource ContentPage}">
     <ContentPage.BindingContext>
         <viewmodel:RoutesViewModel />
@@ -66,13 +67,6 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <!--AbsoluteLayout Grid.Row="1" Grid.Column="2" VerticalOptions="Center">
-                <Image Source="additem2.png" WidthRequest="96" HeightRequest="96" HorizontalOptions="EndAndExpand" AbsoluteLayout.LayoutBounds=".6,.0,0.6, 1." AbsoluteLayout.LayoutFlags="All">
-                    <Image.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding AddNewRouteCommand}" />
-                    </Image.GestureRecognizers>
-                </Image>
-            </-->
             <AbsoluteLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="3" VerticalOptions="Fill" HorizontalOptions="Fill" Opacity="1" BackgroundColor="#CAECFF" IsVisible="{Binding IsAutorizedMode, Converter={StaticResource inverter}}">
             </AbsoluteLayout>
             <AbsoluteLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="3" VerticalOptions="Center" HorizontalOptions="Center" Opacity="1" IsVisible="{Binding IsAutorizedMode, Converter={StaticResource inverter}}">
@@ -93,6 +87,19 @@
                         <TapGestureRecognizer Command="{Binding AddNewRouteCommand}" />
                     </Image.GestureRecognizers>
                 </Image>
+            </AbsoluteLayout>
+            <AbsoluteLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="3" VerticalOptions="End" HorizontalOptions="End" IsVisible="{Binding IsFireworksMode}">
+                <animationForms:AnimationView
+                                Animation="fireworks.json"
+                                Loop="{Binding IsFireworksMode}"
+                                AutoPlay="{Binding IsFireworksMode}"
+                                IsEnabled="{Binding IsFireworksMode}"
+                                IsPlaying="{Binding IsFireworksMode}"
+                                WidthRequest="120"
+                                HeightRequest="120"
+                                ClickedCommand="{Binding AddNewRouteCommand}"
+                                VerticalOptions="Center" HorizontalOptions="Center"
+                                />
             </AbsoluteLayout>
             <ProgressBar Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="FillAndExpand" ProgressColor="Blue" BackgroundColor="White" Progress="{Binding ProgressValue}" Margin="0" IsVisible="{Binding IsVisibleProgress}" ></ProgressBar>
         </Grid>

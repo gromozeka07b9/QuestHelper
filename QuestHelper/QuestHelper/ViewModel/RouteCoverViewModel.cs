@@ -234,6 +234,24 @@ namespace QuestHelper.ViewModel
             }
         }
 
+        public string AnimationName
+        {
+            get
+            {
+                var nowDate = DateTime.Now;            
+                bool isNewYear = nowDate.Month >= 11 || nowDate.Month == 1;
+                return isNewYear ? "newyearloading.json" : "usualloading.json";
+            }
+        }
+
+        public int AnimationSize
+        {
+            get
+            {
+                return AnimationName.Equals("newyearloading.json") ? 150 : 80;
+            }
+        }
+
         public ObservableCollection<ViewRoutePoint> PointsOfRoute
         {
             set
