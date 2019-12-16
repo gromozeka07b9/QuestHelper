@@ -32,6 +32,7 @@ namespace QuestHelper.ViewModel
         private ObservableCollection<ViewRoutePoint> _viewPointsOfRoute = new ObservableCollection<ViewRoutePoint>();
 
         public ICommand StartRouteCommand { get; private set; }
+        public ICommand BackNavigationCommand { get; private set; }
 
         /// <summary>
         /// Вызывается при открытии обложки из страницы альбомов, когда маршрут уже существует в локальной БД
@@ -73,7 +74,13 @@ namespace QuestHelper.ViewModel
         private void init()
         {
             StartRouteCommand = new Command(startRouteCommand);
+            BackNavigationCommand = new Command(backNavigationCommand);
             PointsOfRoute = new ObservableCollection<ViewRoutePoint>();
+        }
+
+        private void backNavigationCommand(object obj)
+        {
+            Navigation.PopAsync();
         }
 
         private void startRouteCommand(object obj)

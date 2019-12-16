@@ -49,6 +49,13 @@
                                 VerticalOptions="Center" HorizontalOptions="Center"
                                 />
                 </AbsoluteLayout>
+                <StackLayout Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Orientation="Vertical" VerticalOptions="Start">
+                    <Image Source="baseline_arrow_back_black_48.png" WidthRequest="40" HeightRequest="40" Margin="10,10,0,0" VerticalOptions="Start" HorizontalOptions="Start">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding BackNavigationCommand}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                </StackLayout>
             </Grid>
 
             <ListView VerticalOptions="StartAndExpand" SeparatorVisibility="Default" HasUnevenRows="True" RowHeight="96" ItemsSource="{Binding PointsOfRoute}" SelectedItem="{Binding SelectedRoutePointItem,Mode=TwoWay}" IsPullToRefreshEnabled="False" RefreshCommand="{Binding StartDialogCommand}" IsVisible="{Binding IsVisibleList}" CachingStrategy="RecycleElementAndDataTemplate">
@@ -92,6 +99,14 @@
                                 <TapGestureRecognizer Command="{Binding StartRouteCommand}"></TapGestureRecognizer>
                             </circle:CircleImage.GestureRecognizers>
                         </circle:CircleImage>
+                    
+                        <StackLayout Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Orientation="Vertical" VerticalOptions="Start">
+                            <Image Source="baseline_arrow_back_black_48.png" WidthRequest="40" HeightRequest="40" Margin="10,10,0,0" VerticalOptions="Start" HorizontalOptions="Start">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BackNavigationCommand}"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </StackLayout>
                     </Grid>
                 </ListView.Header>
                 <ListView.ItemTemplate>

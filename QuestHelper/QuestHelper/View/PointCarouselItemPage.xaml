@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:QuestHelper.View.Converters"
              xmlns:circle="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
              xmlns:view="clr-namespace:QuestHelper.View"
-             x:Class="QuestHelper.View.PointCarouselItemPage" NavigationPage.HasNavigationBar="False" Appearing="PointCarouselItemPage_OnAppearing" BackgroundImage="black">
+             x:Class="QuestHelper.View.PointCarouselItemPage" NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="True" Appearing="PointCarouselItemPage_OnAppearing">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:EmptyImageConverter  x:Key="emptyimage" />

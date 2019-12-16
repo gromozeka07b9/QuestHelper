@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Acr.UserDialogs;
 using Foundation;
+using ImageCircle.Forms.Plugin.iOS;
+using Lottie.Forms.iOS.Renderers;
 using QuestHelper.Managers.Sync;
 using QuestHelper.Model.Messages;
 using UIKit;
@@ -27,8 +29,13 @@ namespace QuestHelper.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            Forms.SetFlags("CollectionView_Experimental");
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
+
+            AnimationViewRenderer.Init();
+            Xamarin.FormsMaps.Init();
+            ImageCircleRenderer.Init();
 
             MessagingCenter.Subscribe<SyncMessage>(this, string.Empty, async (sender) =>
             {

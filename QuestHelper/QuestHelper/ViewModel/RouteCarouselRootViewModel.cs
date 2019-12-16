@@ -32,11 +32,18 @@ namespace QuestHelper.ViewModel
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
+        public ICommand BackNavigationCommand { get; private set; }
 
         public RouteCarouselRootViewModel(string routeId, string routePointId = "")
         {
+            BackNavigationCommand = new Command(backNavigationCommand);
             _routeObject = new ViewRoute(routeId);
             _routePointId = routePointId;
+        }
+
+        private void backNavigationCommand(object obj)
+        {
+            Navigation.PopAsync();
         }
 
         public string RouteName
