@@ -287,7 +287,7 @@ Gosh!</value>
     <value>No</value>
   </data>
   <data name="Albums_AreYourSureToDeleteLoadedRoutes" xml:space="preserve">
-    <value>¿Estás seguro de que deseas eliminar las rutas descargadas? Si es necesario, puede descargarlos nuevamente desde el feed de.</value>
+    <value>¿Estás seguro de que deseas eliminar las rutas descargadas?</value>
   </data>
   <data name="Login_RegistrationProcess" xml:space="preserve">
     <value>Inscripciones ...</value>
@@ -474,5 +474,11 @@ Gosh!</value>
   </data>
   <data name="Permission_Position" xml:space="preserve">
     <value>La resolución es necesaria para obtener las coordenadas del punto.</value>
+  </data>
+  <data name="Albums_YouCanDeleteDownloadedRoutes" xml:space="preserve">
+    <value>Puede liberar memoria eliminando rutas cargadas previamente. Si es necesario, puede descargarlos nuevamente.</value>
+  </data>
+  <data name="Feed_SearchPlaceholder" xml:space="preserve">
+    <value>Georgia</value>
   </data>
 </root>

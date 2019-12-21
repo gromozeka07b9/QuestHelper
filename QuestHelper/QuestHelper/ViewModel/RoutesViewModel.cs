@@ -228,7 +228,7 @@ namespace QuestHelper.ViewModel
         {
             get
             {
-                bool authorizedMode = true;
+                bool authorizedMode = false;
                 ParameterManager par = new ParameterManager();
                 string guestMode = string.Empty;
                 if (par.Get("GuestMode", out guestMode))

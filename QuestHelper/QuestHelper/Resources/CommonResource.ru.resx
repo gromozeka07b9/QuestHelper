@@ -277,7 +277,7 @@
     <value>Давайте скорее начнём!</value>
   </data>
   <data name="Albums_AreYourSureToDeleteLoadedRoutes" xml:space="preserve">
-    <value>Вы уверены, что хотите удалить загруженные маршруты? При необходимости, вы сможете загрузить их повторно из ленты.</value>
+    <value>Вы уверены, что хотите удалить загруженные маршруты?</value>
   </data>
   <data name="CommonMsg_Warning" xml:space="preserve">
     <value>Внимание</value>
@@ -473,5 +473,11 @@
   </data>
   <data name="Permission_Position" xml:space="preserve">
     <value>Разрешение необходимо для получения координат точки</value>
+  </data>
+  <data name="Albums_YouCanDeleteDownloadedRoutes" xml:space="preserve">
+    <value>Вы можете освободить память, удалив ранее загруженные маршруты. При необходимости, вы можете их загрузить повторно.</value>
+  </data>
+  <data name="Feed_SearchPlaceholder" xml:space="preserve">
+    <value>Грузия</value>
   </data>
 </root>

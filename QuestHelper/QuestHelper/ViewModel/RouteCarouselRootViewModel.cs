@@ -33,24 +33,12 @@ namespace QuestHelper.ViewModel
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand BackNavigationCommand { get; private set; }
-        public ICommand PrevPhotoCommand { get; private set; }
-        public ICommand NextPhotoCommand { get; private set; }
 
         public RouteCarouselRootViewModel(string routeId, string routePointId = "")
         {
             BackNavigationCommand = new Command(backNavigationCommand);
-            PrevPhotoCommand = new Command(prevPhotoCommand);
-            NextPhotoCommand = new Command(nextPhotoCommand);
             _routeObject = new ViewRoute(routeId);
             _routePointId = routePointId;
-        }
-
-        private void nextPhotoCommand(object obj)
-        {
-        }
-
-        private void prevPhotoCommand(object obj)
-        {
         }
 
         private void backNavigationCommand(object obj)

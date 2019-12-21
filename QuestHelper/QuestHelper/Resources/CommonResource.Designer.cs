@@ -61,7 +61,7 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Are you sure you want to delete the downloaded routes? If necessary, you can download them again from the feed..
+        ///   Ищет локализованную строку, похожую на Are you sure you want to delete the downloaded routes?.
         /// </summary>
         public static string Albums_AreYourSureToDeleteLoadedRoutes {
             get {
@@ -75,6 +75,15 @@ namespace QuestHelper.Resources {
         public static string Albums_ListRouteIsEmpty {
             get {
                 return ResourceManager.GetString("Albums_ListRouteIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You can free up memory by deleting previously loaded routes. If necessary, you can download them again..
+        /// </summary>
+        public static string Albums_YouCanDeleteDownloadedRoutes {
+            get {
+                return ResourceManager.GetString("Albums_YouCanDeleteDownloadedRoutes", resourceCulture);
             }
         }
         
@@ -201,6 +210,15 @@ namespace QuestHelper.Resources {
         public static string Feed_ErrorLoadingFeed {
             get {
                 return ResourceManager.GetString("Feed_ErrorLoadingFeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Georgia.
+        /// </summary>
+        public static string Feed_SearchPlaceholder {
+            get {
+                return ResourceManager.GetString("Feed_SearchPlaceholder", resourceCulture);
             }
         }
         

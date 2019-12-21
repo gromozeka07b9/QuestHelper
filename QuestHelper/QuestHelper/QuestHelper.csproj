@@ -59,9 +59,6 @@
     <Compile Update="View\MapRouteOverviewPage.xaml.cs">
       <DependentUpon>MapRouteOverviewPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="View\PointCarouselItemPage.xaml.cs">
-      <DependentUpon>PointCarouselItemPage.xaml</DependentUpon>
-    </Compile>
     <Compile Update="View\RouteCreatedPage.xaml.cs">
       <DependentUpon>RouteCreatedPage.xaml</DependentUpon>
     </Compile>
@@ -98,9 +95,6 @@
     </EmbeddedResource>
     <EmbeddedResource Update="View\MasterMainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="View\PointCarouselItemPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="View\ProcessShareIntentPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>

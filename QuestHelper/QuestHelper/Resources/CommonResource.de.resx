@@ -257,7 +257,7 @@
     <value>Willkommen zu GoSh!</value>
   </data>
   <data name="Albums_AreYourSureToDeleteLoadedRoutes" xml:space="preserve">
-    <value>Möchten Sie die heruntergeladenen Routen wirklich löschen? Bei Bedarf können Sie sie erneut vom Band herunterladen.</value>
+    <value>Möchten Sie die heruntergeladenen Routen wirklich löschen?</value>
   </data>
   <data name="CommonMsg_No" xml:space="preserve">
     <value>Nein</value>
@@ -453,5 +453,11 @@
   </data>
   <data name="Permission_Position" xml:space="preserve">
     <value>Die Auflösung ist erforderlich, um die Koordinaten des Punktes zu erhalten</value>
+  </data>
+  <data name="Albums_YouCanDeleteDownloadedRoutes" xml:space="preserve">
+    <value>Sie können Speicherplatz freigeben, indem Sie zuvor geladene Routen löschen. Bei Bedarf können Sie sie erneut herunterladen.</value>
+  </data>
+  <data name="Feed_SearchPlaceholder" xml:space="preserve">
+    <value>Georgia</value>
   </data>
 </root>

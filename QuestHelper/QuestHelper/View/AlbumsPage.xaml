@@ -31,7 +31,7 @@
                 <Frame Padding="0" Style="{StaticResource InfoBlockFrame}">
                     <StackLayout Orientation="Horizontal">
                         <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand" Margin="10">
-                            <Label Text="Вы можете освободить память, удалив ранее загруженные маршруты. При необходимости, вы можете их загрузить повторно." Style="{StaticResource InfoBlockSmallLabel}"></Label>
+                            <Label Text="{lang:Translation Albums_YouCanDeleteDownloadedRoutes}" Style="{StaticResource InfoBlockSmallLabel}"></Label>
                         </StackLayout>
                         <StackLayout Orientation="Vertical" HorizontalOptions="EndAndExpand" Margin="5" VerticalOptions="Center">
                             <Image Source="delete.png" Style="{StaticResource InfoBlockIconImage}">

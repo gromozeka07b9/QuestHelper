@@ -287,7 +287,7 @@ GoSh!</value>
     <value>No</value>
   </data>
   <data name="Albums_AreYourSureToDeleteLoadedRoutes" xml:space="preserve">
-    <value>Are you sure you want to delete the downloaded routes? If necessary, you can download them again from the feed.</value>
+    <value>Are you sure you want to delete the downloaded routes?</value>
   </data>
   <data name="Login_RegistrationProcess" xml:space="preserve">
     <value>Registrations...</value>
@@ -474,5 +474,11 @@ GoSh!</value>
   </data>
   <data name="Permission_Position" xml:space="preserve">
     <value>Right need for get your position</value>
+  </data>
+  <data name="Albums_YouCanDeleteDownloadedRoutes" xml:space="preserve">
+    <value>You can free up memory by deleting previously loaded routes. If necessary, you can download them again.</value>
+  </data>
+  <data name="Feed_SearchPlaceholder" xml:space="preserve">
+    <value>Georgia</value>
   </data>
 </root>
