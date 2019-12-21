@@ -80,6 +80,7 @@ namespace QuestHelper.Droid
             string shareDescription = Intent.GetStringExtra("shareDescription") ?? string.Empty;
 
             LoadApplication(new App());
+
             if (!string.IsNullOrEmpty(shareDescription))
             {
                 var pageCollections = new PagesCollection();

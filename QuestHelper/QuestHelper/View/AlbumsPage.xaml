@@ -8,11 +8,9 @@
         <ResourceDictionary>
             <local:AspectImageConverter  x:Key="aspectimage" />
             <local:LockImageConverter  x:Key="lockimage" />
+            <local:NegativeBoolConverter  x:Key="inverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    <ContentPage.ToolbarItems>
-        <!--ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding DeleteDataAllAlbumsCommand}" Icon="delete.png"></-->
-    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -26,18 +24,21 @@
                 <RowDefinition Height="80" />
             </Grid.RowDefinitions>
             <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Orientation="Vertical" IsVisible="{Binding NoPostsWarningIsVisible}" HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
-                <!--Label Text="{lang:Translation Albums_ListRouteIsEmpty}У вас пока нет загруженных маршрутов" Style="{StaticResource StandartTextLabel}" FontSize="16" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" Margin="20,0,20,0"></-->
-                <Label Text="{lang:Translation Albums_ListRouteIsEmpty}" Style="{StaticResource StandartTextLabel}" FontSize="16" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" Margin="20,0,20,0"></Label>
-                <Image Source="emptylist.png" HeightRequest="150" WidthRequest="300" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                <Label Text="{lang:Translation Albums_ListRouteIsEmpty}" Style="{StaticResource NoDataWarinigSmallLabel}" Margin="20,0,20,0" VerticalOptions="End"></Label>
+                <Image Source="emptylist.png" Style="{StaticResource NoDataWarinigIconImage}" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}"/>
             </StackLayout>
-            <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="5,0,5,0" VerticalOptions="EndAndExpand">
-                <Frame CornerRadius="5" HasShadow="False" BorderColor="Accent" Padding="0">
+            <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="5,0,5,0" Style="{StaticResource InfoBlockStackLayout}" IsVisible="{Binding NoPostsWarningIsVisible, Converter={StaticResource inverter}}">
+                <Frame Padding="0" Style="{StaticResource InfoBlockFrame}">
                     <StackLayout Orientation="Horizontal">
                         <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand" Margin="10">
-                            <Label Text="Загружено 10 маршрутов. Вы можете освободить память, удалив их. При необходимости, вы можете их загрузить повторно." FontSize="13"></Label>
+                            <Label Text="Вы можете освободить память, удалив ранее загруженные маршруты. При необходимости, вы можете их загрузить повторно." Style="{StaticResource InfoBlockSmallLabel}"></Label>
                         </StackLayout>
-                        <StackLayout Orientation="Vertical" HorizontalOptions="EndAndExpand" Margin="5" VerticalOptions="FillAndExpand">
-                            <Image Source="delete.png" VerticalOptions="Center" WidthRequest="40" HeightRequest="40" />
+                        <StackLayout Orientation="Vertical" HorizontalOptions="EndAndExpand" Margin="5" VerticalOptions="Center">
+                            <Image Source="delete.png" Style="{StaticResource InfoBlockIconImage}">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding DeleteDataAllAlbumsCommand}"/>
+                                </Image.GestureRecognizers>
+                            </Image>
                         </StackLayout>
                     </StackLayout>
                 </Frame>
@@ -46,7 +47,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Frame CornerRadius="5" Padding="0" IsClippedToBounds="False" BackgroundColor="#e0f0f0" HasShadow="False" BorderColor="Accent" OutlineColor="#CAECFF"  Margin="5,5,5,5">
+                            <Frame IsClippedToBounds="False" Margin="5,5,5,5" Style="{StaticResource RouteListFrame}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="2*"/>
@@ -54,18 +55,23 @@
                                         <ColumnDefinition Width="2*"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="8*"/>
+                                        <RowDefinition Height="3*"/>
+                                        <RowDefinition Height="6*"/>
                                         <RowDefinition Height="1*"/>
                                         <RowDefinition Height="1*"/>
                                     </Grid.RowDefinitions>
-                                    <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="{Binding CoverImage}" Margin="0,35,0,0" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                                    <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="4" Source="{Binding CoverImage}" Opacity="1" Margin="0,0,0,0" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
 
-                                    <Label Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding RouteLengthKm}" FontSize="10" FontAttributes="Bold" LineBreakMode="NoWrap" Margin="0,0,10,0" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Start" HorizontalTextAlignment="End"></Label>
-                                    <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding RouteLengthSteps}" FontSize="10" FontAttributes="Bold" LineBreakMode="NoWrap" Margin="0,0,10,0" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Start" HorizontalTextAlignment="End"></Label>
+                                    <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Style="{StaticResource RouteListStackLayoutTop}">
+                                    </StackLayout>
+                                    <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" Style="{StaticResource RouteListStackLayoutBottom}">
+                                    </StackLayout>
+                                    <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Text="{Binding Name}" Style="{StaticResource RouteListBigLabel}" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="End" Margin="5,0,5,0" />
 
-                                    <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Text="{Binding Name}" Style="{StaticResource RouteTextLabel}" FontSize="22" FontAttributes="None" TextColor="Black" Margin="10,5,0,5" LineBreakMode="WordWrap" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="End"></Label>
-                                    <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" Text="{Binding RouteDays}" FontSize="12" FontAttributes="Bold" TextColor="Gray" Margin="10,0,0,10" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Start"></Label>
-                                    <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding RoutePointsCount}" FontSize="10" FontAttributes="Bold" LineBreakMode="NoWrap" Margin="10,0,0,0" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Start" HorizontalTextAlignment="End"></Label>
+                                    <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding RouteLengthKm}" Style="{StaticResource RouteListSmallLabel}" Margin="0,0,10,0" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="End"></Label>
+                                    <Label Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding RouteLengthSteps}" Style="{StaticResource RouteListSmallLabel}" Margin="0,0,10,0" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="End"></Label>
+                                    <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="2" Text="{Binding RouteDays}" Style="{StaticResource RouteListSmallLabel}" Margin="10,0,0,10" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center"></Label>
+                                    <Label Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding RoutePointsCount}" Style="{StaticResource RouteListSmallLabel}" Margin="10,0,0,0" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="End"></Label>
                                 </Grid>
                             </Frame>
                         </ViewCell>

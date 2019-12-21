@@ -7,7 +7,7 @@
             
             <Style x:Key="ContentPage" TargetType="ContentPage">
                 <!--Setter Property="BackgroundColor" Value="#F5F5F5"/-->
-                <Setter Property="BackgroundColor" Value="#FFFFFF"/>
+                <Setter Property="BackgroundColor" Value="White"/>
             </Style>
 
             <Style x:Key="StandartTextLabel" TargetType="Label">
@@ -87,6 +87,74 @@
                 <Setter Property="WidthRequest" Value="80"/>
                 <Setter Property="BindingContext" Value="{TemplateBinding BindingContext}"/>
             </Style>
+
+            <!--Начало предупреждение нет данных-->
+            <Style x:Key="NoDataWarinigSmallLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            </Style>
+            <Style x:Key="NoDataWarinigIconImage" TargetType="Image">
+                <Setter Property="WidthRequest" Value="150"/>
+                <Setter Property="HeightRequest" Value="300"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+            </Style>
+            <!--Конец предупреждение нет данных-->
+
+            <!--Начало Информационный блок-->
+            <Style x:Key="InfoBlockSmallLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontSize" Value="13"/>
+            </Style>
+            <Style x:Key="InfoBlockIconImage" TargetType="Image">
+                <Setter Property="WidthRequest" Value="40"/>
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+            <Style x:Key="InfoBlockStackLayout" TargetType="StackLayout">
+                <Setter Property="BackgroundColor" Value="#f5f5f5"/>
+                <Setter Property="VerticalOptions" Value="EndAndExpand"/>
+            </Style>
+            <Style x:Key="InfoBlockFrame" TargetType="Frame">
+                <Setter Property="BorderColor" Value="Black"/>
+                <Setter Property="BackgroundColor" Value="#f5f5f5"/>
+                <Setter Property="HasShadow" Value="False"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="Padding" Value="0"/>
+            </Style>
+            <!--Конец Информационный блок-->
+
+            <!--Начало Список маршрутов-->
+            <Style x:Key="RouteListFrame" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="#e0f0f0"/>
+                <Setter Property="HasShadow" Value="True"/>
+                <Setter Property="CornerRadius" Value="0"/>
+                <Setter Property="Padding" Value="0"/>
+            </Style>
+            <Style x:Key="RouteListStackLayoutTop" TargetType="StackLayout">
+                <Setter Property="BackgroundColor" Value="Black"/>
+                <Setter Property="Opacity" Value="0.3"/>
+            </Style>
+            <Style x:Key="RouteListStackLayoutBottom" TargetType="StackLayout">
+                <Setter Property="BackgroundColor" Value="Black"/>
+                <Setter Property="Opacity" Value="0.3"/>
+            </Style>
+            <Style x:Key="RouteListSmallLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="LineBreakMode" Value="NoWrap"/>
+            </Style>
+            <Style x:Key="RouteListBigLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
+                <Setter Property="MaxLines" Value="2"/>
+            </Style>
+            <!--Конец Список маршрутов-->
+
             <ControlTemplate x:Key="NavigationButtons">
                 <Grid>
                     <Grid.RowDefinitions>

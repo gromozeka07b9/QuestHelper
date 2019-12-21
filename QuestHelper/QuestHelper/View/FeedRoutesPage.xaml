@@ -9,11 +9,9 @@
         <ResourceDictionary>
             <local:AspectImageConverter  x:Key="aspectimage" />
             <local:LockImageConverter  x:Key="lockimage" />
+            <local:NegativeBoolConverter  x:Key="inverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    <ContentPage.ToolbarItems>
-        <!--ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding RefreshFeedCommand}" Icon="loop.png"></-->
-    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -22,19 +20,25 @@
                 <ColumnDefinition Width="96" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
+                <RowDefinition Height="60" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="96" />
             </Grid.RowDefinitions>
             <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Orientation="Vertical" IsVisible="{Binding NoItemsWarningIsVisible}" HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
-                <Label Text="{lang:Translation Feed_ErrorLoadingFeed}" Style="{StaticResource StandartTextLabel}" FontSize="16" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" Margin="20,0,20,0"></Label>
-                <Image Source="emptylist.png" HeightRequest="150" WidthRequest="300" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                <Label Text="{lang:Translation Feed_ErrorLoadingFeed}" Style="{StaticResource NoDataWarinigSmallLabel}" Margin="20,0,20,0"></Label>
+                <Image Source="emptylist.png" Style="{StaticResource NoDataWarinigIconImage}" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" />
             </StackLayout>
-            <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" SeparatorVisibility="None" ItemsSource="{Binding FeedItems}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshFeedCommand}" x:Name="FeedListView" RowHeight="360"  SelectedItem="{Binding SelectedFeedItem,Mode=TwoWay}" CachingStrategy="RecycleElementAndDataTemplate">
+
+            <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="5,5,5,0" Style="{StaticResource InfoBlockStackLayout}">
+                <Frame Padding="0" Style="{StaticResource InfoBlockFrame}">
+                    <SearchBar x:Name="SearchBar" Placeholder="москва" SearchCommand="{Binding SearchRoutesCommand}" SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}" Text="{Binding TextFilter}" HorizontalOptions="FillAndExpand" FontSize="15" TextChanged="SearchBar_TextChanged"></SearchBar>
+                </Frame>
+            </StackLayout>
+            <ListView x:Name="FeedListView" Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="0,0,0,0" SeparatorVisibility="None" ItemsSource="{Binding FeedItems}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshFeedCommand}" RowHeight="240"  SelectedItem="{Binding SelectedFeedItem,Mode=TwoWay}" CachingStrategy="RecycleElementAndDataTemplate">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Frame CornerRadius="10" Padding="0" IsClippedToBounds="False" BackgroundColor="#e3f2fd" HasShadow="True" BorderColor="Accent" OutlineColor="#CAECFF"  Margin="10,10,10,5">
+                            <Frame Style="{StaticResource RouteListFrame}" Padding="0" IsClippedToBounds="False" Margin="5,5,5,0">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="1*"/>
@@ -42,13 +46,21 @@
                                         <ColumnDefinition Width="4*"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="2*"/>
+                                        <RowDefinition Height="4*"/>
                                         <RowDefinition Height="8*"/>
-                                        <RowDefinition Height="1*"/>
-                                        <RowDefinition Height="1*"/>
+                                        <RowDefinition Height="2*"/>
+                                        <RowDefinition Height="2*"/>
                                     </Grid.RowDefinitions>
+                                    
+                                    <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="4" Source="{Binding CoverImage}" Margin="0,0,0,0" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+
+                                    <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Style="{StaticResource RouteListStackLayoutTop}">
+                                    </StackLayout>
+                                    <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" Style="{StaticResource RouteListStackLayoutBottom}">
+                                    </StackLayout>
+
                                     <StackLayout Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                                        <Label Text="{Binding Name}" Style="{StaticResource RouteTextLabel}" FontSize="16" FontAttributes="Bold" TextColor="Black" Margin="10,0,0,5" LineBreakMode="WordWrap" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center"></Label>
+                                        <Label Text="{Binding Name}" Style="{StaticResource RouteListBigLabel}" Margin="10,0,0,5" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center"></Label>
                                     </StackLayout>
                                     <StackLayout Grid.Column="2" Grid.Row="0" Orientation="Horizontal" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand" Margin="0,0,5,0">
                                         <StackLayout.GestureRecognizers>
@@ -56,21 +68,19 @@
                                         </StackLayout.GestureRecognizers>
                                         <circle:CircleImage Source="ic_eye_1" WidthRequest="25" HeightRequest="25" BorderColor="Wheat" Aspect="AspectFit" BorderThickness="0" Margin="0">
                                         </circle:CircleImage>
-                                        <Label Text="{Binding ViewsCount}" Style="{StaticResource RouteTextLabel}" FontSize="12" FontAttributes="Bold" TextColor="Black" Margin="0" LineBreakMode="NoWrap" VerticalTextAlignment="Center" HorizontalOptions="Center">
+                                        <Label Text="{Binding ViewsCount}" Style="{StaticResource RouteListSmallLabel}" VerticalTextAlignment="Center" HorizontalOptions="Center">
                                         </Label>
                                         <circle:CircleImage Source="{Binding FavoriteImage}" WidthRequest="25" HeightRequest="25" BorderColor="Wheat" Aspect="AspectFit" BorderThickness="0" Margin="0">
                                         </circle:CircleImage>
-                                        <Label Text="{Binding FavoritesCount}" Style="{StaticResource RouteTextLabel}" FontSize="12" FontAttributes="Bold" TextColor="Black" Margin="0" LineBreakMode="NoWrap" VerticalTextAlignment="Center" HorizontalOptions="Center">
+                                        <Label Text="{Binding FavoritesCount}" Style="{StaticResource RouteListSmallLabel}" VerticalTextAlignment="Center" HorizontalOptions="Center">
                                         </Label>
                                     </StackLayout>
-                                    <Image Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Source="{Binding CoverImage}" Margin="0,0,0,0" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+
                                     <StackLayout Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="2" Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="Center">
                                         <Label Text="{Binding CreatorName}" Style="{StaticResource RouteTextLabel}" FontSize="16" FontAttributes="Bold" TextColor="White" Margin="10,5,0,0" LineBreakMode="WordWrap" VerticalTextAlignment="Center" HorizontalOptions="Center"></Label>
                                         <Label Text="{Binding CreateDateText}" Style="{StaticResource RouteTextLabel}" FontSize="14" FontAttributes="Bold" TextColor="White" Margin="10,0,0,5" LineBreakMode="WordWrap" VerticalTextAlignment="Center" HorizontalOptions="Center"></Label>
-                                        <!--circle:CircleImage Source="face_black.png" WidthRequest="50" HeightRequest="50" BorderColor="Wheat" Aspect="AspectFit" BorderThickness="0" Margin="5,10,5,5">
-                                        </-->
                                     </StackLayout>
-                                    <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" Text="{Binding Description}" Style="{StaticResource RouteTextLabel}" FontSize="13" FontAttributes="None" TextColor="Black" Margin="10,0,10,5" MaxLines="3" LineBreakMode="TailTruncation" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center"></Label>
+                                    <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" Text="{Binding Description}" Style="{StaticResource RouteListSmallLabel}" Margin="10,0,10,5" MaxLines="3" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center"></Label>
                                 </Grid>
                             </Frame>
                         </ViewCell>

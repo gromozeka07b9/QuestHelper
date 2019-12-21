@@ -23,6 +23,7 @@ namespace QuestHelper.ViewModel
         private const string _feedCacheId = "FeedApiCache";
         private IMemoryCache _memoryCache;
         private string _feedItemId;
+        private string _textFilter;
         private IEnumerable<ViewFeedItem> _feedItems = new List<ViewFeedItem>();
         private ViewFeedItem _feedItem = new ViewFeedItem();
         private int _countOfUpdateListByTimer = 0;
@@ -33,12 +34,26 @@ namespace QuestHelper.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand RefreshFeedCommand { get; private set; }
         public ICommand SetLikeCommand { get; private set; }
+        public ICommand SearchRoutesCommand { get; private set; }
+        
 
         public FeedRoutesViewModel()
         {
             RefreshFeedCommand = new Command(refreshFeedCommandAsync);
             SetLikeCommand = new Command(setLikeCommand);
+            SearchRoutesCommand = new Command(searchRoutesCommand);
             _memoryCache = App.Container.Resolve<IMemoryCache>();
+        }
+
+        private async void searchRoutesCommand(object text)
+        {
+            /*string searchTxt = text.ToString().Trim();
+            if (!string.IsNullOrEmpty(searchTxt))
+            {
+                TextFilter = searchTxt;
+                await refreshFeed(false, TextFilter);
+            }*/
+            await refreshFeed(false, TextFilter);
         }
 
         private void setLikeCommand(object routeObject)
@@ -76,7 +91,7 @@ namespace QuestHelper.ViewModel
         public async void startDialogAsync()
         {
             Analytics.TrackEvent("Feed started", new Dictionary<string, string> { });
-            await refreshFeed(false);
+            await refreshFeed(false, TextFilter);
         }
 
         internal void closeDialog()
@@ -85,10 +100,10 @@ namespace QuestHelper.ViewModel
 
         async void refreshFeedCommandAsync()
         {
-            await refreshFeed(true);
+            await refreshFeed(true, TextFilter);
         }
 
-        private async Task refreshFeed(bool force)
+        private async Task refreshFeed(bool force, string textFilter)
         {
             IsRefreshing = true;
             List<FeedItem> feed = new List<FeedItem>();
@@ -106,7 +121,7 @@ namespace QuestHelper.ViewModel
 
             if(feed != null)
             {
-                FeedItems = getSortedViewFeed(feed);
+                FeedItems = getSortedViewFeed(feed, textFilter);
             }
             else
             {
@@ -123,24 +138,35 @@ namespace QuestHelper.ViewModel
             IsRefreshing = false;
         }
 
-        private IEnumerable<ViewFeedItem> getSortedViewFeed(List<FeedItem> feed)
+        private IEnumerable<ViewFeedItem> getSortedViewFeed(List<FeedItem> feed, string textFilter)
         {
             var items = new List<ViewFeedItem>();
+            string filterString = textFilter is null ? string.Empty: textFilter.Trim();
             foreach (var item in feed)
             {
-                items.Add(new ViewFeedItem(item.Id)
+                bool itemFoundInFilter = true;
+                if (!string.IsNullOrEmpty(filterString))
                 {
-                    Name = item.Name,
-                    CreatorId = item.CreatorId,
-                    CreateDate = item.CreateDate,
-                    Description = item.Description,
-                    CreatorName = item.CreatorName,
-                    ImgUrl = item.ImgUrl,
-                    FavoritesCount = item.LikeCount,
-                    ViewsCount = item.ViewCount,
-                    IsUserViewed = item.IsUserViewed > 0,
-                    IsUserLiked = item.IsUserLiked > 0
-                });
+                    itemFoundInFilter = (item.Name.IndexOf(filterString, StringComparison.CurrentCultureIgnoreCase) > -1) ||
+                                        (item.Description.IndexOf(filterString, StringComparison.CurrentCultureIgnoreCase) > -1) ||
+                                        (item.CreatorName.IndexOf(filterString, StringComparison.CurrentCultureIgnoreCase) > -1);
+                }
+                if (itemFoundInFilter)
+                {
+                    items.Add(new ViewFeedItem(item.Id)
+                    {
+                        Name = item.Name,
+                        CreatorId = item.CreatorId,
+                        CreateDate = item.CreateDate,
+                        Description = item.Description,
+                        CreatorName = item.CreatorName,
+                        ImgUrl = item.ImgUrl,
+                        FavoritesCount = item.LikeCount,
+                        ViewsCount = item.ViewCount,
+                        IsUserViewed = item.IsUserViewed > 0,
+                        IsUserLiked = item.IsUserLiked > 0
+                    });
+                }
             }
 
             //FeedItems = items.OrderByDescending(i => i.CreateDate);
@@ -237,6 +263,28 @@ namespace QuestHelper.ViewModel
             get
             {
                 return _feedItemId;
+            }
+        }
+        public string TextFilter
+        {
+            set
+            {
+                if ((_textFilter != value) && (string.IsNullOrEmpty(value)))
+                {
+                    Task.Run(() => refreshFeed(false, value));
+                }
+                if (_textFilter != value)
+                {
+                    _textFilter = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("TextFilter"));
+                    }
+                }
+            }
+            get
+            {
+                return _textFilter;
             }
         }
 
