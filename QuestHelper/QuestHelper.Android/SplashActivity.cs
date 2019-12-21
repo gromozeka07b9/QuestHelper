@@ -6,7 +6,6 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
-using BottomNavigationBar;
 using QuestHelper;
 using Xamarin.Forms;
 using QuestHelper.Model;

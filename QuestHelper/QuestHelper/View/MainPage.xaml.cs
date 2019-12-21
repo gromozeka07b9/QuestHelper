@@ -14,7 +14,7 @@ using Xamarin.Essentials;
 
 namespace QuestHelper.View
 {
-    public partial class MainPage : MasterDetailPage
+    public partial class MainPage : TabbedPage
     {
         public MainPage()
         {
@@ -26,7 +26,7 @@ namespace QuestHelper.View
             //Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
 #endif
 
-            var pageCollections = new PagesCollection();
+            /*var pageCollections = new PagesCollection();
             MasterPage.ListView.ItemSelected += ListView_ItemSelected;
             MessagingCenter.Subscribe<PageNavigationMessage>(this, string.Empty, async (senderMsg) =>
             {
@@ -54,27 +54,27 @@ namespace QuestHelper.View
                 var pageParameters = pageCollections.GetSelectRoutesPage();
                 var page = (RoutesPage)Activator.CreateInstance(pageParameters.TargetType, args: senderMsg);
                 openContentPage(page, CommonResource.ShareMsg_ChooseWorker, "");
-            });
+            });*/
         }
 
-        private async void navigateToPage(PageNavigationMessage msg)
+        /*private async void navigateToPage(PageNavigationMessage msg)
         {
             if (msg.DestinationPageDescription != null)
             {
                 var page = (Page)Activator.CreateInstance(msg.DestinationPageDescription.TargetType);
                 openContentPage(page, msg.DestinationPageDescription.Title, msg.DestinationPageDescription.IconName);
             }
-        }
+        }*/
 
-        private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        /*private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             MainPageMenuItem item = e.SelectedItem as MainPageMenuItem;
             if (item != null)
                 MessagingCenter.Send<PageNavigationMessage>(new PageNavigationMessage() { DestinationPageDescription = item }, string.Empty);
             MasterPage.ListView.SelectedItem = null;
-        }
+        }*/
 
-        private void openContentPage(Page page, string title, string iconName)
+        /*private void openContentPage(Page page, string title, string iconName)
         {
             page.Title = title;
             //page.Icon = new FileImageSource() { File = iconName };
@@ -83,9 +83,9 @@ namespace QuestHelper.View
             IsPresented = false;
 
             MasterPage.ListView.SelectedItem = null;
-        }
+        }*/
 
-        private async void MainPage_OnAppearing(object sender, EventArgs e)
+        /*private async void MainPage_OnAppearing(object sender, EventArgs e)
         {
             var pageCollections = new PagesCollection();
             MessagingCenter.Subscribe<ToggleFullscreenMapMessage>(this, string.Empty, (senderMsg) =>
@@ -94,14 +94,14 @@ namespace QuestHelper.View
                 var page = (MapOverviewPage)Activator.CreateInstance(pageParameters.TargetType);
                 openContentPage(page, pageParameters.Title, pageParameters.IconName);
             });
-            /*if (IsNeedShowOnboarding())
+            if (IsNeedShowOnboarding())
             {
                 DependencyService.Get<IToolbarService>().SetVisibilityToolbar(false);
                 await Navigation.PushModalAsync(new NavigationPage(new SplashWizardPage()));
-            }*/
-        }
+            }
+        }*/
 
-        private bool IsNeedShowOnboarding()
+        /*private bool IsNeedShowOnboarding()
         {
             ParameterManager par = new ParameterManager();
             string showOnboarding = string.Empty;
@@ -110,11 +110,11 @@ namespace QuestHelper.View
                 return showOnboarding.Equals("1");
             }
             return false;
-        }
+        }*/
 
-        private void MainPage_OnDisappearing(object sender, EventArgs e)
+        /*private void MainPage_OnDisappearing(object sender, EventArgs e)
         {
             MessagingCenter.Unsubscribe<ShareFromGoogleMapsMessage>(this, string.Empty);
-        }
+        }*/
     }
 }

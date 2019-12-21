@@ -76,8 +76,6 @@ namespace QuestHelper.ViewModel
         public async void startDialogAsync()
         {
             Analytics.TrackEvent("Feed started", new Dictionary<string, string> { });
-            var toolbarService = DependencyService.Get<IToolbarService>();
-            toolbarService.SetVisibilityToolbar(true);
             await refreshFeed(false);
         }
 

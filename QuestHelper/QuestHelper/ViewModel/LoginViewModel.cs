@@ -132,11 +132,6 @@ namespace QuestHelper.ViewModel
             MainPageMenuItem destinationPage = pageCollections.GetPageByPosition(0);
             Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(
                 new PageNavigationMessage() {DestinationPageDescription = destinationPage}, string.Empty);
-            var toolbarService = DependencyService.Get<IToolbarService>();
-            if (toolbarService.ToolbarIsHidden())
-            {
-                toolbarService.SetVisibilityToolbar(true);
-            }
         }
 
         public string Username

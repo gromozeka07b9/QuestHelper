@@ -97,8 +97,6 @@ namespace QuestHelper.ViewModel
 
         public void StartDialog()
         {
-            var toolbarService = DependencyService.Get<IToolbarService>();
-            toolbarService.SetVisibilityToolbar(false);
             MessagingCenter.Subscribe<SyncRouteCompleteMessage>(this, string.Empty, (sender) =>
             {
                 if (sender.RouteId.Equals(_vroute.Id) && sender.SuccessSync)

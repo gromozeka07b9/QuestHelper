@@ -72,12 +72,6 @@ namespace QuestHelper.ViewModel
 
         public void StartDialog()
         {
-            var toolbarService = DependencyService.Get<IToolbarService>();
-            if (!toolbarService.ToolbarIsHidden())
-            {
-                toolbarService.SetVisibilityToolbar(false);
-            }
-
             MessageTitle = CommonResource.ReceivePush_YouHaveNewRoutes;
             MessageBody = "";
         }

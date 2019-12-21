@@ -6,6 +6,6 @@
     android:layout_height="wrap_content"
     android:background="#ffffff"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-    app:tabIndicatorColor="#000000"
+    app:tabIndicatorColor="#ffffff"
     app:tabGravity="fill"
     app:tabMode="fixed" />

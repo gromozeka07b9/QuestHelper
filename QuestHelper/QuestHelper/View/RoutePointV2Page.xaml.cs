@@ -17,7 +17,6 @@ namespace QuestHelper.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RoutePointV2Page : ContentPage
     {
-        IToolbarService _toolbarService = DependencyService.Get<IToolbarService>();
         private RoutePointV2ViewModel _vm;
         
         public RoutePointV2Page()
@@ -52,7 +51,6 @@ namespace QuestHelper.View
 
         private void ContentPage_Appearing(object sender, EventArgs e)
         {
-            _toolbarService.SetVisibilityToolbar(false);
             _vm.StartDialog();
             MessagingCenter.Subscribe<MapUpdateLocationPointMessage>(this, string.Empty, async (msgSender) =>
             {

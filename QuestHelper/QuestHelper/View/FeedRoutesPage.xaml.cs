@@ -27,7 +27,6 @@ namespace QuestHelper.View
             {
                 ParameterManager par = new ParameterManager();
                 par.Set("NeedShowOnboarding", "0");
-                DependencyService.Get<IToolbarService>().SetVisibilityToolbar(false);
                 Navigation.PushModalAsync(new NavigationPage(new SplashWizardPage()));
             }
             else

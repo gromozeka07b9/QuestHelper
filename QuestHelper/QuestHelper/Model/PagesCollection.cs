@@ -22,7 +22,7 @@ namespace QuestHelper.Model
                 new MainPageMenuItem { Id = 1, Title = CommonResource.ScreenLoadedAlbumsName, TargetType = typeof(AlbumsPage), IconName="loaded.png", ShowInMenu = true},
                 new MainPageMenuItem { Id = 2, Title = CommonResource.ScreenPrivateName, TargetType = typeof(RoutesPage), IconName="personal.png", ShowInMenu = true},
 
-                new MainPageMenuItem { Id = 5, Title = CommonResource.ScreenAboutUsName, TargetType = typeof(AboutPage), IconName="about.png", ShowInMenu = true},
+                //new MainPageMenuItem { Id = 5, Title = CommonResource.ScreenAboutUsName, TargetType = typeof(AboutPage), IconName="about.png", ShowInMenu = true},
                 new MainPageMenuItem { Id = 6, Title = string.Empty, TargetType = typeof(LoginPage)},
                 new MainPageMenuItem { Id = 7, Title = CommonResource.ScreenChooseWorkerName, TargetType = typeof(ProcessShareIntentPage), IconName="earth.png"},
                 new MainPageMenuItem { Id = 8, Title = CommonResource.ScreenOnBoardingName, TargetType = typeof(SplashWizardPage), IconName = "onboarding.png", ShowInMenu = true},

@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:QuestHelper.View.Converters"
              xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
              xmlns:circle="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
-             x:Class="QuestHelper.View.FeedRoutesPage" Appearing="FeedRoutesPage_OnAppearing" Disappearing="FeedRoutesPage_OnDisappearing" Style="{StaticResource ContentPage}">
+             x:Class="QuestHelper.View.FeedRoutesPage" NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False" Appearing="FeedRoutesPage_OnAppearing" Disappearing="FeedRoutesPage_OnDisappearing" Style="{StaticResource ContentPage}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:AspectImageConverter  x:Key="aspectimage" />

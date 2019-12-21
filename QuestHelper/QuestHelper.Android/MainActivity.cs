@@ -6,7 +6,6 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
-using BottomNavigationBar;
 using QuestHelper;
 using Xamarin.Forms;
 using QuestHelper.Model;
@@ -29,7 +28,7 @@ using Lottie.Forms.Droid;
 namespace QuestHelper.Droid
 {
     [Activity(Label = "QuestHelper", Icon = "@drawable/icon2", Theme = "@style/MainTheme", MainLauncher = false, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Portrait)]
-    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity, BottomNavigationBar.Listeners.IOnTabClickListener
+    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         
         SyncPossibility _syncPossibility = new SyncPossibility();
@@ -86,12 +85,6 @@ namespace QuestHelper.Droid
                 var pageCollections = new PagesCollection();
                 MainPageMenuItem destinationPage = pageCollections.GetProcessSharePage();
                 Xamarin.Forms.MessagingCenter.Send<ShareFromGoogleMapsMessage>(new ShareFromGoogleMapsMessage() { Subject = shareSubject, Description = shareDescription }, string.Empty);
-            }
-            else
-            {
-                StartToolbar(bundle);                
-                ToolbarService bar  = new ToolbarService();
-                bar.SetVisibilityToolbar(true);
             }
 
             MessagingCenter.Subscribe<SyncMessage>(this, string.Empty, async (sender) =>
@@ -150,18 +143,9 @@ namespace QuestHelper.Droid
 
         }
 
-        private void StartToolbar(Bundle bundle)
-        {
-            ToolbarService.CreateToolbar(this, bundle);
-        }
-
         protected override void OnSaveInstanceState(Bundle outState)
         {
             base.OnSaveInstanceState(outState);
-            if (ToolbarService.Bar != null)
-            {
-                ToolbarService.Bar.OnSaveInstanceState(outState);
-            }
         }
     }
 }

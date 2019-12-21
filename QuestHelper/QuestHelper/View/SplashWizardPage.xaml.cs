@@ -22,14 +22,10 @@ namespace QuestHelper.View
 
 	    private void SplashWizardPage_OnAppearing(object sender, EventArgs e)
 	    {
-	        var toolbarService = DependencyService.Get<IToolbarService>();
-	        toolbarService.SetVisibilityToolbar(false);
 	    }
 
         private void SplashWizardPage_OnDisappearing(object sender, EventArgs e)
 	    {
-	        //var toolbarService = DependencyService.Get<IToolbarService>();
-	        //toolbarService.SetVisibilityToolbar(true);
             //_vm.SetStatusNoNeedShowOnboarding();
 	    }
     }

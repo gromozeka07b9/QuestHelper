@@ -22,8 +22,6 @@ namespace QuestHelper.View
 
 	    private void LoginPage_OnAppearing(object sender, EventArgs e)
 	    {
-	        var toolbarService = DependencyService.Get<IToolbarService>();
-	        toolbarService.SetVisibilityToolbar(false);
             _vm.StartLoginDialog();
 	    }
 

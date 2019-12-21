@@ -1,6 +1,6 @@
 ﻿namespace QuestHelper
 {
-    public interface IToolbarService
+    public interface IToolbarServiceDEL
     {
         bool ToolbarIsHidden();
         void SetVisibilityToolbar(bool Visibility);

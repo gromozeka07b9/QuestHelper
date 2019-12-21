@@ -34,8 +34,6 @@ namespace QuestHelper.View
             TokenStoreService tokenService = new TokenStoreService();
             _authToken = await tokenService.GetAuthTokenAsync();
             MapRouteOverview.Points = _vm.PointsOnMap;
-            var toolbarService = DependencyService.Get<IToolbarService>();
-            toolbarService.SetVisibilityToolbar(false);
             _vm.StartDialogAsync();
         }
 
@@ -58,8 +56,6 @@ namespace QuestHelper.View
 
         private void RouteCarouselRootPage_OnDisappearing(object sender, EventArgs e)
         {
-            var toolbarService = DependencyService.Get<IToolbarService>();
-            toolbarService.SetDarkMode(false);
         }
         private bool OnTimerForUpdate()
         {

@@ -114,7 +114,6 @@
     <Compile Include="NetworkConnectionsService.cs" />
     <Compile Include="SyncService.cs" />
     <Compile Include="ToastService.cs" />
-    <Compile Include="ToolbarService.cs" />
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
     <Compile Include="PathService.cs" />
@@ -323,5 +322,8 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\play2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\person2.png" />
   </ItemGroup>
 </Project>

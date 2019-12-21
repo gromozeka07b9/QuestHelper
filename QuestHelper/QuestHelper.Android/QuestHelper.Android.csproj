@@ -68,9 +68,6 @@
     <PackageReference Include="Acr.UserDialogs">
       <Version>7.0.35</Version>
     </PackageReference>
-    <PackageReference Include="BottomNavigationBar">
-      <Version>1.4.0.3</Version>
-    </PackageReference>
     <PackageReference Include="CardsView">
       <Version>2.3.8</Version>
     </PackageReference>
@@ -141,7 +138,6 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ToolbarService.cs" />
   </ItemGroup>
   <ItemGroup>
     <GoogleServicesJson Include="google-services.json" />
@@ -156,7 +152,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Toolbar.axml" />
-    <AndroidResource Include="Resources\menu\bottombar_menu.xml" />
     <AndroidResource Include="Resources\values\styles.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -181,6 +176,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Renderers\" />
+    <Folder Include="Resources\menu\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FodyWeavers.xml" />
@@ -635,9 +631,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\onboarding.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\values\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values-de\Strings.xml" />
