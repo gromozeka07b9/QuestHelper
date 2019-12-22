@@ -122,7 +122,7 @@
                 <Setter Property="BorderColor" Value="#FFFFFF"/>
                 <Setter Property="BackgroundColor" Value="#FFFFFF"/>
                 <Setter Property="HasShadow" Value="False"/>
-                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="CornerRadius" Value="0"/>
                 <Setter Property="Padding" Value="0"/>
             </Style>
             <!--Конец Информационный блок-->
@@ -154,6 +154,33 @@
                 <Setter Property="MaxLines" Value="2"/>
             </Style>
             <!--Конец Список маршрутов-->
+
+            <!--Начало личные маршруты и профиль-->
+            <Style x:Key="PrivateSmallLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontSize" Value="10"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            </Style>
+            <Style x:Key="PrivateMiddleLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontSize" Value="13"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            </Style>
+            <Style x:Key="PrivateStackLayout" TargetType="StackLayout">
+                <Setter Property="BackgroundColor" Value="#FFFFFF"/>
+                <Setter Property="VerticalOptions" Value="EndAndExpand"/>
+            </Style>
+            <Style x:Key="PrivateFrame" TargetType="Frame">
+                <Setter Property="BorderColor" Value="#FFFFFF"/>
+                <Setter Property="BackgroundColor" Value="#FFFFFF"/>
+                <Setter Property="HasShadow" Value="False"/>
+                <Setter Property="CornerRadius" Value="0"/>
+                <Setter Property="Padding" Value="0"/>
+            </Style>
+            <!--Конец личные маршруты и профиль-->
 
             <ControlTemplate x:Key="NavigationButtons">
                 <Grid>
