@@ -19,7 +19,7 @@
                 <ColumnDefinition Width="96" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="100" />
+                <RowDefinition Height="80" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="80" />
             </Grid.RowDefinitions>
@@ -30,10 +30,10 @@
             <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="5,0,5,0" Style="{StaticResource InfoBlockStackLayout}" IsVisible="{Binding NoPostsWarningIsVisible, Converter={StaticResource inverter}}">
                 <Frame Padding="0" Style="{StaticResource InfoBlockFrame}">
                     <StackLayout Orientation="Horizontal">
-                        <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand" Margin="10">
+                        <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand" Margin="0">
                             <Label Text="{lang:Translation Albums_YouCanDeleteDownloadedRoutes}" Style="{StaticResource InfoBlockSmallLabel}"></Label>
                         </StackLayout>
-                        <StackLayout Orientation="Vertical" HorizontalOptions="EndAndExpand" Margin="5" VerticalOptions="Center">
+                        <StackLayout Orientation="Vertical" HorizontalOptions="EndAndExpand" Margin="0" VerticalOptions="Center">
                             <Image Source="delete.png" Style="{StaticResource InfoBlockIconImage}">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding DeleteDataAllAlbumsCommand}"/>
@@ -47,7 +47,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Frame IsClippedToBounds="False" Margin="5,5,5,5" Style="{StaticResource RouteListFrame}">
+                            <Frame IsClippedToBounds="False" Margin="5,0,5,5" Style="{StaticResource RouteListFrame}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="2*"/>

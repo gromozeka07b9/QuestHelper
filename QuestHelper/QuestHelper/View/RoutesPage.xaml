@@ -5,7 +5,7 @@
              xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
              xmlns:local="clr-namespace:QuestHelper.View.Converters"
              xmlns:animationForms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
-             x:Class="QuestHelper.View.RoutesPage" Appearing="ContentPage_Appearing" NavigationPage.HasNavigationBar="{Binding IsAutorizedMode}" Disappearing="RoutesPage_OnDisappearing" Style="{StaticResource ContentPage}">
+             x:Class="QuestHelper.View.RoutesPage" Appearing="ContentPage_Appearing" NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False" Disappearing="RoutesPage_OnDisappearing" Style="{StaticResource ContentPage}">
     <ContentPage.BindingContext>
         <viewmodel:RoutesViewModel />
     </ContentPage.BindingContext>
@@ -24,23 +24,38 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*" />
                 <ColumnDefinition Width="5*" />
-                <!--ColumnDefinition Width="96" /-->
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="85*" />
-                <!--RowDefinition Height="*" /-->
-                <RowDefinition Height="14*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="94*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="3" Orientation="Vertical" IsVisible="{Binding NoRoutesWarningIsVisible}" HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
                 <Label Text="{lang:Translation Routes_RoutesNotFound}" Style="{StaticResource StandartTextLabel}" FontSize="16" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" Margin="20,0,20,0"></Label>
                 <Image Source="emptylist.png" HeightRequest="150" WidthRequest="300" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
             </StackLayout>
-            <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" SeparatorVisibility="None" ItemsSource="{Binding Routes}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshListRoutesCommand}" x:Name="RoutesListView" RowHeight="300"  SelectedItem="{Binding SelectedRouteItem,Mode=TwoWay}" CachingStrategy="RecycleElement">
+            
+            <ListView Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" SeparatorVisibility="None" ItemsSource="{Binding Routes}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshListRoutesCommand}" x:Name="RoutesListView" RowHeight="300"  SelectedItem="{Binding SelectedRouteItem,Mode=TwoWay}" CachingStrategy="RecycleElement">
+                <ListView.Header>
+                    <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0" Style="{StaticResource InfoBlockStackLayout}" IsVisible="{Binding NoPostsWarningIsVisible, Converter={StaticResource inverter}}">
+                        <Frame Padding="0" Style="{StaticResource InfoBlockFrame}" BorderColor="Black" Margin="5,0,5,0">
+                            <StackLayout Orientation="Horizontal">
+                                <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand" Margin="0">
+                                    <Label Text="Добро пожаловать, Sergey Dyachenko!" Style="{StaticResource InfoBlockSmallLabel}"></Label>
+                                    <Label Text="Вы опубликовали 5 маршрутов" Style="{StaticResource InfoBlockSmallLabel}"></Label>
+                                    <Label Text="В 5 странах" Style="{StaticResource InfoBlockSmallLabel}"></Label>
+                                    <Label Text="Вами создано 15 маршрутов" Style="{StaticResource InfoBlockSmallLabel}"></Label>
+                                    <Label Text="Поставлено 134 лайка вашим маршрутам" Style="{StaticResource InfoBlockSmallLabel}"></Label>
+                                    <Label Text="Просматривали ваши маршруты 12 человек" Style="{StaticResource InfoBlockSmallLabel}"></Label>
+                                </StackLayout>
+                            </StackLayout>
+                        </Frame>
+                    </StackLayout>
+                </ListView.Header>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Frame CornerRadius="10" Padding="0" IsClippedToBounds="False" BackgroundColor="White" HasShadow="True" BorderColor="Accent" OutlineColor="#CAECFF"  Margin="10,10,10,5">
+                            <Frame CornerRadius="10" Padding="0" IsClippedToBounds="False" BackgroundColor="White" HasShadow="True" BorderColor="Accent" OutlineColor="#CAECFF"  Margin="5,10,5,5">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="2*"/>

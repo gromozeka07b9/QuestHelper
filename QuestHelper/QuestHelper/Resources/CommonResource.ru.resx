@@ -478,6 +478,6 @@
     <value>Вы можете освободить память, удалив ранее загруженные маршруты. При необходимости, вы можете их загрузить повторно.</value>
   </data>
   <data name="Feed_SearchPlaceholder" xml:space="preserve">
-    <value>Грузия</value>
+    <value>например, Грузия</value>
   </data>
 </root>

@@ -80,13 +80,13 @@ namespace QuestHelper.ViewModel
 
         private void backNavigationCommand(object obj)
         {
-            Navigation.PopAsync();
+            Navigation.PopModalAsync();
         }
 
         private void startRouteCommand(object obj)
         {
             var page = new RouteCarouselRootPage(_vroute.RouteId);
-            Navigation.PushAsync(page);
+            Navigation.PushModalAsync(page);
         }
 
         public void CloseDialog()

@@ -115,12 +115,12 @@
                 <Setter Property="VerticalOptions" Value="Center"/>
             </Style>
             <Style x:Key="InfoBlockStackLayout" TargetType="StackLayout">
-                <Setter Property="BackgroundColor" Value="#f5f5f5"/>
+                <Setter Property="BackgroundColor" Value="#FFFFFF"/>
                 <Setter Property="VerticalOptions" Value="EndAndExpand"/>
             </Style>
             <Style x:Key="InfoBlockFrame" TargetType="Frame">
-                <Setter Property="BorderColor" Value="Black"/>
-                <Setter Property="BackgroundColor" Value="#f5f5f5"/>
+                <Setter Property="BorderColor" Value="#FFFFFF"/>
+                <Setter Property="BackgroundColor" Value="#FFFFFF"/>
                 <Setter Property="HasShadow" Value="False"/>
                 <Setter Property="CornerRadius" Value="5"/>
                 <Setter Property="Padding" Value="0"/>

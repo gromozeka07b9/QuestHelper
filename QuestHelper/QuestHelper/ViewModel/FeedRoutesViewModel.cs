@@ -296,7 +296,7 @@ namespace QuestHelper.ViewModel
                 {
                     _feedItem = value;
                     var coverPage = new RouteCoverPage(value);
-                    Navigation.PushAsync(coverPage);
+                    Navigation.PushModalAsync(coverPage);
                     PropertyChanged(this, new PropertyChangedEventArgs("SelectedRouteItem"));
                     if (!_feedItem.IsUserViewed)
                     {
