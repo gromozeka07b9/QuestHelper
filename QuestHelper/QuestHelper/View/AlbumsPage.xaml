@@ -30,7 +30,7 @@
             <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="5,0,5,0" Style="{StaticResource InfoBlockStackLayout}" IsVisible="{Binding NoPostsWarningIsVisible, Converter={StaticResource inverter}}">
                 <Frame Padding="0" Style="{StaticResource InfoBlockFrame}">
                     <StackLayout Orientation="Horizontal">
-                        <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand" Margin="0">
+                        <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand" Margin="5,0,0,0">
                             <Label Text="{lang:Translation Albums_YouCanDeleteDownloadedRoutes}" Style="{StaticResource InfoBlockSmallLabel}"></Label>
                         </StackLayout>
                         <StackLayout Orientation="Vertical" HorizontalOptions="EndAndExpand" Margin="0" VerticalOptions="Center">

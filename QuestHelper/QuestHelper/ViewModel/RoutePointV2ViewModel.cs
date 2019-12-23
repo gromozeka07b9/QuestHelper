@@ -116,7 +116,7 @@ namespace QuestHelper.ViewModel
 
         private void backNavigationCommand(object obj)
         {
-            Navigation.PopAsync();
+            Navigation.PopModalAsync();
         }
         private async void copyAddressCommand(object obj)
         {
@@ -133,7 +133,7 @@ namespace QuestHelper.ViewModel
         private async void editDescriptionCommand(object obj)
         {
             _vpoint.Save();
-            await Navigation.PushAsync(new EditRoutePointDescriptionPage(_vpoint.Id));
+            await Navigation.PushModalAsync(new EditRoutePointDescriptionPage(_vpoint.Id));
         }
 
         private void shareCommand(object obj)

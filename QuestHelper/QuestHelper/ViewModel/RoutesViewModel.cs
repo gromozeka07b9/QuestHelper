@@ -41,6 +41,7 @@ namespace QuestHelper.ViewModel
         public ICommand RefreshListRoutesCommand { get; private set; }
         public ICommand SyncStartCommand { get; private set; }
         public ICommand AuthorizationCommand { get; private set; }
+        public Action StopAnimateCallback;
 
         public RoutesViewModel()
         {
@@ -72,6 +73,7 @@ namespace QuestHelper.ViewModel
                 if (string.IsNullOrEmpty(sender.RouteId))
                 {
                     if (IsVisibleProgress) IsVisibleProgress = false;
+                    //StopAnimateCallback.Invoke();
                 }
             });
 
@@ -129,7 +131,7 @@ namespace QuestHelper.ViewModel
             Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
         }
 
-        public bool SyncProgressIsVisible
+        /*public bool SyncProgressIsVisible
         {
             get
             {
@@ -146,7 +148,7 @@ namespace QuestHelper.ViewModel
                     }
                 }
             }
-        }
+        }*/
 
         public double ProgressValue
         {
@@ -288,7 +290,7 @@ namespace QuestHelper.ViewModel
                     _routeItem = value;
 
                     var routePage = new RoutePage(value.RouteId, false);
-                    Navigation.PushAsync(routePage);
+                    Navigation.PushModalAsync(routePage);
                     PropertyChanged(this, new PropertyChangedEventArgs("SelectedRouteItem"));
                     addNewPointFromShareAsync(_routeItem.Name);
                     _routeItem = null;

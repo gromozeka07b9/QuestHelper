@@ -6,7 +6,7 @@
              xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
              xmlns:views="clr-namespace:QuestHelper.View"
              xmlns:circle="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
-             x:Class="QuestHelper.View.RoutePage" NavigationPage.HasNavigationBar="{Binding IsVisibleNavigationToolbar}" Appearing="ContentPage_Appearing" Disappearing="RoutePage_OnDisappearing" Style="{StaticResource ContentPage}">
+             x:Class="QuestHelper.View.RoutePage" NavigationPage.HasNavigationBar="{Binding IsVisibleNavigationToolbar}" NavigationPage.HasBackButton="True" Appearing="ContentPage_Appearing" Disappearing="RoutePage_OnDisappearing" Style="{StaticResource ContentPage}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:NegativeBoolConverter  x:Key="inverter" />
@@ -19,7 +19,6 @@
         <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding EditRouteCommand}" Icon="edit.png"></ToolbarItem>
         <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding FullScreenMapCommand}" Icon="map1.png"></ToolbarItem>
         <ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding PhotoAlbumCommand}" Icon="photo.png"></ToolbarItem>
-        <!--ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding ShareRouteCommand}" Icon="share.png"></-->
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid>

@@ -116,7 +116,7 @@ namespace QuestHelper.ViewModel
         private void photoAlbumCommandAsync(object obj)
         {
             var page = new RouteCarouselRootPage(_vroute.RouteId);
-            Navigation.PushAsync(page);
+            Navigation.PushModalAsync(page);
         }
 
         internal async Task<bool> UserCanShareAsync()
@@ -129,13 +129,13 @@ namespace QuestHelper.ViewModel
         private async void shareRouteCommandAsync(object obj)
         {
             var shareRoutePage = new ShareRoutesServicesPage(_vroute.RouteId);
-            await Navigation.PushAsync(shareRoutePage, true);
+            await Navigation.PushModalAsync(shareRoutePage, true);
         }
 
         private void fullScreenMapCommandAsync(object obj)
         {
             var mapRoutePage = new MapRouteOverviewPage(_vroute.RouteId);
-            Navigation.PushAsync(mapRoutePage, true);
+            Navigation.PushModalAsync(mapRoutePage, true);
         }
 
         private void editRouteCommandAsync(object obj)
@@ -204,7 +204,7 @@ namespace QuestHelper.ViewModel
         {
             //var routePointPage = new RoutePointPage(_vroute.Id, string.Empty);
             var routePointPage = new RoutePointV2Page(_vroute.Id, string.Empty);
-            await Navigation.PushAsync(routePointPage, true);
+            await Navigation.PushModalAsync(routePointPage, true);
         }
 
         public bool IsRefreshing
@@ -430,7 +430,7 @@ namespace QuestHelper.ViewModel
                     ViewRoutePoint point = value;
                     //var page = new RoutePointPage(_vroute.Id, point.Id);
                     var page = new RoutePointV2Page(_vroute.Id, point.Id);
-                    Navigation.PushAsync(page);
+                    Navigation.PushModalAsync(page);
                     _selectedPoint = null;
                     PropertyChanged(this, new PropertyChangedEventArgs("SelectedRoutePointItem"));
                 }

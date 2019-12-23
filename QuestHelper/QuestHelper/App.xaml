@@ -158,7 +158,7 @@
             <!--Начало личные маршруты и профиль-->
             <Style x:Key="PrivateSmallLabel" TargetType="Label">
                 <Setter Property="TextColor" Value="Black"/>
-                <Setter Property="FontSize" Value="10"/>
+                <Setter Property="FontSize" Value="12"/>
                 <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
                 <Setter Property="HorizontalTextAlignment" Value="Center"/>
             </Style>
