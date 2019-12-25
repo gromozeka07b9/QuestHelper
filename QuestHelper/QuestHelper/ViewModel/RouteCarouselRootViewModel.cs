@@ -43,7 +43,7 @@ namespace QuestHelper.ViewModel
 
         private void backNavigationCommand(object obj)
         {
-            Navigation.PopAsync();
+            Navigation.PopModalAsync();
         }
 
         public string RouteName

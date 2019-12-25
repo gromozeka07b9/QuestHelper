@@ -145,6 +145,10 @@
     <AndroidAsset Include="Assets\usualloading.json" />
     <AndroidAsset Include="Assets\fireworks.json" />
     <AndroidAsset Include="Assets\gears-animation.json" />
+    <AndroidAsset Include="Assets\busy.json" />
+    <AndroidAsset Include="Assets\clock.json" />
+    <AndroidAsset Include="Assets\spinner.json" />
+    <AndroidAsset Include="Assets\hourglass.json" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
@@ -839,6 +843,15 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\avatar1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\land1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\land2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\sync.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

@@ -15,6 +15,7 @@ using QuestHelper.Model.Messages;
 using QuestHelper.Model;
 using Acr.UserDialogs;
 using Xamarin.Essentials;
+using System.Threading.Tasks;
 
 namespace QuestHelper.ViewModel
 {
@@ -33,22 +34,23 @@ namespace QuestHelper.ViewModel
         private ShareFromGoogleMapsMessage _sharePointMessage;
         private bool _syncProgressIsVisible = false;
         private string _syncProgressDetailText = string.Empty;
+        private string _currentUserId = string.Empty;
         private double _progressValue = 0;
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand AddNewRouteCommand { get; private set; }
         public ICommand RefreshListRoutesCommand { get; private set; }
-        public ICommand SyncStartCommand { get; private set; }
+        //public ICommand SyncStartCommand { get; private set; }//Lottie не работает с MVVM, пришлось из формы запускать
         public ICommand AuthorizationCommand { get; private set; }
-        public Action StopAnimateCallback;
 
         public RoutesViewModel()
         {
             AddNewRouteCommand = new Command(addNewRouteCommandAsync);
             RefreshListRoutesCommand = new Command(refreshListRoutesCommandAsync);
-            SyncStartCommand = new Command(syncStartCommand);
+            //SyncStartCommand = new Command(syncStartCommand);
             AuthorizationCommand = new Command(authorizationCommand);
+
         }
 
         private void authorizationCommand(object obj)
@@ -56,7 +58,7 @@ namespace QuestHelper.ViewModel
             Navigation.PushAsync(new LoginPage());
         }
 
-        public void startDialog()
+        public async void startDialog()
         {
             MessagingCenter.Subscribe<SyncProgressRouteLoadingMessage>(this, string.Empty, (sender) =>
             {
@@ -99,8 +101,9 @@ namespace QuestHelper.ViewModel
         async void refreshListRoutesCommandAsync()
         {
             TokenStoreService tokenService = new TokenStoreService();
-            string currentUserId = await tokenService.GetUserIdAsync();
-            Routes = _routeManager.GetRoutes(currentUserId);
+            _currentUserId = await tokenService.GetUserIdAsync();
+
+            Routes = _routeManager.GetRoutes(_currentUserId);
             if (Routes.Count() == 0)
             {
                 Device.StartTimer(TimeSpan.FromSeconds(3), OnTimerForUpdate);
@@ -126,28 +129,9 @@ namespace QuestHelper.ViewModel
         {
             await Navigation.PushAsync(new NewRoutePage(!Routes.Any()));
         }
-        private void syncStartCommand(object obj)
+        /*private void syncStartCommand(object obj)
         {
             Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
-        }
-
-        /*public bool SyncProgressIsVisible
-        {
-            get
-            {
-                return _syncProgressIsVisible;
-            }
-            set
-            {
-                if (_syncProgressIsVisible != value)
-                {
-                    _syncProgressIsVisible = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("SyncProgressIsVisible"));
-                    }
-                }
-            }
         }*/
 
         public double ProgressValue
@@ -295,6 +279,38 @@ namespace QuestHelper.ViewModel
                     addNewPointFromShareAsync(_routeItem.Name);
                     _routeItem = null;
                 }
+            }
+        }
+
+        public string CountRoutesCreatedMe
+        {
+            get
+            {
+                return _routeManager.GetCountRoutesByCreator(_currentUserId).ToString();
+            }
+        }
+
+        public string CountRoutesPublishedMe
+        {
+            get
+            {
+                return "0";
+            }
+        }
+
+        public string CountLikesMe
+        {
+            get
+            {
+                return "0";
+            }
+        }
+
+        public string CountViewsMe
+        {
+            get
+            {
+                return "0";
             }
         }
 

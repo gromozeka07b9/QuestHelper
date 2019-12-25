@@ -33,36 +33,54 @@ namespace QuestHelper.View
         {
             _vm.startDialog();
             _vm.RefreshListRoutesCommand.Execute(new object());
-			SyncAnimation.IsVisible = true;
-			if (_vm.IsVisibleProgress)
+			//SyncAnimation.IsVisible = false;
+			/*if (_vm.IsVisibleProgress)
 			{
 				SyncAnimation.Play();//Какой-то глюк есть - когда анимация уходит в невидимую область списка, при возврате она уже не работает, приходится повторно пинать
 			}
 			else
 			{
 				SyncAnimation.Pause();
-			}
+			}*/
 
-		}
-
-		public void StopAnimateCallback()
-		{
-			SyncAnimation.Pause();
 		}
 
 		private void RoutesPage_OnDisappearing(object sender, EventArgs e)
 	    {
 	        _vm.closeDialog();
-			MessagingCenter.Unsubscribe<SyncRouteCompleteMessage>(this, string.Empty);
 		}
 
 		private void AnimationView_OnClick(object sender, EventArgs e)
 		{
-			SyncAnimation.Play();//Какой-то глюк есть - когда анимация уходит в невидимую область списка, при возврате она уже не работает, приходится повторно пинать
+			startSync();
+		}
+
+		private void startSync()
+		{
+			//SyncAnimation.Play();//Какой-то глюк есть - когда анимация уходит в невидимую область списка, при возврате она уже не работает, приходится повторно пинать
 			if (!_vm.IsVisibleProgress)
 			{
+				//SyncAnimation.IsVisible = true;
 				SyncAnimation.Play();
 				Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);//Запуск новой синхронизации
+			}
+		}
+
+		private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+		{
+			startSync();
+		}
+
+		private void SyncAnimation_OnFinish(object sender, EventArgs e)
+		{
+			if (_vm.IsVisibleProgress)
+			{
+				SyncAnimation.Play();
+			}
+			else
+			{
+				//SyncAnimation.IsVisible = false;
+				//SyncAnimation.IsPlaying = true;
 			}
 		}
 	}

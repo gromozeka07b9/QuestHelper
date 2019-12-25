@@ -29,6 +29,12 @@ namespace QuestHelper.Managers
             }
             return vroutes;
         }
+        internal int GetCountRoutesByCreator(string UserId)
+        {
+            List<ViewRoute> vroutes = new List<ViewRoute>();
+            var countRoutes = RealmInstance.All<Route>().Where(u => (u.CreatorId == UserId)).Count();
+            return countRoutes;
+        }
 
         internal IEnumerable<ViewRoute> GetRoutesForSync()
         {
