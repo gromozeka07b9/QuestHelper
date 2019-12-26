@@ -32,10 +32,15 @@ namespace QuestHelper.ViewModel
         private bool _isFireworksMode = false;
         private int _countOfUpdateListByTimer = 0;
         private ShareFromGoogleMapsMessage _sharePointMessage;
-        private bool _syncProgressIsVisible = false;
+        //private bool _syncProgressIsVisible = false;
         private string _syncProgressDetailText = string.Empty;
         private string _currentUserId = string.Empty;
         private double _progressValue = 0;
+        private int _countRoutesCreatedMe = 0;
+        private int _countRoutesPublishedMe = 0;
+        private int _countLikesMe = 0;
+        private int _countViewsMe = 0;
+        
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -104,7 +109,14 @@ namespace QuestHelper.ViewModel
             _currentUserId = await tokenService.GetUserIdAsync();
 
             Routes = _routeManager.GetRoutes(_currentUserId);
-            if (Routes.Count() == 0)
+            if (Routes.Count() > 0)
+            {
+                CountRoutesCreatedMe = _routeManager.GetCountRoutesByCreator(_currentUserId);
+                CountRoutesPublishedMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
+                CountLikesMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
+                CountViewsMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
+            }
+            else
             {
                 Device.StartTimer(TimeSpan.FromSeconds(3), OnTimerForUpdate);
             }
@@ -282,35 +294,67 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        public string CountRoutesCreatedMe
+        public int CountRoutesCreatedMe
         {
+            set
+            {
+                if (_countRoutesCreatedMe != value)
+                {
+                    _countRoutesCreatedMe = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("CountRoutesCreatedMe"));
+                }
+            }
             get
             {
-                return _routeManager.GetCountRoutesByCreator(_currentUserId).ToString();
+                return _countRoutesCreatedMe;
             }
         }
 
-        public string CountRoutesPublishedMe
+        public int CountRoutesPublishedMe
         {
+            set
+            {
+                if (_countRoutesPublishedMe != value)
+                {
+                    _countRoutesPublishedMe = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("CountRoutesPublishedMe"));
+                }
+            }
             get
             {
-                return "0";
+                return _countRoutesPublishedMe;
             }
         }
 
-        public string CountLikesMe
+        public int CountLikesMe
         {
+            set
+            {
+                if (_countLikesMe != value)
+                {
+                    _countLikesMe = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("CountLikesMe"));
+                }
+            }
             get
             {
-                return "0";
+                return _countLikesMe;
             }
         }
 
-        public string CountViewsMe
+        public int CountViewsMe
         {
+            set
+            {
+                if (_countViewsMe != value)
+                {
+                    _countViewsMe = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("CountViewsMe"));
+                }
+            }
             get
             {
-                return "0";
+                return _countViewsMe;
             }
         }
 

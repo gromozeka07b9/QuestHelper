@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using QuestHelper.LocalDB.Model;
 using QuestHelper.Model;
 using Realms;
@@ -29,10 +30,18 @@ namespace QuestHelper.Managers
             }
             return vroutes;
         }
+
         internal int GetCountRoutesByCreator(string UserId)
         {
             List<ViewRoute> vroutes = new List<ViewRoute>();
             var countRoutes = RealmInstance.All<Route>().Where(u => (u.CreatorId == UserId)).Count();
+            return countRoutes;
+        }
+
+        internal int GetCountPublishedRoutesByCreator(string UserId)
+        {
+            List<ViewRoute> vroutes = new List<ViewRoute>();
+            var countRoutes = RealmInstance.All<Route>().Where(u => (u.CreatorId == UserId && u.IsPublished)).Count();
             return countRoutes;
         }
 

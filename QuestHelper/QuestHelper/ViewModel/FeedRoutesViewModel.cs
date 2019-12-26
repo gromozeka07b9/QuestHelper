@@ -47,12 +47,6 @@ namespace QuestHelper.ViewModel
 
         private async void searchRoutesCommand(object text)
         {
-            /*string searchTxt = text.ToString().Trim();
-            if (!string.IsNullOrEmpty(searchTxt))
-            {
-                TextFilter = searchTxt;
-                await refreshFeed(false, TextFilter);
-            }*/
             await refreshFeed(false, TextFilter);
         }
 

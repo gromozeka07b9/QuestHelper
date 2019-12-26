@@ -284,7 +284,7 @@ namespace QuestHelper.ViewModel
                 {
                     _pointItem = value;
                     var page = new RouteCarouselRootPage(_vroute.RouteId, _pointItem.Id);
-                    Navigation.PushAsync(page);
+                    Navigation.PushModalAsync(page);
                     PropertyChanged(this, new PropertyChangedEventArgs("SelectedRoutePointItem"));
                     _pointItem = null;
                 }

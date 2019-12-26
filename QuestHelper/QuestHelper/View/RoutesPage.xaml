@@ -72,16 +72,16 @@
                                             <Label Text="опубликовано" Style="{StaticResource PrivateSmallLabel}" ></Label>
                                             <Label Text="{Binding CountRoutesPublishedMe}"  Style="{StaticResource PrivateMiddleLabel}"></Label>
                                         </StackLayout>
-                                        <StackLayout Orientation="Vertical" Spacing="0" Margin="0" HorizontalOptions="FillAndExpand">
+                                        <!--StackLayout Orientation="Vertical" Spacing="0" Margin="0" HorizontalOptions="FillAndExpand">
                                             <Image Source="ic_like_on_1.png" WidthRequest="30" HeightRequest="30"/>
                                             <Label Text="лайков" Style="{StaticResource PrivateSmallLabel}" ></Label>
                                             <Label Text="{Binding CountLikesMe}"  Style="{StaticResource PrivateMiddleLabel}"></Label>
-                                        </StackLayout>
+                                        </>
                                         <StackLayout Orientation="Vertical" Spacing="0" Margin="0" HorizontalOptions="FillAndExpand">
                                             <Image Source="ic_eye_1.png" WidthRequest="30" HeightRequest="30"/>
                                             <Label Text="просмотров" Style="{StaticResource PrivateSmallLabel}"></Label>
                                             <Label Text="{Binding CountViewsMe}"  Style="{StaticResource PrivateMiddleLabel}"></Label>
-                                        </StackLayout>
+                                        </StackLayout-->
                                     </StackLayout>
                                 </Frame>
                                 <animationForms:AnimationView x:Name="SyncAnimation" Grid.Column="2" Grid.ColumnSpan="1" Grid.Row="0" Grid.RowSpan="1" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" OnClick="AnimationView_OnClick" OnFinish="SyncAnimation_OnFinish" Margin="0"

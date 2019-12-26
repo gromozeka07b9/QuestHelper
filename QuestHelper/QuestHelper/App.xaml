@@ -169,6 +169,13 @@
                 <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
                 <Setter Property="HorizontalTextAlignment" Value="Center"/>
             </Style>
+            <Style x:Key="PrivateBigLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="Gray"/>
+                <Setter Property="FontSize" Value="22"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            </Style>
             <Style x:Key="PrivateStackLayout" TargetType="StackLayout">
                 <Setter Property="BackgroundColor" Value="#FFFFFF"/>
                 <Setter Property="VerticalOptions" Value="EndAndExpand"/>
