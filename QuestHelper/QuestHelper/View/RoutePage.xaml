@@ -33,46 +33,47 @@
                 <Image Source="emptylist.png" HeightRequest="150" WidthRequest="300" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
             </StackLayout>
             <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Vertical" IsVisible="{Binding RouteScreenIsVisible}">
-                <ListView x:Name="RoutePointsListView" VerticalOptions="StartAndExpand" SeparatorVisibility="None" RowHeight="250" HasUnevenRows="True" ItemsSource="{Binding PointsOfRoute}" SelectedItem="{Binding SelectedRoutePointItem,Mode=TwoWay}" IsPullToRefreshEnabled="False" RefreshCommand="{Binding StartDialogCommand}" IsRefreshing="{Binding ListIsRefreshing}" CachingStrategy="RecycleElementAndDataTemplate">
+                <ListView x:Name="RoutePointsListView" VerticalOptions="StartAndExpand" SeparatorVisibility="None" RowHeight="250" HasUnevenRows="True" ItemsSource="{Binding PointsOfRoute}" SelectedItem="{Binding SelectedRoutePointItem,Mode=TwoWay}" IsPullToRefreshEnabled="False" RefreshCommand="{Binding StartDialogCommand}" IsRefreshing="{Binding ListIsRefreshing}">
                     <ListView.Header>
-                        <StackLayout Grid.Row="0" Grid.Column="0" Margin="0" Style="{StaticResource PrivateStackLayout}" IsVisible="{Binding NoPostsWarningIsVisible, Converter={StaticResource inverter}}">
-                            <Frame Padding="0" Style="{StaticResource PrivateFrame}" Margin="0,0,0,0" HeightRequest="220">
-                                <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <StackLayout Margin="0" Style="{StaticResource PrivateStackLayout}" IsVisible="{Binding NoPostsWarningIsVisible, Converter={StaticResource inverter}}" HeightRequest="170">
+                            <Frame Padding="0" Style="{StaticResource PrivateFrame}" Margin="0">
+                                <Grid BackgroundColor="Beige">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="3*" />
                                         <ColumnDefinition Width="3*" />
-                                        <ColumnDefinition Width="50" />
+                                        <ColumnDefinition Width="70" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="3*" />
                                         <RowDefinition Height="3*" />
                                         <RowDefinition Height="3*" />
                                     </Grid.RowDefinitions>
-                                    <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="2" Source="land1.png" Aspect="Fill" HorizontalOptions="StartAndExpand" VerticalOptions="FillAndExpand"></Image>
-                                    <StackLayout Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="1" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand">
-                                        <circle:CircleImage Source="avatar1.png" WidthRequest="40" HeightRequest="40" BorderColor="#FFFFFF" BorderThickness="2" Margin="10">
-                                        </circle:CircleImage>
-                                    </StackLayout>
+                                    <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Source="land2.png" Aspect="Fill" HorizontalOptions="StartAndExpand" VerticalOptions="FillAndExpand">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding EditRouteCommand}"/>
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                    <circle:CircleImage Grid.Column="2" Grid.Row="0" Source="settings.png" WidthRequest="50" HeightRequest="50" BorderColor="#FFFFFF" BorderThickness="1" Margin="0,10,0,0" VerticalOptions="Center" HorizontalOptions="End">
+                                        <circle:CircleImage.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding EditRouteCommand}"/>
+                                        </circle:CircleImage.GestureRecognizers>
+                                    </circle:CircleImage>
+                                    <circle:CircleImage Grid.Column="2" Grid.Row="1" Source="picture.png" WidthRequest="50" HeightRequest="50" BorderColor="#FFFFFF" BorderThickness="1" Margin="10,5,5,5" VerticalOptions="Center" HorizontalOptions="End">
+                                        <circle:CircleImage.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding PhotoAlbumCommand}"/>
+                                        </circle:CircleImage.GestureRecognizers>
+                                    </circle:CircleImage>
+                                    <circle:CircleImage Grid.Column="2" Grid.Row="2" Source="discover.png" WidthRequest="50" HeightRequest="50" BorderColor="#FFFFFF" BorderThickness="1" Margin="0,0,0,10" VerticalOptions="Center" HorizontalOptions="End">
+                                        <circle:CircleImage.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding FullScreenMapCommand}"/>
+                                        </circle:CircleImage.GestureRecognizers>
+                                    </circle:CircleImage>
                                     <StackLayout Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="1" Orientation="Vertical" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" Margin="5,5,0,0">
-                                        <Label Text="{Binding Name}"  Style="{StaticResource PrivateBigLabel}" TextColor="Gray" HorizontalTextAlignment="Center" ></Label>
+                                        <Label Text="{Binding Name}"  Style="{StaticResource PrivateBigLabel}" TextColor="White" HorizontalTextAlignment="Start" ></Label>
                                     </StackLayout>
-                                    <StackLayout Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="1" Orientation="Vertical" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" Margin="5,5,0,0">
-                                        <Label Text="{Binding Description}"  Style="{StaticResource PrivateMiddleLabel}" TextColor="Gray" HorizontalTextAlignment="Start" ></Label>
+                                    <StackLayout Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" Orientation="Vertical" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand" Margin="5,5,0,5">
+                                        <Label Text="{Binding Description}"  Style="{StaticResource PrivateMiddleLabel}" TextColor="White" HorizontalTextAlignment="Start" FontAttributes="None" MaxLines="7" LineBreakMode="TailTruncation" VerticalTextAlignment="End"></Label>
                                     </StackLayout>
-                                    <Frame Grid.Column="0" Grid.Row="2" Grid.RowSpan="1" Grid.ColumnSpan="3" HorizontalOptions="FillAndExpand" HasShadow="True" CornerRadius="5" Margin="5" Padding="0" BackgroundColor="White">
-                                        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
-                                            <StackLayout Orientation="Vertical" Spacing="0" Margin="0" HorizontalOptions="FillAndExpand">
-                                                <Image Source="map1.png" WidthRequest="30" HeightRequest="30"/>
-                                                <Label Text="Карта" Style="{StaticResource PrivateSmallLabel}" ></Label>
-                                                <Label Text="{Binding CountRoutesCreatedMe}"  Style="{StaticResource PrivateMiddleLabel}"></Label>
-                                            </StackLayout>
-                                            <StackLayout Orientation="Vertical" Spacing="0" Margin="0" HorizontalOptions="FillAndExpand">
-                                                <Image Source="photo.png" WidthRequest="30" HeightRequest="30"/>
-                                                <Label Text="Альбом" Style="{StaticResource PrivateSmallLabel}" ></Label>
-                                                <Label Text="{Binding CountRoutesPublishedMe}"  Style="{StaticResource PrivateMiddleLabel}"></Label>
-                                            </StackLayout>
-                                        </StackLayout>
-                                    </Frame>
                                 </Grid>
                             </Frame>
                         </StackLayout>
@@ -80,7 +81,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <Frame HeightRequest="250" CornerRadius="10" HasShadow="True" Padding="0,1,0,0" BorderColor="Accent" OutlineColor="#CAECFF" IsClippedToBounds="False" Margin="5,0,5,5">
+                                <Frame HeightRequest="250" CornerRadius="10" HasShadow="True" Padding="0" BorderColor="Accent" OutlineColor="#CAECFF" Margin="5,5,5,0">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
@@ -93,7 +94,7 @@
                                             <RowDefinition Height="3*"></RowDefinition>
                                         </Grid.RowDefinitions>
                                         <Image Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="2" Opacity="1" Source="{Binding ImagePreviewPathForList, Converter={StaticResource typeImageConverter}}" IsVisible="{Binding IsNew, Converter={StaticResource inverter}}" Aspect="{Binding ImagePreviewPathForList, Converter={StaticResource aspectimage}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
-                                        <StackLayout BackgroundColor="Blue" Opacity="0.3" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePointName}">
+                                        <StackLayout Opacity="0.3" BackgroundColor="Black" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePointName}">
                                         </StackLayout>
                                         <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                             <Label Text="{Binding NameText}" Style="{StaticResource ImageBigTextLabel}" TextColor="White" FontSize="16" Margin="10,0,10,5" LineBreakMode="TailTruncation" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand" VerticalTextAlignment="Center"></Label>

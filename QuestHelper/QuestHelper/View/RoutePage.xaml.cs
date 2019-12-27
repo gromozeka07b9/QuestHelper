@@ -62,5 +62,6 @@ namespace QuestHelper.View
 	    {
 	        _vm.closeDialog();
 	    }
-	}
+
+    }
 }

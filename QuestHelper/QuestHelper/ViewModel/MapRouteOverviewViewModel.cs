@@ -36,7 +36,7 @@ namespace QuestHelper.ViewModel
 
         private void backNavigationCommand(object obj)
         {
-            Navigation.PopAsync();
+            Navigation.PopModalAsync();
         }
 
         internal async void OpenPointPropertiesAsync(double latitude, double longitude)
@@ -45,7 +45,7 @@ namespace QuestHelper.ViewModel
             if(point.MainRoute != null)
             {
                 var routePointPage = new RoutePointPage(point.MainRoute.RouteId, point.RoutePointId);
-                await Navigation.PushAsync(routePointPage, true);
+                await Navigation.PushModalAsync(routePointPage, true);
             }
         }
 

@@ -86,8 +86,6 @@ namespace QuestHelper.ViewModel
             {
                 ImgFilenameForEdit = ImagePathManager.GetMediaFilename(pickPhoto.newMediaId, MediaObjectTypeEnum.Image, false);
                 CoverImagePathForEdit = Path.Combine(ImagePathManager.GetPicturesDirectory(), ImgFilenameForEdit);
-                //ImgFilename = pickPhoto.newMediaId;
-                //CoverImagePathForEdit = 
             }
         }
 
