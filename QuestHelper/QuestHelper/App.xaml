@@ -165,14 +165,14 @@
             <Style x:Key="PrivateMiddleLabel" TargetType="Label">
                 <Setter Property="TextColor" Value="Gray"/>
                 <Setter Property="FontSize" Value="13"/>
-                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="FontAttributes" Value="None"/>
                 <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
                 <Setter Property="HorizontalTextAlignment" Value="Center"/>
             </Style>
             <Style x:Key="PrivateBigLabel" TargetType="Label">
                 <Setter Property="TextColor" Value="Gray"/>
-                <Setter Property="FontSize" Value="22"/>
-                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="FontAttributes" Value="None"/>
                 <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
                 <Setter Property="HorizontalTextAlignment" Value="Center"/>
             </Style>

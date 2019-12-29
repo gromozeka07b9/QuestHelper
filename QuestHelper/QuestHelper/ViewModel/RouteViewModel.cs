@@ -61,7 +61,8 @@ namespace QuestHelper.ViewModel
         public ICommand ShareRouteCommand { get; private set; }
         public ICommand FullScreenMapCommand { get; private set; }
         public ICommand PhotoAlbumCommand { get; private set; }
-        
+        public ICommand BackNavigationCommand { get; private set; }
+
         public RouteViewModel(string routeId, bool isFirstRoute)
         {
             _vroute = new ViewRoute(routeId);
@@ -76,6 +77,12 @@ namespace QuestHelper.ViewModel
             ShareRouteCommand = new Command(shareRouteCommandAsync);
             FullScreenMapCommand = new Command(fullScreenMapCommandAsync);
             PhotoAlbumCommand = new Command(photoAlbumCommandAsync);
+            BackNavigationCommand = new Command(backNavigationCommand);
+        }
+
+        private void backNavigationCommand(object obj)
+        {
+            Navigation.PopModalAsync();
         }
 
         private async void chooseImageForCoverCommand(object obj)

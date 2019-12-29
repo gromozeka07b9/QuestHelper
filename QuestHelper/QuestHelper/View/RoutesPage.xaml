@@ -39,7 +39,7 @@
             <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" SeparatorVisibility="None" ItemsSource="{Binding Routes}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshListRoutesCommand}" x:Name="RoutesListView" RowHeight="200"  SelectedItem="{Binding SelectedRouteItem,Mode=TwoWay}" CachingStrategy="RecycleElement">
                 <ListView.Header>
                     <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0" Style="{StaticResource PrivateStackLayout}" IsVisible="{Binding NoPostsWarningIsVisible, Converter={StaticResource inverter}}">
-                        <Frame Padding="0" Style="{StaticResource PrivateFrame}" Margin="0,0,0,0" HeightRequest="280">
+                        <Frame Padding="0" Style="{StaticResource PrivateFrame}" Margin="0,0,0,0" HeightRequest="260">
                             <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="3*" />
@@ -48,7 +48,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="55" />
-                                    <RowDefinition Height="3*" />
+                                    <RowDefinition Height="4*" />
                                     <RowDefinition Height="3*" />
                                 </Grid.RowDefinitions>
                                 <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="2" Source="land1.png" Aspect="Fill" HorizontalOptions="StartAndExpand" VerticalOptions="FillAndExpand"></Image>
