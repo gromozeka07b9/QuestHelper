@@ -45,11 +45,13 @@ namespace QuestHelper.Managers.Sync
                     : await syncRoutes.Sync(routeId);
                 if (syncRoutes.AuthRequired)
                 {
-                    errorMsg = "Auth required";
+                    Xamarin.Forms.MessagingCenter.Send<UIAlertMessage>(new UIAlertMessage() { Title = "Error", Message = "Error syncing server. Try to open feed."}, string.Empty);
+                    /*errorMsg = "Auth required";
                     var pageCollections = new PagesCollection();
                     MainPageMenuItem destinationPage = pageCollections.GetLoginPage();
                     Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(
-                        new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);
+                        new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);*/
+
                 }
             }
             return new Tuple<bool, string>(syncResult, errorMsg);
@@ -192,13 +194,14 @@ namespace QuestHelper.Managers.Sync
         {
             if (AuthRequired)
             {
-                var pageCollections = new PagesCollection();
+                Xamarin.Forms.MessagingCenter.Send<UIAlertMessage>(new UIAlertMessage() { Title = "Error", Message = "Error syncing server. Try to open feed." }, string.Empty);
+                /*var pageCollections = new PagesCollection();
                 MainPageMenuItem destinationPage = pageCollections.GetLoginPage();
                 Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(
                     new PageNavigationMessage()
                     {
                         DestinationPageDescription = destinationPage
-                    }, string.Empty);
+                    }, string.Empty);*/
             }
 
             var diff = DateTime.Now - startTime;

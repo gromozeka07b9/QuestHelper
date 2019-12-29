@@ -20,11 +20,17 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
                 <RowDefinition Height="4*" />
                 <RowDefinition Height="6*" />
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" FontSize="Medium" Text="{Binding CaptionText}" VerticalTextAlignment="End" HorizontalTextAlignment="Center" Margin="20"></Label>
-            <StackLayout Grid.Row="1" Orientation="Vertical" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Margin="20" IsVisible="{Binding MakeLinkIsVisible, Converter={StaticResource inverter}}">
+            <Image Grid.Row="0" Grid.Column="0" Source="baseline_arrow_back_black_48.png" WidthRequest="40" HeightRequest="40" Margin="10,10,0,0" VerticalOptions="Start" HorizontalOptions="Start">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackNavigationCommand}"/>
+                </Image.GestureRecognizers>
+            </Image>
+            <Label Grid.Row="1" FontSize="Medium" Text="{Binding CaptionText}" VerticalTextAlignment="End" HorizontalTextAlignment="Center" Margin="20"></Label>
+            <StackLayout Grid.Row="2" Orientation="Vertical" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Margin="20" IsVisible="{Binding MakeLinkIsVisible, Converter={StaticResource inverter}}">
                 <Label FontSize="14" Text="{Binding UrlPresentationText}" TextDecorations="Underline">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding UrlTappedCommand}"></TapGestureRecognizer>
@@ -36,7 +42,7 @@
                     </Image.GestureRecognizers>
                 </Image>
             </StackLayout>
-            <StackLayout Grid.Row="1" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Margin="20" IsVisible="{Binding MakeLinkIsVisible}">
+            <StackLayout Grid.Row="2" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Margin="20" IsVisible="{Binding MakeLinkIsVisible}">
                 <Button Padding="15" WidthRequest="200" HeightRequest="64" Text="{lang:Translation MakeRouteLink_EnableShareAccess}" Command="{Binding MakeSharedLinkCommand}"></Button>
             </StackLayout>
         </Grid>

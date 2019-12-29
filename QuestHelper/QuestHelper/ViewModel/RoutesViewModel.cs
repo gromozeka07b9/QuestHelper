@@ -60,7 +60,7 @@ namespace QuestHelper.ViewModel
 
         private void authorizationCommand(object obj)
         {
-            Navigation.PushAsync(new LoginPage());
+            Navigation.PushModalAsync(new LoginPage());
         }
 
         public async void startDialog()
@@ -84,6 +84,16 @@ namespace QuestHelper.ViewModel
                 }
             });
 
+            /*MessagingCenter.Subscribe<UserAuthenticatedMessage>(this, string.Empty, (sender) =>
+            {
+                bool test = IsAutorizedMode;
+                PropertyChanged(this, new PropertyChangedEventArgs("IsAutorizedMode"));
+            });*/
+
+            if(IsAutorizedMode)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs("IsAutorizedMode"));
+            }
         }
 
         private bool OnTimerForUpdateFireworks()
@@ -96,6 +106,7 @@ namespace QuestHelper.ViewModel
         {
             MessagingCenter.Unsubscribe<SyncProgressRouteLoadingMessage>(this, string.Empty);
             MessagingCenter.Unsubscribe<SyncRouteCompleteMessage>(this, string.Empty);
+            MessagingCenter.Unsubscribe<UserAuthenticatedMessage>(this, string.Empty);
         }
 
         internal void AddSharedPoint(ShareFromGoogleMapsMessage msg)

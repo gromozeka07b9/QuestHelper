@@ -10,11 +10,11 @@ using ProcessShareIntentPage = QuestHelper.View.ProcessShareIntentPage;
 
 namespace QuestHelper.Model
 {
-    public class PagesCollection
+    public class PagesCollectionDEL
     {
         public ObservableCollection<MainPageMenuItem> Pages;
 
-        public PagesCollection()
+        public PagesCollectionDEL()
         {
             Pages = new ObservableCollection<MainPageMenuItem>(new[]
             {

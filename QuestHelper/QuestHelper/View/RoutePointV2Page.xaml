@@ -70,19 +70,19 @@
                         </StackLayout>
                     </Frame>
                     <StackLayout Orientation="Vertical" VerticalOptions="Start" HeightRequest="300" IsVisible="{Binding IsOneImagesPresent, Converter={StaticResource inverter}}">
-                        <CarouselView x:Name="myCarouselViewCtrl" ItemsSource="{Binding Images}" HorizontalOptions="FillAndExpand" Margin="0,0,0,0" VerticalOptions="StartAndExpand">
+                        <CarouselView x:Name="myCarouselViewCtrl" ItemsUpdatingScrollMode="KeepItemsInView" ItemsSource="{Binding Images}" HorizontalOptions="FillAndExpand" Margin="0,0,0,0" VerticalOptions="StartAndExpand" HorizontalScrollBarVisibility="Always">
                             <CarouselView.ItemTemplate>
                                 <DataTemplate>
                                     <StackLayout Padding="3">
                                         <Frame HasShadow="True"
                                            BorderColor="DarkGray"
                                            CornerRadius="5"
-                                           Margin="5,0,0,0"
-                                           WidthRequest="250"
-                                            HeightRequest="300"
-                                            Padding="4"
-                                           HorizontalOptions="Center"
-                                           VerticalOptions="Start">
+                                           Margin="5,0,5,0"
+                                           WidthRequest="60"
+                                           HeightRequest="60"
+                                           Padding="3"
+                                           HorizontalOptions="FillAndExpand"
+                                           VerticalOptions="FillAndExpand">
                                             <Frame.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding Path=BindingContext.ViewPhotoCommand, Source={x:Reference Name=myCarouselViewCtrl}}" CommandParameter="{Binding}"/>
                                                 <TapGestureRecognizer Command="{Binding Path=BindingContext.DeletePhotoCommand, Source={x:Reference Name=myCarouselViewCtrl}}" NumberOfTapsRequired="2"/>

@@ -142,9 +142,12 @@ namespace QuestHelper.Droid
             {
                 base.OnMapReady(map);
                 map.MapClick += Map_MapClick;
-                drawMarkers(150);
                 NativeMap.InfoWindowClick += OnInfoWindowClick;
                 NativeMap.SetInfoWindowAdapter(this);
+                if(NativeMap.CameraPosition.Zoom > 3)
+                {
+                    drawMarkers(150);
+                }
             }
         }
 
@@ -195,7 +198,14 @@ namespace QuestHelper.Droid
             NativeMap.AddPolyline(lineOptions);
             if(customMap.Points.Count > 1)
             {
-                NativeMap.MoveCamera(CameraUpdateFactory.NewLatLngBounds(bounds.Build(), 120));
+                try
+                {
+                    NativeMap.MoveCamera(CameraUpdateFactory.NewLatLngBounds(bounds.Build(), 120));
+                }
+                catch (Java.Lang.Exception e)
+                {
+
+                }
             }
             bounds.Dispose();
         }

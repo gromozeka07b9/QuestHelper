@@ -33,6 +33,7 @@ namespace QuestHelper.ViewModel
         public ICommand UrlTappedCommand { get; private set; }
         public ICommand MakeSharedLinkCommand { get; private set; }
         public ICommand ShareRouteCommand { get; private set; }
+        public ICommand BackNavigationCommand { get; private set; }
 
         internal MakeRouteLinkPageViewModel(string routeId)
         {
@@ -47,8 +48,13 @@ namespace QuestHelper.ViewModel
             UrlTappedCommand = new Command(urlTappedCommandAsync);
             MakeSharedLinkCommand = new Command(makeSharedLinkCommandAsync);
             ShareRouteCommand = new Command(shareRouteCommand);
-
+            BackNavigationCommand = new Command(backNavigationCommand);
             CaptionText = _accessByLink;
+        }
+
+        private void backNavigationCommand(object obj)
+        {
+            Navigation.PopModalAsync();
         }
 
         private void shareRouteCommand()

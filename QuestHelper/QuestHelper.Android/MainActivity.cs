@@ -39,7 +39,7 @@ namespace QuestHelper.Droid
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
-        public void OnTabReSelected(int position)
+        /*public void OnTabReSelected(int position)
         {
             NavigateToPage(position);
         }
@@ -47,14 +47,14 @@ namespace QuestHelper.Droid
         public void OnTabSelected(int position)
         {
             NavigateToPage(position);
-        }
+        }*/
 
-        private static void NavigateToPage(int position)
+        /*private static void NavigateToPage(int position)
         {
             var pageCollections = new PagesCollection();
             MainPageMenuItem destinationPage = pageCollections.GetPageByPosition(position);
             Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>( new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);
-        }
+        }*/
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -81,12 +81,12 @@ namespace QuestHelper.Droid
 
             LoadApplication(new App());
 
-            if (!string.IsNullOrEmpty(shareDescription))
+            /*if (!string.IsNullOrEmpty(shareDescription))
             {
                 var pageCollections = new PagesCollection();
                 MainPageMenuItem destinationPage = pageCollections.GetProcessSharePage();
                 Xamarin.Forms.MessagingCenter.Send<ShareFromGoogleMapsMessage>(new ShareFromGoogleMapsMessage() { Subject = shareSubject, Description = shareDescription }, string.Empty);
-            }
+            }*/
 
             MessagingCenter.Subscribe<SyncMessage>(this, string.Empty, async (sender) =>
             {
@@ -136,9 +136,10 @@ namespace QuestHelper.Droid
                 {
                     Xamarin.Forms.MessagingCenter.Send<UIAlertMessage>(new UIAlertMessage() { Title = CommonResource.Login_GoogleAuthCaption, Message = CommonResource.Login_GoogleAuthError }, string.Empty);
                     Analytics.TrackEvent("Login OAuth error", new Dictionary<string, string> { { "ExceptionMessage", e.Message },{"Google Chrome auth", "error"} });
-                    var pageCollections = new PagesCollection();
+                    Xamarin.Forms.MessagingCenter.Send<UIAlertMessage>(new UIAlertMessage() { Title = "Error", Message = "Error syncing server. Try to open feed." }, string.Empty);
+                    /*var pageCollections = new PagesCollection();
                     MainPageMenuItem destinationPage = pageCollections.GetLoginPage();
-                    Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);
+                    Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);*/
                 }
             });
 

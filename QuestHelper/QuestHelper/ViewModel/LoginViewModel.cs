@@ -80,7 +80,7 @@ namespace QuestHelper.ViewModel
                                 Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
 #endif
                                 var page = await Navigation.PopModalAsync();
-                                ShowMainPage();
+                                Xamarin.Forms.MessagingCenter.Send<UserAuthenticatedMessage>(new UserAuthenticatedMessage(), string.Empty);
                             }
                             else
                             {
@@ -115,7 +115,7 @@ namespace QuestHelper.ViewModel
 #if !DEBUG
                         Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
 #endif
-                        ShowMainPage();
+                        Xamarin.Forms.MessagingCenter.Send<UserAuthenticatedMessage>(new UserAuthenticatedMessage(), string.Empty);
                     }
                     else
                     {
@@ -126,13 +126,13 @@ namespace QuestHelper.ViewModel
             } else await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.Login_FillLoginAndPassword, "Ok");
         }
 
-        private static void ShowMainPage()
+        /*private static void ShowMainPage()
         {
             var pageCollections = new PagesCollection();
             MainPageMenuItem destinationPage = pageCollections.GetPageByPosition(0);
             Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(
                 new PageNavigationMessage() {DestinationPageDescription = destinationPage}, string.Empty);
-        }
+        }*/
 
         public string Username
         {
@@ -232,7 +232,8 @@ namespace QuestHelper.ViewModel
 #if !DEBUG
                     Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
 #endif
-                    ShowMainPage();
+                    //Xamarin.Forms.MessagingCenter.Send<UserAuthenticatedMessage>(new UserAuthenticatedMessage(), string.Empty);
+                    await Navigation.PopModalAsync();
                 }
                 else
                 {

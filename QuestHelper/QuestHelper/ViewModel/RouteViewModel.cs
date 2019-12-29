@@ -106,6 +106,7 @@ namespace QuestHelper.ViewModel
         {
             if (!NameForEdit.Equals(Name) || !DescriptionForEdit.Equals(Description) || (!string.IsNullOrEmpty(ImgFilename) && !ImgFilename.Equals(ImgFilenameForEdit)))
             {
+                Description = DescriptionForEdit;
                 _vroute.Name = NameForEdit;
                 _vroute.Description = DescriptionForEdit;
                 _vroute.ImgFilename = ImgFilenameForEdit;

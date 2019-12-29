@@ -24,12 +24,8 @@ namespace QuestHelper.WS
             string token = string.Empty;
 
             ParameterManager par = new ParameterManager();
-            string demoUsername = string.Empty;
-            if (!par.Get("DemoUsername", out demoUsername))
-            {
-                demoUsername = generateDemoUsername();
-                par.Set("DemoUsername", demoUsername);
-            }
+            string demoUsername = generateDemoUsername();
+            par.Set("DemoUsername", demoUsername);
 
             AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
             _username = demoUsername;
@@ -47,6 +43,18 @@ namespace QuestHelper.WS
             }
 
             return token;
+        }
+        public bool ResetCurrentGuestToken()
+        {
+
+            ParameterManager par = new ParameterManager();
+            string demoUsername = string.Empty;
+            if (!par.Get("DemoUsername", out demoUsername))
+            {
+                par.Set("DemoUsername", string.Empty);
+            }
+
+            return true;
         }
 
         private string generateDemoUsername()

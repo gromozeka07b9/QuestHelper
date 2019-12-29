@@ -49,7 +49,7 @@
                                 VerticalOptions="Center" HorizontalOptions="Center"
                                 />
                 </AbsoluteLayout>
-                <Image Grid.Row="0" Grid.Column="0" Source="baseline_arrow_back_black_48.png" WidthRequest="40" HeightRequest="40" Margin="10,10,0,0" VerticalOptions="Start" HorizontalOptions="Start">
+                <Image Grid.Row="0" Grid.Column="0" Source="baseline_arrow_back_white_48.png" WidthRequest="40" HeightRequest="40" Margin="10,10,0,0" VerticalOptions="Start" HorizontalOptions="Start">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding BackNavigationCommand}"/>
                     </Image.GestureRecognizers>
@@ -74,17 +74,31 @@
                                 <TapGestureRecognizer Command="{Binding StartRouteCommand}"></TapGestureRecognizer>
                             </Image.GestureRecognizers>
                         </Image>
-                        <Image Grid.Row="0" Grid.Column="0" Source="baseline_arrow_back_black_48.png" WidthRequest="40" HeightRequest="40" Margin="10" VerticalOptions="Start" HorizontalOptions="Start">
+                        <Image Grid.Row="0" Grid.Column="0" Source="baseline_arrow_back_white_48.png" WidthRequest="40" HeightRequest="40" Margin="10" VerticalOptions="Start" HorizontalOptions="Start">
                             <Image.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding BackNavigationCommand}"/>
                             </Image.GestureRecognizers>
                         </Image>
 
                         <StackLayout Grid.Row="1" Orientation="Vertical" Padding="10" Margin="0,110,0,0" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand">
-                            <Label Text="{Binding Name}" HorizontalOptions="Center" TextColor="White" FontSize="30" HorizontalTextAlignment="Center" Margin="30"></Label>
-                            <circle:CircleImage Source="account_circle.png" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="50" HeightRequest="50" BorderColor="White" Aspect="AspectFill" BorderThickness="0" Margin="5">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding StartRouteCommand}"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                            <Label Text="{Binding Name}" HorizontalOptions="Center" TextColor="White" FontSize="30" HorizontalTextAlignment="Center" Margin="30">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding StartRouteCommand}"></TapGestureRecognizer>
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <circle:CircleImage Source="avatar1.png" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="50" HeightRequest="50" BorderColor="White" Aspect="AspectFill" BorderThickness="2" Margin="5">
+                                <circle:CircleImage.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding StartRouteCommand}"></TapGestureRecognizer>
+                                </circle:CircleImage.GestureRecognizers>
                             </circle:CircleImage>
-                            <Label Text="{Binding Author}" HorizontalOptions="Center" FontSize="12" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"></Label>
+                            <Label Text="{Binding Author}" HorizontalOptions="Center" FontSize="12" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding StartRouteCommand}"></TapGestureRecognizer>
+                                </Label.GestureRecognizers>
+                            </Label>
                         </StackLayout>
 
                         <StackLayout Grid.Row="3" Grid.RowSpan="1" Padding="5" HorizontalOptions="FillAndExpand" VerticalOptions="Start">

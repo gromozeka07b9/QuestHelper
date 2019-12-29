@@ -35,6 +35,7 @@ namespace QuestHelper.ViewModel
         public ICommand TapViberCommand { get; private set; }
         public ICommand TapWhatsappCommand { get; private set; }
         public ICommand TapGMailCommand { get; private set; }
+        public ICommand BackNavigationCommand { get; private set; }
 
         public INavigation Navigation { get; set; }
         private readonly string _routeId;
@@ -77,7 +78,13 @@ namespace QuestHelper.ViewModel
             TapViberCommand = new Command(tapViberCommand);
             TapWhatsappCommand = new Command(tapWhatsappCommand);
             TapGMailCommand = new Command(tapGMailCommand);
+            BackNavigationCommand = new Command(backNavigationCommand);
             _routeId = routeId;
+        }
+
+        private void backNavigationCommand(object obj)
+        {
+            Navigation.PopModalAsync();
         }
 
         private void tapInstagramCommand(object obj)
@@ -92,7 +99,7 @@ namespace QuestHelper.ViewModel
             Analytics.TrackEvent("Share service", new Dictionary<string, string> { { "TypeShare", "gmail" } });
             var shareService = DependencyService.Get<ICommonShareService>();
             shareService.Share(_vroute, _namesForShareApps["gmail"]);
-            await Navigation.PopAsync(false);
+            await Navigation.PopModalAsync(false);
         }
 
         private void tapOtherCommand(object obj)
@@ -106,7 +113,7 @@ namespace QuestHelper.ViewModel
         {
             Analytics.TrackEvent("Share service", new Dictionary<string, string> { { "TypeShare", "makeRef" } });
             var page = new MakeRouteLinkPage(_vroute.RouteId);
-            Navigation.PushAsync(page);
+            Navigation.PushModalAsync(page);
         }
 
         private async void tapPublishAlbumCommand(object obj)
@@ -141,7 +148,7 @@ namespace QuestHelper.ViewModel
         {
             Analytics.TrackEvent("Share service", new Dictionary<string, string> { { "TypeShare", "addUser" } });
             var shareRoutePage = new ShareRoutePage(_vroute.RouteId);
-            await Navigation.PushAsync(shareRoutePage, true);
+            await Navigation.PushModalAsync(shareRoutePage, true);
         }
         private async void tapTelegramCommand(object obj)
         {
@@ -155,14 +162,14 @@ namespace QuestHelper.ViewModel
                         Analytics.TrackEvent("Share service", new Dictionary<string, string> { { "TypeShare", "telegramPhotos" } });
                         var shareService = DependencyService.Get<ITelegramShareService>();
                         shareService.Share(_vroute, _namesForShareApps["telegram"]);
-                        await Navigation.PopAsync(false);
+                        await Navigation.PopModalAsync(false);
                     }
                     else if (result.Equals(_actionsForPopupMenu["onlyTexts"]))
                     {
                         Analytics.TrackEvent("Share service", new Dictionary<string, string> { { "TypeShare", "telegramDescription" } });
                         var shareService = DependencyService.Get<ITelegramShareService>();
                         shareService.ShareRouteOnlyPointsDescription(_vroute, _namesForShareApps["telegram"]);
-                        await Navigation.PopAsync(false);
+                        await Navigation.PopModalAsync(false);
                     }
                 }
             }
@@ -171,7 +178,7 @@ namespace QuestHelper.ViewModel
                 Analytics.TrackEvent("Share service", new Dictionary<string, string> { { "TypeShare", "telegramDescription" } });
                 var shareService = DependencyService.Get<ITelegramShareService>();
                 shareService.ShareRouteOnlyPointsDescription(_vroute, _namesForShareApps["telegram"]);
-                await Navigation.PopAsync(false);
+                await Navigation.PopModalAsync(false);
             }
         }
         private async void tapFacebookCommand(object obj)
@@ -179,21 +186,21 @@ namespace QuestHelper.ViewModel
             Analytics.TrackEvent("Share service", new Dictionary<string, string> { { "TypeShare", "facebook" } });
             var shareService = DependencyService.Get<IFacebookShareService>();
             shareService.Share(_vroute, _namesForShareApps["facebook"]);
-            await Navigation.PopAsync(false);
+            await Navigation.PopModalAsync(false);
         }
         private async void tapViberCommand(object obj)
         {
             Analytics.TrackEvent("Share service", new Dictionary<string, string> { { "TypeShare", "viber" } });
             var shareService = DependencyService.Get<IViberShareService>();
             shareService.Share(_vroute, _namesForShareApps["viber"]);
-            await Navigation.PopAsync(false);
+            await Navigation.PopModalAsync(false);
         }
         private async void tapWhatsappCommand(object obj)
         {
             Analytics.TrackEvent("Share service", new Dictionary<string, string> { { "TypeShare", "whatsapp" } });
             var shareService = DependencyService.Get<IWhatsappShareService>();
             shareService.Share(_vroute, _namesForShareApps["whatsapp"]);
-            await Navigation.PopAsync(false);
+            await Navigation.PopModalAsync(false);
         }
 
         public async void StartDialog()
