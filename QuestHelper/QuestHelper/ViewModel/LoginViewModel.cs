@@ -73,14 +73,13 @@ namespace QuestHelper.ViewModel
                             {
                                 Analytics.TrackEvent("Register new user done", new Dictionary<string, string> { { "Username", _username } });
                                 TokenStoreService tokenService = new TokenStoreService();
-                                await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId);
+                                await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId, _username, _email);
                                 ParameterManager par = new ParameterManager();
                                 par.Set("GuestMode", "0");
 #if !DEBUG
                                 Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
 #endif
-                                var page = await Navigation.PopModalAsync();
-                                Xamarin.Forms.MessagingCenter.Send<UserAuthenticatedMessage>(new UserAuthenticatedMessage(), string.Empty);
+                                await Navigation.PopModalAsync();
                             }
                             else
                             {
@@ -109,13 +108,13 @@ namespace QuestHelper.ViewModel
                     {
                         Analytics.TrackEvent("GetToken done", new Dictionary<string, string> { { "Username", _username } });
                         TokenStoreService tokenService = new TokenStoreService();
-                        await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId);
+                        await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId, _username, authData.Email);
                         ParameterManager par = new ParameterManager();
                         par.Set("GuestMode", "0");
 #if !DEBUG
                         Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
 #endif
-                        Xamarin.Forms.MessagingCenter.Send<UserAuthenticatedMessage>(new UserAuthenticatedMessage(), string.Empty);
+                        await Navigation.PopModalAsync();
                     }
                     else
                     {
@@ -226,13 +225,12 @@ namespace QuestHelper.ViewModel
                 {
                     Analytics.TrackEvent("Login OAuth done", new Dictionary<string, string> { { "Username", _username } });
                     TokenStoreService tokenService = new TokenStoreService();
-                    await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId);
+                    await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId, _username, authData.Email);
                     ParameterManager par = new ParameterManager();
                     par.Set("GuestMode", "0");
 #if !DEBUG
                     Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
 #endif
-                    //Xamarin.Forms.MessagingCenter.Send<UserAuthenticatedMessage>(new UserAuthenticatedMessage(), string.Empty);
                     await Navigation.PopModalAsync();
                 }
                 else

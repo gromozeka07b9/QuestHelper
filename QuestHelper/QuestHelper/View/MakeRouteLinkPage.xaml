@@ -6,7 +6,6 @@
              xmlns:converters="clr-namespace:QuestHelper.View.Converters;assembly=QuestHelper"
              x:Class="QuestHelper.View.MakeRouteLinkPage" Appearing="MakeRouteLinkPage_OnAppearing" Disappearing="MakeRouteLinkPage_OnDisappearing">
     <ContentPage.ToolbarItems>
-        <!--ToolbarItem NavigationPage.HasNavigationBar="False" Text="Выберите способ"></-->
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
         <ResourceDictionary>

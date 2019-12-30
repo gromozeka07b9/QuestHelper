@@ -35,7 +35,7 @@ namespace QuestHelper.WS
             {
                 Analytics.TrackEvent("GetToken Demo", new Dictionary<string, string> { { "Username", _username } });
                 TokenStoreService tokenService = new TokenStoreService();
-                bool setResultIsOk = await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId);
+                bool setResultIsOk = await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId, string.Empty, string.Empty);
                 if (setResultIsOk)
                 {
                     token = authData.Access_Token;

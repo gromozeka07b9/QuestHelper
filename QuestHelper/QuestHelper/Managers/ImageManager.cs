@@ -85,12 +85,12 @@ namespace QuestHelper.Managers
                 {
                     file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
                     {
-                        PhotoSize = PhotoSize.Large,
+                        PhotoSize = PhotoSize.Medium,
                         Location = new Plugin.Media.Abstractions.Location() { Latitude = latitude, Longitude = longitude, Timestamp = DateTime.Now },
                         Directory = string.Empty,
                         Name = photoName,
                         SaveToAlbum = true,
-                        CompressionQuality = 30
+                        CompressionQuality = 70
                     });
                     takePhotoResult = true;
                 }

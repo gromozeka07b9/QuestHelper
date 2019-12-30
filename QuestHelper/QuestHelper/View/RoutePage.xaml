@@ -82,7 +82,7 @@
                                                     <TapGestureRecognizer Command="{Binding EditRouteCommand}"/>
                                                 </StackLayout.GestureRecognizers>
                                             </-->
-                                            <Label Text="Описание маршрута"  Style="{StaticResource PrivateMiddleLabel}" VerticalOptions="StartAndExpand" VerticalTextAlignment="Start" HorizontalOptions="StartAndExpand" Margin="10,5,0,0" FontAttributes="None" TextColor="Black">
+                                            <Label Text="{lang:Translation Route_Description}"  Style="{StaticResource PrivateMiddleLabel}" VerticalOptions="StartAndExpand" VerticalTextAlignment="Start" HorizontalOptions="StartAndExpand" Margin="10,5,0,0" FontAttributes="None" TextColor="Black">
                                                 <Label.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding EditRouteCommand}"/>
                                                 </Label.GestureRecognizers>

@@ -480,4 +480,13 @@
   <data name="Feed_SearchPlaceholder" xml:space="preserve">
     <value>например, Грузия</value>
   </data>
+  <data name="Routes_StatisticsRoutesCreated" xml:space="preserve">
+    <value>маршрутов</value>
+  </data>
+  <data name="Routes_StatisticsRoutesPublished" xml:space="preserve">
+    <value>опубликовано</value>
+  </data>
+  <data name="Route_Description" xml:space="preserve">
+    <value>Описание маршрута</value>
+  </data>
 </root>

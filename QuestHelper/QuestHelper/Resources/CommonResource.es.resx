@@ -479,6 +479,15 @@ Gosh!</value>
     <value>Puede liberar memoria eliminando rutas cargadas previamente. Si es necesario, puede descargarlos nuevamente.</value>
   </data>
   <data name="Feed_SearchPlaceholder" xml:space="preserve">
-    <value>Georgia</value>
+    <value>por ejemplo, 2019</value>
+  </data>
+  <data name="Routes_StatisticsRoutesCreated" xml:space="preserve">
+    <value>rutas</value>
+  </data>
+  <data name="Routes_StatisticsRoutesPublished" xml:space="preserve">
+    <value>publicado</value>
+  </data>
+  <data name="Route_Description" xml:space="preserve">
+    <value>Descripción de la ruta</value>
   </data>
 </root>

@@ -214,7 +214,7 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Georgia.
+        ///   Ищет локализованную строку, похожую на e.g. 2019.
         /// </summary>
         public static string Feed_SearchPlaceholder {
             get {
@@ -656,6 +656,15 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Route description.
+        /// </summary>
+        public static string Route_Description {
+            get {
+                return ResourceManager.GetString("Route_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на You have no points yet, you can add a new one..
         /// </summary>
         public static string Route_FirstPoint {
@@ -886,6 +895,24 @@ namespace QuestHelper.Resources {
         public static string Routes_RoutesNotFound {
             get {
                 return ResourceManager.GetString("Routes_RoutesNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на routes.
+        /// </summary>
+        public static string Routes_StatisticsRoutesCreated {
+            get {
+                return ResourceManager.GetString("Routes_StatisticsRoutesCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на published.
+        /// </summary>
+        public static string Routes_StatisticsRoutesPublished {
+            get {
+                return ResourceManager.GetString("Routes_StatisticsRoutesPublished", resourceCulture);
             }
         }
         

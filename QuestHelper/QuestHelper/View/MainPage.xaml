@@ -6,11 +6,12 @@
             mc:Ignorable="d"
             xmlns:view="clr-namespace:QuestHelper.View"
             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+            xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
             android:TabbedPage.ToolbarPlacement="Bottom"
             x:Class="QuestHelper.View.MainPage" >
 
     <TabbedPage.Children>
-        <NavigationPage Title="Feed">
+        <NavigationPage Title="{lang:Translation ScreenFeedName}">
             <NavigationPage.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="iOS" Value="feed.png"/>
@@ -22,7 +23,7 @@
             </x:Arguments>
         </NavigationPage>
 
-        <NavigationPage Title="Loaded">
+        <NavigationPage Title="{lang:Translation ScreenLoadedAlbumsName}">
             <NavigationPage.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="iOS" Value="loaded.png"/>
@@ -33,7 +34,7 @@
                 <view:AlbumsPage />
             </x:Arguments>
         </NavigationPage>
-        <NavigationPage Title="My">
+        <NavigationPage Title="{lang:Translation ScreenPrivateName}">
             <NavigationPage.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="iOS" Value="person2.png"/>

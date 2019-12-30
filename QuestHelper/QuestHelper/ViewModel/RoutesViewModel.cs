@@ -35,6 +35,8 @@ namespace QuestHelper.ViewModel
         //private bool _syncProgressIsVisible = false;
         private string _syncProgressDetailText = string.Empty;
         private string _currentUserId = string.Empty;
+        private string _username = string.Empty;
+        private string _email = string.Empty;
         private double _progressValue = 0;
         private int _countRoutesCreatedMe = 0;
         private int _countRoutesPublishedMe = 0;
@@ -52,7 +54,7 @@ namespace QuestHelper.ViewModel
         public RoutesViewModel()
         {
             AddNewRouteCommand = new Command(addNewRouteCommandAsync);
-            RefreshListRoutesCommand = new Command(refreshListRoutesCommandAsync);
+            RefreshListRoutesCommand = new Command(refreshListRoutesCommand);
             //SyncStartCommand = new Command(syncStartCommand);
             AuthorizationCommand = new Command(authorizationCommand);
 
@@ -65,13 +67,20 @@ namespace QuestHelper.ViewModel
 
         public async void startDialog()
         {
+            TokenStoreService tokenService = new TokenStoreService();
+            _currentUserId = await tokenService.GetUserIdAsync();
+            _username = await tokenService.GetUsernameAsync();
+            _email = await tokenService.GetEmailAsync();
+            PropertyChanged(this, new PropertyChangedEventArgs("Username"));
+            PropertyChanged(this, new PropertyChangedEventArgs("Email"));
+
             MessagingCenter.Subscribe<SyncProgressRouteLoadingMessage>(this, string.Empty, (sender) =>
             {
                 if (string.IsNullOrEmpty(sender.RouteId))
                 {
                     if (!IsVisibleProgress) IsVisibleProgress = true;
                     ProgressValue = sender.ProgressValue;
-                    refreshListRoutesCommandAsync();
+                    refreshListRoutesCommand();
                 }
             });
 
@@ -83,17 +92,6 @@ namespace QuestHelper.ViewModel
                     //StopAnimateCallback.Invoke();
                 }
             });
-
-            /*MessagingCenter.Subscribe<UserAuthenticatedMessage>(this, string.Empty, (sender) =>
-            {
-                bool test = IsAutorizedMode;
-                PropertyChanged(this, new PropertyChangedEventArgs("IsAutorizedMode"));
-            });*/
-
-            if(IsAutorizedMode)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs("IsAutorizedMode"));
-            }
         }
 
         private bool OnTimerForUpdateFireworks()
@@ -106,7 +104,6 @@ namespace QuestHelper.ViewModel
         {
             MessagingCenter.Unsubscribe<SyncProgressRouteLoadingMessage>(this, string.Empty);
             MessagingCenter.Unsubscribe<SyncRouteCompleteMessage>(this, string.Empty);
-            MessagingCenter.Unsubscribe<UserAuthenticatedMessage>(this, string.Empty);
         }
 
         internal void AddSharedPoint(ShareFromGoogleMapsMessage msg)
@@ -114,11 +111,8 @@ namespace QuestHelper.ViewModel
             _sharePointMessage = msg;
         }
 
-        async void refreshListRoutesCommandAsync()
+        void refreshListRoutesCommand()
         {
-            TokenStoreService tokenService = new TokenStoreService();
-            _currentUserId = await tokenService.GetUserIdAsync();
-
             Routes = _routeManager.GetRoutes(_currentUserId);
             if (Routes.Count() > 0)
             {
@@ -143,7 +137,11 @@ namespace QuestHelper.ViewModel
             }
             else
             {
-                refreshListRoutesCommandAsync();
+                if (IsAutorizedMode)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("IsAutorizedMode"));
+                }
+                refreshListRoutesCommand();
             }
             return false;
         }
@@ -288,6 +286,21 @@ namespace QuestHelper.ViewModel
                 return _routeId;
             }
         }
+        public string Username
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(_username) ? _username: "";
+            }
+        }
+        public string Email
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(_email) ? _email : "";
+            }
+        }
+
         public ViewRoute SelectedRouteItem
         {
             set

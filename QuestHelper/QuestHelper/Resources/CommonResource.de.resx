@@ -458,6 +458,15 @@
     <value>Sie können Speicherplatz freigeben, indem Sie zuvor geladene Routen löschen. Bei Bedarf können Sie sie erneut herunterladen.</value>
   </data>
   <data name="Feed_SearchPlaceholder" xml:space="preserve">
-    <value>Georgia</value>
+    <value>beispielsweise 2019</value>
+  </data>
+  <data name="Routes_StatisticsRoutesCreated" xml:space="preserve">
+    <value>routen</value>
+  </data>
+  <data name="Routes_StatisticsRoutesPublished" xml:space="preserve">
+    <value>veröffentlicht</value>
+  </data>
+  <data name="Route_Description" xml:space="preserve">
+    <value>Routenbeschreibung</value>
   </data>
 </root>

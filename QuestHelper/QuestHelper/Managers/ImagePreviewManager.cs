@@ -12,7 +12,7 @@ namespace QuestHelper.Managers
     {
         private int _width = 640;
         private int _height = 480;
-        private int _quality = 50;
+        private int _quality = 70;
 
         private byte[] GetPreviewImage(IMediaService mediaService, byte[] byteArrayOriginal, int width, int height, int quality)
         {

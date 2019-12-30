@@ -115,6 +115,10 @@ namespace QuestHelper.ViewModel
 
             if(feed != null)
             {
+                if(!string.IsNullOrEmpty(textFilter))
+                {
+                    Analytics.TrackEvent("Search by feedfilter", new Dictionary<string, string> { { "Filter", textFilter } });
+                }
                 FeedItems = getSortedViewFeed(feed, textFilter);
             }
             else

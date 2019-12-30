@@ -17,9 +17,6 @@
             <local:LockImageConverter  x:Key="lockimage" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    <ContentPage.ToolbarItems>
-        <!--ToolbarItem NavigationPage.HasNavigationBar="False" Command="{Binding SyncStartCommand}" Icon="cloud_upload.png"></-->
-    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -57,8 +54,8 @@
                                     </circle:CircleImage>
                                 </StackLayout>
                                 <StackLayout Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Orientation="Vertical" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Margin="0,20,0,0">
-                                    <Label Text="Sergey Dyachenko"  Style="{StaticResource PrivateMiddleLabel}" TextColor="White" HorizontalTextAlignment="Center" ></Label>
-                                    <Label Text="sdyachenko1977@gmail.com" Style="{StaticResource PrivateSmallLabel}" TextColor="White" HorizontalTextAlignment="Center" Margin="0,0,0,0"></Label>
+                                    <Label Text="{Binding Username}"  Style="{StaticResource PrivateMiddleLabel}" TextColor="White" HorizontalTextAlignment="Center" ></Label>
+                                    <Label Text="{Binding Email}" Style="{StaticResource PrivateSmallLabel}" TextColor="White" HorizontalTextAlignment="Center" Margin="0,0,0,0"></Label>
                                 </StackLayout>
                                 <Frame Grid.Column="0" Grid.Row="2" Grid.RowSpan="1" Grid.ColumnSpan="3" HorizontalOptions="FillAndExpand" HasShadow="True" CornerRadius="5" Margin="10,0,10,5" Padding="0" BackgroundColor="White">
                                     <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
@@ -66,14 +63,14 @@
                                             <Image Source="map1.png" WidthRequest="30" HeightRequest="30"/>
                                             <StackLayout Orientation="Horizontal">
                                                 <Label Text="{Binding CountRoutesCreatedMe}"  Style="{StaticResource PrivateMiddleLabel}" HorizontalTextAlignment="End" VerticalTextAlignment="Center"></Label>
-                                                <Label Text="маршрутов" Style="{StaticResource PrivateSmallLabel}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" ></Label>
+                                                <Label Text="{lang:Translation Routes_StatisticsRoutesCreated}" Style="{StaticResource PrivateSmallLabel}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" ></Label>
                                             </StackLayout>
                                         </StackLayout>
                                         <StackLayout Orientation="Vertical" Spacing="0" Margin="0" HorizontalOptions="FillAndExpand">
                                             <Image Source="share.png" WidthRequest="30" HeightRequest="30"/>
                                             <StackLayout Orientation="Horizontal">
                                                 <Label Text="{Binding CountRoutesPublishedMe}"  Style="{StaticResource PrivateMiddleLabel}" HorizontalTextAlignment="End" VerticalTextAlignment="Center"></Label>
-                                                <Label Text="опубликовано" Style="{StaticResource PrivateSmallLabel}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" ></Label>
+                                                <Label Text="{lang:Translation Routes_StatisticsRoutesPublished}" Style="{StaticResource PrivateSmallLabel}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" ></Label>
                                             </StackLayout>
                                         </StackLayout>
                                     </StackLayout>
