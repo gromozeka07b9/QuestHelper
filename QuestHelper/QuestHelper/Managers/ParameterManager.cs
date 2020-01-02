@@ -53,5 +53,27 @@ namespace QuestHelper.Managers
             }
             return !string.IsNullOrEmpty(value);
         }
+
+        public bool Delete(string key)
+        {
+            bool result = false;
+            try
+            {
+                _realmInstance.Write(() =>
+                {
+                    var paramObject = _realmInstance.Find<Parameter>(key);
+                    if (paramObject != null)
+                    {
+                        _realmInstance.Remove(paramObject);
+                    }
+                });
+                result = true;
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("ParameterManager", "Delete", e, false);
+            }
+            return result;
+        }
     }
 }

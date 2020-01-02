@@ -44,15 +44,16 @@ namespace QuestHelper.WS
 
             return token;
         }
-        public bool ResetCurrentGuestToken()
+        public bool ResetCurrentGuestUsername()
         {
 
             ParameterManager par = new ParameterManager();
-            string demoUsername = string.Empty;
+            par.Delete("DemoUsername");
+            /*string demoUsername = string.Empty;
             if (!par.Get("DemoUsername", out demoUsername))
             {
                 par.Set("DemoUsername", string.Empty);
-            }
+            }*/
 
             return true;
         }

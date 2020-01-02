@@ -223,11 +223,6 @@ namespace QuestHelper.Model
             get
             {
                 return _imagePreviewPath;
-
-                /*if (!string.IsNullOrEmpty(_imagePreviewPath)&& File.Exists(_imagePreviewPath))
-                    return _imagePreviewPath;
-                else
-                    return _imagePath;*/
             }
         }
         public string ImagePreviewPathForList

@@ -9,5 +9,6 @@ namespace QuestHelper
     {
         Task<string> GetAuthTokenAsync();
         Task<bool> SetAuthDataAsync(string authToken, string userId, string username, string email);
+        bool ResetAuthToken();
     }
 }

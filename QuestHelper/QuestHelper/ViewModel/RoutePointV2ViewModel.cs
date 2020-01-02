@@ -226,7 +226,7 @@ namespace QuestHelper.ViewModel
             {
                 if (_vpoint.SetDeleteMarkPointWithDeleteMedias())
                 {
-                    await Navigation.PopAsync();
+                    await Navigation.PopModalAsync();
                 }
                 else
                 {

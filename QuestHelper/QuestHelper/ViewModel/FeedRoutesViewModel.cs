@@ -208,7 +208,8 @@ namespace QuestHelper.ViewModel
                 MainPageMenuItem destinationPage = pageCollections.GetLoginPage();
                 Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);*/
                 GuestAuthHelper guestHelper = new GuestAuthHelper();
-                guestHelper.ResetCurrentGuestToken();
+                guestHelper.ResetCurrentGuestUsername();
+                tokenService.ResetAuthToken();
             }
 
             return feed;

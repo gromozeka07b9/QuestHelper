@@ -39,11 +39,12 @@ namespace QuestHelper.View
 
         private void Cards_OnItemAppearing(CardsView view, ItemAppearingEventArgs args)
         {
+            _vm.IsMaximumQualityPhoto = false;
             var newItem = (RouteCarouselRootViewModel.CarouselItem) view.SelectedItem;
-            if (!newItem.IsFullImage)
+            /*if (!newItem.IsFullImage)
             {
                 Device.StartTimer(TimeSpan.FromMilliseconds(500), OnTimerForUpdate);
-            }
+            }*/
 
             if ((_vm.CurrentItem?.Latitude != newItem.Latitude)||(_vm.CurrentItem?.Longitude != newItem.Longitude))
             {
@@ -57,8 +58,10 @@ namespace QuestHelper.View
         private void RouteCarouselRootPage_OnDisappearing(object sender, EventArgs e)
         {
         }
+
         private bool OnTimerForUpdate()
         {
+            return false;
             string fullImgPath = ImagePathManager.GetImagePath(_vm.CurrentItem.MediaId, MediaObjectTypeEnum.Image, false);
             if (File.Exists(fullImgPath))
             {

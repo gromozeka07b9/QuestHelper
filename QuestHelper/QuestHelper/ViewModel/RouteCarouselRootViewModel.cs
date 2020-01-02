@@ -100,12 +100,24 @@ namespace QuestHelper.ViewModel
                 if(_isMaximumQualityPhoto != value)
                 {
                     _isMaximumQualityPhoto = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsMaximumQualityPhoto"));
-                    string fullImgPath = ImagePathManager.GetImagePath(CurrentItem.MediaId, MediaObjectTypeEnum.Image, false);
-                    if ((_isMaximumQualityPhoto) && (!File.Exists(fullImgPath)))
+                    if (_isMaximumQualityPhoto)
                     {
-                        LoadFullImage(fullImgPath);
+                        string fullImgPath = ImagePathManager.GetImagePath(CurrentItem.MediaId, MediaObjectTypeEnum.Image, false);
+                        if (!File.Exists(fullImgPath))
+                        {
+                            LoadFullImage(fullImgPath);
+                        }
+                        else
+                        {
+                            if (File.Exists(fullImgPath))
+                            {
+                                CurrentItem.ImageSource = fullImgPath;
+                                CurrentItem.IsFullImage = true;
+                            }
+
+                        }
                     }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsMaximumQualityPhoto"));
                 }
             }
             get
@@ -147,7 +159,9 @@ namespace QuestHelper.ViewModel
                 CurrentItem.ImageSource = fullImgPath;
                 CurrentItem.IsFullImage = true;
             }
-            int maxTimeoutSecondsForLoad = 3;
+
+            //IsMaximumQualityPhoto = false;
+            /*int maxTimeoutSecondsForLoad = 3;
             int loadTimeInSeconds = (DateTime.Now - dtStartLoad).Seconds;
             if (loadTimeInSeconds > maxTimeoutSecondsForLoad)
             {
@@ -158,7 +172,7 @@ namespace QuestHelper.ViewModel
             else
             {
                 IsVisibleQualityImageSelector = false;
-            }
+            }*/
         }
 
         public List<CarouselItem> CarouselPages

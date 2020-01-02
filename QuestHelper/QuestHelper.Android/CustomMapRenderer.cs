@@ -137,17 +137,14 @@ namespace QuestHelper.Droid
 
         protected override async void OnMapReady(Android.Gms.Maps.GoogleMap map)
         {
+            base.OnMapReady(map);
             PermissionManager permissions = new PermissionManager();
             if (await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position))
             {
-                base.OnMapReady(map);
                 map.MapClick += Map_MapClick;
                 NativeMap.InfoWindowClick += OnInfoWindowClick;
                 NativeMap.SetInfoWindowAdapter(this);
-                if(NativeMap.CameraPosition.Zoom > 3)
-                {
-                    drawMarkers(150);
-                }
+                drawMarkers(150);
             }
         }
 
@@ -200,7 +197,7 @@ namespace QuestHelper.Droid
             {
                 try
                 {
-                    NativeMap.MoveCamera(CameraUpdateFactory.NewLatLngBounds(bounds.Build(), 120));
+                    NativeMap.MoveCamera(CameraUpdateFactory.NewLatLngBounds(bounds.Build(), 100));
                 }
                 catch (Java.Lang.Exception e)
                 {

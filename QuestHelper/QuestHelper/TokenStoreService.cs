@@ -23,24 +23,6 @@ namespace QuestHelper
         public async Task<string> GetUserIdAsync()
         {
             return await getDataByKey(_userIdKey);
-            /*string userId = string.Empty;
-
-            try
-            {
-                userId = await SecureStorage.GetAsync(_userIdKey);
-            }
-            catch (Exception e)
-            {
-                HandleError.Process("TokenStoreService", "GetUserIdAsync", e, false);
-            }
-
-            //если токен не был сохранен в безопасное хранилище, ищем его в небезопасном - Android 4.4.2
-            if (string.IsNullOrEmpty(userId))
-            {
-                ParameterManager par = new ParameterManager();
-                par.Get(_userIdKey, out userId);
-            }
-            return userId;*/
         }
 
         public async Task<string> GetUsernameAsync()
@@ -77,7 +59,6 @@ namespace QuestHelper
 
         public async Task<bool> SetAuthDataAsync(string authToken, string userId, string username, string email)
         {
-            bool setResult = false;
             try
             {
                 SecureStorage.Remove(_tokenNameKey);
@@ -88,7 +69,6 @@ namespace QuestHelper
                 await SecureStorage.SetAsync(_tokenUsernameKey, username);
                 SecureStorage.Remove(_tokenEmailKey);
                 await SecureStorage.SetAsync(_tokenEmailKey, email);
-                setResult = true;
             }
             catch (Exception e)
             {
@@ -100,7 +80,29 @@ namespace QuestHelper
                 par.Set(_tokenEmailKey, email);
             }
 
-            return setResult;
+            return true;
+        }
+
+        public bool ResetAuthToken()
+        {
+            try
+            {
+                SecureStorage.Remove(_tokenNameKey);
+                SecureStorage.Remove(_userIdKey);
+                SecureStorage.Remove(_tokenUsernameKey);
+                SecureStorage.Remove(_tokenEmailKey);
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("TokenStoreService", "ResetAuthTokenAsync", e, false);
+                ParameterManager par = new ParameterManager();
+                par.Delete(_tokenNameKey);
+                par.Delete(_userIdKey);
+                par.Delete(_tokenUsernameKey);
+                par.Delete(_tokenEmailKey);
+            }
+
+            return true;
         }
     }
 }
