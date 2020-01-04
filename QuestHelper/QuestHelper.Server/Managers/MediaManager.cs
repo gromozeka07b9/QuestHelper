@@ -53,17 +53,20 @@ namespace QuestHelper.Server.Managers
             }
         }
 
-        internal void CopyMediaFileToSharedCatalog(string filename)
+        internal bool CopyMediaFileToSharedCatalog(string filename)
         {
+            bool result = false;
             try
             {
                 System.IO.File.Copy(Path.Combine(_pathToMediaCatalog, filename), Path.Combine(_pathToMediaCatalogShared, filename), true);
                 Console.WriteLine($"Copied preview: imgFileName:{filename}");
+                result = true;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
+            return result;
         }
     }
 }

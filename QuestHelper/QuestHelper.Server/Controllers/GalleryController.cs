@@ -22,6 +22,7 @@ namespace QuestHelper.Server.Controllers
         public IActionResult Gallery(string SharedRouteRef)
         {
             Route resultRoute = new Route();
+            User routeUser = new User();
             string routeId = string.Empty;//будет другой объект
 
             List<GalleryItemModel> galleryItems = new List<GalleryItemModel>();
@@ -40,13 +41,14 @@ namespace QuestHelper.Server.Controllers
                     if(resultRoutes.Any())
                     {
                         resultRoute = resultRoutes.Single();
+                        routeUser = (from user in db.User where user.UserId == resultRoute.CreatorId select user).Single();
                     }
                 }
                 if(!string.IsNullOrEmpty(resultRoute.RouteId))
                 {
                     var query = from media in db.RoutePointMediaObject
                                 join point in db.RoutePoint on media.RoutePointId equals point.RoutePointId
-                                where point.RouteId == resultRoute.RouteId
+                                where point.RouteId == resultRoute.RouteId && !point.IsDeleted && !media.IsDeleted
                                 orderby point.CreateDate
                                 select new GalleryItemModel() { PointName = point.Name, PointDescription = point.Description, ImgId = media.RoutePointMediaObjectId };
 
@@ -54,6 +56,7 @@ namespace QuestHelper.Server.Controllers
                 }
             }
             ViewData["RouteName"] = resultRoute.Name;
+            ViewData["RouteCreatorName"] = routeUser.Name;
             ViewData["RouteDefaultImgUrl"] = galleryItems.Count > 0 ? $"../shared/img_{galleryItems[0].ImgId}_preview.jpg" : "http://igosh.pro/images/icon.png";
 
             MediaManager mediaManager = new MediaManager();
@@ -63,7 +66,11 @@ namespace QuestHelper.Server.Controllers
                 string imgPreviewFileName = $"img_{mediaItem.ImgId.ToLowerInvariant()}_preview.jpg";
                 if (!mediaManager.SharedMediaFileExist(imgFileName))
                 {
-                    mediaManager.CopyMediaFileToSharedCatalog(imgFileName);
+                    bool copied = mediaManager.CopyMediaFileToSharedCatalog(imgFileName);
+                    /*if (!copied)
+                    {
+                        imgFileName = imgPreviewFileName;
+                    }*/
                 }
                 if (!mediaManager.SharedMediaFileExist(imgPreviewFileName))
                 {
