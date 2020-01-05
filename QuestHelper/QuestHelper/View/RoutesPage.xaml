@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:QuestHelper.View.Converters"
              xmlns:animationForms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              xmlns:circle="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              x:Class="QuestHelper.View.RoutesPage" Appearing="ContentPage_Appearing" NavigationPage.HasBackButton="False" NavigationPage.HasNavigationBar="False" Disappearing="RoutesPage_OnDisappearing" Style="{StaticResource ContentPage}" BackgroundColor="White">
     <ContentPage.BindingContext>
         <viewmodel:RoutesViewModel />
@@ -112,8 +113,11 @@
                                         <RowDefinition Height="1*"/>
                                         <RowDefinition Height="1*"/>
                                     </Grid.RowDefinitions>
-                                    <Image x:Name="ImgRoute" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="4" Source="{Binding CoverImage}" Opacity="1" Margin="0,0,0,0" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-                                    </Image>
+                                    <ffimageloading:CachedImage x:Name="ImgRoute" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="4" Source="{Binding CoverImage}" Opacity="1" Margin="0,0,0,0" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+
+                                    </ffimageloading:CachedImage>
+                                    <!--Image x:Name="ImgRoute" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="4" Source="{Binding CoverImage}" Opacity="1" Margin="0,0,0,0" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    </-->
 
                                     <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Style="{StaticResource RouteListStackLayoutTop}">
                                     </StackLayout>

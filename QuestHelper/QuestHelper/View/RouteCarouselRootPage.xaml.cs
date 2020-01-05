@@ -31,6 +31,7 @@ namespace QuestHelper.View
 
         private async void RouteCarouselRootPage_OnAppearingAsync(object sender, EventArgs e)
         {
+            GC.Collect();
             TokenStoreService tokenService = new TokenStoreService();
             _authToken = await tokenService.GetAuthTokenAsync();
             MapRouteOverview.Points = _vm.PointsOnMap;
@@ -39,12 +40,11 @@ namespace QuestHelper.View
 
         private void Cards_OnItemAppearing(CardsView view, ItemAppearingEventArgs args)
         {
-            _vm.IsMaximumQualityPhoto = false;
             var newItem = (RouteCarouselRootViewModel.CarouselItem) view.SelectedItem;
-            /*if (!newItem.IsFullImage)
+            if ((!newItem.IsFullImage) && (_vm.IsMaximumQualityPhoto))
             {
                 Device.StartTimer(TimeSpan.FromMilliseconds(500), OnTimerForUpdate);
-            }*/
+            }
 
             if ((_vm.CurrentItem?.Latitude != newItem.Latitude)||(_vm.CurrentItem?.Longitude != newItem.Longitude))
             {
@@ -57,11 +57,11 @@ namespace QuestHelper.View
 
         private void RouteCarouselRootPage_OnDisappearing(object sender, EventArgs e)
         {
+            GC.Collect();
         }
 
         private bool OnTimerForUpdate()
         {
-            return false;
             string fullImgPath = ImagePathManager.GetImagePath(_vm.CurrentItem.MediaId, MediaObjectTypeEnum.Image, false);
             if (File.Exists(fullImgPath))
             {
@@ -75,6 +75,7 @@ namespace QuestHelper.View
                     _vm.LoadFullImage(fullImgPath);
                 }
             }
+            GC.Collect();
             return false;
         }
     }

@@ -27,7 +27,7 @@ namespace QuestHelper.ViewModel
         private RoutePointMediaObjectRequest _routePointMediaObjectsApi;
         private CarouselItem _currentItem;
         private string _routePointId = string.Empty;
-        private bool _isMaximumQualityPhoto = true;
+        private bool _isMaximumQualityPhoto = false;
         private bool _isVisibleQualityImageSelector = false;
 
         public INavigation Navigation { get; set; }

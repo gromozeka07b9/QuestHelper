@@ -16,6 +16,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using QuestHelper.Model;
 using Microsoft.AppCenter.Analytics;
+using QuestHelper.Model.Messages;
 
 namespace QuestHelper.ViewModel
 {
@@ -23,24 +24,41 @@ namespace QuestHelper.ViewModel
     {
         ViewRoutePoint _vpoint;
         private bool _isEditMode = false;
+        private string _previousDescription = string.Empty;
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
+        public ICommand BackNavigationCommand { get; private set; }
+        public ICommand CancelCommand { get; private set; }
         public ICommand EditDescriptionCommand { get; private set; }
 
         public EditRoutePointDescriptionViewModel(string routePointId)
         {
+            BackNavigationCommand = new Command(backNavigationCommand);
+            CancelCommand = new Command(cancelCommand);
             EditDescriptionCommand = new Command(editDescriptionCommand);
             if (!string.IsNullOrEmpty(routePointId))
             {
                 RoutePointManager manager = new RoutePointManager();
                 var point = manager.GetPointById(routePointId);
                 _vpoint = new ViewRoutePoint(point.RouteId, routePointId);
+                _previousDescription = _vpoint.Description;
             } else
             {
                 HandleError.Process("EditRoutePointDescription", "EditDescripton", new Exception("Ошибка, точка еще не создана."), true);
             }
 
             IsEditMode = false;
+        }
+
+        private void cancelCommand(object obj)
+        {
+            Description = _previousDescription;
+        }
+
+        private void backNavigationCommand(object obj)
+        {
+            SaveChangedText();
+            Navigation.PopModalAsync();
         }
 
         private void editDescriptionCommand(object obj)
@@ -56,6 +74,7 @@ namespace QuestHelper.ViewModel
         {
             set
             {
+                IsTextModified = (_vpoint.Description != value);
                 if (_vpoint.Description != value)
                 {
                     _vpoint.Description = value;
@@ -65,6 +84,15 @@ namespace QuestHelper.ViewModel
             get
             {
                 return _vpoint.Description;
+            }
+        }
+
+        public void SaveChangedText()
+        {
+            if (IsTextModified)
+            {
+                ApplyChanges();
+                MessagingCenter.Send<RoutePointDescriptionModifiedMessage>(new RoutePointDescriptionModifiedMessage() { RoutePointId = _vpoint.Id }, string.Empty);
             }
         }
 
@@ -93,6 +121,7 @@ namespace QuestHelper.ViewModel
                 return _isEditMode;
             }
         }
+        public bool IsTextModified { get; private set; }
 
     }
 }

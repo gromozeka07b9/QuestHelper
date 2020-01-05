@@ -8,6 +8,7 @@
              xmlns:local="clr-namespace:QuestHelper.View"
              xmlns:local1="clr-namespace:QuestHelper.View.Converters"
              xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              mc:Ignorable="d"
              x:Class="QuestHelper.View.RoutePointV2Page" NavigationPage.HasNavigationBar="True" NavigationPage.BackButtonTitle="Back" Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing" Style="{StaticResource ContentPage}">
     <ContentPage.Resources>
@@ -70,7 +71,7 @@
                         </StackLayout>
                     </Frame>
                     <StackLayout Orientation="Vertical" VerticalOptions="Start" HeightRequest="300" IsVisible="{Binding IsOneImagesPresent, Converter={StaticResource inverter}}">
-                        <CarouselView x:Name="myCarouselViewCtrl" ItemsUpdatingScrollMode="KeepItemsInView" ItemsSource="{Binding Images}" HorizontalOptions="FillAndExpand" Margin="0,0,0,0" VerticalOptions="StartAndExpand" HorizontalScrollBarVisibility="Always" IndicatorView.ItemsSourceBy="{Binding Images}">
+                        <CarouselView x:Name="myCarouselViewCtrl" ItemsUpdatingScrollMode="KeepLastItemInView" ItemsSource="{Binding Images}" HorizontalOptions="FillAndExpand" Margin="0,0,0,0" VerticalOptions="StartAndExpand" HorizontalScrollBarVisibility="Always" IndicatorView.ItemsSourceBy="{Binding Images}">
                             <CarouselView.ItemTemplate>
                                 <DataTemplate>
                                     <StackLayout Padding="3">
@@ -88,12 +89,17 @@
                                                 <!--TapGestureRecognizer Command="{Binding Path=BindingContext.DeletePhotoCommand, Source={x:Reference Name=myCarouselViewCtrl}}" NumberOfTapsRequired="2"/-->
                                             </Frame.GestureRecognizers>
                                             <Grid>
-                                                <Image Grid.Row="0" Grid.Column="0" x:Name="imgCtrl" Source="{Binding SourceImg, Converter={StaticResource typeImageConverter}}" WidthRequest="48" HeightRequest="48" Margin="0" Aspect="{Binding SourceImg, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-                                                    <!--Image.GestureRecognizers>
+                                                <ffimageloading:CachedImage Grid.Row="0" Grid.Column="0" x:Name="imgCtrl" Source="{Binding SourceImg, Converter={StaticResource typeImageConverter}}" WidthRequest="48" HeightRequest="48" Margin="0" Aspect="{Binding SourceImg, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                                    <ffimageloading:CachedImage.GestureRecognizers>
+                                                        <!--TapGestureRecognizer Command="{Binding ViewPhotoCommand}"/-->
+                                                    </ffimageloading:CachedImage.GestureRecognizers>
+                                                </ffimageloading:CachedImage>
+                                                <!--Image Grid.Row="0" Grid.Column="0" x:Name="imgCtrl" Source="{Binding SourceImg, Converter={StaticResource typeImageConverter}}" WidthRequest="48" HeightRequest="48" Margin="0" Aspect="{Binding SourceImg, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                                    <Image.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding ViewPhotoCommand}"/>
                                                     <TapGestureRecognizer Command="{Binding DeletePhotoCommand}" NumberOfTapsRequired="2"/>
+                                                </>
                                                 </-->
-                                                </Image>
                                                 <Image Grid.Row="0" Grid.Column="0" Source="baseline_clear_black_48.png" WidthRequest="32" HeightRequest="32" Margin="0,5,5,0" VerticalOptions="Start" HorizontalOptions="End">
                                                     <Image.GestureRecognizers>
                                                         <TapGestureRecognizer Command="{Binding Path=BindingContext.DeletePhotoCommand, Source={x:Reference Name=myCarouselViewCtrl}}" CommandParameter="{Binding}"/>

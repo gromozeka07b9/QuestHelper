@@ -6,6 +6,7 @@
              xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
              xmlns:view="clr-namespace:QuestHelper.View;assembly=QuestHelper"
              xmlns:proc="clr-namespace:PanCardView.Processors;assembly=PanCardView"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              x:Class="QuestHelper.View.RouteCarouselRootPage" NavigationPage.HasNavigationBar="False" Appearing="RouteCarouselRootPage_OnAppearingAsync" Disappearing="RouteCarouselRootPage_OnDisappearing" Style="{StaticResource ContentPage}">
     <ContentPage.Content>
         <ScrollView Orientation="Vertical" Padding="0">
@@ -20,22 +21,28 @@
                         <ColumnDefinition Width="6*" ></ColumnDefinition>
                         <ColumnDefinition Width="2*" ></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <pancardview:CarouselView Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="Cards" ItemsSource="{Binding CarouselPages}" AreAnimationsEnabled="False" ItemAppearing="Cards_OnItemAppearing">
+                    <pancardview:CarouselView Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="Cards" ItemsSource="{Binding CarouselPages}"  IsViewReusingEnabled="True" AreAnimationsEnabled="False" ItemAppearing="Cards_OnItemAppearing">
                         <x:Arguments>
-                            <proc:BaseCarouselFrontViewProcessor ScaleFactor="0.1" OpacityFactor="0.1" RotationFactor="0" />
-                            <proc:BaseCarouselBackViewProcessor ScaleFactor="0.1" OpacityFactor="0.1" RotationFactor="0" />
+                            <!--proc:BaseCarouselFrontViewProcessor ScaleFactor="0.1" OpacityFactor="0.1" RotationFactor="0" />
+                            <proc:BaseCarouselBackViewProcessor ScaleFactor="0.1" OpacityFactor="0.1" RotationFactor="0" /-->
                         </x:Arguments>
                         <pancardview:CarouselView.ItemTemplate>
                             <DataTemplate>
                                 <ContentView Padding="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Black">
-                                    <Frame VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0" CornerRadius="0" Padding="0">
+                                    <ffimageloading:CachedImage Source="{Binding ImageSource}" Aspect="{Binding PhotoImageAspect}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0" DownsampleToViewSize="True" BackgroundColor="Black">
+                                        <ffimageloading:CachedImage.GestureRecognizers>
+                                            <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding ViewPhotoCommand}"></TapGestureRecognizer>
+                                            <TapGestureRecognizer NumberOfTapsRequired="2" Command="{Binding ChangeImageAspectCommand}"></TapGestureRecognizer>
+                                        </ffimageloading:CachedImage.GestureRecognizers>
+                                    </ffimageloading:CachedImage>
+                                    <!--Frame VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0" CornerRadius="0" Padding="0">
                                         <Image Source="{Binding ImageSource}" Aspect="{Binding PhotoImageAspect}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0" BackgroundColor="Black">
                                             <Image.GestureRecognizers>
                                                 <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding ViewPhotoCommand}"></TapGestureRecognizer>
                                                 <TapGestureRecognizer NumberOfTapsRequired="2" Command="{Binding ChangeImageAspectCommand}"></TapGestureRecognizer>
                                             </Image.GestureRecognizers>
                                         </Image>
-                                    </Frame>
+                                    </-->
                                 </ContentView>
                             </DataTemplate>
                         </pancardview:CarouselView.ItemTemplate>
