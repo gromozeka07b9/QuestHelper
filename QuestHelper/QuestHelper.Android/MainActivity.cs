@@ -70,6 +70,7 @@ namespace QuestHelper.Droid
 
             AnimationViewRenderer.Init();
             Xamarin.FormsMaps.Init(this, bundle);
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer: true);
             ImageCircleRenderer.Init();
             UserDialogs.Init(this);
 

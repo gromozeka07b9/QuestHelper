@@ -60,7 +60,15 @@ namespace QuestHelper.ViewModel
         private void shareRouteCommand()
         {
             var shareService = DependencyService.Get<ICommonShareService>();
-            shareService.ShareWebLink(new Uri(_routeUrl), string.Empty);
+            if (!string.IsNullOrEmpty(_routeUrl))
+            {
+                shareService.ShareWebLink(new Uri(_routeUrl), string.Empty);
+            }
+            else
+            {
+                HandleError.Process("shareRouteCommand", "Share route", new Exception("Empty URL"), false);
+                Navigation.PopModalAsync();
+            }
         }
 
         private async void makeSharedLinkCommandAsync()

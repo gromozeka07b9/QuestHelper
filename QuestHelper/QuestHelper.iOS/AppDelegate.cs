@@ -35,6 +35,7 @@ namespace QuestHelper.iOS
 
             AnimationViewRenderer.Init();
             Xamarin.FormsMaps.Init();
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init(); 
             ImageCircleRenderer.Init();
 
             MessagingCenter.Subscribe<SyncMessage>(this, string.Empty, async (sender) =>
