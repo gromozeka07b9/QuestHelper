@@ -335,4 +335,7 @@
   <ItemGroup>
     <BundleResource Include="Resources\person2.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\baseline_arrow_back_white_48.png" />
+  </ItemGroup>
 </Project>

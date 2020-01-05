@@ -5,6 +5,9 @@ using Acr.UserDialogs;
 using Foundation;
 using ImageCircle.Forms.Plugin.iOS;
 using Lottie.Forms.iOS.Renderers;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using QuestHelper.Managers.Sync;
 using QuestHelper.Model.Messages;
 using UIKit;
@@ -32,11 +35,12 @@ namespace QuestHelper.iOS
             Forms.SetFlags("CollectionView_Experimental");
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
-
             AnimationViewRenderer.Init();
             Xamarin.FormsMaps.Init();
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(); 
             ImageCircleRenderer.Init();
+
+            AppCenter.Start("f091513f-6c14-4845-8737-dbdc8dbeff2f", typeof(Analytics), typeof(Crashes));
 
             MessagingCenter.Subscribe<SyncMessage>(this, string.Empty, async (sender) =>
             {
