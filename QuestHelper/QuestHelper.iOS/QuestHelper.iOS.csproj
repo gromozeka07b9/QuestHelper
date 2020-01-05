@@ -338,4 +338,16 @@
   <ItemGroup>
     <BundleResource Include="Resources\baseline_arrow_back_white_48.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\mount1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\land1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\land2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\photo.png" />
+  </ItemGroup>
 </Project>
