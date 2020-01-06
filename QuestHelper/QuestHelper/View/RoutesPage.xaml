@@ -34,9 +34,9 @@
                 <Image Source="emptylist.png" HeightRequest="120" WidthRequest="300" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="StartAndExpand" HorizontalOptions="FillAndExpand"/>
             </StackLayout>
             
-            <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" BackgroundColor="Gray" SeparatorVisibility="None" ItemsSource="{Binding Routes}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshListRoutesCommand}" x:Name="RoutesListView" RowHeight="200"  SelectedItem="{Binding SelectedRouteItem,Mode=TwoWay}" CachingStrategy="RecycleElement">
+            <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" SeparatorVisibility="None" ItemsSource="{Binding Routes}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshListRoutesCommand}" x:Name="RoutesListView" RowHeight="200"  SelectedItem="{Binding SelectedRouteItem,Mode=TwoWay}" CachingStrategy="RecycleElement">
                 <ListView.Header>
-                    <StackLayout BackgroundColor="Red" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0" Style="{StaticResource PrivateStackLayout}" IsVisible="{Binding NoPostsWarningIsVisible, Converter={StaticResource inverter}}">
+                    <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0" Style="{StaticResource PrivateStackLayout}" IsVisible="{Binding NoPostsWarningIsVisible, Converter={StaticResource inverter}}">
                         <Frame Padding="0" Style="{StaticResource PrivateFrame}" Margin="0,0,0,0" HeightRequest="260">
                             <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                 <Grid.ColumnDefinitions>
