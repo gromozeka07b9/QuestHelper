@@ -137,7 +137,6 @@ namespace QuestHelper.Droid
 
         protected override async void OnMapReady(Android.Gms.Maps.GoogleMap map)
         {
-            base.OnMapReady(map);
             PermissionManager permissions = new PermissionManager();
             if (await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position))
             {
@@ -146,6 +145,7 @@ namespace QuestHelper.Droid
                 NativeMap.SetInfoWindowAdapter(this);
                 drawMarkers(150);
             }
+            base.OnMapReady(map);
         }
 
         private void drawMarkers(int markerSize)

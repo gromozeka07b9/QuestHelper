@@ -66,7 +66,7 @@ namespace QuestHelper.View
 
         private async Task CenterMap(double latitude, double longitude, string name, string address)
         {
-            CustomMapView customMap = new CustomMapView((CustomMap)this.PointMapOverview, 15);
+            CustomMapView customMap = new CustomMapView(PointMapOverview, 15);
             if (customMap.CenterMapToPosition(latitude, longitude, 1))
             {
                 customMap.ClearPins();
