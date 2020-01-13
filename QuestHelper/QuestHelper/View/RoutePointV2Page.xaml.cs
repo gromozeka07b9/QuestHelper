@@ -51,6 +51,16 @@ namespace QuestHelper.View
 
         private void ContentPage_Appearing(object sender, EventArgs e)
         {
+            Task.Run(async () => 
+            {
+                PermissionManager permissions = new PermissionManager();
+
+                if (!await permissions.PermissionGetCoordsGrantedAsync())
+                {
+                    await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position);
+                }
+            });
+
             _vm.StartDialog();
             MessagingCenter.Subscribe<MapUpdateLocationPointMessage>(this, string.Empty, async (msgSender) =>
             {

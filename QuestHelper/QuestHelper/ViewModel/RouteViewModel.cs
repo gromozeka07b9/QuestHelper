@@ -104,7 +104,7 @@ namespace QuestHelper.ViewModel
 
         private void editRouteCompleteCommand(object obj)
         {
-            if (!NameForEdit.Equals(Name) || !DescriptionForEdit.Equals(Description) || (!string.IsNullOrEmpty(ImgFilename) && !ImgFilename.Equals(ImgFilenameForEdit)))
+            if (!NameForEdit.Equals(Name) || !DescriptionForEdit.Equals(Description) || (!string.IsNullOrEmpty(ImgFilenameForEdit) && !ImgFilename.Equals(ImgFilenameForEdit)))
             {
                 Description = DescriptionForEdit;
                 _vroute.Name = NameForEdit;

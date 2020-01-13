@@ -172,7 +172,9 @@ namespace QuestHelper.ViewModel
             var pickPhotoResult = await imageManager.PickPhotoAsync();
             if (pickPhotoResult.pickPhotoResult)
             {
-                if ((pickPhotoResult.imageGpsCoordinates.Latitude > 0 && pickPhotoResult.imageGpsCoordinates.Longitude > 0) && await App.Current.MainPage.DisplayAlert(CommonResource.RoutePoint_GeotagsExists,
+                bool latNotZero = pickPhotoResult.imageGpsCoordinates.Latitude < 0 || pickPhotoResult.imageGpsCoordinates.Latitude > 0;
+                bool longNotZero = pickPhotoResult.imageGpsCoordinates.Longitude < 0 || pickPhotoResult.imageGpsCoordinates.Longitude > 0;
+                if ((latNotZero) && (longNotZero) && await App.Current.MainPage.DisplayAlert(CommonResource.RoutePoint_GeotagsExists,
                         CommonResource.RoutePoint_UseGeotagsForPoint, CommonResource.CommonMsg_Yes, CommonResource.CommonMsg_No))
                 {
                     _vpoint.Address = string.Empty;

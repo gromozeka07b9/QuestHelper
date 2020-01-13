@@ -35,5 +35,11 @@ namespace QuestHelper.Managers
 
             return status == PermissionStatus.Granted;
         }
+
+        public async System.Threading.Tasks.Task<bool> PermissionGetCoordsGrantedAsync()
+        {
+            var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Plugin.Permissions.Abstractions.Permission.Location);
+            return (status != PermissionStatus.Granted);
+        }
     }
 }
