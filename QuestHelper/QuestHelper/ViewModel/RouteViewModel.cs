@@ -104,7 +104,11 @@ namespace QuestHelper.ViewModel
 
         private void editRouteCompleteCommand(object obj)
         {
-            if (!NameForEdit.Equals(Name) || !DescriptionForEdit.Equals(Description) || (!string.IsNullOrEmpty(ImgFilenameForEdit) && !ImgFilename.Equals(ImgFilenameForEdit)))
+            if (!NameForEdit.Equals(Name) || 
+                !DescriptionForEdit.Equals(Description) ||
+                (!string.IsNullOrEmpty(ImgFilename) && string.IsNullOrEmpty(ImgFilenameForEdit)) ||
+                (!string.IsNullOrEmpty(ImgFilenameForEdit) && string.IsNullOrEmpty(ImgFilename)) ||
+                (ImgFilenameForEdit != null && ImgFilename !=null && !ImgFilenameForEdit.Equals(ImgFilename)))
             {
                 Description = DescriptionForEdit;
                 _vroute.Name = NameForEdit;
@@ -121,7 +125,9 @@ namespace QuestHelper.ViewModel
 
         private void photoAlbumCommandAsync(object obj)
         {
-            var page = new RouteCarouselRootPage(_vroute.RouteId);
+            //var page = new RouteCarouselRootPage(_vroute.RouteId);
+            //Navigation.PushModalAsync(page);
+            var page = new RouteGalleryPage(_vroute.RouteId);
             Navigation.PushModalAsync(page);
         }
 

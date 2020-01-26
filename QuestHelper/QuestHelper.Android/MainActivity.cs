@@ -65,6 +65,7 @@ namespace QuestHelper.Droid
 
             CrossCurrentActivity.Current.Init(this, bundle);
 
+            Forms.SetFlags("IndicatorView_Experimental");
             Forms.SetFlags("CollectionView_Experimental");
             global::Xamarin.Forms.Forms.Init(this, bundle);
 
