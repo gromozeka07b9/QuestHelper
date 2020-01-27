@@ -204,9 +204,6 @@ namespace QuestHelper.ViewModel
             bool AuthRequired = (feedApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || feedApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
             if (AuthRequired)
             {
-                /*var pageCollections = new PagesCollection();
-                MainPageMenuItem destinationPage = pageCollections.GetLoginPage();
-                Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);*/
                 GuestAuthHelper guestHelper = new GuestAuthHelper();
                 guestHelper.ResetCurrentGuestUsername();
                 tokenService.ResetAuthToken();

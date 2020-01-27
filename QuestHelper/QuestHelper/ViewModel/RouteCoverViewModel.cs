@@ -310,7 +310,10 @@ namespace QuestHelper.ViewModel
         {
             get
             {
-                return _vroute.CoverImage;
+                if(string.IsNullOrEmpty(_vroute.CoverImage) || (_vroute.CoverImage.Equals("mount1.png")))
+                {
+                    return string.Empty;
+                } else return _vroute.CoverImage;
             }
         }
         public string Description

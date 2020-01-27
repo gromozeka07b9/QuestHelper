@@ -29,7 +29,6 @@ namespace QuestHelper.Server.Controllers
             DateTime startDate = DateTime.Now;
             string userId = IdentityManager.GetUserId(HttpContext);
 
-            string imageBaseUrl = $"{Request.Scheme}://{Request.Host.Value}/shared";
             List<FeedItem> routes = new List<FeedItem>();
             using (var db = new ServerDbContext(_dbOptions))
             {
@@ -83,7 +82,7 @@ namespace QuestHelper.Server.Controllers
                     CreatorId = r.CreatorId,
                     CreatorName = r.CreatorName,
                     CreateDate = r.CreateDate,
-                    ImgUrl = string.IsNullOrEmpty(r.ImgFilename) ? tryToMakePreviewFromFirstPoint(r.RouteId, imageBaseUrl) : $"{imageBaseUrl}/{r.ImgFilename}",
+                    ImgUrl = getImgCoverUrl(r.RouteId, r.ImgFilename),
                     Description = string.IsNullOrEmpty(r.Description) ? getDescriptionFromFirstPoint(r.RouteId) : r.Description,
                     LikeCount = r.LikeCount,
                     DislikeCount = 0,
@@ -103,10 +102,44 @@ namespace QuestHelper.Server.Controllers
             return new ObjectResult(routes);
         }
 
-        private string tryToMakePreviewFromFirstPoint(string routeId, string imageBaseUrl)
+        private string getImgCoverUrl(string routeId, string imgFilename)
+        {
+            string imgFilenameCreated = string.Empty;
+            MediaManager mediaManager = new MediaManager();
+            if (!string.IsNullOrEmpty(imgFilename) && mediaManager.SharedMediaFileExist(imgFilename))
+            {
+                imgFilenameCreated = imgFilename;
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(imgFilename))
+                {
+                    //создаем из первой точки
+                    imgFilenameCreated = tryToMakePreviewFromFirstPoint(routeId);
+                }
+                else
+                {
+                    //Дурацкое перекладывание файлов в Shared. ToDo: Надо убрать пожалуй вообще этот shared
+                    if (mediaManager.CopyMediaFileToSharedCatalog(imgFilename))
+                    {
+                        imgFilenameCreated = imgFilename;
+                    }
+                }
+            }
+            if (!string.IsNullOrEmpty(imgFilenameCreated))
+            {
+                return $"{Request.Scheme}://{Request.Host.Value}/shared/{imgFilenameCreated}";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        private string tryToMakePreviewFromFirstPoint(string routeId)
         {
             Console.WriteLine($"Try to make preview: routeId:{routeId}");
-            string previewUrl = $"{imageBaseUrl}/default.png";
+            string imgFileName = string.Empty;
             using (var db = new ServerDbContext(_dbOptions))
             {
                 var firstPoint = db.RoutePoint.Where(p => p.RouteId.Equals(routeId) && !p.IsDeleted).OrderBy(p => p.CreateDate).FirstOrDefault();
@@ -115,18 +148,24 @@ namespace QuestHelper.Server.Controllers
                     var firstMedia = db.RoutePointMediaObject.Where(m => m.RoutePointId.Equals(firstPoint.RoutePointId) && !m.IsDeleted).FirstOrDefault();
                     if (firstMedia != null)
                     {
-                        string imgFileName = $"img_{firstMedia.RoutePointMediaObjectId}_preview.jpg";
+                        string tryImgFileName = $"img_{firstMedia.RoutePointMediaObjectId}_preview.jpg";
                         MediaManager mediaManager = new MediaManager();
-                        if(!mediaManager.SharedMediaFileExist(imgFileName))
+                        if(!mediaManager.SharedMediaFileExist(tryImgFileName))
                         {
-                            Console.WriteLine($"Try to copy preview: imgFileName:{imgFileName}");
-                            mediaManager.CopyMediaFileToSharedCatalog(imgFileName);
+                            Console.WriteLine($"Try to copy preview: imgFileName:{tryImgFileName}");
+                            if (mediaManager.CopyMediaFileToSharedCatalog(tryImgFileName))
+                            {
+                                imgFileName = tryImgFileName;
+                            }
                         }
-                        previewUrl = $"{imageBaseUrl}/{imgFileName}";
+                        else
+                        {
+                            imgFileName = tryImgFileName;
+                        }
                     }
                 }
             }
-            return previewUrl;
+            return imgFileName;
         }
         private string getDescriptionFromFirstPoint(string routeId)
         {

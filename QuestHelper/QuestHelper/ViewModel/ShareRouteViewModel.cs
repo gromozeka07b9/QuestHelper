@@ -140,7 +140,7 @@ namespace QuestHelper.ViewModel
                 string resultShareText = result ? CommonResource.ShareRoute_RouteSharedToSelectedUsers : CommonResource.ShareRoute_ErrorShareRoute;
                 DependencyService.Get<IToastService>().ShortToast(resultShareText);
 
-                await Navigation.PopAsync(true);
+                await Navigation.PopModalAsync(true);
             }
         }
     }

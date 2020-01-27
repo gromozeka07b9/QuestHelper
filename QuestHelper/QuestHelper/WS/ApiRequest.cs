@@ -32,7 +32,7 @@ namespace QuestHelper.WS
             request.PreAuthenticate = !string.IsNullOrEmpty(authToken);
             try
             {
-                using (WebResponse response = await request.GetResponseAsync())
+                using (WebResponse response = request.GetResponseAsync().GetAwaiter().GetResult())
                 {
                     var webresponse = (HttpWebResponse) response;
                     using (System.IO.Stream stream = response.GetResponseStream())

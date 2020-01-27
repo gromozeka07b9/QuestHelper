@@ -71,7 +71,7 @@
                             <RowDefinition Height="{Binding RowHeightForDescription}"></RowDefinition>
                             <!--RowDefinition Height="128"></-->
                         </Grid.RowDefinitions>
-                        <Image Grid.Row="0" Grid.RowSpan="2" Source="{Binding RouteCoverImage}" Aspect="AspectFill" HeightRequest="300" WidthRequest="256" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <Image Grid.Row="0" Grid.RowSpan="2" Source="{Binding RouteCoverImage}" BackgroundColor="Blue" Aspect="AspectFill" HeightRequest="300" WidthRequest="256" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                             <Image.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding StartRouteCommand}"></TapGestureRecognizer>
                             </Image.GestureRecognizers>

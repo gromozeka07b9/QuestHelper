@@ -240,37 +240,6 @@ namespace QuestHelper.Model
             }
         }
 
-        /*public string CoverImage
-        {
-            get
-            {
-                string imgCover = string.Empty;
-                if (!string.IsNullOrEmpty(_imgFilename))
-                {
-                    string imgPath = Path.Combine(ImagePathManager.GetPicturesDirectory(), _imgFilename);
-                    if (File.Exists(imgPath))
-                    {
-                        imgCover = imgPath;
-                    }
-                }
-
-                if(string.IsNullOrEmpty(imgCover))
-                {
-                    RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
-                    ViewRoutePointMediaObject vMedia = mediaManager.GetFirstMediaObjectByRouteId(RouteId);
-                    if (!string.IsNullOrEmpty(vMedia.Id))
-                    {
-                        if (!vMedia.IsDeleted)
-                        {
-                            imgCover = ImagePathManager.GetImagePath(vMedia.RoutePointMediaObjectId, MediaObjectTypeEnum.Image, true);
-                        }
-                    }
-                    else imgCover = "mount1.png";
-                }
-                return imgCover;
-            }
-        }*/
-
         public string RouteLengthKm
         {
             get

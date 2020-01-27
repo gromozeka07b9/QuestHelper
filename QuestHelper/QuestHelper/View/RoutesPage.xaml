@@ -100,7 +100,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Frame IsClippedToBounds="False" Margin="5,10,5,5" Style="{StaticResource RouteListFrame}">
+                            <Frame IsClippedToBounds="True" CornerRadius="10" Margin="5,10,5,5" Style="{StaticResource RouteListFrame}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="2*"/>

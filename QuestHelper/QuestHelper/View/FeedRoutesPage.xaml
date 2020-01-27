@@ -39,7 +39,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Frame Style="{StaticResource RouteListFrame}" Padding="0" IsClippedToBounds="False" Margin="5,5,5,0">
+                            <Frame Style="{StaticResource RouteListFrame}" IsClippedToBounds="True" Margin="5,5,5,0" BackgroundColor="Gray" CornerRadius="10" Padding="0">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="1*"/>

@@ -181,10 +181,6 @@ namespace QuestHelper.Model
                         imgCover = imgPath;
                     }
                 }
-                else
-                {
-                    imgCover = "emptyphoto.png";
-                }
                 return imgCover;
             }
         }

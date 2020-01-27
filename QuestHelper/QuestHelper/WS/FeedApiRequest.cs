@@ -70,6 +70,10 @@ namespace QuestHelper.WS
                         ApiRequest api = new ApiRequest();
                         result = await api.HttpRequestGetFile(imgUrl, pathToMediaFile, _authToken);
                         LastHttpStatusCode = api.LastHttpStatusCode;
+                        if (LastHttpStatusCode != HttpStatusCode.OK)
+                        {
+                            HandleError.Process("FeedApiRequest", "GetCoverImage", new Exception(LastHttpStatusCode.ToString()), false, imgUrl);
+                        }
                     }
                     catch (Exception e)
                     {

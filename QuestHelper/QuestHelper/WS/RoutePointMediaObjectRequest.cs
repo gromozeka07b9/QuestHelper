@@ -79,14 +79,16 @@ namespace QuestHelper.WS
             ApiRequest api = new ApiRequest();
             try
             {
-                await api.HttpRequestGET($"{this._hostUrl}/routepointmediaobjects/{nameMediafile}/imageexist", _authToken);
+                var result = await api.HttpRequestGET($"{this._hostUrl}/routepointmediaobjects/{nameMediafile}/imageexist", _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
             }
             catch (Exception e)
             {
                 HandleError.Process("RoutePointMediaObjectApiRequest", "ImageExist", e, false);
             }
-            return api.LastHttpStatusCode;
+            return LastHttpStatusCode;
         }
+
         private async Task<bool> TryToSendFileAsync(string pathToMediaFile, string nameMediafile, string routePointId, string routePointMediaObjectId)
         {
             bool result = false;
