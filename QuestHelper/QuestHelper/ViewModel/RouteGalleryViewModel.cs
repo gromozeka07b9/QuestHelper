@@ -26,16 +26,33 @@ namespace QuestHelper.ViewModel
         private int _currentPointIndex = 0;
         private int _carouselCurrentItemPosition = 0;
         private IEnumerable<RoutePointItem> _routePoints;
+        private PointImageItem _selectedItem;
+
         public ICommand PositionItemChange { get; private set; }
         public ICommand PrevPointCommand { get; private set; }
         public ICommand NextPointCommand { get; private set; }
+        public ICommand ItemAppearedCommand { get; private set; }
 
         public RouteGalleryViewModel(string routeId)
         {
             PositionItemChange = new Command(positionItemChange);
             PrevPointCommand = new Command(prevPointCommand);
             NextPointCommand = new Command(nextPointCommand);
+            ItemAppearedCommand = new Command(itemAppearedCommand);
             _vroute = new ViewRoute(routeId);
+        }
+
+        private void itemAppearedCommand(object obj)
+        {
+            var appearedItem = (PanCardView.EventArgs.ItemAppearedEventArgs)obj;
+            var imgItem = appearedItem.Item as PointImageItem;
+            if (!imgItem.RoutePointId.Equals(_currentPointItem.Id))
+            {
+                _currentPointIndex = imgItem.CurrentPointIndex;
+                UpdateItemsByPosition(_currentPointIndex);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagesCurrentPoint"));                
+                SelectedItemIndex = _currentPointIndex == 0 ? 0 : 1;
+            }
         }
 
         private void nextPointCommand()
@@ -43,7 +60,7 @@ namespace QuestHelper.ViewModel
             _currentPointIndex++;
             UpdateItemsByPosition(_currentPointIndex);
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagesCurrentPoint"));
-            Position = 0;
+            //Position = 0;
         }
 
         private void prevPointCommand()
@@ -51,7 +68,7 @@ namespace QuestHelper.ViewModel
             _currentPointIndex--;
             UpdateItemsByPosition(_currentPointIndex);
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagesCurrentPoint"));
-            Position = 0;
+            //Position = 0;
         }
 
         private void positionItemChange(object objIndex)
@@ -77,16 +94,17 @@ namespace QuestHelper.ViewModel
         {
             public string Name { get; set; }
             public string Id { get; set; }
+            public string SourceImg { get; set; }
         }
 
-        public int Position
+        public int SelectedItemIndex
         {
             set
             {
                 if(value != _carouselCurrentItemPosition)
                 {
                     _carouselCurrentItemPosition = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Position"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedItemIndex"));
                 }
             }
             get
@@ -94,6 +112,34 @@ namespace QuestHelper.ViewModel
                 return _carouselCurrentItemPosition;
             }
         }
+
+        public PointImageItem SelectedItem
+        {
+            set
+            {
+                _selectedItem = value;
+            }
+            get
+            {
+                return _selectedItem;
+            }
+        }
+        public IEnumerable<RoutePointItem> RoutePoints
+        {
+            set
+            {
+                if(_routePoints != value)
+                {
+                    _routePoints = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RoutePoints"));
+                }
+            }
+            get
+            {
+                return _routePoints;
+            }
+        }
+
         public IEnumerable<PointImageItem> ImagesCurrentPoint
         {
             get
@@ -110,19 +156,20 @@ namespace QuestHelper.ViewModel
                 {
                     var firstItem = _vPreviousPoint.MediaObjects.Where(x => !x.IsDeleted).Select(x => new PointImageItem() { SourceImg = ImagePathManager.GetImagePath(x.RoutePointMediaObjectId, (MediaObjectTypeEnum)x.MediaType, true), MediaId = x.RoutePointMediaObjectId, MediaType = (MediaObjectTypeEnum)x.MediaType, RoutePointId = x.RoutePointId, RoutePointName = _vPreviousPoint.Name, CurrentPointIndex = _currentPointIndex - 1 }).FirstOrDefault();
                     prevImgSrc = firstItem.SourceImg;
-                    //firstItem.SourceImg = "baseline_clear_black_48.png";
-                    //list.Add(firstItem);
+                    firstItem.SourceImg = "";
+                    list.Add(firstItem);
                 }
+
+                list.AddRange(_vCurrentPoint.MediaObjects.Where(x => !x.IsDeleted).Select(x => new PointImageItem() { SourceImg = ImagePathManager.GetImagePath(x.RoutePointMediaObjectId, (MediaObjectTypeEnum)x.MediaType, true), MediaId = x.RoutePointMediaObjectId, MediaType = (MediaObjectTypeEnum)x.MediaType, RoutePointId = x.RoutePointId, RoutePointName = _vCurrentPoint.Name, CurrentPointIndex = _currentPointIndex, PrevSourceImg = prevImgSrc, NextSourceImg = nextImgSrc }).ToList());
 
                 if (!string.IsNullOrEmpty(_vNextPoint.Id))
                 {
                     var nextItem = _vNextPoint.MediaObjects.Where(x => !x.IsDeleted).Select(x => new PointImageItem() { SourceImg = ImagePathManager.GetImagePath(x.RoutePointMediaObjectId, (MediaObjectTypeEnum)x.MediaType, true), MediaId = x.RoutePointMediaObjectId, MediaType = (MediaObjectTypeEnum)x.MediaType, RoutePointId = x.RoutePointId, RoutePointName = _vNextPoint.Name, CurrentPointIndex = _currentPointIndex + 1 }).LastOrDefault();
                     nextImgSrc = nextItem.SourceImg;
-                    //nextItem.SourceImg = "baseline_clear_black_48.png";
-                    //list.Add(nextItem);
+                    nextItem.SourceImg = "";
+                    list.Add(nextItem);
                 }
 
-                list.AddRange(_vCurrentPoint.MediaObjects.Where(x => !x.IsDeleted).Select(x => new PointImageItem() { SourceImg = ImagePathManager.GetImagePath(x.RoutePointMediaObjectId, (MediaObjectTypeEnum)x.MediaType, true), MediaId = x.RoutePointMediaObjectId, MediaType = (MediaObjectTypeEnum)x.MediaType, RoutePointId = x.RoutePointId, RoutePointName = _vCurrentPoint.Name, CurrentPointIndex = _currentPointIndex, PrevSourceImg = prevImgSrc, NextSourceImg = nextImgSrc }).ToList());
                 return list;
             }
         }
@@ -141,12 +188,13 @@ namespace QuestHelper.ViewModel
 
         public void StartDialog()
         {
+            InitPointCollection();
         }
 
         private void InitPointCollection()
         {
             var points = _routePointManager.GetPointsByRouteId(_vroute.RouteId, false);
-            _routePoints = points.Where(x => !x.IsDeleted).OrderBy(x => x.CreateDate).Select(x => new RoutePointItem() { Name = x.Name, Id = x.Id }).ToList();
+            RoutePoints = points.Where(x => !x.IsDeleted).OrderBy(x => x.CreateDate).Select(x => new RoutePointItem() { Name = x.Name, Id = x.Id, SourceImg = "icon2.png" }).ToList();
         }
 
         private void UpdateItemsByPosition(int index)

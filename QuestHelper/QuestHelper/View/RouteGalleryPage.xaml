@@ -7,6 +7,8 @@
              xmlns:view="clr-namespace:QuestHelper.View"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:local1="clr-namespace:QuestHelper.View.Converters"
+             xmlns:pancardview="clr-namespace:PanCardView;assembly=PanCardView"
+             xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
              mc:Ignorable="d"
              x:Class="QuestHelper.View.RouteGalleryPage" Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing">
     <ContentPage.Resources>
@@ -39,8 +41,21 @@
                             <TapGestureRecognizer Command="{Binding BackNavigationCommand}"/>
                         </Image.GestureRecognizers>
                     </Image>
-                    <StackLayout Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="3" BackgroundColor="Yellow" Orientation="Vertical" VerticalOptions="Start" IsVisible="{Binding IsOneImagesPresent, Converter={StaticResource inverter}}">
-                        <CarouselView x:Name="myCarouselViewCtrl" ItemsUpdatingScrollMode="KeepItemsInView" ItemsSource="{Binding ImagesCurrentPoint}" HorizontalOptions="FillAndExpand" Margin="0,0,0,0" VerticalOptions="StartAndExpand" IndicatorView.ItemsSourceBy="{Binding ImagesCurrentPoint}" Position="{Binding Position}" PositionChangedCommand="{Binding PositionItemChange}" PositionChangedCommandParameter="{Binding Source={RelativeSource Self}, Path=Position}">
+                    <pancardview:CarouselView Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="Cards" ItemsSource="{Binding ImagesCurrentPoint}" SelectedIndex="{Binding SelectedItemIndex}" ItemAppearedCommand="{Binding ItemAppearedCommand}"  IsViewReusingEnabled="True" AreAnimationsEnabled="False" IsCyclical="False">
+                        <pancardview:CarouselView.ItemTemplate>
+                            <DataTemplate>
+                                <ContentView Padding="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Black">
+                                    <ffimageloading:CachedImage Source="{Binding SourceImg}" Aspect="AspectFill" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0" DownsampleToViewSize="True" BackgroundColor="Black">
+                                    </ffimageloading:CachedImage>
+                                </ContentView>
+                            </DataTemplate>
+                        </pancardview:CarouselView.ItemTemplate>
+                        <controls:IndicatorsControl ToFadeDuration="5000"/>
+                        <controls:LeftArrowControl ToFadeDuration="5000"/>
+                        <controls:RightArrowControl ToFadeDuration="5000"/>
+                    </pancardview:CarouselView>
+                    <!--StackLayout Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="3" BackgroundColor="Yellow" Orientation="Vertical" VerticalOptions="Start" IsVisible="{Binding IsOneImagesPresent, Converter={StaticResource inverter}}">
+                        <CarouselView x:Name="myCarouselViewCtrl" ItemsUpdatingScrollMode="KeepItemsInView" ItemsSource="{Binding ImagesCurrentPoint}" HorizontalOptions="FillAndExpand" Margin="0,0,0,0" VerticalOptions="StartAndExpand" IndicatorView.ItemsSourceBy="{Binding RoutePoints}" Position="{Binding Position}" PositionChangedCommand="{Binding PositionItemChange}" PositionChangedCommandParameter="{Binding Source={RelativeSource Self}, Path=Position}" BackgroundColor="Green">
                             <CarouselView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -54,8 +69,7 @@
                                             <ColumnDefinition Width="2*" ></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
                                         <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding RoutePointName}" FontSize="15" TextColor="Black" VerticalOptions="Start" HorizontalOptions="StartAndExpand" HorizontalTextAlignment="Start" Margin="10,0,0,0"></Label>
-                                        <ffimageloading:CachedImage Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="2" Source="{Binding SourceImg}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill">
-                                        </ffimageloading:CachedImage>
+
                                         <Frame Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" CornerRadius="0" HorizontalOptions="End" VerticalOptions="End" WidthRequest="120" HeightRequest="80" Margin="5" Padding="2" HasShadow="False" IsClippedToBounds="True" BorderColor="White" BackgroundColor="Wheat">
                                             <ffimageloading:CachedImage Source="{Binding PrevSourceImg}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill">
                                                 <ffimageloading:CachedImage.GestureRecognizers>
@@ -75,11 +89,11 @@
                                 </DataTemplate>
                             </CarouselView.ItemTemplate>
                         </CarouselView>
-                    </StackLayout>
-                    <Frame Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="3" HorizontalOptions="Center" VerticalOptions="End" CornerRadius="10" Padding="5" Margin="5">
+                    </-->
+                    <!--Frame Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="3" HorizontalOptions="Center" VerticalOptions="End" CornerRadius="10" Padding="5" Margin="5">
                         <IndicatorView IndicatorView.ItemsSourceBy="myCarouselViewCtrl" IndicatorColor="LightSkyBlue" SelectedIndicatorColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
                         </IndicatorView>
-                    </Frame>
+                    </-->
                 </Grid>
                 <view:CustomMap HeightRequest="300" x:Name="MapRouteOverview" VerticalOptions="FillAndExpand"
                                 IsShowingUser="False"
