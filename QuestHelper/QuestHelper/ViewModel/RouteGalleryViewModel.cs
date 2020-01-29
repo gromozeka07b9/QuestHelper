@@ -36,58 +36,36 @@ namespace QuestHelper.ViewModel
         public RouteGalleryViewModel(string routeId)
         {
             PositionItemChange = new Command(positionItemChange);
-            PrevPointCommand = new Command(prevPointCommand);
-            NextPointCommand = new Command(nextPointCommand);
+            //PrevPointCommand = new Command(prevPointCommand);
+            //NextPointCommand = new Command(nextPointCommand);
             ItemAppearedCommand = new Command(itemAppearedCommand);
             _vroute = new ViewRoute(routeId);
         }
 
+        private void positionItemChange(object obj)
+        {
+        }
+
         private void itemAppearedCommand(object obj)
         {
-            var appearedItem = (PanCardView.EventArgs.ItemAppearedEventArgs)obj;
+            var appearedItem = (PanCardView.EventArgs.ItemAppearingEventArgs)obj;
             var imgItem = appearedItem.Item as PointImageItem;
             if (!imgItem.RoutePointId.Equals(_currentPointItem.Id))
             {
+                int prevPointIndex = _currentPointIndex;
                 _currentPointIndex = imgItem.CurrentPointIndex;
                 UpdateItemsByPosition(_currentPointIndex);
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagesCurrentPoint"));                
-                SelectedItemIndex = _currentPointIndex == 0 ? 0 : 1;
-            }
-        }
-
-        private void nextPointCommand()
-        {
-            _currentPointIndex++;
-            UpdateItemsByPosition(_currentPointIndex);
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagesCurrentPoint"));
-            //Position = 0;
-        }
-
-        private void prevPointCommand()
-        {
-            _currentPointIndex--;
-            UpdateItemsByPosition(_currentPointIndex);
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagesCurrentPoint"));
-            //Position = 0;
-        }
-
-        private void positionItemChange(object objIndex)
-        {
-            /*int imgCount = ImagesCurrentPoint.Count();
-            int newPosition = (int)objIndex;
-            var currentItem = ImagesCurrentPoint.ElementAtOrDefault(newPosition);
-            _currentPointIndex = currentItem.CurrentPointIndex;
-
-            if (newPosition == 0)
-            {
-                UpdateItemsByPosition(_currentPointIndex);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagesCurrentPoint"));
+                var images = ImagesCurrentPoint;
+                if(_currentPointIndex < prevPointIndex)
+                {
+                    SelectedItemIndex = images.Count() - 1 - 1; //- фото перехода, -последнее фото в точке
+                }
+                else if(_currentPointIndex > prevPointIndex)
+                {
+                    SelectedItemIndex = 1;
+                }
             }
-            else if(newPosition == imgCount - 1)
-            {
-                UpdateItemsByPosition(_currentPointIndex);
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagesCurrentPoint"));
-            }*/
         }
 
         public class RoutePointItem
@@ -104,6 +82,26 @@ namespace QuestHelper.ViewModel
                 if(value != _carouselCurrentItemPosition)
                 {
                     _carouselCurrentItemPosition = value;
+                    var points = ImagesCurrentPoint;
+                    var imgItem = points.ElementAtOrDefault(value);
+                    if (!imgItem.RoutePointId.Equals(_currentPointItem.Id))
+                    {
+                        int prevPointIndex = _currentPointIndex;
+                        _currentPointIndex = imgItem.CurrentPointIndex;
+                        UpdateItemsByPosition(_currentPointIndex);
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagesCurrentPoint"));
+                        /*var images = ImagesCurrentPoint;
+                        if (_currentPointIndex < prevPointIndex)
+                        {
+                            SelectedItemIndex = images.Count() - 1 - 1; //- фото перехода, -последнее фото в точке
+                        }
+                        else if (_currentPointIndex > prevPointIndex)
+                        {
+                            SelectedItemIndex = 1;
+                        }*/
+                    }
+
+
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedItemIndex"));
                 }
             }
@@ -154,9 +152,9 @@ namespace QuestHelper.ViewModel
                 string nextImgSrc = string.Empty;
                 if (!string.IsNullOrEmpty(_vPreviousPoint.Id))
                 {
-                    var firstItem = _vPreviousPoint.MediaObjects.Where(x => !x.IsDeleted).Select(x => new PointImageItem() { SourceImg = ImagePathManager.GetImagePath(x.RoutePointMediaObjectId, (MediaObjectTypeEnum)x.MediaType, true), MediaId = x.RoutePointMediaObjectId, MediaType = (MediaObjectTypeEnum)x.MediaType, RoutePointId = x.RoutePointId, RoutePointName = _vPreviousPoint.Name, CurrentPointIndex = _currentPointIndex - 1 }).FirstOrDefault();
+                    var firstItem = _vPreviousPoint.MediaObjects.Where(x => !x.IsDeleted).Select(x => new PointImageItem() { SourceImg = ImagePathManager.GetImagePath(x.RoutePointMediaObjectId, (MediaObjectTypeEnum)x.MediaType, true), MediaId = x.RoutePointMediaObjectId, MediaType = (MediaObjectTypeEnum)x.MediaType, RoutePointId = x.RoutePointId, RoutePointName = _vPreviousPoint.Name, CurrentPointIndex = _currentPointIndex - 1 }).LastOrDefault();
                     prevImgSrc = firstItem.SourceImg;
-                    firstItem.SourceImg = "";
+                    //firstItem.SourceImg = "";
                     list.Add(firstItem);
                 }
 
@@ -164,9 +162,9 @@ namespace QuestHelper.ViewModel
 
                 if (!string.IsNullOrEmpty(_vNextPoint.Id))
                 {
-                    var nextItem = _vNextPoint.MediaObjects.Where(x => !x.IsDeleted).Select(x => new PointImageItem() { SourceImg = ImagePathManager.GetImagePath(x.RoutePointMediaObjectId, (MediaObjectTypeEnum)x.MediaType, true), MediaId = x.RoutePointMediaObjectId, MediaType = (MediaObjectTypeEnum)x.MediaType, RoutePointId = x.RoutePointId, RoutePointName = _vNextPoint.Name, CurrentPointIndex = _currentPointIndex + 1 }).LastOrDefault();
+                    var nextItem = _vNextPoint.MediaObjects.Where(x => !x.IsDeleted).Select(x => new PointImageItem() { SourceImg = ImagePathManager.GetImagePath(x.RoutePointMediaObjectId, (MediaObjectTypeEnum)x.MediaType, true), MediaId = x.RoutePointMediaObjectId, MediaType = (MediaObjectTypeEnum)x.MediaType, RoutePointId = x.RoutePointId, RoutePointName = _vNextPoint.Name, CurrentPointIndex = _currentPointIndex + 1 }).FirstOrDefault();
                     nextImgSrc = nextItem.SourceImg;
-                    nextItem.SourceImg = "";
+                    //nextItem.SourceImg = "";
                     list.Add(nextItem);
                 }
 

@@ -21,24 +21,76 @@ namespace QuestHelper.ViewModel
     public class RouteCarouselRootViewModel : INotifyPropertyChanged
     {
         private const string _apiUrl = "http://igosh.pro/api";
-        private readonly ViewRoute _routeObject;
+        private readonly ViewRoute _vRoute;
+        //private readonly ViewRoutePoint _vRoutePoint;
         private RouteManager _routeManager = new RouteManager();
         private RoutePointManager _routePointManager = new RoutePointManager();
+        private RoutePointMediaObjectManager routePointMediaObjectManager = new RoutePointMediaObjectManager();
         private RoutePointMediaObjectRequest _routePointMediaObjectsApi;
         private CarouselItem _currentItem;
-        private string _routePointId = string.Empty;
+        //private string _routePointId = string.Empty;
         private bool _isMaximumQualityPhoto = false;
         private bool _isVisibleQualityImageSelector = false;
+        private List<CarouselItem> _carouselPages;
+        private List<ImagePreviewItem> _currentPointImagesPreview;
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand BackNavigationCommand { get; private set; }
+        public ICommand CardsItemAppearedCommand { get; private set; }
+        public ICommand ShowAllPhotosCommand { get; private set; }
 
         public RouteCarouselRootViewModel(string routeId, string routePointId = "")
         {
             BackNavigationCommand = new Command(backNavigationCommand);
-            _routeObject = new ViewRoute(routeId);
-            _routePointId = routePointId;
+            CardsItemAppearedCommand = new Command(cardsItemAppearedCommand);
+            ShowAllPhotosCommand = new Command(showAllPhotosCommand);
+            _vRoute = new ViewRoute(routeId);
+        }
+
+        private void showAllPhotosCommand(object obj)
+        {
+            var imgSource = (ImageSource)obj;
+            CurrentItem.ImageSource = imgSource;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CarouselPages"));
+        }
+
+        private void cardsItemAppearedCommand(object obj)
+        {
+            var cardArgs = (PanCardView.EventArgs.ItemAppearedEventArgs)obj;
+            if (cardArgs.Item != null)
+            {
+                var newItem = (RouteCarouselRootViewModel.CarouselItem)cardArgs.Item;
+
+                if ((!newItem.IsFullImage) && (IsMaximumQualityPhoto))
+                {
+                    Device.StartTimer(TimeSpan.FromMilliseconds(500), OnTimerForUpdate);
+                }
+
+                CurrentItem = newItem;
+
+                var pointMediaObjects = routePointMediaObjectManager.GetMediaObjectsByRoutePointId(CurrentItem.RoutePointId);
+                CurrentPointImagesPreview = pointMediaObjects.Select(media => new ImagePreviewItem() { RoutePointId = CurrentItem.RoutePointId, ImageSource = ImagePathManager.GetImagePath(media.RoutePointMediaObjectId, MediaObjectTypeEnum.Image, true) }).ToList();
+            }
+        }
+
+        private bool OnTimerForUpdate()
+        {
+            string fullImgPath = ImagePathManager.GetImagePath(CurrentItem.MediaId, MediaObjectTypeEnum.Image, false);
+            if (File.Exists(fullImgPath))
+            {
+                CurrentItem.ImageSource = fullImgPath;
+                CurrentItem.IsFullImage = true;
+            }
+            else
+            {
+                if (IsMaximumQualityPhoto)
+                {
+                    LoadFullImage(fullImgPath);
+                }
+            }
+            GC.Collect();
+            return false;
         }
 
         private void backNavigationCommand(object obj)
@@ -48,7 +100,7 @@ namespace QuestHelper.ViewModel
 
         public string RouteName
         {
-            get { return _routeObject?.Name.ToUpper(); }
+            get { return _vRoute?.Name.ToUpper(); }
         }
 
         public string RoutePointName
@@ -130,7 +182,10 @@ namespace QuestHelper.ViewModel
 
         public CarouselItem CurrentItem
         {
-            get { return _currentItem; }
+            get 
+            { 
+                return _currentItem; 
+            }
             set
             {
                 if (_currentItem != value)
@@ -141,6 +196,33 @@ namespace QuestHelper.ViewModel
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DescriptionIsVisible"));
                 }
             }
+        }
+        public List<ImagePreviewItem>  CurrentPointImagesPreview
+        {
+            get { 
+                    return _currentPointImagesPreview; 
+                }
+            set
+            {
+                if (_currentPointImagesPreview != value)
+                {
+                    _currentPointImagesPreview = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentPointImagesPreview"));
+                }
+            }
+        }
+        /*public List<string> CurrentPointImagesPreview2
+        {
+            get
+            {
+                return new List<string>();
+            }
+        }*/
+
+        public class ImagePreviewItem
+        {
+            public string RoutePointId { get; set; }
+            public string ImageSource { get; set; }
         }
 
         internal async void LoadFullImage(string fullImgPath)
@@ -179,7 +261,13 @@ namespace QuestHelper.ViewModel
         {
             get
             {
-                List<CarouselItem> items = new List<CarouselItem>();
+                if(_carouselPages == null)
+                {
+                    var points = _routePointManager.GetPointsByRouteId(_vRoute.RouteId).Select(point => new CarouselItem() { RouteId = _vRoute.RouteId, RoutePointId = point.RoutePointId, ImageSource = point.ImagePreviewPath, RoutePointName = point.NameText, RoutePointDescription = point.Description, Latitude = point.Latitude, Longitude = point.Longitude });
+                    _carouselPages = points.ToList();
+                }
+                return _carouselPages;
+                /*List<CarouselItem> items = new List<CarouselItem>();
                 IEnumerable<ViewRoutePoint> points = new List<ViewRoutePoint>();
                 if (!string.IsNullOrEmpty(_routePointId))
                 {
@@ -207,7 +295,7 @@ namespace QuestHelper.ViewModel
                         }
                     }
                 }
-                return items;
+                return items;*/
             }
         }
 
@@ -217,7 +305,7 @@ namespace QuestHelper.ViewModel
             string _userId = await getUserId();
 
             //Автора альбома пока не считаем за просмотр
-            if (!_routeObject.CreatorId.Equals(_userId))
+            if (!_vRoute.CreatorId.Equals(_userId))
             {
                 Analytics.TrackEvent("Album opened", new Dictionary<string, string> { { "Album", RouteName } });
             }
@@ -246,7 +334,7 @@ namespace QuestHelper.ViewModel
         {
             public event PropertyChangedEventHandler PropertyChanged;
             private Aspect _imageAspect = Aspect.AspectFill;
-            private string _imageSource = string.Empty;
+            private ImageSource _imageSource;
             public ICommand ChangeImageAspectCommand { get; private set; }
             public ICommand ViewPhotoCommand { get; private set; }
 
@@ -279,7 +367,7 @@ namespace QuestHelper.ViewModel
 
             public bool IsFullImage { get; set; }
 
-            public string ImageSource
+            public ImageSource ImageSource
             {
                 get
                 {

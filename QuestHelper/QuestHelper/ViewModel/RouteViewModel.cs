@@ -125,10 +125,10 @@ namespace QuestHelper.ViewModel
 
         private void photoAlbumCommandAsync(object obj)
         {
-            //var page = new RouteCarouselRootPage(_vroute.RouteId);
-            //Navigation.PushModalAsync(page);
-            var page = new RouteGalleryPage(_vroute.RouteId);
+            var page = new RouteCarouselRootPage(_vroute.RouteId);
             Navigation.PushModalAsync(page);
+            //var page = new RouteGalleryPage(_vroute.RouteId);
+            //Navigation.PushModalAsync(page);
         }
 
         internal async Task<bool> UserCanShareAsync()

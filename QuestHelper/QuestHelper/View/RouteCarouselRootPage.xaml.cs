@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FFImageLoading.Forms;
 using PanCardView;
 using PanCardView.EventArgs;
 using QuestHelper.LocalDB.Model;
@@ -34,11 +35,11 @@ namespace QuestHelper.View
             GC.Collect();
             TokenStoreService tokenService = new TokenStoreService();
             _authToken = await tokenService.GetAuthTokenAsync();
-            MapRouteOverview.Points = _vm.PointsOnMap;
+            //MapRouteOverview.Points = _vm.PointsOnMap;
             _vm.StartDialogAsync();
         }
 
-        private void Cards_OnItemAppearing(CardsView view, ItemAppearingEventArgs args)
+        /*private void Cards_OnItemAppearing(CardsView view, ItemAppearingEventArgs args)
         {
             var newItem = (RouteCarouselRootViewModel.CarouselItem) view.SelectedItem;
             if ((!newItem.IsFullImage) && (_vm.IsMaximumQualityPhoto))
@@ -53,14 +54,36 @@ namespace QuestHelper.View
 
             _vm.CurrentItem = newItem;
 
-        }
+        }*/
 
         private void RouteCarouselRootPage_OnDisappearing(object sender, EventArgs e)
         {
             GC.Collect();
         }
 
-        private bool OnTimerForUpdate()
+        private void Cards_ItemAppeared(CardsView view, ItemAppearedEventArgs args)
+        {
+            double previewWidthRequest = 60;
+            double previewHeightRequest = 60;
+            StackPreviewImages.Children.Clear();
+            if (_vm.CurrentPointImagesPreview != null)
+            {
+                var listImages = _vm.CurrentPointImagesPreview.Select(img => new CachedImage() 
+                { 
+                    Source = img.ImageSource, Aspect = Aspect.AspectFill, DownsampleToViewSize = true, WidthRequest = previewWidthRequest, HeightRequest = previewHeightRequest 
+                });
+                if (listImages.Count() > 1)
+                {
+                    foreach (var imgItem in listImages)
+                    {
+                        imgItem.GestureRecognizers.Add(new TapGestureRecognizer() { Command = _vm.ShowAllPhotosCommand, CommandParameter = imgItem.Source });
+                        StackPreviewImages.Children.Add(imgItem);
+                    }
+                }
+            }
+        }
+
+        /*private bool OnTimerForUpdate()
         {
             string fullImgPath = ImagePathManager.GetImagePath(_vm.CurrentItem.MediaId, MediaObjectTypeEnum.Image, false);
             if (File.Exists(fullImgPath))
@@ -77,6 +100,6 @@ namespace QuestHelper.View
             }
             GC.Collect();
             return false;
-        }
+        }*/
     }
 }

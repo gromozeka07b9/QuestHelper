@@ -41,7 +41,7 @@
                             <TapGestureRecognizer Command="{Binding BackNavigationCommand}"/>
                         </Image.GestureRecognizers>
                     </Image>
-                    <pancardview:CarouselView Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="Cards" ItemsSource="{Binding ImagesCurrentPoint}" SelectedIndex="{Binding SelectedItemIndex}" ItemAppearedCommand="{Binding ItemAppearedCommand}"  IsViewReusingEnabled="True" AreAnimationsEnabled="False" IsCyclical="False">
+                    <!--pancardview:CarouselView Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="Cards" ItemsSource="{Binding ImagesCurrentPoint}" SelectedIndex="{Binding SelectedItemIndex}" ItemAppearingCommand="{Binding ItemAppearedCommand}" IsViewReusingEnabled="True" AreAnimationsEnabled="False" IsCyclical="False">
                         <pancardview:CarouselView.ItemTemplate>
                             <DataTemplate>
                                 <ContentView Padding="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Black">
@@ -53,9 +53,9 @@
                         <controls:IndicatorsControl ToFadeDuration="5000"/>
                         <controls:LeftArrowControl ToFadeDuration="5000"/>
                         <controls:RightArrowControl ToFadeDuration="5000"/>
-                    </pancardview:CarouselView>
-                    <!--StackLayout Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="3" BackgroundColor="Yellow" Orientation="Vertical" VerticalOptions="Start" IsVisible="{Binding IsOneImagesPresent, Converter={StaticResource inverter}}">
-                        <CarouselView x:Name="myCarouselViewCtrl" ItemsUpdatingScrollMode="KeepItemsInView" ItemsSource="{Binding ImagesCurrentPoint}" HorizontalOptions="FillAndExpand" Margin="0,0,0,0" VerticalOptions="StartAndExpand" IndicatorView.ItemsSourceBy="{Binding RoutePoints}" Position="{Binding Position}" PositionChangedCommand="{Binding PositionItemChange}" PositionChangedCommandParameter="{Binding Source={RelativeSource Self}, Path=Position}" BackgroundColor="Green">
+                    </-->
+                    <StackLayout Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="3" BackgroundColor="Yellow" Orientation="Vertical" VerticalOptions="Start" IsVisible="{Binding IsOneImagesPresent, Converter={StaticResource inverter}}">
+                        <CarouselView x:Name="myCarouselViewCtrl" ItemsUpdatingScrollMode="KeepItemsInView" ItemsSource="{Binding ImagesCurrentPoint}" HorizontalOptions="FillAndExpand" Margin="0,0,0,0" VerticalOptions="StartAndExpand" IndicatorView.ItemsSourceBy="{Binding ImagesCurrentPoint}" Position="{Binding SelectedItemIndex}" PositionChangedCommand="{Binding PositionItemChange}" PositionChangedCommandParameter="{Binding Source={RelativeSource Self}, Path=Position}" BackgroundColor="Green">
                             <CarouselView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -69,14 +69,16 @@
                                             <ColumnDefinition Width="2*" ></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
                                         <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding RoutePointName}" FontSize="15" TextColor="Black" VerticalOptions="Start" HorizontalOptions="StartAndExpand" HorizontalTextAlignment="Start" Margin="10,0,0,0"></Label>
+                                        <ffimageloading:CachedImage Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Source="{Binding SourceImg}" Aspect="AspectFill" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0" DownsampleToViewSize="True" BackgroundColor="Black">
+                                        </ffimageloading:CachedImage>
 
-                                        <Frame Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" CornerRadius="0" HorizontalOptions="End" VerticalOptions="End" WidthRequest="120" HeightRequest="80" Margin="5" Padding="2" HasShadow="False" IsClippedToBounds="True" BorderColor="White" BackgroundColor="Wheat">
+                                        <!--Frame Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" CornerRadius="0" HorizontalOptions="End" VerticalOptions="End" WidthRequest="120" HeightRequest="80" Margin="5" Padding="2" HasShadow="False" IsClippedToBounds="True" BorderColor="White" BackgroundColor="Wheat">
                                             <ffimageloading:CachedImage Source="{Binding PrevSourceImg}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill">
                                                 <ffimageloading:CachedImage.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding Path=BindingContext.PrevPointCommand, Source={x:Reference Name=myCarouselViewCtrl}}"></TapGestureRecognizer>
                                                 </ffimageloading:CachedImage.GestureRecognizers>
                                             </ffimageloading:CachedImage>
-                                        </Frame>
+                                        </>
 
                                         <Frame Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" CornerRadius="0" HorizontalOptions="End" VerticalOptions="End" WidthRequest="120" HeightRequest="80" Margin="5" Padding="2" HasShadow="False" IsClippedToBounds="True" BorderColor="White" BackgroundColor="Wheat">
                                             <ffimageloading:CachedImage Source="{Binding NextSourceImg}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill">
@@ -84,12 +86,12 @@
                                                     <TapGestureRecognizer Command="{Binding Path=BindingContext.NextPointCommand, Source={x:Reference Name=myCarouselViewCtrl}}"></TapGestureRecognizer>
                                                 </ffimageloading:CachedImage.GestureRecognizers>
                                             </ffimageloading:CachedImage>
-                                        </Frame>
+                                        </Frame-->
                                     </Grid>
                                 </DataTemplate>
                             </CarouselView.ItemTemplate>
                         </CarouselView>
-                    </-->
+                    </StackLayout>
                     <!--Frame Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="3" HorizontalOptions="Center" VerticalOptions="End" CornerRadius="10" Padding="5" Margin="5">
                         <IndicatorView IndicatorView.ItemsSourceBy="myCarouselViewCtrl" IndicatorColor="LightSkyBlue" SelectedIndicatorColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
                         </IndicatorView>
