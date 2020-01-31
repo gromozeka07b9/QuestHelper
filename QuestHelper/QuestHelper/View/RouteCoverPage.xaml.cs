@@ -44,5 +44,6 @@ namespace QuestHelper.View
 	    {
 	        _vm.CloseDialog();
 	    }
+
 	}
 }

@@ -20,6 +20,7 @@ namespace QuestHelper.Model
         private string _name = string.Empty;
         private string _imagePath = string.Empty;
         private string _imagePreviewPath = string.Empty;
+        private string _imageMediaId = string.Empty;        
         private string _description = string.Empty;
         private string _address = string.Empty;
         private double _latitude = 0;
@@ -30,6 +31,7 @@ namespace QuestHelper.Model
         private DateTimeOffset _createDate;
         private RoutePointManager routePointManager = new RoutePointManager();
         private RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
+        private MediaObjectTypeEnum _imageMediaType;
 
         public ViewRoutePoint(string routeId, string routePointId)
         {
@@ -89,13 +91,17 @@ namespace QuestHelper.Model
             _mediaObjects = mediaManager.GetMediaObjectsByRoutePointId(_id)?.ToList();
             if ((_mediaObjects != null) && (_mediaObjects.Count > 0))
             {
-                _imagePath = ImagePathManager.GetImagePath(_mediaObjects[0].RoutePointMediaObjectId, (MediaObjectTypeEnum)_mediaObjects[0].MediaType);
-                _imagePreviewPath = ImagePathManager.GetImagePath(_mediaObjects[0].RoutePointMediaObjectId, (MediaObjectTypeEnum)_mediaObjects[0].MediaType, true);
+                var routePointMediaObject = _mediaObjects[0];
+                _imagePath = ImagePathManager.GetImagePath(routePointMediaObject.RoutePointMediaObjectId, (MediaObjectTypeEnum)routePointMediaObject.MediaType);
+                _imagePreviewPath = ImagePathManager.GetImagePath(routePointMediaObject.RoutePointMediaObjectId, (MediaObjectTypeEnum)routePointMediaObject.MediaType, true);
+                _imageMediaId = routePointMediaObject.RoutePointMediaObjectId;
+                _imageMediaType = (MediaObjectTypeEnum)routePointMediaObject.MediaType;
             }
             else
             {
                 _imagePath = routePointManager.GetDefaultImageFilename(_id);
                 _imagePreviewPath = routePointManager.GetDefaultImagePreviewFilename(_id);
+                _imageMediaId = string.Empty;
             }
         }
 
@@ -218,6 +224,7 @@ namespace QuestHelper.Model
                 return _imagePath;
             }
         }
+
         public string ImagePreviewPath
         {
             get
@@ -225,6 +232,22 @@ namespace QuestHelper.Model
                 return _imagePreviewPath;
             }
         }
+
+        public string ImageMediaId
+        {
+            get
+            {
+                return _imageMediaId;
+            }
+        }
+        public MediaObjectTypeEnum ImageMediaType
+        {
+            get
+            {
+                return _imageMediaType;
+            }
+        }
+
         public string ImagePreviewPathForList
         {
             get

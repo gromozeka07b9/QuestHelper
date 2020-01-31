@@ -75,7 +75,7 @@ namespace QuestHelper.ViewModel
         {
             StartRouteCommand = new Command(startRouteCommand);
             BackNavigationCommand = new Command(backNavigationCommand);
-            PointsOfRoute = new ObservableCollection<ViewRoutePoint>();
+            //PointsOfRoute = new ObservableCollection<ViewRoutePoint>();
         }
 
         private void backNavigationCommand(object obj)
@@ -85,8 +85,11 @@ namespace QuestHelper.ViewModel
 
         private void startRouteCommand(object obj)
         {
-            var page = new RouteCarouselRootPage(_vroute.RouteId);
-            Navigation.PushModalAsync(page);
+            if (!IsVisibleProgress)
+            {
+                var page = new RouteCarouselRootPage(_vroute.RouteId);
+                Navigation.PushModalAsync(page);
+            }
         }
 
         public void CloseDialog()
@@ -102,7 +105,7 @@ namespace QuestHelper.ViewModel
                 if (sender.RouteId.Equals(_vroute.Id) && sender.SuccessSync)
                 {
                     _vroute = new ViewRoute(_vroute.Id);
-                    updatePoints();
+                    //updatePoints();
                     IsVisibleList = true;
                     IsVisibleProgress = false;
                     IsVisibleStartRoute = !IsVisibleProgress;
@@ -146,7 +149,7 @@ namespace QuestHelper.ViewModel
             {
                 //Тут возможны варианты - либо это актуальный маршрут, либо нет, но это надо еще проверить
                 //Но показываем точки, и в фоне проверяем версию, только если она отличается, запускаем синхронизацию
-                updatePoints();
+                //updatePoints();
                 IsVisibleProgress = false;
                 IsVisibleList = true;
                 Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage() { RouteId = _vroute.Id, NeedCheckVersionRoute = true}, string.Empty);
@@ -156,14 +159,14 @@ namespace QuestHelper.ViewModel
 
         }
 
-        private void updatePoints()
+        /*private void updatePoints()
         {
             var points = _routePointManager.GetPointsByRouteId(_vroute.Id);
             if (points.Any())
             {
                 PointsOfRoute = new ObservableCollection<ViewRoutePoint>(points);
             }
-        }
+        }*/
 
         public double ProgressValue
         {
@@ -257,7 +260,7 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        public ObservableCollection<ViewRoutePoint> PointsOfRoute
+        /*public ObservableCollection<ViewRoutePoint> PointsOfRoute
         {
             set
             {
@@ -274,9 +277,9 @@ namespace QuestHelper.ViewModel
             {
                 return _viewPointsOfRoute;
             }
-        }
+        }*/
 
-        public ViewRoutePoint SelectedRoutePointItem
+        /*public ViewRoutePoint SelectedRoutePointItem
         {
             set
             {
@@ -289,7 +292,7 @@ namespace QuestHelper.ViewModel
                     _pointItem = null;
                 }
             }
-        }
+        }*/
 
         public int RowHeightForDescription
         {

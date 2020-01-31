@@ -21,7 +21,7 @@
                         <ColumnDefinition Width="6*" ></ColumnDefinition>
                         <ColumnDefinition Width="2*" ></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <pancardview:CarouselView Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="Cards" ItemsSource="{Binding CarouselPages}"  IsViewReusingEnabled="True" AreAnimationsEnabled="False" ItemAppearedCommand="{Binding CardsItemAppearedCommand}" ItemAppeared="Cards_ItemAppeared" IsCyclical="False">
+                    <pancardview:CarouselView Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="Cards" ItemsSource="{Binding CarouselPages}" SelectedIndex="{Binding CarouselPointsSelectedIndex}"  IsViewReusingEnabled="True" AreAnimationsEnabled="False" ItemAppearedCommand="{Binding CardsItemAppearedCommand}" ItemAppeared="Cards_ItemAppeared" IsCyclical="False">
                         <pancardview:CarouselView.ItemTemplate>
                             <DataTemplate>
                                 <ContentView Padding="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Black">
@@ -38,7 +38,6 @@
                         <controls:LeftArrowControl ToFadeDuration="5000"/>
                         <controls:RightArrowControl ToFadeDuration="5000"/>
                     </pancardview:CarouselView>
-                    <!--StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalOptions="Center" Orientation="Horizontal" HorizontalOptions="EndAndExpand" Margin="10" IsVisible="{Binding  IsVisibleQualityImageSelector}"-->
                     <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalOptions="Center" Orientation="Horizontal" HorizontalOptions="EndAndExpand" Margin="10" IsVisible="True">
                         <Label FontSize="12" Style="{StaticResource ImageBigTextLabel}" Text="{lang:Translation CommonMsg_UseOriginalQuality}" VerticalOptions="Center">
                         </Label>
@@ -51,35 +50,17 @@
                     </Image>
                     <Label Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding RoutePointName}" FontSize="15" TextColor="White" VerticalOptions="Start" HorizontalOptions="StartAndExpand" HorizontalTextAlignment="Start" Margin="10,0,0,0"></Label>
                 </Grid>
-                <!--CarouselView ItemsSource="{Binding CurrentPointImagesPreview}" HorizontalOptions="Center" VerticalOptions="Start" Margin="5" HeightRequest="50" PeekAreaInsets="150" BackgroundColor="Yellow">
-                    <CarouselView.ItemTemplate>
-                        <DataTemplate>
-                            <Frame CornerRadius="10" Padding="5">
-                                <ffimageloading:CachedImage Source="{Binding ImageSource}" Aspect="AspectFill" Margin="0" DownsampleToViewSize="True" HeightRequest="40" WidthRequest="40">
-                                </ffimageloading:CachedImage>
-                            </Frame>
-                        </DataTemplate>
-                    </CarouselView.ItemTemplate>
-                </-->
                 <ScrollView Orientation="Horizontal" HorizontalOptions="Center" Margin="0">
                     <StackLayout Orientation="Horizontal" x:Name="StackPreviewImages">
                         <!--ffimageloading:CachedImage Source="mount1.png" Aspect="AspectFill" Margin="0" DownsampleToViewSize="True" HeightRequest="40" WidthRequest="40">
                         </-->
                     </StackLayout>
                 </ScrollView>
-                <!--ListView ItemsSource="{Binding CurrentPointImagesPreview}" HorizontalOptions="Center" VerticalOptions="Start" Margin="100,0,100,0" HeightRequest="100">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <Frame CornerRadius="10" WidthRequest="80" HeightRequest="80">
-                                    <ffimageloading:CachedImage Source="{Binding ImageSource}" Aspect="AspectFill" Margin="0" DownsampleToViewSize="True" HeightRequest="80" WidthRequest="80">
-                                    </ffimageloading:CachedImage>
-                                </Frame>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </-->
                 <Label Margin="5,0,5,0" FontSize="15" Text="{Binding RoutePointDescription}" TextColor="Black" LineBreakMode="WordWrap" IsVisible="{Binding DescriptionIsVisible}">
+                    <Label.GestureRecognizers>
+                        <SwipeGestureRecognizer Command="{Binding SwipeDescriptionRightCommand}" Direction="Right" Threshold="10"/>
+                        <SwipeGestureRecognizer Command="{Binding SwipeDescriptionLeftCommand}" Direction="Left" Threshold="10"/>
+                    </Label.GestureRecognizers>
                 </Label>
                 <view:CustomMap HeightRequest="300" x:Name="MapRouteOverview" VerticalOptions="FillAndExpand"
                                 IsShowingUser="False"

@@ -159,6 +159,7 @@
     <AndroidAsset Include="Assets\clock.json" />
     <AndroidAsset Include="Assets\spinner.json" />
     <AndroidAsset Include="Assets\hourglass.json" />
+    <AndroidAsset Include="Assets\play-button.json" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
