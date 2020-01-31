@@ -9,6 +9,7 @@ using PanCardView;
 using PanCardView.EventArgs;
 using QuestHelper.LocalDB.Model;
 using QuestHelper.Managers;
+using QuestHelper.View.Converters;
 using QuestHelper.ViewModel;
 using QuestHelper.WS;
 using Xamarin.Forms;
@@ -52,9 +53,11 @@ namespace QuestHelper.View
             StackPreviewImages.Children.Clear();
             if (_vm.CurrentPointImagesPreview != null)
             {
+                //Source = "{Binding ImageSource, Converter={StaticResource typeMediaIconSetter}}"
                 var listImages = _vm.CurrentPointImagesPreview.Select(img => new CustomCachedImage() 
                 { 
-                    Source = (MediaObjectTypeEnum)img.MediaType == MediaObjectTypeEnum.Audio ? "sound.png" : img.ImageSource,
+                    //Source = (MediaObjectTypeEnum)img.MediaType == MediaObjectTypeEnum.Audio ? "sound.png" : img.ImageSource,
+                    Source = img.ImageSource,
                     Aspect = Aspect.AspectFill, 
                     DownsampleToViewSize = true, 
                     WidthRequest = previewWidthRequest, 
@@ -63,10 +66,22 @@ namespace QuestHelper.View
                     RoutePointMediaId = img.RoutePointMediaId,
                     MediaType = img.MediaType
                 });
+                //.SetBinding(CustomCachedImage.SourceProperty, new Binding("Source", BindingMode.Default, new TypeMediaIconConverter(), null, null))
                 if (listImages.Count() > 1)
                 {
                     foreach (var imgItem in listImages)
                     {
+                        /*var trigger = new DataTrigger(typeof(CustomCachedImage));
+                        var binding = new Binding();
+                        binding.Source = "Source";
+                        binding.Path = "Source.File.Length";
+                        trigger.Value = "9"; //длина "sound.png"
+
+                        var setter = new Setter();
+                        setter.Property = CustomCachedImage.SourceProperty;
+                        setter.Value = "sound.png";
+                        trigger.SetBinding(CustomCachedImage.SourceProperty, binding);                        
+                        imgItem.Triggers.Add(trigger);*/
                         imgItem.GestureRecognizers.Add(new TapGestureRecognizer() { Command = _vm.ShowOtherPhotoCommand, CommandParameter = imgItem });
                         StackPreviewImages.Children.Add(imgItem);
                     }

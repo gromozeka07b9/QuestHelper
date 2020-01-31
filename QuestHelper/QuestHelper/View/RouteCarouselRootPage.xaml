@@ -7,7 +7,13 @@
              xmlns:view="clr-namespace:QuestHelper.View;assembly=QuestHelper"
              xmlns:proc="clr-namespace:PanCardView.Processors;assembly=PanCardView"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:local1="clr-namespace:QuestHelper.View.Converters"
              x:Class="QuestHelper.View.RouteCarouselRootPage" NavigationPage.HasNavigationBar="False" Appearing="RouteCarouselRootPage_OnAppearingAsync" Disappearing="RouteCarouselRootPage_OnDisappearing" Style="{StaticResource ContentPage}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local1:TypeMediaIconConverter  x:Key="typeMediaIconSetter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <ScrollView Orientation="Vertical" Padding="0">
             <StackLayout Padding="0">
@@ -25,7 +31,7 @@
                         <pancardview:CarouselView.ItemTemplate>
                             <DataTemplate>
                                 <ContentView Padding="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Black">
-                                    <ffimageloading:CachedImage Source="{Binding ImageSource}" Aspect="{Binding PhotoImageAspect}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0" DownsampleToViewSize="True" BackgroundColor="Black">
+                                    <ffimageloading:CachedImage Source="{Binding ImageSource, Converter={StaticResource typeMediaIconSetter}}" Aspect="{Binding PhotoImageAspect}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0" DownsampleToViewSize="True" BackgroundColor="Black">
                                         <ffimageloading:CachedImage.GestureRecognizers>
                                             <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding ViewPhotoCommand}"></TapGestureRecognizer>
                                             <TapGestureRecognizer NumberOfTapsRequired="2" Command="{Binding ChangeImageAspectCommand}"></TapGestureRecognizer>

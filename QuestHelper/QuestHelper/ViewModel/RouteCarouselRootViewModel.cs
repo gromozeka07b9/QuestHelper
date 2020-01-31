@@ -33,6 +33,7 @@ namespace QuestHelper.ViewModel
         private List<ImagePreviewItem> _currentPointImagesPreview;
         private int _prevCarouselPointsSelectedIndex;
         private int _carouselPointsSelectedIndex;
+        //private string _currentPreviewFile;
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -76,6 +77,7 @@ namespace QuestHelper.ViewModel
             CurrentItem.MediaType = (MediaObjectTypeEnum)customImg.MediaType;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CarouselPages"));
             CurrentItem.IsFullImage = false;
+            //_currentPreviewFile = ImagePathManager.GetImagePath(CurrentItem.MediaId, MediaObjectTypeEnum.Image, true);
             startWaitLoadOriginal(CurrentItem);
         }
 
