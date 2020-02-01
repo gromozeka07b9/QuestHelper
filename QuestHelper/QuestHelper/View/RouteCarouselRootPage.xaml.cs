@@ -21,8 +21,6 @@ namespace QuestHelper.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RouteCarouselRootPage : ContentPage
     {
-        private const string _apiUrl = "http://igosh.pro/api";
-        private string _authToken;
         private RouteCarouselRootViewModel _vm;
         public RouteCarouselRootPage(string routeId)
         {
@@ -31,11 +29,9 @@ namespace QuestHelper.View
             BindingContext = _vm;
         }
 
-        private async void RouteCarouselRootPage_OnAppearingAsync(object sender, EventArgs e)
+        private void RouteCarouselRootPage_OnAppearing(object sender, EventArgs e)
         {
             GC.Collect();
-            //TokenStoreService tokenService = new TokenStoreService();
-            //_authToken = await tokenService.GetAuthTokenAsync();
             MapRouteOverview.Points = _vm.PointsOnMap;
             _vm.StartDialogAsync();
         }
@@ -47,47 +43,7 @@ namespace QuestHelper.View
 
         private void Cards_ItemAppeared(CardsView view, ItemAppearedEventArgs args)
         {
-            //ToDo: Так и не нашел способа сделать горизонтальный список. Ни ListView, ни CarouselView не позволяют.
-            double previewWidthRequest = 80;
-            double previewHeightRequest = 80;
-            StackPreviewImages.Children.Clear();
-            if (_vm.CurrentPointImagesPreview != null)
-            {
-                //Source = "{Binding ImageSource, Converter={StaticResource typeMediaIconSetter}}"
-                var listImages = _vm.CurrentPointImagesPreview.Select(img => new CustomCachedImage() 
-                { 
-                    //Source = (MediaObjectTypeEnum)img.MediaType == MediaObjectTypeEnum.Audio ? "sound.png" : img.ImageSource,
-                    Source = img.ImageSource,
-                    Aspect = Aspect.AspectFill, 
-                    DownsampleToViewSize = true, 
-                    WidthRequest = previewWidthRequest, 
-                    HeightRequest = previewHeightRequest, 
-                    RoutePointId = img.RoutePointId, 
-                    RoutePointMediaId = img.RoutePointMediaId,
-                    MediaType = img.MediaType
-                });
-                //.SetBinding(CustomCachedImage.SourceProperty, new Binding("Source", BindingMode.Default, new TypeMediaIconConverter(), null, null))
-                if (listImages.Count() > 1)
-                {
-                    foreach (var imgItem in listImages)
-                    {
-                        /*var trigger = new DataTrigger(typeof(CustomCachedImage));
-                        var binding = new Binding();
-                        binding.Source = "Source";
-                        binding.Path = "Source.File.Length";
-                        trigger.Value = "9"; //длина "sound.png"
-
-                        var setter = new Setter();
-                        setter.Property = CustomCachedImage.SourceProperty;
-                        setter.Value = "sound.png";
-                        trigger.SetBinding(CustomCachedImage.SourceProperty, binding);                        
-                        imgItem.Triggers.Add(trigger);*/
-                        imgItem.GestureRecognizers.Add(new TapGestureRecognizer() { Command = _vm.ShowOtherPhotoCommand, CommandParameter = imgItem });
-                        StackPreviewImages.Children.Add(imgItem);
-                    }
-                }
-            }
-
+            //ToDo: Так и не нашел понял, как картой управлять.
             if ((_vm.CurrentItem?.Latitude != 0) || (_vm.CurrentItem?.Longitude != 0))
             {
                 MapRouteOverview.MoveToRegion(MapSpan.FromCenterAndRadius(new Xamarin.Forms.Maps.Position(_vm.CurrentItem.Latitude, _vm.CurrentItem.Longitude), Distance.FromKilometers(1)));

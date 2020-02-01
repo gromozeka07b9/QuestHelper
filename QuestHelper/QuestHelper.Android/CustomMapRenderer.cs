@@ -140,11 +140,11 @@ namespace QuestHelper.Droid
             PermissionManager permissions = new PermissionManager();
             if (await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position))
             {
-                map.MapClick += Map_MapClick;
-                NativeMap.InfoWindowClick += OnInfoWindowClick;
-                NativeMap.SetInfoWindowAdapter(this);
-                drawMarkers(150);
             }
+            map.MapClick += Map_MapClick;
+            NativeMap.InfoWindowClick += OnInfoWindowClick;
+            NativeMap.SetInfoWindowAdapter(this);
+            drawMarkers(150);
             base.OnMapReady(map);
         }
 

@@ -159,7 +159,7 @@
                     <StackLayout Orientation="Horizontal" Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0,5,0,0">
                         <local:CustomMap HeightRequest="350" HasZoomEnabled="True"
                                 x:Name="PointMapOverview"
-                                IsShowingUser="True"
+                                IsShowingUser="{Binding IsRightsToGetLocationPresented}"
                                 UseInterceptTouchEvent="true"
                                 MapType="Street"  HasScrollEnabled="True" 
                                 />

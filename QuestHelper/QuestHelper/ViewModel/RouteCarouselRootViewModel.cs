@@ -71,13 +71,13 @@ namespace QuestHelper.ViewModel
 
         private void showOtherPhotoCommand(object obj)
         {
-            var customImg = (CustomCachedImage)obj;
-            CurrentItem.ImageSource = customImg.Source;
+            //var customImg = (CustomCachedImage)obj;
+            var customImg = (ImagePreviewItem)obj;
+            CurrentItem.ImageSource = customImg.ImageSource;
             CurrentItem.MediaId = customImg.RoutePointMediaId;
             CurrentItem.MediaType = (MediaObjectTypeEnum)customImg.MediaType;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CarouselPages"));
             CurrentItem.IsFullImage = false;
-            //_currentPreviewFile = ImagePathManager.GetImagePath(CurrentItem.MediaId, MediaObjectTypeEnum.Image, true);
             startWaitLoadOriginal(CurrentItem);
         }
 
@@ -93,6 +93,7 @@ namespace QuestHelper.ViewModel
 
                 startWaitLoadOriginal(CurrentItem);
             }
+            GC.Collect();
         }
 
         private void startWaitLoadOriginal(CarouselItem newItem)
@@ -204,6 +205,13 @@ namespace QuestHelper.ViewModel
             get
             {
                 return !string.IsNullOrEmpty(_currentItem?.RoutePointDescription);
+            }
+        }
+        public bool IsVisiblePreviewImgList
+        {
+            get
+            {
+                return CurrentPointImagesPreview != null && CurrentPointImagesPreview.Count > 1;
             }
         }
 
@@ -318,6 +326,7 @@ namespace QuestHelper.ViewModel
                 {
                     _currentPointImagesPreview = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentPointImagesPreview"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsVisiblePreviewImgList"));
                 }
             }
         }
@@ -350,7 +359,7 @@ namespace QuestHelper.ViewModel
         {
             public string RoutePointId { get; set; }
             public string RoutePointMediaId { get; set; }
-            public string ImageSource { get; set; }
+            public FileImageSource ImageSource { get; set; }
             public int MediaType { get; internal set; }
         }
 

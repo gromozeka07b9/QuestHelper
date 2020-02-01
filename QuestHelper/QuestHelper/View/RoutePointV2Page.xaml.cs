@@ -57,7 +57,7 @@ namespace QuestHelper.View
 
                 if (!await permissions.PermissionGetCoordsGrantedAsync())
                 {
-                    await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position);
+                    _vm.IsRightsToGetLocationPresented = await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position);
                 }
             });
 

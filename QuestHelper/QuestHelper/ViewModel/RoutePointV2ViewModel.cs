@@ -50,6 +50,7 @@ namespace QuestHelper.ViewModel
         private bool _isVisibleModalNameEdit;
         private bool _newPoint;
         private string _nameForEdit;
+        private bool _isRightsToGetLocationPresented;
 
         public RoutePointV2ViewModel(string routeId, string routePointId)
         {
@@ -317,6 +318,21 @@ namespace QuestHelper.ViewModel
             }
         }
 
+        public bool IsRightsToGetLocationPresented
+        {
+            set
+            {
+                if(value != _isRightsToGetLocationPresented)
+                {
+                    _isRightsToGetLocationPresented = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsRightsToGetLocationPresented"));
+                }
+            }
+            get
+            {
+                return _isRightsToGetLocationPresented;
+            }
+        }
         public string Description
         {
             get

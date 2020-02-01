@@ -478,7 +478,7 @@
     <value>Вы можете освободить память, удалив ранее загруженные маршруты. При необходимости, вы можете их загрузить повторно.</value>
   </data>
   <data name="Feed_SearchPlaceholder" xml:space="preserve">
-    <value>например, Грузия</value>
+    <value>например, Касабланка</value>
   </data>
   <data name="Routes_StatisticsRoutesCreated" xml:space="preserve">
     <value>маршрутов</value>

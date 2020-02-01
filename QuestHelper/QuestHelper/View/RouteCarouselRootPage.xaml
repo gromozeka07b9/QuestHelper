@@ -8,7 +8,7 @@
              xmlns:proc="clr-namespace:PanCardView.Processors;assembly=PanCardView"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:local1="clr-namespace:QuestHelper.View.Converters"
-             x:Class="QuestHelper.View.RouteCarouselRootPage" NavigationPage.HasNavigationBar="False" Appearing="RouteCarouselRootPage_OnAppearingAsync" Disappearing="RouteCarouselRootPage_OnDisappearing" Style="{StaticResource ContentPage}">
+             x:Class="QuestHelper.View.RouteCarouselRootPage" NavigationPage.HasNavigationBar="False" Appearing="RouteCarouselRootPage_OnAppearing" Disappearing="RouteCarouselRootPage_OnDisappearing" Style="{StaticResource ContentPage}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local1:TypeMediaIconConverter  x:Key="typeMediaIconSetter" />
@@ -56,11 +56,21 @@
                     </Image>
                     <Label Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding RoutePointName}" FontSize="15" TextColor="White" VerticalOptions="Start" HorizontalOptions="StartAndExpand" HorizontalTextAlignment="Start" Margin="10,0,0,0"></Label>
                 </Grid>
-                <ScrollView Orientation="Horizontal" HorizontalOptions="Center" Margin="0">
-                    <StackLayout Orientation="Horizontal" x:Name="StackPreviewImages">
-                        <!--ffimageloading:CachedImage Source="mount1.png" Aspect="AspectFill" Margin="0" DownsampleToViewSize="True" HeightRequest="40" WidthRequest="40">
-                        </-->
-                    </StackLayout>
+                <ScrollView Orientation="Horizontal" HorizontalOptions="Center" Margin="0" IsVisible="{Binding IsVisiblePreviewImgList}">
+                    <FlexLayout x:Name="flexLayout" Direction="Row" BindableLayout.ItemsSource="{Binding CurrentPointImagesPreview}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BackgroundColor="Black" Padding="0" Margin="5,0,0,0" CornerRadius="10" IsClippedToBounds="True">
+                                    <view:CustomCachedImage Source="{Binding ImageSource, Converter={StaticResource typeMediaIconSetter}}" WidthRequest="80" HeightRequest="80" Aspect="AspectFill">
+                                        <view:CustomCachedImage.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Path=BindingContext.ShowOtherPhotoCommand, Source={x:Reference Name=flexLayout}}" CommandParameter="{Binding .}">
+                                            </TapGestureRecognizer>
+                                        </view:CustomCachedImage.GestureRecognizers>
+                                    </view:CustomCachedImage>
+                                </Frame>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </FlexLayout>
                 </ScrollView>
                 <Label Margin="5,0,5,0" FontSize="15" Text="{Binding RoutePointDescription}" TextColor="Black" LineBreakMode="WordWrap" IsVisible="{Binding DescriptionIsVisible}">
                     <Label.GestureRecognizers>
