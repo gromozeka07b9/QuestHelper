@@ -47,9 +47,13 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <MtouchArch>ARM64</MtouchArch>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>Apple Development: gromozeka07b9@gmail.com (UGH9G8Q7MX)</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <MtouchLink>None</MtouchLink>
+    <CodesignProvision>iOS Team Provisioning Profile: com.sd.gosh</CodesignProvision>
+    <CodesignExtraArgs />
+    <CodesignResourceRules />
+    <CodesignEntitlements />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -114,6 +118,11 @@
     <Compile Include="NetworkConnectionsService.cs" />
     <Compile Include="SyncService.cs" />
     <Compile Include="ToastService.cs" />
+    <BundleResource Include="Animations\fireworks.json" />
+    <BundleResource Include="Animations\hourglass.json" />
+    <BundleResource Include="Animations\newyearloading.json" />
+    <BundleResource Include="Animations\play-button.json" />
+    <BundleResource Include="Animations\usualloading.json" />
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
     <Compile Include="PathService.cs" />
@@ -349,5 +358,17 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\photo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\tourpage1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\avatar1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\sync.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\settings.png" />
   </ItemGroup>
 </Project>

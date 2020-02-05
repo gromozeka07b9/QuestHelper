@@ -49,15 +49,5 @@ namespace QuestHelper.View
         {
             _vm.closeDialog();
         }
-
-        private async void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(e.NewTextValue))
-            {
-                //SearchBar.Unfocus();
-                //await Task.Delay(200);
-                //TestEntry.Focus();
-            }
-        }
     }
 }

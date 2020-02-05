@@ -6,7 +6,8 @@
              xmlns:animationForms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
-             x:Class="QuestHelper.View.RouteCoverPage" NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="True" Appearing="RouteCoverPage_OnAppearing" Disappearing="RouteCoverPage_OnDisappearing">
+             xmlns:animationResource="clr-namespace:QuestHelper.Resources"
+             x:Class="QuestHelper.View.RouteCoverPage" NavigationPage.HasNavigationBar="False" Appearing="RouteCoverPage_OnAppearing" Disappearing="RouteCoverPage_OnDisappearing">
     <ContentPage.ToolbarItems>
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
@@ -45,7 +46,7 @@
                                 VerticalOptions="Start" HorizontalOptions="Center"
                                 />
             <animationForms:AnimationView Grid.Row="2" ClickedCommand="{Binding StartRouteCommand}" IsVisible="{Binding IsVisibleProgress, Converter={StaticResource inverter}}"
-                                Animation="play-button.json"
+                                Animation="{animationResource:AnimationResourceExtension play-button}"
                                 Loop="True"
                                 AutoPlay="True"
                                 IsEnabled="True"

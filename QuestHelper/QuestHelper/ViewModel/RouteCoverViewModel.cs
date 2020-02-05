@@ -3,6 +3,7 @@ using QuestHelper.Managers;
 using QuestHelper.Managers.Sync;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
+using QuestHelper.Resources;
 using QuestHelper.View;
 using System;
 using System.Collections.Generic;
@@ -159,15 +160,6 @@ namespace QuestHelper.ViewModel
 
         }
 
-        /*private void updatePoints()
-        {
-            var points = _routePointManager.GetPointsByRouteId(_vroute.Id);
-            if (points.Any())
-            {
-                PointsOfRoute = new ObservableCollection<ViewRoutePoint>(points);
-            }
-        }*/
-
         public double ProgressValue
         {
             set
@@ -248,7 +240,9 @@ namespace QuestHelper.ViewModel
             {
                 var nowDate = DateTime.Now;            
                 bool isNewYear = nowDate.Month >= 11 || nowDate.Month == 1;
-                return isNewYear ? "newyearloading.json" : "usualloading.json";
+                
+                //return isNewYear ? "newyearloading.json" : "usualloading.json";
+                return isNewYear ? AnimationResourceController.GetPath("newyearloading") : AnimationResourceController.GetPath("usualloading");
             }
         }
 
@@ -256,43 +250,9 @@ namespace QuestHelper.ViewModel
         {
             get
             {
-                return AnimationName.Equals("newyearloading.json") ? 150 : 80;
+                return AnimationName.Contains("newyearloading") ? 150 : 80;
             }
         }
-
-        /*public ObservableCollection<ViewRoutePoint> PointsOfRoute
-        {
-            set
-            {
-                if (_viewPointsOfRoute != value)
-                {
-                    _viewPointsOfRoute = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("PointsOfRoute"));
-                    }
-                }
-            }
-            get
-            {
-                return _viewPointsOfRoute;
-            }
-        }*/
-
-        /*public ViewRoutePoint SelectedRoutePointItem
-        {
-            set
-            {
-                if (_pointItem != value)
-                {
-                    _pointItem = value;
-                    var page = new RouteCarouselRootPage(_vroute.RouteId, _pointItem.Id);
-                    Navigation.PushModalAsync(page);
-                    PropertyChanged(this, new PropertyChangedEventArgs("SelectedRoutePointItem"));
-                    _pointItem = null;
-                }
-            }
-        }*/
 
         public int RowHeightForDescription
         {

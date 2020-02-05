@@ -151,15 +151,11 @@
   </ItemGroup>
   <ItemGroup>
     <GoogleServicesJson Include="google-services.json" />
-    <AndroidAsset Include="Assets\newyearloading.json" />
-    <AndroidAsset Include="Assets\usualloading.json" />
-    <AndroidAsset Include="Assets\fireworks.json" />
-    <AndroidAsset Include="Assets\gears-animation.json" />
-    <AndroidAsset Include="Assets\busy.json" />
-    <AndroidAsset Include="Assets\clock.json" />
-    <AndroidAsset Include="Assets\spinner.json" />
-    <AndroidAsset Include="Assets\hourglass.json" />
-    <AndroidAsset Include="Assets\play-button.json" />
+    <AndroidAsset Include="Assets\Animations\newyearloading.json" />
+    <AndroidAsset Include="Assets\Animations\usualloading.json" />
+    <AndroidAsset Include="Assets\Animations\fireworks.json" />
+    <AndroidAsset Include="Assets\Animations\hourglass.json" />
+    <AndroidAsset Include="Assets\Animations\play-button.json" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
