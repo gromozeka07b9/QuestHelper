@@ -8,6 +8,7 @@ using Lottie.Forms.iOS.Renderers;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using QuestHelper.Consts;
 using QuestHelper.Managers.Sync;
 using QuestHelper.Model.Messages;
 using UIKit;
@@ -35,6 +36,10 @@ namespace QuestHelper.iOS
             Forms.SetFlags("IndicatorView_Experimental");
             Forms.SetFlags("CollectionView_Experimental");
             global::Xamarin.Forms.Forms.Init();
+
+            DeviceSize.FullScreenWidth = (int)UIScreen.MainScreen.Bounds.Width;
+            DeviceSize.FullScreenHeight = (int)UIScreen.MainScreen.Bounds.Height;
+
             LoadApplication(new App());
             AnimationViewRenderer.Init();
             Xamarin.FormsMaps.Init();

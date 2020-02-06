@@ -33,6 +33,8 @@ namespace QuestHelper.ViewModel
         private List<ImagePreviewItem> _currentPointImagesPreview;
         private int _prevCarouselPointsSelectedIndex;
         private int _carouselPointsSelectedIndex;
+        private bool _isMapShow;
+
         //private string _currentPreviewFile;
 
         public INavigation Navigation { get; set; }
@@ -42,6 +44,7 @@ namespace QuestHelper.ViewModel
         public ICommand ShowOtherPhotoCommand { get; private set; }
         public ICommand SwipeDescriptionRightCommand { get; private set; }
         public ICommand SwipeDescriptionLeftCommand { get; private set; }
+        public ICommand MapIconTappedCommand { get; private set; }
 
         public RouteCarouselRootViewModel(string routeId)
         {
@@ -50,7 +53,13 @@ namespace QuestHelper.ViewModel
             ShowOtherPhotoCommand = new Command(showOtherPhotoCommand);
             SwipeDescriptionRightCommand = new Command(swipeDescriptionRightCommand);
             SwipeDescriptionLeftCommand = new Command(swipeDescriptionLeftCommand);
+            MapIconTappedCommand = new Command(mapIconTappedCommand);
             _vRoute = new ViewRoute(routeId);
+        }
+
+        private void mapIconTappedCommand(object obj)
+        {
+            IsMapShow = !IsMapShow;
         }
 
         private void swipeDescriptionLeftCommand(object obj)
@@ -177,6 +186,8 @@ namespace QuestHelper.ViewModel
             return _userId;
         }
 
+        public int CarouselRowHeight => Convert.ToInt32(Consts.DeviceSize.FullScreenHeight * 0.8);
+
         public string RouteName
         {
             get { return _vRoute?.Name.ToUpper(); }
@@ -264,6 +275,21 @@ namespace QuestHelper.ViewModel
             }
         }
 
+        public bool IsMapShow
+        {
+            set
+            {
+                if(_isMapShow != value)
+                {
+                    _isMapShow = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsMapShow"));
+                }
+            }
+            get
+            {
+                return _isMapShow;
+            }
+        }
         public List<PointForMap> PointsOnMap
         {
             get

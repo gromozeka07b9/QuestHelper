@@ -172,19 +172,19 @@
                         <StackLayout Orientation="Vertical">
                             <Label Text="Name" FontSize="16" FontAttributes="Bold" Margin="5,0,0,0" Style="{StaticResource RouteTextLabel}" TextColor="Black" LineBreakMode="WordWrap" VerticalTextAlignment="Start" HorizontalOptions="FillAndExpand">
                             </Label>
-                            <StackLayout Orientation="Horizontal">
-                                <Editor x:Name="NameEditorCtrl" Margin="0" Text="{Binding NameForEdit}" FontSize="16" WidthRequest="280" HeightRequest="40" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand"></Editor>
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Fill">
+                                <Editor x:Name="NameEditorCtrl" Margin="0" Text="{Binding NameForEdit}" FontSize="16" WidthRequest="280" HeightRequest="40" HorizontalOptions="Fill" VerticalOptions="EndAndExpand"></Editor>
                             </StackLayout>
 
                             <Label Text="Description" FontSize="16" FontAttributes="Bold" Margin="5,0,0,0" Style="{StaticResource RouteTextLabel}" TextColor="Black" LineBreakMode="WordWrap" VerticalTextAlignment="Start" HorizontalOptions="FillAndExpand">
                             </Label>
-                            <StackLayout Orientation="Horizontal">
-                                <Editor Margin="0" Text="{Binding DescriptionForEdit}" FontSize="14" WidthRequest="280" HeightRequest="140" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand"></Editor>
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Fill">
+                                <Editor Margin="0" Text="{Binding DescriptionForEdit}" FontSize="14" WidthRequest="280" HeightRequest="140" HorizontalOptions="Fill" VerticalOptions="EndAndExpand"></Editor>
                             </StackLayout>
 
                             <Label Text="Cover image" FontSize="16" FontAttributes="Bold" Margin="5,0,0,0" Style="{StaticResource RouteTextLabel}" TextColor="Black" LineBreakMode="WordWrap" VerticalTextAlignment="Start" HorizontalOptions="FillAndExpand">
                             </Label>
-                            <Frame CornerRadius="0" Padding="1" Margin="0" BackgroundColor="Blue">
+                            <Frame CornerRadius="0" Padding="0" Margin="0">
                                 <Image Source="{Binding CoverImagePathForEdit}" Aspect="AspectFill" HeightRequest="200" WidthRequest="50">
                                     <Image.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ChooseImageForCoverCommand}"/>

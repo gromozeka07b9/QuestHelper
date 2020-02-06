@@ -27,6 +27,15 @@ namespace QuestHelper.View
             InitializeComponent();
             _vm = new RouteCarouselRootViewModel(routeId) { Navigation = this.Navigation };
             BindingContext = _vm;
+            _vm.PropertyChanged += _vm_PropertyChanged;
+        }
+
+        private void _vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == "IsMapShow")
+            {
+                centerMap();
+            }
         }
 
         private void RouteCarouselRootPage_OnAppearing(object sender, EventArgs e)
@@ -43,7 +52,15 @@ namespace QuestHelper.View
 
         private void Cards_ItemAppeared(CardsView view, ItemAppearedEventArgs args)
         {
-            //ToDo: Так и не нашел понял, как картой управлять.
+            if (_vm.IsMapShow)
+            {
+                centerMap();
+            }
+        }
+
+        private void centerMap()
+        {
+            //ToDo: Так и не нашел понял, как картой управлять через вьюмодель.
             if ((_vm.CurrentItem?.Latitude != 0) || (_vm.CurrentItem?.Longitude != 0))
             {
                 MapRouteOverview.MoveToRegion(MapSpan.FromCenterAndRadius(new Xamarin.Forms.Maps.Position(_vm.CurrentItem.Latitude, _vm.CurrentItem.Longitude), Distance.FromKilometers(1)));

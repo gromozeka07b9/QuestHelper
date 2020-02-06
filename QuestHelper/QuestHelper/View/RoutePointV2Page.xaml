@@ -71,17 +71,18 @@
                         </StackLayout>
                     </Frame>
                     <StackLayout Orientation="Vertical" VerticalOptions="Start" HeightRequest="300" IsVisible="{Binding IsOneImagesPresent, Converter={StaticResource inverter}}">
-                        <CarouselView x:Name="myCarouselViewCtrl" ItemsUpdatingScrollMode="KeepLastItemInView" ItemsSource="{Binding Images}" HorizontalOptions="FillAndExpand" Margin="0,0,0,0" VerticalOptions="StartAndExpand" HorizontalScrollBarVisibility="Always" IndicatorView.ItemsSourceBy="{Binding Images}">
+                        <CarouselView x:Name="myCarouselViewCtrl" ItemsUpdatingScrollMode="KeepLastItemInView" ItemsSource="{Binding Images}" HorizontalOptions="FillAndExpand" Margin="0,0,0,0" VerticalOptions="StartAndExpand" HorizontalScrollBarVisibility="Always" IndicatorView.ItemsSourceBy="{Binding Images}" PeekAreaInsets="50">
                             <CarouselView.ItemTemplate>
                                 <DataTemplate>
-                                    <StackLayout Padding="3">
+                                    <StackLayout Padding="5">
                                         <Frame HasShadow="True"
                                            BorderColor="DarkGray"
                                            CornerRadius="5"
                                            Margin="5,0,5,0"
                                            WidthRequest="60"
                                            HeightRequest="60"
-                                           Padding="3"
+                                           Padding="0"
+                                           IsClippedToBounds="True"    
                                            HorizontalOptions="FillAndExpand"
                                            VerticalOptions="FillAndExpand">
                                             <Frame.GestureRecognizers>

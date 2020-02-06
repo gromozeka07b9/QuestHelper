@@ -114,7 +114,7 @@
                                         <RowDefinition Height="1*"/>
                                         <RowDefinition Height="1*"/>
                                     </Grid.RowDefinitions>
-                                    <ffimageloading:CachedImage x:Name="ImgRoute" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="4" Source="{Binding CoverImage}" Opacity="1" Margin="0,0,0,0" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <ffimageloading:CachedImage x:Name="ImgRoute" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="4" Source="{Binding CoverImage}" Opacity="1" Margin="0" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
 
                                     </ffimageloading:CachedImage>
                                     <!--Image x:Name="ImgRoute" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="4" Source="{Binding CoverImage}" Opacity="1" Margin="0,0,0,0" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
@@ -124,7 +124,7 @@
                                     </StackLayout>
                                     <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" Style="{StaticResource RouteListStackLayoutBottom}">
                                     </StackLayout>
-                                    <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Text="{Binding Name}" Style="{StaticResource RouteListBigLabel}" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="End" Margin="5,0,5,0" />
+                                    <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Text="{Binding Name}" Style="{StaticResource RouteListBigLabel}" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="End" Margin="5,3,5,0" />
 
                                     <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding RouteLengthKm}" Style="{StaticResource RouteListSmallLabel}" Margin="0,0,10,0" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="End"></Label>
                                     <Label Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding RouteLengthSteps}" Style="{StaticResource RouteListSmallLabel}" Margin="0,0,10,0" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="End"></Label>

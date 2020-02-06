@@ -11,13 +11,14 @@
              x:Class="QuestHelper.View.RouteCarouselRootPage" NavigationPage.HasNavigationBar="False" Appearing="RouteCarouselRootPage_OnAppearing" Disappearing="RouteCarouselRootPage_OnDisappearing" Style="{StaticResource ContentPage}">
     <ContentPage.Resources>
         <ResourceDictionary>
+            <local1:NegativeBoolConverter  x:Key="inverter" />
             <local1:TypeMediaIconConverter  x:Key="typeMediaIconSetter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
         <ScrollView Orientation="Vertical" Padding="0">
             <StackLayout Padding="0">
-                <Grid HeightRequest="550">
+                <Grid HeightRequest="{Binding CarouselRowHeight}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
@@ -78,11 +79,17 @@
                         <SwipeGestureRecognizer Command="{Binding SwipeDescriptionLeftCommand}" Direction="Left" Threshold="10"/>
                     </Label.GestureRecognizers>
                 </Label>
-                <view:CustomMap HeightRequest="300" x:Name="MapRouteOverview" VerticalOptions="FillAndExpand"
+                <StackLayout Orientation="Vertical" HeightRequest="300" HorizontalOptions="Fill">
+                    <ffimageloading:CachedImage Source="map2.png" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Aspect="Fill" Margin="30" IsVisible="{Binding IsMapShow, Converter={StaticResource inverter}}" >
+                        <ffimageloading:CachedImage.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding MapIconTappedCommand}" />
+                        </ffimageloading:CachedImage.GestureRecognizers>                        
+                    </ffimageloading:CachedImage>
+                    <view:CustomMap HeightRequest="300" x:Name="MapRouteOverview" VerticalOptions="FillAndExpand"  IsEnabled="{Binding IsMapShow}" IsVisible="{Binding IsMapShow}"                                    
                                 IsShowingUser="False"
                                 UseInterceptTouchEvent="true"
-                                MapType="Street"
-                />
+                                MapType="Street" />
+                </StackLayout>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
