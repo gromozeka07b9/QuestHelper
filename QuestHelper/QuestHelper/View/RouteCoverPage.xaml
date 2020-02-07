@@ -7,9 +7,7 @@
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
              xmlns:animationResource="clr-namespace:QuestHelper.Resources"
-             x:Class="QuestHelper.View.RouteCoverPage" NavigationPage.HasNavigationBar="True" NavigationPage.HasBackButton="False" Appearing="RouteCoverPage_OnAppearing" Disappearing="RouteCoverPage_OnDisappearing">
-    <ContentPage.ToolbarItems>
-    </ContentPage.ToolbarItems>
+             x:Class="QuestHelper.View.RouteCoverPage" NavigationPage.HasNavigationBar="False" Appearing="RouteCoverPage_OnAppearing" Disappearing="RouteCoverPage_OnDisappearing">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:NegativeBoolConverter  x:Key="inverter" />
@@ -18,12 +16,26 @@
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="20*"></RowDefinition>
-                <RowDefinition Height="30*"></RowDefinition>
+                <RowDefinition>
+                    <RowDefinition.Height>
+                        <OnPlatform x:TypeArguments="GridLength">
+                            <On Platform="iOS">17*</On>
+                            <On Platform="Android">10*</On>
+                        </OnPlatform>
+                    </RowDefinition.Height>
+                </RowDefinition>
+                <RowDefinition>
+                    <RowDefinition.Height>
+                        <OnPlatform x:TypeArguments="GridLength">
+                            <On Platform="iOS">33*</On>
+                            <On Platform="Android">40*</On>
+                        </OnPlatform>
+                    </RowDefinition.Height>
+                </RowDefinition>
                 <RowDefinition Height="49*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Image Grid.Row="0" Grid.RowSpan="3" Source="{Binding RouteCoverImage}" Aspect="AspectFill" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Image Grid.Row="0" Grid.RowSpan="4" Source="{Binding RouteCoverImage}" Aspect="AspectFill" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding StartRouteCommand}"></TapGestureRecognizer>
                 </Image.GestureRecognizers>
@@ -53,7 +65,7 @@
                                 WidthRequest="80"
                                 HeightRequest="80"
                                 VerticalOptions="Start" HorizontalOptions="Center"></animationForms:AnimationView>
-            <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+            <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="End">
                 <Image Source="baseline_arrow_back_white_48.png" WidthRequest="40" HeightRequest="40" Margin="10,10,0,0" VerticalOptions="Start" HorizontalOptions="Start">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding BackNavigationCommand}"/>
@@ -66,11 +78,11 @@
                     </circle:CircleImage>
                 </StackLayout>
             </StackLayout>
-            <StackLayout Grid.Row="2" Padding="5" HorizontalOptions="FillAndExpand" VerticalOptions="End" BackgroundColor="Black" Opacity="0.5">
+            <StackLayout Grid.Row="2" Grid.RowSpan="2" Padding="5" HorizontalOptions="FillAndExpand" VerticalOptions="End" BackgroundColor="Black" Opacity="0.5">
                 <Label Text="{Binding Description}" FontSize="15" TextColor="White" FontAttributes="None" LineBreakMode="TailTruncation" MaxLines="10" VerticalTextAlignment="Start" VerticalOptions="Start" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" Opacity="0" >
                 </Label>
             </StackLayout>
-            <StackLayout Grid.Row="2" Padding="5" HorizontalOptions="FillAndExpand" VerticalOptions="End">
+            <StackLayout Grid.Row="2" Grid.RowSpan="2" Padding="5" HorizontalOptions="FillAndExpand" VerticalOptions="End">
                 <Label Text="{Binding Description}" FontSize="15" TextColor="White" FontAttributes="None" LineBreakMode="TailTruncation" MaxLines="10" VerticalTextAlignment="Start" VerticalOptions="Start" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" >
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding StartRouteCommand}"></TapGestureRecognizer>

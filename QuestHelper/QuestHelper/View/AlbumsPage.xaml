@@ -20,15 +20,21 @@
                 <ColumnDefinition Width="96" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="0" />
+                <RowDefinition>
+                    <RowDefinition.Height>
+                        <OnPlatform x:TypeArguments="GridLength">
+                            <On Platform="iOS">30</On>
+                            <On Platform="Android">0</On>
+                        </OnPlatform>
+                    </RowDefinition.Height>
+                </RowDefinition>
                 <RowDefinition Height="*" />
-                <RowDefinition Height="80" />
             </Grid.RowDefinitions>
-            <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Orientation="Vertical" IsVisible="{Binding NoPostsWarningIsVisible}" HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
+            <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="2" Orientation="Vertical" IsVisible="{Binding NoPostsWarningIsVisible}" HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
                 <Label Text="{lang:Translation Albums_ListRouteIsEmpty}" Style="{StaticResource NoDataWarinigSmallLabel}" Margin="20,0,20,0" VerticalOptions="End"></Label>
                 <Image Source="emptylist.png" Style="{StaticResource NoDataWarinigIconImage}" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}"/>
             </StackLayout>
-            <ListView Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="3" SeparatorVisibility="None" ItemsSource="{Binding Routes}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshListPostsCommand}" RowHeight="250"  SelectedItem="{Binding SelectedRouteItem,Mode=TwoWay}">
+            <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" SeparatorVisibility="None" ItemsSource="{Binding Routes}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshListPostsCommand}" RowHeight="250"  SelectedItem="{Binding SelectedRouteItem,Mode=TwoWay}">
                 <ListView.Header>
                     <StackLayout Margin="0" Style="{StaticResource InfoBlockStackLayout}" IsVisible="{Binding NoPostsWarningIsVisible, Converter={StaticResource inverter}}">
                         <Frame Padding="0,0,0,5" Style="{StaticResource InfoBlockFrame}">

@@ -34,7 +34,7 @@
                 <ListView.Header>
                     <StackLayout Margin="0" Style="{StaticResource InfoBlockStackLayout}">
                         <Frame Padding="0" Style="{StaticResource InfoBlockFrame}">
-                            <SearchBar x:Name="SearchBar" Placeholder="{lang:Translation Feed_SearchPlaceholder}" SearchCommand="{Binding SearchRoutesCommand}" SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}" Text="{Binding TextFilter}" HorizontalOptions="FillAndExpand" FontSize="15"></SearchBar>
+                            <SearchBar x:Name="SearchBar" Placeholder="{lang:Translation Feed_SearchPlaceholder}" SearchCommand="{Binding SearchRoutesCommand}" SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}" Text="{Binding TextFilter}" HorizontalOptions="FillAndExpand" FontSize="15" BackgroundColor="White"></SearchBar>
                         </Frame>
                     </StackLayout>
                 </ListView.Header>
@@ -45,8 +45,8 @@
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="3*"/>
-                                        <ColumnDefinition Width="6*"/>
+                                        <ColumnDefinition Width="5*"/>
+                                        <ColumnDefinition Width="4*"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="4*"/>

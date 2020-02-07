@@ -14,6 +14,12 @@
     <ContentPage.Content>
         <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <StackLayout.Margin>
+                    <OnPlatform x:TypeArguments="Thickness">
+                        <On Platform="iOS">0,20,0,0</On>
+                        <On Platform="Android">0</On>
+                    </OnPlatform>
+                </StackLayout.Margin>
                 <Image Source="baseline_arrow_back_black_48.png" WidthRequest="32" HeightRequest="32" Margin="5,5,0,0" VerticalOptions="Start" HorizontalOptions="Start">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding BackNavigationCommand}"/>
@@ -31,11 +37,5 @@
                 </Editor>
             </StackLayout>
         </StackLayout>
-        <!--Frame CornerRadius="10" HasShadow="True" Padding="0" BorderColor="Accent" OutlineColor="#CAECFF" BackgroundColor="#C8FFFF" IsClippedToBounds="False" Margin="5">
-            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0">
-                <Editor IsVisible="True" x:Name="EditorElement" HeightRequest="300" Placeholder="{lang:Translation RoutePointDescription_Text}" AutoSize="Disabled" Completed="Editor_OnCompleted"  Text="{Binding Description}" FontSize="16" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Focused="EditorElement_OnFocused" Unfocused="EditorElement_OnUnfocused">
-                </Editor>
-            </StackLayout>
-        </-->
     </ContentPage.Content>
 </ContentPage>
