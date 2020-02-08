@@ -1,5 +1,8 @@
-﻿using QuestHelper.iOS;
+﻿using Foundation;
+using QuestHelper.iOS;
 using System;
+using System.Linq;
+using UIKit;
 using Path = System.IO.Path;
 
 [assembly: Xamarin.Forms.Dependency(typeof(DefaultViewer))]
@@ -9,25 +12,49 @@ namespace QuestHelper.iOS
     {
         public void Show(string filename)
         {
-            /*Intent intent = new Intent();
-            intent.SetAction(Intent.ActionView);
-            intent.AddFlags(ActivityFlags.NewTask);
-            intent.AddFlags(ActivityFlags.MultipleTask);
-            intent.AddFlags(ActivityFlags.GrantReadUriPermission);
             try
             {
-                Java.IO.File file = new Java.IO.File(filename);
-                var fileUri = FileProvider.GetUriForFile(Android.App.Application.Context, Android.App.Application.Context.PackageName + ".fileprovider", file);
-                if(Path.GetExtension(filename) == ".3gp")
-                    intent.SetDataAndType(fileUri, "audio/*");
-                else
-                    intent.SetDataAndType(fileUri, "image/*");
-                Android.App.Application.Context.StartActivity(intent);
+                Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+                {
+                    var firstController = UIApplication.SharedApplication.KeyWindow.RootViewController.ChildViewControllers.First().ChildViewControllers.Last().ChildViewControllers.First();
+                    var navcontroller = firstController as UINavigationController;
+                    var viewController = navcontroller.ViewControllers.Last();
+                    var uidic = UIDocumentInteractionController.FromUrl(new NSUrl(filename, true));
+
+                    uidic.Delegate = new DocInteractionC(viewController);
+
+                    uidic.PresentPreview(true);
+                });
             }
             catch (Exception e)
             {
-                HandleError.Process("DefaultViewer", "Show", e, false);
-            }*/
+
+            }
+
+        }
+        public class DocInteractionC : UIDocumentInteractionControllerDelegate
+        {
+            readonly UIViewController _viewController;
+
+            public DocInteractionC(UIViewController controller)
+            {
+                _viewController = controller;
+            }
+
+            public override UIViewController ViewControllerForPreview(UIDocumentInteractionController controller)
+            {
+
+                return _viewController;
+
+            }
+
+            public override UIView ViewForPreview(UIDocumentInteractionController controller)
+            {
+
+                return _viewController.View;
+
+            }
+
         }
     }
 }
