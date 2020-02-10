@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Acr.UserDialogs;
 using Microsoft.AppCenter.Analytics;
@@ -63,12 +65,38 @@ namespace QuestHelper.ViewModel
         {
             if (googleUser != null)
             {
-                //GoogleUser = googleUser;
-                //IsLogedIn = true;
+                Task.Run(async ()  => await TryToLoginServerWithOAuth(googleUser));
             }
             else
             {
-                //_dialogService.DisplayAlertAsync("Error", message, "Ok");
+                Application.Current.MainPage.DisplayAlert("error", message, "Ok");
+            }
+        }
+
+        private async Task<bool> TryToLoginServerWithOAuth(GoogleUser googleUser)
+        {
+            Username = googleUser.Name;
+            AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
+            Analytics.TrackEvent("Login OAuth user started", new Dictionary<string, string> { { "Username", _username } });
+            TokenResponse authData = await apiRequest.LoginByOAuthAsync(googleUser.Name, googleUser.Email, "", googleUser.ImgUrl.ToString(), googleUser.Name, "111");
+            if (!string.IsNullOrEmpty(authData?.Access_Token))
+            {
+                Analytics.TrackEvent("Login OAuth done", new Dictionary<string, string> { { "Username", _username } });
+                TokenStoreService tokenService = new TokenStoreService();
+                await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId, _username, authData.Email);
+                ParameterManager par = new ParameterManager();
+                par.Set("GuestMode", "0");
+#if !DEBUG
+                    Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+#endif
+                await Navigation.PopModalAsync();
+                return true;
+            }
+            else
+            {
+                Analytics.TrackEvent("Login OAuth error", new Dictionary<string, string> { { "Username", _username } });
+                await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.Login_AuthError, "Ok");
+                return false;
             }
         }
 
@@ -231,31 +259,12 @@ namespace QuestHelper.ViewModel
         {
             Analytics.TrackEvent("Login dialog start", new Dictionary<string, string> { });
             UserDialogs.Instance.HideLoading();
-            MessagingCenter.Subscribe<OAuthResultMessage>(this, string.Empty, async (sender) =>
+            /*MessagingCenter.Subscribe<OAuthResultMessage>(this, string.Empty, async (sender) =>
             {
-                Username = sender.Username;
-                AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
-                Analytics.TrackEvent("Login OAuth user started", new Dictionary<string, string> { { "Username", _username } });
-                TokenResponse authData = await apiRequest.LoginByOAuthAsync(sender.Username, sender.Email, sender.Locale, sender.ImgUrl, sender.AuthenticatorUserId, sender.AuthToken);
-                if (!string.IsNullOrEmpty(authData?.Access_Token))
-                {
-                    Analytics.TrackEvent("Login OAuth done", new Dictionary<string, string> { { "Username", _username } });
-                    TokenStoreService tokenService = new TokenStoreService();
-                    await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId, _username, authData.Email);
-                    ParameterManager par = new ParameterManager();
-                    par.Set("GuestMode", "0");
-#if !DEBUG
-                    Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
-#endif
-                    await Navigation.PopModalAsync();
-                }
-                else
-                {
-                    Analytics.TrackEvent("Login OAuth error", new Dictionary<string, string> { { "Username", _username } });
-                    await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.Login_AuthError, "Ok");
-                }
-            });
+                await TryToLoginServerWithOAuth(sender);
+            });*/
         }
+
         public void StopLoginDialog()
         {
             MessagingCenter.Unsubscribe<OAuthResultMessage>(this, string.Empty);

@@ -15567,6 +15567,15 @@ namespace QuestHelper.Droid
 			// aapt resource value: 0x7F0C0044
 			public const int mtrl_chip_close_icon_content_description = 2131492932;
 			
+			// aapt resource value: 0x7F0C0045
+			public const int pageFeed = 2131492933;
+			
+			// aapt resource value: 0x7F0C0046
+			public const int pageLoadedAlbums = 2131492934;
+			
+			// aapt resource value: 0x7F0C0047
+			public const int pagePrivate = 2131492935;
+			
 			// aapt resource value: 0x7F0C0048
 			public const int password_toggle_content_description = 2131492936;
 			

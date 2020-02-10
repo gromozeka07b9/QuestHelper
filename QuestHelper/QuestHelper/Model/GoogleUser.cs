@@ -8,6 +8,6 @@ namespace QuestHelper.Model
     {
         public string Name { get; set; }
         public string Email { get; set; }
-        public Uri Picture { get; set; }
+        public Uri ImgUrl { get; set; }
     }
 }

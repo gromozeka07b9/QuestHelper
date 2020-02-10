@@ -13,6 +13,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Plugin.CurrentActivity;
 using QuestHelper.Droid;
 using QuestHelper.Model;
 using Xamarin.Forms;
@@ -30,8 +31,8 @@ namespace QuestHelper.Droid
 		{
 			Instance = this;
 			GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DefaultSignIn)
-															 .RequestEmail()
-															 .Build();
+																.RequestEmail()
+																.Build();
 
 			_googleApiClient = new GoogleApiClient.Builder(Android.App.Application.Context)
 				.AddConnectionCallbacks(this)
@@ -45,8 +46,7 @@ namespace QuestHelper.Droid
 		{
 			_onLoginComplete = onLoginComplete;
 			Intent signInIntent = Auth.GoogleSignInApi.GetSignInIntent(_googleApiClient);
-			//Android.App.Application.Context.ApplicationContext
-			((MainActivity)Forms.Context).StartActivityForResult(signInIntent, 1);
+			CrossCurrentActivity.Current.Activity.StartActivityForResult(signInIntent, 1);
 			_googleApiClient.Connect();
 		}
 
@@ -64,7 +64,7 @@ namespace QuestHelper.Droid
 				{
 					Name = accountt.DisplayName,
 					Email = accountt.Email,
-					Picture = new Uri((accountt.PhotoUrl != null ? $"{accountt.PhotoUrl}" : $"https://autisticdating.net/imgs/profile-placeholder.jpg"))
+					ImgUrl = new Uri((accountt.PhotoUrl != null ? $"{accountt.PhotoUrl}" : $"https://autisticdating.net/imgs/profile-placeholder.jpg"))
 				}, string.Empty);
 			}
 			else
