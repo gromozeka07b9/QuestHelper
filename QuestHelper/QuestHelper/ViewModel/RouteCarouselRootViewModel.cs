@@ -186,7 +186,7 @@ namespace QuestHelper.ViewModel
             return _userId;
         }
 
-        public int CarouselRowHeight => Convert.ToInt32(Consts.DeviceSize.FullScreenHeight * 0.6);
+        public int CarouselRowHeight => Convert.ToInt32(Consts.DeviceSize.FullScreenHeight * 0.7);
 
         public string RouteName
         {
