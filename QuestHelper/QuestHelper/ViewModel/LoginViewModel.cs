@@ -26,6 +26,7 @@ namespace QuestHelper.ViewModel
         private string _apiUrl = "http://igosh.pro/api";
         private string _email;
 
+        private IGoogleAuthManagerService _googleAuthManager;
         public event PropertyChangedEventHandler PropertyChanged;
         public INavigation Navigation { get; set; }
         public ICommand LoginCommand { get; private set; }
@@ -51,9 +52,24 @@ namespace QuestHelper.ViewModel
         /// </summary>
         private void startLoginWithGoogleCommand()
         {
-            UserDialogs.Instance.ShowLoading(CommonResource.Login_AuthorizationProcess, MaskType.Black);
-            OAuthGoogleAuthenticator oAuth = new OAuthGoogleAuthenticator();
-            oAuth.Login();
+            //UserDialogs.Instance.ShowLoading(CommonResource.Login_AuthorizationProcess, MaskType.Black);
+            //OAuthGoogleAuthenticator oAuth = new OAuthGoogleAuthenticator();
+            //oAuth.Login();
+            _googleAuthManager = DependencyService.Get<IGoogleAuthManagerService>();
+            _googleAuthManager.Login(OnLoginComplete);
+        }
+
+        private void OnLoginComplete(GoogleUser googleUser, string message)
+        {
+            if (googleUser != null)
+            {
+                //GoogleUser = googleUser;
+                //IsLogedIn = true;
+            }
+            else
+            {
+                //_dialogService.DisplayAlertAsync("Error", message, "Ok");
+            }
         }
 
         async void RegisterCommandAsync()

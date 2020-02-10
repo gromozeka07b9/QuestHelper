@@ -25,6 +25,8 @@ using QuestHelper.Resources;
 using QuestHelper.Droid.Intents;
 using Lottie.Forms.Droid;
 using QuestHelper.Consts;
+using Android.Gms.Auth.Api.SignIn;
+using Android.Gms.Auth.Api;
 
 namespace QuestHelper.Droid
 {
@@ -131,6 +133,15 @@ namespace QuestHelper.Droid
 
         }
 
+        protected override void OnActivityResult(int requestCode, Result resultCode, Android.Content.Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            if (requestCode == 1)
+            {
+                GoogleSignInResult result = Auth.GoogleSignInApi.GetSignInResultFromIntent(data);
+                GoogleAuthManagerService.Instance.OnAuthCompleted(result);
+            }
+        }
         protected override void OnSaveInstanceState(Bundle outState)
         {
             base.OnSaveInstanceState(outState);
