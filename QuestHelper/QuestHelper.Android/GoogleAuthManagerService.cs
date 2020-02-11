@@ -59,17 +59,18 @@ namespace QuestHelper.Droid
 		{
 			if (result.IsSuccess)
 			{
-				GoogleSignInAccount accountt = result.SignInAccount;
+				GoogleSignInAccount account = result.SignInAccount;
 				_onLoginComplete?.Invoke(new GoogleUser()
 				{
-					Name = accountt.DisplayName,
-					Email = accountt.Email,
-					ImgUrl = new Uri((accountt.PhotoUrl != null ? $"{accountt.PhotoUrl}" : $"https://autisticdating.net/imgs/profile-placeholder.jpg"))
+					Name = account.DisplayName,
+					Email = account.Email,
+					Id = account.Id,
+					ImgUrl = new Uri((account.PhotoUrl != null ? $"{account.PhotoUrl}" : $"https://autisticdating.net/imgs/profile-placeholder.jpg"))
 				}, string.Empty);
 			}
 			else
 			{
-				_onLoginComplete?.Invoke(null, "An error occured!");
+				_onLoginComplete?.Invoke(null, string.Empty);
 			}
 		}
 

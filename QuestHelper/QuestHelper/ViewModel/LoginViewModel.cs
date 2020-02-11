@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Acr.UserDialogs;
 using Microsoft.AppCenter.Analytics;
+using QuestHelper.Consts;
 using QuestHelper.Managers;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
@@ -65,11 +66,20 @@ namespace QuestHelper.ViewModel
         {
             if (googleUser != null)
             {
-                Task.Run(async ()  => await TryToLoginServerWithOAuth(googleUser));
+                try
+                {
+                    Task.Run(async () => {
+                        var result = await TryToLoginServerWithOAuth(googleUser);
+                        });
+                }
+                catch (Exception e)
+                {
+                    HandleError.Process("OAuthLogin", "OnLoginComplete", e, true);
+                }
             }
             else
             {
-                Application.Current.MainPage.DisplayAlert("error", message, "Ok");
+                Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.Login_AuthError, "Ok");
             }
         }
 
@@ -78,9 +88,10 @@ namespace QuestHelper.ViewModel
             Username = googleUser.Name;
             AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
             Analytics.TrackEvent("Login OAuth user started", new Dictionary<string, string> { { "Username", _username } });
-            TokenResponse authData = await apiRequest.LoginByOAuthAsync(googleUser.Name, googleUser.Email, "", googleUser.ImgUrl.ToString(), googleUser.Name, "111");
+            TokenResponse authData = await apiRequest.LoginByOAuthAsync(googleUser.Name, googleUser.Email, DeviceCulture.CurrentCulture.Name, googleUser.ImgUrl.ToString(), googleUser.Id, string.Empty);
             if (!string.IsNullOrEmpty(authData?.Access_Token))
             {
+                //throw new Exception("Неведомая фигня");
                 Analytics.TrackEvent("Login OAuth done", new Dictionary<string, string> { { "Username", _username } });
                 TokenStoreService tokenService = new TokenStoreService();
                 await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId, _username, authData.Email);
