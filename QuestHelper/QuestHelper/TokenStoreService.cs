@@ -14,6 +14,8 @@ namespace QuestHelper
         private string _userIdKey = "UserId";
         private string _tokenUsernameKey = "Username";
         private string _tokenEmailKey = "UserEmail";
+        private string _tokenImgUrlKey = "ImgUrl";
+        private string _tokenRoleKey = "Role";
 
         public async Task<string> GetAuthTokenAsync()
         {
@@ -32,6 +34,14 @@ namespace QuestHelper
         public async Task<string> GetEmailAsync()
         {
             return await getDataByKey(_tokenEmailKey);
+        }
+        public async Task<string> GetRoleAsync()
+        {
+            return await getDataByKey(_tokenRoleKey);
+        }
+        public async Task<string> GetImgUrlAsync()
+        {
+            return await getDataByKey(_tokenImgUrlKey);
         }
 
         private async Task<string> getDataByKey(string keyName)
@@ -57,7 +67,7 @@ namespace QuestHelper
             return datavalue;
         }
 
-        public async Task<bool> SetAuthDataAsync(string authToken, string userId, string username, string email)
+        public async Task<bool> SetAuthDataAsync(string authToken, string userId, string username, string email, string imgUrl = "", string role = "")
         {
             try
             {
@@ -69,6 +79,10 @@ namespace QuestHelper
                 await SecureStorage.SetAsync(_tokenUsernameKey, username);
                 SecureStorage.Remove(_tokenEmailKey);
                 await SecureStorage.SetAsync(_tokenEmailKey, email);
+                SecureStorage.Remove(_tokenImgUrlKey);
+                await SecureStorage.SetAsync(_tokenImgUrlKey, imgUrl);
+                SecureStorage.Remove(_tokenRoleKey);
+                await SecureStorage.SetAsync(_tokenRoleKey, role);
             }
             catch (Exception e)
             {
@@ -78,6 +92,8 @@ namespace QuestHelper
                 par.Set(_userIdKey, userId);
                 par.Set(_tokenUsernameKey, username);
                 par.Set(_tokenEmailKey, email);
+                par.Set(_tokenImgUrlKey, imgUrl);
+                par.Set(_tokenRoleKey, role);
             }
 
             return true;
@@ -91,6 +107,8 @@ namespace QuestHelper
                 SecureStorage.Remove(_userIdKey);
                 SecureStorage.Remove(_tokenUsernameKey);
                 SecureStorage.Remove(_tokenEmailKey);
+                SecureStorage.Remove(_tokenImgUrlKey);
+                SecureStorage.Remove(_tokenRoleKey);
             }
             catch (Exception e)
             {
@@ -100,6 +118,8 @@ namespace QuestHelper
                 par.Delete(_userIdKey);
                 par.Delete(_tokenUsernameKey);
                 par.Delete(_tokenEmailKey);
+                par.Delete(_tokenImgUrlKey);
+                par.Delete(_tokenRoleKey);
             }
 
             return true;

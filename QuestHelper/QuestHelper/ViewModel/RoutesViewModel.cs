@@ -37,6 +37,8 @@ namespace QuestHelper.ViewModel
         private string _currentUserId = string.Empty;
         private string _username = string.Empty;
         private string _email = string.Empty;
+        private string _userRole;
+        private string _userImgUrl;
         private double _progressValue = 0;
         private int _countRoutesCreatedMe = 0;
         private int _countRoutesPublishedMe = 0;
@@ -67,13 +69,6 @@ namespace QuestHelper.ViewModel
 
         public async void startDialog()
         {
-            TokenStoreService tokenService = new TokenStoreService();
-            _currentUserId = await tokenService.GetUserIdAsync();
-            _username = await tokenService.GetUsernameAsync();
-            _email = await tokenService.GetEmailAsync();
-            PropertyChanged(this, new PropertyChangedEventArgs("Username"));
-            PropertyChanged(this, new PropertyChangedEventArgs("Email"));
-
             MessagingCenter.Subscribe<SyncProgressRouteLoadingMessage>(this, string.Empty, (sender) =>
             {
                 if (string.IsNullOrEmpty(sender.RouteId))
@@ -92,6 +87,30 @@ namespace QuestHelper.ViewModel
                     //StopAnimateCallback.Invoke();
                 }
             });
+            MessagingCenter.Subscribe<AuthResultMessage>(this, string.Empty, async (sender) =>
+            {
+                if (sender.IsAuthenticated)
+                {
+                    Task taskInnerUpdate = Task.Run(updateUserInfo);
+                    taskInnerUpdate.Wait();
+                    PropertyChanged(this, new PropertyChangedEventArgs("IsAutorizedMode"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("Username"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("Email"));
+                }
+            });
+            await updateUserInfo();
+            //Task taskUpdate = Task.Run(updateUserInfo);
+            //taskUpdate.Wait();
+        }
+
+        private async Task updateUserInfo()
+        {
+            TokenStoreService tokenService = new TokenStoreService();
+            _currentUserId = await tokenService.GetUserIdAsync();
+            _username = await tokenService.GetUsernameAsync();
+            _email = await tokenService.GetEmailAsync();
+            _userRole = await tokenService.GetRoleAsync();
+            _userImgUrl = await tokenService.GetImgUrlAsync();
         }
 
         private bool OnTimerForUpdateFireworks()
@@ -104,6 +123,7 @@ namespace QuestHelper.ViewModel
         {
             MessagingCenter.Unsubscribe<SyncProgressRouteLoadingMessage>(this, string.Empty);
             MessagingCenter.Unsubscribe<SyncRouteCompleteMessage>(this, string.Empty);
+            MessagingCenter.Unsubscribe<AuthResultMessage>(this, string.Empty);
         }
 
         internal void AddSharedPoint(ShareFromGoogleMapsMessage msg)
@@ -293,11 +313,19 @@ namespace QuestHelper.ViewModel
                 return !string.IsNullOrEmpty(_username) ? _username: "";
             }
         }
+
         public string Email
         {
             get
             {
                 return !string.IsNullOrEmpty(_email) ? _email : "";
+            }
+        }
+        public string UserImgUrl
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(_userImgUrl) ? _userImgUrl : "avatar1.png";
             }
         }
 

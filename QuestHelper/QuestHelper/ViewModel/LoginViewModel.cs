@@ -11,7 +11,6 @@ using QuestHelper.Consts;
 using QuestHelper.Managers;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
-using QuestHelper.OAuth;
 using QuestHelper.Resources;
 using QuestHelper.View;
 using QuestHelper.WS;
@@ -30,6 +29,8 @@ namespace QuestHelper.ViewModel
         private string _email;
 
         private IGoogleAuthManagerService _googleAuthManager;
+        private bool _isWaitForServer;
+
         public event PropertyChangedEventHandler PropertyChanged;
         public INavigation Navigation { get; set; }
         public ICommand LoginCommand { get; private set; }
@@ -55,9 +56,7 @@ namespace QuestHelper.ViewModel
         /// </summary>
         private void startLoginWithGoogleCommand()
         {
-            //UserDialogs.Instance.ShowLoading(CommonResource.Login_AuthorizationProcess, MaskType.Black);
-            //OAuthGoogleAuthenticator oAuth = new OAuthGoogleAuthenticator();
-            //oAuth.Login();
+            IsWaitForServer = true;
             _googleAuthManager = DependencyService.Get<IGoogleAuthManagerService>();
             _googleAuthManager.Login(OnLoginComplete);
         }
@@ -66,16 +65,17 @@ namespace QuestHelper.ViewModel
         {
             if (googleUser != null)
             {
-                try
+                var taskRun = Task.Run(async () =>
                 {
-                    Task.Run(async () => {
-                        var result = await TryToLoginServerWithOAuth(googleUser);
-                        });
-                }
-                catch (Exception e)
-                {
-                    HandleError.Process("OAuthLogin", "OnLoginComplete", e, true);
-                }
+                    try
+                    {
+                        await TryToLoginServerWithOAuth(googleUser);
+                    }
+                    catch (Exception e)
+                    {
+                        HandleError.Process("OAuthLogin", "OnLoginComplete", e, false);
+                    }
+                });
             }
             else
             {
@@ -83,31 +83,32 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        private async Task<bool> TryToLoginServerWithOAuth(GoogleUser googleUser)
+        private async Task TryToLoginServerWithOAuth(GoogleUser googleUser)
         {
             Username = googleUser.Name;
             AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
             Analytics.TrackEvent("Login OAuth user started", new Dictionary<string, string> { { "Username", _username } });
+            //ToDo: надо добавить на сервер передачу и получение imgurl и роли!
             TokenResponse authData = await apiRequest.LoginByOAuthAsync(googleUser.Name, googleUser.Email, DeviceCulture.CurrentCulture.Name, googleUser.ImgUrl.ToString(), googleUser.Id, string.Empty);
             if (!string.IsNullOrEmpty(authData?.Access_Token))
             {
-                //throw new Exception("Неведомая фигня");
                 Analytics.TrackEvent("Login OAuth done", new Dictionary<string, string> { { "Username", _username } });
                 TokenStoreService tokenService = new TokenStoreService();
-                await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId, _username, authData.Email);
-                ParameterManager par = new ParameterManager();
-                par.Set("GuestMode", "0");
+                if (await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId, _username, authData.Email, googleUser.ImgUrl.ToString()))
+                {
+                    ParameterManager par = new ParameterManager();
+                    par.Set("GuestMode", "0");
+                    Xamarin.Forms.MessagingCenter.Send<AuthResultMessage>(new AuthResultMessage() { IsAuthenticated = true, Username = googleUser.Name }, string.Empty);
 #if !DEBUG
                     Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
 #endif
-                await Navigation.PopModalAsync();
-                return true;
+                    await Navigation.PopModalAsync();
+                }
             }
             else
             {
                 Analytics.TrackEvent("Login OAuth error", new Dictionary<string, string> { { "Username", _username } });
                 await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.Login_AuthError, "Ok");
-                return false;
             }
         }
 
@@ -128,13 +129,16 @@ namespace QuestHelper.ViewModel
                             {
                                 Analytics.TrackEvent("Register new user done", new Dictionary<string, string> { { "Username", _username } });
                                 TokenStoreService tokenService = new TokenStoreService();
-                                await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId, _username, _email);
-                                ParameterManager par = new ParameterManager();
-                                par.Set("GuestMode", "0");
+                                if(await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId, _username, _email))
+                                {
+                                    ParameterManager par = new ParameterManager();
+                                    par.Set("GuestMode", "0");
+                                    Xamarin.Forms.MessagingCenter.Send<AuthResultMessage>(new AuthResultMessage() { IsAuthenticated = true, Username = _username }, string.Empty);
 #if !DEBUG
-                                Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+                                    Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
 #endif
-                                await Navigation.PopModalAsync();
+                                    await Navigation.PopModalAsync();
+                                }
                             }
                             else
                             {
@@ -163,13 +167,16 @@ namespace QuestHelper.ViewModel
                     {
                         Analytics.TrackEvent("GetToken done", new Dictionary<string, string> { { "Username", _username } });
                         TokenStoreService tokenService = new TokenStoreService();
-                        await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId, _username, authData.Email);
-                        ParameterManager par = new ParameterManager();
-                        par.Set("GuestMode", "0");
+                        if(await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId, _username, authData.Email))
+                        {
+                            ParameterManager par = new ParameterManager();
+                            par.Set("GuestMode", "0");
+                            Xamarin.Forms.MessagingCenter.Send<AuthResultMessage>(new AuthResultMessage() { IsAuthenticated = true, Username = _username }, string.Empty);
 #if !DEBUG
-                        Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+                            Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
 #endif
-                        await Navigation.PopModalAsync();
+                            await Navigation.PopModalAsync();
+                        }
                     }
                     else
                     {
@@ -180,13 +187,24 @@ namespace QuestHelper.ViewModel
             } else await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.Login_FillLoginAndPassword, "Ok");
         }
 
-        /*private static void ShowMainPage()
+        public bool IsWaitForServer
         {
-            var pageCollections = new PagesCollection();
-            MainPageMenuItem destinationPage = pageCollections.GetPageByPosition(0);
-            Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(
-                new PageNavigationMessage() {DestinationPageDescription = destinationPage}, string.Empty);
-        }*/
+            set
+            {
+                if (_isWaitForServer != value)
+                {
+                    _isWaitForServer = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("IsWaitForServer"));
+                    }
+                }
+            }
+            get
+            {
+                return _isWaitForServer;
+            }
+        }
 
         public string Username
         {
@@ -270,15 +288,10 @@ namespace QuestHelper.ViewModel
         {
             Analytics.TrackEvent("Login dialog start", new Dictionary<string, string> { });
             UserDialogs.Instance.HideLoading();
-            /*MessagingCenter.Subscribe<OAuthResultMessage>(this, string.Empty, async (sender) =>
-            {
-                await TryToLoginServerWithOAuth(sender);
-            });*/
         }
 
         public void StopLoginDialog()
         {
-            MessagingCenter.Unsubscribe<OAuthResultMessage>(this, string.Empty);
         }
     }
 }

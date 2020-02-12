@@ -31,6 +31,7 @@ namespace QuestHelper.View
 
         private void ContentPage_Appearing(object sender, EventArgs e)
         {
+			bool auth = _vm.IsAutorizedMode;
             _vm.startDialog();
             _vm.RefreshListRoutesCommand.Execute(new object());
 			//SyncAnimation.IsVisible = false;

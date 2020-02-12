@@ -3,10 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
              xmlns:viewModel="clr-namespace:QuestHelper.ViewModel"
+             xmlns:animationForms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
+             xmlns:animationResource="clr-namespace:QuestHelper.Resources"
+             xmlns:local="clr-namespace:QuestHelper.View.Converters"
              x:Class="QuestHelper.View.LoginPage" NavigationPage.HasNavigationBar="False" BackgroundColor="#3A3A9C" Appearing="LoginPage_OnAppearing" Disappearing="LoginPage_OnDisappearing">
     <ContentPage.BindingContext>
         <viewModel:LoginViewModel />
     </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:NegativeBoolConverter  x:Key="inverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -19,7 +27,7 @@
                 <RowDefinition Height="12*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            <ScrollView Orientation="Vertical" Grid.Row="1" Grid.Column="1">
+            <ScrollView Orientation="Vertical" Grid.Row="1" Grid.Column="1" IsVisible="{Binding IsWaitForServer, Converter={StaticResource inverter}}">
                 <StackLayout Orientation="Vertical" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="LightGray">
                     <StackLayout Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Center" Margin="0,20,0,10">
                         <Image HorizontalOptions="Center" Source="icon2" WidthRequest="40" HeightRequest="40" VerticalOptions="Center"></Image>
@@ -38,6 +46,17 @@
                     </Button>
                 </StackLayout>
             </ScrollView>
+            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="3" IsVisible="{Binding IsWaitForServer}" BackgroundColor="White">
+                <animationForms:AnimationView x:Name="SyncAnimation" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" Margin="0"
+                                        Animation="{animationResource:AnimationResourceExtension hourglass}"
+                                        Loop="True"
+                                        AutoPlay="True"
+                                        IsEnabled="True"
+                                        IsVisible="True"
+                                        WidthRequest="100"
+                                        HeightRequest="100"                                        
+                                        />
+            </StackLayout>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

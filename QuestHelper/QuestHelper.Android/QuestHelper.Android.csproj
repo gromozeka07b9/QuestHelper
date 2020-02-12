@@ -128,7 +128,6 @@
     <Compile Include="CustomEditTextRenderer.cs" />
     <Compile Include="CustomMapRenderer.cs" />
     <Compile Include="FirebaseNotificationService.cs" />
-    <Compile Include="GoogleAuthInterceptor.cs" />
     <Compile Include="GoogleAuthManagerService.cs" />
     <Compile Include="Intents\SetEmotionRouteIntentService.cs" />
     <Compile Include="Intents\SendRouteViewedIntentService.cs" />

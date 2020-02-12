@@ -52,7 +52,7 @@
                                 </Grid.RowDefinitions>
                                 <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="2" Source="land1.png" Aspect="Fill" HorizontalOptions="StartAndExpand" VerticalOptions="FillAndExpand"></Image>
                                 <StackLayout Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-                                    <circle:CircleImage Source="avatar1.png" WidthRequest="80" HeightRequest="80" BorderColor="#FFFFFF" BorderThickness="2" Margin="10,20,0,0">
+                                    <circle:CircleImage Source="{Binding UserImgUrl}" WidthRequest="80" HeightRequest="80" BorderColor="#FFFFFF" BorderThickness="2" Margin="10,20,0,0">
                                     </circle:CircleImage>
                                 </StackLayout>
                                 <StackLayout Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Orientation="Vertical" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Margin="0,20,0,0">
