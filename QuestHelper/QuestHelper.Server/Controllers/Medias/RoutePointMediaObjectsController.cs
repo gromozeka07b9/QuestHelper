@@ -188,13 +188,13 @@ namespace QuestHelper.Server.Controllers.Medias
             Console.WriteLine($"Image exist: status {Response.StatusCode}, {userId}, file:{fileName}, delay:{delay.Milliseconds}");
         }
 
-        [HttpPost("tryspeechparse")]
+        /*[HttpPost("tryspeechparse")]
         public async Task TrySpeachParseAsync()
         {
             string userId = IdentityManager.GetUserId(HttpContext);
             SpeachToTextProcess speachToTextProcess = new SpeachToTextProcess(_pathToMediaCatalog);
-            var result = await speachToTextProcess.TrySpeachParseAsync();
+            var result = await speachToTextProcess.TrySpeachParseAllAsync();
             Response.StatusCode  = result ? 200 : 500;
-        }
+        }*/
     }
 }

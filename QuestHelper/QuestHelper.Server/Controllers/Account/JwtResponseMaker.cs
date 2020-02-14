@@ -26,7 +26,8 @@ namespace QuestHelper.Server.Controllers.Account
                     access_token = encodedJwt,
                     username = user.Name,
                     email = user.Email,
-                    userid = user.UserId
+                    userid = user.UserId,
+                    role = user.Role
                 };
 
                 // сериализация ответа

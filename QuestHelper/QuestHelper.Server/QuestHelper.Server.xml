@@ -64,10 +64,58 @@
             <response code="200">Returns short id</response>
             <response code="401">Returns if user has no access to route</response>
         </member>
+        <member name="T:QuestHelper.Server.Controllers.SpeechToText.SpeechToTextController">
+            <summary>
+            Методы обработки запросов на распознавание аудиофайлов
+            </summary>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.SpeechToText.SpeechToTextController.#ctor">
+            <summary>
+            Распознавание аудио
+            </summary>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.SpeechToText.SpeechToTextController.TrySpeechParseAllAsync">
+            <summary>
+            Запуск распознавания всех необработанных аудиофайлов
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.SpeechToText.SpeechToTextController.TrySpeechParseAsync(System.String)">
+            <summary>
+            Распознавание одного файла (media)
+            </summary>
+            <param name="id">routepointmediaobjectId</param>
+            <returns></returns>
+        </member>
         <member name="T:QuestHelper.Server.Integration.RawTextCleaner">
             <summary>
             Преобразователь сырого распознанного текста в текст с предложениями и пунктуацией
             </summary>
+        </member>
+        <member name="T:QuestHelper.Server.Integration.SpeechToTextProcess">
+            <summary>
+            Распознавание аудиофайлов в текст
+            </summary>
+        </member>
+        <member name="M:QuestHelper.Server.Integration.SpeechToTextProcess.#ctor(System.String)">
+            <summary>
+            Параметр - путь к каталогу сервера, где лежат файлы
+            </summary>
+            <param name="pathToMediaCatalog"></param>
+        </member>
+        <member name="M:QuestHelper.Server.Integration.SpeechToTextProcess.TrySpeechParseAllAsync">
+            <summary>
+            Распознавание всех ранее не обработанных файлов, без привязки к маршруту
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:QuestHelper.Server.Integration.SpeechToTextProcess.TrySpeechParseMediaAsync(System.String)">
+            <summary>
+            Распознавание конкретного media файла
+            </summary>
+            <param name="mediaId"></param>
+            <param name="text"></param>
+            <returns></returns>
         </member>
         <member name="M:QuestHelper.Server.Managers.AvailableRoutes.GetByUserIdAndRouteId(System.String,System.String)">
             <summary>

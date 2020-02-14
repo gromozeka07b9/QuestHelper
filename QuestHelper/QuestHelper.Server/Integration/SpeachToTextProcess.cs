@@ -5,23 +5,37 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Xabe.FFmpeg;
+using Xabe.FFmpeg.Enums;
+using static QuestHelper.Server.Integration.SpeechToTextRequest;
 
 namespace QuestHelper.Server.Integration
 {
-    public class SpeachToTextProcess
+    /// <summary>
+    /// Распознавание аудиофайлов в текст
+    /// </summary>
+    public class SpeechToTextProcess
     {
         private DbContextOptions<ServerDbContext> _dbOptions = ServerDbContext.GetOptionsContextDbServer();
         private string _pathToMediaCatalog = string.Empty;
 
-        public SpeachToTextProcess(string pathToMediaCatalog)
+        /// <summary>
+        /// Параметр - путь к каталогу сервера, где лежат файлы
+        /// </summary>
+        /// <param name="pathToMediaCatalog"></param>
+        public SpeechToTextProcess(string pathToMediaCatalog)
         {
             _pathToMediaCatalog = pathToMediaCatalog;
         }
 
-        public async Task<bool> TrySpeachParseAsync()
+        /// <summary>
+        /// Распознавание всех ранее не обработанных файлов, без привязки к маршруту
+        /// </summary>
+        /// <returns></returns>
+        public async Task<bool> TrySpeechParseAllAsync()
         {
             bool result = true;
-            SpeachToTextRequest speachToText = new SpeachToTextRequest();
+            SpeechToTextRequest speechToText = new SpeechToTextRequest();
             try
             {
                 using (var db = new ServerDbContext(_dbOptions))
@@ -29,11 +43,11 @@ namespace QuestHelper.Server.Integration
                     var audioObjects = db.RoutePointMediaObject.Where(m => m.MediaType == MediaObjectTypeEnum.Audio && m.NeedProcess && !m.Processed && !m.IsDeleted);
                     foreach (var audioObj in audioObjects)
                     {
-                        var resultSpeachParsing = await speachToText.GetTextAsync(Path.Combine(_pathToMediaCatalog, $"audio_{audioObj.RoutePointMediaObjectId}.3gp"));
-                        if (resultSpeachParsing.StatusCode == 200)
+                        var resultSpeechParsing = await speechToText.GetTextAsync(Path.Combine(_pathToMediaCatalog, $"audio_{audioObj.RoutePointMediaObjectId}.3gp"));
+                        if (resultSpeechParsing.StatusCode == 200)
                         {
                             RawTextCleaner textCleaner = new RawTextCleaner();
-                            string recognizedText = textCleaner.Clean(resultSpeachParsing.Text);
+                            string recognizedText = textCleaner.Clean(resultSpeechParsing.Text);
                             var entityRoutePoint = db.RoutePoint.Find(audioObj.RoutePointId);
                             if (entityRoutePoint != null)
                             {
@@ -53,7 +67,7 @@ namespace QuestHelper.Server.Integration
                         }
                         else
                         {
-                            Console.WriteLine($"Yandex audio parser status code:{resultSpeachParsing.StatusCode}");
+                            Console.WriteLine($"Yandex audio parser status code:{resultSpeechParsing.StatusCode}");
                             result = false;
                         }
                     }
@@ -65,6 +79,80 @@ namespace QuestHelper.Server.Integration
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Распознавание конкретного media файла
+        /// </summary>
+        /// <param name="mediaId"></param>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public async Task<SpeechParseResult> TrySpeechParseMediaAsync(string mediaId)
+        {
+            SpeechParseResult resultParse = new SpeechParseResult();
+            SpeechToTextRequest speechToText = new SpeechToTextRequest();
+
+            try
+            {
+                using (var db = new ServerDbContext(_dbOptions))
+                {
+                    var audioObject = db.RoutePointMediaObject.Where(m => m.RoutePointMediaObjectId.Equals(mediaId)).FirstOrDefault();
+                    if(audioObject != null)
+                    {
+                        if (string.IsNullOrEmpty(audioObject.ProcessResultText))
+                        {
+                            string mediaFilePath = Path.Combine(_pathToMediaCatalog, $"audio_{audioObject.RoutePointMediaObjectId}.3gp");
+                            if (File.Exists(mediaFilePath))
+                            {
+                                FFmpeg.ExecutablesPath = @"c:\ffmpeg\bin";
+                                string outputFileName = Path.Combine(Path.GetTempPath(), $"{audioObject.RoutePointMediaObjectId}.ogg");
+                                //string outputFileName = @"c:\temp\convert\test.ogg";
+                                IMediaInfo mediaInfo = await MediaInfo.Get(mediaFilePath).ConfigureAwait(false);
+                                var audioStream = mediaInfo.AudioStreams.First();
+                                var conversion = Conversion.New()
+                                    .AddStream(audioStream)
+                                    .SetOutputFormat(MediaFormat.Ogg)
+                                    .SetOverwriteOutput(true)
+                                    .SetOutput(outputFileName);
+                                await conversion.Start().ConfigureAwait(false);
+
+                                var resultSpeechParsing = await speechToText.GetTextAsync(outputFileName);
+                                if(resultSpeechParsing.StatusCode == 200)
+                                {
+                                    RawTextCleaner textCleaner = new RawTextCleaner();
+                                    resultParse.Result = true;
+                                    resultParse.Text = textCleaner.Clean(resultSpeechParsing.Text);
+                                }
+                                else
+                                {
+                                    throw new Exception($"Error while request Yandex service:{resultSpeechParsing.StatusCode}");
+                                }
+                            }
+                            else
+                            {
+                                throw new FileNotFoundException($"Media file not found:{mediaFilePath}");
+                            }
+                        }
+                        else
+                        {
+                            resultParse.Result = true;
+                            resultParse.Text = audioObject.ProcessResultText;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return resultParse;
+        }
+
+        public class SpeechParseResult
+        {
+            public bool Result { get; set; }
+            public string Text { get; set; }
         }
     }
 }

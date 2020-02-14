@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace QuestHelper.Server.Integration
 {
-    public class SpeachToTextRequest
+    public class SpeechToTextRequest
     {
         private string _yandexFolderId = string.Empty;
-        private string _yandexApiKey = string.Empty;
+        private string _yandexApiToken = string.Empty;
         private string _yandexSpeechUrl = string.Empty;
 
-        public SpeachToTextRequest()
+        public SpeechToTextRequest()
         {
             _yandexFolderId = System.Environment.GetEnvironmentVariable("GoshYandexFolderId");
-            _yandexApiKey = System.Environment.GetEnvironmentVariable("GoshYandexApiKey");
+            _yandexApiToken = System.Environment.GetEnvironmentVariable("GoshYandexApiToken");
             _yandexSpeechUrl = $"https://stt.api.cloud.yandex.net/speech/v1/stt:recognize?folderId={ _yandexFolderId }";
         }
 
@@ -34,7 +34,7 @@ namespace QuestHelper.Server.Integration
                 {
                     using (var client = new HttpClient())
                     {
-                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Api-Key", $"{ _yandexApiKey }");
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", $"Bearer {_yandexApiToken}");
                         var response = await client.PostAsync($"{ _yandexSpeechUrl }", content);
                         if (response.IsSuccessStatusCode)
                         {
