@@ -36,6 +36,7 @@ namespace QuestHelper.WS
             public string Username = string.Empty;
             public string Email = string.Empty;
             public string UserId = string.Empty;
+            public string Role = string.Empty;
         }
 
         public async Task<TokenResponse> GetTokenAsync(string login, string password, bool demomode = false)

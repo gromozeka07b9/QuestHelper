@@ -4,16 +4,19 @@ using Plugin.Media;
 using Plugin.Media.Abstractions;
 using QuestHelper.LocalDB.Model;
 using QuestHelper.Managers;
+using QuestHelper.Managers.Sync;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
 using QuestHelper.Resources;
 using QuestHelper.View;
 using QuestHelper.View.Geo;
+using QuestHelper.WS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -44,6 +47,8 @@ namespace QuestHelper.ViewModel
         public ICommand AddPhotoCommand { get; private set; }
         public ICommand AddAudioCommand { get; private set; }
         public ICommand ShareCommand { get; private set; }
+        public ICommand RecognizeAudioCommand { get; private set; }
+        
 
         GeolocatorManager _geolocatorManager = new GeolocatorManager();
         ViewRoutePoint _vpoint;
@@ -51,6 +56,7 @@ namespace QuestHelper.ViewModel
         private bool _newPoint;
         private string _nameForEdit;
         private bool _isRightsToGetLocationPresented;
+        private bool _isWaitRecognizeAudio;
 
         public RoutePointV2ViewModel(string routeId, string routePointId)
         {
@@ -71,9 +77,54 @@ namespace QuestHelper.ViewModel
             CopyCoordinatesCommand = new Command(copyCoordinatesCommand);
             UpdateAddressCommand = new Command(updateAddressCommand);
             CopyAddressCommand = new Command(copyAddressCommand);
+            RecognizeAudioCommand = new Command(recognizeAudioCommandAsync);
+            
             _vpoint = new ViewRoutePoint(routeId, routePointId);
             Analytics.TrackEvent("Dialog point opened");
             _newPoint = string.IsNullOrEmpty(routePointId);
+        }
+
+        private async void recognizeAudioCommandAsync(object obj)
+        {
+            IsWaitRecognizeAudio = true;
+            SyncServer syncRoute = new SyncServer();
+            bool synced = !await syncRoute.SyncRouteIsNeedAsync(_vpoint.RouteId);
+            if (!synced)
+            {
+                synced = await syncRoute.Sync(_vpoint.RouteId);
+            }
+            if (synced)
+            {
+                TokenStoreService tokenService = new TokenStoreService();
+                string authToken = await tokenService.GetAuthTokenAsync();
+
+                var audios = _vpoint.MediaObjects.Where(x => !x.IsDeleted && x.MediaType == 2);
+                int index = 0;
+                int count = audios.Count();
+                SpeechToTextHelper speechToText = new SpeechToTextHelper(authToken);
+                string oldDescription = _vpoint.Description;
+                var sb = new StringBuilder();
+                foreach (var audio in audios)
+                {
+                    string textResult = await speechToText.TryRecognizeAudioAsync(audio.RoutePointMediaObjectId);
+                    if (speechToText.LastHttpStatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(textResult))
+                    {
+                        sb.AppendLine(textResult);
+                    }
+                    index++;
+                    double percent = (double)index * 100 / (double)count / 100;
+                    Xamarin.Forms.MessagingCenter.Send<SyncProgressImageLoadingMessage>(new SyncProgressImageLoadingMessage() { RouteId = _vpoint.RouteId, ProgressValue = percent }, string.Empty);
+                }
+                string newDescription = sb.ToString();
+                if (!string.IsNullOrEmpty(newDescription) && !oldDescription.Equals(newDescription))
+                {
+                    _vpoint.Description += Environment.NewLine + newDescription;
+                    _vpoint.Version++;
+                    _vpoint.Save();
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Description"));
+                }
+            }
+            IsWaitRecognizeAudio = false;
         }
 
         private async void updateAddressCommand(object obj)
@@ -343,7 +394,11 @@ namespace QuestHelper.ViewModel
             }
             set
             {
-                _vpoint.Description = value;
+                if(_vpoint.Description != value)
+                {
+                    _vpoint.Description = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Address"));
+                }
             }
         }
 
@@ -391,6 +446,23 @@ namespace QuestHelper.ViewModel
             get
             {
                 return _vpoint.Longitude;
+            }
+        }
+
+        
+        public bool IsWaitRecognizeAudio
+        {
+            set
+            {
+                if (_isWaitRecognizeAudio != value)
+                {
+                    _isWaitRecognizeAudio = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsWaitRecognizeAudio"));
+                }
+            }
+            get
+            {
+                return _isWaitRecognizeAudio;
             }
         }
 

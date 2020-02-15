@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using QuestHelper.Server.Controllers.SpeechToText;
 using QuestHelper.Server.Models;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace QuestHelper.Server.Integration
         /// Распознавание всех ранее не обработанных файлов, без привязки к маршруту
         /// </summary>
         /// <returns></returns>
-        public async Task<bool> TrySpeechParseAllAsync()
+        /*public async Task<bool> TrySpeechParseAllAsync()
         {
             bool result = true;
             SpeechToTextRequest speechToText = new SpeechToTextRequest();
@@ -79,7 +80,7 @@ namespace QuestHelper.Server.Integration
             }
 
             return result;
-        }
+        }*/
 
         /// <summary>
         /// Распознавание конкретного media файла
@@ -104,28 +105,27 @@ namespace QuestHelper.Server.Integration
                             string mediaFilePath = Path.Combine(_pathToMediaCatalog, $"audio_{audioObject.RoutePointMediaObjectId}.3gp");
                             if (File.Exists(mediaFilePath))
                             {
-                                FFmpeg.ExecutablesPath = @"c:\ffmpeg\bin";
                                 string outputFileName = Path.Combine(Path.GetTempPath(), $"{audioObject.RoutePointMediaObjectId}.ogg");
-                                //string outputFileName = @"c:\temp\convert\test.ogg";
-                                IMediaInfo mediaInfo = await MediaInfo.Get(mediaFilePath).ConfigureAwait(false);
-                                var audioStream = mediaInfo.AudioStreams.First();
-                                var conversion = Conversion.New()
-                                    .AddStream(audioStream)
-                                    .SetOutputFormat(MediaFormat.Ogg)
-                                    .SetOverwriteOutput(true)
-                                    .SetOutput(outputFileName);
-                                await conversion.Start().ConfigureAwait(false);
 
-                                var resultSpeechParsing = await speechToText.GetTextAsync(outputFileName);
-                                if(resultSpeechParsing.StatusCode == 200)
+                                var audioConverter = new Audio3gpToOggConverter();
+                                bool successConvert = await audioConverter.ConvertAsync(mediaFilePath, outputFileName);
+                                if (successConvert)
                                 {
-                                    RawTextCleaner textCleaner = new RawTextCleaner();
-                                    resultParse.Result = true;
-                                    resultParse.Text = textCleaner.Clean(resultSpeechParsing.Text);
+                                    var resultSpeechParsing = await speechToText.GetTextAsync(outputFileName);
+                                    if (resultSpeechParsing.StatusCode == 200)
+                                    {
+                                        RawTextCleaner textCleaner = new RawTextCleaner();
+                                        resultParse.Result = true;
+                                        resultParse.Text = textCleaner.Clean(resultSpeechParsing.Text);
+                                    }
+                                    else
+                                    {
+                                        throw new Exception($"Error while request Yandex service:{resultSpeechParsing.StatusCode}");
+                                    }
                                 }
                                 else
                                 {
-                                    throw new Exception($"Error while request Yandex service:{resultSpeechParsing.StatusCode}");
+                                    throw new Exception($"Error while convert 3gp to Ogg:{mediaFilePath}");
                                 }
                             }
                             else

@@ -41,7 +41,7 @@ namespace QuestHelper.Droid
                 recorder.SetAudioSamplingRate(44100);
                 recorder.SetOutputFile(filePath);
                 recorder.Prepare(); // Prepared state
-                recorder.SetMaxDuration(30000);
+                //recorder.SetMaxDuration(30000);
                 recorder.Start(); // Recording state.
             }
             catch (Exception e)

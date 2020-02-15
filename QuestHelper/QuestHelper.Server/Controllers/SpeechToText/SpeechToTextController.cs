@@ -34,14 +34,14 @@ namespace QuestHelper.Server.Controllers.SpeechToText
         /// Запуск распознавания всех необработанных аудиофайлов
         /// </summary>
         /// <returns></returns>
-        [HttpPost("parse/all")]
+        /*[HttpPost("parse/all")]
         public async Task TrySpeechParseAllAsync()
         {
             string userId = IdentityManager.GetUserId(HttpContext);
             SpeechToTextProcess speachToTextProcess = new SpeechToTextProcess(_pathToMediaCatalog);
             var result = await speachToTextProcess.TrySpeechParseAllAsync();
             Response.StatusCode = result ? 200 : 500;
-        }
+        }*/
 
         /// <summary>
         /// Распознавание одного файла (media)

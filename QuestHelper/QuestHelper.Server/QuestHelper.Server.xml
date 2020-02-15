@@ -64,6 +64,11 @@
             <response code="200">Returns short id</response>
             <response code="401">Returns if user has no access to route</response>
         </member>
+        <member name="T:QuestHelper.Server.Controllers.SpeechToText.Audio3gpToOggConverter">
+            <summary>
+            Конвертер файлов 3gp в ogg
+            </summary>
+        </member>
         <member name="T:QuestHelper.Server.Controllers.SpeechToText.SpeechToTextController">
             <summary>
             Методы обработки запросов на распознавание аудиофайлов
@@ -73,12 +78,6 @@
             <summary>
             Распознавание аудио
             </summary>
-        </member>
-        <member name="M:QuestHelper.Server.Controllers.SpeechToText.SpeechToTextController.TrySpeechParseAllAsync">
-            <summary>
-            Запуск распознавания всех необработанных аудиофайлов
-            </summary>
-            <returns></returns>
         </member>
         <member name="M:QuestHelper.Server.Controllers.SpeechToText.SpeechToTextController.TrySpeechParseAsync(System.String)">
             <summary>
@@ -103,18 +102,24 @@
             </summary>
             <param name="pathToMediaCatalog"></param>
         </member>
-        <member name="M:QuestHelper.Server.Integration.SpeechToTextProcess.TrySpeechParseAllAsync">
-            <summary>
-            Распознавание всех ранее не обработанных файлов, без привязки к маршруту
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:QuestHelper.Server.Integration.SpeechToTextProcess.TrySpeechParseMediaAsync(System.String)">
             <summary>
             Распознавание конкретного media файла
             </summary>
             <param name="mediaId"></param>
             <param name="text"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QuestHelper.Server.Integration.SpeechToTextRequest">
+            <summary>
+            Запросы к API Yandex для распознавания аудио
+            </summary>
+        </member>
+        <member name="M:QuestHelper.Server.Integration.SpeechToTextRequest.GetTextAsync(System.String)">
+            <summary>
+            Распознавание одного аудио файла
+            </summary>
+            <param name="pathToAudioFile"></param>
             <returns></returns>
         </member>
         <member name="M:QuestHelper.Server.Managers.AvailableRoutes.GetByUserIdAndRouteId(System.String,System.String)">

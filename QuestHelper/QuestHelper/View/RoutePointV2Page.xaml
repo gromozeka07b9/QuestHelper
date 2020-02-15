@@ -9,6 +9,8 @@
              xmlns:local1="clr-namespace:QuestHelper.View.Converters"
              xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:animationForms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
+             xmlns:animationResource="clr-namespace:QuestHelper.Resources"
              mc:Ignorable="d"
              x:Class="QuestHelper.View.RoutePointV2Page" NavigationPage.HasNavigationBar="True" NavigationPage.BackButtonTitle="Back" Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing" Style="{StaticResource ContentPage}">
     <ContentPage.Resources>
@@ -35,6 +37,11 @@
                             </Image.GestureRecognizers>
                         </Image>
                         <StackLayout HorizontalOptions="FillAndExpand"></StackLayout>
+                        <Image Source="rec.png" WidthRequest="32" HeightRequest="32" Margin="0,5,5,0" VerticalOptions="Start" HorizontalOptions="End">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding RecognizeAudioCommand}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
                         <Image Source="delete.png" WidthRequest="32" HeightRequest="32" Margin="0,5,5,0" VerticalOptions="Start" HorizontalOptions="End">
                             <Image.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding DeletePointCommand}"/>
@@ -167,6 +174,20 @@
                     </StackLayout>
                 </StackLayout>
             </ScrollView>
+            <AbsoluteLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="0.7" BackgroundColor="Black" IsVisible="{Binding IsWaitRecognizeAudio}">
+            </AbsoluteLayout>
+            <AbsoluteLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Center" IsVisible="{Binding IsWaitRecognizeAudio}">
+                <animationForms:AnimationView
+                                Animation="{animationResource:AnimationResourceExtension usualloading}"
+                                Loop="True"
+                                AutoPlay="True"
+                                IsEnabled="True"
+                                WidthRequest="60"
+                                HeightRequest="60"
+                                VerticalOptions="Center" HorizontalOptions="Center"
+                                />
+            </AbsoluteLayout>
+
             <AbsoluteLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="0.7" BackgroundColor="Black" IsVisible="{Binding IsVisibleModalNameEdit}">
                 <AbsoluteLayout.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding EditNameCommand}"/>

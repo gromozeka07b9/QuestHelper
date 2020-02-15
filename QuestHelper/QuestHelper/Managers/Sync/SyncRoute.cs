@@ -68,7 +68,7 @@ namespace QuestHelper.Managers.Sync
 
                     if (_syncMediaFiles)
                     {
-                        var medias = _routePointMediaManager.GetMediaObjectsByRouteId(routeRoot.Route.Id).Where(m => !m.OriginalServerSynced || !m.PreviewServerSynced).Select(m => new MediaForUpdate{ RoutePointId = m.RoutePointId, RoutePointMediaObjectId = m.RoutePointMediaObjectId, OriginalServerSynced = m.OriginalServerSynced, PreviewServerSynced = m.PreviewServerSynced, IsDeleted = m.IsDeleted, MediaType = (MediaObjectTypeEnum)m.MediaType }).ToList();
+                        var medias = _routePointMediaManager.GetMediaObjectsByRouteId(routeRoot.Route.Id).Where(m => !m.OriginalServerSynced || !m.PreviewServerSynced).Select(m => new MediaForUpdate { RoutePointId = m.RoutePointId, RoutePointMediaObjectId = m.RoutePointMediaObjectId, OriginalServerSynced = m.OriginalServerSynced, PreviewServerSynced = m.PreviewServerSynced, IsDeleted = m.IsDeleted, MediaType = (MediaObjectTypeEnum)m.MediaType }).ToList();
                         _log.AddStringEvent($"media files sync,  route {_routeId}, media count:{medias?.Count.ToString()}");
 
                         int count = medias.Count;
@@ -79,7 +79,7 @@ namespace QuestHelper.Managers.Sync
                             if (!result) syncImgHasErrors = !result;
                             index++;
                             double percent = (double)index * 100 / (double)count / 100;
-                            Xamarin.Forms.MessagingCenter.Send<SyncProgressImageLoadingMessage>(new SyncProgressImageLoadingMessage() { RouteId = _routeId, ProgressValue = percent}, string.Empty);
+                            Xamarin.Forms.MessagingCenter.Send<SyncProgressImageLoadingMessage>(new SyncProgressImageLoadingMessage() { RouteId = _routeId, ProgressValue = percent }, string.Empty);
                         }
                     }
                 }
@@ -106,21 +106,6 @@ namespace QuestHelper.Managers.Sync
 
             return true;
         }
-
-        /*private void loadImg(List<MediaForUpdate> medias)
-        {
-            List<Task> tasks = new List<Task>();
-            foreach (var media in medias)
-            {
-                var task = new Task(async () => { await updateImages(media); });
-                //task.Start();
-                tasks.Add(task);
-                Console.WriteLine($"async load img {media.RoutePointMediaObjectId}");
-            }
-
-            Task.WaitAll(tasks.ToArray());
-            tasks.Clear();
-        }*/
 
         private async Task<bool> updateImages(MediaForUpdate media, bool loadOnlyPreviewImg)
         {

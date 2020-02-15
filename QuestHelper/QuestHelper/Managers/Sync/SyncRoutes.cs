@@ -141,7 +141,7 @@ namespace QuestHelper.Managers.Sync
                     SyncRoute syncRouteContext = new SyncRoute(serverRouteVersion.Id, _authToken);
                     syncRouteContext.SyncImages = true;
                     _log.AddStringEvent($"start sync diff route {serverRouteVersion.Id}");
-                    result = await syncRouteContext.SyncAsync(serverRouteVersion.ObjVerHash, true);
+                    result = await syncRouteContext.SyncAsync(serverRouteVersion.ObjVerHash, false);
                     _log.AddStringEvent($"diff route result, {serverRouteVersion.Id} :" + result);
                     Xamarin.Forms.MessagingCenter.Send<SyncRouteCompleteMessage>(new SyncRouteCompleteMessage() { RouteId = routeId, SuccessSync = result }, string.Empty);
                 }
