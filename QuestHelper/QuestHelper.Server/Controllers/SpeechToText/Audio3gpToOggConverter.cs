@@ -35,7 +35,10 @@ namespace QuestHelper.Server.Controllers.SpeechToText
                 var conversion = Conversion.New()
                     .AddStream(audioStream)
                     .SetOutputFormat(MediaFormat.Ogg)
+                    //.SetOutputTime(TimeSpan.FromSeconds(14))
+                    //.SetAudioBitrate("11K")
                     .SetOverwriteOutput(true)
+                    .AddParameter("-ac 1")
                     .SetOutput(outputFileName);
                 var convertResult = await conversion.Start().ConfigureAwait(false);
                 result = convertResult.Success;
