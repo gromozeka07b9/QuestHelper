@@ -96,21 +96,20 @@ namespace QuestHelper.ViewModel
                     PropertyChanged(this, new PropertyChangedEventArgs("IsAutorizedMode"));
                     PropertyChanged(this, new PropertyChangedEventArgs("Username"));
                     PropertyChanged(this, new PropertyChangedEventArgs("Email"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("UserImgUrl"));
                 }
             });
             await updateUserInfo();
-            //Task taskUpdate = Task.Run(updateUserInfo);
-            //taskUpdate.Wait();
         }
 
         private async Task updateUserInfo()
         {
             TokenStoreService tokenService = new TokenStoreService();
             _currentUserId = await tokenService.GetUserIdAsync();
-            _username = await tokenService.GetUsernameAsync();
-            _email = await tokenService.GetEmailAsync();
-            _userRole = await tokenService.GetRoleAsync();
-            _userImgUrl = await tokenService.GetImgUrlAsync();
+            Username = await tokenService.GetUsernameAsync();
+            Email = await tokenService.GetEmailAsync();
+            UserRole = await tokenService.GetRoleAsync();
+            UserImgUrl = await tokenService.GetImgUrlAsync();
         }
 
         private bool OnTimerForUpdateFireworks()
@@ -308,6 +307,14 @@ namespace QuestHelper.ViewModel
         }
         public string Username
         {
+            set
+            {
+                if (_username != value)
+                {
+                    _username = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("Username"));
+                }
+            }
             get
             {
                 return !string.IsNullOrEmpty(_username) ? _username: "";
@@ -316,13 +323,45 @@ namespace QuestHelper.ViewModel
 
         public string Email
         {
+            set
+            {
+                if (_email != value)
+                {
+                    _email = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("Email"));
+                }
+            }
             get
             {
                 return !string.IsNullOrEmpty(_email) ? _email : "";
             }
         }
+        public string UserRole
+        {
+            set
+            {
+                if (_userRole != value)
+                {
+                    _userRole = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("UserRole"));
+                }
+            }
+            get
+            {
+                return _userRole;
+            }
+        }
+
         public string UserImgUrl
         {
+            set
+            {
+                if (_userImgUrl != value)
+                {
+                    _userImgUrl = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("UserImgUrl"));
+                }
+            }
             get
             {
                 return !string.IsNullOrEmpty(_userImgUrl) ? _userImgUrl : "avatar1.png";

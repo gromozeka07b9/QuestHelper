@@ -31,6 +31,7 @@ namespace QuestHelper.ViewModel
         private bool _isVisibleStartRoute;
         private bool _isVisibleList;
         private ObservableCollection<ViewRoutePoint> _viewPointsOfRoute = new ObservableCollection<ViewRoutePoint>();
+        private string _creatorImgUrl;
 
         public ICommand StartRouteCommand { get; private set; }
         public ICommand BackNavigationCommand { get; private set; }
@@ -158,6 +159,22 @@ namespace QuestHelper.ViewModel
 
             IsVisibleStartRoute = IsVisibleList;
 
+        }
+
+        public string CreatorImgUrl
+        {
+            set
+            {
+                if (_creatorImgUrl != value)
+                {
+                    _creatorImgUrl = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("CreatorImgUrl"));
+                }
+            }
+            get
+            {
+                return !string.IsNullOrEmpty(_creatorImgUrl) ? _creatorImgUrl : "avatar1.png";
+            }
         }
 
         public double ProgressValue

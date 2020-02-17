@@ -74,7 +74,7 @@
                 <StackLayout HorizontalOptions="FillAndExpand"></StackLayout>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="End" VerticalOptions="Start">
                     <Label Text="{Binding Author}" HorizontalOptions="End" VerticalOptions="Center" FontSize="12" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"></Label>
-                    <circle:CircleImage Source="avatar1.png" HorizontalOptions="End" VerticalOptions="Start" WidthRequest="50" HeightRequest="50" BorderColor="White" Aspect="AspectFill" BorderThickness="0" Margin="5,10,10,10">
+                    <circle:CircleImage Source="{Binding CreatorImgUrl}" HorizontalOptions="End" VerticalOptions="Start" WidthRequest="50" HeightRequest="50" BorderColor="White" Aspect="AspectFill" BorderThickness="0" Margin="5,10,10,10">
                     </circle:CircleImage>
                 </StackLayout>
             </StackLayout>

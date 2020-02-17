@@ -117,7 +117,7 @@ namespace QuestHelper.ViewModel
                 _vroute.Version++;
                 _vroute.ObjVerHash = string.Empty;
                 _vroute.Save();
-                Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage() { RouteId = _vroute.Id, NeedCheckVersionRoute = true }, string.Empty);
+                Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage() { }, string.Empty);
             }
             IsVisibleModalRouteEdit = !IsVisibleModalRouteEdit;
             IsVisibleNavigationToolbar = !IsVisibleModalRouteEdit;
@@ -127,8 +127,6 @@ namespace QuestHelper.ViewModel
         {
             var page = new RouteCarouselRootPage(_vroute.RouteId);
             Navigation.PushModalAsync(page);
-            //var page = new RouteGalleryPage(_vroute.RouteId);
-            //Navigation.PushModalAsync(page);
         }
 
         internal async Task<bool> UserCanShareAsync()

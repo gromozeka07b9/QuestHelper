@@ -48,7 +48,7 @@ namespace QuestHelper.Droid
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                HandleError.Process("RecordAudioService", "Start", e, false);
             }
         }
 
@@ -60,7 +60,7 @@ namespace QuestHelper.Droid
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                HandleError.Process("RecordAudioService", "Stop", e, false);
             }
         }
     }

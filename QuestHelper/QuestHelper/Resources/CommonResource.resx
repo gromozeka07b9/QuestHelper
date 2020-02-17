@@ -493,4 +493,10 @@ GoSh!</value>
   <data name="Routes_Register" xml:space="preserve">
     <value>Please register for creating and syncing your routes</value>
   </data>
+  <data name="CommonMsg_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Audio_RecordCompleted" xml:space="preserve">
+    <value>Recording completed</value>
+  </data>
 </root>

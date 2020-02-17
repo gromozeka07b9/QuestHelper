@@ -493,4 +493,10 @@ Gosh!</value>
   <data name="Routes_Register" xml:space="preserve">
     <value>Para crear rutas y subirlas a la nube, debe registrarse</value>
   </data>
+  <data name="CommonMsg_Save" xml:space="preserve">
+    <value>Guarda</value>
+  </data>
+  <data name="Audio_RecordCompleted" xml:space="preserve">
+    <value>Grabación completa</value>
+  </data>
 </root>

@@ -9,23 +9,33 @@ namespace QuestHelper.Managers
 {
     public class AudioManager
     {
-        public async Task<bool> RecordAsync(string pathAudioFile)
+
+        static IRecordAudioService srvInstance = DependencyService.Get<IRecordAudioService>();
+
+        public bool RecordStart(string pathAudioFile)
         {
-            bool result = false;
+            bool started = false;
             try
             {
-                DependencyService.Get<IRecordAudioService>().Start(pathAudioFile);
-                result = !await App.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Audio, CommonResource.RoutePoint_AudioRecording, CommonResource.CommonMsg_Cancel, CommonResource.CommonMsg_OkAndSave);
+                srvInstance.Start(pathAudioFile);
+                started = true;
             }
             catch (Exception e)
             {
-                HandleError.Process("AudioManager", "Record", e, false);
+                HandleError.Process("AudioManager", "RecordStart", e, false);
             }
-            finally
+            return started;
+        }
+        public void RecordStop()
+        {
+            try
             {
-                DependencyService.Get<IRecordAudioService>().Stop();
+                srvInstance.Stop();
             }
-            return result;
+            catch (Exception e)
+            {
+                HandleError.Process("AudioManager", "RecordStop", e, false);
+            }
         }
     }
 }

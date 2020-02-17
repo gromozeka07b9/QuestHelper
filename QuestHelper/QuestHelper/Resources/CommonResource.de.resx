@@ -472,4 +472,10 @@
   <data name="Routes_Register" xml:space="preserve">
     <value>Um Routen zu erstellen und in die Cloud hochzuladen, müssen Sie sich registrieren</value>
   </data>
+  <data name="CommonMsg_Save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="Audio_RecordCompleted" xml:space="preserve">
+    <value>Aufnahme abgeschlossen</value>
+  </data>
 </root>

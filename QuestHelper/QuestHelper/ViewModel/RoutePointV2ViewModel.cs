@@ -18,6 +18,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -48,8 +49,11 @@ namespace QuestHelper.ViewModel
         public ICommand AddAudioCommand { get; private set; }
         public ICommand ShareCommand { get; private set; }
         public ICommand RecognizeAudioCommand { get; private set; }
-        
+        public ICommand RecordAudioStopAndSaveCommand { get; private set; }
+        public ICommand RecordAudioCancel { get; private set; }
 
+
+        AudioManager _audioManager = new AudioManager();
         GeolocatorManager _geolocatorManager = new GeolocatorManager();
         ViewRoutePoint _vpoint;
         private bool _isVisibleModalNameEdit;
@@ -57,6 +61,12 @@ namespace QuestHelper.ViewModel
         private string _nameForEdit;
         private bool _isRightsToGetLocationPresented;
         private bool _isWaitRecognizeAudio;
+        private bool _isVisibleBottomButtons = true;
+        private bool _isVisibleRecordAudio;
+        private int _recordAudioTimerValueSec = 0;
+        private string _currentRecordedAudioMediaId;
+        private bool _isAudioRecordFinished;
+        private const int _maxRecordAudioLength = 30;
 
         public RoutePointV2ViewModel(string routeId, string routePointId)
         {
@@ -78,15 +88,46 @@ namespace QuestHelper.ViewModel
             UpdateAddressCommand = new Command(updateAddressCommand);
             CopyAddressCommand = new Command(copyAddressCommand);
             RecognizeAudioCommand = new Command(recognizeAudioCommandAsync);
-            
+
+            RecordAudioStopAndSaveCommand = new Command(recordAudioStopAndSaveCommand);
+            RecordAudioCancel = new Command(recordAudioCancel);
+
             _vpoint = new ViewRoutePoint(routeId, routePointId);
             Analytics.TrackEvent("Dialog point opened");
             _newPoint = string.IsNullOrEmpty(routePointId);
         }
 
+        private void recordAudioCancel(object obj)
+        {
+            _recordAudioTimerValueSec = 0;
+            _audioManager.RecordStop();
+            IsVisibleRecordAudio = false;
+            IsAudioRecordFinished = false;
+        }
+
+        private void recordAudioStopAndSaveCommand(object obj)
+        {
+            _recordAudioTimerValueSec = 0;
+            _audioManager.RecordStop();
+            IsVisibleRecordAudio = false;
+            IsAudioRecordFinished = false;
+            if (!string.IsNullOrEmpty(_currentRecordedAudioMediaId))
+            {
+                _vpoint.AddMediaItem(_currentRecordedAudioMediaId, MediaObjectTypeEnum.Audio);
+                ApplyChanges();
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("OneImagePath"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
+                _currentRecordedAudioMediaId = string.Empty;
+                Analytics.TrackEvent("Media: audio recorded");
+            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsVisibleButtonStartProcessAudio"));
+        }
+
         private async void recognizeAudioCommandAsync(object obj)
         {
             IsWaitRecognizeAudio = true;
+            IsVisibleBottomButtons = !IsWaitRecognizeAudio;
             SyncServer syncRoute = new SyncServer();
             bool synced = !await syncRoute.SyncRouteIsNeedAsync(_vpoint.RouteId);
             if (!synced)
@@ -108,9 +149,10 @@ namespace QuestHelper.ViewModel
                 foreach (var audio in audios)
                 {
                     string textResult = await speechToText.TryRecognizeAudioAsync(audio.RoutePointMediaObjectId);
-                    if (speechToText.LastHttpStatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(textResult))
+                    //if (speechToText.LastHttpStatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(textResult))
+                    if (speechToText.LastHttpStatusCode == HttpStatusCode.OK)
                     {
-                        sb.AppendLine(textResult);
+                        sb.AppendLine(string.IsNullOrEmpty(textResult) ? "Текст не распознан": textResult);
                         ViewRoutePointMediaObject vMediaObject = new ViewRoutePointMediaObject();
                         vMediaObject.Load(audio.RoutePointMediaObjectId);
                         vMediaObject.Processed = true;
@@ -131,6 +173,7 @@ namespace QuestHelper.ViewModel
                 }
             }
             IsWaitRecognizeAudio = false;
+            IsVisibleBottomButtons = !IsWaitRecognizeAudio;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsVisibleButtonStartProcessAudio"));
         }
 
@@ -208,21 +251,29 @@ namespace QuestHelper.ViewModel
             PermissionManager permissions = new PermissionManager();
             if (await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Microphone, CommonResource.RoutePoint_RightNeedToRecordAudio))
             {
-                string mediaId = Guid.NewGuid().ToString();
-                string pathAudioFile = Path.Combine(ImagePathManager.GetPicturesDirectory(), "audio_" + mediaId + ".3gp");
+                IsVisibleRecordAudio = true;
+                IsAudioRecordFinished = false;
+                _currentRecordedAudioMediaId = Guid.NewGuid().ToString();
+                string pathAudioFile = Path.Combine(ImagePathManager.GetPicturesDirectory(), "audio_" + _currentRecordedAudioMediaId + ".3gp");
 
-                AudioManager audioManager = new AudioManager();
-                bool resultRecordAudio = await audioManager.RecordAsync(pathAudioFile);
-                if (resultRecordAudio)
-                {
-                    _vpoint.AddMediaItem(mediaId, MediaObjectTypeEnum.Audio);
-                    ApplyChanges();
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("OneImagePath"));
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Images"));
-                    Analytics.TrackEvent("Media: audio recorded");
-                }
+                bool recordStarted = _audioManager.RecordStart(pathAudioFile);
+                Device.StartTimer(TimeSpan.FromSeconds(1), OnTimerForRecordAudio);
+
             }
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsVisibleButtonStartProcessAudio"));
+        }
+
+        private bool OnTimerForRecordAudio()
+        {
+            _recordAudioTimerValueSec++;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RecordAudioTimerValue"));
+            bool isNotMaxLength = _recordAudioTimerValueSec < _maxRecordAudioLength;
+            if (!isNotMaxLength)
+            {
+                _recordAudioTimerValueSec = 0;
+                _audioManager.RecordStop();
+                IsAudioRecordFinished = !isNotMaxLength;
+            }
+            return isNotMaxLength;
         }
 
         private async void addPhotoAsync(object obj)
@@ -389,6 +440,22 @@ namespace QuestHelper.ViewModel
                 return GetUnprocessedAudios().Any();
             }
         }
+        
+        public bool IsAudioRecordFinished
+        {
+            set
+            {
+                if (value != _isAudioRecordFinished)
+                {
+                    _isAudioRecordFinished = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsAudioRecordFinished"));
+                }
+            }
+            get
+            {
+                return _isAudioRecordFinished;
+            }
+        }
 
         public bool IsRightsToGetLocationPresented
         {
@@ -488,6 +555,49 @@ namespace QuestHelper.ViewModel
             }
         }
 
+        
+        public string RecordAudioTimerValue
+        {
+            get
+            {
+                return $"{_maxRecordAudioLength - _recordAudioTimerValueSec} сек.";
+            }
+        }
+
+
+        public bool IsVisibleRecordAudio
+        {
+            set
+            {
+                if (_isVisibleRecordAudio != value)
+                {
+                    _isVisibleRecordAudio = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsVisibleRecordAudio"));
+                    IsVisibleBottomButtons = !_isVisibleRecordAudio;
+                }
+            }
+            get
+            {
+                return _isVisibleRecordAudio;
+            }
+        }
+
+        public bool IsVisibleBottomButtons
+        {
+            set
+            {
+                if (_isVisibleBottomButtons != value)
+                {
+                    _isVisibleBottomButtons = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsVisibleBottomButtons"));
+                }
+            }
+            get
+            {
+                return _isVisibleBottomButtons;
+            }
+        }
+
         public bool IsVisibleModalNameEdit
         {
             set
@@ -496,6 +606,7 @@ namespace QuestHelper.ViewModel
                 {
                     _isVisibleModalNameEdit = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsVisibleModalNameEdit"));
+                    IsVisibleBottomButtons = !_isVisibleModalNameEdit;
                 }
             }
             get

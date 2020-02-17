@@ -88,6 +88,15 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Recording completed.
+        /// </summary>
+        public static string Audio_RecordCompleted {
+            get {
+                return ResourceManager.GetString("Audio_RecordCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Audio.
         /// </summary>
         public static string CommonMsg_Audio {
@@ -165,6 +174,15 @@ namespace QuestHelper.Resources {
         public static string CommonMsg_PointCount {
             get {
                 return ResourceManager.GetString("CommonMsg_PointCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Save.
+        /// </summary>
+        public static string CommonMsg_Save {
+            get {
+                return ResourceManager.GetString("CommonMsg_Save", resourceCulture);
             }
         }
         

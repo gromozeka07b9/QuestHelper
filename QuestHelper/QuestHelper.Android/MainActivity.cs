@@ -114,23 +114,6 @@ namespace QuestHelper.Droid
                 }
             });
 
-            //Используется для вывода нативного окна выбора oauth учетки
-            /*MessagingCenter.Subscribe<OAuthDialogShowRequest>(this, string.Empty, (sender) =>
-            {
-                var intent = AuthenticationState.Authenticator.GetUI(Android.App.Application.Context);
-                intent.SetFlags(ActivityFlags.NewTask);
-                try
-                {
-                    Android.App.Application.Context.StartActivity(intent);
-                }
-                catch (Exception e)
-                {
-                    Xamarin.Forms.MessagingCenter.Send<UIAlertMessage>(new UIAlertMessage() { Title = CommonResource.Login_GoogleAuthCaption, Message = CommonResource.Login_GoogleAuthError }, string.Empty);
-                    Analytics.TrackEvent("Login OAuth error", new Dictionary<string, string> { { "ExceptionMessage", e.Message },{"Google Chrome auth", "error"} });
-                    Xamarin.Forms.MessagingCenter.Send<UIAlertMessage>(new UIAlertMessage() { Title = "Error", Message = "Error syncing server. Try to open feed." }, string.Empty);
-                }
-            });*/
-
         }
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Android.Content.Intent data)
