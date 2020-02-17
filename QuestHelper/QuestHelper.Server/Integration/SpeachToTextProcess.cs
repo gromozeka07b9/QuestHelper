@@ -117,6 +117,18 @@ namespace QuestHelper.Server.Integration
                                         RawTextCleaner textCleaner = new RawTextCleaner();
                                         resultParse.Result = true;
                                         resultParse.Text = textCleaner.Clean(resultSpeechParsing.Text);
+                                        try
+                                        {
+                                            var entityMediaObject = db.RoutePointMediaObject.Find(audioObject.RoutePointMediaObjectId);
+                                            entityMediaObject.Processed = true;
+                                            entityMediaObject.ProcessResultText = resultParse.Text;
+                                            db.Entry(entityMediaObject).CurrentValues.SetValues(entityMediaObject);
+                                            db.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Console.Write("Error save data:" + e.Message);
+                                        }
                                     }
                                     else
                                     {

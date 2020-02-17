@@ -17,6 +17,8 @@ namespace QuestHelper.Model
         private int _version = 0;
         private MediaObjectTypeEnum _mediaType;
         RoutePointMediaObjectManager manager = new RoutePointMediaObjectManager();
+        private string _processResultText;
+        private bool _processed;
 
         public ViewRoutePointMediaObject()
         {
@@ -37,6 +39,8 @@ namespace QuestHelper.Model
                 _serverSyncedDate = mediaObject.ServerSyncedDate;
                 _isDeleted = mediaObject.IsDeleted;
                 _mediaType = (MediaObjectTypeEnum)mediaObject.MediaType;
+                _processed = mediaObject.Processed;
+                _processResultText = mediaObject.ProcessResultText;
             }
         }
         internal void FillFromWSModel(SharedModelsWS.RoutePointMediaObject mediaObject)
@@ -127,6 +131,30 @@ namespace QuestHelper.Model
                 _version = value;
             }
         }
+
+        public bool Processed
+        {
+            get
+            {
+                return _processed;
+            }
+            set
+            {
+                _processed = value;
+            }
+        }
+        public string ProcessResultText
+        {
+            get
+            {
+                return _processResultText;
+            }
+            set
+            {
+                _processResultText = value;
+            }
+        }
+
         public bool IsDeleted
         {
             get

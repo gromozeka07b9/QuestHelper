@@ -208,7 +208,7 @@
     <value>Submit</value>
   </data>
   <data name="RouteCreated_NowYouCanAddNewPoint" xml:space="preserve">
-    <value>Now you can add first point into your route</value>
+    <value>Now you can add first point into your route.</value>
   </data>
   <data name="RouteCreated_AddNewPoint" xml:space="preserve">
     <value>Add</value>
@@ -359,7 +359,7 @@ GoSh!</value>
     <value>Error deleting point</value>
   </data>
   <data name="RoutePoint_RightNeedToRecordAudio" xml:space="preserve">
-    <value>Resolution is required for sound recording.</value>
+    <value>Resolution is required for sound recording</value>
   </data>
   <data name="CommonMsg_Audio" xml:space="preserve">
     <value>Audio</value>
@@ -489,5 +489,8 @@ GoSh!</value>
   </data>
   <data name="Route_Description" xml:space="preserve">
     <value>Route description</value>
+  </data>
+  <data name="Routes_Register" xml:space="preserve">
+    <value>Please register for creating and syncing your routes</value>
   </data>
 </root>

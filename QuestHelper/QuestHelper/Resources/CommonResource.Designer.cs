@@ -683,7 +683,7 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Now you can add first point into your route.
+        ///   Ищет локализованную строку, похожую на Now you can add first point into your route..
         /// </summary>
         public static string RouteCreated_NowYouCanAddNewPoint {
             get {
@@ -836,7 +836,7 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Resolution is required for sound recording..
+        ///   Ищет локализованную строку, похожую на Resolution is required for sound recording.
         /// </summary>
         public static string RoutePoint_RightNeedToRecordAudio {
             get {
@@ -886,6 +886,15 @@ namespace QuestHelper.Resources {
         public static string RoutePointDescription_Text {
             get {
                 return ResourceManager.GetString("RoutePointDescription_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Please register for creating and syncing your routes.
+        /// </summary>
+        public static string Routes_Register {
+            get {
+                return ResourceManager.GetString("Routes_Register", resourceCulture);
             }
         }
         

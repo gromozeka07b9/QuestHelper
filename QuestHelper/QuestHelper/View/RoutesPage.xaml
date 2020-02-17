@@ -141,7 +141,7 @@
             <AbsoluteLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="3" VerticalOptions="Center" HorizontalOptions="Center" Opacity="1" IsVisible="{Binding IsAutorizedMode, Converter={StaticResource inverter}}">
                 <Frame CornerRadius="5" Padding="15" Margin="20" BackgroundColor="White" VerticalOptions="Center">
                     <StackLayout Orientation="Vertical" VerticalOptions="Center" HorizontalOptions="Center">
-                        <Label Text="Для того, чтобы создавать маршруты и загружать их в облако, необходимо зарегистрироваться." TextColor="Black" FontSize="18" HorizontalTextAlignment="Center"></Label>
+                        <Label Text="{Binding lang:Translation Routes_Register}" TextColor="Black" FontSize="18" HorizontalTextAlignment="Center"></Label>
                         <Image Source="lock_key.png" WidthRequest="70" HeightRequest="70" Margin="15">
                             <Image.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding AuthorizationCommand}" />

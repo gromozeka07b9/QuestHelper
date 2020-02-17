@@ -489,4 +489,7 @@
   <data name="Route_Description" xml:space="preserve">
     <value>Описание маршрута</value>
   </data>
+  <data name="Routes_Register" xml:space="preserve">
+    <value>Для того, чтобы создавать маршруты и загружать их в облако, необходимо зарегистрироваться.</value>
+  </data>
 </root>

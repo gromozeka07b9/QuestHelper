@@ -98,7 +98,8 @@ namespace QuestHelper.ViewModel
                 TokenStoreService tokenService = new TokenStoreService();
                 string authToken = await tokenService.GetAuthTokenAsync();
 
-                var audios = _vpoint.MediaObjects.Where(x => !x.IsDeleted && x.MediaType == 2);
+
+                var audios = GetUnprocessedAudios();
                 int index = 0;
                 int count = audios.Count();
                 SpeechToTextHelper speechToText = new SpeechToTextHelper(authToken);
@@ -110,6 +111,11 @@ namespace QuestHelper.ViewModel
                     if (speechToText.LastHttpStatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(textResult))
                     {
                         sb.AppendLine(textResult);
+                        ViewRoutePointMediaObject vMediaObject = new ViewRoutePointMediaObject();
+                        vMediaObject.Load(audio.RoutePointMediaObjectId);
+                        vMediaObject.Processed = true;
+                        vMediaObject.ProcessResultText = textResult;
+                        vMediaObject.Save();
                     }
                     index++;
                     double percent = (double)index * 100 / (double)count / 100;
@@ -125,6 +131,7 @@ namespace QuestHelper.ViewModel
                 }
             }
             IsWaitRecognizeAudio = false;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsVisibleButtonStartProcessAudio"));
         }
 
         private async void updateAddressCommand(object obj)
@@ -215,6 +222,7 @@ namespace QuestHelper.ViewModel
                     Analytics.TrackEvent("Media: audio recorded");
                 }
             }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsVisibleButtonStartProcessAudio"));
         }
 
         private async void addPhotoAsync(object obj)
@@ -354,6 +362,11 @@ namespace QuestHelper.ViewModel
             }
         }
 
+        private IEnumerable<RoutePointMediaObject> GetUnprocessedAudios()
+        {
+            return _vpoint.MediaObjects.Where(x => !x.IsDeleted && x.MediaType == 2 && !x.Processed);
+        }
+
         public void ApplyChanges()
         {
             _vpoint.Version++;
@@ -366,6 +379,14 @@ namespace QuestHelper.ViewModel
             {
                 var list = _vpoint.MediaObjects.Where(x => !x.IsDeleted).Select(x => new MediaPreview() { SourceImg = ImagePathManager.GetImagePath(x.RoutePointMediaObjectId, (MediaObjectTypeEnum)x.MediaType, true), MediaId = x.RoutePointMediaObjectId, MediaType = (MediaObjectTypeEnum)x.MediaType }).ToList();
                 return list;
+            }
+        }
+
+        public bool IsVisibleButtonStartProcessAudio
+        {
+            get
+            {
+                return GetUnprocessedAudios().Any();
             }
         }
 
@@ -384,6 +405,7 @@ namespace QuestHelper.ViewModel
                 return _isRightsToGetLocationPresented;
             }
         }
+
         public string Description
         {
             get

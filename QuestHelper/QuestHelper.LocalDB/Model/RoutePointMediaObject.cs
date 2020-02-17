@@ -15,6 +15,8 @@ namespace QuestHelper.LocalDB.Model
         public string RoutePointId { get; set; }
         public RoutePoint Point { get; set; }
         public int MediaType { get; set; }
+        public bool Processed { get; set; }
+        public string ProcessResultText { get; set; }
 
         /// <summary>
         /// Версия записи

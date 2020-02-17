@@ -338,7 +338,7 @@
     <value>Fehler beim Löschen des Punktes</value>
   </data>
   <data name="RoutePoint_RightNeedToRecordAudio" xml:space="preserve">
-    <value>Für die Tonaufnahme ist eine Auflösung erforderlich.</value>
+    <value>Für die Tonaufnahme ist eine Auflösung erforderlich</value>
   </data>
   <data name="CommonMsg_Audio" xml:space="preserve">
     <value>Audio</value>
@@ -468,5 +468,8 @@
   </data>
   <data name="Route_Description" xml:space="preserve">
     <value>Routenbeschreibung</value>
+  </data>
+  <data name="Routes_Register" xml:space="preserve">
+    <value>Um Routen zu erstellen und in die Cloud hochzuladen, müssen Sie sich registrieren</value>
   </data>
 </root>

@@ -208,13 +208,13 @@
     <value>Registro</value>
   </data>
   <data name="RouteCreated_NowYouCanAddNewPoint" xml:space="preserve">
-    <value>Ahora puedes agregar el primer punto a tu ruta</value>
+    <value>Ahora puedes agregar el primer punto a tu ruta.</value>
   </data>
   <data name="RouteCreated_AddNewPoint" xml:space="preserve">
     <value>Añadir</value>
   </data>
   <data name="Route_FirstPoint" xml:space="preserve">
-    <value>Aún no tiene puntos, puede agregar uno nuevo</value>
+    <value>Aún no tiene puntos, puede agregar uno nuevo.</value>
   </data>
   <data name="Routes_RoutesNotFound" xml:space="preserve">
     <value>No se encontraron rutas</value>
@@ -458,7 +458,7 @@ Gosh!</value>
     <value>Audio</value>
   </data>
   <data name="RoutePoint_RightNeedToRecordAudio" xml:space="preserve">
-    <value>Se requiere resolución para la grabación de sonido.</value>
+    <value>Se requiere resolución para la grabación de sonido</value>
   </data>
   <data name="RoutePoint_ErrorWhileDeletingPoint" xml:space="preserve">
     <value>Error al eliminar el punto</value>
@@ -489,5 +489,8 @@ Gosh!</value>
   </data>
   <data name="Route_Description" xml:space="preserve">
     <value>Descripción de la ruta</value>
+  </data>
+  <data name="Routes_Register" xml:space="preserve">
+    <value>Para crear rutas y subirlas a la nube, debe registrarse</value>
   </data>
 </root>
