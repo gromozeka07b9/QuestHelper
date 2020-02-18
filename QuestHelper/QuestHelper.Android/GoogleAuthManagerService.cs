@@ -65,7 +65,7 @@ namespace QuestHelper.Droid
 					Name = account.DisplayName,
 					Email = account.Email,
 					Id = account.Id,
-					ImgUrl = new Uri((account.PhotoUrl != null ? $"{account.PhotoUrl}" : $"https://autisticdating.net/imgs/profile-placeholder.jpg"))
+					ImgUrl = new Uri((account.PhotoUrl != null ? $"{account.PhotoUrl}" : $"http://igosh.pro/images/avatar.png"))
 				}, string.Empty);
 			}
 			else

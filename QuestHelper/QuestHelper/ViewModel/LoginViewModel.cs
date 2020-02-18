@@ -63,6 +63,7 @@ namespace QuestHelper.ViewModel
 
         private void OnLoginComplete(GoogleUser googleUser, string message)
         {
+            IsWaitForServer = false;
             if (googleUser != null)
             {
                 var taskRun = Task.Run(async () =>
