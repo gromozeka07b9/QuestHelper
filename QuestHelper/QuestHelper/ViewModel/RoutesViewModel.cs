@@ -93,10 +93,10 @@ namespace QuestHelper.ViewModel
                 {
                     Task taskInnerUpdate = Task.Run(updateUserInfo);
                     taskInnerUpdate.Wait();
-                    PropertyChanged(this, new PropertyChangedEventArgs("IsAutorizedMode"));
-                    PropertyChanged(this, new PropertyChangedEventArgs("Username"));
-                    PropertyChanged(this, new PropertyChangedEventArgs("Email"));
-                    PropertyChanged(this, new PropertyChangedEventArgs("UserImgUrl"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsAutorizedMode"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Username"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Email"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("UserImgUrl"));
                 }
             });
             await updateUserInfo();
@@ -158,7 +158,7 @@ namespace QuestHelper.ViewModel
             {
                 if (IsAutorizedMode)
                 {
-                    PropertyChanged(this, new PropertyChangedEventArgs("IsAutorizedMode"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsAutorizedMode"));
                 }
                 refreshListRoutesCommand();
             }

@@ -230,10 +230,7 @@ namespace QuestHelper.ViewModel
                 if (_isVisibleStartRoute != value)
                 {
                     _isVisibleStartRoute = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("IsVisibleStartRoute"));
-                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsVisibleStartRoute"));
                 }
             }
             get

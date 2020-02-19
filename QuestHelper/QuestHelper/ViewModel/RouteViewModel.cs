@@ -528,10 +528,7 @@ namespace QuestHelper.ViewModel
                 if (_viewPointsOfRoute != value)
                 {
                     _viewPointsOfRoute = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("PointsOfRoute"));
-                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("PointsOfRoute"));
                 }
             }
             get

@@ -55,10 +55,7 @@ namespace QuestHelper.ViewModel
                 if (_messageBody != value)
                 {
                     _messageBody = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("MessageBody"));
-                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("MessageBody"));
                 }
             }
             get

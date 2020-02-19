@@ -30,7 +30,7 @@ using Android.Gms.Auth.Api;
 
 namespace QuestHelper.Droid
 {
-    [Activity(Label = "QuestHelper", Icon = "@drawable/icon2", Theme = "@style/MainTheme", MainLauncher = false, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "GoSh!", Icon = "@drawable/icon2", Theme = "@style/MainTheme", MainLauncher = false, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         
