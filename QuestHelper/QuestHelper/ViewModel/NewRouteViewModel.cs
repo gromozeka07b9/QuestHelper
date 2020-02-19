@@ -90,10 +90,7 @@ namespace QuestHelper.ViewModel
                 if (_splashStartScreenIsVisible != value)
                 {
                     _splashStartScreenIsVisible = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("SplashStartScreenIsVisible"));
-                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SplashStartScreenIsVisible"));
                 }
             }
             get

@@ -56,7 +56,7 @@ namespace QuestHelper.Server.Controllers.Points
             }
 
             TimeSpan delay = DateTime.Now - startDate;
-            Console.WriteLine($"Points Sync (old): status 200, {userId}, delay:{delay.Milliseconds}");
+            Console.WriteLine($"Points Sync (old): status 200, {userId}, delay:{delay.TotalMilliseconds}");
 
             return new ObjectResult(report);
         }

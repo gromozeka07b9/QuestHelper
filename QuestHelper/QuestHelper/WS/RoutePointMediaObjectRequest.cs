@@ -106,8 +106,7 @@ namespace QuestHelper.WS
                             using (var formData = new MultipartFormDataContent())
                             {
                                 formData.Add(content);
-                                HttpResponseMessage response = new HttpResponseMessage();
-                                response = await client.PostAsync($"{ this._hostUrl }/routepointmediaobjects/{ routePointId }/{ routePointMediaObjectId }/uploadfile", formData);
+                                HttpResponseMessage response = await client.PostAsync($"{ this._hostUrl }/routepointmediaobjects/{ routePointId }/{ routePointMediaObjectId }/uploadfile", formData);
                                 LastHttpStatusCode = response.StatusCode;
                                 result = response.IsSuccessStatusCode;
                             }

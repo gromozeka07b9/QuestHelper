@@ -80,10 +80,7 @@ namespace QuestHelper.ViewModel
                 if (_isRefreshing != value)
                 {
                     _isRefreshing = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("IsRefreshing"));
-                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsRefreshing"));
                 }
             }
             get
@@ -98,10 +95,7 @@ namespace QuestHelper.ViewModel
                 if (_noPostsWarningIsVisible != value)
                 {
                     _noPostsWarningIsVisible = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("NoPostsWarningIsVisible"));
-                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NoPostsWarningIsVisible"));
                 }
             }
             get
@@ -118,7 +112,7 @@ namespace QuestHelper.ViewModel
                     _routeItem = value;
                     var coverPage = new RouteCoverPage(value);
                     Navigation.PushModalAsync(coverPage);
-                    PropertyChanged(this, new PropertyChangedEventArgs("SelectedRouteItem"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedRouteItem"));
                     _routeItem = null;
                 }
             }
@@ -132,7 +126,7 @@ namespace QuestHelper.ViewModel
                     _routes = value;
                     if (PropertyChanged != null)
                     {
-                        PropertyChanged(this, new PropertyChangedEventArgs("Routes"));
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Routes"));
                         NoPostsWarningIsVisible = _routes.Count() > 0;
                     }
                 }

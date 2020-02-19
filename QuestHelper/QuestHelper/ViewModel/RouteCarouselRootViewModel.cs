@@ -207,7 +207,7 @@ namespace QuestHelper.ViewModel
                 {
                     text = "";
                 }
-                else text = _currentItem?.RoutePointDescription;
+                else text = _currentItem.RoutePointDescription;
                 return text;
             }
         }

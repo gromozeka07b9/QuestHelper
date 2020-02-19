@@ -84,9 +84,9 @@ namespace QuestHelper.Droid
                 if (await _syncPossibility.CheckAsync(true))
                 {
                     Intent syncIntent = new Intent(this, typeof(SyncIntentService));
-                    if (!string.IsNullOrEmpty(sender.RouteId))
+                    if ((sender != null) && !string.IsNullOrEmpty(sender.RouteId))
                     {
-                        syncIntent.PutExtra("RouteId", sender?.RouteId);
+                        syncIntent.PutExtra("RouteId", sender.RouteId);
                         syncIntent.PutExtra("NeedCheckVersionRoute", sender.NeedCheckVersionRoute);
                     }
                     var result = StartService(syncIntent);

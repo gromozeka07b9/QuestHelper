@@ -67,7 +67,7 @@ namespace QuestHelper.Managers.Sync
             {
                 RoutesApiRequest api = new RoutesApiRequest(_apiUrl, authToken);
                 var routeServerVersion = await api.GetRouteVersion(routeId);
-                if (api.LastHttpStatusCode == HttpStatusCode.OK)
+                if (routeServerVersion != null && api.LastHttpStatusCode == HttpStatusCode.OK)
                 {
                     RouteManager routeManager = new RouteManager();
                     var routeLocal = routeManager.GetRouteById(routeId);

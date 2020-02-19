@@ -31,7 +31,7 @@ namespace QuestHelper.ViewModel
         private IGoogleAuthManagerService _googleAuthManager;
         private bool _isWaitForServer;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged = (sender, AddingNewEventArgs) => { };
         public INavigation Navigation { get; set; }
         public ICommand LoginCommand { get; private set; }
         public ICommand GoToRegisterCommand { get; private set; }
@@ -115,7 +115,7 @@ namespace QuestHelper.ViewModel
 
         async void RegisterCommandAsync()
         {
-            if ((!string.IsNullOrEmpty(_username) && !string.IsNullOrEmpty(_password) && !string.IsNullOrEmpty(_email)))
+            if (!string.IsNullOrEmpty(_username) && !string.IsNullOrEmpty(_password) && !string.IsNullOrEmpty(_email))
             {
                 if (_email.Contains("@") && _email.Contains("."))
                 {
@@ -157,7 +157,7 @@ namespace QuestHelper.ViewModel
 
         async void TryLoginCommandAsync()
         {
-            if ((!string.IsNullOrEmpty(_username) && !string.IsNullOrEmpty(_password)))
+            if (!string.IsNullOrEmpty(_username) && !string.IsNullOrEmpty(_password))
             {
                 using (UserDialogs.Instance.Loading(CommonResource.Login_AuthorizationProcess, null, null, true, MaskType.Black))
                 {
@@ -250,10 +250,7 @@ namespace QuestHelper.ViewModel
                 if (_password != value)
                 {
                     _password = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("Password"));
-                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Password"));
                 }
             }
             get

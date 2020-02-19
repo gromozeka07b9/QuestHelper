@@ -97,7 +97,7 @@ namespace QuestHelper.Server.Controllers
             }
 
             TimeSpan delay = DateTime.Now - startDate;
-            Console.WriteLine($"Get Feed: status 200, {userId}, delay:{delay.Milliseconds}");
+            Console.WriteLine($"Get Feed: status 200, {userId}, delay:{delay.TotalMilliseconds}");
 
             return new ObjectResult(routes);
         }

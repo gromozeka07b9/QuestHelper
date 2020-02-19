@@ -67,7 +67,7 @@ namespace QuestHelper.Managers
                         address = $"{addressItem.SubThoroughfare}, {addressItem.Thoroughfare}, {addressItem.Locality}, {addressItem.CountryName}";
                         if (!string.IsNullOrEmpty(addressItem.SubLocality))
                         {
-                            pointName = $"{addressItem?.SubLocality}";
+                            pointName = $"{addressItem.SubLocality}";
                         }
                         else
                         {

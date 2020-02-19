@@ -61,7 +61,7 @@ namespace QuestHelper.Server.Controllers.Routes
             }
 
             TimeSpan delay = DateTime.Now - startDate;
-            Console.WriteLine($"Route Sync (old): status 200, {userId}, delay:{delay.Milliseconds}");
+            Console.WriteLine($"Route Sync (old): status 200, {userId}, delay:{delay.TotalMilliseconds}");
 
             return new ObjectResult(report);
         }

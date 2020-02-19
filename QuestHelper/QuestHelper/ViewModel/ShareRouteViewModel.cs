@@ -79,8 +79,8 @@ namespace QuestHelper.ViewModel
                 if (_usersForShare != value)
                 {
                     _usersForShare = value;
-                    PropertyChanged(this, new PropertyChangedEventArgs("FoundedUsers"));
-                    PropertyChanged(this, new PropertyChangedEventArgs("NoContactWarningIsVisible"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("FoundedUsers"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NoContactWarningIsVisible"));
                 }
             }
             get
@@ -95,10 +95,7 @@ namespace QuestHelper.ViewModel
                 if (_isRefreshing != value)
                 {
                     _isRefreshing = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("IsRefreshing"));
-                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsRefreshing"));
                 }
             }
             get

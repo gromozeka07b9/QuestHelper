@@ -88,12 +88,12 @@ namespace QuestHelper.ViewModel
                 string text = string.Empty;
                 if (string.IsNullOrEmpty(_pointObject?.Description))
                 {
-                    if (!string.IsNullOrEmpty(_pointObject.Address))
+                    if (!string.IsNullOrEmpty(_pointObject?.Address))
                     {
                         text = _pointObject.Address;
                     }
                 }
-                else text = _pointObject?.Description;
+                else text = _pointObject.Description;
                 return text;
             }
         }

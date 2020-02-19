@@ -60,7 +60,7 @@ namespace QuestHelper.Droid.Intents
             {
                 syncResult = await syncSrv.Sync(routeId);
             }
-            Console.WriteLine("SyncIntentService sync ended");
+            Console.WriteLine($"SyncIntentService sync ended, result:{syncResult}");
         }
     }
 }

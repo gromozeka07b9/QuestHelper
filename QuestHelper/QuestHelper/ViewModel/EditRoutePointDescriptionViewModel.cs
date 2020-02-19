@@ -110,10 +110,7 @@ namespace QuestHelper.ViewModel
                 if (_isEditMode != value)
                 {
                     _isEditMode = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("IsEditMode"));
-                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsEditMode"));
                 }
             }
             get

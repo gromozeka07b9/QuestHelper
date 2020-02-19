@@ -40,10 +40,7 @@ namespace QuestHelper.ViewModel
                 if (_messageTitle != value)
                 {
                     _messageTitle = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("MessageTitle"));
-                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("MessageTitle"));
                 }
             }
             get

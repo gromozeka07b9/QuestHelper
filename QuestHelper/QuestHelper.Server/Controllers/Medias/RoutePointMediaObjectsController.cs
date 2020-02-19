@@ -31,7 +31,7 @@ namespace QuestHelper.Server.Controllers.Medias
         public IActionResult Get(string routePointMediaObjectId)
         {
             string userId = IdentityManager.GetUserId(HttpContext);
-            RoutePointMediaObject item = new RoutePointMediaObject();
+            RoutePointMediaObject item;
             using (var db = new ServerDbContext(_dbOptions))
             {
                 var publishRoutes = db.Route.Where(r => r.IsPublished && r.IsDeleted == false).Select(r => r.RouteId).ToList();
@@ -39,7 +39,7 @@ namespace QuestHelper.Server.Controllers.Medias
                 var availablePoints = db.RoutePoint.Where(p => routeAccess.Contains(p.RouteId)||(publishRoutes.Contains(p.RouteId))).Select(p => p.RoutePointId).ToList();
                 item = db.RoutePointMediaObject.SingleOrDefault(x => x.RoutePointMediaObjectId == routePointMediaObjectId && availablePoints.Contains(x.RoutePointId));
             }
-            return new ObjectResult(item);
+            return new ObjectResult(item != null ? item : new RoutePointMediaObject());
         }
 
         [HttpPost]
@@ -169,7 +169,7 @@ namespace QuestHelper.Server.Controllers.Medias
             }
 
             TimeSpan delay = DateTime.Now - startDate;
-            Console.WriteLine($"Image GET: status {Response.StatusCode}, {userId}, file:{fileName}, delay:{delay.Milliseconds}");
+            Console.WriteLine($"Image GET: status {Response.StatusCode}, {userId}, file:{fileName}, delay:{delay.TotalMilliseconds}");
 
             return new ObjectResult("");
         }
@@ -185,7 +185,7 @@ namespace QuestHelper.Server.Controllers.Medias
             else Response.StatusCode = 404;
 
             TimeSpan delay = DateTime.Now - startDate;
-            Console.WriteLine($"Image exist: status {Response.StatusCode}, {userId}, file:{fileName}, delay:{delay.Milliseconds}");
+            Console.WriteLine($"Image exist: status {Response.StatusCode}, {userId}, file:{fileName}, delay:{delay.TotalMilliseconds}");
         }
 
         /*[HttpPost("tryspeechparse")]

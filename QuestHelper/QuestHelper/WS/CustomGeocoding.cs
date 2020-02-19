@@ -16,7 +16,8 @@ namespace QuestHelper.WS
         {
             get
             {
-                return _locations.FirstOrDefault().Longitude;
+                var location = _locations.FirstOrDefault();
+                return location != null ? location.Longitude : 0;
             }
         }
 
@@ -24,7 +25,8 @@ namespace QuestHelper.WS
         {
             get
             {
-                return _locations.FirstOrDefault().Latitude;
+                var location = _locations.FirstOrDefault();
+                return location != null ? location.Latitude : 0;
             }
         }
 

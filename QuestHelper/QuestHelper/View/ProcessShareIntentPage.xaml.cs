@@ -17,9 +17,9 @@ namespace QuestHelper.View
 		{
 			InitializeComponent ();	    
         }
-	    public ProcessShareIntentPage(ShareFromGoogleMapsMessage msg)
+	    /*public ProcessShareIntentPage(ShareFromGoogleMapsMessage msg)
 	    {
 	        InitializeComponent();
-	    }
+	    }*/
 	}
 }

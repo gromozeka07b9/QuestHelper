@@ -61,7 +61,7 @@ namespace QuestHelper.Server.Controllers.Medias
             }
 
             TimeSpan delay = DateTime.Now - startDate;
-            Console.WriteLine($"Medias Sync (old): status 200, {userId}, delay:{delay.Milliseconds}");
+            Console.WriteLine($"Medias Sync (old): status 200, {userId}, delay:{delay.TotalMilliseconds}");
 
             return new ObjectResult(report);
         }
@@ -109,7 +109,7 @@ namespace QuestHelper.Server.Controllers.Medias
             }
 
             TimeSpan delay = DateTime.Now - startDate;
-            Console.WriteLine($"Image status (old): status 200, {userId}, delay:{delay.Milliseconds}");
+            Console.WriteLine($"Image status (old): status 200, {userId}, delay:{delay.TotalMilliseconds}");
 
             return new ObjectResult(status);
         }

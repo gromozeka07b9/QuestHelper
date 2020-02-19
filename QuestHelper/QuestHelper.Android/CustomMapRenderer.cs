@@ -224,10 +224,6 @@ namespace QuestHelper.Droid
             canvas.DrawARGB(0, 0, 0, 0);
             paint.Color = Android.Graphics.Color.ParseColor("#000000");
 
-            //Paint paintBack = new Paint();
-            //paintBack.Color = Android.Graphics.Color.Blue;
-            //paintBack.SetShadowLayer(sbmp.Width / 2 + 0.0f, sbmp.Width / 2 + 0.0f, sbmp.Height / 2 + 0.0f, Android.Graphics.Color.Black);
-            //canvas.DrawCircle(sbmp.Width / 2 + 0.0f, sbmp.Height / 2 + 0.0f, sbmp.Width / 2 + 0.0f, paintBack);
             canvas.DrawCircle(sbmp.Width / 2 + 0.0f, sbmp.Height / 2 + 0.0f, sbmp.Width / 2 + 0.0f, paint);
             paint.SetXfermode(new PorterDuffXfermode(PorterDuff.Mode.SrcIn));
             try

@@ -126,7 +126,7 @@ namespace QuestHelper.ViewModel
                 HandleError.Process("FeedRoutesViewModel", "GetFeed", new Exception("feed is null"), false);
             }
 
-            PropertyChanged(this, new PropertyChangedEventArgs("FeedItems"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("FeedItems"));
             if (FeedItems?.Count() == 0)
             {
                 Device.StartTimer(TimeSpan.FromSeconds(3), OnTimerForUpdate);
@@ -233,10 +233,7 @@ namespace QuestHelper.ViewModel
                 if (_isRefreshing != value)
                 {
                     _isRefreshing = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("IsRefreshing"));
-                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsRefreshing"));
                 }
             }
             get
@@ -252,10 +249,7 @@ namespace QuestHelper.ViewModel
                 if (_feedItemId != value)
                 {
                     _feedItemId = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("FeedItemId"));
-                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("FeedItemId"));
                 }
             }
             get
@@ -276,7 +270,7 @@ namespace QuestHelper.ViewModel
                     _textFilter = value;
                     if (PropertyChanged != null)
                     {
-                        PropertyChanged(this, new PropertyChangedEventArgs("TextFilter"));
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TextFilter"));
                     }
                 }
             }
@@ -295,7 +289,7 @@ namespace QuestHelper.ViewModel
                     _feedItem = value;
                     var coverPage = new RouteCoverPage(value);
                     Navigation.PushModalAsync(coverPage);
-                    PropertyChanged(this, new PropertyChangedEventArgs("SelectedRouteItem"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedRouteItem"));
                     if (!_feedItem.IsUserViewed)
                     {
                         Xamarin.Forms.MessagingCenter.Send<AddRouteViewedMessage>(new AddRouteViewedMessage() { RouteId = _feedItem.Id }, string.Empty);
@@ -313,10 +307,7 @@ namespace QuestHelper.ViewModel
                 if (_noItemsWarningIsVisible != value)
                 {
                     _noItemsWarningIsVisible = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("NoItemsWarningIsVisible"));
-                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NoItemsWarningIsVisible"));
                 }
             }
             get
@@ -334,7 +325,7 @@ namespace QuestHelper.ViewModel
                     _feedItems = value;
                     if (PropertyChanged != null)
                     {
-                        PropertyChanged(this, new PropertyChangedEventArgs("FeedItems"));
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("FeedItems"));
                         NoItemsWarningIsVisible = _feedItems.Count() > 0;
                     }
                 }

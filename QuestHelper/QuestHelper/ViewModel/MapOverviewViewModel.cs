@@ -40,7 +40,7 @@ namespace QuestHelper.ViewModel
         internal async void OpenPointPropertiesAsync(double latitude, double longitude)
         {
             RoutePoint point = _routePointManager.GetPointByCoordinates(latitude, longitude);
-            if(point.MainRoute != null)
+            if(point != null && point.MainRoute != null)
             {
                 var routePointPage = new RoutePointPage(point.MainRoute.RouteId, point.RoutePointId);
                 await Navigation.PushAsync(routePointPage, true);

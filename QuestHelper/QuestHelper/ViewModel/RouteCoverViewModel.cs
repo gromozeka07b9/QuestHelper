@@ -111,14 +111,14 @@ namespace QuestHelper.ViewModel
                     IsVisibleList = true;
                     IsVisibleProgress = false;
                     IsVisibleStartRoute = !IsVisibleProgress;
-                    PropertyChanged(this, new PropertyChangedEventArgs("PointsOfRoute"));
-                    PropertyChanged(this, new PropertyChangedEventArgs("Description"));
-                    PropertyChanged(this, new PropertyChangedEventArgs("RouteCoverImage"));
-                    PropertyChanged(this, new PropertyChangedEventArgs("Name"));
-                    PropertyChanged(this, new PropertyChangedEventArgs("CreateDateText"));
-                    PropertyChanged(this, new PropertyChangedEventArgs("Author"));
-                    PropertyChanged(this, new PropertyChangedEventArgs("RowHeightForDescription"));
-                    PropertyChanged(this, new PropertyChangedEventArgs("RowHeightForImage"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("PointsOfRoute"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Description"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RouteCoverImage"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CreateDateText"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Author"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RowHeightForDescription"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RowHeightForImage"));
                 }
             });
             MessagingCenter.Subscribe<SyncProgressImageLoadingMessage>(this, string.Empty, (sender) =>
@@ -126,8 +126,8 @@ namespace QuestHelper.ViewModel
                 if (sender.RouteId.Equals(_vroute.Id))
                 {
                     ProgressValue = sender.ProgressValue;
-                    PropertyChanged(this, new PropertyChangedEventArgs("PointsOfRoute"));
-                    PropertyChanged(this, new PropertyChangedEventArgs("RowHeightForDescription"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("PointsOfRoute"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RowHeightForDescription"));
                 }
             });
             MessagingCenter.Subscribe<SyncProgressRouteLoadingMessage>(this, string.Empty, (sender) =>
@@ -135,8 +135,8 @@ namespace QuestHelper.ViewModel
                 if (!string.IsNullOrEmpty(sender.RouteId) && (sender.RouteId.Equals(_vroute.Id)))
                 {
                     ProgressValue = sender.ProgressValue;
-                    PropertyChanged(this, new PropertyChangedEventArgs("PointsOfRoute"));
-                    PropertyChanged(this, new PropertyChangedEventArgs("RowHeightForDescription"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("PointsOfRoute"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RowHeightForDescription"));
                 }
             });
 
@@ -168,7 +168,7 @@ namespace QuestHelper.ViewModel
                 if (_creatorImgUrl != value)
                 {
                     _creatorImgUrl = value;
-                    PropertyChanged(this, new PropertyChangedEventArgs("CreatorImgUrl"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CreatorImgUrl"));
                 }
             }
             get
@@ -184,10 +184,7 @@ namespace QuestHelper.ViewModel
                 if (_progressValue != value)
                 {
                     _progressValue = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("ProgressValue"));
-                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ProgressValue"));
                 }
             }
             get
@@ -202,10 +199,7 @@ namespace QuestHelper.ViewModel
                 if (_isVisibleList != value)
                 {
                     _isVisibleList = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("IsVisibleList"));
-                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsVisibleList"));
                 }
             }
             get
@@ -221,10 +215,7 @@ namespace QuestHelper.ViewModel
                 if (_isVisibleProgress != value)
                 {
                     _isVisibleProgress = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("IsVisibleProgress"));
-                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsVisibleProgress"));
                 }
             }
             get

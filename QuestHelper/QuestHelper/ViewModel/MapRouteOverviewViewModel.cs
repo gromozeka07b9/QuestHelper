@@ -42,7 +42,7 @@ namespace QuestHelper.ViewModel
         internal async void OpenPointPropertiesAsync(double latitude, double longitude)
         {
             RoutePoint point = _routePointManager.GetPointByCoordinates(latitude, longitude);
-            if(point.MainRoute != null)
+            if(point != null && point.MainRoute != null)
             {
                 var routePointPage = new RoutePointPage(point.MainRoute.RouteId, point.RoutePointId);
                 await Navigation.PushModalAsync(routePointPage, true);
@@ -62,16 +62,9 @@ namespace QuestHelper.ViewModel
             else
             {
                 ViewRoute route = _routeManager.GetViewRouteById(_routeId);
-                if (route != null)
-                {
-                    var routesList = new List<ViewRoute>();
-                    routesList.Add(route);
-                    routes = routesList;
-                }
-                else
-                {
-                    routes = new List<ViewRoute>();
-                }
+                var routesList = new List<ViewRoute>();
+                routesList.Add(route);
+                routes = routesList;
             }
             foreach (var route in routes)
             {

@@ -47,7 +47,7 @@ namespace QuestHelper.Server.Controllers.RouteSync
 
             string userId = IdentityManager.GetUserId(HttpContext);
 
-            List<RouteVersion> routeVersions = new List<RouteVersion>();
+            //List<RouteVersion> routeVersions = new List<RouteVersion>();
             AvailableRoutes availRoutes = new AvailableRoutes(_dbOptions);
 
             List<Models.Route> routes = new List<Models.Route>();
@@ -60,10 +60,10 @@ namespace QuestHelper.Server.Controllers.RouteSync
                 routes = availRoutes.GetByUserIdWithPublished(userId);
             }
 
-            routeVersions = makeRoutesVersion(routes);
+            List<RouteVersion> routeVersions = makeRoutesVersion(routes);
 
             TimeSpan delay = DateTime.Now - startDate;
-            Console.WriteLine($"GetRouteData full: status 200, {userId}, delay:{delay.Milliseconds}");
+            Console.WriteLine($"GetRouteData full: status 200, {userId}, delay:{delay.TotalMilliseconds}");
 
             return new ObjectResult(routeVersions);
         }
@@ -86,7 +86,7 @@ namespace QuestHelper.Server.Controllers.RouteSync
             List<Models.Route> routes = new List<Models.Route>();
             routes.Add(route);
 
-            if (string.IsNullOrEmpty(route.VersionsHash))
+            if (string.IsNullOrEmpty(route?.VersionsHash))
             {
                 routeVersions = makeRoutesVersion(routes);
             }
@@ -96,7 +96,7 @@ namespace QuestHelper.Server.Controllers.RouteSync
             }
 
             TimeSpan delay = DateTime.Now - startDate;
-            Console.WriteLine($"GetRouteVersion: status 200, {userId}, delay:{delay.Milliseconds}");
+            Console.WriteLine($"GetRouteVersion: status 200, {userId}, delay:{delay.TotalMilliseconds}");
 
             return new ObjectResult(routeVersions);
         }
@@ -118,7 +118,7 @@ namespace QuestHelper.Server.Controllers.RouteSync
 
         private List<RouteVersion> makeRoutesVersion(List<Models.Route> routes)
         {
-            List<RouteVersion> routeVersions = new List<RouteVersion>();
+            List<RouteVersion> routeVersions;
 
             using (var db = new ServerDbContext(_dbOptions))
             {
@@ -157,7 +157,7 @@ namespace QuestHelper.Server.Controllers.RouteSync
                 }
             }
 
-            return routeVersions;
+            return routeVersions != null ? routeVersions : new List<RouteVersion>();
         }
 
 
@@ -191,7 +191,7 @@ namespace QuestHelper.Server.Controllers.RouteSync
             }
 
             TimeSpan delay = DateTime.Now - startDate;
-            Console.WriteLine($"GetRouteData by Id: status 200, {userId}, {routeId}, delay:{delay.Milliseconds}");
+            Console.WriteLine($"GetRouteData by Id: status 200, {userId}, {routeId}, delay:{delay.TotalMilliseconds}");
             return new ObjectResult(routeRoot);
         }
 
@@ -222,7 +222,7 @@ namespace QuestHelper.Server.Controllers.RouteSync
             }
             else Response.StatusCode = 204;
             TimeSpan delay = DateTime.Now - startDate;
-            Console.WriteLine($"GetCoverImage by Id: status 200, {userId}, {routeId}, delay:{delay.Milliseconds}");
+            Console.WriteLine($"GetCoverImage by Id: status 200, {userId}, {routeId}, delay:{delay.TotalMilliseconds}");
             return new ObjectResult("");
         }
 
@@ -247,7 +247,7 @@ namespace QuestHelper.Server.Controllers.RouteSync
             }
 
             TimeSpan delay = DateTime.Now - startDate;
-            Console.WriteLine($"Add route view: status 200, {userId}, delay:{delay.Milliseconds}");
+            Console.WriteLine($"Add route view: status 200, {userId}, delay:{delay.TotalMilliseconds}");
         }
 
     }

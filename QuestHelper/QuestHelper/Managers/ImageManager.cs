@@ -92,7 +92,7 @@ namespace QuestHelper.Managers
                         SaveToAlbum = true,
                         CompressionQuality = 70
                     });
-                    takePhotoResult = true;
+                    takePhotoResult = file != null;
                 }
                 catch (Exception e)
                 {

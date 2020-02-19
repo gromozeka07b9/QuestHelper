@@ -69,7 +69,7 @@ namespace QuestHelper.Managers.Sync
                     if (_syncMediaFiles)
                     {
                         var medias = _routePointMediaManager.GetMediaObjectsByRouteId(routeRoot.Route.Id).Where(m => !m.OriginalServerSynced || !m.PreviewServerSynced).Select(m => new MediaForUpdate { RoutePointId = m.RoutePointId, RoutePointMediaObjectId = m.RoutePointMediaObjectId, OriginalServerSynced = m.OriginalServerSynced, PreviewServerSynced = m.PreviewServerSynced, IsDeleted = m.IsDeleted, MediaType = (MediaObjectTypeEnum)m.MediaType }).ToList();
-                        _log.AddStringEvent($"media files sync,  route {_routeId}, media count:{medias?.Count.ToString()}");
+                        _log.AddStringEvent($"media files sync,  route {_routeId}, media count:{medias.Count.ToString()}");
 
                         int count = medias.Count;
                         int index = 0;
@@ -336,8 +336,10 @@ namespace QuestHelper.Managers.Sync
         private async Task<bool> updateRoute(string routeServerHash, RouteRoot routeRoot, ViewRoute localRoute)
         {
             bool updateResult = false;
+            
+            if (routeRoot == null) return updateResult;
 
-            if ((localRoute == null) || (routeRoot.Route.Version > localRoute.Version))
+            if ((localRoute == null) || (routeRoot.Route?.Version > localRoute.Version))
             {
                 ViewRoute updateViewRoute = new ViewRoute(_routeId);
                 updateViewRoute.FillFromWSModel(routeRoot, routeServerHash);
@@ -351,7 +353,7 @@ namespace QuestHelper.Managers.Sync
             {
                 updateResult = await UploadAsync(GetRouteJsonStructure(localRoute, ""), _routesApi);
             }
-            else if (routeRoot?.Route?.Version < localRoute?.Version)
+            else if (routeRoot.Route.Version < localRoute.Version)
             {
 
                 string coverImgBase64 = string.Empty;
@@ -369,7 +371,7 @@ namespace QuestHelper.Managers.Sync
 
                 updateResult = await UploadAsync(GetRouteJsonStructure(localRoute, coverImgBase64), _routesApi);
             }
-            else if (routeRoot?.Route?.Version == localRoute?.Version)
+            else if (routeRoot.Route.Version == localRoute.Version)
             {
                 updateResult = true;
             }

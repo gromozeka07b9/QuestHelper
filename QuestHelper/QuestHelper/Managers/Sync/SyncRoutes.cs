@@ -56,7 +56,7 @@ namespace QuestHelper.Managers.Sync
             {
                 sendProgress(string.Empty, ++currentIndex, mainIndex);
                 _log.AddStringEvent("GetRoutesVersions, count:" + listRoutesVersions?.Count.ToString());
-                if ((!AuthRequired) && (listRoutesVersions?.Count > 0))
+                if (listRoutesVersions?.Count > 0)
                 {
                     var routesLocal = _routeManager.GetRoutesForSync().Select(x => new { x.RouteId, x.Version, x.ObjVerHash, x.IsPublished });
                     var differentRoutes = listRoutesVersions.Where(r => (!routesLocal.Any(l => (l.RouteId == r.Id && l.ObjVerHash == r.ObjVerHash))));
@@ -136,13 +136,13 @@ namespace QuestHelper.Managers.Sync
             {
                 var localRoute = _routeManager.GetRouteById(routeId);
                 sendProgress(routeId, ++currentIndex, mainIndex);
-                if ((localRoute == null) || !serverRouteVersion.ObjVerHash.Equals(localRoute.ObjVerHash))
+                if ((localRoute == null) || (serverRouteVersion != null && !serverRouteVersion.ObjVerHash.Equals(localRoute.ObjVerHash)))
                 {
-                    SyncRoute syncRouteContext = new SyncRoute(serverRouteVersion.Id, _authToken);
+                    SyncRoute syncRouteContext = new SyncRoute(serverRouteVersion?.Id, _authToken);
                     syncRouteContext.SyncImages = true;
-                    _log.AddStringEvent($"start sync diff route {serverRouteVersion.Id}");
-                    result = await syncRouteContext.SyncAsync(serverRouteVersion.ObjVerHash, false);
-                    _log.AddStringEvent($"diff route result, {serverRouteVersion.Id} :" + result);
+                    _log.AddStringEvent($"start sync diff route {serverRouteVersion?.Id}");
+                    result = await syncRouteContext.SyncAsync(serverRouteVersion?.ObjVerHash, false);
+                    _log.AddStringEvent($"diff route result, {serverRouteVersion?.Id} :" + result);
                     Xamarin.Forms.MessagingCenter.Send<SyncRouteCompleteMessage>(new SyncRouteCompleteMessage() { RouteId = routeId, SuccessSync = result }, string.Empty);
                 }
             }

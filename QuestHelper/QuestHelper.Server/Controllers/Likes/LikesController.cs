@@ -44,7 +44,7 @@ namespace QuestHelper.Server.Controllers.Likes
             }
 
             TimeSpan delay = DateTime.Now - startDate;
-            Console.WriteLine($"Add emotion: status 200, {userId}, delay:{delay.Milliseconds}");
+            Console.WriteLine($"Add emotion: status 200, {userId}, delay:{delay.TotalMilliseconds}");
         }
 
         public class Emotion

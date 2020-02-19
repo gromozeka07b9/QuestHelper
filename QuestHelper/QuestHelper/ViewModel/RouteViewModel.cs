@@ -224,10 +224,7 @@ namespace QuestHelper.ViewModel
                 if (_isRefreshing != value)
                 {
                     _isRefreshing = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("IsRefreshing"));
-                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsRefreshing"));
                 }
             }
             get
@@ -243,10 +240,7 @@ namespace QuestHelper.ViewModel
                 if (_isVisibleNavigationToolbar != value)
                 {
                     _isVisibleNavigationToolbar = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("IsVisibleNavigationToolbar"));
-                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsVisibleNavigationToolbar"));
                 }
             }
             get
@@ -442,7 +436,7 @@ namespace QuestHelper.ViewModel
                     var page = new RoutePointV2Page(_vroute.Id, point.Id);
                     Navigation.PushModalAsync(page);
                     _selectedPoint = null;
-                    PropertyChanged(this, new PropertyChangedEventArgs("SelectedRoutePointItem"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedRoutePointItem"));
                 }
             }
         }
@@ -456,7 +450,7 @@ namespace QuestHelper.ViewModel
                     _listIsRefreshing = value;
                     if (PropertyChanged != null)
                     {
-                        PropertyChanged(this, new PropertyChangedEventArgs("ListIsRefreshing"));
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ListIsRefreshing"));
                     }
                 }
             }
@@ -472,10 +466,7 @@ namespace QuestHelper.ViewModel
                 if (_noPointWarningIsVisible != value)
                 {
                     _noPointWarningIsVisible = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("NoPointWarningIsVisible"));
-                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NoPointWarningIsVisible"));
                 }
             }
             get
@@ -507,10 +498,7 @@ namespace QuestHelper.ViewModel
                 if (_splashStartScreenIsVisible != value)
                 {
                     _splashStartScreenIsVisible = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("SplashStartScreenIsVisible"));
-                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SplashStartScreenIsVisible"));
                 }
             }
             get
@@ -525,10 +513,7 @@ namespace QuestHelper.ViewModel
                 if (_routeScreenIsVisible != value)
                 {
                     _routeScreenIsVisible = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("RouteScreenIsVisible"));
-                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RouteScreenIsVisible"));
                 }
             }
             get

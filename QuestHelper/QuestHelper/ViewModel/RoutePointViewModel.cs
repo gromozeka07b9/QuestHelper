@@ -343,12 +343,10 @@ namespace QuestHelper.ViewModel
                     }
                 }
 
-                long fileSize = 0;
                 if (file != null)
                 {
                     FileInfo info = new FileInfo(file.Path);
                     string imgPathToDirectory = info.DirectoryName;
-                    fileSize = info.Length;
                     file.Dispose();
 
                     ImagePreviewManager preview = new ImagePreviewManager();
@@ -406,7 +404,7 @@ namespace QuestHelper.ViewModel
                     address = $"{addressItem.SubThoroughfare}, {addressItem.Thoroughfare}, {addressItem.Locality}, {addressItem.CountryName}";
                     if (!string.IsNullOrEmpty(addressItem.SubLocality))
                     {
-                        _pointNameFromAddress = $"{addressItem?.SubLocality}";
+                        _pointNameFromAddress = $"{addressItem.SubLocality}";
                     }
                     else
                     {

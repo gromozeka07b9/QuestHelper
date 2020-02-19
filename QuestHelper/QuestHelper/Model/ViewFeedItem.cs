@@ -39,8 +39,7 @@ namespace QuestHelper.Model
         /// Создание элемента ленты, пока поддерживается только тип Route
         /// </summary>
         /// <param name="feedItemId"></param>
-        /// <param name="feedItemType"></param>
-        public ViewFeedItem(string feedItemId, int feedItemType = 1)
+        public ViewFeedItem(string feedItemId)
         {
             if (string.IsNullOrEmpty(feedItemId))
             {
@@ -199,10 +198,7 @@ namespace QuestHelper.Model
                 if (_favoritesCount != value)
                 {
                     _favoritesCount = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("FavoritesCount"));
-                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("FavoritesCount"));
                 }
             }
             get
@@ -230,10 +226,7 @@ namespace QuestHelper.Model
             set
             {
                 _isUserLiked = value;
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs("FavoriteImage"));
-                }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("FavoriteImage"));
             }
             get
             {
