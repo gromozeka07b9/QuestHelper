@@ -15544,64 +15544,76 @@ namespace QuestHelper.Droid
 			public const int common_signin_button_text_long = 2131492923;
 			
 			// aapt resource value: 0x7F0C003C
-			public const int fab_transformation_scrim_behavior = 2131492924;
+			public const int default_web_client_id = 2131492924;
 			
 			// aapt resource value: 0x7F0C003D
-			public const int fab_transformation_sheet_behavior = 2131492925;
+			public const int fab_transformation_scrim_behavior = 2131492925;
 			
 			// aapt resource value: 0x7F0C003E
-			public const int fcm_fallback_notification_channel_label = 2131492926;
+			public const int fab_transformation_sheet_behavior = 2131492926;
 			
 			// aapt resource value: 0x7F0C003F
-			public const int firebase_database_url = 2131492927;
+			public const int fcm_fallback_notification_channel_label = 2131492927;
 			
 			// aapt resource value: 0x7F0C0040
-			public const int gcm_defaultSenderId = 2131492928;
+			public const int firebase_database_url = 2131492928;
 			
 			// aapt resource value: 0x7F0C0041
-			public const int google_storage_bucket = 2131492929;
+			public const int gcm_defaultSenderId = 2131492929;
 			
 			// aapt resource value: 0x7F0C0042
-			public const int hide_bottom_view_on_scroll_behavior = 2131492930;
+			public const int google_api_key = 2131492930;
 			
 			// aapt resource value: 0x7F0C0043
-			public const int library_name = 2131492931;
+			public const int google_app_id = 2131492931;
 			
 			// aapt resource value: 0x7F0C0044
-			public const int mtrl_chip_close_icon_content_description = 2131492932;
+			public const int google_crash_reporting_api_key = 2131492932;
 			
 			// aapt resource value: 0x7F0C0045
-			public const int pageFeed = 2131492933;
+			public const int google_storage_bucket = 2131492933;
 			
 			// aapt resource value: 0x7F0C0046
-			public const int pageLoadedAlbums = 2131492934;
+			public const int hide_bottom_view_on_scroll_behavior = 2131492934;
 			
 			// aapt resource value: 0x7F0C0047
-			public const int pagePrivate = 2131492935;
+			public const int library_name = 2131492935;
 			
 			// aapt resource value: 0x7F0C0048
-			public const int password_toggle_content_description = 2131492936;
+			public const int mtrl_chip_close_icon_content_description = 2131492936;
 			
 			// aapt resource value: 0x7F0C0049
-			public const int path_password_eye = 2131492937;
+			public const int pageFeed = 2131492937;
 			
 			// aapt resource value: 0x7F0C004A
-			public const int path_password_eye_mask_strike_through = 2131492938;
+			public const int pageLoadedAlbums = 2131492938;
 			
 			// aapt resource value: 0x7F0C004B
-			public const int path_password_eye_mask_visible = 2131492939;
+			public const int pagePrivate = 2131492939;
 			
 			// aapt resource value: 0x7F0C004C
-			public const int path_password_strike_through = 2131492940;
+			public const int password_toggle_content_description = 2131492940;
 			
 			// aapt resource value: 0x7F0C004D
-			public const int search_menu_title = 2131492941;
+			public const int path_password_eye = 2131492941;
 			
 			// aapt resource value: 0x7F0C004E
-			public const int status_bar_notification_info_overflow = 2131492942;
+			public const int path_password_eye_mask_strike_through = 2131492942;
 			
 			// aapt resource value: 0x7F0C004F
-			public const int title_activity_webview = 2131492943;
+			public const int path_password_eye_mask_visible = 2131492943;
+			
+			// aapt resource value: 0x7F0C0050
+			public const int path_password_strike_through = 2131492944;
+			
+			// aapt resource value: 0x7F0C0051
+			public const int search_menu_title = 2131492945;
+			
+			// aapt resource value: 0x7F0C0052
+			public const int status_bar_notification_info_overflow = 2131492946;
+			
+			// aapt resource value: 0x7F0C0053
+			public const int title_activity_webview = 2131492947;
 			
 			static String()
 			{

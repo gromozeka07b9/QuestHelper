@@ -57,6 +57,10 @@
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     <AndroidPackageFormat>apk</AndroidPackageFormat>
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
+    <AotAssemblies>false</AotAssemblies>
+    <EnableLLVM>false</EnableLLVM>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+    <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -153,6 +157,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="google-services-debug.json" />
     <GoogleServicesJson Include="google-services.json" />
     <None Include="google-services-prod.json" />
     <AndroidAsset Include="Assets\Animations\newyearloading.json" />
@@ -160,7 +165,6 @@
     <AndroidAsset Include="Assets\Animations\fireworks.json" />
     <AndroidAsset Include="Assets\Animations\hourglass.json" />
     <AndroidAsset Include="Assets\Animations\play-button.json" />
-    <GoogleServicesJson Include="google-services-debug.json" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
