@@ -15610,10 +15610,13 @@ namespace QuestHelper.Droid
 			public const int search_menu_title = 2131492945;
 			
 			// aapt resource value: 0x7F0C0052
-			public const int status_bar_notification_info_overflow = 2131492946;
+			public const int server_client_id = 2131492946;
 			
 			// aapt resource value: 0x7F0C0053
-			public const int title_activity_webview = 2131492947;
+			public const int status_bar_notification_info_overflow = 2131492947;
+			
+			// aapt resource value: 0x7F0C0054
+			public const int title_activity_webview = 2131492948;
 			
 			static String()
 			{

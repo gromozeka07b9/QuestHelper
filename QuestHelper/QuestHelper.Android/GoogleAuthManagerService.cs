@@ -13,6 +13,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Microsoft.AppCenter.Analytics;
 using Plugin.CurrentActivity;
 using QuestHelper.Droid;
 using QuestHelper.Model;
@@ -60,6 +61,7 @@ namespace QuestHelper.Droid
 			if (result.IsSuccess)
 			{
 				GoogleSignInAccount account = result.SignInAccount;
+				Analytics.TrackEvent("GoogleAuthManager", new Dictionary<string, string> { { "account", account.DisplayName } });
 				_onLoginComplete?.Invoke(new GoogleUser()
 				{
 					Name = account.DisplayName,
@@ -70,6 +72,9 @@ namespace QuestHelper.Droid
 			}
 			else
 			{
+				string errorText;
+				errorText = result.Status?.StatusMessage;
+				HandleError.Process("GoogleAuthManager", "OnAuthCompleted", new Exception(string.IsNullOrEmpty(errorText) ? errorText : "unknown error"), false);
 				_onLoginComplete?.Invoke(null, string.Empty);
 			}
 		}
@@ -81,11 +86,13 @@ namespace QuestHelper.Droid
 
 		public void OnConnectionSuspended(int cause)
 		{
+			HandleError.Process("GoogleAuthManager", "OnConnectionSuspended", new Exception("Cancelled"), false);
 			_onLoginComplete?.Invoke(null, "Canceled!");
 		}
 
 		public void OnConnectionFailed(ConnectionResult result)
 		{
+			HandleError.Process("GoogleAuthManager", "OnConnectionFailed", new Exception(result.ErrorMessage), false);
 			_onLoginComplete?.Invoke(null, result.ErrorMessage);
 		}
 	}
