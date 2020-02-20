@@ -72,9 +72,8 @@ namespace QuestHelper.Droid
 			}
 			else
 			{
-				string errorText;
-				errorText = result.Status?.StatusMessage;
-				HandleError.Process("GoogleAuthManager", "OnAuthCompleted", new Exception(string.IsNullOrEmpty(errorText) ? errorText : "unknown error"), false);
+				string errorCodeText = result.Status?.StatusCode.ToString();
+				HandleError.Process("GoogleAuthManager", "OnAuthCompleted", new Exception(string.IsNullOrEmpty(errorCodeText) ? errorCodeText : "unknown error"), false);
 				_onLoginComplete?.Invoke(null, string.Empty);
 			}
 		}

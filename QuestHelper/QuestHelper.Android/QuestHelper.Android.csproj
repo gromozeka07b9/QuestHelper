@@ -130,6 +130,7 @@
     <Compile Include="ApplicationInstalledService.cs" />
     <Compile Include="CustomEditorRenderer.cs" />
     <Compile Include="CustomEditTextRenderer.cs" />
+    <Compile Include="CustomOverviewMapRenderer.cs" />
     <Compile Include="CustomMapRenderer.cs" />
     <Compile Include="FirebaseNotificationService.cs" />
     <Compile Include="GoogleAuthManagerService.cs" />

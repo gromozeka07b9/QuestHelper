@@ -14,30 +14,57 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using QuestHelper.Model;
+using Xamarin.Forms.Maps;
 
 namespace QuestHelper.ViewModel
 {
-    public class MapOverviewViewModel : INotifyPropertyChanged
+    public class MapOverviewViewModel : INotifyPropertyChanged, IDialogEvents
     {
         RoutePointManager _routePointManager;
         RouteManager _routeManager;
         //IEnumerable<RoutePoint> _pointsForOverview;
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
-        public ICommand OpenPointPropertiesCommand { get; private set; }
+        //public ICommand OpenPointPropertiesCommand { get; private set; }
+        List<ViewRoute> _routes = new List<ViewRoute>();
+        List<ViewRoutePoint> _points = new List<ViewRoutePoint>();
 
         public MapOverviewViewModel()
         {
-            OpenPointPropertiesCommand = new Command(openPointPropertiesCommand);
+            //OpenPointPropertiesCommand = new Command(openPointPropertiesCommand);
             _routePointManager = new RoutePointManager();
             _routeManager = new RouteManager();
         }
 
-        internal void openPointPropertiesCommand()
+        public void StartDialog()
+        {
+            _points.Clear();
+            var routesIds = _routeManager.GetAllRoutes().Select(r=>r.RouteId);
+            foreach (string routeId in routesIds)
+            {
+                var firstAndLastPoints = _routePointManager.GetFirstAndLastViewRoutePoints(routeId);
+                _points.Add(firstAndLastPoints.Item2);
+            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("POIs"));
+        }
+
+        public void CloseDialog()
+        {
+        }
+
+        public IEnumerable<Pin> POIs
+        {
+            get
+            {
+                var pois = _points.Select(p => new Pin() { Label = p.NameText, Address = p.Address, Type = PinType.Place, Position = new Position(p.Latitude, p.Longitude) });
+                return pois;
+            }
+        }
+        /*internal void openPointPropertiesCommand()
         {
 
-        }
-        internal async void OpenPointPropertiesAsync(double latitude, double longitude)
+        }*/
+        /*internal async void OpenPointPropertiesAsync(double latitude, double longitude)
         {
             RoutePoint point = _routePointManager.GetPointByCoordinates(latitude, longitude);
             if(point != null && point.MainRoute != null)
@@ -45,6 +72,6 @@ namespace QuestHelper.ViewModel
                 var routePointPage = new RoutePointPage(point.MainRoute.RouteId, point.RoutePointId);
                 await Navigation.PushAsync(routePointPage, true);
             }
-        }
+        }*/
     }
 }

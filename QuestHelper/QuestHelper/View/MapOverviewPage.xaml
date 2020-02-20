@@ -4,12 +4,21 @@
              xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
              xmlns:viewmodel="clr-namespace:QuestHelper.ViewModel;assembly=QuestHelper"
              xmlns:local="clr-namespace:QuestHelper.View"
-             x:Class="QuestHelper.View.MapOverviewPage" NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False" Appearing="ContentPage_AppearingAsync">
+             x:Class="QuestHelper.View.MapOverviewPage" NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False" Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing">
     <ContentPage.Content>
-        <local:CustomMap
-                x:Name="MapOverview"
-                IsShowingUser="true"
-                MapType="Street" 
-                />
+        <local:CustomOverviewMap
+            x:Name="MapOverview"
+            IsShowingUser="true"
+            MapType="Street"
+            ItemsSource="{Binding POIs}"
+            >
+            <local:CustomOverviewMap.ItemTemplate>
+                <DataTemplate>
+                    <maps:Pin Position="{Binding Position}" Label="{Binding Label}">
+
+                    </maps:Pin>
+                </DataTemplate>
+            </local:CustomOverviewMap.ItemTemplate>
+        </local:CustomOverviewMap>
     </ContentPage.Content>
 </ContentPage>

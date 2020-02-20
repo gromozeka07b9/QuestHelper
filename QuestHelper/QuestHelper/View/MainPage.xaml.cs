@@ -27,5 +27,6 @@ namespace QuestHelper.View
 #endif
 
         }
+
     }
 }

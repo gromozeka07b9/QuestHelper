@@ -58,6 +58,19 @@ namespace QuestHelper.Managers
             }
             return vroutes;
         }
+        internal List<ViewRoute> GetAllRoutes()
+        {
+            List<ViewRoute> vroutes = new List<ViewRoute>();
+            var routes = RealmInstance.All<Route>().Where(r=>!r.IsDeleted).OrderByDescending(r => r.CreateDate);
+            if (routes.Any())
+            {
+                foreach (var route in routes)
+                {
+                    vroutes.Add(new ViewRoute(route.RouteId));
+                }
+            }
+            return vroutes;
+        }
 
         /// <summary>
         /// На данном этапе публичные маршруты ничем почти не отличаются от обычных

@@ -177,13 +177,17 @@ namespace QuestHelper.Managers
             return new Tuple<RoutePoint,RoutePoint>(new RoutePoint(), new RoutePoint());
         }
 
-        /*internal void UpdateLocalData(Route route, List<RoutePoint> points)
+        internal (ViewRoutePoint, ViewRoutePoint) GetFirstAndLastViewRoutePoints(string routeId)
         {
-            foreach (var point in points)
+            var routePoints = RealmInstance.All<RoutePoint>().Where(p => p.RouteId == routeId).OrderBy(p => p.CreateDate);
+            if (routePoints.Count() > 0)
             {
-                Add(point, route);
+                var first = new ViewRoutePoint(routeId, routePoints.FirstOrDefault()?.RoutePointId);
+                var last = new ViewRoutePoint(routeId, routePoints.LastOrDefault()?.RoutePointId);
+                return (first, last);
             }
-        }*/
+            return (new ViewRoutePoint(), new ViewRoutePoint());
+        }
 
         internal string GetDefaultImageFilename(string routePointId)
         {
