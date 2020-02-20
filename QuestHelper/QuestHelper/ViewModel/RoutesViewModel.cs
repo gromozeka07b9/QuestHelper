@@ -181,10 +181,7 @@ namespace QuestHelper.ViewModel
                 if (_progressValue != value)
                 {
                     _progressValue = value;
-                    if (PropertyChanged != null)
-                    {
-                        PropertyChanged(this, new PropertyChangedEventArgs("ProgressValue"));
-                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ProgressValue"));
                 }
             }
             get

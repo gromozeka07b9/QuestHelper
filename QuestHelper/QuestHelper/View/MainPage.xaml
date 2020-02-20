@@ -22,6 +22,17 @@
                 <view:FeedRoutesPage />
             </x:Arguments>
         </NavigationPage>
+        <NavigationPage Title="{lang:Translation ScreenMapName}">
+            <NavigationPage.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="iOS" Value="map.png"/>
+                    <On Platform="Android" Value="map.png"/>
+                </OnPlatform>
+            </NavigationPage.Icon>
+            <x:Arguments>
+                <view:MapOverviewPage />
+            </x:Arguments>
+        </NavigationPage>
 
         <NavigationPage Title="{lang:Translation ScreenLoadedAlbumsName}">
             <NavigationPage.Icon>

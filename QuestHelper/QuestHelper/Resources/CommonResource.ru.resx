@@ -498,4 +498,7 @@
   <data name="Audio_RecordCompleted" xml:space="preserve">
     <value>Запись завершена</value>
   </data>
+  <data name="ScreenMapName" xml:space="preserve">
+    <value>Карта</value>
+  </data>
 </root>

@@ -980,6 +980,15 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Map.
+        /// </summary>
+        public static string ScreenMapName {
+            get {
+                return ResourceManager.GetString("ScreenMapName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Description.
         /// </summary>
         public static string ScreenOnBoardingName {

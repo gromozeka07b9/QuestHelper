@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="pageFeed">Feed</string>
-	<string name="pageLoadedAlbums">Albums</string>
+  <string name="pageMap">Map</string>
+  <string name="pageLoadedAlbums">Albums</string>
   <string name="pagePrivate">My</string>
 </resources>

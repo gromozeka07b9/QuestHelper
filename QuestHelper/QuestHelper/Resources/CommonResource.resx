@@ -499,4 +499,7 @@ GoSh!</value>
   <data name="Audio_RecordCompleted" xml:space="preserve">
     <value>Recording completed</value>
   </data>
+  <data name="ScreenMapName" xml:space="preserve">
+    <value>Map</value>
+  </data>
 </root>
