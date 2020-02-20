@@ -157,8 +157,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <GoogleServicesJson Include="google-services.json" />
     <None Include="google-services-debug.json" />
+    <GoogleServicesJson Include="google-services.json" />
     <None Include="google-services-prod.json" />
     <AndroidAsset Include="Assets\Animations\newyearloading.json" />
     <AndroidAsset Include="Assets\Animations\usualloading.json" />
