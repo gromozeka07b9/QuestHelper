@@ -7,6 +7,7 @@ using QuestHelper.ViewModel;
 using Realms;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -25,6 +26,10 @@ namespace QuestHelper.View
             BindingContext = _vm;
         }
 
+        public ObservableCollection<POI> GetPOIs()
+        {
+            return _vm.POIs;
+        }
         /*private void PointPin_Clicked(object sender, EventArgs e)
         {
             var point = (Pin)sender;

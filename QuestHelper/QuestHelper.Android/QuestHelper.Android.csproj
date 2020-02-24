@@ -130,12 +130,13 @@
     <Compile Include="ApplicationInstalledService.cs" />
     <Compile Include="CustomEditorRenderer.cs" />
     <Compile Include="CustomEditTextRenderer.cs" />
-    <Compile Include="CustomOverviewMapRenderer.cs" />
+    <Compile Include="Renderers\CustomOverviewMapRenderer.cs" />
     <Compile Include="CustomMapRenderer.cs" />
     <Compile Include="FirebaseNotificationService.cs" />
     <Compile Include="GoogleAuthManagerService.cs" />
     <Compile Include="Intents\SetEmotionRouteIntentService.cs" />
     <Compile Include="Intents\SendRouteViewedIntentService.cs" />
+    <Compile Include="Renderers\MarkerMaker.cs" />
     <Compile Include="ShareServices\InstagramShareService.cs" />
     <Compile Include="ShareServices\WhatsappShareService.cs" />
     <Compile Include="ShareServices\ViberShareService.cs" />
@@ -197,7 +198,6 @@
     <AndroidResource Include="Resources\drawable\nearme.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Renderers\" />
     <Folder Include="Resources\menu\" />
   </ItemGroup>
   <ItemGroup>

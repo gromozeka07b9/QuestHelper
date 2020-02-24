@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
              xmlns:viewmodel="clr-namespace:QuestHelper.ViewModel;assembly=QuestHelper"
-             xmlns:local="clr-namespace:QuestHelper.View"
+             xmlns:local="clr-namespace:QuestHelper.View.Geo"
              x:Class="QuestHelper.View.MapOverviewPage" NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False" Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing">
     <ContentPage.Content>
         <local:CustomOverviewMap
@@ -14,7 +14,7 @@
             >
             <local:CustomOverviewMap.ItemTemplate>
                 <DataTemplate>
-                    <maps:Pin Position="{Binding Position}" Label="{Binding Label}">
+                    <maps:Pin Position="{Binding Position}" Label="{Binding Name}" Address="{Binding Address}">
 
                     </maps:Pin>
                 </DataTemplate>

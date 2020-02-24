@@ -52,12 +52,12 @@ namespace QuestHelper.ViewModel
         {
         }
 
-        public IEnumerable<Pin> POIs
+        public ObservableCollection<POI> POIs
         {
             get
             {
-                var pois = _points.Select(p => new Pin() { Label = p.NameText, Address = p.Address, Type = PinType.Place, Position = new Position(p.Latitude, p.Longitude) });
-                return pois;
+                var pois = _points.Select(p => new POI() { Name = !string.IsNullOrEmpty(p.NameText) ? p.NameText : "Empty", Address = p.Address, Position = new Position(p.Latitude, p.Longitude), Description = p.Description, PathToPicture = p.ImagePreviewPath });
+                return new ObservableCollection<POI>(pois);
             }
         }
         /*internal void openPointPropertiesCommand()
