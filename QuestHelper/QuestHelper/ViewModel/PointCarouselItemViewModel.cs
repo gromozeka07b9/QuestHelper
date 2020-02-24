@@ -42,7 +42,7 @@ namespace QuestHelper.ViewModel
 
         private void editRoutePointCommand(object obj)
         {
-            var page = new RoutePointPage(_routeObject.RouteId, _pointObject.RoutePointId);
+            var page = new RoutePointV2Page(_routeObject.RouteId, _pointObject.RoutePointId);
             Navigation.PushAsync(page);
         }
 

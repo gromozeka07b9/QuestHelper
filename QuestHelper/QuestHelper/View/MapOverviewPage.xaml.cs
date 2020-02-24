@@ -26,10 +26,6 @@ namespace QuestHelper.View
             BindingContext = _vm;
         }
 
-        public ObservableCollection<POI> GetPOIs()
-        {
-            return _vm.POIs;
-        }
         /*private void PointPin_Clicked(object sender, EventArgs e)
         {
             var point = (Pin)sender;
@@ -39,6 +35,7 @@ namespace QuestHelper.View
         private void ContentPage_Appearing(object sender, EventArgs e)
         {
             _vm.StartDialog();
+            MapOverview.POIs = _vm.POIs.ToList();
         }
 
         private void ContentPage_Disappearing(object sender, EventArgs e)

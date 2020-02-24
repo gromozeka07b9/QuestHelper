@@ -5,7 +5,7 @@ using System.Text;
 using QuestHelper.Model;
 using Xamarin.Forms.Maps;
 
-namespace QuestHelper.View
+namespace QuestHelper.View.Geo
 {
     public class CustomMap : Map
     {

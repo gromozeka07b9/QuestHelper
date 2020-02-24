@@ -18,8 +18,8 @@ namespace QuestHelper.Droid.Renderers
 {
     public class CustomOverviewMapRenderer : MapRenderer, GoogleMap.IInfoWindowAdapter
     {
-        private CustomOverviewMap map;
-
+        private CustomOverviewMap _map;
+        private int _sizeMarker = 200;
 
         public CustomOverviewMapRenderer(Context context) : base(context)
         {
@@ -46,13 +46,14 @@ namespace QuestHelper.Droid.Renderers
 
             if (e.NewElement != null)
             {
+                _map = (CustomOverviewMap)e.NewElement;
+                Control.GetMapAsync(this);
             }
         }
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
-
         }
 
         protected override async void OnMapReady(Android.Gms.Maps.GoogleMap map)
@@ -61,6 +62,7 @@ namespace QuestHelper.Droid.Renderers
             if (await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position))
             {
             }
+            drawMarkers(_sizeMarker);
             base.OnMapReady(map);
         }
 
@@ -70,7 +72,7 @@ namespace QuestHelper.Droid.Renderers
 
         private void drawMarkers(int markerSize)
         {
-            foreach(MarkerOptions marker in MarkerMaker.MakeMarkersByPOI(map.POIs))
+            foreach(MarkerOptions marker in MarkerMaker.MakeMarkersByPOI(_map.POIs, markerSize))
             {
                 NativeMap.AddMarker(marker);
             }

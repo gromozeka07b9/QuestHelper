@@ -8,6 +8,7 @@
              xmlns:proc="clr-namespace:PanCardView.Processors;assembly=PanCardView"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:local1="clr-namespace:QuestHelper.View.Converters"
+             xmlns:view1="clr-namespace:QuestHelper.View.Geo"
              x:Class="QuestHelper.View.RouteCarouselRootPage" NavigationPage.HasNavigationBar="False" Appearing="RouteCarouselRootPage_OnAppearing" Disappearing="RouteCarouselRootPage_OnDisappearing" Style="{StaticResource ContentPage}">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -85,7 +86,7 @@
                             <TapGestureRecognizer Command="{Binding MapIconTappedCommand}" />
                         </ffimageloading:CachedImage.GestureRecognizers>                        
                     </ffimageloading:CachedImage>
-                    <view:CustomMap HeightRequest="300" x:Name="MapRouteOverview" VerticalOptions="FillAndExpand"  IsEnabled="{Binding IsMapShow}" IsVisible="{Binding IsMapShow}"                                    
+                    <view1:CustomMap HeightRequest="300" x:Name="MapRouteOverview" VerticalOptions="FillAndExpand"  IsEnabled="{Binding IsMapShow}" IsVisible="{Binding IsMapShow}"                                    
                                 IsShowingUser="False"
                                 UseInterceptTouchEvent="true"
                                 MapType="Street" />

@@ -10,15 +10,14 @@
             x:Name="MapOverview"
             IsShowingUser="true"
             MapType="Street"
-            ItemsSource="{Binding POIs}"
             >
-            <local:CustomOverviewMap.ItemTemplate>
+            <!--local:CustomOverviewMap.ItemTemplate>
                 <DataTemplate>
                     <maps:Pin Position="{Binding Position}" Label="{Binding Name}" Address="{Binding Address}">
 
                     </maps:Pin>
                 </DataTemplate>
-            </local:CustomOverviewMap.ItemTemplate>
+            </-->
         </local:CustomOverviewMap>
     </ContentPage.Content>
 </ContentPage>

@@ -44,7 +44,7 @@ namespace QuestHelper.ViewModel
             RoutePoint point = _routePointManager.GetPointByCoordinates(latitude, longitude);
             if(point != null && point.MainRoute != null)
             {
-                var routePointPage = new RoutePointPage(point.MainRoute.RouteId, point.RoutePointId);
+                var routePointPage = new RoutePointV2Page(point.MainRoute.RouteId, point.RoutePointId);
                 await Navigation.PushModalAsync(routePointPage, true);
             }
         }

@@ -46,7 +46,7 @@ namespace QuestHelper.View.Geo
             }
             return result;
         }
-        public async Task<bool> GetPositionAsync()
+        /*public async Task<bool> GetPositionAsync()
         {
             bool result = false;
             _lastError = string.Empty;
@@ -69,7 +69,7 @@ namespace QuestHelper.View.Geo
                 _lastError = "Сервис геолокации недоступен. Убедитесь, что он включен и попробуйте еще раз.";
             }
             return result;
-        }
+        }*/
 
         public void ClearPins()
         {

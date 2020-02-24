@@ -130,6 +130,7 @@
     <Compile Include="ApplicationInstalledService.cs" />
     <Compile Include="CustomEditorRenderer.cs" />
     <Compile Include="CustomEditTextRenderer.cs" />
+    <Compile Include="Renderers\BitmapConverter.cs" />
     <Compile Include="Renderers\CustomOverviewMapRenderer.cs" />
     <Compile Include="CustomMapRenderer.cs" />
     <Compile Include="FirebaseNotificationService.cs" />
