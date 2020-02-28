@@ -215,12 +215,7 @@ namespace QuestHelper.Model
                 string imgCover = string.Empty;
                 if (!string.IsNullOrEmpty(_imgFilename))
                 {
-                    string imgPath = Path.Combine(ImagePathManager.GetPicturesDirectory(), _imgFilename);
-                    /*if (File.Exists(imgPath))
-                    {
-                        imgCover = imgPath;
-                    }*/
-                    imgCover = imgPath;
+                    imgCover = Path.Combine(ImagePathManager.GetPicturesDirectory(), _imgFilename);
                 }
 
                 if (string.IsNullOrEmpty(imgCover))

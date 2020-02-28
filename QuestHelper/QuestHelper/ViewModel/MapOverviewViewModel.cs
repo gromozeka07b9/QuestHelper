@@ -42,12 +42,6 @@ namespace QuestHelper.ViewModel
         public async void StartDialog()
         {
             _points.Clear();
-            var routesIds = _routeManager.GetAllRoutes().Select(r=>r.RouteId);
-            foreach (string routeId in routesIds)
-            {
-                var firstAndLastPoints = _routePointManager.GetFirstAndLastViewRoutePoints(routeId);
-                _points.Add(firstAndLastPoints.Item2);
-            }
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("POIs"));
             
             await updateLocationAsync();
@@ -75,12 +69,40 @@ namespace QuestHelper.ViewModel
         {
         }
 
-        public ObservableCollection<POI> POIs
+        public ObservableCollection<ViewPoi> POIs
         {
             get
             {
-                var pois = _points.Select(p => new POI() { Name = !string.IsNullOrEmpty(p.NameText) ? p.NameText : "Empty", Address = p.Address, Position = new Position(p.Latitude, p.Longitude), Description = p.Description, PathToPicture = p.ImagePreviewPath });
-                return new ObservableCollection<POI>(pois);
+                var lst = new ObservableCollection<ViewPoi>();
+
+                var routess = _routeManager.GetAllRoutes();
+                foreach (ViewRoute route in routess)
+                {
+                    var firstAndLastPoints = _routePointManager.GetFirstAndLastViewRoutePoints(route.Id);
+
+                    var testPoi = new ViewPoi();
+                    if (!string.IsNullOrEmpty(route.CoverImage))
+                    {
+                        testPoi.ImgFilename = route.CoverImage;
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(firstAndLastPoints.Item1.ImagePreviewPath))
+                        {
+                            testPoi.ImgFilename = firstAndLastPoints.Item1.ImagePreviewPath;
+                        }
+                        else
+                        {
+                            testPoi.ImgFilename = firstAndLastPoints.Item2.ImagePreviewPath;
+                        }
+                    }
+                    testPoi.Name = route.Name;
+                    testPoi.Location = new Position(firstAndLastPoints.Item1.Latitude, firstAndLastPoints.Item1.Longitude);
+                    lst.Add(testPoi);
+                }
+
+                //var pois = _points.Select(p => new POI() { Name = !string.IsNullOrEmpty(p.NameText) ? p.NameText : "Empty", Address = p.Address, Position = new Position(p.Latitude, p.Longitude), Description = p.Description, PathToPicture = p.ImagePreviewPath });
+                return new ObservableCollection<ViewPoi>(lst);
             }
         }
 

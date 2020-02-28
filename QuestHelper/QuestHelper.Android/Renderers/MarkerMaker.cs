@@ -9,16 +9,16 @@ namespace QuestHelper.Droid.Renderers
 {
     internal class MarkerMaker
     {
-        internal static IEnumerable<MarkerOptions> MakeMarkersByPOI(List<POI> pois, int imageSize)
+        internal static IEnumerable<MarkerOptions> MakeMarkersByPOI(List<ViewPoi> pois, int imageSize)
         {
             List<MarkerOptions> markers = new List<MarkerOptions>();
             foreach (var poi in pois)
             {
-                var latlng = new LatLng(poi.Position.Latitude, poi.Position.Longitude);
+                var latlng = new LatLng(poi.Location.Latitude, poi.Location.Longitude);
                 var marker = new MarkerOptions();
                 marker.Anchor(0.5f, 0.5f);
                 marker.SetPosition(latlng);
-                BitmapDescriptor pic = getBitmap(poi.PathToPicture, imageSize);
+                BitmapDescriptor pic = getBitmap(poi.ImgFilename, imageSize);
                 if (pic == null)
                 {
                     pic = BitmapDescriptorFactory.FromResource(Resource.Drawable.place_unknown);

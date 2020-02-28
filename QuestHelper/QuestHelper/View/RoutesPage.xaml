@@ -114,8 +114,7 @@
                                         <RowDefinition Height="1*"/>
                                         <RowDefinition Height="1*"/>
                                     </Grid.RowDefinitions>
-                                    <ffimageloading:CachedImage x:Name="ImgRoute" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="4" Source="{Binding CoverImage}" Opacity="1" Margin="0" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-
+                                    <ffimageloading:CachedImage x:Name="ImgRoute" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="4" Source="{Binding CoverImage}" Margin="0" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" DownsampleToViewSize="True" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                                     </ffimageloading:CachedImage>
                                     <!--Image x:Name="ImgRoute" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="4" Source="{Binding CoverImage}" Opacity="1" Margin="0,0,0,0" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                                     </-->

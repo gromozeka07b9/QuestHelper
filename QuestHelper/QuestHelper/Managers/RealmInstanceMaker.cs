@@ -18,7 +18,8 @@ namespace QuestHelper.Managers
                         //v4 - added RoutePointMediaObject.MediaType
                         //v5 - added Route.ImgFilename & Route.Description
                         //v6 = added RoutePointMediaObject.Processed and RoutePointMediaObject.ProcessResultText
-                        SchemaVersion = 6,
+                        //v7 - added Poi
+                        SchemaVersion = 7,
                         MigrationCallback = (migration, oldSchemaVersion) =>
                         {
 
