@@ -178,6 +178,15 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Retry.
+        /// </summary>
+        public static string CommonMsg_Repeat {
+            get {
+                return ResourceManager.GetString("CommonMsg_Repeat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Save.
         /// </summary>
         public static string CommonMsg_Save {

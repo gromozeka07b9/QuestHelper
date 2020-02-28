@@ -502,4 +502,7 @@ Gosh!</value>
   <data name="ScreenMapName" xml:space="preserve">
     <value>El mapa</value>
   </data>
+  <data name="CommonMsg_Repeat" xml:space="preserve">
+    <value>Procesar de nuevo</value>
+  </data>
 </root>

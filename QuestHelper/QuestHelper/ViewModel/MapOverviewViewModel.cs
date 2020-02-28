@@ -15,6 +15,8 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using QuestHelper.Model;
 using Xamarin.Forms.Maps;
+using Plugin.Geolocator.Abstractions;
+using Position = Xamarin.Forms.Maps.Position;
 
 namespace QuestHelper.ViewModel
 {
@@ -22,7 +24,8 @@ namespace QuestHelper.ViewModel
     {
         RoutePointManager _routePointManager;
         RouteManager _routeManager;
-        //IEnumerable<RoutePoint> _pointsForOverview;
+        GeolocatorManager _geolocatorManager = new GeolocatorManager();
+        Position _currentLocation;
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         //public ICommand OpenPointPropertiesCommand { get; private set; }
@@ -36,7 +39,7 @@ namespace QuestHelper.ViewModel
             _routeManager = new RouteManager();
         }
 
-        public void StartDialog()
+        public async void StartDialog()
         {
             _points.Clear();
             var routesIds = _routeManager.GetAllRoutes().Select(r=>r.RouteId);
@@ -46,6 +49,26 @@ namespace QuestHelper.ViewModel
                 _points.Add(firstAndLastPoints.Item2);
             }
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("POIs"));
+            
+            await updateLocationAsync();
+
+        }
+
+        private async Task updateLocationAsync()
+        {
+            var cacheCoordinates = await _geolocatorManager.GetLastKnownPosition();
+            if ((cacheCoordinates.Latitude != 0) && (cacheCoordinates.Longtitude != 0))
+            {
+                CurrentLocation = new Position(cacheCoordinates.Latitude, cacheCoordinates.Longtitude);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentLocation"));
+            }
+
+            var coordinates = await _geolocatorManager.GetCurrentLocationAsync();
+            if ((coordinates.Latitude != 0) && (coordinates.Longtitude != 0))
+            {
+                CurrentLocation = new Position(coordinates.Latitude, coordinates.Longtitude);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentLocation"));
+            }
         }
 
         public void CloseDialog()
@@ -60,18 +83,8 @@ namespace QuestHelper.ViewModel
                 return new ObservableCollection<POI>(pois);
             }
         }
-        /*internal void openPointPropertiesCommand()
-        {
 
-        }*/
-        /*internal async void OpenPointPropertiesAsync(double latitude, double longitude)
-        {
-            RoutePoint point = _routePointManager.GetPointByCoordinates(latitude, longitude);
-            if(point != null && point.MainRoute != null)
-            {
-                var routePointPage = new RoutePointPage(point.MainRoute.RouteId, point.RoutePointId);
-                await Navigation.PushAsync(routePointPage, true);
-            }
-        }*/
+        public Position CurrentLocation { get => _currentLocation; set => _currentLocation = value; }
+
     }
 }

@@ -31,7 +31,6 @@ namespace QuestHelper.View
             { 
                 Navigation = this.Navigation 
             };
-            _vm.PropertyChanged += Vm_PropertyChanged;
             BindingContext = _vm;
         }
         private async void Vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -51,6 +50,7 @@ namespace QuestHelper.View
 
         private void ContentPage_Appearing(object sender, EventArgs e)
         {
+            _vm.PropertyChanged += Vm_PropertyChanged;
             Task.Run(async () => 
             {
                 PermissionManager permissions = new PermissionManager();
@@ -70,6 +70,7 @@ namespace QuestHelper.View
 
         private void ContentPage_Disappearing(object sender, EventArgs e)
         {
+            _vm.PropertyChanged -= Vm_PropertyChanged;
             _vm.CloseDialog();
             MessagingCenter.Unsubscribe<MapUpdateLocationPointMessage>(this, string.Empty);
         }

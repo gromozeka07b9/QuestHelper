@@ -1,12 +1,14 @@
 ﻿using Android.Content;
 using Android.Gms.Maps;
 using Android.Gms.Maps.Model;
+using QuestHelper.Consts;
 using QuestHelper.Droid;
 using QuestHelper.Droid.Renderers;
 using QuestHelper.Managers;
 using QuestHelper.Resources;
 using QuestHelper.View;
 using QuestHelper.View.Geo;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Xamarin.Forms;
@@ -19,7 +21,8 @@ namespace QuestHelper.Droid.Renderers
     public class CustomOverviewMapRenderer : MapRenderer, GoogleMap.IInfoWindowAdapter
     {
         private CustomOverviewMap _map;
-        private int _sizeMarker = 200;
+        private static int _sizeMarkerDivider = 3;//примерный делитель для получения более менее видимого маркера
+        private int _sizeMarker = Convert.ToInt32(DeviceSize.FullScreenHeight / _sizeMarkerDivider);
 
         public CustomOverviewMapRenderer(Context context) : base(context)
         {
@@ -76,63 +79,6 @@ namespace QuestHelper.Droid.Renderers
             {
                 NativeMap.AddMarker(marker);
             }
-
-
-            /*LatLngBounds.Builder bounds = new LatLngBounds.Builder();
-            NativeMap.Clear();
-            List<LatLng> latLngList = new List<LatLng>();
-            foreach (var pin in map.POIs)
-            {
-                var latlng = new LatLng(pin.Position.Latitude, pin.Position.Longitude);
-                latLngList.Add(latlng);
-                var marker = new MarkerOptions();
-                marker.Anchor(0.5f, 0.5f);
-                marker.SetPosition(latlng);
-                BitmapDescriptor pic = null;
-                if (!string.IsNullOrEmpty(point.PathToPicture))
-                {
-                    Bitmap bm = BitmapFactory.DecodeFile(pin..PathToPicture);
-                    if (bm != null)
-                    {
-                        var croppedBitmap = getCroppedBitmap(bm, markerSize);
-                        pic = BitmapDescriptorFactory.FromBitmap(croppedBitmap);
-                        bm = null;
-                        croppedBitmap = null;
-                    }
-                }
-
-                if (pic == null)
-                {
-                    pic = BitmapDescriptorFactory.FromResource(Resource.Drawable.place_unknown);
-                }
-
-                marker.SetIcon(pic);
-                NativeMap.AddMarker(marker);
-                bounds.Include(latlng);
-            }
-            List<PatternItem> pattern_lines = new List<PatternItem>();
-            pattern_lines.Add(new Gap(20));
-            pattern_lines.Add(new Dash(20));
-            PolylineOptions lineOptions = new PolylineOptions();
-            foreach (var point in latLngList)
-            {
-                lineOptions.Add(point);
-            }
-            lineOptions.InvokePattern(pattern_lines);
-            lineOptions.InvokeWidth(10);
-            NativeMap.AddPolyline(lineOptions);
-            if (customMap.Points.Count > 1)
-            {
-                try
-                {
-                    NativeMap.MoveCamera(CameraUpdateFactory.NewLatLngBounds(bounds.Build(), 100));
-                }
-                catch (Java.Lang.Exception e)
-                {
-
-                }
-            }
-            bounds.Dispose();*/
         }
     }
 }

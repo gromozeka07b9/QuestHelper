@@ -481,4 +481,7 @@
   <data name="ScreenMapName" xml:space="preserve">
     <value>Die Karte</value>
   </data>
+  <data name="CommonMsg_Repeat" xml:space="preserve">
+    <value>Wiederholen</value>
+  </data>
 </root>

@@ -2,6 +2,7 @@
 using Microsoft.AppCenter.Crashes;
 using Plugin.Geolocator;
 using QuestHelper.Model;
+using QuestHelper.Resources;
 using QuestHelper.View.Geo;
 using QuestHelper.ViewModel;
 using Realms;
@@ -23,14 +24,25 @@ namespace QuestHelper.View
             InitializeComponent();
             _vm = new MapOverviewViewModel();
             _vm.Navigation = this.Navigation;
+            _vm.PropertyChanged += _vm_PropertyChanged;
             BindingContext = _vm;
         }
 
-        /*private void PointPin_Clicked(object sender, EventArgs e)
+        private void _vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            var point = (Pin)sender;
-            vm.OpenPointPropertiesAsync(point.Position.Latitude, point.Position.Longitude);
-        }*/
+            switch (e.PropertyName)
+            {
+                case "CurrentLocation":
+                    {
+                        if ((_vm.CurrentLocation.Latitude != 0) && (_vm.CurrentLocation.Longitude != 0))
+                        {
+                            Task.Run(async ()=> {
+                                await centerMap(_vm.CurrentLocation.Latitude, _vm.CurrentLocation.Longitude);
+                            });
+                        }
+                    }; break;
+            }
+        }
 
         private void ContentPage_Appearing(object sender, EventArgs e)
         {
@@ -43,16 +55,33 @@ namespace QuestHelper.View
             _vm.CloseDialog();
         }
 
-        /*private async Task centerMap(CustomMapView customMap, double Latitude, double Longitude)
+        private async Task centerMap(double latitude, double longitude)
         {
-            if (!customMap.CenterMapToPosition(Latitude, Longitude, 10))
+            if (!centerMapToPosition(latitude, longitude, 100))
             {
-                bool answerRetry = await DisplayAlert("Ошибка", customMap.LastError + " Повторить?", "Да", "Нет");
+                bool answerRetry = await DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.CommonMsg_Repeat + "?", CommonResource.CommonMsg_Yes, CommonResource.CommonMsg_No);
                 if (answerRetry)
                 {
-                    await centerMap(customMap, Latitude, Longitude);
+                    centerMapToPosition(latitude, longitude, 100);
                 }
             }
-        }*/
+        }
+
+        private bool centerMapToPosition(double Latitude, double Longitude, double ScaleKilometers)
+        {
+            bool result = false;
+            try
+            {
+                MapOverview.MoveToRegion(MapSpan.FromCenterAndRadius(new Xamarin.Forms.Maps.Position(Latitude, Longitude), Distance.FromKilometers(ScaleKilometers)));
+                result = true;
+            }
+            catch (Exception exception)
+            {
+                var properties = new Dictionary<string, string> { { "Action", "centerMapToPosition" } };
+                Crashes.TrackError(exception, properties);
+            }
+            return result;
+        }
+
     }
 }

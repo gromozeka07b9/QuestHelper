@@ -90,6 +90,5 @@ namespace QuestHelper.Managers
             }
             return (address, pointName);
         }
-
     }
 }

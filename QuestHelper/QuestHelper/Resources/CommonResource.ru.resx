@@ -501,4 +501,7 @@
   <data name="ScreenMapName" xml:space="preserve">
     <value>Карта</value>
   </data>
+  <data name="CommonMsg_Repeat" xml:space="preserve">
+    <value>Повторить</value>
+  </data>
 </root>
