@@ -58,10 +58,8 @@ namespace QuestHelper.View
 
 		private void startSync()
 		{
-			//SyncAnimation.Play();//Какой-то глюк есть - когда анимация уходит в невидимую область списка, при возврате она уже не работает, приходится повторно пинать
 			if (!_vm.IsVisibleProgress)
 			{
-				//SyncAnimation.IsVisible = true;
 				SyncAnimation.Play();
 				Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);//Запуск новой синхронизации
 			}

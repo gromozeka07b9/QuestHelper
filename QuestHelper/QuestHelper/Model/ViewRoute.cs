@@ -33,7 +33,7 @@ namespace QuestHelper.Model
         private string _routeLengthKmText = string.Empty;
         private string _routePointCountText = string.Empty;
         private string _routeLengthStepsText = string.Empty;
-        
+        private string _coverImage = string.Empty;
 
         public ViewRoute(string routeId)
         {
@@ -213,23 +213,31 @@ namespace QuestHelper.Model
             get
             {
                 string imgCover = string.Empty;
-                if (!string.IsNullOrEmpty(_imgFilename))
+                if (!string.IsNullOrEmpty(_coverImage))
                 {
-                    imgCover = Path.Combine(ImagePathManager.GetPicturesDirectory(), _imgFilename);
+                    imgCover = _coverImage;
                 }
-
-                if (string.IsNullOrEmpty(imgCover))
+                else
                 {
-                    RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
-                    ViewRoutePointMediaObject vMedia = mediaManager.GetFirstMediaObjectByRouteId(RouteId);
-                    if (!string.IsNullOrEmpty(vMedia.Id))
+                    if (!string.IsNullOrEmpty(_imgFilename))
                     {
-                        if (!vMedia.IsDeleted)
-                        {
-                            imgCover = ImagePathManager.GetImagePath(vMedia.RoutePointMediaObjectId, MediaObjectTypeEnum.Image, true);
-                        }
+                        imgCover = Path.Combine(ImagePathManager.GetPicturesDirectory(), _imgFilename);
                     }
-                    else imgCover = "mount1.png";
+
+                    if (string.IsNullOrEmpty(imgCover))
+                    {
+                        RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
+                        ViewRoutePointMediaObject vMedia = mediaManager.GetFirstMediaObjectByRouteId(RouteId);
+                        if (!string.IsNullOrEmpty(vMedia.Id))
+                        {
+                            if (!vMedia.IsDeleted)
+                            {
+                                imgCover = ImagePathManager.GetImagePath(vMedia.RoutePointMediaObjectId, MediaObjectTypeEnum.Image, true);
+                            }
+                        }
+                        else imgCover = "mount1.png";
+                    }
+                    _coverImage = imgCover;
                 }
                 return imgCover;
             }

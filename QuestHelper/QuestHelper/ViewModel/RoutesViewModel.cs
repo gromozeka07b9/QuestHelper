@@ -139,6 +139,7 @@ namespace QuestHelper.ViewModel
                 CountRoutesPublishedMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
                 CountLikesMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
                 CountViewsMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
+                IsRefreshing = false;
             }
             else
             {
@@ -224,8 +225,7 @@ namespace QuestHelper.ViewModel
             }
             get
             {
-                //return _isRefreshing;
-                return false;
+                return _isRefreshing;
             }
         }
 
