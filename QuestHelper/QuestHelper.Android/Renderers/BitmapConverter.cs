@@ -17,12 +17,13 @@ namespace QuestHelper.Droid.Renderers
     internal class BitmapConverter
     {
         static Bitmap bitmapBackCircleSrc = BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.markerback2);
-        static Bitmap bitmapBackRectangleSrc = BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.markerback3);
+        static Bitmap bitmapBackRectangleSrc3 = BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.markerback3);
+        static Bitmap bitmapBackRectangleSrc4 = BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.markerback4);
 
         public static Bitmap Crop(Bitmap bmp, int radius)
         {
-            return getRectangleBitmap(bmp, radius);
-            Random r = new Random();
+            return getRectangleBitmap4(bmp, radius);
+            /*Random r = new Random();
             int res = r.Next(5, 10);
             if (res > 5)
             {
@@ -31,7 +32,7 @@ namespace QuestHelper.Droid.Renderers
             else
             {
                 return getRectangleBitmap(bmp, radius);
-            }
+            }*/
 
         }
 
@@ -80,15 +81,25 @@ namespace QuestHelper.Droid.Renderers
             return bitmapBackCircle;
         }
 
-        private static Bitmap getRectangleBitmap(Bitmap bmp, int radius)
+        private static Bitmap getRectangleBitmap3(Bitmap bmp, int radius)
         {
-            //Bitmap bitmapBackSrc = BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.markerback3);
-            var bitmapBack = bitmapBackRectangleSrc.Copy(Bitmap.Config.Argb8888, true);
+            var bitmapBack = bitmapBackRectangleSrc3.Copy(Bitmap.Config.Argb8888, true);
             Canvas canvas = new Canvas(bitmapBack);
             Rect rectMin = new Rect(0, 0, bmp.Width, bmp.Height);
             int margin = 10;
             int marginBottom = Convert.ToInt32(bitmapBack.Height * 0.175);
             Rect rectMax = new Rect(margin, margin, bitmapBack.Width - margin, bitmapBack.Height - (margin + marginBottom));
+            canvas.DrawBitmap(bmp, rectMin, rectMax, null);
+            return bitmapBack;
+        }
+        private static Bitmap getRectangleBitmap4(Bitmap bmp, int radius)
+        {
+            var bitmapBack = bitmapBackRectangleSrc4.Copy(Bitmap.Config.Argb8888, true);
+            Canvas canvas = new Canvas(bitmapBack);
+            Rect rectMin = new Rect(0, 0, bmp.Width, bmp.Height);
+            int margin = 7;
+            int marginBottom = Convert.ToInt32(bitmapBack.Height * 0.25);
+            Rect rectMax = new Rect(margin, marginBottom, bitmapBack.Width - margin * 3, bitmapBack.Height - margin * 3);
             canvas.DrawBitmap(bmp, rectMin, rectMax, null);
             return bitmapBack;
         }
