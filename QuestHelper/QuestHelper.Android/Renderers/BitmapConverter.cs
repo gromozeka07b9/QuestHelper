@@ -97,10 +97,16 @@ namespace QuestHelper.Droid.Renderers
             var bitmapBack = bitmapBackRectangleSrc4.Copy(Bitmap.Config.Argb8888, true);
             Canvas canvas = new Canvas(bitmapBack);
             Rect rectMin = new Rect(0, 0, bmp.Width, bmp.Height);
-            int margin = 7;
-            int marginBottom = Convert.ToInt32(bitmapBack.Height * 0.25);
-            Rect rectMax = new Rect(margin, marginBottom, bitmapBack.Width - margin * 3, bitmapBack.Height - margin * 3);
-            canvas.DrawBitmap(bmp, rectMin, rectMax, null);
+            int marginLeft = 10;
+            int marginRight = 18;
+            int marginTop = Convert.ToInt32(bitmapBack.Height * 0.25);
+            int marginBottom = Convert.ToInt32(bitmapBack.Height * 0.05);
+            Rect rectMax = new Rect(marginLeft, marginTop, bitmapBack.Width - marginRight, bitmapBack.Height - marginBottom);
+            canvas.DrawBitmap(bmp, rectMax, rectMax, null);
+
+            var textPaint = new Paint(PaintFlags.AntiAlias);
+            textPaint.TextSize = 30;
+            canvas.DrawText("Название", 27, 60, textPaint);
             return bitmapBack;
         }
     }
