@@ -23,17 +23,6 @@ namespace QuestHelper.Droid.Renderers
         public static Bitmap Crop(Bitmap bmp, int radius)
         {
             return getRectangleBitmap4(bmp, radius);
-            /*Random r = new Random();
-            int res = r.Next(5, 10);
-            if (res > 5)
-            {
-                return getCircleBitmap(bmp, radius);
-            }
-            else
-            {
-                return getRectangleBitmap(bmp, radius);
-            }*/
-
         }
 
         private static Bitmap getCircleBitmap(Bitmap bmp, int radius)
@@ -96,17 +85,19 @@ namespace QuestHelper.Droid.Renderers
         {
             var bitmapBack = bitmapBackRectangleSrc4.Copy(Bitmap.Config.Argb8888, true);
             Canvas canvas = new Canvas(bitmapBack);
-            Rect rectMin = new Rect(0, 0, bmp.Width, bmp.Height);
             int marginLeft = 10;
             int marginRight = 18;
             int marginTop = Convert.ToInt32(bitmapBack.Height * 0.25);
             int marginBottom = Convert.ToInt32(bitmapBack.Height * 0.05);
+            int marginSrc = 0;
+            if (bmp.Width <= bmp.Height) marginSrc = bmp.Height - bmp.Width;
+            Rect rectMin = new Rect(marginSrc, marginSrc + marginSrc /2, bmp.Width - marginSrc, bmp.Height - marginSrc/2);
             Rect rectMax = new Rect(marginLeft, marginTop, bitmapBack.Width - marginRight, bitmapBack.Height - marginBottom);
-            canvas.DrawBitmap(bmp, rectMax, rectMax, null);
+            canvas.DrawBitmap(bmp, rectMin, rectMax, null);
 
-            var textPaint = new Paint(PaintFlags.AntiAlias);
-            textPaint.TextSize = 30;
-            canvas.DrawText("Название", 27, 60, textPaint);
+            //var textPaint = new Paint(PaintFlags.AntiAlias);
+            //textPaint.TextSize = 30;
+            //canvas.DrawText("Название", 27, 60, textPaint);
             return bitmapBack;
         }
     }

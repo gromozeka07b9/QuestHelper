@@ -55,7 +55,7 @@
                                         <RowDefinition Height="2*"/>
                                     </Grid.RowDefinitions>
 
-                                    <ffimageloading:CachedImage Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="4" Source="{Binding CoverImage}" Margin="0,0,0,0" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" DownsampleToViewSize="True" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <ffimageloading:CachedImage Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="4" Source="{Binding CoverImage}" Margin="0,0,0,0" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" DownsampleToViewSize="True" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" CacheType="Disk">
                                         
                                     </ffimageloading:CachedImage>
                                     <!--Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="4" Source="{Binding CoverImage}" Margin="0,0,0,0" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/-->

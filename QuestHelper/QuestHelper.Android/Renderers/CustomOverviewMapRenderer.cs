@@ -66,7 +66,15 @@ namespace QuestHelper.Droid.Renderers
             {
             }
             drawMarkers(_sizeMarker);
+            map.MarkerClick += MapOnMarkerClick;
             base.OnMapReady(map);
+        }
+
+        void MapOnMarkerClick(object sender, GoogleMap.MarkerClickEventArgs markerClickEventArgs)
+        {
+            markerClickEventArgs.Handled = true;
+            var marker = markerClickEventArgs.Marker;
+            
         }
 
         private void OnInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)

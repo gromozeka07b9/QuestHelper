@@ -17,8 +17,9 @@ namespace QuestHelper.Droid.Renderers
                 var latlng = new LatLng(poi.Location.Latitude, poi.Location.Longitude);
                 var marker = new MarkerOptions();
                 marker.Anchor(0.5f, 0.5f);
+                marker.SetTitle(poi.Name);
                 marker.SetPosition(latlng);
-                BitmapDescriptor pic = getBitmap(poi.ImgFilename, imageSize);
+                BitmapDescriptor pic = getBitmap(poi.ImgFilename, imageSize, poi.Name);
                 if (pic == null)
                 {
                     pic = BitmapDescriptorFactory.FromResource(Resource.Drawable.place_unknown);
@@ -29,7 +30,7 @@ namespace QuestHelper.Droid.Renderers
             return markers;
         }
 
-        private static BitmapDescriptor getBitmap(string pathToPicture, int imageSize)
+        private static BitmapDescriptor getBitmap(string pathToPicture, int imageSize, string name)
         {
             if (!string.IsNullOrEmpty(pathToPicture) && File.Exists(pathToPicture))
             {
@@ -37,7 +38,8 @@ namespace QuestHelper.Droid.Renderers
                 if (bm != null)
                 {
                     var croppedBitmap = BitmapConverter.Crop(bm, imageSize);
-                    return BitmapDescriptorFactory.FromBitmap(croppedBitmap);
+                    var markerBitmap = BitmapTextWriter.Write(croppedBitmap, name,  25, 60, 25);
+                    return BitmapDescriptorFactory.FromBitmap(markerBitmap);
                 }
             }
             return null;
