@@ -16,13 +16,14 @@ namespace QuestHelper.Droid.Renderers
 {
     internal class BitmapConverter
     {
-        static Bitmap bitmapBackCircleSrc = BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.markerback2);
+        static Bitmap bitmapBackCircleSrc = BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.markerback5);
         static Bitmap bitmapBackRectangleSrc3 = BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.markerback3);
         static Bitmap bitmapBackRectangleSrc4 = BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.markerback4);
 
         public static Bitmap Crop(Bitmap bmp, int radius)
         {
-            return getRectangleBitmap4(bmp, radius);
+            //return getRectangleBitmap4(bmp, radius);
+            return getCircleBitmap(bmp, radius);
         }
 
         private static Bitmap getCircleBitmap(Bitmap bmp, int radius)
