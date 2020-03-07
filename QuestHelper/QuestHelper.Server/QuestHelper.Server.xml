@@ -25,6 +25,17 @@
             0 - dislike, 1 - like
             </summary>
         </member>
+        <member name="T:QuestHelper.Server.Controllers.PoiController">
+            <summary>
+            Getting poi
+            </summary>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.PoiController.Get(QuestHelper.SharedModelsWS.PoiFilter)">
+            <summary>
+            Get POI with filter
+            </summary>
+            <returns>List of POI</returns>
+        </member>
         <member name="M:QuestHelper.Server.Controllers.RouteSync.RouteSyncController.GetRouteVersion(System.String)">
             <summary>
             Get route hash
@@ -157,6 +168,11 @@
             Версия записи
             </summary>
         </member>
+        <member name="P:QuestHelper.Server.Models.Poi.Version">
+            <summary>
+            Версия записи
+            </summary>
+        </member>
         <member name="P:QuestHelper.Server.Models.Route.Version">
             <summary>
             Версия записи
@@ -180,6 +196,11 @@
         <member name="P:QuestHelper.Server.Models.User.Version">
             <summary>
             Версия записи
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.ServerDbContext.Poi">
+            <summary>
+            Таблица с POI
             </summary>
         </member>
         <member name="P:QuestHelper.Server.ServerDbContext.RouteLike">

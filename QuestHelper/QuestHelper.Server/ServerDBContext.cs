@@ -13,6 +13,11 @@ namespace QuestHelper.Server
         public DbSet<RouteShare> RouteShare { get; set; }
 
         /// <summary>
+        /// Таблица с POI
+        /// </summary>
+        public DbSet<Poi> Poi { get; set; }
+
+        /// <summary>
         /// Таблица с лайками маршрутов
         /// </summary>
         public DbSet<RouteLike> RouteLike { get; set; }
