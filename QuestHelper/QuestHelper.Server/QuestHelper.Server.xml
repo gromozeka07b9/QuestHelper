@@ -30,9 +30,15 @@
             Getting poi
             </summary>
         </member>
-        <member name="M:QuestHelper.Server.Controllers.PoiController.Get(QuestHelper.SharedModelsWS.PoiFilter)">
+        <member name="M:QuestHelper.Server.Controllers.PoiController.GetAllPoi">
             <summary>
-            Get POI with filter
+            Get all available POIs for current user - published other people, private
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.PoiController.GetPrivatePoi">
+            <summary>
+            Get only private POI for current user
             </summary>
             <returns>List of POI</returns>
         </member>
@@ -166,6 +172,21 @@
         <member name="P:QuestHelper.Server.Models.OauthUser.Version">
             <summary>
             Версия записи
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.Models.Poi.ByRouteId">
+            <summary>
+            Создана на основе маршрута
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.Models.Poi.IsPublished">
+            <summary>
+            доступна всем
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.Models.Poi.ImgFilename">
+            <summary>
+            имя файла картинки обложки
             </summary>
         </member>
         <member name="P:QuestHelper.Server.Models.Poi.Version">

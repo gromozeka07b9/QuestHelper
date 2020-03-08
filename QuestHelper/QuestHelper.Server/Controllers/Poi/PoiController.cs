@@ -19,21 +19,60 @@ namespace QuestHelper.Server.Controllers
     public class PoiController : Controller
     {
         private DbContextOptions<ServerDbContext> _dbOptions = ServerDbContext.GetOptionsContextDbServer();
+
         /// <summary>
-        /// Get POI with filter
+        /// Get all available POIs for current user - published other people, private
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult GetAllPoi()
+        {
+            DateTime startDate = DateTime.Now;
+            string userId = IdentityManager.GetUserId(HttpContext);
+            var filter = new PoiFilter();
+            filter.IsPrivate = false;
+            filter.CreatorId = string.Empty;
+            List<Poi> pois = selectPois(filter);
+
+            TimeSpan delay = DateTime.Now - startDate;
+            Console.WriteLine($"GetAllPoi: status 200, {userId}, delay:{delay.TotalMilliseconds}");
+
+            return new ObjectResult(pois);
+        }
+        /// <summary>
+        /// Get only private POI for current user
         /// </summary>
         /// <returns>List of POI</returns>
-        [HttpGet]
-        public IActionResult Get(PoiFilter filter)
+        [HttpGet("private")]
+        public IActionResult GetPrivatePoi()
         {
             DateTime startDate = DateTime.Now;
             string userId = IdentityManager.GetUserId(HttpContext);
 
+            var filter = new PoiFilter();
+            filter.IsPrivate = true;
+            filter.CreatorId = userId;
+            List<Poi> pois = selectPois(filter);
+
+            TimeSpan delay = DateTime.Now - startDate;
+            Console.WriteLine($"GetPrivatePoi: status 200, {userId}, delay:{delay.TotalMilliseconds}");
+
+            return new ObjectResult(pois);
+        }
+
+        private List<Poi> selectPois(PoiFilter filter)
+        {
             List<Poi> pois = new List<Poi>();
+            
             using (var db = new ServerDbContext(_dbOptions))
             {
-                pois = db.Poi.Select(p=>new Poi() 
-                { 
+                pois = db.Poi
+                    .Where(p=>
+                    (filter.IsPrivate && p.CreatorId.Equals(filter.CreatorId)) || (!filter.IsPrivate)
+                    && !p.IsDeleted
+                    )
+                    .Select(p => new Poi()
+                {
                     Id = p.PoiId,
                     Name = p.Name,
                     Description = p.Description,
@@ -45,19 +84,13 @@ namespace QuestHelper.Server.Controllers
                     ByRouteId = p.ByRouteId,
                     Latitude = p.Latitude,
                     Longitude = p.Longitude,
+                    ImgFilename = p.ImgFilename,
+                    IsPublished = p.IsPublished,
                     Version = p.Version
                 }).ToList();
             }
 
-            TimeSpan delay = DateTime.Now - startDate;
-            Console.WriteLine($"Get POI: status 200, {userId}, delay:{delay.TotalMilliseconds}");
-
-            return new ObjectResult(pois);
+            return pois;
         }
-
-
-
-
-
     }
 }

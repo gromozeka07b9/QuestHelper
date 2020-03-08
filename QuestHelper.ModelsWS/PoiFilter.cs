@@ -6,6 +6,7 @@ namespace QuestHelper.SharedModelsWS
     {
         public string SearchString;
         public string CreatorId;
+        public bool IsPrivate;
         public DateTimeOffset DateFrom;
         public DateTimeOffset DateTo;
         public double LatitudeFrom;

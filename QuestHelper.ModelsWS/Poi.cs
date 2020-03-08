@@ -14,5 +14,7 @@ namespace QuestHelper.SharedModelsWS
         public string Address { get; set; }
         public string Description { get; set; }
         public string ByRouteId { get; set; }
+        public bool IsPublished { get; set; }
+        public string ImgFilename { get; set; }
     }
 }

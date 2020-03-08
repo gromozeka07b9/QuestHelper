@@ -18,7 +18,19 @@ namespace QuestHelper.Server.Models
         public double? Longitude { get; set; }
         public string Address { get; set; }
         public string Description { get; set; }
+        /// <summary>
+        /// Создана на основе маршрута
+        /// </summary>
         public string ByRouteId { get; set; }
+        /// <summary>
+        /// доступна всем
+        /// </summary>
+        public bool IsPublished { get; set; }
+        /// <summary>
+        /// имя файла картинки обложки
+        /// </summary>
+        public string ImgFilename { get; set; }
+
         /// <summary>
         /// Версия записи
         /// </summary>
