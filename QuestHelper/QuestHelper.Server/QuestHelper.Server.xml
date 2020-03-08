@@ -164,6 +164,18 @@
             <param name="length">длина итогой строки идентификатора</param>
             <returns></returns>
         </member>
+        <member name="T:QuestHelper.Server.Models.ConverterWsToDbModel">
+            <summary>
+            Конвертер модели веб-сервиса в модель БД
+            </summary>
+        </member>
+        <member name="M:QuestHelper.Server.Models.ConverterWsToDbModel.PoiConvert(QuestHelper.SharedModelsWS.Poi)">
+            <summary>
+            Конвертер для модели POI
+            </summary>
+            <param name="wsObject"></param>
+            <returns></returns>
+        </member>
         <member name="P:QuestHelper.Server.Models.FeedItem.Version">
             <summary>
             Версия записи
@@ -174,9 +186,9 @@
             Версия записи
             </summary>
         </member>
-        <member name="P:QuestHelper.Server.Models.Poi.ByRouteId">
+        <member name="P:QuestHelper.Server.Models.Poi.ByRoutePointId">
             <summary>
-            Создана на основе маршрута
+            Создана на основе точки маршрута
             </summary>
         </member>
         <member name="P:QuestHelper.Server.Models.Poi.IsPublished">

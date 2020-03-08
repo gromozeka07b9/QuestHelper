@@ -1,11 +1,11 @@
 using QuestHelper.Server.Integration;
-using Xunit;
+//using Xunit;
 
 namespace QuestHelperServer.Tests
 {
     public class TestRawTextCleaner
     {
-        [Theory]
+        /*[Theory]
         [InlineData("this is example of text block comma where we must find commas and set to up first letter and point at end dot")]
         public void TestMust_CleanTextWithComma(string rawText)
         {
@@ -71,6 +71,6 @@ namespace QuestHelperServer.Tests
         public void TestMust_Work()
         {
 
-        }
+        }*/
     }
 }

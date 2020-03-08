@@ -19,9 +19,9 @@ namespace QuestHelper.Server.Models
         public string Address { get; set; }
         public string Description { get; set; }
         /// <summary>
-        /// Создана на основе маршрута
+        /// Создана на основе точки маршрута
         /// </summary>
-        public string ByRouteId { get; set; }
+        public string ByRoutePointId { get; set; }
         /// <summary>
         /// доступна всем
         /// </summary>

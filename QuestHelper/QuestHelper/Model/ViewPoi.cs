@@ -51,7 +51,7 @@ namespace QuestHelper.Model
         public void Load(string id)
         {
             PoiManager manager = new PoiManager();
-            Poi poi = manager.GetPoiById(id);
+            LocalDB.Model.Poi poi = manager.GetPoiById(id);
             if (poi != null)
             {
                 _id = poi.PoiId;

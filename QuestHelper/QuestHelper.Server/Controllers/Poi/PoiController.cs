@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuestHelper.Server.Managers;
+using QuestHelper.Server.Models;
 using QuestHelper.SharedModelsWS;
 
 namespace QuestHelper.Server.Controllers
@@ -32,7 +33,7 @@ namespace QuestHelper.Server.Controllers
             var filter = new PoiFilter();
             filter.IsPrivate = false;
             filter.CreatorId = string.Empty;
-            List<Poi> pois = selectPois(filter);
+            List<SharedModelsWS.Poi> pois = selectPois(filter);
 
             TimeSpan delay = DateTime.Now - startDate;
             Console.WriteLine($"GetAllPoi: status 200, {userId}, delay:{delay.TotalMilliseconds}");
@@ -52,7 +53,7 @@ namespace QuestHelper.Server.Controllers
             var filter = new PoiFilter();
             filter.IsPrivate = true;
             filter.CreatorId = userId;
-            List<Poi> pois = selectPois(filter);
+            List<SharedModelsWS.Poi> pois = selectPois(filter);
 
             TimeSpan delay = DateTime.Now - startDate;
             Console.WriteLine($"GetPrivatePoi: status 200, {userId}, delay:{delay.TotalMilliseconds}");
@@ -60,9 +61,75 @@ namespace QuestHelper.Server.Controllers
             return new ObjectResult(pois);
         }
 
-        private List<Poi> selectPois(PoiFilter filter)
+        [HttpDelete]
+        public void DeletePoi([FromBody] string poiId)
         {
-            List<Poi> pois = new List<Poi>();
+            DateTime startDate = DateTime.Now;
+            string userId = IdentityManager.GetUserId(HttpContext);
+
+            using (var db = new ServerDbContext(_dbOptions))
+            {
+                var poiObject = db.Poi.Where(p => p.PoiId.Equals(poiId) && p.CreatorId.Equals(userId)).FirstOrDefault();
+                if (!string.IsNullOrEmpty(poiObject?.PoiId))
+                {
+                    if (!poiObject.IsDeleted)
+                    {
+                        var poiDb = db.Poi.Find(poiId);
+                        poiDb.IsDeleted = true;
+                        db.Entry(poiDb).CurrentValues.SetValues(poiDb);
+                        db.SaveChanges();
+                    }
+                }
+                else
+                {
+                    Response.StatusCode = 404;
+                }
+            }
+
+            TimeSpan delay = DateTime.Now - startDate;
+            Console.WriteLine($"DeletePoi: status 200, {userId}, delay:{delay.TotalMilliseconds}");
+        }
+
+        [HttpPost]
+        public void UpdatePoi([FromBody]SharedModelsWS.Poi poi)
+        {
+            DateTime startDate = DateTime.Now;
+            string userId = IdentityManager.GetUserId(HttpContext);
+
+            using (var db = new ServerDbContext(_dbOptions))
+            {
+                var poiObject = db.Poi.Where(p => p.PoiId.Equals(poi.Id)).FirstOrDefault();
+                if (!string.IsNullOrEmpty(poiObject?.PoiId))
+                {
+                    if (poiObject.CreatorId.Equals(userId))
+                    {
+                        var convertedPoiDb = ConverterWsToDbModel.PoiConvert(poi);
+                        convertedPoiDb.CreatorId = userId;
+                        convertedPoiDb.Version = ++poiObject.Version;
+
+                        var poiDb = db.Poi.Find(convertedPoiDb.PoiId);
+                        db.Entry(poiDb).CurrentValues.SetValues(convertedPoiDb);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        Response.StatusCode = 403;
+                    }
+                }
+                else
+                {
+                    var poiDb = ConverterWsToDbModel.PoiConvert(poi);
+                    db.Poi.Add(poiDb);
+                    db.SaveChanges();
+                }
+            }
+
+            TimeSpan delay = DateTime.Now - startDate;
+            Console.WriteLine($"UpdatePoi: status 200, {userId}, delay:{delay.TotalMilliseconds}");
+        }
+        private List<SharedModelsWS.Poi> selectPois(PoiFilter filter)
+        {
+            List<SharedModelsWS.Poi> pois = new List<SharedModelsWS.Poi>();
             
             using (var db = new ServerDbContext(_dbOptions))
             {
@@ -71,7 +138,7 @@ namespace QuestHelper.Server.Controllers
                     (filter.IsPrivate && p.CreatorId.Equals(filter.CreatorId)) || (!filter.IsPrivate)
                     && !p.IsDeleted
                     )
-                    .Select(p => new Poi()
+                    .Select(p => new SharedModelsWS.Poi()
                 {
                     Id = p.PoiId,
                     Name = p.Name,
@@ -81,7 +148,7 @@ namespace QuestHelper.Server.Controllers
                     CreateDate = p.CreateDate,
                     UpdateDate = p.UpdateDate,
                     IsDeleted = p.IsDeleted,
-                    ByRouteId = p.ByRouteId,
+                    ByRoutePointId = p.ByRoutePointId,
                     Latitude = p.Latitude,
                     Longitude = p.Longitude,
                     ImgFilename = p.ImgFilename,

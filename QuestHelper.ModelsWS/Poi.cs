@@ -13,7 +13,7 @@ namespace QuestHelper.SharedModelsWS
         public double? Longitude { get; set; }
         public string Address { get; set; }
         public string Description { get; set; }
-        public string ByRouteId { get; set; }
+        public string ByRoutePointId { get; set; }
         public bool IsPublished { get; set; }
         public string ImgFilename { get; set; }
     }
