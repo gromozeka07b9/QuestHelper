@@ -112,7 +112,7 @@ namespace QuestHelper.Managers.Sync
             bool result = false;
             if (!media.IsDeleted)
             {
-                if ((!loadOnlyPreviewImg) && (!media.OriginalServerSynced))
+                if ((media.MediaType == MediaObjectTypeEnum.Audio || (media.MediaType == MediaObjectTypeEnum.Image && !loadOnlyPreviewImg)) && (!media.OriginalServerSynced))
                 {
                     var httpStatus = await updateMediaFileAsync(media.RoutePointId, media.RoutePointMediaObjectId,
                         media.MediaType, false);
