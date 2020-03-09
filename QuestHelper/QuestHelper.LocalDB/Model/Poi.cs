@@ -9,11 +9,15 @@ namespace QuestHelper.LocalDB.Model
     {
         [PrimaryKey]
         public string PoiId { get; set; } = Guid.NewGuid().ToString();
-        public string RouteId { get; set; }
+        //public string RouteId { get; set; }//НЕ Используется!
         public string CreatorId { get; set; }
         public string Name { get; set; }
         public DateTimeOffset CreateDate { get; set; } = DateTime.Now;
+        public DateTimeOffset UpdateDate { get; set; } = DateTime.Now;
+        public string Address { get; set; }
+        public string ByRoutePointId { get; set; }
         public int PoiType { get; set; }
+        public bool IsPublished { get; set; }
         public bool IsDeleted { get; set; }
         public string ImgFilename { get; set; }
         public string Description { get; set; }

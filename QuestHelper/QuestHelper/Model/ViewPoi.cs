@@ -22,11 +22,15 @@ namespace QuestHelper.Model
         private string _id = string.Empty;
         private string _name = string.Empty;
         private DateTimeOffset _createDate;
+        private DateTimeOffset _updateDate;
         private string _creatorId = string.Empty;
         private bool _isDeleted = false;
+        private bool _isPublished = false;
         private string _imgFilename = string.Empty;
         private string _description = string.Empty;
-        private string _routeId;
+        private string _byRoutePointId = string.Empty;
+        private string _address = string.Empty;
+        //private string _routeId;
         private int _likesCount;
         private int _viewsCount;
         private Position _position;
@@ -44,8 +48,9 @@ namespace QuestHelper.Model
             }
         }
 
-        public ViewPoi()
+        public ViewPoi(SharedModelsWS.Poi poi)
         {
+            FillFromWSModel(poi);
         }
 
         public void Load(string id)
@@ -57,9 +62,13 @@ namespace QuestHelper.Model
                 _id = poi.PoiId;
                 _name = poi.Name;
                 _createDate = poi.CreateDate;
+                _updateDate = poi.UpdateDate;
+                _address = poi.Address;
+                _isPublished = poi.IsPublished;
                 _isDeleted = poi.IsDeleted;
                 _creatorId = poi.CreatorId;
-                _routeId = poi.RouteId;
+                _byRoutePointId = poi.ByRoutePointId;
+                _byRoutePointId = poi.ByRoutePointId;
                 _description = poi.Description;
                 _imgFilename = poi.ImgFilename;
                 _likesCount = poi.LikesCount;
@@ -67,23 +76,26 @@ namespace QuestHelper.Model
                 _position = new Position(poi.Latitude, poi.Longitude);
             }
         }
-        /*internal void FillFromWSModel(RouteRoot routeRoot, string routeHash)
+        internal void FillFromWSModel(SharedModelsWS.Poi poi)
         {
-            if (routeRoot != null)
+            if (poi != null)
             {
-                _id = routeRoot.Route.Id;
-                _name = routeRoot.Route.Name;
-                _createDate = routeRoot.Route.CreateDate;
-                _version = routeRoot.Route.Version;
-                _isShared = routeRoot.Route.IsShared;
-                _isPublished = routeRoot.Route.IsPublished;
-                _isDeleted = routeRoot.Route.IsDeleted;
-                _creatorId = routeRoot.Route.CreatorId;
-                _description = routeRoot.Route.Description;
-                _imgFilename = routeRoot.Route.ImgFilename;
-                _objVerHash = routeHash;
+                _id = poi.Id;
+                _name = poi.Name;
+                _createDate = poi.CreateDate;
+                _updateDate = poi.UpdateDate;
+                _address = poi.Address;
+                _isPublished = poi.IsPublished;
+                _isDeleted = poi.IsDeleted;
+                _creatorId = poi.CreatorId;
+                _byRoutePointId = poi.ByRoutePointId;
+                _description = poi.Description;
+                _imgFilename = poi.ImgFilename;
+                _likesCount = 0;
+                _viewsCount = 0;
+                _position = new Position(poi.Latitude.GetValueOrDefault(0), poi.Longitude.GetValueOrDefault(0));
             }
-        }*/
+        }
 
         public void Refresh(string id)
         {
@@ -105,15 +117,15 @@ namespace QuestHelper.Model
             }
         }
 
-        public string RouteId
+        public string ByRoutePointId
         {
             set
             {
-                _routeId = value;
+                _byRoutePointId = value;
             }
             get
             {
-                return _routeId;
+                return _byRoutePointId;
             }
         }
         public string Name
@@ -158,6 +170,17 @@ namespace QuestHelper.Model
                 _createDate = value;
             }
         }
+        public DateTimeOffset UpdateDate
+        {
+            get
+            {
+                return _updateDate;
+            }
+            set
+            {
+                _updateDate = value;
+            }
+        }
 
         public string ImgFilename
         {
@@ -168,6 +191,17 @@ namespace QuestHelper.Model
             get
             {
                 return _imgFilename;
+            }
+        }
+        public string Address
+        {
+            set
+            {
+                _address = value;
+            }
+            get
+            {
+                return _address;
             }
         }
 
@@ -205,6 +239,19 @@ namespace QuestHelper.Model
                 _isDeleted = value;
             }
         }
+
+        public bool IsPublished
+        {
+            get
+            {
+                return _isPublished;
+            }
+            set
+            {
+                _isPublished = value;
+            }
+        }
+
         public int LikesCount
         {
             get

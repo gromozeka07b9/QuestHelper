@@ -17,6 +17,7 @@ using QuestHelper.Model;
 using Xamarin.Forms.Maps;
 using Plugin.Geolocator.Abstractions;
 using Position = Xamarin.Forms.Maps.Position;
+using QuestHelper.WS;
 
 namespace QuestHelper.ViewModel
 {
@@ -29,8 +30,9 @@ namespace QuestHelper.ViewModel
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         //public ICommand OpenPointPropertiesCommand { get; private set; }
-        List<ViewRoute> _routes = new List<ViewRoute>();
-        List<ViewRoutePoint> _points = new List<ViewRoutePoint>();
+        //List<ViewRoute> _routes = new List<ViewRoute>();
+        //List<ViewRoutePoint> _points = new List<ViewRoutePoint>();
+        private List<ViewPoi> _pois = new List<ViewPoi>();
 
         public MapOverviewViewModel()
         {
@@ -41,11 +43,11 @@ namespace QuestHelper.ViewModel
 
         public async void StartDialog()
         {
-            _points.Clear();
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("POIs"));
+            //_points.Clear();
+            //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("POIs"));
             
             await updateLocationAsync();
-
+            await refreshPoisAsync();
         }
 
         private async Task updateLocationAsync()
@@ -69,11 +71,25 @@ namespace QuestHelper.ViewModel
         {
         }
 
-        public ObservableCollection<ViewPoi> POIs
+        private async Task refreshPoisAsync()
+        {
+            TokenStoreService tokenService = new TokenStoreService();
+            string token = await tokenService.GetAuthTokenAsync();
+            if (!string.IsNullOrEmpty(token))
+            {
+                PoiApiRequest poiApi = new PoiApiRequest(token);
+                var pois = await poiApi.GetMyPoisAsync();
+                _pois = pois.Select(p=>new ViewPoi(p)).ToList();
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("POIs"));
+            }
+        }
+
+        public List<ViewPoi> POIs
         {
             get
             {
-                var lst = new ObservableCollection<ViewPoi>();
+                return _pois;
+                /*var lst = new ObservableCollection<ViewPoi>();
 
                 var routess = _routeManager.GetAllRoutes();
                 foreach (ViewRoute route in routess)
@@ -99,10 +115,10 @@ namespace QuestHelper.ViewModel
                     testPoi.Name = route.Name;
                     testPoi.Location = new Position(firstAndLastPoints.Item1.Latitude, firstAndLastPoints.Item1.Longitude);
                     lst.Add(testPoi);
-                }
+                }*/
 
                 //var pois = _points.Select(p => new POI() { Name = !string.IsNullOrEmpty(p.NameText) ? p.NameText : "Empty", Address = p.Address, Position = new Position(p.Latitude, p.Longitude), Description = p.Description, PathToPicture = p.ImagePreviewPath });
-                return new ObservableCollection<ViewPoi>(lst);
+                //return new ObservableCollection<ViewPoi>(lst);
             }
         }
 

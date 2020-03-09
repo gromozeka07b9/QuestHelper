@@ -57,6 +57,7 @@ namespace QuestHelper.Droid.Renderers
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
+            drawMarkers(_sizeMarker);
         }
 
         protected override async void OnMapReady(Android.Gms.Maps.GoogleMap map)

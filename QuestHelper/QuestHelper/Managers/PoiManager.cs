@@ -192,17 +192,22 @@ namespace QuestHelper.Managers
                     }
                     poi.Name = viewPoi.Name;
                     poi.CreateDate = viewPoi.CreateDate;
+                    poi.UpdateDate = viewPoi.UpdateDate;
                     poi.IsDeleted = viewPoi.IsDeleted;
                     poi.CreatorId = viewPoi.CreatorId;
                     poi.ImgFilename = viewPoi.ImgFilename;
                     poi.Description = viewPoi.Description;
                     //poi.PoiType = viewPoi.PoiType;
+                    poi.Address = viewPoi.Address;
+                    poi.ByRoutePointId = viewPoi.ByRoutePointId;
+                    poi.IsPublished = viewPoi.IsPublished;
                     poi.Latitude = viewPoi.Location.Latitude;
                     poi.Longitude = viewPoi.Location.Longitude;
                     poi.LikesCount = viewPoi.LikesCount;
                     poi.ViewsCount = viewPoi.ViewsCount;
-                    viewPoi.Refresh(poi.RouteId);
                 });
+                var poiSaved = RealmInstance.Find<Poi>(viewPoi.Id);
+                viewPoi.Refresh(poiSaved.PoiId);
                 result = true;
             }
             catch (Exception e)
