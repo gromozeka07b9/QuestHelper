@@ -57,7 +57,7 @@ namespace QuestHelper.Droid.Renderers
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
-            drawMarkers(_sizeMarker);
+            //drawMarkers(_sizeMarker);
         }
 
         protected override async void OnMapReady(Android.Gms.Maps.GoogleMap map)
@@ -82,12 +82,16 @@ namespace QuestHelper.Droid.Renderers
         {
         }
 
+        protected override MarkerOptions CreateMarker(Pin pin)
+        {
+            return MarkerMaker.MakeMarkerByPOI(pin, _sizeMarker);
+        }
         private void drawMarkers(int markerSize)
         {
-            foreach(MarkerOptions marker in MarkerMaker.MakeMarkersByPOI(_map.POIs, markerSize))
+            /*foreach(MarkerOptions marker in MarkerMaker.MakeMarkersByPOI(_map.POIs, markerSize))
             {
                 NativeMap.AddMarker(marker);
-            }
+            }*/
         }
     }
 }

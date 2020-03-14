@@ -32,11 +32,16 @@ namespace QuestHelper.View
         {
             switch (e.PropertyName)
             {
+                case "POIs":
+                    {
+                        //MapOverview.Pins.Clear();
+                        UpdatePinsFromPOIs();
+                    }; break;
                 case "CurrentLocation":
                     {
                         if ((_vm.CurrentLocation.Latitude != 0) && (_vm.CurrentLocation.Longitude != 0))
                         {
-                            Task.Run(async ()=> {
+                            Task.Run(async () => {
                                 await centerMap(_vm.CurrentLocation.Latitude, _vm.CurrentLocation.Longitude);
                             });
                         }
@@ -44,10 +49,22 @@ namespace QuestHelper.View
             }
         }
 
+        private void UpdatePinsFromPOIs()
+        {
+            MapOverview.Pins.Clear();
+            foreach(var poi in _vm.POIs.Select(p => new OverViewMapPin() { Label = p.Name, Position = p.Location, ImagePath = "/resource/about.png", ClassId = "test", StyleId = "teststyle" }))
+            {
+                MapOverview.Pins.Add(poi);
+            }
+            //_vm.POIs.Select(p => new Pin() { Label = p.Name, Position = p.Location }).ToList();
+        }
+
         private void ContentPage_Appearing(object sender, EventArgs e)
         {
             _vm.StartDialog();
-            MapOverview.POIs = _vm.POIs.ToList();
+            //MapOverview.POIs = _vm.POIs.ToList();
+            //MapOverview.Pins.Add(new Pin() { Label = "test"});
+            //POI = new POI() { };
         }
 
         private void ContentPage_Disappearing(object sender, EventArgs e)

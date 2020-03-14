@@ -30,24 +30,28 @@ namespace QuestHelper.ViewModel
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         //public ICommand OpenPointPropertiesCommand { get; private set; }
-        //List<ViewRoute> _routes = new List<ViewRoute>();
-        //List<ViewRoutePoint> _points = new List<ViewRoutePoint>();
         private List<ViewPoi> _pois = new List<ViewPoi>();
+        public ICommand UpdatePOIsCommand { get; private set; }
 
         public MapOverviewViewModel()
         {
-            //OpenPointPropertiesCommand = new Command(openPointPropertiesCommand);
+            UpdatePOIsCommand = new Command(updatePOIsCommand);
             _routePointManager = new RoutePointManager();
             _routeManager = new RouteManager();
         }
 
-        public async void StartDialog()
+        private async void updatePOIsCommand(object obj)
         {
-            //_points.Clear();
-            //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("POIs"));
-            
-            await updateLocationAsync();
             await refreshPoisAsync();
+        }
+
+        public async void StartDialog()
+        {            
+            await updateLocationAsync();
+            if (!_pois.Any())
+            {
+                await refreshPoisAsync();
+            }
         }
 
         private async Task updateLocationAsync()
@@ -89,36 +93,6 @@ namespace QuestHelper.ViewModel
             get
             {
                 return _pois;
-                /*var lst = new ObservableCollection<ViewPoi>();
-
-                var routess = _routeManager.GetAllRoutes();
-                foreach (ViewRoute route in routess)
-                {
-                    var firstAndLastPoints = _routePointManager.GetFirstAndLastViewRoutePoints(route.Id);
-
-                    var testPoi = new ViewPoi();
-                    if (!string.IsNullOrEmpty(route.CoverImage))
-                    {
-                        testPoi.ImgFilename = route.CoverImage;
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrEmpty(firstAndLastPoints.Item1.ImagePreviewPath))
-                        {
-                            testPoi.ImgFilename = firstAndLastPoints.Item1.ImagePreviewPath;
-                        }
-                        else
-                        {
-                            testPoi.ImgFilename = firstAndLastPoints.Item2.ImagePreviewPath;
-                        }
-                    }
-                    testPoi.Name = route.Name;
-                    testPoi.Location = new Position(firstAndLastPoints.Item1.Latitude, firstAndLastPoints.Item1.Longitude);
-                    lst.Add(testPoi);
-                }*/
-
-                //var pois = _points.Select(p => new POI() { Name = !string.IsNullOrEmpty(p.NameText) ? p.NameText : "Empty", Address = p.Address, Position = new Position(p.Latitude, p.Longitude), Description = p.Description, PathToPicture = p.ImagePreviewPath });
-                //return new ObservableCollection<ViewPoi>(lst);
             }
         }
 

@@ -9,7 +9,7 @@ namespace QuestHelper.View.Geo
 {
     public class CustomOverviewMap : Map
     {
-        public List<ViewPoi> POIs { get; set; } = new List<ViewPoi>();
+        //public List<ViewPoi> POIs { get; set; } = new List<ViewPoi>();
 
         public CustomOverviewMap()
         {

@@ -6,18 +6,21 @@
              xmlns:local="clr-namespace:QuestHelper.View.Geo"
              x:Class="QuestHelper.View.MapOverviewPage" NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False" Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing">
     <ContentPage.Content>
-        <local:CustomOverviewMap
+        <StackLayout>
+            <Button Text="Refresh" Command="{Binding UpdatePOIsCommand}"></Button>
+            <local:CustomOverviewMap
             x:Name="MapOverview"
             IsShowingUser="true"
             MapType="Street"
             >
-            <!--local:CustomOverviewMap.ItemTemplate>
+                <!--local:CustomOverviewMap.ItemTemplate>
                 <DataTemplate>
                     <maps:Pin Position="{Binding Position}" Label="{Binding Name}" Address="{Binding Address}">
 
                     </maps:Pin>
                 </DataTemplate>
             </-->
-        </local:CustomOverviewMap>
+            </local:CustomOverviewMap>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>
