@@ -13,13 +13,6 @@
             IsShowingUser="true"
             MapType="Street"
             >
-                <!--local:CustomOverviewMap.ItemTemplate>
-                <DataTemplate>
-                    <maps:Pin Position="{Binding Position}" Label="{Binding Name}" Address="{Binding Address}">
-
-                    </maps:Pin>
-                </DataTemplate>
-            </-->
             </local:CustomOverviewMap>
         </StackLayout>
     </ContentPage.Content>

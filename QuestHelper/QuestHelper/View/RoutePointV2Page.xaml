@@ -102,12 +102,6 @@
                                                         <!--TapGestureRecognizer Command="{Binding ViewPhotoCommand}"/-->
                                                     </ffimageloading:CachedImage.GestureRecognizers>
                                                 </ffimageloading:CachedImage>
-                                                <!--Image Grid.Row="0" Grid.Column="0" x:Name="imgCtrl" Source="{Binding SourceImg, Converter={StaticResource typeImageConverter}}" WidthRequest="48" HeightRequest="48" Margin="0" Aspect="{Binding SourceImg, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-                                                    <Image.GestureRecognizers>
-                                                    <TapGestureRecognizer Command="{Binding ViewPhotoCommand}"/>
-                                                    <TapGestureRecognizer Command="{Binding DeletePhotoCommand}" NumberOfTapsRequired="2"/>
-                                                </>
-                                                </-->
                                                 <Image Grid.Row="0" Grid.Column="0" Source="baseline_clear_black_48.png" WidthRequest="32" HeightRequest="32" Margin="0,5,5,0" VerticalOptions="Start" HorizontalOptions="End">
                                                     <Image.GestureRecognizers>
                                                         <TapGestureRecognizer Command="{Binding Path=BindingContext.DeletePhotoCommand, Source={x:Reference Name=myCarouselViewCtrl}}" CommandParameter="{Binding}"/>
@@ -148,6 +142,21 @@
                                     <TapGestureRecognizer Command="{Binding CopyCoordinatesCommand}" />
                                 </Image.GestureRecognizers>
                             </Image>
+                        </StackLayout>
+                    </Frame>
+                    <Frame CornerRadius="5" Padding="5" Margin="10,0,10,0">
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0,5,0,5">
+                            <Image Source="share.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Center" HorizontalOptions="Start"></Image>
+                            <Label Text="Добавить на карту..." FontSize="16" Style="{StaticResource RouteTextLabel}" VerticalTextAlignment="Center" HorizontalOptions="FillAndExpand">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ShareToMapCommand}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <!--Image Source=".png" WidthRequest="28" HeightRequest="28" VerticalOptions="Center" HorizontalOptions="End">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding CopyCoordinatesCommand}" />
+                                </Image.GestureRecognizers>
+                            </-->
                         </StackLayout>
                     </Frame>
                     <Frame CornerRadius="5" Padding="5" Margin="10,0,10,0">

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using QuestHelper.Managers;
+using QuestHelper.Model;
 using QuestHelper.SharedModelsWS;
 using System;
 using System.Collections.Generic;
@@ -23,20 +24,6 @@ namespace QuestHelper.WS
             _authToken = authToken;
         }
 
-        /*public async Task<List<FeedItem>> GetFeed()
-        {
-            List<FeedItem> feed = new List<FeedItem>();
-            try
-            {
-                feed = await tryToRequestFeedAsync();
-            }
-            catch (Exception e)
-            {
-                HandleError.Process("FeedApiRequest", "GetFeed", e, false);
-            }
-            return feed;
-        }*/
-
         public async Task<List<Poi>> GetMyPoisAsync()
         {
             try
@@ -52,6 +39,25 @@ namespace QuestHelper.WS
             }
 
             return new List<Poi>();
+        }
+
+        public async Task<bool> UploadPoiAsync(string jsonStructure)
+        {
+            bool addResult = false;
+
+            try
+            {
+                ApiRequest api = new ApiRequest();
+                await api.HttpRequestPOST($"{_apiUrl}/poi", jsonStructure, _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
+                addResult = LastHttpStatusCode == HttpStatusCode.OK;
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("PoiApiRequest", "UploadPoiAsync", e, false);
+            }
+
+            return addResult;
         }
 
         /*public async Task<bool> GetCoverImage(string imgUrl)

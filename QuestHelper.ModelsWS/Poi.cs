@@ -16,5 +16,6 @@ namespace QuestHelper.SharedModelsWS
         public string ByRoutePointId { get; set; }
         public bool IsPublished { get; set; }
         public string ImgFilename { get; set; }
+        public string ImgBase64 { get; set; }
     }
 }

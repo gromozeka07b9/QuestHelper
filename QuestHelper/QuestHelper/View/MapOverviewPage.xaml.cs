@@ -1,6 +1,7 @@
 ﻿using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Plugin.Geolocator;
+using QuestHelper.Managers;
 using QuestHelper.Model;
 using QuestHelper.Resources;
 using QuestHelper.View.Geo;
@@ -52,19 +53,22 @@ namespace QuestHelper.View
         private void UpdatePinsFromPOIs()
         {
             MapOverview.Pins.Clear();
-            foreach(var poi in _vm.POIs.Select(p => new OverViewMapPin() { Label = p.Name, Position = p.Location, ImagePath = "/resource/about.png", ClassId = "test", StyleId = "teststyle" }))
+            string _pathToPictures = ImagePathManager.GetPicturesDirectory();
+
+            foreach (var poi in _vm.POIs.Select(p => new OverViewMapPin()
+            {
+                Label = p.Name,
+                Position = p.Location,
+                ImagePath = $"{_pathToPictures}/{p.ImgFilename}" 
+            }))
             {
                 MapOverview.Pins.Add(poi);
             }
-            //_vm.POIs.Select(p => new Pin() { Label = p.Name, Position = p.Location }).ToList();
         }
 
         private void ContentPage_Appearing(object sender, EventArgs e)
         {
             _vm.StartDialog();
-            //MapOverview.POIs = _vm.POIs.ToList();
-            //MapOverview.Pins.Add(new Pin() { Label = "test"});
-            //POI = new POI() { };
         }
 
         private void ContentPage_Disappearing(object sender, EventArgs e)

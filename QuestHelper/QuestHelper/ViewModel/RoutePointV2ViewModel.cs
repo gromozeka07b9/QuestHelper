@@ -51,6 +51,7 @@ namespace QuestHelper.ViewModel
         public ICommand RecognizeAudioCommand { get; private set; }
         public ICommand RecordAudioStopAndSaveCommand { get; private set; }
         public ICommand RecordAudioCancel { get; private set; }
+        public ICommand ShareToMapCommand { get; private set; }
 
 
         AudioManager _audioManager = new AudioManager();
@@ -92,9 +93,44 @@ namespace QuestHelper.ViewModel
             RecordAudioStopAndSaveCommand = new Command(recordAudioStopAndSaveCommand);
             RecordAudioCancel = new Command(recordAudioCancel);
 
+            ShareToMapCommand = new Command(shareToMapCommand);
+
             _vpoint = new ViewRoutePoint(routeId, routePointId);
-            Analytics.TrackEvent("Dialog point opened");
             _newPoint = string.IsNullOrEmpty(routePointId);
+
+            Analytics.TrackEvent("Dialog point opened");
+        }
+
+        private async void shareToMapCommand(object obj)
+        {
+            TokenStoreService tokenService = new TokenStoreService();
+            string authToken = await tokenService.GetAuthTokenAsync();
+            string userId = await tokenService.GetUserIdAsync();
+            PoiApiRequest poiApi = new PoiApiRequest(authToken);
+
+            ViewPoi sharePoi = new ViewPoi(string.Empty);
+            sharePoi.IsPublished = true;
+            sharePoi.Location = new Xamarin.Forms.Maps.Position(_vpoint.Latitude, _vpoint.Longitude);
+            sharePoi.Name = _vpoint.Name;
+            sharePoi.Description = _vpoint.Description;
+            sharePoi.UpdateDate = sharePoi.CreateDate;
+            sharePoi.ByRoutePointId = _vpoint.RoutePointId;
+            sharePoi.CreatorId = userId;
+
+            if (Images.Any())
+            {
+                string mediaId = Images.First().MediaId;
+                sharePoi.ImgFilename = ImagePathManager.GetMediaFilename(mediaId, MediaObjectTypeEnum.Image, true);
+
+                string pathToImg = Path.Combine(ImagePathManager.GetPicturesDirectory(), sharePoi.ImgFilename);
+                if (File.Exists(pathToImg))
+                {
+                    var bytes = File.ReadAllBytes(pathToImg);
+                    sharePoi.ImgBase64 = Convert.ToBase64String(bytes);
+                }
+
+            }
+            bool resultUpload = await poiApi.UploadPoiAsync(sharePoi.GetJsonStructure());
         }
 
         private void recordAudioCancel(object obj)

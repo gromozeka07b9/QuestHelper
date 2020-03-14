@@ -109,17 +109,8 @@ namespace QuestHelper.Server.Controllers.Routes
                     db.Entry(entity).CurrentValues.SetValues(routeObject);
                     if (!string.IsNullOrEmpty(routeObject.CoverImgBase64))
                     {
-                        var bytes = Convert.FromBase64String(routeObject.CoverImgBase64);
-                        try
-                        {
-                            System.IO.File.WriteAllBytes(Path.Combine(_pathToMediaCatalog, routeObject.ImgFilename), bytes);
-                        }
-                        catch (Exception e)
-                        {
-                            throw new Exception($"Error writing route cover: {routeObject.ImgFilename}", e);
-                        }
+                        Base64Manager.SaveBase64ToFile(routeObject.CoverImgBase64, Path.Combine(_pathToMediaCatalog, routeObject.ImgFilename));
                     }
-
                 }
                 db.SaveChanges();
             }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -69,6 +70,24 @@ namespace QuestHelper.Server.Controllers
             return new ObjectResult(pois);
         }
 
+        [HttpGet("{poiId}")]
+        public IActionResult GetPoiById(string poiId)
+        {
+            DateTime startDate = DateTime.Now;
+            SharedModelsWS.Poi poi = new SharedModelsWS.Poi();
+            string userId = IdentityManager.GetUserId(HttpContext);
+
+            using (var db = new ServerDbContext(_dbOptions))
+            {
+                poi = db.Poi.Where(p=>p.PoiId.Equals(poiId)).Select(getWsModelPoi()).SingleOrDefault();
+            }
+
+            TimeSpan delay = DateTime.Now - startDate;
+            Console.WriteLine($"GetPoiById: status 200, {userId}, delay:{delay.TotalMilliseconds}");
+
+            return new ObjectResult(poi);
+        }
+
         [HttpDelete]
         public void DeletePoi([FromBody] string poiId)
         {
@@ -111,6 +130,11 @@ namespace QuestHelper.Server.Controllers
                 {
                     if (poiObject.CreatorId.Equals(userId))
                     {
+                        if (!string.IsNullOrEmpty(poi.ImgBase64))
+                        {
+                            Base64Manager.SaveBase64ToFile(poi.ImgBase64, Path.Combine(_pathToMediaCatalog, poi.ImgFilename));
+                        }
+
                         var convertedPoiDb = ConverterWsToDbModel.PoiConvert(poi);
                         convertedPoiDb.CreatorId = userId;
                         convertedPoiDb.Version = ++poiObject.Version;
@@ -126,6 +150,10 @@ namespace QuestHelper.Server.Controllers
                 }
                 else
                 {
+                    if (!string.IsNullOrEmpty(poi.ImgBase64))
+                    {
+                        Base64Manager.SaveBase64ToFile(poi.ImgBase64, Path.Combine(_pathToMediaCatalog, poi.ImgFilename));
+                    }
                     var poiDb = ConverterWsToDbModel.PoiConvert(poi);
                     db.Poi.Add(poiDb);
                     db.SaveChanges();
@@ -149,9 +177,10 @@ namespace QuestHelper.Server.Controllers
             using (var db = new ServerDbContext(_dbOptions))
             {
                 var poi = db.Poi.Find(poiId);
-                if(!string.IsNullOrEmpty(poi?.ImgFilename) && poi.ImgFilename.Equals(filename))
+                string fullFileName = Path.Combine(_pathToMediaCatalog, filename);
+                if (!string.IsNullOrEmpty(poi?.ImgFilename) && poi.ImgFilename.Equals(filename) && System.IO.File.Exists(fullFileName))
                 {
-                    FileStream fileStream = System.IO.File.OpenRead(Path.Combine(_pathToMediaCatalog, filename));
+                    FileStream fileStream = System.IO.File.OpenRead(fullFileName);
                     TimeSpan delay = DateTime.Now - startDate;
                     Console.WriteLine($"GetPoiImage: status 200, {userId}, delay:{delay.TotalMilliseconds}");
                     return new FileStreamResult(fileStream, "image/jpeg");
@@ -171,30 +200,35 @@ namespace QuestHelper.Server.Controllers
             using (var db = new ServerDbContext(_dbOptions))
             {
                 pois = db.Poi
-                    .Where(p=>
+                    .Where(p =>
                     (filter.IsPrivate && p.CreatorId.Equals(filter.CreatorId)) || (!filter.IsPrivate)
                     && !p.IsDeleted
                     )
-                    .Select(p => new SharedModelsWS.Poi()
-                {
-                    Id = p.PoiId,
-                    Name = p.Name,
-                    Description = p.Description,
-                    CreatorId = p.CreatorId,
-                    Address = p.Address,
-                    CreateDate = p.CreateDate,
-                    UpdateDate = p.UpdateDate,
-                    IsDeleted = p.IsDeleted,
-                    ByRoutePointId = p.ByRoutePointId,
-                    Latitude = p.Latitude,
-                    Longitude = p.Longitude,
-                    ImgFilename = p.ImgFilename,
-                    IsPublished = p.IsPublished,
-                    Version = p.Version
-                }).ToList();
+                    .Select(getWsModelPoi()).ToList();
             }
 
             return pois;
+        }
+
+        private static Expression<Func<Models.Poi, SharedModelsWS.Poi>> getWsModelPoi()
+        {
+            return p => new SharedModelsWS.Poi()
+            {
+                Id = p.PoiId,
+                Name = p.Name,
+                Description = p.Description,
+                CreatorId = p.CreatorId,
+                Address = p.Address,
+                CreateDate = p.CreateDate,
+                UpdateDate = p.UpdateDate,
+                IsDeleted = p.IsDeleted,
+                ByRoutePointId = p.ByRoutePointId,
+                Latitude = p.Latitude,
+                Longitude = p.Longitude,
+                ImgFilename = p.ImgFilename,
+                IsPublished = p.IsPublished,
+                Version = p.Version
+            };
         }
     }
 }
