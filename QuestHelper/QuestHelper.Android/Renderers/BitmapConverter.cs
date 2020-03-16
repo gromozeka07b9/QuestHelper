@@ -16,7 +16,7 @@ namespace QuestHelper.Droid.Renderers
 {
     internal class BitmapConverter
     {
-        static Bitmap bitmapBackCircleSrc = BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.markerback5);
+        static Bitmap bitmapBackCircleSrc = BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.markerback6);
         static Bitmap bitmapBackRectangleSrc3 = BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.markerback3);
         static Bitmap bitmapBackRectangleSrc4 = BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.markerback4);
 
@@ -57,16 +57,10 @@ namespace QuestHelper.Droid.Renderers
             paint.AntiAlias = true;
             paint.FilterBitmap = true;
             paint.Dither = true;
-            //Bitmap bitmapBackSrc = BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.markerback2);
             var bitmapBackCircle = bitmapBackCircleSrc.Copy(Bitmap.Config.Argb8888, true);
             Canvas canvas1 = new Canvas(bitmapBackCircle);
-            Rect rectMin = new Rect(0, 0, bmp.Width, bmp.Height);
-            int margin = 0;
-            int marginBottom = Convert.ToInt32(bitmapBackCircle.Height * 0.14);
-            //Rect rectMax = new Rect(margin, margin, bitmapBack.Width - margin, bitmapBack.Height - (margin + marginBottom));
-            //canvas.DrawCircle(bitmapBack.Width / 2 + 0.0f, bitmapBack.Height / 2 - marginBottom + 0.0f, bitmapBack.Width / 2 - margin + 0.0f, paint1);
-            //paint.SetXfermode(new PorterDuffXfermode(PorterDuff.Mode.SrcIn));
-            Rect rectMax = new Rect(10, 10, 290, 290);
+            //Rect rectMin = new Rect(0, 0, bmp.Width, bmp.Height);
+            Rect rectMax = new Rect(25, 20, 275, 260);
             canvas1.DrawBitmap(output, null, rectMax, paint1);
             return bitmapBackCircle;
         }

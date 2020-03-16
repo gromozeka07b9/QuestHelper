@@ -27,6 +27,18 @@ namespace QuestHelper.View
             _vm.Navigation = this.Navigation;
             _vm.PropertyChanged += _vm_PropertyChanged;
             BindingContext = _vm;
+            MapOverview.MapClicked += MapOverview_MapClicked;
+        }
+
+        private void MapOverview_MapClicked(object sender, MapClickedEventArgs e)
+        {
+            if(_vm.IsPoiDialogVisible) _vm.IsPoiDialogVisible = false;
+        }
+
+        private void Poi_MarkerClicked(object sender, PinClickedEventArgs e)
+        {
+            var selectedPin = (OverViewMapPin)sender;            
+            _vm.SelectedPin(selectedPin.PoiId);
         }
 
         private void _vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -35,7 +47,6 @@ namespace QuestHelper.View
             {
                 case "POIs":
                     {
-                        //MapOverview.Pins.Clear();
                         UpdatePinsFromPOIs();
                     }; break;
                 case "CurrentLocation":
@@ -57,11 +68,13 @@ namespace QuestHelper.View
 
             foreach (var poi in _vm.POIs.Select(p => new OverViewMapPin()
             {
+                PoiId = p.Id,
                 Label = p.Name,
                 Position = p.Location,
                 ImagePath = $"{_pathToPictures}/{p.ImgFilename}" 
             }))
             {
+                poi.MarkerClicked += Poi_MarkerClicked;
                 MapOverview.Pins.Add(poi);
             }
         }

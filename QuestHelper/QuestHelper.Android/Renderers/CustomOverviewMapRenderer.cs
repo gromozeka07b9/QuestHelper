@@ -57,7 +57,6 @@ namespace QuestHelper.Droid.Renderers
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
-            //drawMarkers(_sizeMarker);
         }
 
         protected override async void OnMapReady(Android.Gms.Maps.GoogleMap map)
@@ -66,17 +65,15 @@ namespace QuestHelper.Droid.Renderers
             if (await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position))
             {
             }
-            drawMarkers(_sizeMarker);
-            map.MarkerClick += MapOnMarkerClick;
+            //map.MarkerClick += MapOnMarkerClick;
             base.OnMapReady(map);
         }
 
-        void MapOnMarkerClick(object sender, GoogleMap.MarkerClickEventArgs markerClickEventArgs)
+        /*void MapOnMarkerClick(object sender, GoogleMap.MarkerClickEventArgs markerClickEventArgs)
         {
             markerClickEventArgs.Handled = true;
             var marker = markerClickEventArgs.Marker;
-            
-        }
+        }*/
 
         private void OnInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
         {
@@ -85,13 +82,6 @@ namespace QuestHelper.Droid.Renderers
         protected override MarkerOptions CreateMarker(Pin pin)
         {
             return MarkerMaker.MakeMarkerByPOI(pin, _sizeMarker);
-        }
-        private void drawMarkers(int markerSize)
-        {
-            /*foreach(MarkerOptions marker in MarkerMaker.MakeMarkersByPOI(_map.POIs, markerSize))
-            {
-                NativeMap.AddMarker(marker);
-            }*/
         }
     }
 }

@@ -18,6 +18,8 @@ using Xamarin.Forms.Maps;
 using Plugin.Geolocator.Abstractions;
 using Position = Xamarin.Forms.Maps.Position;
 using QuestHelper.WS;
+using System.IO;
+using System.Threading;
 
 namespace QuestHelper.ViewModel
 {
@@ -31,6 +33,11 @@ namespace QuestHelper.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
         //public ICommand OpenPointPropertiesCommand { get; private set; }
         private List<ViewPoi> _pois = new List<ViewPoi>();
+        private bool _isLoadingPoi;
+        private bool _isPoiDialogVisible;
+        private string _currentPoiName = string.Empty;
+        private string _currentPoiImage = string.Empty;
+
         public ICommand UpdatePOIsCommand { get; private set; }
 
         public MapOverviewViewModel()
@@ -46,7 +53,8 @@ namespace QuestHelper.ViewModel
         }
 
         public async void StartDialog()
-        {            
+        {
+            IsPoiDialogVisible = false;
             await updateLocationAsync();
             if (!_pois.Any())
             {
@@ -75,16 +83,44 @@ namespace QuestHelper.ViewModel
         {
         }
 
+        public async void SelectedPin(string poiId)
+        {
+            IsPoiDialogVisible = true;
+            var poi = _pois.Single(p => p.Id.Equals(poiId));
+            CurrentPoiName = poi.Name;
+            CurrentPoiImage = Path.Combine(ImagePathManager.GetPicturesDirectory(), poi.ImgFilename);
+            /*TokenStoreService tokenService = new TokenStoreService();
+            string token = await tokenService.GetAuthTokenAsync();
+            if (!string.IsNullOrEmpty(token))
+            {
+                PoiApiRequest poiApi = new PoiApiRequest(token);
+                var pois = await poiApi.GetMyPoisAsync();
+                _pois = pois.Select(p => new ViewPoi(p)).ToList();
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("POIs"));
+                var coverPage = new RouteCoverPage(value);
+                Navigation.PushModalAsync(coverPage);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedRouteItem"));
+                if (!_feedItem.IsUserViewed)
+                {
+                    Xamarin.Forms.MessagingCenter.Send<AddRouteViewedMessage>(new AddRouteViewedMessage() { RouteId = _feedItem.Id }, string.Empty);
+                    Analytics.TrackEvent($"Set route viewed");
+                }
+            }*/
+        }
+
         private async Task refreshPoisAsync()
         {
             TokenStoreService tokenService = new TokenStoreService();
             string token = await tokenService.GetAuthTokenAsync();
             if (!string.IsNullOrEmpty(token))
             {
+                IsLoadingPoi = true;
                 PoiApiRequest poiApi = new PoiApiRequest(token);
                 var pois = await poiApi.GetMyPoisAsync();
                 _pois = pois.Select(p=>new ViewPoi(p)).ToList();
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("POIs"));
+                Thread.Sleep(5000);
+                IsLoadingPoi = false;
             }
         }
 
@@ -93,6 +129,71 @@ namespace QuestHelper.ViewModel
             get
             {
                 return _pois;
+            }
+        }
+
+        public string CurrentPoiName
+        {
+            get
+            {
+                return _currentPoiName;
+            }
+            set
+            {
+                if (!value.Equals(_currentPoiName))
+                {
+                    _currentPoiName = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentPoiName"));
+                }
+            }
+        }
+        public string CurrentPoiImage
+        {
+            get
+            {
+                return _currentPoiImage;
+            }
+            set
+            {
+                if (!value.Equals(_currentPoiImage))
+                {
+                    _currentPoiImage = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentPoiImage"));
+                }
+            }
+        }
+
+        public bool IsLoadingPoi 
+        {
+            get 
+            {
+                return _isLoadingPoi;
+            }
+
+            set 
+            {
+                if (value != _isLoadingPoi)
+                {
+                    _isLoadingPoi = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsLoadingPoi"));
+                }
+            } 
+        }
+
+        public bool IsPoiDialogVisible
+        {
+            get
+            {
+                return _isPoiDialogVisible;
+            }
+
+            set
+            {
+                if (value != _isPoiDialogVisible)
+                {
+                    _isPoiDialogVisible = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsPoiDialogVisible"));
+                }
             }
         }
 
