@@ -117,9 +117,14 @@ namespace QuestHelper.ViewModel
                 IsLoadingPoi = true;
                 PoiApiRequest poiApi = new PoiApiRequest(token);
                 var pois = await poiApi.GetMyPoisAsync();
-                _pois = pois.Select(p=>new ViewPoi(p)).ToList();
+                PoiManager poiManager = new PoiManager();
+                pois.ForEach(p =>
+                {
+                    ViewPoi poi = new ViewPoi(p);
+                    poi.Save();
+                });
+                _pois = poiManager.GetAllMyPois();
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("POIs"));
-                //Thread.Sleep(5000);
                 IsLoadingPoi = false;
             }
         }

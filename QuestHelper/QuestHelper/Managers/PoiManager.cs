@@ -17,6 +17,15 @@ namespace QuestHelper.Managers
         {
         }
 
+        internal List<ViewPoi> GetAllMyPois()
+        {
+            List<ViewPoi> vPois = new List<ViewPoi>();
+            RealmInstance.All<Poi>().Where(p => !p.IsDeleted).ToList().ForEach(p =>
+            {
+                vPois.Add(new ViewPoi(p.PoiId));
+            });
+            return vPois;
+        }
         /*internal IEnumerable<ViewRoute> GetRoutes(string UserId)
         {
             List<ViewRoute> vroutes = new List<ViewRoute>();
@@ -179,7 +188,6 @@ namespace QuestHelper.Managers
         public bool Save(ViewPoi viewPoi)
         {
             bool result = false;
-            RouteManager routeManager = new RouteManager();
             try
             {
                 RealmInstance.Write(() =>

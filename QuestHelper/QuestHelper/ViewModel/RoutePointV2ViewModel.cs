@@ -131,6 +131,11 @@ namespace QuestHelper.ViewModel
 
             }
             bool resultUpload = await poiApi.UploadPoiAsync(sharePoi.GetJsonStructure());
+            if (resultUpload)
+            {
+                PoiManager poiManager = new PoiManager();
+                poiManager.Save(sharePoi);
+            }
         }
 
         private void recordAudioCancel(object obj)
