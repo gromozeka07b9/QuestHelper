@@ -42,6 +42,13 @@
             </summary>
             <returns>List of POI</returns>
         </member>
+        <member name="M:QuestHelper.Server.Controllers.PoiController.GetPoisByRouteId(System.String)">
+            <summary>
+            Возвращает список POI по всему маршруту, чтобы не получать их по отдельности
+            </summary>
+            <param name="routeId"></param>
+            <returns></returns>
+        </member>
         <member name="M:QuestHelper.Server.Controllers.PoiController.GetPoiImage(System.String,System.String)">
             <summary>
             Получение самого маленького превью, для отображения на карте

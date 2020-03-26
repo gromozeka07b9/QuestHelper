@@ -88,6 +88,48 @@ namespace QuestHelper.Server.Controllers
             return new ObjectResult(poi);
         }
 
+        [HttpGet("byRoutePointId/{routePointId}")]
+        public IActionResult GetPoiByRoutePointId(string routePointId)
+        {
+            DateTime startDate = DateTime.Now;
+            SharedModelsWS.Poi poi = new SharedModelsWS.Poi();
+            string userId = IdentityManager.GetUserId(HttpContext);
+
+            using (var db = new ServerDbContext(_dbOptions))
+            {
+                poi = db.Poi.Where(p => p.ByRoutePointId.Equals(routePointId)).Select(getWsModelPoi()).SingleOrDefault();
+            }
+
+            TimeSpan delay = DateTime.Now - startDate;
+            Console.WriteLine($"GetPoiByRoutePointId: status 200, {userId}, delay:{delay.TotalMilliseconds}");
+
+            return new ObjectResult(poi);
+        }
+
+        /// <summary>
+        /// Возвращает список POI по всему маршруту, чтобы не получать их по отдельности
+        /// </summary>
+        /// <param name="routeId"></param>
+        /// <returns></returns>
+        [HttpGet("byRouteId/{routeId}")]
+        public IActionResult GetPoisByRouteId(string routeId)
+        {
+            DateTime startDate = DateTime.Now;
+            List<SharedModelsWS.Poi> pois = new List<SharedModelsWS.Poi>();
+            string userId = IdentityManager.GetUserId(HttpContext);
+
+            using (var db = new ServerDbContext(_dbOptions))
+            {
+                var pointIds = db.RoutePoint.Where(r=>r.RouteId.Equals(routeId)).Select(r=>r.RoutePointId);
+                pois = db.Poi.Where(p => pointIds.Contains(p.ByRoutePointId)).Select(getWsModelPoi()).ToList();
+            }
+
+            TimeSpan delay = DateTime.Now - startDate;
+            Console.WriteLine($"GetPoisByRouteId: status 200, {userId}, delay:{delay.TotalMilliseconds}");
+
+            return new ObjectResult(pois);
+        }
+
         [HttpDelete]
         public void DeletePoi([FromBody] string poiId)
         {

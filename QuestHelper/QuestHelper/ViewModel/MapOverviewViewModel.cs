@@ -119,7 +119,7 @@ namespace QuestHelper.ViewModel
                 var pois = await poiApi.GetMyPoisAsync();
                 _pois = pois.Select(p=>new ViewPoi(p)).ToList();
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("POIs"));
-                Thread.Sleep(5000);
+                //Thread.Sleep(5000);
                 IsLoadingPoi = false;
             }
         }

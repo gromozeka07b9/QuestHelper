@@ -17,7 +17,7 @@ namespace QuestHelper.Droid.Renderers
             var latlng = new LatLng(poi.Position.Latitude, poi.Position.Longitude);
             var marker = new MarkerOptions();
             marker.Anchor(0.5f, 0.5f);
-            marker.SetTitle(poi.Label);
+            //marker.SetTitle(poi.Label);
             marker.SetPosition(latlng);
             BitmapDescriptor pic = getBitmap(imgPath, imageSize, poi.Label) ;
             if (pic == null)
