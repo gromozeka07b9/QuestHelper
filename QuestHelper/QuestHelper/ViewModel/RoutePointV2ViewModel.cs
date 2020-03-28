@@ -58,6 +58,7 @@ namespace QuestHelper.ViewModel
         AudioManager _audioManager = new AudioManager();
         GeolocatorManager _geolocatorManager = new GeolocatorManager();
         ViewRoutePoint _vpoint;
+        ViewPoi _vPoi;
         private bool _isVisibleModalNameEdit;
         private bool _newPoint;
         private string _nameForEdit;
@@ -104,14 +105,15 @@ namespace QuestHelper.ViewModel
             Analytics.TrackEvent("Dialog point opened");
         }
 
-        private void editPoiDialogCommand(object obj)
+        private async void editPoiDialogCommand(object obj)
         {
-            Navigation.PushModalAsync(new EditPoiPage());
+            await Navigation.PushModalAsync(new EditPoiPage(_vPoi.Id, _vpoint.Id));
         }
 
         private async void shareToMapCommand(object obj)
         {
-            TokenStoreService tokenService = new TokenStoreService();
+            await Navigation.PushModalAsync(new EditPoiPage(IsPoiExists ? _vPoi.Id : string.Empty, _vpoint.Id));
+            /*TokenStoreService tokenService = new TokenStoreService();
             string authToken = await tokenService.GetAuthTokenAsync();
             string userId = await tokenService.GetUserIdAsync();
             PoiApiRequest poiApi = new PoiApiRequest(authToken);
@@ -143,7 +145,7 @@ namespace QuestHelper.ViewModel
             {
                 PoiManager poiManager = new PoiManager();
                 poiManager.Save(sharePoi);
-            }
+            }*/
         }
 
         private void recordAudioCancel(object obj)
@@ -789,7 +791,31 @@ namespace QuestHelper.ViewModel
 
             Device.StartTimer(TimeSpan.FromMilliseconds(100), OnTimerForUpdateLocation);
 
+            MessagingCenter.Subscribe<PoiUpdatedMessage>(this, string.Empty, (sender) =>
+            {
+                PoiManager poiManager = new PoiManager();
+                var vPoi = poiManager.GetPoiByRoutePointId(_vpoint.Id);
+                if (!string.IsNullOrEmpty(vPoi.Id) && vPoi.Id.Equals(sender.PoiId))
+                {
+                    _vPoi = vPoi;
+                    IsPoiExists = true;
+                }
+                else
+                {
+                    IsPoiExists = false;
+                }
+
+            });
+
             await updatePoiStatusAsync();
+            /*await updatePoiStatusAsync().ContinueWith(update => {
+                PoiManager poiManager = new PoiManager();
+                var vPoi = poiManager.GetPoiByRoutePointId(_vpoint.Id);
+                if(!string.IsNullOrEmpty(vPoi.Id))
+                {
+                    _vPoi = vPoi;
+                }
+            });*/
         }
 
         private async Task updatePoiStatusAsync()
@@ -802,8 +828,8 @@ namespace QuestHelper.ViewModel
                 var wsPoi = await poiApi.GetPoiByRoutePointIdAsync(_vpoint.Id);
                 if(poiApi.LastHttpStatusCode == HttpStatusCode.OK)
                 {
-                    ViewPoi vPoi = new ViewPoi(wsPoi);
-                    vPoi.Save();
+                    _vPoi = new ViewPoi(wsPoi);
+                    _vPoi.Save();
                     IsPoiExists = true;
                 }
             }
@@ -838,6 +864,7 @@ namespace QuestHelper.ViewModel
         {
             MessagingCenter.Unsubscribe<RoutePointDescriptionModifiedMessage>(this, string.Empty);
             MessagingCenter.Unsubscribe<MapSelectNewPointMessage>(this, string.Empty);
+            MessagingCenter.Unsubscribe<PoiUpdatedMessage>(this, string.Empty);
         }
 
         private async void setNewCoordinates(double latitude, double longitude)

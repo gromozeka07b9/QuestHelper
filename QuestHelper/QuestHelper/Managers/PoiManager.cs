@@ -28,149 +28,25 @@ namespace QuestHelper.Managers
             var vPois = RealmInstance.All<Poi>().Where(p => !p.IsDeleted && (p.CreatorId.Equals(creatorId) || p.IsPublished)).ToList().Select(p => new ViewPoi(p.PoiId));
             return vPois.ToList();
         }
-        /*internal IEnumerable<ViewRoute> GetRoutes(string UserId)
-        {
-            List<ViewRoute> vroutes = new List<ViewRoute>();
-            var routes = RealmInstance.All<Route>().Where(u=>(!u.IsDeleted && !u.IsPublished)||(!u.IsDeleted && u.IsPublished && u.CreatorId == UserId)).OrderByDescending(r => r.CreateDate);
-            if (routes.Any())
-            {
-                foreach (var route in routes)
-                {
-                    vroutes.Add(new ViewRoute(route.RouteId));
-                }
-            }
-            return vroutes;
-        }
 
-        internal int GetCountRoutesByCreator(string UserId)
+        internal void Delete(string poiId)
         {
-            List<ViewRoute> vroutes = new List<ViewRoute>();
-            var countRoutes = RealmInstance.All<Route>().Where(u => (u.CreatorId == UserId)).Count();
-            return countRoutes;
-        }
-
-        internal int GetCountPublishedRoutesByCreator(string UserId)
-        {
-            List<ViewRoute> vroutes = new List<ViewRoute>();
-            var countRoutes = RealmInstance.All<Route>().Where(u => (u.CreatorId == UserId && u.IsPublished)).Count();
-            return countRoutes;
-        }
-
-        internal IEnumerable<ViewRoute> GetRoutesForSync()
-        {
-            List<ViewRoute> vroutes = new List<ViewRoute>();
-            var routes = RealmInstance.All<Route>().OrderByDescending(r => r.CreateDate);
-            if (routes.Any())
+            try
             {
-                foreach (var route in routes)
+                RealmInstance.Write(() =>
                 {
-                    vroutes.Add(new ViewRoute(route.RouteId));
-                }
-            }
-            return vroutes;
-        }
-        internal List<ViewRoute> GetAllRoutes()
-        {
-            List<ViewRoute> vroutes = new List<ViewRoute>();
-            var routes = RealmInstance.All<Route>().Where(r=>!r.IsDeleted).OrderByDescending(r => r.CreateDate);
-            if (routes.Any())
-            {
-                foreach (var route in routes)
-                {
-                    vroutes.Add(new ViewRoute(route.RouteId));
-                }
-            }
-            return vroutes;
-        }
-
-        /// <summary>
-        /// На данном этапе публичные маршруты ничем почти не отличаются от обычных
-        /// </summary>
-        /// <returns></returns>
-        internal IEnumerable<ViewRoute> GetPosts()
-        {
-            List<ViewRoute> vroutes = new List<ViewRoute>();
-            var routes = RealmInstance.All<Route>().Where(r=>r.IsPublished && !r.IsDeleted).OrderByDescending(r => r.CreateDate);
-            if (routes.Any())
-            {
-                foreach (var route in routes)
-                {
-                    vroutes.Add(new ViewRoute(route.RouteId));
-                }
-            }
-            return vroutes;
-        }
-
-        /// <summary>
-        /// Возвращает список маршрутов, созданных и опубликованных не текущим пользователем
-        /// </summary>
-        /// <param name="currentUserId"></param>
-        /// <returns></returns>
-        internal IEnumerable<ViewRoute> GetPostsOtherCreators(string currentUserId)
-        {
-            List<ViewRoute> vroutes = new List<ViewRoute>();
-            var routes = RealmInstance.All<Route>().Where(r => r.IsPublished && !r.CreatorId.Equals(currentUserId)).OrderByDescending(r => r.CreateDate);
-            if (routes.Any())
-            {
-                foreach (var route in routes)
-                {
-                    vroutes.Add(new ViewRoute(route.RouteId));
-                }
-            }
-            return vroutes;
-        }
-
-        internal void DeleteRoutesDataFromStorage(IEnumerable<ViewRoute> routes)
-        {
-            RoutePointManager pointManager = new RoutePointManager();
-            RoutePointMediaObjectManager mediaManager = new RoutePointMediaObjectManager();
-            foreach (var vRoute in routes)
-            {
-                var points = pointManager.GetPointsByRouteId(vRoute.RouteId);
-                foreach (var vPoint in points)
-                {
-                    var medias = mediaManager.GetMediaObjectsByRoutePointId(vPoint.RoutePointId);
-                    foreach (var media in medias)
+                    var poiDb = RealmInstance.Find<Poi>(poiId);
+                    if (poiDb != null)
                     {
-                        mediaManager.TryDeleteFile(media.RoutePointMediaObjectId, MediaObjectTypeEnum.Image, false);
-                        mediaManager.TryDeleteFile(media.RoutePointMediaObjectId, MediaObjectTypeEnum.Image, true);
-                        mediaManager.TryDeleteFile(media.RoutePointMediaObjectId, MediaObjectTypeEnum.Audio);
-                        var vMedia = new ViewRoutePointMediaObject();
-                        vMedia.Load(media.RoutePointMediaObjectId);
-                        mediaManager.DeleteObjectFromLocalStorage(vMedia);
+                        RealmInstance.Remove(poiDb);
                     }
-                    pointManager.DeleteObjectFromLocalStorage(vPoint);
-                }
-                DeleteObjectFromLocalStorage(vRoute);
+                });
             }
-        }
-
-        internal void DeleteObjectFromLocalStorage(ViewRoute vRoute)
-        {
-            if (vRoute != null)
+            catch (Exception e)
             {
-                try
-                {
-                    Route route = !string.IsNullOrEmpty(vRoute.Id) ? RealmInstance.Find<Route>(vRoute.Id) : null;
-                    if (route != null)
-                    {
-                        RealmInstance.Write(() =>
-                        {
-                            RealmInstance.Remove(route);
-                        });
-                    }
-                }
-                catch (Exception e)
-                {
-                    HandleError.Process("RouteManager", "DeleteObjectFromLocalStorage", e, false);
-                }
+                HandleError.Process("PoiManager", "Delete", e, false);
             }
         }
-
-        public IEnumerable<Route> GetNotSynced()
-        {
-            return RealmInstance.All<Route>().Where(item => !item.ServerSynced);
-        }*/
 
         internal void DeleteAll()
         {
@@ -235,6 +111,15 @@ namespace QuestHelper.Managers
         internal ViewPoi GetViewPoiById(string id)
         {
             return new ViewPoi(id);
+        }
+        internal ViewPoi GetPoiByRoutePointId(string routePointId)
+        {
+            var poiDb = RealmInstance.All<Poi>().Where(p => !p.IsDeleted && p.ByRoutePointId.Equals(routePointId)).FirstOrDefault();
+            if (poiDb != null)
+            {
+                return new ViewPoi(poiDb.PoiId);
+            }
+            return new ViewPoi();
         }
 
     }

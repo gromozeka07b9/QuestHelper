@@ -505,7 +505,7 @@
     <value>Повторить</value>
   </data>
   <data name="RoutePoint_EditPoi" xml:space="preserve">
-    <value>Открыть метку на карте...</value>
+    <value>Изменить метку на карте...</value>
   </data>
   <data name="RoutePoint_AddPoi" xml:space="preserve">
     <value>Добавить метку на карту...</value>

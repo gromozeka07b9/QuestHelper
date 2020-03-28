@@ -17,7 +17,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <local:CustomOverviewMap Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" x:Name="MapOverview" IsShowingUser="true" MapType="Street">
+            <local:CustomOverviewMap Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" x:Name="MapOverview" IsShowingUser="{Binding IsShowingUser}" MapType="Street">
             </local:CustomOverviewMap>
             <StackLayout Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="0" Grid.RowSpan="1" IsVisible="{Binding Path=IsLoadingPoi}" BackgroundColor="Yellow">
                 <animationForms:AnimationView x:Name="SyncAnimation" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" Margin="0"

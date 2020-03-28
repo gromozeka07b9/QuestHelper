@@ -37,6 +37,11 @@ namespace QuestHelper.Model
         private Position _position;
         private string _imgBase64 = string.Empty;
 
+        public ViewPoi()
+        {
+
+        }
+
         public ViewPoi(string id)
         {
             if (!string.IsNullOrEmpty(id))

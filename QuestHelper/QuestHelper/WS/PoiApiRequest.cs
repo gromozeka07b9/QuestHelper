@@ -76,6 +76,24 @@ namespace QuestHelper.WS
 
             return addResult;
         }
+        public async Task<bool> DeleteAsync(string poiId)
+        {
+            bool result = false;
+
+            try
+            {
+                ApiRequest api = new ApiRequest();
+                await api.HttpRequestDELETE($"{_apiUrl}/poi/{poiId}", _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
+                result = LastHttpStatusCode == HttpStatusCode.OK;
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("PoiApiRequest", "DeleteAsync", e, false);
+            }
+
+            return result;
+        }
 
         /*public async Task<bool> GetCoverImage(string imgUrl)
         {

@@ -20,6 +20,7 @@ using Position = Xamarin.Forms.Maps.Position;
 using QuestHelper.WS;
 using System.IO;
 using System.Threading;
+using QuestHelper.Resources;
 
 namespace QuestHelper.ViewModel
 {
@@ -37,6 +38,7 @@ namespace QuestHelper.ViewModel
         private bool _isPoiDialogVisible;
         private string _currentPoiName = string.Empty;
         private string _currentPoiImage = string.Empty;
+        private bool _isShowingUser;
 
         public ICommand UpdatePOIsCommand { get; private set; }
 
@@ -54,6 +56,8 @@ namespace QuestHelper.ViewModel
 
         public async void StartDialog()
         {
+            PermissionManager permissions = new PermissionManager();
+            IsShowingUser = await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position);
             IsPoiDialogVisible = false;
             await updateLocationAsync();
             if (!_pois.Any())
@@ -169,21 +173,38 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        public bool IsLoadingPoi 
+        public bool IsShowingUser 
         {
             get 
+            {
+                return _isShowingUser;
+            }
+
+            set 
+            {
+                if (value != _isShowingUser)
+                {
+                    _isShowingUser = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsShowingUser"));
+                }
+            }
+        }
+
+        public bool IsLoadingPoi
+        {
+            get
             {
                 return _isLoadingPoi;
             }
 
-            set 
+            set
             {
                 if (value != _isLoadingPoi)
                 {
                     _isLoadingPoi = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsLoadingPoi"));
                 }
-            } 
+            }
         }
 
         public bool IsPoiDialogVisible
