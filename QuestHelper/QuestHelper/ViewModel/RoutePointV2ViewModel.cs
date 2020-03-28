@@ -52,6 +52,7 @@ namespace QuestHelper.ViewModel
         public ICommand RecordAudioStopAndSaveCommand { get; private set; }
         public ICommand RecordAudioCancel { get; private set; }
         public ICommand ShareToMapCommand { get; private set; }
+        public ICommand EditPoiDialogCommand { get; private set; }
 
 
         AudioManager _audioManager = new AudioManager();
@@ -67,6 +68,7 @@ namespace QuestHelper.ViewModel
         private int _recordAudioTimerValueSec = 0;
         private string _currentRecordedAudioMediaId;
         private bool _isAudioRecordFinished;
+        private bool _isPoiExists;
         private const int _maxRecordAudioLength = 30;
 
         public RoutePointV2ViewModel(string routeId, string routePointId)
@@ -94,11 +96,17 @@ namespace QuestHelper.ViewModel
             RecordAudioCancel = new Command(recordAudioCancel);
 
             ShareToMapCommand = new Command(shareToMapCommand);
+            EditPoiDialogCommand = new Command(editPoiDialogCommand);
 
             _vpoint = new ViewRoutePoint(routeId, routePointId);
             _newPoint = string.IsNullOrEmpty(routePointId);
 
             Analytics.TrackEvent("Dialog point opened");
+        }
+
+        private void editPoiDialogCommand(object obj)
+        {
+            Navigation.PushModalAsync(new EditPoiPage());
         }
 
         private async void shareToMapCommand(object obj)
@@ -179,8 +187,6 @@ namespace QuestHelper.ViewModel
             {
                 TokenStoreService tokenService = new TokenStoreService();
                 string authToken = await tokenService.GetAuthTokenAsync();
-
-
                 var audios = GetUnprocessedAudios();
                 int index = 0;
                 int count = audios.Count();
@@ -497,6 +503,21 @@ namespace QuestHelper.ViewModel
                 return _isAudioRecordFinished;
             }
         }
+        public bool IsPoiExists
+        {
+            set
+            {
+                if (value != _isPoiExists)
+                {
+                    _isPoiExists = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsPoiExists"));
+                }
+            }
+            get
+            {
+                return _isPoiExists;
+            }
+        }
 
         public bool IsRightsToGetLocationPresented
         {
@@ -767,6 +788,29 @@ namespace QuestHelper.ViewModel
             }
 
             Device.StartTimer(TimeSpan.FromMilliseconds(100), OnTimerForUpdateLocation);
+
+            await updatePoiStatusAsync();
+        }
+
+        private async Task updatePoiStatusAsync()
+        {
+            if (!_newPoint)
+            {
+                TokenStoreService tokenService = new TokenStoreService();
+                string authToken = await tokenService.GetAuthTokenAsync();
+                PoiApiRequest poiApi = new PoiApiRequest(authToken);
+                var wsPoi = await poiApi.GetPoiByRoutePointIdAsync(_vpoint.Id);
+                if(poiApi.LastHttpStatusCode == HttpStatusCode.OK)
+                {
+                    ViewPoi vPoi = new ViewPoi(wsPoi);
+                    vPoi.Save();
+                    IsPoiExists = true;
+                }
+            }
+            else
+            {
+                IsPoiExists = false;
+            }
         }
 
         private bool OnTimerForUpdateLocation()

@@ -40,21 +40,22 @@ namespace QuestHelper.WS
 
             return new List<Poi>();
         }
-        public async Task<List<Poi>> GetPoisByRouteIdAsync(string routeId)
+
+        public async Task<Poi> GetPoiByRoutePointIdAsync(string routePointId)
         {
             try
             {
                 ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{_apiUrl}/poi/byRoutePointId/{routeId}", _authToken);
+                var response = await api.HttpRequestGET($"{_apiUrl}/poi/byRoutePointId/{routePointId}", _authToken);
                 LastHttpStatusCode = api.LastHttpStatusCode;
-                return JsonConvert.DeserializeObject<List<Poi>>(response);
+                return JsonConvert.DeserializeObject<Poi>(response);
             }
             catch (Exception e)
             {
-                HandleError.Process("PoiApiRequest", "GetPoisByRouteIdAsync", e, false);
+                HandleError.Process("PoiApiRequest", "GetPoiByRoutePointIdAsync", e, false);
             }
 
-            return new List<Poi>();
+            return new Poi();
         }
 
         public async Task<bool> UploadPoiAsync(string jsonStructure)

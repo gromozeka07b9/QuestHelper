@@ -484,4 +484,10 @@
   <data name="CommonMsg_Repeat" xml:space="preserve">
     <value>Wiederholen</value>
   </data>
+  <data name="RoutePoint_EditPoi" xml:space="preserve">
+    <value>Kartenbeschriftung bearbeiten ...</value>
+  </data>
+  <data name="RoutePoint_AddPoi" xml:space="preserve">
+    <value>Etikett zur Karte hinzufügen ...</value>
+  </data>
 </root>

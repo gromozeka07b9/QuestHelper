@@ -193,7 +193,7 @@
     <value>Registro</value>
   </data>
   <data name="Registration_Name" xml:space="preserve">
-    <value>Nombre </value>
+    <value>Nombre</value>
   </data>
   <data name="Registration_Email" xml:space="preserve">
     <value>Email</value>
@@ -473,7 +473,7 @@ Gosh!</value>
     <value>Eliminar un waypoint</value>
   </data>
   <data name="Permission_Position" xml:space="preserve">
-    <value>La resolución es necesaria para obtener las coordenadas del punto.</value>
+    <value>La resolución es necesaria para obtener las coordenadas del punto</value>
   </data>
   <data name="Albums_YouCanDeleteDownloadedRoutes" xml:space="preserve">
     <value>Puede liberar memoria eliminando rutas cargadas previamente. Si es necesario, puede descargarlos nuevamente.</value>
@@ -504,5 +504,11 @@ Gosh!</value>
   </data>
   <data name="CommonMsg_Repeat" xml:space="preserve">
     <value>Procesar de nuevo</value>
+  </data>
+  <data name="RoutePoint_AddPoi" xml:space="preserve">
+    <value>Agregar etiqueta al mapa...</value>
+  </data>
+  <data name="RoutePoint_EditPoi" xml:space="preserve">
+    <value>Editar etiqueta del mapa ...</value>
   </data>
 </root>

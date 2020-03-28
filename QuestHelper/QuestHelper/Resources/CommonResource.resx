@@ -505,4 +505,10 @@ GoSh!</value>
   <data name="CommonMsg_Repeat" xml:space="preserve">
     <value>Retry</value>
   </data>
+  <data name="RoutePoint_EditPoi" xml:space="preserve">
+    <value>Edit map label...</value>
+  </data>
+  <data name="RoutePoint_AddPoi" xml:space="preserve">
+    <value>Add label to map...</value>
+  </data>
 </root>

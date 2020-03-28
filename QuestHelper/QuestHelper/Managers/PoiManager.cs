@@ -17,14 +17,16 @@ namespace QuestHelper.Managers
         {
         }
 
-        internal List<ViewPoi> GetAllMyPois()
+        internal List<ViewPoi> GetMyPois(string creatorId)
         {
-            List<ViewPoi> vPois = new List<ViewPoi>();
-            RealmInstance.All<Poi>().Where(p => !p.IsDeleted).ToList().ForEach(p =>
-            {
-                vPois.Add(new ViewPoi(p.PoiId));
-            });
-            return vPois;
+            var vPois = RealmInstance.All<Poi>().Where(p => !p.IsDeleted && p.CreatorId.Equals(creatorId)).ToList().Select(p => new ViewPoi(p.PoiId));
+            return vPois.ToList();
+        }
+
+        internal List<ViewPoi> GetAllAvailablePois(string creatorId)
+        {
+            var vPois = RealmInstance.All<Poi>().Where(p => !p.IsDeleted && (p.CreatorId.Equals(creatorId) || p.IsPublished)).ToList().Select(p => new ViewPoi(p.PoiId));
+            return vPois.ToList();
         }
         /*internal IEnumerable<ViewRoute> GetRoutes(string UserId)
         {

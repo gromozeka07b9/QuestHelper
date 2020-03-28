@@ -112,6 +112,7 @@ namespace QuestHelper.ViewModel
         {
             TokenStoreService tokenService = new TokenStoreService();
             string token = await tokenService.GetAuthTokenAsync();
+            string userId = await tokenService.GetUserIdAsync();
             if (!string.IsNullOrEmpty(token))
             {
                 IsLoadingPoi = true;
@@ -123,7 +124,7 @@ namespace QuestHelper.ViewModel
                     ViewPoi poi = new ViewPoi(p);
                     poi.Save();
                 });
-                _pois = poiManager.GetAllMyPois();
+                _pois = poiManager.GetAllAvailablePois(userId);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("POIs"));
                 IsLoadingPoi = false;
             }

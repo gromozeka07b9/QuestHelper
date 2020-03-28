@@ -728,6 +728,15 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Add label to map....
+        /// </summary>
+        public static string RoutePoint_AddPoi {
+            get {
+                return ResourceManager.GetString("RoutePoint_AddPoi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Address not defined.
         /// </summary>
         public static string RoutePoint_AddressAbsent {
@@ -805,6 +814,15 @@ namespace QuestHelper.Resources {
         public static string RoutePoint_DescriptionAbsent {
             get {
                 return ResourceManager.GetString("RoutePoint_DescriptionAbsent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit map label....
+        /// </summary>
+        public static string RoutePoint_EditPoi {
+            get {
+                return ResourceManager.GetString("RoutePoint_EditPoi", resourceCulture);
             }
         }
         
