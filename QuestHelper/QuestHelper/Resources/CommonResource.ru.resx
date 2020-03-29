@@ -510,4 +510,10 @@
   <data name="RoutePoint_AddPoi" xml:space="preserve">
     <value>Добавить метку на карту...</value>
   </data>
+  <data name="PoiMsg_Saved" xml:space="preserve">
+    <value>Метка сохранена</value>
+  </data>
+  <data name="PoiMsg_Warning" xml:space="preserve">
+    <value>Теперь вы можете увидеть её на карте</value>
+  </data>
 </root>

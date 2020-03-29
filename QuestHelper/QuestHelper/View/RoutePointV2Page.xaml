@@ -148,7 +148,7 @@
                         <StackLayout>
                             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0,5,0,5" IsVisible="{Binding IsPoiExists, Converter={StaticResource inverter}}">
                                 <Image Source="baseline_beenhere_black_48.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Center" HorizontalOptions="Start"></Image>
-                                <Label Text="{lang:Translation RoutePoint_AddPoi}" FontSize="16" Style="{StaticResource RouteTextLabel}" VerticalTextAlignment="Center" HorizontalOptions="FillAndExpand">
+                                <Label Text="{lang:Translation RoutePoint_AddPoi}" FontSize="16" Style="{StaticResource RouteTextLabel}" FontAttributes="Bold" VerticalTextAlignment="Center" HorizontalOptions="FillAndExpand">
                                     <Label.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ShareToMapCommand}" />
                                     </Label.GestureRecognizers>
@@ -156,12 +156,15 @@
                             </StackLayout>
                             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0,5,0,5" IsVisible="{Binding IsPoiExists}">
                                 <Image Source="baseline_beenhere_black_48.png" WidthRequest="32" HeightRequest="32" VerticalOptions="Center" HorizontalOptions="Start"></Image>
-                                <Label Text="{lang:Translation RoutePoint_EditPoi}" FontSize="16" Style="{StaticResource RouteTextLabel}" VerticalTextAlignment="Center" HorizontalOptions="FillAndExpand">
+                                <Label Text="{lang:Translation RoutePoint_EditPoi}" FontSize="16" Style="{StaticResource RouteTextLabel}" FontAttributes="Bold" VerticalTextAlignment="Center" HorizontalOptions="FillAndExpand">
                                     <Label.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding EditPoiDialogCommand}" />
                                     </Label.GestureRecognizers>
                                 </Label>
                                 <Image Source="edit.png" WidthRequest="28" HeightRequest="28" VerticalOptions="Center" HorizontalOptions="End">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding EditPoiDialogCommand}" />
+                                    </Image.GestureRecognizers>
                                 </Image>
                             </StackLayout>
                         </StackLayout>

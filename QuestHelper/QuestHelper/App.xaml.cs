@@ -58,9 +58,9 @@ namespace QuestHelper
 		    {
 		        par.Set("NeedShowOnboarding", "1");
 		    }
-        }
+		}
 
-        protected override async void OnStart ()
+		protected override async void OnStart ()
 		{
 
 #if DEBUG
@@ -77,10 +77,9 @@ namespace QuestHelper
             Setup();
 
 		    SubscribeMessages();
-		    
 		}
 
-        private void SubscribeMessages()
+		private void SubscribeMessages()
 	    {
 
 	        /*MessagingCenter.Subscribe<StartAppMessage>(this, string.Empty, (sender) =>

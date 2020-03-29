@@ -620,6 +620,24 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Label saved.
+        /// </summary>
+        public static string PoiMsg_Saved {
+            get {
+                return ResourceManager.GetString("PoiMsg_Saved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Now you can see it on map.
+        /// </summary>
+        public static string PoiMsg_Warning {
+            get {
+                return ResourceManager.GetString("PoiMsg_Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на New routes are available to you.
         /// </summary>
         public static string ReceivePush_YouHaveNewRoutes {

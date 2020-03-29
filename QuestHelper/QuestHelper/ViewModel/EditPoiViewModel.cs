@@ -19,6 +19,8 @@ using Microsoft.AppCenter.Analytics;
 using QuestHelper.Model.Messages;
 using System.IO;
 using Xamarin.Essentials;
+using Acr.UserDialogs;
+using QuestHelper.Resources;
 
 namespace QuestHelper.ViewModel
 {
@@ -29,8 +31,6 @@ namespace QuestHelper.ViewModel
         bool _isNewPoi;
         string _authToken = string.Empty;
         string _userId = string.Empty;
-        //private bool _isEditMode = false;
-        //private string _previousDescription = string.Empty;
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand BackNavigationCommand { get; private set; }
@@ -63,6 +63,12 @@ namespace QuestHelper.ViewModel
             if (resultUpload)
             {
                 applyChanges();
+
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    UserDialogs.Instance.Alert(CommonResource.PoiMsg_Warning, CommonResource.PoiMsg_Saved, CommonResource.CommonMsg_Ok);
+                });
+
                 MessagingCenter.Send<PoiUpdatedMessage>(new PoiUpdatedMessage() { PoiId = _vpoi.Id }, string.Empty);
                 await Navigation.PopModalAsync();
             }
@@ -88,14 +94,8 @@ namespace QuestHelper.ViewModel
 
         private void backNavigationCommand(object obj)
         {
-            //SaveChangedText();
             Navigation.PopModalAsync();
         }
-
-        /*private void editDescriptionCommand(object obj)
-        {
-            IsEditMode = true;
-        }*/
 
         public string PoiName
         {

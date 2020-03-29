@@ -490,4 +490,10 @@
   <data name="RoutePoint_AddPoi" xml:space="preserve">
     <value>Etikett zur Karte hinzufügen ...</value>
   </data>
+  <data name="PoiMsg_Warning" xml:space="preserve">
+    <value>Jetzt können Sie es auf der Karte sehen</value>
+  </data>
+  <data name="PoiMsg_Saved" xml:space="preserve">
+    <value>Etikett gespeichert</value>
+  </data>
 </root>

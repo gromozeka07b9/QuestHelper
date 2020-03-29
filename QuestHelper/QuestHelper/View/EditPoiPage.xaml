@@ -64,7 +64,18 @@
                     </StackLayout>
                 </Frame>
                 <Frame Grid.Row="3" CornerRadius="5" Margin="5,0,5,5" Padding="5">
-                    <Button Text="Добавить на карту" Command="{Binding UpdatePoiCommand}"></Button>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                        <ffimageloading:CachedImage Source="baseline_check_circle_outline_black_48.png" WidthRequest="28" HeightRequest="28" Margin="0" VerticalOptions="Center" HorizontalOptions="Center">
+                            <ffimageloading:CachedImage.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding UpdatePoiCommand}"/>
+                            </ffimageloading:CachedImage.GestureRecognizers>
+                        </ffimageloading:CachedImage>
+                        <Label Text="Сохранить на карте" Style="{StaticResource RouteTextLabel}" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding UpdatePoiCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
                 </Frame>
             </Grid>
         </StackLayout>

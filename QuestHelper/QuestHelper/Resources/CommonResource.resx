@@ -511,4 +511,10 @@ GoSh!</value>
   <data name="RoutePoint_AddPoi" xml:space="preserve">
     <value>Add label to map...</value>
   </data>
+  <data name="PoiMsg_Saved" xml:space="preserve">
+    <value>Label saved</value>
+  </data>
+  <data name="PoiMsg_Warning" xml:space="preserve">
+    <value>Now you can see it on map</value>
+  </data>
 </root>

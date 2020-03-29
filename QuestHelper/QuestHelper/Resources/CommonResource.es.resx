@@ -511,4 +511,10 @@ Gosh!</value>
   <data name="RoutePoint_EditPoi" xml:space="preserve">
     <value>Editar etiqueta del mapa ...</value>
   </data>
+  <data name="PoiMsg_Warning" xml:space="preserve">
+    <value>Ahora puedes verlo en el mapa</value>
+  </data>
+  <data name="PoiMsg_Saved" xml:space="preserve">
+    <value>Etiqueta guardada</value>
+  </data>
 </root>

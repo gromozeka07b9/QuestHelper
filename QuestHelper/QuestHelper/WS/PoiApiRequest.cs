@@ -95,33 +95,22 @@ namespace QuestHelper.WS
             return result;
         }
 
-        /*public async Task<bool> GetCoverImage(string imgUrl)
+        public async Task<bool> DownloadImg(string poiId, string pathToMediaFile)
         {
             bool result = false;
-            string fileName = System.IO.Path.GetFileName(imgUrl);
-            if (!string.IsNullOrEmpty(fileName))
+            try
             {
-                string pathToMediaFile = Path.Combine(ImagePathManager.GetPicturesDirectory(), fileName);
-                if (!File.Exists(pathToMediaFile))
-                {
-                    try
-                    {
-                        ApiRequest api = new ApiRequest();
-                        result = await api.HttpRequestGetFile(imgUrl, pathToMediaFile, _authToken);
-                        LastHttpStatusCode = api.LastHttpStatusCode;
-                        if (LastHttpStatusCode != HttpStatusCode.OK)
-                        {
-                            HandleError.Process("FeedApiRequest", "GetCoverImage", new Exception(LastHttpStatusCode.ToString()), false, imgUrl);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        HandleError.Process("FeedApiRequest", "GetCoverImage", e, false);
-                    }
-                }
+                ApiRequest api = new ApiRequest();
+                string fileName = System.IO.Path.GetFileName(pathToMediaFile);
+                result = await api.HttpRequestGetFile($"{_apiUrl}/poi/{poiId}/image/{fileName}", pathToMediaFile, _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("PoiApiRequest", "DownloadImg", e, false);
             }
             return result;
-        }*/
+        }
 
         public HttpStatusCode GetLastHttpStatusCode()
         {

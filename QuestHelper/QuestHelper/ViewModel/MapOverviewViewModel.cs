@@ -56,14 +56,14 @@ namespace QuestHelper.ViewModel
 
         public async void StartDialog()
         {
-            PermissionManager permissions = new PermissionManager();
-            IsShowingUser = await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position);
             IsPoiDialogVisible = false;
-            await updateLocationAsync();
             if (!_pois.Any())
             {
                 await refreshPoisAsync();
             }
+            PermissionManager permissions = new PermissionManager();
+            IsShowingUser = await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position);
+            await updateLocationAsync();
         }
 
         private async Task updateLocationAsync()
@@ -130,8 +130,19 @@ namespace QuestHelper.ViewModel
                 });
                 _pois = poiManager.GetAllAvailablePois(userId);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("POIs"));
+                _pois.AsParallel().Select(p => downloadPoiImgAsync(poiApi, p));
                 IsLoadingPoi = false;
             }
+        }
+
+        private async Task<string> downloadPoiImgAsync(PoiApiRequest api, ViewPoi viewPoi)
+        {
+            string pathToImg = Path.Combine(ImagePathManager.GetPicturesDirectory(), viewPoi.ImgFilename);
+            if (!File.Exists(pathToImg))
+            {
+                await api.DownloadImg(viewPoi.Id, pathToImg);
+            }
+            return pathToImg;
         }
 
         public List<ViewPoi> POIs
