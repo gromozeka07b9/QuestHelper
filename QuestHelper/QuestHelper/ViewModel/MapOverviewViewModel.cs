@@ -39,22 +39,44 @@ namespace QuestHelper.ViewModel
         private string _currentPoiName = string.Empty;
         private string _currentPoiImage = string.Empty;
         private bool _isShowingUser;
+        private string _сurrentPoiCreatorName;
+        private string _currentPoiDescription;
+        private ViewPoi _currentViewPoi;
 
         public ICommand UpdatePOIsCommand { get; private set; }
         public ICommand HidePoiDialogCommand { get; private set; }
-        
+        public ICommand StartShowAlbumCommand { get; private set; }
+
 
         public MapOverviewViewModel()
         {
             UpdatePOIsCommand = new Command(updatePOIsCommand);
             HidePoiDialogCommand = new Command(hidePoiDialogCommand);
+            StartShowAlbumCommand = new Command(startShowAlbumCommand);
             _routePointManager = new RoutePointManager();
             _routeManager = new RouteManager();
+        }
+
+        private void startShowAlbumCommand(object obj)
+        {
+            //var viewPoint = new ViewRoutePoint();
+            //viewPoint.Refresh(_currentViewPoi.ByRoutePointId);
+            RoutePointManager manager = new RoutePointManager();
+            var point = manager.RealmInstance.All<RoutePoint>().Where(p => p.RoutePointId.Equals(_currentViewPoi.ByRoutePointId)).SingleOrDefault();
+            if(point != null)
+            {
+                Navigation.PushModalAsync(new RouteCoverPage(new ViewRoute(point.RouteId)));
+            }
+            /*if (!string.IsNullOrEmpty(point.RouteId))
+            {
+                Navigation.PushModalAsync(new RouteCoverPage(new ViewRoute(point.RouteId)));
+            }*/
         }
 
         private void hidePoiDialogCommand(object obj)
         {
             IsPoiDialogVisible = false;
+            _currentViewPoi = null;
         }
 
         private async void updatePOIsCommand(object obj)
@@ -99,25 +121,11 @@ namespace QuestHelper.ViewModel
         {
             IsPoiDialogVisible = true;
             var poi = _pois.Single(p => p.Id.Equals(poiId));
+            _currentViewPoi = poi;
             CurrentPoiName = poi.Name;
             CurrentPoiImage = Path.Combine(ImagePathManager.GetPicturesDirectory(), poi.ImgFilename);
-            /*TokenStoreService tokenService = new TokenStoreService();
-            string token = await tokenService.GetAuthTokenAsync();
-            if (!string.IsNullOrEmpty(token))
-            {
-                PoiApiRequest poiApi = new PoiApiRequest(token);
-                var pois = await poiApi.GetMyPoisAsync();
-                _pois = pois.Select(p => new ViewPoi(p)).ToList();
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("POIs"));
-                var coverPage = new RouteCoverPage(value);
-                Navigation.PushModalAsync(coverPage);
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedRouteItem"));
-                if (!_feedItem.IsUserViewed)
-                {
-                    Xamarin.Forms.MessagingCenter.Send<AddRouteViewedMessage>(new AddRouteViewedMessage() { RouteId = _feedItem.Id }, string.Empty);
-                    Analytics.TrackEvent($"Set route viewed");
-                }
-            }*/
+            CurrentPoiCreatorName = poi.CreatorId;
+            CurrentPoiDescription = poi.Description;
         }
 
         private async Task refreshPoisAsync()
@@ -161,6 +169,22 @@ namespace QuestHelper.ViewModel
             }
         }
 
+        public string CurrentPoiCreatorName
+        {
+            get
+            {
+                return _сurrentPoiCreatorName;
+            }
+            set
+            {
+                if (!value.Equals(_сurrentPoiCreatorName))
+                {
+                    _сurrentPoiCreatorName = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentPoiCreatorName"));
+                }
+            }
+        }
+
         public string CurrentPoiName
         {
             get
@@ -176,6 +200,23 @@ namespace QuestHelper.ViewModel
                 }
             }
         }
+
+        public string CurrentPoiDescription
+        {
+            get
+            {
+                return _currentPoiDescription;
+            }
+            set
+            {
+                if (!value.Equals(_currentPoiDescription))
+                {
+                    _currentPoiDescription = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentPoiDescription"));
+                }
+            }
+        }
+
         public string CurrentPoiImage
         {
             get
