@@ -142,6 +142,15 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Please, fill the name.
+        /// </summary>
+        public static string CommonMsg_NameIsEmpty {
+            get {
+                return ResourceManager.GetString("CommonMsg_NameIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на No.
         /// </summary>
         public static string CommonMsg_No {
@@ -922,6 +931,15 @@ namespace QuestHelper.Resources {
         public static string RoutePoint_RouteNameMustBeFill {
             get {
                 return ResourceManager.GetString("RoutePoint_RouteNameMustBeFill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Need to set point location.
+        /// </summary>
+        public static string RoutePoint_UnknownLocation {
+            get {
+                return ResourceManager.GetString("RoutePoint_UnknownLocation", resourceCulture);
             }
         }
         

@@ -517,4 +517,10 @@ GoSh!</value>
   <data name="PoiMsg_Warning" xml:space="preserve">
     <value>Now you can see it on map</value>
   </data>
+  <data name="CommonMsg_NameIsEmpty" xml:space="preserve">
+    <value>Please, fill the name</value>
+  </data>
+  <data name="RoutePoint_UnknownLocation" xml:space="preserve">
+    <value>Need to set point location</value>
+  </data>
 </root>

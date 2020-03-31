@@ -496,4 +496,10 @@
   <data name="PoiMsg_Saved" xml:space="preserve">
     <value>Etikett gespeichert</value>
   </data>
+  <data name="CommonMsg_NameIsEmpty" xml:space="preserve">
+    <value>Bitte geben Sie den Namen ein</value>
+  </data>
+  <data name="RoutePoint_UnknownLocation" xml:space="preserve">
+    <value>Punktposition müssen eingestellt werden</value>
+  </data>
 </root>

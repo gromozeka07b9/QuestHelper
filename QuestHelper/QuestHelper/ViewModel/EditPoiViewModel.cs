@@ -21,6 +21,7 @@ using System.IO;
 using Xamarin.Essentials;
 using Acr.UserDialogs;
 using QuestHelper.Resources;
+using QuestHelper.Consts;
 
 namespace QuestHelper.ViewModel
 {
@@ -36,12 +37,14 @@ namespace QuestHelper.ViewModel
         public ICommand BackNavigationCommand { get; private set; }
         public ICommand DeleteCommand { get; private set; }
         public ICommand UpdatePoiCommand { get; private set; }
+        public ICommand PickImageCommand { get; private set; }
 
         public EditPoiViewModel(string poiId, string routePointId)
         {
             BackNavigationCommand = new Command(backNavigationCommand);
             DeleteCommand = new Command(deleteCommand);
             UpdatePoiCommand = new Command(updatePoiCommand);
+            PickImageCommand = new Command(pickImageCommand);
 
             _vpoi = new ViewPoi(poiId);
 
@@ -55,23 +58,50 @@ namespace QuestHelper.ViewModel
             }
         }
 
+        private async void pickImageCommand(object obj)
+        {
+            ImageManager imageManager = new ImageManager();
+            imageManager.PreviewImageQuality = ImageQualityType.Q320x240x40;
+            var pickPhotoResult = await imageManager.PickPhotoAsync();
+            if (pickPhotoResult.pickPhotoResult)
+            {
+                PoiImage = ImagePathManager.GetMediaFilename(pickPhotoResult.newMediaId, MediaObjectTypeEnum.Image, true);
+            }
+        }
+
         private async void updatePoiCommand(object obj)
         {
-            PoiApiRequest poiApi = new PoiApiRequest(_authToken);
-            _vpoi.UpdateDate = DateTimeOffset.Now;
-            bool resultUpload = await poiApi.UploadPoiAsync(_vpoi.GetJsonStructure());
-            if (resultUpload)
+            if(validatePoi())
             {
-                applyChanges();
+                PoiApiRequest poiApi = new PoiApiRequest(_authToken);
+                _vpoi.UpdateDate = DateTimeOffset.Now;
+                bool resultUpload = await poiApi.UploadPoiAsync(_vpoi.GetJsonStructure());
+                if (resultUpload)
+                {
+                    applyChanges();
 
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        UserDialogs.Instance.Alert(CommonResource.PoiMsg_Warning, CommonResource.PoiMsg_Saved, CommonResource.CommonMsg_Ok);
+                    });
+
+                    MessagingCenter.Send<PoiUpdatedMessage>(new PoiUpdatedMessage() { PoiId = _vpoi.Id }, string.Empty);
+                    await Navigation.PopModalAsync();
+                }
+            }
+        }
+
+        private bool validatePoi()
+        {
+            bool result = !string.IsNullOrEmpty(_vpoi.Name.Trim());
+            if (!result)
+            {
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    UserDialogs.Instance.Alert(CommonResource.PoiMsg_Warning, CommonResource.PoiMsg_Saved, CommonResource.CommonMsg_Ok);
+                    UserDialogs.Instance.Alert(CommonResource.CommonMsg_NameIsEmpty, CommonResource.CommonMsg_Warning, CommonResource.CommonMsg_Ok);
                 });
-
-                MessagingCenter.Send<PoiUpdatedMessage>(new PoiUpdatedMessage() { PoiId = _vpoi.Id }, string.Empty);
-                await Navigation.PopModalAsync();
             }
+            return result;
         }
 
         private async void deleteCommand(object obj)
@@ -133,7 +163,14 @@ namespace QuestHelper.ViewModel
         {
             get
             {
-                return Path.Combine(ImagePathManager.GetPicturesDirectory(), _vpoi.ImgFilename);
+                if(string.IsNullOrEmpty(_vpoi.ImgFilename))
+                {
+                    return DefaultImages.EmptyPhoto;
+                }
+                else
+                {
+                    return Path.Combine(ImagePathManager.GetPicturesDirectory(), _vpoi.ImgFilename);
+                }
             }
             set
             {

@@ -13,6 +13,27 @@ namespace QuestHelper.Managers
 {
     public class ImageManager
     {
+        private ImageQualityType _previewImageQuality;
+
+        public ImageManager()
+        {
+            _previewImageQuality = ImageQualityType.Q640x480x70;
+        }
+
+        public ImageQualityType PreviewImageQuality
+        {
+            set
+            {
+                if(value != _previewImageQuality)
+                {
+                    _previewImageQuality = value;
+                }
+            }
+            get
+            {
+                return _previewImageQuality;
+            }
+        }
         public async Task<(bool pickPhotoResult, string newMediaId, Model.GpsCoordinates imageGpsCoordinates)> PickPhotoAsync()
         {
             bool pickPhotoResult = false;
@@ -42,14 +63,13 @@ namespace QuestHelper.Managers
                     //используем метод создания превью для того, чтобы сделать основное фото из оригинального, но с уменьшенным качеством
 
                     ImagePreviewManager resizedOriginal = new ImagePreviewManager();
-                    resizedOriginal.PreviewHeight = 0;
-                    resizedOriginal.PreviewWidth = 0;
-                    resizedOriginal.PreviewQuality = 40;
+                    resizedOriginal.PreviewQualityType = ImageQualityType.Q0x0x40;
                     FileInfo originalFileInfo = new FileInfo(photoPicked.Path);
 
                     if (resizedOriginal.CreateImagePreview(originalFileInfo.DirectoryName, originalFileInfo.Name, imgPathDirectory, ImagePathManager.GetMediaFilename(mediaId, MediaObjectTypeEnum.Image, false)))
                     {
                         ImagePreviewManager preview = new ImagePreviewManager();
+                        preview.PreviewQualityType = _previewImageQuality;
                         if (preview.CreateImagePreview(originalFileInfo.DirectoryName, originalFileInfo.Name, imgPathDirectory, ImagePathManager.GetMediaFilename(mediaId, MediaObjectTypeEnum.Image, true)))
                         {
                             ExifManager exif = new ExifManager();
@@ -75,7 +95,6 @@ namespace QuestHelper.Managers
             bool takePhotoResult = false;
             string mediaId = Guid.NewGuid().ToString();
             string photoName = ImagePathManager.GetMediaFilename(mediaId, MediaObjectTypeEnum.Image);
-            //string photoNamePreview = ImagePathManager.GetMediaFilename(mediaId, MediaObjectTypeEnum.Image, true);
 
             MediaFile file;
             PermissionManager permissions = new PermissionManager();
@@ -85,12 +104,12 @@ namespace QuestHelper.Managers
                 {
                     file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
                     {
-                        PhotoSize = PhotoSize.Medium,
                         Location = new Plugin.Media.Abstractions.Location() { Latitude = latitude, Longitude = longitude, Timestamp = DateTime.Now },
                         Directory = string.Empty,
                         Name = photoName,
                         SaveToAlbum = true,
-                        CompressionQuality = 70
+                        PhotoSize = PhotoSize.Full,
+                        CompressionQuality = 40//так же соответствует параметрам качества при выборе фото
                     });
                     takePhotoResult = file != null;
                 }

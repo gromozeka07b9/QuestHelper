@@ -2,6 +2,7 @@
 using Microsoft.AppCenter.Analytics;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
+using QuestHelper.Consts;
 using QuestHelper.LocalDB.Model;
 using QuestHelper.Managers;
 using QuestHelper.Managers.Sync;
@@ -112,40 +113,17 @@ namespace QuestHelper.ViewModel
 
         private async void shareToMapCommand(object obj)
         {
-            await Navigation.PushModalAsync(new EditPoiPage(IsPoiExists ? _vPoi.Id : string.Empty, _vpoint.Id));
-            /*TokenStoreService tokenService = new TokenStoreService();
-            string authToken = await tokenService.GetAuthTokenAsync();
-            string userId = await tokenService.GetUserIdAsync();
-            PoiApiRequest poiApi = new PoiApiRequest(authToken);
-
-            ViewPoi sharePoi = new ViewPoi(string.Empty);
-            sharePoi.IsPublished = true;
-            sharePoi.Location = new Xamarin.Forms.Maps.Position(_vpoint.Latitude, _vpoint.Longitude);
-            sharePoi.Name = _vpoint.Name;
-            sharePoi.Description = _vpoint.Description;
-            sharePoi.UpdateDate = sharePoi.CreateDate;
-            sharePoi.ByRoutePointId = _vpoint.RoutePointId;
-            sharePoi.CreatorId = userId;
-
-            if (Images.Any())
+            if(!((_vpoint.Latitude == 0) && (_vpoint.Longitude == 0)))
             {
-                string mediaId = Images.First().MediaId;
-                sharePoi.ImgFilename = ImagePathManager.GetMediaFilename(mediaId, MediaObjectTypeEnum.Image, true);
-
-                string pathToImg = Path.Combine(ImagePathManager.GetPicturesDirectory(), sharePoi.ImgFilename);
-                if (File.Exists(pathToImg))
-                {
-                    var bytes = File.ReadAllBytes(pathToImg);
-                    sharePoi.ImgBase64 = Convert.ToBase64String(bytes);
-                }
-
+                await Navigation.PushModalAsync(new EditPoiPage(IsPoiExists ? _vPoi.Id : string.Empty, _vpoint.Id));
             }
-            bool resultUpload = await poiApi.UploadPoiAsync(sharePoi.GetJsonStructure());
-            if (resultUpload)
+            else
             {
-                PoiManager poiManager = new PoiManager();
-                poiManager.Save(sharePoi);
-            }*/
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    UserDialogs.Instance.Alert(CommonResource.CommonMsg_Warning, CommonResource.RoutePoint_UnknownLocation, CommonResource.CommonMsg_Ok);
+                });
+            }
         }
 
         private void recordAudioCancel(object obj)
@@ -198,7 +176,6 @@ namespace QuestHelper.ViewModel
                 foreach (var audio in audios)
                 {
                     string textResult = await speechToText.TryRecognizeAudioAsync(audio.RoutePointMediaObjectId);
-                    //if (speechToText.LastHttpStatusCode == HttpStatusCode.OK && !string.IsNullOrEmpty(textResult))
                     if (speechToText.LastHttpStatusCode == HttpStatusCode.OK)
                     {
                         sb.AppendLine(string.IsNullOrEmpty(textResult) ? "Текст не распознан": textResult);
@@ -697,7 +674,7 @@ namespace QuestHelper.ViewModel
         {
             get
             {
-                string pathToSingleImage = "emptyphoto.png";
+                string pathToSingleImage = DefaultImages.EmptyPhoto;
                 var listObjects = _vpoint.MediaObjects.Where(x => !x.IsDeleted).ToList();
                 if(listObjects.Count == 1)
                 {

@@ -517,4 +517,10 @@ Gosh!</value>
   <data name="PoiMsg_Saved" xml:space="preserve">
     <value>Etiqueta guardada</value>
   </data>
+  <data name="CommonMsg_NameIsEmpty" xml:space="preserve">
+    <value>Por favor, complete el nombre</value>
+  </data>
+  <data name="RoutePoint_UnknownLocation" xml:space="preserve">
+    <value>Necesidad de establecer la ubicación del punto</value>
+  </data>
 </root>

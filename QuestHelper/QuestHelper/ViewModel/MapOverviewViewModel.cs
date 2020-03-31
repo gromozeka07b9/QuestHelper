@@ -41,12 +41,20 @@ namespace QuestHelper.ViewModel
         private bool _isShowingUser;
 
         public ICommand UpdatePOIsCommand { get; private set; }
+        public ICommand HidePoiDialogCommand { get; private set; }
+        
 
         public MapOverviewViewModel()
         {
             UpdatePOIsCommand = new Command(updatePOIsCommand);
+            HidePoiDialogCommand = new Command(hidePoiDialogCommand);
             _routePointManager = new RoutePointManager();
             _routeManager = new RouteManager();
+        }
+
+        private void hidePoiDialogCommand(object obj)
+        {
+            IsPoiDialogVisible = false;
         }
 
         private async void updatePOIsCommand(object obj)

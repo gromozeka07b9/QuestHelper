@@ -13,6 +13,12 @@ namespace QuestHelper.Managers
         private int _width = 640;
         private int _height = 480;
         private int _quality = 70;
+        private ImageQualityType _previewQuality = ImageQualityType.Q640x480x70;
+
+        public ImagePreviewManager()
+        {
+            PreviewQualityType = ImageQualityType.Q640x480x70;
+        }
 
         private byte[] GetPreviewImage(IMediaService mediaService, byte[] byteArrayOriginal, int width, int height, int quality)
         {
@@ -100,5 +106,54 @@ namespace QuestHelper.Managers
                 return _quality;
             }
         }
+
+        public ImageQualityType PreviewQualityType
+        {
+            set
+            {
+                if(value != _previewQuality)
+                {
+                    switch (value)
+                    {
+                        case ImageQualityType.Q640x480x70:
+                            {
+                                _width = 640;
+                                _height = 480;
+                                _quality = 70;
+                            };break;
+                        case ImageQualityType.Q320x240x40:
+                            {
+                                _width = 320;
+                                _height = 240;
+                                _quality = 40;
+                            }; break;
+                        case ImageQualityType.Q0x0x40:
+                            {
+                                _width = 0;
+                                _height = 0;
+                                _quality = 40;
+                            }; break;
+                        default:
+                            {
+
+                            };break;
+                    }
+                }
+            }
+            get
+            {
+                return _previewQuality;
+            }
+        }
+    }
+
+    public enum ImageQualityType
+    {
+        //обычное превью
+        Q640x480x70, 
+        //для меток на карте
+        Q320x240x40,
+        //для оригинальных изображений, размер тот же
+        Q0x0x40
     }
 }

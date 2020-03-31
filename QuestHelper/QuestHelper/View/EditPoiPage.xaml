@@ -60,6 +60,9 @@
                 <Frame Grid.Row="2" CornerRadius="5" Margin="5,0,5,5" Padding="5">
                     <StackLayout Orientation="Vertical">
                         <ffimageloading:CachedImage x:Name="imgCtrl" Source="{Binding PoiImage}" WidthRequest="48" HeightRequest="48" Margin="0" Aspect="AspectFill" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                            <ffimageloading:CachedImage.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding PickImageCommand}"/>
+                            </ffimageloading:CachedImage.GestureRecognizers>
                         </ffimageloading:CachedImage>
                     </StackLayout>
                 </Frame>
