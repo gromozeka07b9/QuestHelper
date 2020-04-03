@@ -42,6 +42,7 @@ namespace QuestHelper.ViewModel
         private string _сurrentPoiCreatorName;
         private string _currentPoiDescription;
         private ViewPoi _currentViewPoi;
+        private bool _isPoisLoaded;
 
         public ICommand UpdatePOIsCommand { get; private set; }
         public ICommand HidePoiDialogCommand { get; private set; }
@@ -67,10 +68,6 @@ namespace QuestHelper.ViewModel
             {
                 Navigation.PushModalAsync(new RouteCoverPage(new ViewRoute(point.RouteId)));
             }
-            /*if (!string.IsNullOrEmpty(point.RouteId))
-            {
-                Navigation.PushModalAsync(new RouteCoverPage(new ViewRoute(point.RouteId)));
-            }*/
         }
 
         private void hidePoiDialogCommand(object obj)
@@ -87,13 +84,10 @@ namespace QuestHelper.ViewModel
         public async void StartDialog()
         {
             IsPoiDialogVisible = false;
-            if (!_pois.Any())
-            {
-                await refreshPoisAsync();
-            }
+            IsPoisLoaded = _pois.Any();
             PermissionManager permissions = new PermissionManager();
             IsShowingUser = await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position);
-            await updateLocationAsync();
+            /*await updateLocationAsync();*/
         }
 
         private async Task updateLocationAsync()
@@ -145,20 +139,23 @@ namespace QuestHelper.ViewModel
                     poi.Save();
                 });
                 _pois = poiManager.GetAllAvailablePois(userId);
+                _pois.ForEach(async p  => await downloadPoiImgAsync(poiApi, p));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("POIs"));
-                _pois.AsParallel().Select(p => downloadPoiImgAsync(poiApi, p));
                 IsLoadingPoi = false;
+                IsPoisLoaded = _pois.Any();
+
             }
         }
 
-        private async Task<string> downloadPoiImgAsync(PoiApiRequest api, ViewPoi viewPoi)
+        private async Task<bool> downloadPoiImgAsync(PoiApiRequest api, ViewPoi viewPoi)
         {
+            bool result = false;
             string pathToImg = Path.Combine(ImagePathManager.GetPicturesDirectory(), viewPoi.ImgFilename);
             if (!File.Exists(pathToImg))
             {
-                await api.DownloadImg(viewPoi.Id, pathToImg);
+                result = await api.DownloadImg(viewPoi.Id, pathToImg);
             }
-            return pathToImg;
+            return result;
         }
 
         public List<ViewPoi> POIs
@@ -250,6 +247,23 @@ namespace QuestHelper.ViewModel
             }
         }
 
+        
+        public bool IsPoisLoaded
+        {
+            get
+            {
+                return _isPoisLoaded;
+            }
+
+            set
+            {
+                if (value != _isPoisLoaded)
+                {
+                    _isPoisLoaded = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsPoisLoaded"));
+                }
+            }
+        }
         public bool IsLoadingPoi
         {
             get

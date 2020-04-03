@@ -79,7 +79,7 @@ namespace QuestHelper.Server.Controllers
 
             using (var db = new ServerDbContext(_dbOptions))
             {
-                poi = db.Poi.Where(p=>p.PoiId.Equals(poiId)).Select(getWsModelPoi()).SingleOrDefault();
+                poi = db.Poi.Where(p=>p.PoiId.Equals(poiId)).Select(getWsModelPoi(db)).SingleOrDefault();
             }
 
             TimeSpan delay = DateTime.Now - startDate;
@@ -97,7 +97,7 @@ namespace QuestHelper.Server.Controllers
 
             using (var db = new ServerDbContext(_dbOptions))
             {
-                poi = db.Poi.Where(p => p.ByRoutePointId.Equals(routePointId)).Select(getWsModelPoi()).SingleOrDefault();
+                poi = db.Poi.Where(p => p.ByRoutePointId.Equals(routePointId)).Select(getWsModelPoi(db)).SingleOrDefault();
             }
 
             TimeSpan delay = DateTime.Now - startDate;
@@ -121,7 +121,7 @@ namespace QuestHelper.Server.Controllers
             using (var db = new ServerDbContext(_dbOptions))
             {
                 var pointIds = db.RoutePoint.Where(r=>r.RouteId.Equals(routeId)).Select(r=>r.RoutePointId);
-                pois = db.Poi.Where(p => pointIds.Contains(p.ByRoutePointId)).Select(getWsModelPoi()).ToList();
+                pois = db.Poi.Where(p => pointIds.Contains(p.ByRoutePointId)).Select(getWsModelPoi(db)).ToList();
             }
 
             TimeSpan delay = DateTime.Now - startDate;
@@ -246,13 +246,13 @@ namespace QuestHelper.Server.Controllers
                     (filter.IsPrivate && p.CreatorId.Equals(filter.CreatorId)) || (!filter.IsPrivate)
                     && !p.IsDeleted
                     )
-                    .Select(getWsModelPoi()).ToList();
+                    .Select(getWsModelPoi(db)).ToList();
             }
 
             return pois;
         }
 
-        private static Expression<Func<Models.Poi, SharedModelsWS.Poi>> getWsModelPoi()
+        private static Expression<Func<Models.Poi, SharedModelsWS.Poi>> getWsModelPoi(ServerDbContext db)
         {
             return p => new SharedModelsWS.Poi()
             {
@@ -265,6 +265,7 @@ namespace QuestHelper.Server.Controllers
                 UpdateDate = p.UpdateDate,
                 IsDeleted = p.IsDeleted,
                 ByRoutePointId = p.ByRoutePointId,
+                ByRouteId = !String.IsNullOrEmpty(p.ByRoutePointId) ? db.RoutePoint.Find(p.ByRoutePointId).RouteId : string.Empty,
                 Latitude = p.Latitude,
                 Longitude = p.Longitude,
                 ImgFilename = p.ImgFilename,

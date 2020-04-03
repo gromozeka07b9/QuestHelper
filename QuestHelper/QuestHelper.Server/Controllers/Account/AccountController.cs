@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using QuestHelper.Server.Auth;
 using QuestHelper.Server.Managers;
 using QuestHelper.Server.Models;
+using QuestHelper.SharedModelsWS;
 
 namespace QuestHelper.Server.Controllers.Account
 {
@@ -131,15 +132,25 @@ namespace QuestHelper.Server.Controllers.Account
         }              
 
         [Authorize]
-        [HttpGet]
-        public IActionResult Get()
+        [ServiceFilter(typeof(RequestFilter))]
+        [HttpGet("{userId}")]
+        public IActionResult Get(string userId)
         {
-            ValidateUser validateContext = new ValidateUser(_dbOptions, BearerParser.GetTokenFromHeader(Request.Headers));
-            if(!validateContext.UserIsValid(User.Identity.Name))
+            var userAccount = new UserAccount();
+            using (var db = new ServerDbContext(_dbOptions))
             {
-                return Unauthorized();
+                var user = db.User.Find(userId.Trim());
+                if (user != null)
+                {
+                    userAccount.CreateDate = user.CreateDate;
+                    userAccount.Email = user.Email;
+                    userAccount.Id = user.UserId;
+                    userAccount.ImgUrl = user.ImgUrl;
+                    userAccount.Name = user.Name;
+                    userAccount.Version = user.Version;
+                }
             }
-            return Ok($"Name:{User.Identity.Name}");
+            return Ok(userAccount);
         }
     }
 }

@@ -17,6 +17,7 @@ namespace QuestHelper.Server.Models
         public DateTime CreateDate { get; set; }
         public string Email { get; set; }
         public string TokenKey { get; set; }
+        public string ImgUrl { get; set; }
         /// <summary>
         /// Версия записи
         /// </summary>
