@@ -86,6 +86,7 @@ namespace QuestHelper.Managers
                     //poi.PoiType = viewPoi.PoiType;
                     poi.Address = viewPoi.Address;
                     poi.ByRoutePointId = viewPoi.ByRoutePointId;
+                    poi.ByRouteId = viewPoi.ByRouteId;
                     poi.IsPublished = viewPoi.IsPublished;
                     poi.Latitude = viewPoi.Location.Latitude;
                     poi.Longitude = viewPoi.Location.Longitude;

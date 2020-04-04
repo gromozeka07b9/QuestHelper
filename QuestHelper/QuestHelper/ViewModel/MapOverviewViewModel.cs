@@ -21,6 +21,11 @@ using QuestHelper.WS;
 using System.IO;
 using System.Threading;
 using QuestHelper.Resources;
+using Xamarin.Essentials;
+using QuestHelper.Managers.Sync;
+using QuestHelper.Model.Messages;
+using QuestHelper.Consts;
+using System.Net;
 
 namespace QuestHelper.ViewModel
 {
@@ -58,15 +63,32 @@ namespace QuestHelper.ViewModel
             _routeManager = new RouteManager();
         }
 
-        private void startShowAlbumCommand(object obj)
+        private async void startShowAlbumCommand(object obj)
         {
-            //var viewPoint = new ViewRoutePoint();
-            //viewPoint.Refresh(_currentViewPoi.ByRoutePointId);
-            RoutePointManager manager = new RoutePointManager();
-            var point = manager.RealmInstance.All<RoutePoint>().Where(p => p.RoutePointId.Equals(_currentViewPoi.ByRoutePointId)).SingleOrDefault();
-            if(point != null)
+            if (!string.IsNullOrEmpty(_currentViewPoi?.ByRouteId))
             {
-                Navigation.PushModalAsync(new RouteCoverPage(new ViewRoute(point.RouteId)));
+                TokenStoreService token = new TokenStoreService();
+                string authToken = await token.GetAuthTokenAsync();
+                var routesApi = new RoutesApiRequest(DefaultUrls.ApiUrl, authToken);
+                var routeRoot = await routesApi.GetRouteRoot(_currentViewPoi?.ByRouteId);
+                if(routesApi.GetLastHttpStatusCode() == HttpStatusCode.OK)
+                {
+                    var vRoute = new ViewRoute(_currentViewPoi.ByRouteId);
+                    if (!string.IsNullOrEmpty(routeRoot.Route.Id))
+                    {
+                        //Может быть неопубликованный маршрут, все-таки покажем его
+                        vRoute.FillFromWSModel(routeRoot, string.Empty);
+                    }
+                    if (!string.IsNullOrEmpty(routeRoot.Route.ImgFilename))
+                    {
+                        bool resultDownloadCover = await routesApi.DownloadCoverImage(_currentViewPoi?.ByRouteId, routeRoot.Route.ImgFilename);
+                    }
+                    else
+                    {
+                        vRoute.ImgFilename = _currentPoiImage;
+                    }
+                    await Navigation.PushModalAsync(new RouteCoverPage(vRoute));
+                }
             }
         }
 
@@ -87,7 +109,15 @@ namespace QuestHelper.ViewModel
             IsPoisLoaded = _pois.Any();
             PermissionManager permissions = new PermissionManager();
             IsShowingUser = await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position);
-            /*await updateLocationAsync();*/
+            await updateLocationAsync();
+            if (IsPoisLoaded)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("POIs"));
+            }
+            else
+            {
+                await refreshPoisAsync();
+            }
         }
 
         private async Task updateLocationAsync()
@@ -139,11 +169,9 @@ namespace QuestHelper.ViewModel
                     poi.Save();
                 });
                 _pois = poiManager.GetAllAvailablePois(userId);
-                _pois.ForEach(async p  => await downloadPoiImgAsync(poiApi, p));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("POIs"));
                 IsLoadingPoi = false;
                 IsPoisLoaded = _pois.Any();
-
+                _pois.AsParallel().ForAll(async p => await downloadPoiImgAsync(poiApi, p));
             }
         }
 
@@ -155,6 +183,10 @@ namespace QuestHelper.ViewModel
             {
                 result = await api.DownloadImg(viewPoi.Id, pathToImg);
             }
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("POIs"));
+            });
             return result;
         }
 

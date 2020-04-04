@@ -143,14 +143,16 @@ namespace QuestHelper.Managers.Sync
                     _log.AddStringEvent($"start sync diff route {serverRouteVersion?.Id}");
                     result = await syncRouteContext.SyncAsync(serverRouteVersion?.ObjVerHash, true);
                     _log.AddStringEvent($"diff route result, {serverRouteVersion?.Id} :" + result);
-                    Xamarin.Forms.MessagingCenter.Send<SyncRouteCompleteMessage>(new SyncRouteCompleteMessage() { RouteId = routeId, SuccessSync = result }, string.Empty);
                 }
             }
             else
             {
                 result = false;
             }
-
+            if (result)
+            {
+                Xamarin.Forms.MessagingCenter.Send<SyncRouteCompleteMessage>(new SyncRouteCompleteMessage() { RouteId = routeId, SuccessSync = result }, string.Empty);
+            }
             return result;
         }
     }

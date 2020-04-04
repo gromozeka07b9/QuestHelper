@@ -47,7 +47,7 @@ namespace QuestHelper.ViewModel
             if (!string.IsNullOrEmpty(viewRoute.Id))
             {
                 _routeId = viewRoute.Id;
-                _vroute = new ViewRoute(viewRoute.Id);
+                _vroute = viewRoute;
             }
             else throw new Exception("viewRoute.Id is empty!");
         }

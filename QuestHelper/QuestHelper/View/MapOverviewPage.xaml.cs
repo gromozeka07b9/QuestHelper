@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
@@ -106,7 +107,9 @@ namespace QuestHelper.View
             bool result = false;
             try
             {
-                MapOverview.MoveToRegion(MapSpan.FromCenterAndRadius(new Xamarin.Forms.Maps.Position(Latitude, Longitude), Distance.FromKilometers(ScaleKilometers)));
+                MainThread.BeginInvokeOnMainThread(() => {
+                    MapOverview.MoveToRegion(MapSpan.FromCenterAndRadius(new Xamarin.Forms.Maps.Position(Latitude, Longitude), Distance.FromKilometers(ScaleKilometers)));
+                });
                 result = true;
             }
             catch (Exception exception)

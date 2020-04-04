@@ -70,9 +70,9 @@
                         <circle:CircleImage Source="avatar1.png" WidthRequest="50" HeightRequest="50" BorderColor="#FFFFFF" BorderThickness="2" Margin="5,10,10,0" HorizontalOptions="EndAndExpand" VerticalOptions="Center">
                         </circle:CircleImage>
                     </StackLayout>
-                    <StackLayout Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="1" Opacity="0.6" BackgroundColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Vertical" Margin="5">
-                        <Label Text="{Binding CurrentPoiName}" TextColor="White" FontSize="14" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" HorizontalTextAlignment="Start" Margin="5,0,5,0"></Label>
-                        <Label Text="{Binding CurrentPoiDescription}" LineBreakMode="WordWrap" TextColor="White" FontSize="10" HorizontalOptions="StartAndExpand" VerticalOptions="EndAndExpand" HorizontalTextAlignment="Start" Margin="5,5,5,5"></Label>
+                    <StackLayout Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="1" Opacity="0.6" BackgroundColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="End" Orientation="Vertical" Margin="5">
+                        <Label Text="{Binding CurrentPoiName}" TextColor="White" FontSize="14" HorizontalOptions="StartAndExpand" VerticalOptions="End" HorizontalTextAlignment="Start" Margin="5,0,5,0"></Label>
+                        <Label Text="{Binding CurrentPoiDescription}" LineBreakMode="WordWrap" TextColor="White" FontSize="10" HorizontalOptions="StartAndExpand" VerticalOptions="End" HorizontalTextAlignment="Start" Margin="5,5,5,5"></Label>
                     </StackLayout>
                 </Grid>
             </AbsoluteLayout>
@@ -87,7 +87,6 @@
                 </StackLayout>
             </AbsoluteLayout>
 
-            <Button Grid.Row="2" Grid.Column="0" HeightRequest="20" WidthRequest="80" Text="Refresh" Command="{Binding UpdatePOIsCommand}"></Button>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

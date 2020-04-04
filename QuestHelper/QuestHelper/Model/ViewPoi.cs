@@ -31,7 +31,7 @@ namespace QuestHelper.Model
         private string _description = string.Empty;
         private string _byRoutePointId = string.Empty;
         private string _address = string.Empty;
-        //private string _routeId;
+        private string _byRouteId = string.Empty;
         private int _likesCount;
         private int _viewsCount;
         private Position _position;
@@ -76,7 +76,7 @@ namespace QuestHelper.Model
                 _isDeleted = poi.IsDeleted;
                 _creatorId = poi.CreatorId;
                 _byRoutePointId = poi.ByRoutePointId;
-                _byRoutePointId = poi.ByRoutePointId;
+                _byRouteId = poi.ByRouteId;
                 _description = poi.Description;
                 _imgFilename = poi.ImgFilename;
                 _imgBase64 = string.Empty;
@@ -98,6 +98,7 @@ namespace QuestHelper.Model
                 _isDeleted = poi.IsDeleted;
                 _creatorId = poi.CreatorId;
                 _byRoutePointId = poi.ByRoutePointId;
+                _byRouteId = poi.ByRouteId;
                 _description = poi.Description;
                 _imgFilename = poi.ImgFilename;
                 _imgBase64 = poi.ImgBase64;
@@ -123,6 +124,7 @@ namespace QuestHelper.Model
                 Address = _address,
                 Description = _description,
                 ByRoutePointId = _byRoutePointId,
+                ByRouteId = _byRouteId,
                 IsPublished = _isPublished,
                 ImgFilename = _imgFilename,
                 ImgBase64 = _imgBase64
@@ -159,6 +161,17 @@ namespace QuestHelper.Model
             get
             {
                 return _byRoutePointId;
+            }
+        }
+        public string ByRouteId
+        {
+            set
+            {
+                _byRouteId = value;
+            }
+            get
+            {
+                return _byRouteId;
             }
         }
         public string Name

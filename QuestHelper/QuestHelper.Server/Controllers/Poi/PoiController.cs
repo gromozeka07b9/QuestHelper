@@ -265,7 +265,7 @@ namespace QuestHelper.Server.Controllers
                 UpdateDate = p.UpdateDate,
                 IsDeleted = p.IsDeleted,
                 ByRoutePointId = p.ByRoutePointId,
-                ByRouteId = !String.IsNullOrEmpty(p.ByRoutePointId) ? db.RoutePoint.Find(p.ByRoutePointId).RouteId : string.Empty,
+                ByRouteId = db.RoutePoint.Where(point=>point.RoutePointId.Equals(p.ByRoutePointId)).FirstOrDefault().RouteId,
                 Latitude = p.Latitude,
                 Longitude = p.Longitude,
                 ImgFilename = p.ImgFilename,
