@@ -12,49 +12,49 @@
 
     <TabbedPage.Children>
         <NavigationPage Title="{lang:Translation ScreenFeedName}">
+            <x:Arguments>
+                <view:FeedRoutesPage />
+            </x:Arguments>
             <NavigationPage.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="iOS" Value="feed.png"/>
                     <On Platform="Android" Value="feed.png"/>
                 </OnPlatform>
             </NavigationPage.Icon>
-            <x:Arguments>
-                <view:FeedRoutesPage />
-            </x:Arguments>
         </NavigationPage>
         <NavigationPage Title="{lang:Translation ScreenMapName}">
-            <NavigationPage.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="iOS" Value="map.png"/>
-                    <On Platform="Android" Value="map.png"/>
-                </OnPlatform>
-            </NavigationPage.Icon>
             <x:Arguments>
                 <view:MapOverviewPage />
             </x:Arguments>
+            <NavigationPage.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="iOS" Value="map_menu.png"/>
+                    <On Platform="Android" Value="map_menu.png"/>
+                </OnPlatform>
+            </NavigationPage.Icon>
         </NavigationPage>
 
         <NavigationPage Title="{lang:Translation ScreenLoadedAlbumsName}">
+            <x:Arguments>
+                <view:AlbumsPage />
+            </x:Arguments>
             <NavigationPage.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="iOS" Value="loaded.png"/>
                     <On Platform="Android" Value="loaded.png"/>
                 </OnPlatform>
             </NavigationPage.Icon>
-            <x:Arguments>
-                <view:AlbumsPage />
-            </x:Arguments>
         </NavigationPage>
         <NavigationPage Title="{lang:Translation ScreenPrivateName}">
+            <x:Arguments>
+                <view:RoutesPage />
+            </x:Arguments>
             <NavigationPage.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="iOS" Value="person2.png"/>
                     <On Platform="Android" Value="person2.png"/>
                 </OnPlatform>
             </NavigationPage.Icon>
-            <x:Arguments>
-                <view:RoutesPage />
-            </x:Arguments>
         </NavigationPage>
     </TabbedPage.Children>
 

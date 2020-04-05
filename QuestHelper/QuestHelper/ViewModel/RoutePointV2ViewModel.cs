@@ -785,14 +785,6 @@ namespace QuestHelper.ViewModel
             });
 
             await updatePoiStatusAsync();
-            /*await updatePoiStatusAsync().ContinueWith(update => {
-                PoiManager poiManager = new PoiManager();
-                var vPoi = poiManager.GetPoiByRoutePointId(_vpoint.Id);
-                if(!string.IsNullOrEmpty(vPoi.Id))
-                {
-                    _vPoi = vPoi;
-                }
-            });*/
         }
 
         private async Task updatePoiStatusAsync()

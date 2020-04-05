@@ -34,6 +34,7 @@ namespace QuestHelper.ViewModel
         RoutePointManager _routePointManager;
         RouteManager _routeManager;
         GeolocatorManager _geolocatorManager = new GeolocatorManager();
+        TokenStoreService _tokenService = new TokenStoreService();
         Position _currentLocation;
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -48,6 +49,9 @@ namespace QuestHelper.ViewModel
         private string _currentPoiDescription;
         private ViewPoi _currentViewPoi;
         private bool _isPoisLoaded;
+        private string _token;
+        private string _userId;
+        private string _currentPoiCreatorImg;
 
         public ICommand UpdatePOIsCommand { get; private set; }
         public ICommand HidePoiDialogCommand { get; private set; }
@@ -67,11 +71,9 @@ namespace QuestHelper.ViewModel
         {
             if (!string.IsNullOrEmpty(_currentViewPoi?.ByRouteId))
             {
-                TokenStoreService token = new TokenStoreService();
-                string authToken = await token.GetAuthTokenAsync();
-                var routesApi = new RoutesApiRequest(DefaultUrls.ApiUrl, authToken);
+                var routesApi = new RoutesApiRequest(DefaultUrls.ApiUrl, _token);
                 var routeRoot = await routesApi.GetRouteRoot(_currentViewPoi?.ByRouteId);
-                if(routesApi.GetLastHttpStatusCode() == HttpStatusCode.OK)
+                if((routesApi.GetLastHttpStatusCode() == HttpStatusCode.OK) && (!string.IsNullOrEmpty(routeRoot.Route.Id)))
                 {
                     var vRoute = new ViewRoute(_currentViewPoi.ByRouteId);
                     if (!string.IsNullOrEmpty(routeRoot.Route.Id))
@@ -105,19 +107,25 @@ namespace QuestHelper.ViewModel
 
         public async void StartDialog()
         {
-            IsPoiDialogVisible = false;
+            _token = await _tokenService.GetAuthTokenAsync();
+            _userId = await _tokenService.GetUserIdAsync();
             IsPoisLoaded = _pois.Any();
             PermissionManager permissions = new PermissionManager();
             IsShowingUser = await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position);
-            await updateLocationAsync();
-            if (IsPoisLoaded)
+            
+            if((CurrentLocation.Latitude == 0) && (CurrentLocation.Longitude == 0))
+            {
+                await updateLocationAsync();
+            }
+
+            /*if (POIs.Count > 0)
             {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("POIs"));
-            }
-            else
+            }*/
+            /*else
             {
                 await refreshPoisAsync();
-            }
+            }*/
         }
 
         private async Task updateLocationAsync()
@@ -148,19 +156,33 @@ namespace QuestHelper.ViewModel
             _currentViewPoi = poi;
             CurrentPoiName = poi.Name;
             CurrentPoiImage = Path.Combine(ImagePathManager.GetPicturesDirectory(), poi.ImgFilename);
-            CurrentPoiCreatorName = poi.CreatorId;
             CurrentPoiDescription = poi.Description;
+            UserManager userManager = new UserManager();
+            var creator = userManager.GetById(poi.CreatorId);
+            //if (creator == null)
+            {
+                UsersApiRequest userApi = new UsersApiRequest(DefaultUrls.ApiUrl, _token);
+                var user = await userApi.GetUserAsync(poi.CreatorId);
+                if(userApi.LastHttpStatusCode.Equals(HttpStatusCode.OK))
+                {
+                    user.Save();
+                    CurrentPoiCreatorName = user.Name;
+                    CurrentPoiCreatorImg = user.ImgUrl;
+                }
+            }
+            /*else
+            {
+                CurrentPoiCreatorName = creator.Name;
+                CurrentPoiCreatorImg = creator.ImgUrl;
+            }*/
         }
 
         private async Task refreshPoisAsync()
         {
-            TokenStoreService tokenService = new TokenStoreService();
-            string token = await tokenService.GetAuthTokenAsync();
-            string userId = await tokenService.GetUserIdAsync();
-            if (!string.IsNullOrEmpty(token))
+            if (!string.IsNullOrEmpty(_token))
             {
                 IsLoadingPoi = true;
-                PoiApiRequest poiApi = new PoiApiRequest(token);
+                PoiApiRequest poiApi = new PoiApiRequest(_token);
                 var pois = await poiApi.GetMyPoisAsync();
                 PoiManager poiManager = new PoiManager();
                 pois.ForEach(p =>
@@ -168,7 +190,7 @@ namespace QuestHelper.ViewModel
                     ViewPoi poi = new ViewPoi(p);
                     poi.Save();
                 });
-                _pois = poiManager.GetAllAvailablePois(userId);
+                _pois = poiManager.GetAllAvailablePois(_userId);
                 IsLoadingPoi = false;
                 IsPoisLoaded = _pois.Any();
                 _pois.AsParallel().ForAll(async p => await downloadPoiImgAsync(poiApi, p));
@@ -195,6 +217,22 @@ namespace QuestHelper.ViewModel
             get
             {
                 return _pois;
+            }
+        }
+
+        public string CurrentPoiCreatorImg
+        {
+            get
+            {
+                return string.IsNullOrEmpty(_currentPoiCreatorImg) ? "avatar1.png": _currentPoiCreatorImg;
+            }
+            set
+            {
+                if (!value.Equals(_currentPoiCreatorImg))
+                {
+                    _currentPoiCreatorImg = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentPoiCreatorImg"));
+                }
             }
         }
 

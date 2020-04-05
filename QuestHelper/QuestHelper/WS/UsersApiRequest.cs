@@ -41,5 +41,23 @@ namespace QuestHelper.WS
             }
             return deserializedValue;
         }
+
+        public async Task<ViewUserInfo> GetUserAsync(string userId)
+        {
+            try
+            {
+                ApiRequest api = new ApiRequest();
+                var response = await api.HttpRequestGET($"{_hostUrl}/account/{userId}", _authToken);
+                LastHttpStatusCode = api.LastHttpStatusCode;
+                return JsonConvert.DeserializeObject<ViewUserInfo>(response);
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("UsersApiRequest", "GetUserAsync", e, false);
+            }
+
+            return new ViewUserInfo();
+        }
+
     }
 }

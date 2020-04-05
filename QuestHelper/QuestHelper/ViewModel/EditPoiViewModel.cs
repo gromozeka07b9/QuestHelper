@@ -80,9 +80,19 @@ namespace QuestHelper.ViewModel
                 {
                     applyChanges();
 
+                    string msgText = CommonResource.PoiMsg_Warning;
+                    if (!string.IsNullOrEmpty(_vpoi.ByRouteId))
+                    {
+                        var route = new ViewRoute(_vpoi.ByRouteId);
+                        if ((!route.IsPublished) && (_vpoi.IsPublished))
+                        {
+                            msgText = "Точка будет добавлена на карту, но ваш маршрут недоступен другим пользователям";
+                        }
+                    }
+
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
-                        UserDialogs.Instance.Alert(CommonResource.PoiMsg_Warning, CommonResource.PoiMsg_Saved, CommonResource.CommonMsg_Ok);
+                        UserDialogs.Instance.Alert(msgText, CommonResource.PoiMsg_Saved, CommonResource.CommonMsg_Ok);
                     });
 
                     MessagingCenter.Send<PoiUpdatedMessage>(new PoiUpdatedMessage() { PoiId = _vpoi.Id }, string.Empty);
