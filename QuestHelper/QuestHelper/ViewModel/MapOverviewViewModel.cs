@@ -159,7 +159,7 @@ namespace QuestHelper.ViewModel
             CurrentPoiDescription = poi.Description;
             UserManager userManager = new UserManager();
             var creator = userManager.GetById(poi.CreatorId);
-            //if (creator == null)
+            if (creator == null)
             {
                 UsersApiRequest userApi = new UsersApiRequest(DefaultUrls.ApiUrl, _token);
                 var user = await userApi.GetUserAsync(poi.CreatorId);
@@ -170,17 +170,18 @@ namespace QuestHelper.ViewModel
                     CurrentPoiCreatorImg = user.ImgUrl;
                 }
             }
-            /*else
+            else
             {
                 CurrentPoiCreatorName = creator.Name;
                 CurrentPoiCreatorImg = creator.ImgUrl;
-            }*/
+            }
         }
 
         private async Task refreshPoisAsync()
         {
             if (!string.IsNullOrEmpty(_token))
             {
+                IsPoisLoaded = false;
                 IsLoadingPoi = true;
                 PoiApiRequest poiApi = new PoiApiRequest(_token);
                 var pois = await poiApi.GetMyPoisAsync();
@@ -191,10 +192,20 @@ namespace QuestHelper.ViewModel
                     poi.Save();
                 });
                 _pois = poiManager.GetAllAvailablePois(_userId);
-                IsLoadingPoi = false;
-                IsPoisLoaded = _pois.Any();
                 _pois.AsParallel().ForAll(async p => await downloadPoiImgAsync(poiApi, p));
+                //IsLoadingPoi = false;
+                //IsPoisLoaded = _pois.Any();
+                Device.StartTimer(TimeSpan.FromMilliseconds(10), onTimerForUpdate);
             }
+        }
+
+        private bool onTimerForUpdate()
+        {
+            MainThread.BeginInvokeOnMainThread(() => {
+                IsPoisLoaded = !IsPoisLoaded;
+                IsLoadingPoi = !IsLoadingPoi;
+            });
+            return false;
         }
 
         private async Task<bool> downloadPoiImgAsync(PoiApiRequest api, ViewPoi viewPoi)

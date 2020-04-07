@@ -92,12 +92,12 @@ namespace QuestHelper.View
 
         private async Task centerMap(double latitude, double longitude)
         {
-            if (!centerMapToPosition(latitude, longitude, 100))
+            if (!centerMapToPosition(latitude, longitude, 1000))
             {
                 bool answerRetry = await DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.CommonMsg_Repeat + "?", CommonResource.CommonMsg_Yes, CommonResource.CommonMsg_No);
                 if (answerRetry)
                 {
-                    centerMapToPosition(latitude, longitude, 100);
+                    centerMapToPosition(latitude, longitude, 1000);
                 }
             }
         }
