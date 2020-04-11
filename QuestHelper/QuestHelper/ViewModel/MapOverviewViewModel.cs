@@ -38,7 +38,6 @@ namespace QuestHelper.ViewModel
         Position _currentLocation;
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
-        //public ICommand OpenPointPropertiesCommand { get; private set; }
         private List<ViewPoi> _pois = new List<ViewPoi>();
         private bool _isLoadingPoi;
         private bool _isPoiDialogVisible;
@@ -49,9 +48,9 @@ namespace QuestHelper.ViewModel
         private string _currentPoiDescription;
         private ViewPoi _currentViewPoi;
         private bool _isPoisLoaded;
-        private string _token;
-        private string _userId;
         private string _currentPoiCreatorImg;
+        private int _poiImageHeight;
+        private int _poiImageWidth;
 
         public ICommand UpdatePOIsCommand { get; private set; }
         public ICommand HidePoiDialogCommand { get; private set; }
@@ -65,13 +64,15 @@ namespace QuestHelper.ViewModel
             StartShowAlbumCommand = new Command(startShowAlbumCommand);
             _routePointManager = new RoutePointManager();
             _routeManager = new RouteManager();
+            PoiImageWidth = Convert.ToInt32(DeviceSize.FullScreenWidth * 0.9);
+            PoiImageHeight = Convert.ToInt32(DeviceSize.FullScreenHeight * 0.5);
         }
 
         private async void startShowAlbumCommand(object obj)
         {
             if (!string.IsNullOrEmpty(_currentViewPoi?.ByRouteId))
             {
-                var routesApi = new RoutesApiRequest(DefaultUrls.ApiUrl, _token);
+                var routesApi = new RoutesApiRequest(DefaultUrls.ApiUrl, await _tokenService.GetAuthTokenAsync());
                 var routeRoot = await routesApi.GetRouteRoot(_currentViewPoi?.ByRouteId);
                 if((routesApi.GetLastHttpStatusCode() == HttpStatusCode.OK) && (!string.IsNullOrEmpty(routeRoot.Route.Id)))
                 {
@@ -107,25 +108,15 @@ namespace QuestHelper.ViewModel
 
         public async void StartDialog()
         {
-            _token = await _tokenService.GetAuthTokenAsync();
-            _userId = await _tokenService.GetUserIdAsync();
             IsPoisLoaded = _pois.Any();
             PermissionManager permissions = new PermissionManager();
-            IsShowingUser = await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position);
+            //IsShowingUser = await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position);
             
             if((CurrentLocation.Latitude == 0) && (CurrentLocation.Longitude == 0))
             {
                 await updateLocationAsync();
             }
 
-            /*if (POIs.Count > 0)
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("POIs"));
-            }*/
-            /*else
-            {
-                await refreshPoisAsync();
-            }*/
         }
 
         private async Task updateLocationAsync()
@@ -157,33 +148,32 @@ namespace QuestHelper.ViewModel
             CurrentPoiName = poi.Name;
             CurrentPoiImage = Path.Combine(ImagePathManager.GetPicturesDirectory(), poi.ImgFilename);
             CurrentPoiDescription = poi.Description;
-            UserManager userManager = new UserManager();
-            var creator = userManager.GetById(poi.CreatorId);
-            if (creator == null)
+            if (!string.IsNullOrEmpty(_currentViewPoi?.ByRouteId))
             {
-                UsersApiRequest userApi = new UsersApiRequest(DefaultUrls.ApiUrl, _token);
-                var user = await userApi.GetUserAsync(poi.CreatorId);
-                if(userApi.LastHttpStatusCode.Equals(HttpStatusCode.OK))
+                var creator = new ViewUserInfo();
+                creator.Load(_currentViewPoi.CreatorId);
+                CurrentPoiCreatorName = creator?.Name;
+                CurrentPoiCreatorImg = creator?.ImgUrl;
+                if (string.IsNullOrEmpty(CurrentPoiCreatorName))
                 {
-                    user.Save();
-                    CurrentPoiCreatorName = user.Name;
-                    CurrentPoiCreatorImg = user.ImgUrl;
+                    if (await creator.UpdateFromServerAsync())
+                    {
+                        CurrentPoiCreatorName = creator.Name;
+                        CurrentPoiCreatorImg = creator.ImgUrl;
+                    }
                 }
-            }
-            else
-            {
-                CurrentPoiCreatorName = creator.Name;
-                CurrentPoiCreatorImg = creator.ImgUrl;
             }
         }
 
         private async Task refreshPoisAsync()
         {
-            if (!string.IsNullOrEmpty(_token))
+            string token = await _tokenService.GetAuthTokenAsync();
+            string userId = await _tokenService.GetUserIdAsync();
+            if (!string.IsNullOrEmpty(token))
             {
                 IsPoisLoaded = false;
                 IsLoadingPoi = true;
-                PoiApiRequest poiApi = new PoiApiRequest(_token);
+                PoiApiRequest poiApi = new PoiApiRequest(token);
                 var pois = await poiApi.GetMyPoisAsync();
                 PoiManager poiManager = new PoiManager();
                 pois.ForEach(p =>
@@ -191,7 +181,7 @@ namespace QuestHelper.ViewModel
                     ViewPoi poi = new ViewPoi(p);
                     poi.Save();
                 });
-                _pois = poiManager.GetAllAvailablePois(_userId);
+                _pois = poiManager.GetAllAvailablePois(userId);
                 _pois.AsParallel().ForAll(async p => await downloadPoiImgAsync(poiApi, p));
                 //IsLoadingPoi = false;
                 //IsPoisLoaded = _pois.Any();
@@ -307,6 +297,36 @@ namespace QuestHelper.ViewModel
                 {
                     _currentPoiImage = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentPoiImage"));
+                }
+            }
+        }
+        public int PoiImageWidth
+        {
+            get
+            {
+                return _poiImageWidth;
+            }
+            set
+            {
+                if (!value.Equals(_poiImageWidth))
+                {
+                    _poiImageWidth = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("PoiImageWidth"));
+                }
+            }
+        }
+        public int PoiImageHeight
+        {
+            get
+            {
+                return _poiImageHeight;
+            }
+            set
+            {
+                if (!value.Equals(_poiImageHeight))
+                {
+                    _poiImageHeight = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("PoiImageHeight"));
                 }
             }
         }

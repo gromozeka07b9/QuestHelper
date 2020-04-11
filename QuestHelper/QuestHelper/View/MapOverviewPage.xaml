@@ -22,69 +22,63 @@
                 <RowDefinition Height="30*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="5*"/>
-                <ColumnDefinition Width="10*"/>
-                <ColumnDefinition Width="70*"/>
-                <ColumnDefinition Width="10*"/>
-                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <local:CustomOverviewMap Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="0" Grid.RowSpan="4" x:Name="MapOverview" IsShowingUser="{Binding IsShowingUser}" MapType="Street">
+            <local:CustomOverviewMap Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="0" Grid.RowSpan="4" x:Name="MapOverview" IsShowingUser="{Binding IsShowingUser}" MapType="Street">
             </local:CustomOverviewMap>
-            <StackLayout Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="1" IsVisible="{Binding IsLoadingPoi, Converter={StaticResource inverter}}">
-                <ffimageloading:CachedImage Source="sync.png"  WidthRequest="48" HeightRequest="48" Margin="10" HorizontalOptions="Start" VerticalOptions="Start">
+            <StackLayout WidthRequest="50" IsVisible="{Binding IsLoadingPoi, Converter={StaticResource inverter}}" HorizontalOptions="Start">
+                <ffimageloading:CachedImage Source="sync.png" WidthRequest="48" HeightRequest="48" Margin="10" HorizontalOptions="Start" VerticalOptions="Start">
                     <ffimageloading:CachedImage.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding UpdatePOIsCommand}" />
                     </ffimageloading:CachedImage.GestureRecognizers>
                 </ffimageloading:CachedImage>
             </StackLayout>
 
-            <AbsoluteLayout Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="0" Grid.RowSpan="4" HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="0.7" BackgroundColor="White" IsVisible="{Binding IsPoiDialogVisible}">
+            <AbsoluteLayout Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="0" Grid.RowSpan="4" HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="0.7" BackgroundColor="White" IsVisible="{Binding IsPoiDialogVisible}">
                 <AbsoluteLayout.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding HidePoiDialogCommand}"/>
                 </AbsoluteLayout.GestureRecognizers>
             </AbsoluteLayout>
 
-            <AbsoluteLayout Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="2" Grid.RowSpan="1" IsVisible="{Binding IsPoiDialogVisible}">
+            <AbsoluteLayout Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="2" Grid.RowSpan="1" HorizontalOptions="Center" IsVisible="{Binding IsPoiDialogVisible}">
                 <AbsoluteLayout.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding StartShowAlbumCommand}" />
                 </AbsoluteLayout.GestureRecognizers>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="20*"/>
-                        <RowDefinition Height="40*"/>
-                        <RowDefinition Height="40*"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Frame Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="0" Grid.RowSpan="3" CornerRadius="5" HasShadow="True" IsClippedToBounds="True" Padding="0" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsPoiDialogVisible}">
-                        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                            <ffimageloading:CachedImage Source="{Binding CurrentPoiImage}"  WidthRequest="300" HeightRequest="300"  Aspect="AspectFill" Margin="0" VerticalOptions="FillAndExpand" HorizontalOptions="Fill">
-                                <ffimageloading:CachedImage.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding StartShowAlbumCommand}" />
-                                </ffimageloading:CachedImage.GestureRecognizers>
-                            </ffimageloading:CachedImage>
-                        </StackLayout>
-                    </Frame>
-                    <StackLayout Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1" HorizontalOptions="EndAndExpand" VerticalOptions="Center" Orientation="Horizontal">
-                        <Label Text="{Binding CurrentPoiCreatorName}" TextColor="White" FontSize="8" HorizontalOptions="EndAndExpand" VerticalOptions="Center" HorizontalTextAlignment="End" Margin="0,0,0,0"></Label>
-                        <circle:CircleImage Source="{Binding CurrentPoiCreatorImg}" WidthRequest="30" HeightRequest="30" BorderColor="#FFFFFF" BorderThickness="2" Margin="5,0,15,0" HorizontalOptions="EndAndExpand" VerticalOptions="Center">
-                            <circle:CircleImage.GestureRecognizers>
+                <Frame CornerRadius="5" HasShadow="True" HorizontalOptions="Center" WidthRequest="{Binding PoiImageWidth}" HeightRequest="{Binding PoiImageHeight}" IsClippedToBounds="True" Margin="10,0,10,0" Padding="0" IsVisible="{Binding IsPoiDialogVisible}" BorderColor="Blue">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20*"/>
+                            <RowDefinition Height="40*"/>
+                            <RowDefinition Height="40*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <ffimageloading:CachedImage Grid.Row="0" Grid.RowSpan="3" Source="{Binding CurrentPoiImage}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Aspect="AspectFill" Margin="0" BackgroundColor="Red">
+                            <ffimageloading:CachedImage.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding StartShowAlbumCommand}" />
-                            </circle:CircleImage.GestureRecognizers>
-                        </circle:CircleImage>
-                    </StackLayout>
-                    <StackLayout Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="1" Opacity="0.6" BackgroundColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="End" Orientation="Vertical" Margin="0">
-                        <Label Text="{Binding CurrentPoiName}" TextColor="White" FontSize="14" HorizontalOptions="StartAndExpand" VerticalOptions="End" HorizontalTextAlignment="Start" Margin="5,0,5,0"></Label>
-                        <Label Text="{Binding CurrentPoiDescription}" LineBreakMode="TailTruncation" MaxLines="5" TextColor="White" FontSize="10" HorizontalOptions="StartAndExpand" VerticalOptions="End" HorizontalTextAlignment="Start" Margin="5,5,5,5"></Label>
-                    </StackLayout>
-                </Grid>
+                            </ffimageloading:CachedImage.GestureRecognizers>
+                        </ffimageloading:CachedImage>
+                        <StackLayout Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1" HorizontalOptions="EndAndExpand" VerticalOptions="Start" Orientation="Horizontal" Margin="0,5,0,0">
+                            <Label Text="{Binding CurrentPoiCreatorName}" TextColor="White" FontSize="8" HorizontalOptions="EndAndExpand" VerticalOptions="Center" HorizontalTextAlignment="End" Margin="0,0,0,0"></Label>
+                            <circle:CircleImage Source="{Binding CurrentPoiCreatorImg}" WidthRequest="30" HeightRequest="30" BorderColor="#FFFFFF" BorderThickness="2" Margin="0,0,5,0" HorizontalOptions="EndAndExpand" VerticalOptions="Center">
+                                <circle:CircleImage.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding StartShowAlbumCommand}" />
+                                </circle:CircleImage.GestureRecognizers>
+                            </circle:CircleImage>
+                        </StackLayout>
+                        <StackLayout Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="1" Opacity="0.6" BackgroundColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="End" Orientation="Vertical" Margin="0">
+                            <Label Text="{Binding CurrentPoiName}" TextColor="White" FontSize="14" HorizontalOptions="FillAndExpand" VerticalOptions="End" HorizontalTextAlignment="Start" Margin="5,0,5,0"></Label>
+                            <Label Text="{Binding CurrentPoiDescription}" LineBreakMode="TailTruncation" MaxLines="5" TextColor="White" FontSize="10" HorizontalOptions="FillAndExpand" VerticalOptions="End" HorizontalTextAlignment="Start" Margin="5,0,5,5"></Label>
+                        </StackLayout>
+                    </Grid>
+                </Frame>
             </AbsoluteLayout>
 
-            <AbsoluteLayout Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="0" Grid.RowSpan="4" HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="0.7" BackgroundColor="White" IsVisible="{Binding IsPoisLoaded, Converter={StaticResource inverter}}">
+            <AbsoluteLayout Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="0" Grid.RowSpan="4" HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="0.7" BackgroundColor="White" IsVisible="{Binding IsPoisLoaded, Converter={StaticResource inverter}}">
             </AbsoluteLayout>
 
-            <AbsoluteLayout Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="1" IsVisible="{Binding IsPoisLoaded, Converter={StaticResource inverter}}" HorizontalOptions="Center">
+            <AbsoluteLayout Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="2" Grid.RowSpan="1" IsVisible="{Binding IsPoisLoaded, Converter={StaticResource inverter}}" HorizontalOptions="Center">
                 <StackLayout VerticalOptions="FillAndExpand" Orientation="Vertical" HorizontalOptions="Center" IsVisible="{Binding IsLoadingPoi, Converter={StaticResource inverter}}">
                     <Label Text="Нажмите 'Обновить' для загрузки доступных вам меток" TextColor="Black" FontSize="14" Margin="15" HorizontalTextAlignment="Center"></Label>
                     <Button Text="Обновить" Command="{Binding UpdatePOIsCommand}" HorizontalOptions="Center" />

@@ -1,4 +1,5 @@
-﻿using QuestHelper.LocalDB.Model;
+﻿using QuestHelper.Consts;
+using QuestHelper.LocalDB.Model;
 using QuestHelper.Managers;
 using QuestHelper.Resources;
 using QuestHelper.SharedModelsWS;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;

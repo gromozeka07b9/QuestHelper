@@ -68,6 +68,7 @@ namespace QuestHelper.ViewModel
                 _vroute.Description = viewFeedItem.Description;
                 _vroute.Name = viewFeedItem.Name;
                 _vroute.ImgFilename = viewFeedItem.CoverImage;
+                _vroute.CreatorId = viewFeedItem.CreatorId;
                 _creatorName = viewFeedItem.CreatorName;
             }
             else throw new Exception("viewFeedItem.Id is empty!");
@@ -100,7 +101,7 @@ namespace QuestHelper.ViewModel
             MessagingCenter.Unsubscribe<SyncProgressImageLoadingMessage>(this, string.Empty);
         }
 
-        public void StartDialog()
+        public async void StartDialog()
         {
             MessagingCenter.Subscribe<SyncRouteCompleteMessage>(this, string.Empty, (sender) =>
             {
@@ -159,6 +160,18 @@ namespace QuestHelper.ViewModel
 
             IsVisibleStartRoute = IsVisibleList;
 
+            var creator = new ViewUserInfo();
+            creator.Load(_vroute.CreatorId);
+            Author = creator.Name;
+            CreatorImgUrl = creator.ImgUrl;
+            if (string.IsNullOrEmpty(Author))
+            {
+                if(await creator.UpdateFromServerAsync())
+                {
+                    Author = creator.Name;
+                    CreatorImgUrl = creator.ImgUrl;
+                }
+            }
         }
 
         public string CreatorImgUrl
@@ -310,6 +323,15 @@ namespace QuestHelper.ViewModel
         }
         public string Author
         {
+            set
+            {
+                if (_creatorName != value)
+                {
+                    _creatorName = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Author"));
+                }
+            }
+
             get { return _creatorName; }
         }
     }

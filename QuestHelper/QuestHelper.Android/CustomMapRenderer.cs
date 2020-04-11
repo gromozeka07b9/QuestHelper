@@ -137,10 +137,10 @@ namespace QuestHelper.Droid
 
         protected override async void OnMapReady(Android.Gms.Maps.GoogleMap map)
         {
-            PermissionManager permissions = new PermissionManager();
+            /*PermissionManager permissions = new PermissionManager();
             if (await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position))
             {
-            }
+            }*/
             map.MapClick += Map_MapClick;
             NativeMap.InfoWindowClick += OnInfoWindowClick;
             NativeMap.SetInfoWindowAdapter(this);

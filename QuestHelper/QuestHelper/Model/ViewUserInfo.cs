@@ -1,10 +1,14 @@
-﻿using QuestHelper.LocalDB.Model;
+﻿using QuestHelper.Consts;
+using QuestHelper.LocalDB.Model;
 using QuestHelper.Managers;
+using QuestHelper.WS;
 using Realms;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace QuestHelper.Model
@@ -14,7 +18,7 @@ namespace QuestHelper.Model
         private string _userId = string.Empty;
         private string _name = string.Empty;
         private string _email = string.Empty;
-        private string _imgUrl;
+        private string _imgUrl = string.Empty;
         private UserManager _manager = new UserManager();
 
         public ViewUserInfo()
@@ -23,6 +27,7 @@ namespace QuestHelper.Model
 
         public void Load(string userId)
         {
+            _userId = userId;
             var userObject = _manager.GetById(userId);
             if (userObject != null)
             {
@@ -90,6 +95,21 @@ namespace QuestHelper.Model
         public bool Save()
         {
             return _manager.Save(this);
+        }
+
+        public async Task<bool> UpdateFromServerAsync()
+        {
+            TokenStoreService tokenService = new TokenStoreService();
+            var token = await tokenService.GetAuthTokenAsync();
+            UsersApiRequest userApi = new UsersApiRequest(DefaultUrls.ApiUrl, token);
+            var user = await userApi.GetUserAsync(_userId);
+            if (userApi.LastHttpStatusCode.Equals(HttpStatusCode.OK))
+            {
+                user.Save();
+                Load(_userId);
+                return true;
+            }
+            return false;
         }
     }
 }
