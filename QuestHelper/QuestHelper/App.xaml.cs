@@ -48,7 +48,6 @@ namespace QuestHelper
 		    _log = App.Container.Resolve<ITextfileLogger>();
 
             _log.NewFile();
-            MainPage = new View.MainPage();
 		    Analytics.TrackEvent("Start app");
             Application.Current.Properties.Remove("SyncStatus");
 		    Application.Current.Properties.Remove("WorkInRoaming");
@@ -56,8 +55,12 @@ namespace QuestHelper
 		    string showOnboarding = string.Empty;
 		    if (!par.Get("NeedShowOnboarding", out showOnboarding))
 		    {
-		        par.Set("NeedShowOnboarding", "1");
-		    }
+				MainPage = new SplashWizardPage();
+			}
+			else
+			{
+				MainPage = new View.MainPage();
+			}
 		}
 
 		protected override async void OnStart ()

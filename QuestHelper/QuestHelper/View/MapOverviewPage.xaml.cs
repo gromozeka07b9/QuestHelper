@@ -58,6 +58,13 @@ namespace QuestHelper.View
                                 await centerMap(_vm.CurrentLocation.Latitude, _vm.CurrentLocation.Longitude);
                             });
                         }
+                        else
+                        {
+                            if (!_vm.IsShowingUser)
+                            {
+                                centerMapToPosition(44, 34, 2000);
+                            }
+                        }
                     }; break;
             }
         }

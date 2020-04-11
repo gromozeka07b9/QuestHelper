@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="QuestHelper.View.RequestToLocationPermissionPage" NavigationPage.HasNavigationBar="False" BackgroundColor="#004dcb" Appearing="ContentPage_Appearing">
+    <ContentPage.Content>
+        <StackLayout>
+            <Image Source="tourpage1" Style="{StaticResource WizardImage}"></Image>
+            <Label Text="На следующем экране вам будет предложено выбрать, разрешаете ли вы доступ к определению ваших координат. Это нужно только для того, чтобы вы могли использовать координаты для создании новых точек." Style="{StaticResource WizardMainTextLabel}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"></TapGestureRecognizer>
+                </Label.GestureRecognizers>
+            </Label>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

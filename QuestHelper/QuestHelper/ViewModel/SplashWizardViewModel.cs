@@ -23,15 +23,16 @@ namespace QuestHelper.ViewModel
             SkipTourCommand = new Command(skipTourCommand);
         }
 
-        /*internal void SetStatusNoNeedShowOnboarding()
+        internal void SetStatusNoNeedShowOnboarding()
         {
             ParameterManager par = new ParameterManager();
             par.Set("NeedShowOnboarding", "0");
-        }*/
+        }
         private void skipTourCommand()
         {
-            //SetStatusNoNeedShowOnboarding();
-            Navigation.PopModalAsync();
+            SetStatusNoNeedShowOnboarding();
+
+            App.Current.MainPage = new RequestToLocationPermissionPage();
         }
 
         private void nextPageTourCommand()

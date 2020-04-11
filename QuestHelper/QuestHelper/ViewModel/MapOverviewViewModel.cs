@@ -110,11 +110,19 @@ namespace QuestHelper.ViewModel
         {
             IsPoisLoaded = _pois.Any();
             PermissionManager permissions = new PermissionManager();
-            //IsShowingUser = await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position);
+            IsShowingUser = await permissions.PermissionGetCoordsGrantedAsync();
             
-            if((CurrentLocation.Latitude == 0) && (CurrentLocation.Longitude == 0))
+            if(IsShowingUser && (CurrentLocation.Latitude == 0) && (CurrentLocation.Longitude == 0))
             {
                 await updateLocationAsync();
+            }
+            else
+            {
+                if(!IsShowingUser)
+                {
+                    CurrentLocation = new Position(0, 0);
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentLocation"));
+                }
             }
 
         }

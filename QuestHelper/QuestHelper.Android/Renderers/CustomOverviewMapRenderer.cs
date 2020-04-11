@@ -61,19 +61,8 @@ namespace QuestHelper.Droid.Renderers
 
         protected override async void OnMapReady(Android.Gms.Maps.GoogleMap map)
         {
-            /*PermissionManager permissions = new PermissionManager();
-            if (await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position))
-            {
-            }*/
             base.OnMapReady(map);
-            //map.MarkerClick += MapOnMarkerClick;
         }
-
-        /*void MapOnMarkerClick(object sender, GoogleMap.MarkerClickEventArgs markerClickEventArgs)
-        {
-            markerClickEventArgs.Handled = true;
-            var marker = markerClickEventArgs.Marker;
-        }*/
 
         private void OnInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
         {
