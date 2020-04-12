@@ -55,6 +55,8 @@ namespace QuestHelper.ViewModel
         public ICommand UpdatePOIsCommand { get; private set; }
         public ICommand HidePoiDialogCommand { get; private set; }
         public ICommand StartShowAlbumCommand { get; private set; }
+        public ICommand RequestToLocationAccessCommand { get; private set; }
+        
 
 
         public MapOverviewViewModel()
@@ -62,10 +64,17 @@ namespace QuestHelper.ViewModel
             UpdatePOIsCommand = new Command(updatePOIsCommand);
             HidePoiDialogCommand = new Command(hidePoiDialogCommand);
             StartShowAlbumCommand = new Command(startShowAlbumCommand);
+            RequestToLocationAccessCommand = new Command(requestToLocationAccessCommand);
             _routePointManager = new RoutePointManager();
             _routeManager = new RouteManager();
             PoiImageWidth = Convert.ToInt32(DeviceSize.FullScreenWidth * 0.9);
             PoiImageHeight = Convert.ToInt32(DeviceSize.FullScreenHeight * 0.5);
+        }
+
+        private async void requestToLocationAccessCommand(object obj)
+        {
+            PermissionManager permissions = new PermissionManager();
+            await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position);
         }
 
         private async void startShowAlbumCommand(object obj)

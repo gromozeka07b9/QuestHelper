@@ -51,7 +51,8 @@ namespace QuestHelper
 		    Analytics.TrackEvent("Start app");
             Application.Current.Properties.Remove("SyncStatus");
 		    Application.Current.Properties.Remove("WorkInRoaming");
-		    ParameterManager par = new ParameterManager();
+			MainPage = new SplashWizardPage();
+			/*ParameterManager par = new ParameterManager();
 		    string showOnboarding = string.Empty;
 		    if (!par.Get("NeedShowOnboarding", out showOnboarding))
 		    {
@@ -60,7 +61,7 @@ namespace QuestHelper
 			else
 			{
 				MainPage = new View.MainPage();
-			}
+			}*/
 		}
 
 		protected override async void OnStart ()

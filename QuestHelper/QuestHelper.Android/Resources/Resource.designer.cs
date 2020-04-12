@@ -14195,136 +14195,160 @@ namespace QuestHelper.Droid
 			public const int onboarding = 2131165390;
 			
 			// aapt resource value: 0x7F0700CF
-			public const int person = 2131165391;
+			public const int onboarding1 = 2131165391;
 			
 			// aapt resource value: 0x7F0700D0
-			public const int person2 = 2131165392;
-			
-			// aapt resource value: 0x7F0700D2
-			public const int personal = 2131165394;
+			public const int onboarding2 = 2131165392;
 			
 			// aapt resource value: 0x7F0700D1
-			public const int person_add = 2131165393;
+			public const int onboarding3 = 2131165393;
+			
+			// aapt resource value: 0x7F0700D2
+			public const int onboarding4 = 2131165394;
 			
 			// aapt resource value: 0x7F0700D3
-			public const int photo = 2131165395;
+			public const int onboarding5 = 2131165395;
 			
 			// aapt resource value: 0x7F0700D4
-			public const int picture = 2131165396;
+			public const int onboarding6 = 2131165396;
 			
 			// aapt resource value: 0x7F0700D5
-			public const int place = 2131165397;
+			public const int onboarding7 = 2131165397;
 			
 			// aapt resource value: 0x7F0700D6
-			public const int place_unknown = 2131165398;
+			public const int onboarding_location = 2131165398;
 			
 			// aapt resource value: 0x7F0700D7
-			public const int play = 2131165399;
+			public const int person = 2131165399;
 			
 			// aapt resource value: 0x7F0700D8
-			public const int play2 = 2131165400;
-			
-			// aapt resource value: 0x7F0700D9
-			public const int plus = 2131165401;
+			public const int person2 = 2131165400;
 			
 			// aapt resource value: 0x7F0700DA
-			public const int point_gallery = 2131165402;
+			public const int personal = 2131165402;
+			
+			// aapt resource value: 0x7F0700D9
+			public const int person_add = 2131165401;
 			
 			// aapt resource value: 0x7F0700DB
-			public const int point_gallery2 = 2131165403;
+			public const int photo = 2131165403;
 			
 			// aapt resource value: 0x7F0700DC
-			public const int point_recordaudio = 2131165404;
+			public const int picture = 2131165404;
 			
 			// aapt resource value: 0x7F0700DD
-			public const int point_recordaudio2 = 2131165405;
+			public const int place = 2131165405;
 			
 			// aapt resource value: 0x7F0700DE
-			public const int point_share = 2131165406;
+			public const int place_unknown = 2131165406;
 			
 			// aapt resource value: 0x7F0700DF
-			public const int point_share2 = 2131165407;
+			public const int play = 2131165407;
 			
 			// aapt resource value: 0x7F0700E0
-			public const int point_takephoto = 2131165408;
+			public const int play2 = 2131165408;
 			
 			// aapt resource value: 0x7F0700E1
-			public const int point_takephoto2 = 2131165409;
+			public const int plus = 2131165409;
 			
 			// aapt resource value: 0x7F0700E2
-			public const int rec = 2131165410;
+			public const int point_gallery = 2131165410;
 			
 			// aapt resource value: 0x7F0700E3
-			public const int refreshing = 2131165411;
+			public const int point_gallery2 = 2131165411;
 			
 			// aapt resource value: 0x7F0700E4
-			public const int roundedbg = 2131165412;
+			public const int point_recordaudio = 2131165412;
 			
 			// aapt resource value: 0x7F0700E5
-			public const int roundedbgdark = 2131165413;
+			public const int point_recordaudio2 = 2131165413;
 			
 			// aapt resource value: 0x7F0700E6
-			public const int settings = 2131165414;
+			public const int point_share = 2131165414;
 			
 			// aapt resource value: 0x7F0700E7
-			public const int share = 2131165415;
+			public const int point_share2 = 2131165415;
 			
 			// aapt resource value: 0x7F0700E8
-			public const int smile_dissatisfied = 2131165416;
+			public const int point_takephoto = 2131165416;
 			
 			// aapt resource value: 0x7F0700E9
-			public const int smile_satisfied = 2131165417;
+			public const int point_takephoto2 = 2131165417;
 			
 			// aapt resource value: 0x7F0700EA
-			public const int sound = 2131165418;
+			public const int rec = 2131165418;
 			
 			// aapt resource value: 0x7F0700EB
-			public const int splash_screen = 2131165419;
+			public const int refreshing = 2131165419;
 			
 			// aapt resource value: 0x7F0700EC
-			public const int star = 2131165420;
+			public const int roundedbg = 2131165420;
 			
 			// aapt resource value: 0x7F0700ED
-			public const int sync = 2131165421;
+			public const int roundedbgdark = 2131165421;
 			
 			// aapt resource value: 0x7F0700EE
-			public const int take_photo = 2131165422;
+			public const int settings = 2131165422;
 			
 			// aapt resource value: 0x7F0700EF
-			public const int telegram = 2131165423;
+			public const int share = 2131165423;
 			
 			// aapt resource value: 0x7F0700F0
-			public const int text = 2131165424;
+			public const int smile_dissatisfied = 2131165424;
 			
 			// aapt resource value: 0x7F0700F1
-			public const int tooltip_frame_dark = 2131165425;
+			public const int smile_satisfied = 2131165425;
 			
 			// aapt resource value: 0x7F0700F2
-			public const int tooltip_frame_light = 2131165426;
+			public const int sound = 2131165426;
 			
 			// aapt resource value: 0x7F0700F3
-			public const int tourpage1 = 2131165427;
+			public const int splash_screen = 2131165427;
 			
 			// aapt resource value: 0x7F0700F4
-			public const int tourpage_all = 2131165428;
+			public const int star = 2131165428;
 			
 			// aapt resource value: 0x7F0700F5
-			public const int tourpage_photos = 2131165429;
+			public const int sync = 2131165429;
 			
 			// aapt resource value: 0x7F0700F6
-			public const int triple = 2131165430;
+			public const int take_photo = 2131165430;
 			
 			// aapt resource value: 0x7F0700F7
-			public const int viber = 2131165431;
+			public const int telegram = 2131165431;
 			
 			// aapt resource value: 0x7F0700F8
-			public const int vk = 2131165432;
+			public const int text = 2131165432;
 			
 			// aapt resource value: 0x7F0700F9
-			public const int whatsapp = 2131165433;
+			public const int tooltip_frame_dark = 2131165433;
 			
 			// aapt resource value: 0x7F0700FA
-			public const int zoom_out_map = 2131165434;
+			public const int tooltip_frame_light = 2131165434;
+			
+			// aapt resource value: 0x7F0700FB
+			public const int tourpage1 = 2131165435;
+			
+			// aapt resource value: 0x7F0700FC
+			public const int tourpage_all = 2131165436;
+			
+			// aapt resource value: 0x7F0700FD
+			public const int tourpage_photos = 2131165437;
+			
+			// aapt resource value: 0x7F0700FE
+			public const int triple = 2131165438;
+			
+			// aapt resource value: 0x7F0700FF
+			public const int viber = 2131165439;
+			
+			// aapt resource value: 0x7F070100
+			public const int vk = 2131165440;
+			
+			// aapt resource value: 0x7F070101
+			public const int whatsapp = 2131165441;
+			
+			// aapt resource value: 0x7F070102
+			public const int zoom_out_map = 2131165442;
 			
 			static Drawable()
 			{

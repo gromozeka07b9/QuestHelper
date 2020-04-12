@@ -26,13 +26,16 @@
             </Grid.ColumnDefinitions>
             <local:CustomOverviewMap Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="0" Grid.RowSpan="4" x:Name="MapOverview" IsShowingUser="{Binding IsShowingUser}" MapType="Street">
             </local:CustomOverviewMap>
-            <StackLayout WidthRequest="50" IsVisible="{Binding IsLoadingPoi, Converter={StaticResource inverter}}" HorizontalOptions="Start">
-                <ffimageloading:CachedImage Source="sync.png" WidthRequest="48" HeightRequest="48" Margin="10" HorizontalOptions="Start" VerticalOptions="Start">
-                    <ffimageloading:CachedImage.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding UpdatePOIsCommand}" />
-                    </ffimageloading:CachedImage.GestureRecognizers>
-                </ffimageloading:CachedImage>
-            </StackLayout>
+            <ffimageloading:CachedImage Source="sync.png" WidthRequest="40" HeightRequest="40" Margin="10" HorizontalOptions="StartAndExpand" VerticalOptions="Start">
+                <ffimageloading:CachedImage.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding UpdatePOIsCommand}" />
+                </ffimageloading:CachedImage.GestureRecognizers>
+            </ffimageloading:CachedImage>
+            <ffimageloading:CachedImage Source="baseline_gps_fixed_black_48.png" WidthRequest="40" HeightRequest="40" Margin="10" HorizontalOptions="End" VerticalOptions="Start" IsVisible="{Binding IsShowingUser, Converter={StaticResource inverter}}">
+                <ffimageloading:CachedImage.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding RequestToLocationAccessCommand}" />
+                </ffimageloading:CachedImage.GestureRecognizers>
+            </ffimageloading:CachedImage>
 
             <AbsoluteLayout Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="0" Grid.RowSpan="4" HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="0.7" BackgroundColor="White" IsVisible="{Binding IsPoiDialogVisible}">
                 <AbsoluteLayout.GestureRecognizers>

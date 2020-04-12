@@ -42,6 +42,9 @@
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="App.xaml.cs">
       <DependentUpon>*.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Controls\OnboardingView.xaml.cs">
+      <DependentUpon>OnboardingView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Resources\CommonResource.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

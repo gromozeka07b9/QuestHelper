@@ -1,195 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <CarouselPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
-             x:Class="QuestHelper.View.SplashWizardPage" NavigationPage.HasNavigationBar="False" BackgroundColor="#004dcb" Appearing="SplashWizardPage_OnAppearing" Disappearing="SplashWizardPage_OnDisappearing">
+             xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper" xmlns:controls="clr-namespace:QuestHelper.Controls"
+              x:Class="QuestHelper.View.SplashWizardPage" NavigationPage.HasNavigationBar="False" BackgroundColor="White" Appearing="SplashWizardPage_OnAppearing" Disappearing="SplashWizardPage_OnDisappearing">
     <ContentPage>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="6*"></RowDefinition>
-                <RowDefinition Height="3*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage1" Style="{StaticResource WizardImage}"></Image>
-            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Text="{lang:Translation Onboarding_Hello}" Style="{StaticResource WizardMainTextLabel}" />
-            <Label Grid.Column="1" Grid.Row="3" Text="{lang:Translation Onboarding_Skip}" Style="{StaticResource WizardBottomTextLabel}" >
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
-                </Label.GestureRecognizers>
-            </Label>
-        </Grid>
+        <controls:OnboardingView ImgSource="onboarding1.jpg" Text="{lang:Translation Onboarding_Hello}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></controls:OnboardingView>
     </ContentPage>
     <ContentPage>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="6*"></RowDefinition>
-                <RowDefinition Height="3*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <!--Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></-->
-            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Text="{lang:Translation Onboarding_SaveYourImpression}" Style="{StaticResource WizardMainTextLabel}" VerticalOptions="Center" />
-            <Label Grid.Column="1" Grid.Row="3" Text="{lang:Translation Onboarding_Skip}" Style="{StaticResource WizardBottomTextLabel}" >
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
-                </Label.GestureRecognizers>
-            </Label>
-        </Grid>
+        <controls:OnboardingView ImgSource="onboarding2.jpg" Text="{lang:Translation Onboarding_SaveYourImpression}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></controls:OnboardingView>
     </ContentPage>
     <ContentPage>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="6*"></RowDefinition>
-                <RowDefinition Height="3*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <!--Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_all" Style="{StaticResource WizardImage}"></-->
-            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Text="{lang:Translation Onboarding_AllYourNotes}" Style="{StaticResource WizardMainTextLabel}" VerticalOptions="Center" />
-            <Label Grid.Column="1" Grid.Row="3" Text="{lang:Translation Onboarding_Skip}" Style="{StaticResource WizardBottomTextLabel}" >
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
-                </Label.GestureRecognizers>
-            </Label>
-        </Grid>
+        <controls:OnboardingView ImgSource="onboarding3.jpg" Text="{lang:Translation Onboarding_AllYourNotes}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></controls:OnboardingView>
     </ContentPage>
     <ContentPage>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="6*"></RowDefinition>
-                <RowDefinition Height="3*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <!--Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></-->
-            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Text="{lang:Translation Onboarding_PlanningRoutes}" Style="{StaticResource WizardMainTextLabel}" VerticalOptions="Center" />
-            <Label Grid.Column="1" Grid.Row="3" Text="{lang:Translation Onboarding_Skip}" Style="{StaticResource WizardBottomTextLabel}" >
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
-                </Label.GestureRecognizers>
-            </Label>
-        </Grid>
+        <controls:OnboardingView ImgSource="onboarding4.jpg" Text="{lang:Translation Onboarding_PlanningRoutes}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></controls:OnboardingView>
     </ContentPage>
     <ContentPage>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="6*"></RowDefinition>
-                <RowDefinition Height="3*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <!--Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></-->
-            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Text="{lang:Translation Onboarding_AddYourPhotos}" Style="{StaticResource WizardMainTextLabel}" VerticalOptions="Center" />
-            <Label Grid.Column="1" Grid.Row="3" Text="{lang:Translation Onboarding_Skip}" Style="{StaticResource WizardBottomTextLabel}" >
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
-                </Label.GestureRecognizers>
-            </Label>
-        </Grid>
+        <controls:OnboardingView ImgSource="onboarding5.jpg" Text="{lang:Translation Onboarding_AddYourPhotos}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></controls:OnboardingView>
     </ContentPage>
     <ContentPage>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="6*"></RowDefinition>
-                <RowDefinition Height="3*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <!--Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></-->
-            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Text="{lang:Translation Onboarding_WorksOffline}" Style="{StaticResource WizardMainTextLabel}" VerticalOptions="Center" />
-            <Label Grid.Column="1" Grid.Row="3" Text="{lang:Translation Onboarding_Skip}" Style="{StaticResource WizardBottomTextLabel}" >
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
-                </Label.GestureRecognizers>
-            </Label>
-        </Grid>
+        <controls:OnboardingView ImgSource="onboarding6.jpg" Text="{lang:Translation Onboarding_WorksOffline}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></controls:OnboardingView>
     </ContentPage>
     <ContentPage>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="6*"></RowDefinition>
-                <RowDefinition Height="3*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <!--Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></-->
-            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Text="{lang:Translation Onboarding_Share}" Style="{StaticResource WizardMainTextLabel}" VerticalOptions="Center" />
-            <Label Grid.Column="1" Grid.Row="3" Text="{lang:Translation Onboarding_Skip}" Style="{StaticResource WizardBottomTextLabel}" >
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
-                </Label.GestureRecognizers>
-            </Label>
-        </Grid>
+        <controls:OnboardingView ImgSource="onboarding7.jpg" Text="{lang:Translation Onboarding_Share}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></controls:OnboardingView>
     </ContentPage>
     <!--ContentPage>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="6*"></RowDefinition>
-                <RowDefinition Height="3*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></>
-            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Text="{lang:Translation Onboarding_TogetherBetter}" Style="{StaticResource WizardMainTextLabel}" VerticalOptions="Center" />
-            <Label Grid.Column="1" Grid.Row="3" Text="{lang:Translation Onboarding_Skip}" Style="{StaticResource WizardBottomTextLabel}" >
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
-                </Label.GestureRecognizers>
-            </Label>
-        </Grid>
+        <controls:OnboardingView ImgSource="onboarding1.jpg" Text="{lang:Translation Onboarding_TogetherBetter}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></controls:OnboardingView>
     </-->
     <ContentPage>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="6*"></RowDefinition>
-                <RowDefinition Height="3*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <!--Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Source="tourpage_photos" Style="{StaticResource WizardImage}"></-->
-            <!--Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Text="{lang:Translation Onboarding_GoToStart}" Style="{StaticResource WizardMainTextLabel}" VerticalOptions="Center" /-->
-            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Text="{lang:Translation Onboarding_Begin}" Style="{StaticResource WizardBottomTextLabel}" FontSize="20" TextColor="Yellow" >
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding SkipTourCommand}"></TapGestureRecognizer>
-                </Label.GestureRecognizers>
-            </Label>
-        </Grid>
+        <controls:OnboardingView ImgSource="onboarding_location.jpg" Text="{lang:Translation Onboarding_Begin}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></controls:OnboardingView>
     </ContentPage>
 </CarouselPage>
