@@ -14327,28 +14327,19 @@ namespace QuestHelper.Droid
 			public const int tooltip_frame_light = 2131165434;
 			
 			// aapt resource value: 0x7F0700FB
-			public const int tourpage1 = 2131165435;
+			public const int triple = 2131165435;
 			
 			// aapt resource value: 0x7F0700FC
-			public const int tourpage_all = 2131165436;
+			public const int viber = 2131165436;
 			
 			// aapt resource value: 0x7F0700FD
-			public const int tourpage_photos = 2131165437;
+			public const int vk = 2131165437;
 			
 			// aapt resource value: 0x7F0700FE
-			public const int triple = 2131165438;
+			public const int whatsapp = 2131165438;
 			
 			// aapt resource value: 0x7F0700FF
-			public const int viber = 2131165439;
-			
-			// aapt resource value: 0x7F070100
-			public const int vk = 2131165440;
-			
-			// aapt resource value: 0x7F070101
-			public const int whatsapp = 2131165441;
-			
-			// aapt resource value: 0x7F070102
-			public const int zoom_out_map = 2131165442;
+			public const int zoom_out_map = 2131165439;
 			
 			static Drawable()
 			{
