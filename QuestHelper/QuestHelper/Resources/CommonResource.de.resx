@@ -226,29 +226,8 @@
   <data name="Onboarding_GoToStart" xml:space="preserve">
     <value>Lass uns bald anfangen!</value>
   </data>
-  <data name="Onboarding_TogetherBetter" xml:space="preserve">
-    <value>Gemeinsam ist besser - mach ein Foto, nimm Eindrücke mit Freunden auf einer Route auf!</value>
-  </data>
   <data name="Onboarding_Share" xml:space="preserve">
     <value>Veröffentlichen Sie Ihre Routen online, indem Sie einen Link erstellen!</value>
-  </data>
-  <data name="Onboarding_WorksOffline" xml:space="preserve">
-    <value>Meine GoSh! funktioniert, wo es kein Internet gibt. Zeichnen Sie Ihre Eindrücke überall auf, wenn das Netzwerk angezeigt wird und Daten synchronisiert werden können.</value>
-  </data>
-  <data name="Onboarding_AddYourPhotos" xml:space="preserve">
-    <value>Fügen Sie Fotos aus der Galerie hinzu oder machen Sie Fotos direkt in GoSh! Wenn das Foto ein Geotag enthält, können Sie es auf der Karte sehen.</value>
-  </data>
-  <data name="Onboarding_PlanningRoutes" xml:space="preserve">
-    <value>Sie können Routen planen, indem Sie Punkte mit Orten aus anderen Anwendungen hinzufügen, z. B. Google Maps oder Yandex.Maps</value>
-  </data>
-  <data name="Onboarding_AllYourNotes" xml:space="preserve">
-    <value>In diesem Sparschwein sind alle Ihre Fotos, Textnotizen mit Beschreibungen von interessanten Orten und Ereignissen an eine Position auf der Karte gebunden</value>
-  </data>
-  <data name="Onboarding_SaveYourImpression" xml:space="preserve">
-    <value>Speichern Sie Ihre Eindrücke, indem Sie sie thematisch zusammenfassen, zum Beispiel: Urlaub auf Zypern; Kostenlose Parkplätze; Konferenzen</value>
-  </data>
-  <data name="Onboarding_Begin" xml:space="preserve">
-    <value>Starten Sie</value>
   </data>
   <data name="Onboarding_Skip" xml:space="preserve">
     <value>Überspringen</value>
@@ -501,5 +480,28 @@
   </data>
   <data name="RoutePoint_UnknownLocation" xml:space="preserve">
     <value>Punktposition müssen eingestellt werden</value>
+  </data>
+  <data name="Permission_Location" xml:space="preserve">
+    <value>Auf dem nächsten Bildschirm werden Sie aufgefordert, auszuwählen, ob Sie den Zugriff zur Bestimmung Ihrer Koordinaten zulassen.
+Koordinaten werden nur beim Erstellen Ihrer Wegpunkte verwendet.</value>
+  </data>
+  <data name="Onboarding_SaveYourImpression" xml:space="preserve">
+    <value>Karte wird Ihnen helfen
+erinnere dich an Orte
+deine Reisen</value>
+  </data>
+  <data name="Onboarding_Media" xml:space="preserve">
+    <value>Fügen Sie Ihren Routen Sprachnotizen hinzu.
+Fotos, Text</value>
+  </data>
+  <data name="Onboarding_Feed" xml:space="preserve">
+    <value>Das Band hilft Ihnen dabei, interessante Routen zu finden</value>
+  </data>
+  <data name="Onboarding_AddYourPhotos" xml:space="preserve">
+    <value>Erstellen
+Ihre Routen, speichern Sie Ihre Eindrücke!</value>
+  </data>
+  <data name="Permission_Warning" xml:space="preserve">
+    <value>Sie können die Berechtigung zur Positionsbestimmung über das Systemeinstellungsmenü aktivieren</value>
   </data>
 </root>

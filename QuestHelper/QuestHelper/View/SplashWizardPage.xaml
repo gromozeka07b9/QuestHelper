@@ -7,27 +7,49 @@
         <controls:OnboardingView ImgSource="onboarding1.jpg" Text="{lang:Translation Onboarding_Hello}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></controls:OnboardingView>
     </ContentPage>
     <ContentPage>
-        <controls:OnboardingView ImgSource="onboarding2.jpg" Text="{lang:Translation Onboarding_SaveYourImpression}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></controls:OnboardingView>
+        <controls:OnboardingView ImgSource="onboarding3.jpg" Text="{lang:Translation Onboarding_SaveYourImpression}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></controls:OnboardingView>
     </ContentPage>
     <ContentPage>
-        <controls:OnboardingView ImgSource="onboarding3.jpg" Text="{lang:Translation Onboarding_AllYourNotes}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></controls:OnboardingView>
+        <controls:OnboardingView ImgSource="onboarding5.jpg" Text="{lang:Translation Onboarding_Feed}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></controls:OnboardingView>
     </ContentPage>
     <ContentPage>
-        <controls:OnboardingView ImgSource="onboarding4.jpg" Text="{lang:Translation Onboarding_PlanningRoutes}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></controls:OnboardingView>
+        <controls:OnboardingView ImgSource="onboarding2.jpg" Text="{lang:Translation Onboarding_AddYourPhotos}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></controls:OnboardingView>
     </ContentPage>
     <ContentPage>
-        <controls:OnboardingView ImgSource="onboarding5.jpg" Text="{lang:Translation Onboarding_AddYourPhotos}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></controls:OnboardingView>
-    </ContentPage>
-    <ContentPage>
-        <controls:OnboardingView ImgSource="onboarding6.jpg" Text="{lang:Translation Onboarding_WorksOffline}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></controls:OnboardingView>
+        <controls:OnboardingView ImgSource="onboarding6.jpg" Text="{lang:Translation Onboarding_Media}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></controls:OnboardingView>
     </ContentPage>
     <ContentPage>
         <controls:OnboardingView ImgSource="onboarding7.jpg" Text="{lang:Translation Onboarding_Share}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></controls:OnboardingView>
     </ContentPage>
+    <ContentPage>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="8*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*" />
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="2*" />
+            </Grid.RowDefinitions>
+            <Image Grid.Row="0" Grid.Column="1" Margin="0" Source="onboarding_location.jpg" Style="{StaticResource WizardImage}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill"></Image>
+            <Label Grid.Row="1" Grid.Column="1" Text="{lang:Translation  Permission_Location}" Style="{StaticResource WizardMainTextLabel}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding RequestPermissionLocationCommand}"></TapGestureRecognizer>
+                </Label.GestureRecognizers>
+            </Label>
+            <Label Grid.Row="2" Grid.Column="1" Text="Далее" Margin="10" FontAttributes="Bold" Style="{StaticResource WizardMainTextLabel}" VerticalOptions="Center" VerticalTextAlignment="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding RequestPermissionLocationCommand}"></TapGestureRecognizer>
+                </Label.GestureRecognizers>
+            </Label>
+        </Grid>
+    </ContentPage>
     <!--ContentPage>
         <controls:OnboardingView ImgSource="onboarding1.jpg" Text="{lang:Translation Onboarding_TogetherBetter}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></controls:OnboardingView>
     </-->
-    <ContentPage>
+    <!--ContentPage>
         <controls:OnboardingView ImgSource="onboarding_location.jpg" Text="{lang:Translation Onboarding_Begin}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></controls:OnboardingView>
-    </ContentPage>
+    </-->
 </CarouselPage>

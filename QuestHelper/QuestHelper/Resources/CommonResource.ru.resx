@@ -249,29 +249,22 @@
   <data name="Onboarding_Skip" xml:space="preserve">
     <value>Пропустить</value>
   </data>
-  <data name="Onboarding_Begin" xml:space="preserve">
-    <value>Перейти в ленту</value>
-  </data>
   <data name="Onboarding_SaveYourImpression" xml:space="preserve">
-    <value>Сохраните свои впечатления, объединив их по темам, например: Отдых на Кипре; Бесплатная парковка; Конференции</value>
-  </data>
-  <data name="Onboarding_AllYourNotes" xml:space="preserve">
-    <value>В этой копилке все ваши фотографии, текстовые заметки с описаниями интересных мест и событий, привязанных к позиции на карте</value>
-  </data>
-  <data name="Onboarding_PlanningRoutes" xml:space="preserve">
-    <value>Вы можете планировать маршруты, добавляя точки с местами из других приложений, например, Google maps или Яндекс.Карты</value>
+    <value>Карта поможет вам
+вспомнить места
+ваших путешествий</value>
   </data>
   <data name="Onboarding_AddYourPhotos" xml:space="preserve">
-    <value>Добавляйте фотографии из галереи или снимайте сразу в GoSh! Если фотография содержит геометку, вы сможете увидеть её на карте</value>
+    <value>Создавайте
+свои маршруты, сохраните впечатления!</value>
   </data>
-  <data name="Onboarding_WorksOffline" xml:space="preserve">
-    <value>Gosh! работает там, где нет сети Интернет. Записывайте впечатления в любом месте, при появлении сети данные можно синхронизировать.</value>
+  <data name="Onboarding_Media" xml:space="preserve">
+    <value>Добавляйте в маршруты голосовые заметки,
+фотографии, текст</value>
   </data>
   <data name="Onboarding_Share" xml:space="preserve">
-    <value>Публикуйте ваши маршруты в интернет с помощью создания ссылки!</value>
-  </data>
-  <data name="Onboarding_TogetherBetter" xml:space="preserve">
-    <value>Вдвоем лучше - снимайте фото, записывайте впечатления вместе с друзьями в одном маршруте!</value>
+    <value>Делитесь
+вашими маршрутами!</value>
   </data>
   <data name="Onboarding_GoToStart" xml:space="preserve">
     <value>Давайте скорее начнём!</value>
@@ -521,5 +514,15 @@
   </data>
   <data name="RoutePoint_UnknownLocation" xml:space="preserve">
     <value>Необходимо определить расположение точки</value>
+  </data>
+  <data name="Onboarding_Feed" xml:space="preserve">
+    <value>Лента поможет вам найти интересные маршруты</value>
+  </data>
+  <data name="Permission_Location" xml:space="preserve">
+    <value>На следующем экране вам будет предложено выбрать, разрешаете ли вы доступ к определению ваших координат.
+Координаты используются только при создании ваших точек маршрутов.</value>
+  </data>
+  <data name="Permission_Warning" xml:space="preserve">
+    <value>Включить разрешение определения позиции можно через меню настроек системы</value>
   </data>
 </root>

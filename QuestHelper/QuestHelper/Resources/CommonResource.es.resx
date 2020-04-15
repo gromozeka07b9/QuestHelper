@@ -250,29 +250,21 @@ Gosh!</value>
   <data name="Onboarding_Skip" xml:space="preserve">
     <value>Omitir</value>
   </data>
-  <data name="Onboarding_Begin" xml:space="preserve">
-    <value>Comienzo</value>
-  </data>
   <data name="Onboarding_SaveYourImpression" xml:space="preserve">
-    <value>Guarde sus impresiones combinándolas por tema, por ejemplo: vacaciones en Chipre; Estacionamiento gratis; Conferencias</value>
-  </data>
-  <data name="Onboarding_AllYourNotes" xml:space="preserve">
-    <value>En esta hucha todas sus fotos, notas de texto con descripciones de lugares y eventos interesantes relacionados con la posición en el mapa.</value>
-  </data>
-  <data name="Onboarding_PlanningRoutes" xml:space="preserve">
-    <value>Puede planificar rutas agregando puntos con lugares de otras aplicaciones, por ejemplo, mapas de Google o Yandex.</value>
+    <value>El mapa te ayudará
+recordar lugares
+tus viajes</value>
   </data>
   <data name="Onboarding_AddYourPhotos" xml:space="preserve">
-    <value>¡Agregue fotos de la galería o tome fotos de inmediato en GoSh! Si la foto contiene geoetiquetas, puede verla en el mapa.</value>
+    <value>Crear
+tus rutas, guarda tus impresiones!</value>
   </data>
-  <data name="Onboarding_WorksOffline" xml:space="preserve">
-    <value>Gosh! funciona donde no hay internet. Registre sus impresiones en cualquier lugar, cuando aparezca la red, los datos se pueden sincronizar.</value>
+  <data name="Onboarding_Media" xml:space="preserve">
+    <value>Agregue notas de voz a sus rutas,
+fotos, texto</value>
   </data>
   <data name="Onboarding_Share" xml:space="preserve">
     <value>¡Publique sus rutas en línea creando un enlace!</value>
-  </data>
-  <data name="Onboarding_TogetherBetter" xml:space="preserve">
-    <value>Juntos es mejor: ¡tome una foto, grabe impresiones con amigos en una ruta!</value>
   </data>
   <data name="Onboarding_GoToStart" xml:space="preserve">
     <value>¡Comencemos pronto!</value>
@@ -522,5 +514,15 @@ Gosh!</value>
   </data>
   <data name="RoutePoint_UnknownLocation" xml:space="preserve">
     <value>Necesidad de establecer la ubicación del punto</value>
+  </data>
+  <data name="Permission_Location" xml:space="preserve">
+    <value>En la siguiente pantalla, se le pedirá que elija si permite el acceso para determinar sus coordenadas.
+Las coordenadas se usan solo al crear sus waypoints.</value>
+  </data>
+  <data name="Onboarding_Feed" xml:space="preserve">
+    <value>La cinta te ayudará a encontrar rutas interesantes</value>
+  </data>
+  <data name="Permission_Warning" xml:space="preserve">
+    <value>Puede habilitar el permiso de determinación de posición a través del menú de configuración del sistema</value>
   </data>
 </root>

@@ -250,29 +250,21 @@ GoSh!</value>
   <data name="Onboarding_Skip" xml:space="preserve">
     <value>Skip</value>
   </data>
-  <data name="Onboarding_Begin" xml:space="preserve">
-    <value>Go to feed</value>
-  </data>
   <data name="Onboarding_SaveYourImpression" xml:space="preserve">
-    <value>Save your impressions by combining them by topic, for example: Holidays in Cyprus; Free parking; Conferences</value>
-  </data>
-  <data name="Onboarding_AllYourNotes" xml:space="preserve">
-    <value>In this piggy bank all your photos, text notes with descriptions of interesting places and events, tied to a position on the map</value>
-  </data>
-  <data name="Onboarding_PlanningRoutes" xml:space="preserve">
-    <value>You can plan routes by adding points with places from other applications, for example, Google maps or Yandex.Maps</value>
+    <value>Map will help you
+remember places
+your travels</value>
   </data>
   <data name="Onboarding_AddYourPhotos" xml:space="preserve">
-    <value>Add photos from the gallery or take photos right away in GoSh! If the photo contains geotag, you can see it on the map.</value>
+    <value>Create
+your routes, save your impressions!</value>
   </data>
-  <data name="Onboarding_WorksOffline" xml:space="preserve">
-    <value>Gosh! works where there is no Internet. Record your impressions anywhere, when the network appears, data can be synchronized.</value>
+  <data name="Onboarding_Media" xml:space="preserve">
+    <value>Add voice notes to your routes,
+photos, text</value>
   </data>
   <data name="Onboarding_Share" xml:space="preserve">
     <value>Share your route with web link!</value>
-  </data>
-  <data name="Onboarding_TogetherBetter" xml:space="preserve">
-    <value>Together is better - take a photo, record impressions with friends in one route!</value>
   </data>
   <data name="Onboarding_GoToStart" xml:space="preserve">
     <value>Let's get started soon!</value>
@@ -522,5 +514,15 @@ GoSh!</value>
   </data>
   <data name="RoutePoint_UnknownLocation" xml:space="preserve">
     <value>Need to set point location</value>
+  </data>
+  <data name="Onboarding_Feed" xml:space="preserve">
+    <value>Feed will help you find interesting routes</value>
+  </data>
+  <data name="Permission_Location" xml:space="preserve">
+    <value>On the next screen, you will be asked to choose whether you allow access to determine your coordinates.
+Coordinates are used only when creating your waypoints.</value>
+  </data>
+  <data name="Permission_Warning" xml:space="preserve">
+    <value>You can enable position determination permission through the system settings menu</value>
   </data>
 </root>

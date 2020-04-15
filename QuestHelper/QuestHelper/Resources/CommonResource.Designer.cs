@@ -520,7 +520,8 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Add photos from the gallery or take photos right away in GoSh! If the photo contains geotag, you can see it on the map..
+        ///   Ищет локализованную строку, похожую на Create
+        ///your routes, save your impressions!.
         /// </summary>
         public static string Onboarding_AddYourPhotos {
             get {
@@ -529,20 +530,11 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на In this piggy bank all your photos, text notes with descriptions of interesting places and events, tied to a position on the map.
+        ///   Ищет локализованную строку, похожую на Feed will help you find interesting routes.
         /// </summary>
-        public static string Onboarding_AllYourNotes {
+        public static string Onboarding_Feed {
             get {
-                return ResourceManager.GetString("Onboarding_AllYourNotes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Go to feed.
-        /// </summary>
-        public static string Onboarding_Begin {
-            get {
-                return ResourceManager.GetString("Onboarding_Begin", resourceCulture);
+                return ResourceManager.GetString("Onboarding_Feed", resourceCulture);
             }
         }
         
@@ -566,16 +558,19 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на You can plan routes by adding points with places from other applications, for example, Google maps or Yandex.Maps.
+        ///   Ищет локализованную строку, похожую на Add voice notes to your routes,
+        ///photos, text.
         /// </summary>
-        public static string Onboarding_PlanningRoutes {
+        public static string Onboarding_Media {
             get {
-                return ResourceManager.GetString("Onboarding_PlanningRoutes", resourceCulture);
+                return ResourceManager.GetString("Onboarding_Media", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Save your impressions by combining them by topic, for example: Holidays in Cyprus; Free parking; Conferences.
+        ///   Ищет локализованную строку, похожую на Map will help you
+        ///remember places
+        ///your travels.
         /// </summary>
         public static string Onboarding_SaveYourImpression {
             get {
@@ -602,20 +597,12 @@ namespace QuestHelper.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Together is better - take a photo, record impressions with friends in one route!.
+        ///   Ищет локализованную строку, похожую на On the next screen, you will be asked to choose whether you allow access to determine your coordinates.
+        ///Coordinates are used only when creating your waypoints..
         /// </summary>
-        public static string Onboarding_TogetherBetter {
+        public static string Permission_Location {
             get {
-                return ResourceManager.GetString("Onboarding_TogetherBetter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Gosh! works where there is no Internet. Record your impressions anywhere, when the network appears, data can be synchronized..
-        /// </summary>
-        public static string Onboarding_WorksOffline {
-            get {
-                return ResourceManager.GetString("Onboarding_WorksOffline", resourceCulture);
+                return ResourceManager.GetString("Permission_Location", resourceCulture);
             }
         }
         
@@ -625,6 +612,15 @@ namespace QuestHelper.Resources {
         public static string Permission_Position {
             get {
                 return ResourceManager.GetString("Permission_Position", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You can enable position determination permission through the system settings menu.
+        /// </summary>
+        public static string Permission_Warning {
+            get {
+                return ResourceManager.GetString("Permission_Warning", resourceCulture);
             }
         }
         

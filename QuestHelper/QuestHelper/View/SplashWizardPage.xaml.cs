@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using QuestHelper.Managers;
+using QuestHelper.Resources;
 using QuestHelper.ViewModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -26,7 +28,7 @@ namespace QuestHelper.View
 
         private void SplashWizardPage_OnDisappearing(object sender, EventArgs e)
 	    {
-            //_vm.SetStatusNoNeedShowOnboarding();
-	    }
-    }
+		}
+
+	}
 }

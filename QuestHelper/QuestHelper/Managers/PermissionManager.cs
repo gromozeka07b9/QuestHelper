@@ -1,6 +1,7 @@
 ﻿using Acr.UserDialogs;
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
+using QuestHelper.Resources;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,14 +18,21 @@ namespace QuestHelper.Managers
                 status = await CrossPermissions.Current.CheckPermissionStatusAsync(permission);
                 if (status != PermissionStatus.Granted)
                 {
-                    bool resultRequest = await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(permission);
-                    if(!resultRequest)
+                    var resultCheckRequest = await CrossPermissions.Current.RequestPermissionsAsync(permission);
+                    foreach (var permissionItem in resultCheckRequest)
                     {
-                        /*if (resultRequest.Result)
+                        if(permissionItem.Value != PermissionStatus.Granted)
                         {
-                            UserDialogs.Instance.Alert(message: warningText, okText: "Ок");
-                        }*/
-
+                            UserDialogs.Instance.Alert("Включить разрешение определения позиции можно через меню настроек системы", CommonResource.CommonMsg_Warning, CommonResource.CommonMsg_Ok);
+                            /*MainThread.BeginInvokeOnMainThread(() =>
+                            {
+                            });*/
+                            return false;
+                        }
+                    }
+                    bool resultRequest = await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(permission);
+                    if (!resultRequest)
+                    {
                         var results = await CrossPermissions.Current.RequestPermissionsAsync(permission);
                         if (results.ContainsKey(permission))
                         {
