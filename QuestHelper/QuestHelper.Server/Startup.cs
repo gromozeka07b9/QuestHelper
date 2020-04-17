@@ -42,12 +42,13 @@ namespace QuestHelper.Server
             services.AddSwaggerGen(
                 sw =>
                 {
-                    sw.SwaggerDoc("v1",
+                    //ToDo: Не работает после апдейта на 5.3.1
+                    /*sw.SwaggerDoc("v1",
                         new Info()
  {
                             Title = "GoSh! API", Version = "v1", Description = "Api for GoSh! applications",
                             Contact = new Contact() {Name = "Sergey Dyachenko", Email = "sdyachenko1977@gmail.com"}
-                        });
+                        });*/
                     var filePath = Path.Combine(System.AppContext.BaseDirectory, "QuestHelper.Server.xml");
                     sw.IncludeXmlComments(filePath);
                 }

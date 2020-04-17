@@ -77,8 +77,11 @@
                             </Image>
                         </StackLayout>
                     </Frame>
+                    <!--IndicatorView.ItemsSource="{Binding Images}"
+                    https://forums.xamarin.com/discussion/179096/xamarin-forms-4-5-0-356-indicatorview-itemssourceby-problem
+                    -->
                     <StackLayout Orientation="Vertical" VerticalOptions="Start" HeightRequest="300" IsVisible="{Binding IsOneImagesPresent, Converter={StaticResource inverter}}">
-                        <CarouselView x:Name="myCarouselViewCtrl" ItemsUpdatingScrollMode="KeepLastItemInView" ItemsSource="{Binding Images}" HorizontalOptions="FillAndExpand" Margin="0,0,0,0" VerticalOptions="StartAndExpand" HorizontalScrollBarVisibility="Always" IndicatorView.ItemsSourceBy="{Binding Images}" PeekAreaInsets="50">
+                        <CarouselView x:Name="myCarouselViewCtrl" ItemsUpdatingScrollMode="KeepLastItemInView" ItemsSource="{Binding Images}" HorizontalOptions="FillAndExpand" Margin="0,0,0,0" VerticalOptions="StartAndExpand" HorizontalScrollBarVisibility="Always" PeekAreaInsets="50">
                             <CarouselView.ItemTemplate>
                                 <DataTemplate>
                                     <StackLayout Padding="5">

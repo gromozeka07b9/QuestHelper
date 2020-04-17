@@ -1,29 +1,17 @@
-﻿using System;
-
+﻿
 using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
-using QuestHelper;
 using Xamarin.Forms;
-using QuestHelper.Model;
-using System.Threading.Tasks;
 using Android.Content;
 using QuestHelper.Model.Messages;
 using Plugin.CurrentActivity;
 using ImageCircle.Forms.Plugin.Droid;
 using Acr.UserDialogs;
-using QuestHelper.Managers;
 using Plugin.Permissions;
 using QuestHelper.Managers.Sync;
-using Microsoft.AppCenter.Analytics;
-using System.Collections.Generic;
-using Android.Support.V4.App;
-using QuestHelper.Resources;
 using QuestHelper.Droid.Intents;
-using Lottie.Forms.Droid;
 using QuestHelper.Consts;
 using Android.Gms.Auth.Api.SignIn;
 using Android.Gms.Auth.Api;
@@ -55,7 +43,7 @@ namespace QuestHelper.Droid
             Forms.SetFlags("CollectionView_Experimental");
             global::Xamarin.Forms.Forms.Init(this, bundle);
 
-            AnimationViewRenderer.Init();
+            //AnimationViewRenderer.Init();
             Xamarin.FormsMaps.Init(this, bundle);
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer: true);
             ImageCircleRenderer.Init();
@@ -119,11 +107,11 @@ namespace QuestHelper.Droid
         protected override void OnActivityResult(int requestCode, Result resultCode, Android.Content.Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
-            if (requestCode == 1)
+            /*if (requestCode == 1)
             {
                 GoogleSignInResult result = Auth.GoogleSignInApi.GetSignInResultFromIntent(data);
                 GoogleAuthManagerService.Instance.OnAuthCompleted(result);
-            }
+            }*/
         }
         protected override void OnSaveInstanceState(Bundle outState)
         {
