@@ -2619,6 +2619,105 @@ namespace QuestHelper.Droid
 			global::AndroidHUD.Resource.Styleable.ProgressWheel_ahText = global::QuestHelper.Droid.Resource.Styleable.ProgressWheel_ahText;
 			global::AndroidHUD.Resource.Styleable.ProgressWheel_ahTextColor = global::QuestHelper.Droid.Resource.Styleable.ProgressWheel_ahTextColor;
 			global::AndroidHUD.Resource.Styleable.ProgressWheel_ahTextSize = global::QuestHelper.Droid.Resource.Styleable.ProgressWheel_ahTextSize;
+			global::Auth0.OidcClient.Resource.Attribute.font = global::QuestHelper.Droid.Resource.Attribute.font;
+			global::Auth0.OidcClient.Resource.Attribute.fontProviderAuthority = global::QuestHelper.Droid.Resource.Attribute.fontProviderAuthority;
+			global::Auth0.OidcClient.Resource.Attribute.fontProviderCerts = global::QuestHelper.Droid.Resource.Attribute.fontProviderCerts;
+			global::Auth0.OidcClient.Resource.Attribute.fontProviderFetchStrategy = global::QuestHelper.Droid.Resource.Attribute.fontProviderFetchStrategy;
+			global::Auth0.OidcClient.Resource.Attribute.fontProviderFetchTimeout = global::QuestHelper.Droid.Resource.Attribute.fontProviderFetchTimeout;
+			global::Auth0.OidcClient.Resource.Attribute.fontProviderPackage = global::QuestHelper.Droid.Resource.Attribute.fontProviderPackage;
+			global::Auth0.OidcClient.Resource.Attribute.fontProviderQuery = global::QuestHelper.Droid.Resource.Attribute.fontProviderQuery;
+			global::Auth0.OidcClient.Resource.Attribute.fontStyle = global::QuestHelper.Droid.Resource.Attribute.fontStyle;
+			global::Auth0.OidcClient.Resource.Attribute.fontWeight = global::QuestHelper.Droid.Resource.Attribute.fontWeight;
+			global::Auth0.OidcClient.Resource.Boolean.abc_action_bar_embed_tabs = global::QuestHelper.Droid.Resource.Boolean.abc_action_bar_embed_tabs;
+			global::Auth0.OidcClient.Resource.Color.notification_action_color_filter = global::QuestHelper.Droid.Resource.Color.notification_action_color_filter;
+			global::Auth0.OidcClient.Resource.Color.notification_icon_bg_color = global::QuestHelper.Droid.Resource.Color.notification_icon_bg_color;
+			global::Auth0.OidcClient.Resource.Color.ripple_material_light = global::QuestHelper.Droid.Resource.Color.ripple_material_light;
+			global::Auth0.OidcClient.Resource.Color.secondary_text_default_material_light = global::QuestHelper.Droid.Resource.Color.secondary_text_default_material_light;
+			global::Auth0.OidcClient.Resource.Dimension.compat_button_inset_horizontal_material = global::QuestHelper.Droid.Resource.Dimension.compat_button_inset_horizontal_material;
+			global::Auth0.OidcClient.Resource.Dimension.compat_button_inset_vertical_material = global::QuestHelper.Droid.Resource.Dimension.compat_button_inset_vertical_material;
+			global::Auth0.OidcClient.Resource.Dimension.compat_button_padding_horizontal_material = global::QuestHelper.Droid.Resource.Dimension.compat_button_padding_horizontal_material;
+			global::Auth0.OidcClient.Resource.Dimension.compat_button_padding_vertical_material = global::QuestHelper.Droid.Resource.Dimension.compat_button_padding_vertical_material;
+			global::Auth0.OidcClient.Resource.Dimension.compat_control_corner_material = global::QuestHelper.Droid.Resource.Dimension.compat_control_corner_material;
+			global::Auth0.OidcClient.Resource.Dimension.notification_action_icon_size = global::QuestHelper.Droid.Resource.Dimension.notification_action_icon_size;
+			global::Auth0.OidcClient.Resource.Dimension.notification_action_text_size = global::QuestHelper.Droid.Resource.Dimension.notification_action_text_size;
+			global::Auth0.OidcClient.Resource.Dimension.notification_big_circle_margin = global::QuestHelper.Droid.Resource.Dimension.notification_big_circle_margin;
+			global::Auth0.OidcClient.Resource.Dimension.notification_content_margin_start = global::QuestHelper.Droid.Resource.Dimension.notification_content_margin_start;
+			global::Auth0.OidcClient.Resource.Dimension.notification_large_icon_height = global::QuestHelper.Droid.Resource.Dimension.notification_large_icon_height;
+			global::Auth0.OidcClient.Resource.Dimension.notification_large_icon_width = global::QuestHelper.Droid.Resource.Dimension.notification_large_icon_width;
+			global::Auth0.OidcClient.Resource.Dimension.notification_main_column_padding_top = global::QuestHelper.Droid.Resource.Dimension.notification_main_column_padding_top;
+			global::Auth0.OidcClient.Resource.Dimension.notification_media_narrow_margin = global::QuestHelper.Droid.Resource.Dimension.notification_media_narrow_margin;
+			global::Auth0.OidcClient.Resource.Dimension.notification_right_icon_size = global::QuestHelper.Droid.Resource.Dimension.notification_right_icon_size;
+			global::Auth0.OidcClient.Resource.Dimension.notification_right_side_padding_top = global::QuestHelper.Droid.Resource.Dimension.notification_right_side_padding_top;
+			global::Auth0.OidcClient.Resource.Dimension.notification_small_icon_background_padding = global::QuestHelper.Droid.Resource.Dimension.notification_small_icon_background_padding;
+			global::Auth0.OidcClient.Resource.Dimension.notification_small_icon_size_as_large = global::QuestHelper.Droid.Resource.Dimension.notification_small_icon_size_as_large;
+			global::Auth0.OidcClient.Resource.Dimension.notification_subtext_size = global::QuestHelper.Droid.Resource.Dimension.notification_subtext_size;
+			global::Auth0.OidcClient.Resource.Dimension.notification_top_pad = global::QuestHelper.Droid.Resource.Dimension.notification_top_pad;
+			global::Auth0.OidcClient.Resource.Dimension.notification_top_pad_large_text = global::QuestHelper.Droid.Resource.Dimension.notification_top_pad_large_text;
+			global::Auth0.OidcClient.Resource.Drawable.notification_action_background = global::QuestHelper.Droid.Resource.Drawable.notification_action_background;
+			global::Auth0.OidcClient.Resource.Drawable.notification_bg = global::QuestHelper.Droid.Resource.Drawable.notification_bg;
+			global::Auth0.OidcClient.Resource.Drawable.notification_bg_low = global::QuestHelper.Droid.Resource.Drawable.notification_bg_low;
+			global::Auth0.OidcClient.Resource.Drawable.notification_bg_low_normal = global::QuestHelper.Droid.Resource.Drawable.notification_bg_low_normal;
+			global::Auth0.OidcClient.Resource.Drawable.notification_bg_low_pressed = global::QuestHelper.Droid.Resource.Drawable.notification_bg_low_pressed;
+			global::Auth0.OidcClient.Resource.Drawable.notification_bg_normal = global::QuestHelper.Droid.Resource.Drawable.notification_bg_normal;
+			global::Auth0.OidcClient.Resource.Drawable.notification_bg_normal_pressed = global::QuestHelper.Droid.Resource.Drawable.notification_bg_normal_pressed;
+			global::Auth0.OidcClient.Resource.Drawable.notification_icon_background = global::QuestHelper.Droid.Resource.Drawable.notification_icon_background;
+			global::Auth0.OidcClient.Resource.Drawable.notification_template_icon_bg = global::QuestHelper.Droid.Resource.Drawable.notification_template_icon_bg;
+			global::Auth0.OidcClient.Resource.Drawable.notification_template_icon_low_bg = global::QuestHelper.Droid.Resource.Drawable.notification_template_icon_low_bg;
+			global::Auth0.OidcClient.Resource.Drawable.notification_tile_bg = global::QuestHelper.Droid.Resource.Drawable.notification_tile_bg;
+			global::Auth0.OidcClient.Resource.Drawable.notify_panel_notification_icon_bg = global::QuestHelper.Droid.Resource.Drawable.notify_panel_notification_icon_bg;
+			global::Auth0.OidcClient.Resource.Id.actions = global::QuestHelper.Droid.Resource.Id.actions;
+			global::Auth0.OidcClient.Resource.Id.action_container = global::QuestHelper.Droid.Resource.Id.action_container;
+			global::Auth0.OidcClient.Resource.Id.action_divider = global::QuestHelper.Droid.Resource.Id.action_divider;
+			global::Auth0.OidcClient.Resource.Id.action_image = global::QuestHelper.Droid.Resource.Id.action_image;
+			global::Auth0.OidcClient.Resource.Id.action_text = global::QuestHelper.Droid.Resource.Id.action_text;
+			global::Auth0.OidcClient.Resource.Id.async = global::QuestHelper.Droid.Resource.Id.async;
+			global::Auth0.OidcClient.Resource.Id.blocking = global::QuestHelper.Droid.Resource.Id.blocking;
+			global::Auth0.OidcClient.Resource.Id.chronometer = global::QuestHelper.Droid.Resource.Id.chronometer;
+			global::Auth0.OidcClient.Resource.Id.forever = global::QuestHelper.Droid.Resource.Id.forever;
+			global::Auth0.OidcClient.Resource.Id.icon = global::QuestHelper.Droid.Resource.Id.icon;
+			global::Auth0.OidcClient.Resource.Id.icon_group = global::QuestHelper.Droid.Resource.Id.icon_group;
+			global::Auth0.OidcClient.Resource.Id.info = global::QuestHelper.Droid.Resource.Id.info;
+			global::Auth0.OidcClient.Resource.Id.italic = global::QuestHelper.Droid.Resource.Id.italic;
+			global::Auth0.OidcClient.Resource.Id.line1 = global::QuestHelper.Droid.Resource.Id.line1;
+			global::Auth0.OidcClient.Resource.Id.line3 = global::QuestHelper.Droid.Resource.Id.line3;
+			global::Auth0.OidcClient.Resource.Id.normal = global::QuestHelper.Droid.Resource.Id.normal;
+			global::Auth0.OidcClient.Resource.Id.notification_background = global::QuestHelper.Droid.Resource.Id.notification_background;
+			global::Auth0.OidcClient.Resource.Id.notification_main_column = global::QuestHelper.Droid.Resource.Id.notification_main_column;
+			global::Auth0.OidcClient.Resource.Id.notification_main_column_container = global::QuestHelper.Droid.Resource.Id.notification_main_column_container;
+			global::Auth0.OidcClient.Resource.Id.right_icon = global::QuestHelper.Droid.Resource.Id.right_icon;
+			global::Auth0.OidcClient.Resource.Id.right_side = global::QuestHelper.Droid.Resource.Id.right_side;
+			global::Auth0.OidcClient.Resource.Id.text = global::QuestHelper.Droid.Resource.Id.text;
+			global::Auth0.OidcClient.Resource.Id.text2 = global::QuestHelper.Droid.Resource.Id.text2;
+			global::Auth0.OidcClient.Resource.Id.time = global::QuestHelper.Droid.Resource.Id.time;
+			global::Auth0.OidcClient.Resource.Id.title = global::QuestHelper.Droid.Resource.Id.title;
+			global::Auth0.OidcClient.Resource.Integer.status_bar_notification_info_maxnum = global::QuestHelper.Droid.Resource.Integer.status_bar_notification_info_maxnum;
+			global::Auth0.OidcClient.Resource.Layout.notification_action = global::QuestHelper.Droid.Resource.Layout.notification_action;
+			global::Auth0.OidcClient.Resource.Layout.notification_action_tombstone = global::QuestHelper.Droid.Resource.Layout.notification_action_tombstone;
+			global::Auth0.OidcClient.Resource.Layout.notification_template_custom_big = global::QuestHelper.Droid.Resource.Layout.notification_template_custom_big;
+			global::Auth0.OidcClient.Resource.Layout.notification_template_icon_group = global::QuestHelper.Droid.Resource.Layout.notification_template_icon_group;
+			global::Auth0.OidcClient.Resource.Layout.notification_template_part_chronometer = global::QuestHelper.Droid.Resource.Layout.notification_template_part_chronometer;
+			global::Auth0.OidcClient.Resource.Layout.notification_template_part_time = global::QuestHelper.Droid.Resource.Layout.notification_template_part_time;
+			global::Auth0.OidcClient.Resource.String.ApplicationName = global::QuestHelper.Droid.Resource.String.ApplicationName;
+			global::Auth0.OidcClient.Resource.String.Hello = global::QuestHelper.Droid.Resource.String.Hello;
+			global::Auth0.OidcClient.Resource.String.status_bar_notification_info_overflow = global::QuestHelper.Droid.Resource.String.status_bar_notification_info_overflow;
+			global::Auth0.OidcClient.Resource.Style.TextAppearance_Compat_Notification = global::QuestHelper.Droid.Resource.Style.TextAppearance_Compat_Notification;
+			global::Auth0.OidcClient.Resource.Style.TextAppearance_Compat_Notification_Info = global::QuestHelper.Droid.Resource.Style.TextAppearance_Compat_Notification_Info;
+			global::Auth0.OidcClient.Resource.Style.TextAppearance_Compat_Notification_Line2 = global::QuestHelper.Droid.Resource.Style.TextAppearance_Compat_Notification_Line2;
+			global::Auth0.OidcClient.Resource.Style.TextAppearance_Compat_Notification_Time = global::QuestHelper.Droid.Resource.Style.TextAppearance_Compat_Notification_Time;
+			global::Auth0.OidcClient.Resource.Style.TextAppearance_Compat_Notification_Title = global::QuestHelper.Droid.Resource.Style.TextAppearance_Compat_Notification_Title;
+			global::Auth0.OidcClient.Resource.Style.Widget_Compat_NotificationActionContainer = global::QuestHelper.Droid.Resource.Style.Widget_Compat_NotificationActionContainer;
+			global::Auth0.OidcClient.Resource.Style.Widget_Compat_NotificationActionText = global::QuestHelper.Droid.Resource.Style.Widget_Compat_NotificationActionText;
+			global::Auth0.OidcClient.Resource.Styleable.FontFamily = global::QuestHelper.Droid.Resource.Styleable.FontFamily;
+			global::Auth0.OidcClient.Resource.Styleable.FontFamilyFont = global::QuestHelper.Droid.Resource.Styleable.FontFamilyFont;
+			global::Auth0.OidcClient.Resource.Styleable.FontFamilyFont_font = global::QuestHelper.Droid.Resource.Styleable.FontFamilyFont_font;
+			global::Auth0.OidcClient.Resource.Styleable.FontFamilyFont_fontStyle = global::QuestHelper.Droid.Resource.Styleable.FontFamilyFont_fontStyle;
+			global::Auth0.OidcClient.Resource.Styleable.FontFamilyFont_fontWeight = global::QuestHelper.Droid.Resource.Styleable.FontFamilyFont_fontWeight;
+			global::Auth0.OidcClient.Resource.Styleable.FontFamily_fontProviderAuthority = global::QuestHelper.Droid.Resource.Styleable.FontFamily_fontProviderAuthority;
+			global::Auth0.OidcClient.Resource.Styleable.FontFamily_fontProviderCerts = global::QuestHelper.Droid.Resource.Styleable.FontFamily_fontProviderCerts;
+			global::Auth0.OidcClient.Resource.Styleable.FontFamily_fontProviderFetchStrategy = global::QuestHelper.Droid.Resource.Styleable.FontFamily_fontProviderFetchStrategy;
+			global::Auth0.OidcClient.Resource.Styleable.FontFamily_fontProviderFetchTimeout = global::QuestHelper.Droid.Resource.Styleable.FontFamily_fontProviderFetchTimeout;
+			global::Auth0.OidcClient.Resource.Styleable.FontFamily_fontProviderPackage = global::QuestHelper.Droid.Resource.Styleable.FontFamily_fontProviderPackage;
+			global::Auth0.OidcClient.Resource.Styleable.FontFamily_fontProviderQuery = global::QuestHelper.Droid.Resource.Styleable.FontFamily_fontProviderQuery;
 			global::Lottie.Forms.Resource.Animation.abc_fade_in = global::QuestHelper.Droid.Resource.Animation.abc_fade_in;
 			global::Lottie.Forms.Resource.Animation.abc_fade_out = global::QuestHelper.Droid.Resource.Animation.abc_fade_out;
 			global::Lottie.Forms.Resource.Animation.abc_grow_fade_in_from_bottom = global::QuestHelper.Droid.Resource.Animation.abc_grow_fade_in_from_bottom;
@@ -21005,266 +21104,272 @@ namespace QuestHelper.Droid
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7F0C0000
-			public const int abc_action_bar_home_description = 2131492864;
-			
-			// aapt resource value: 0x7F0C0001
-			public const int abc_action_bar_up_description = 2131492865;
-			
 			// aapt resource value: 0x7F0C0002
-			public const int abc_action_menu_overflow_description = 2131492866;
+			public const int abc_action_bar_home_description = 2131492866;
 			
 			// aapt resource value: 0x7F0C0003
-			public const int abc_action_mode_done = 2131492867;
-			
-			// aapt resource value: 0x7F0C0005
-			public const int abc_activitychooserview_choose_application = 2131492869;
+			public const int abc_action_bar_up_description = 2131492867;
 			
 			// aapt resource value: 0x7F0C0004
-			public const int abc_activity_chooser_view_see_all = 2131492868;
+			public const int abc_action_menu_overflow_description = 2131492868;
 			
-			// aapt resource value: 0x7F0C0006
-			public const int abc_capital_off = 2131492870;
+			// aapt resource value: 0x7F0C0005
+			public const int abc_action_mode_done = 2131492869;
 			
 			// aapt resource value: 0x7F0C0007
-			public const int abc_capital_on = 2131492871;
+			public const int abc_activitychooserview_choose_application = 2131492871;
+			
+			// aapt resource value: 0x7F0C0006
+			public const int abc_activity_chooser_view_see_all = 2131492870;
 			
 			// aapt resource value: 0x7F0C0008
-			public const int abc_font_family_body_1_material = 2131492872;
+			public const int abc_capital_off = 2131492872;
 			
 			// aapt resource value: 0x7F0C0009
-			public const int abc_font_family_body_2_material = 2131492873;
+			public const int abc_capital_on = 2131492873;
 			
 			// aapt resource value: 0x7F0C000A
-			public const int abc_font_family_button_material = 2131492874;
+			public const int abc_font_family_body_1_material = 2131492874;
 			
 			// aapt resource value: 0x7F0C000B
-			public const int abc_font_family_caption_material = 2131492875;
+			public const int abc_font_family_body_2_material = 2131492875;
 			
 			// aapt resource value: 0x7F0C000C
-			public const int abc_font_family_display_1_material = 2131492876;
+			public const int abc_font_family_button_material = 2131492876;
 			
 			// aapt resource value: 0x7F0C000D
-			public const int abc_font_family_display_2_material = 2131492877;
+			public const int abc_font_family_caption_material = 2131492877;
 			
 			// aapt resource value: 0x7F0C000E
-			public const int abc_font_family_display_3_material = 2131492878;
+			public const int abc_font_family_display_1_material = 2131492878;
 			
 			// aapt resource value: 0x7F0C000F
-			public const int abc_font_family_display_4_material = 2131492879;
+			public const int abc_font_family_display_2_material = 2131492879;
 			
 			// aapt resource value: 0x7F0C0010
-			public const int abc_font_family_headline_material = 2131492880;
+			public const int abc_font_family_display_3_material = 2131492880;
 			
 			// aapt resource value: 0x7F0C0011
-			public const int abc_font_family_menu_material = 2131492881;
+			public const int abc_font_family_display_4_material = 2131492881;
 			
 			// aapt resource value: 0x7F0C0012
-			public const int abc_font_family_subhead_material = 2131492882;
+			public const int abc_font_family_headline_material = 2131492882;
 			
 			// aapt resource value: 0x7F0C0013
-			public const int abc_font_family_title_material = 2131492883;
+			public const int abc_font_family_menu_material = 2131492883;
 			
 			// aapt resource value: 0x7F0C0014
-			public const int abc_menu_alt_shortcut_label = 2131492884;
+			public const int abc_font_family_subhead_material = 2131492884;
 			
 			// aapt resource value: 0x7F0C0015
-			public const int abc_menu_ctrl_shortcut_label = 2131492885;
+			public const int abc_font_family_title_material = 2131492885;
 			
 			// aapt resource value: 0x7F0C0016
-			public const int abc_menu_delete_shortcut_label = 2131492886;
+			public const int abc_menu_alt_shortcut_label = 2131492886;
 			
 			// aapt resource value: 0x7F0C0017
-			public const int abc_menu_enter_shortcut_label = 2131492887;
+			public const int abc_menu_ctrl_shortcut_label = 2131492887;
 			
 			// aapt resource value: 0x7F0C0018
-			public const int abc_menu_function_shortcut_label = 2131492888;
+			public const int abc_menu_delete_shortcut_label = 2131492888;
 			
 			// aapt resource value: 0x7F0C0019
-			public const int abc_menu_meta_shortcut_label = 2131492889;
+			public const int abc_menu_enter_shortcut_label = 2131492889;
 			
 			// aapt resource value: 0x7F0C001A
-			public const int abc_menu_shift_shortcut_label = 2131492890;
+			public const int abc_menu_function_shortcut_label = 2131492890;
 			
 			// aapt resource value: 0x7F0C001B
-			public const int abc_menu_space_shortcut_label = 2131492891;
+			public const int abc_menu_meta_shortcut_label = 2131492891;
 			
 			// aapt resource value: 0x7F0C001C
-			public const int abc_menu_sym_shortcut_label = 2131492892;
+			public const int abc_menu_shift_shortcut_label = 2131492892;
 			
 			// aapt resource value: 0x7F0C001D
-			public const int abc_prepend_shortcut_label = 2131492893;
-			
-			// aapt resource value: 0x7F0C001F
-			public const int abc_searchview_description_clear = 2131492895;
-			
-			// aapt resource value: 0x7F0C0020
-			public const int abc_searchview_description_query = 2131492896;
-			
-			// aapt resource value: 0x7F0C0021
-			public const int abc_searchview_description_search = 2131492897;
-			
-			// aapt resource value: 0x7F0C0022
-			public const int abc_searchview_description_submit = 2131492898;
-			
-			// aapt resource value: 0x7F0C0023
-			public const int abc_searchview_description_voice = 2131492899;
+			public const int abc_menu_space_shortcut_label = 2131492893;
 			
 			// aapt resource value: 0x7F0C001E
-			public const int abc_search_hint = 2131492894;
+			public const int abc_menu_sym_shortcut_label = 2131492894;
+			
+			// aapt resource value: 0x7F0C001F
+			public const int abc_prepend_shortcut_label = 2131492895;
+			
+			// aapt resource value: 0x7F0C0021
+			public const int abc_searchview_description_clear = 2131492897;
+			
+			// aapt resource value: 0x7F0C0022
+			public const int abc_searchview_description_query = 2131492898;
+			
+			// aapt resource value: 0x7F0C0023
+			public const int abc_searchview_description_search = 2131492899;
 			
 			// aapt resource value: 0x7F0C0024
-			public const int abc_shareactionprovider_share_with = 2131492900;
+			public const int abc_searchview_description_submit = 2131492900;
 			
 			// aapt resource value: 0x7F0C0025
-			public const int abc_shareactionprovider_share_with_application = 2131492901;
+			public const int abc_searchview_description_voice = 2131492901;
+			
+			// aapt resource value: 0x7F0C0020
+			public const int abc_search_hint = 2131492896;
 			
 			// aapt resource value: 0x7F0C0026
-			public const int abc_toolbar_collapse_description = 2131492902;
+			public const int abc_shareactionprovider_share_with = 2131492902;
 			
 			// aapt resource value: 0x7F0C0027
-			public const int appbar_scrolling_view_behavior = 2131492903;
+			public const int abc_shareactionprovider_share_with_application = 2131492903;
 			
 			// aapt resource value: 0x7F0C0028
-			public const int bottom_sheet_behavior = 2131492904;
+			public const int abc_toolbar_collapse_description = 2131492904;
 			
 			// aapt resource value: 0x7F0C0029
-			public const int character_counter_content_description = 2131492905;
+			public const int appbar_scrolling_view_behavior = 2131492905;
+			
+			// aapt resource value: 0x7F0C0000
+			public const int ApplicationName = 2131492864;
 			
 			// aapt resource value: 0x7F0C002A
-			public const int character_counter_pattern = 2131492906;
+			public const int bottom_sheet_behavior = 2131492906;
 			
 			// aapt resource value: 0x7F0C002B
-			public const int common_google_play_services_enable_button = 2131492907;
+			public const int character_counter_content_description = 2131492907;
 			
 			// aapt resource value: 0x7F0C002C
-			public const int common_google_play_services_enable_text = 2131492908;
+			public const int character_counter_pattern = 2131492908;
 			
 			// aapt resource value: 0x7F0C002D
-			public const int common_google_play_services_enable_title = 2131492909;
+			public const int common_google_play_services_enable_button = 2131492909;
 			
 			// aapt resource value: 0x7F0C002E
-			public const int common_google_play_services_install_button = 2131492910;
+			public const int common_google_play_services_enable_text = 2131492910;
 			
 			// aapt resource value: 0x7F0C002F
-			public const int common_google_play_services_install_text = 2131492911;
+			public const int common_google_play_services_enable_title = 2131492911;
 			
 			// aapt resource value: 0x7F0C0030
-			public const int common_google_play_services_install_title = 2131492912;
+			public const int common_google_play_services_install_button = 2131492912;
 			
 			// aapt resource value: 0x7F0C0031
-			public const int common_google_play_services_notification_channel_name = 2131492913;
+			public const int common_google_play_services_install_text = 2131492913;
 			
 			// aapt resource value: 0x7F0C0032
-			public const int common_google_play_services_notification_ticker = 2131492914;
+			public const int common_google_play_services_install_title = 2131492914;
 			
 			// aapt resource value: 0x7F0C0033
-			public const int common_google_play_services_unknown_issue = 2131492915;
+			public const int common_google_play_services_notification_channel_name = 2131492915;
 			
 			// aapt resource value: 0x7F0C0034
-			public const int common_google_play_services_unsupported_text = 2131492916;
+			public const int common_google_play_services_notification_ticker = 2131492916;
 			
 			// aapt resource value: 0x7F0C0035
-			public const int common_google_play_services_update_button = 2131492917;
+			public const int common_google_play_services_unknown_issue = 2131492917;
 			
 			// aapt resource value: 0x7F0C0036
-			public const int common_google_play_services_update_text = 2131492918;
+			public const int common_google_play_services_unsupported_text = 2131492918;
 			
 			// aapt resource value: 0x7F0C0037
-			public const int common_google_play_services_update_title = 2131492919;
+			public const int common_google_play_services_update_button = 2131492919;
 			
 			// aapt resource value: 0x7F0C0038
-			public const int common_google_play_services_updating_text = 2131492920;
+			public const int common_google_play_services_update_text = 2131492920;
 			
 			// aapt resource value: 0x7F0C0039
-			public const int common_google_play_services_wear_update_text = 2131492921;
+			public const int common_google_play_services_update_title = 2131492921;
 			
 			// aapt resource value: 0x7F0C003A
-			public const int common_open_on_phone = 2131492922;
+			public const int common_google_play_services_updating_text = 2131492922;
 			
 			// aapt resource value: 0x7F0C003B
-			public const int common_signin_button_text = 2131492923;
+			public const int common_google_play_services_wear_update_text = 2131492923;
 			
 			// aapt resource value: 0x7F0C003C
-			public const int common_signin_button_text_long = 2131492924;
+			public const int common_open_on_phone = 2131492924;
 			
 			// aapt resource value: 0x7F0C003D
-			public const int default_web_client_id = 2131492925;
+			public const int common_signin_button_text = 2131492925;
 			
 			// aapt resource value: 0x7F0C003E
-			public const int fab_transformation_scrim_behavior = 2131492926;
+			public const int common_signin_button_text_long = 2131492926;
 			
 			// aapt resource value: 0x7F0C003F
-			public const int fab_transformation_sheet_behavior = 2131492927;
+			public const int default_web_client_id = 2131492927;
 			
 			// aapt resource value: 0x7F0C0040
-			public const int fcm_fallback_notification_channel_label = 2131492928;
+			public const int fab_transformation_scrim_behavior = 2131492928;
 			
 			// aapt resource value: 0x7F0C0041
-			public const int firebase_database_url = 2131492929;
+			public const int fab_transformation_sheet_behavior = 2131492929;
 			
 			// aapt resource value: 0x7F0C0042
-			public const int gcm_defaultSenderId = 2131492930;
+			public const int fcm_fallback_notification_channel_label = 2131492930;
 			
 			// aapt resource value: 0x7F0C0043
-			public const int google_api_key = 2131492931;
+			public const int firebase_database_url = 2131492931;
 			
 			// aapt resource value: 0x7F0C0044
-			public const int google_app_id = 2131492932;
+			public const int gcm_defaultSenderId = 2131492932;
 			
 			// aapt resource value: 0x7F0C0045
-			public const int google_crash_reporting_api_key = 2131492933;
+			public const int google_api_key = 2131492933;
 			
 			// aapt resource value: 0x7F0C0046
-			public const int google_storage_bucket = 2131492934;
+			public const int google_app_id = 2131492934;
 			
 			// aapt resource value: 0x7F0C0047
-			public const int hide_bottom_view_on_scroll_behavior = 2131492935;
+			public const int google_crash_reporting_api_key = 2131492935;
 			
 			// aapt resource value: 0x7F0C0048
-			public const int library_name = 2131492936;
+			public const int google_storage_bucket = 2131492936;
+			
+			// aapt resource value: 0x7F0C0001
+			public const int Hello = 2131492865;
 			
 			// aapt resource value: 0x7F0C0049
-			public const int mtrl_chip_close_icon_content_description = 2131492937;
+			public const int hide_bottom_view_on_scroll_behavior = 2131492937;
 			
 			// aapt resource value: 0x7F0C004A
-			public const int pageFeed = 2131492938;
+			public const int library_name = 2131492938;
 			
 			// aapt resource value: 0x7F0C004B
-			public const int pageLoadedAlbums = 2131492939;
+			public const int mtrl_chip_close_icon_content_description = 2131492939;
 			
 			// aapt resource value: 0x7F0C004C
-			public const int pageMap = 2131492940;
+			public const int pageFeed = 2131492940;
 			
 			// aapt resource value: 0x7F0C004D
-			public const int pagePrivate = 2131492941;
+			public const int pageLoadedAlbums = 2131492941;
 			
 			// aapt resource value: 0x7F0C004E
-			public const int password_toggle_content_description = 2131492942;
+			public const int pageMap = 2131492942;
 			
 			// aapt resource value: 0x7F0C004F
-			public const int path_password_eye = 2131492943;
+			public const int pagePrivate = 2131492943;
 			
 			// aapt resource value: 0x7F0C0050
-			public const int path_password_eye_mask_strike_through = 2131492944;
+			public const int password_toggle_content_description = 2131492944;
 			
 			// aapt resource value: 0x7F0C0051
-			public const int path_password_eye_mask_visible = 2131492945;
+			public const int path_password_eye = 2131492945;
 			
 			// aapt resource value: 0x7F0C0052
-			public const int path_password_strike_through = 2131492946;
+			public const int path_password_eye_mask_strike_through = 2131492946;
 			
 			// aapt resource value: 0x7F0C0053
-			public const int search_menu_title = 2131492947;
+			public const int path_password_eye_mask_visible = 2131492947;
 			
 			// aapt resource value: 0x7F0C0054
-			public const int server_client_id = 2131492948;
+			public const int path_password_strike_through = 2131492948;
 			
 			// aapt resource value: 0x7F0C0055
-			public const int status_bar_notification_info_overflow = 2131492949;
+			public const int search_menu_title = 2131492949;
 			
 			// aapt resource value: 0x7F0C0056
-			public const int title_activity_webview = 2131492950;
+			public const int server_client_id = 2131492950;
+			
+			// aapt resource value: 0x7F0C0057
+			public const int status_bar_notification_info_overflow = 2131492951;
+			
+			// aapt resource value: 0x7F0C0058
+			public const int title_activity_webview = 2131492952;
 			
 			static String()
 			{

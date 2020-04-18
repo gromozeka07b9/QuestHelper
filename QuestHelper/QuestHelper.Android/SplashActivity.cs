@@ -26,7 +26,14 @@ namespace QuestHelper.Droid
 {
     [IntentFilter(new[] { Intent.ActionView, Intent.ActionEdit, Intent.ActionSend, Intent.ActionMain }, Label = "Gosh!", Categories = new string[] { Intent.CategoryDefault, Intent.CategoryBrowsable }, DataMimeType = "text/plain")]
 #if DEBUG
-    [Activity(Label = "Gosh! Debug", Icon = "@drawable/icon2", Theme = "@style/MainTheme.Splash", MainLauncher = true, NoHistory = true, LaunchMode = LaunchMode.SingleInstance, ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "Gosh! Debug", Icon = "@drawable/icon2", Theme = "@style/MainTheme.Splash", MainLauncher = true, NoHistory = true, LaunchMode = LaunchMode.SingleTask, ScreenOrientation = ScreenOrientation.Portrait)]
+    [IntentFilter(
+        new[] { Intent.ActionView},
+        Categories = new[] {Intent.CategoryDefault, Intent.CategoryBrowsable},
+        DataScheme = "com.sd.goshdebug",
+        DataHost = "gosh.eu.auth0.com",
+        DataPathPrefix = "/android/com.sd.goshdebug/callback"
+        )]
 #else
     [Activity(Label = "Gosh!", Icon = "@drawable/icon2", Theme = "@style/MainTheme.Splash", MainLauncher = true, NoHistory = true, LaunchMode = LaunchMode.SingleInstance, ScreenOrientation = ScreenOrientation.Portrait)]
 #endif
@@ -38,22 +45,28 @@ namespace QuestHelper.Droid
         {
             base.OnCreate(bundle);
             UserDialogs.Init(this);
-            if (Intent.Extras != null)
+            if ((Intent.Data != null) && (Intent.Data.Host.Contains("auth0.com")))
             {
-                if (Intent.Extras.KeySet().Count > 0)
+                Auth0.OidcClient.ActivityMediator.Instance.Send(Intent.DataString);
+            }
+            else
+            {
+                if (Intent.Extras != null)
                 {
-                    //ToDo: несмотря на передачу extra в FirebaseNotificationService они почему-то не передаются
-                    //Актуально когда гош открываешь из сообщения в шторке
-                    string messageBody = Intent.Extras.GetString("messageBodyText");
-                    Xamarin.Forms.MessagingCenter.Send<ReceivePushMessage>(new ReceivePushMessage() { MessageBody = messageBody, MessageTitle = string.Empty }, string.Empty);
+                    if (Intent.Extras.KeySet().Count > 0)
+                    {
+                        //ToDo: несмотря на передачу extra в FirebaseNotificationService они почему-то не передаются
+                        //Актуально когда гош открываешь из сообщения в шторке
+                        string messageBody = Intent.Extras.GetString("messageBodyText");
+                        Xamarin.Forms.MessagingCenter.Send<ReceivePushMessage>(new ReceivePushMessage() { MessageBody = messageBody, MessageTitle = string.Empty }, string.Empty);
+                    }
+                }
+
+                if (Intent != null)
+                {
+                    processShareIntent(Intent);
                 }
             }
-
-            if (Intent != null)
-            {
-                processShareIntent(Intent);
-            }
-
         }
 
         private void processShareIntent(Intent shareIntent)
@@ -87,6 +100,7 @@ namespace QuestHelper.Droid
             mainActivity.PutExtra("shareDescription", shareDescription);
             StartActivity(mainActivity);
         }
+
     }
 }
 

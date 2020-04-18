@@ -15,6 +15,7 @@ using QuestHelper.Resources;
 using QuestHelper.View;
 using QuestHelper.WS;
 using Xamarin.Auth;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using static QuestHelper.WS.AccountApiRequest;
 
@@ -28,7 +29,6 @@ namespace QuestHelper.ViewModel
         private string _apiUrl = "http://igosh.pro/api";
         private string _email;
 
-        private IGoogleAuthManagerService _googleAuthManager;
         private bool _isWaitForServer;
 
         public event PropertyChangedEventHandler PropertyChanged = (sender, AddingNewEventArgs) => { };
@@ -54,23 +54,19 @@ namespace QuestHelper.ViewModel
         /// <summary>
         /// Здесь только старт авторизации, до появления окна Chrome - завершение через отдельное сообщение
         /// </summary>
-        private void startLoginWithGoogleCommand()
+        private async void startLoginWithGoogleCommand()
         {
             IsWaitForServer = true;
-            _googleAuthManager = DependencyService.Get<IGoogleAuthManagerService>();
-            _googleAuthManager.Login(OnLoginComplete);
-        }
 
-        private void OnLoginComplete(GoogleUser googleUser, string message)
-        {
-            IsWaitForServer = false;
-            if (googleUser != null)
+            var login = DependencyService.Get<IOAuthService>();
+            var resultAuthUser = await login.LoginAsync();
+            if (!string.IsNullOrEmpty(resultAuthUser.Id))
             {
                 var taskRun = Task.Run(async () =>
                 {
                     try
                     {
-                        await TryToLoginServerWithOAuth(googleUser);
+                        var result = await TryToLoginServerWithOAuth(resultAuthUser);
                     }
                     catch (Exception e)
                     {
@@ -80,37 +76,42 @@ namespace QuestHelper.ViewModel
             }
             else
             {
-                Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.Login_AuthError, "Ok");
+                await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.Login_AuthError, "Ok");
             }
         }
 
-        private async Task TryToLoginServerWithOAuth(GoogleUser googleUser)
+        private async Task<bool> TryToLoginServerWithOAuth(OAuthUser oauthUser)
         {
-            Username = googleUser.Name;
+            Username = oauthUser.Name;
             AccountApiRequest apiRequest = new AccountApiRequest(_apiUrl);
             Analytics.TrackEvent("Login OAuth user started", new Dictionary<string, string> { { "Username", _username } });
             //ToDo: надо добавить на сервер передачу и получение imgurl и роли!
-            TokenResponse authData = await apiRequest.LoginByOAuthAsync(googleUser.Name, googleUser.Email, DeviceCulture.CurrentCulture.Name, googleUser.ImgUrl.ToString(), googleUser.Id, string.Empty);
+            TokenResponse authData = await apiRequest.LoginByOAuthAsync(oauthUser.Name, oauthUser.Email, DeviceCulture.CurrentCulture.Name, oauthUser.ImgUrl.ToString(), oauthUser.Id, string.Empty);
             if (!string.IsNullOrEmpty(authData?.Access_Token))
             {
                 Analytics.TrackEvent("Login OAuth done", new Dictionary<string, string> { { "Username", _username } });
                 TokenStoreService tokenService = new TokenStoreService();
-                if (await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId, _username, authData.Email, googleUser.ImgUrl.ToString()))
+                if (await tokenService.SetAuthDataAsync(authData.Access_Token, authData.UserId, _username, authData.Email, oauthUser.ImgUrl.ToString()))
                 {
                     ParameterManager par = new ParameterManager();
                     par.Set("GuestMode", "0");
-                    Xamarin.Forms.MessagingCenter.Send<AuthResultMessage>(new AuthResultMessage() { IsAuthenticated = true, Username = googleUser.Name }, string.Empty);
+                    Xamarin.Forms.MessagingCenter.Send<AuthResultMessage>(new AuthResultMessage() { IsAuthenticated = true, Username = oauthUser.Name }, string.Empty);
 #if !DEBUG
                     Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
 #endif
                     await Navigation.PopModalAsync();
+                    return true;
                 }
             }
             else
             {
                 Analytics.TrackEvent("Login OAuth error", new Dictionary<string, string> { { "Username", _username } });
-                await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.Login_AuthError, "Ok");
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    UserDialogs.Instance.Alert(CommonResource.Login_AuthError, CommonResource.CommonMsg_Warning, "Ок");
+                });
             }
+            return false;
         }
 
         async void RegisterCommandAsync()

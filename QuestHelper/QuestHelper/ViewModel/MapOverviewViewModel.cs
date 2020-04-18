@@ -74,7 +74,8 @@ namespace QuestHelper.ViewModel
         private async void requestToLocationAccessCommand(object obj)
         {
             PermissionManager permissions = new PermissionManager();
-            await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position);
+            //await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position);
+            await permissions.PermissionLocationGrantedAsync(CommonResource.Permission_Position);
         }
 
         private async void startShowAlbumCommand(object obj)

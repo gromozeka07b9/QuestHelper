@@ -10,6 +10,34 @@ namespace QuestHelper.Managers
 {
     public class PermissionManager
     {
+        public async System.Threading.Tasks.Task<bool> PermissionLocationGrantedAsync(string warningText)
+        {
+            PermissionStatus status = PermissionStatus.Unknown;
+            try
+            {
+                status = await CrossPermissions.Current.CheckPermissionStatusAsync<LocationPermission>();
+                if (status != PermissionStatus.Granted)
+                {
+                    var statusRequest = await CrossPermissions.Current.RequestPermissionAsync<LocationPermission>();
+                    if(statusRequest != PermissionStatus.Granted)
+                    {
+                        UserDialogs.Instance.Alert("Включить разрешение определения позиции можно через меню настроек системы", CommonResource.CommonMsg_Warning, CommonResource.CommonMsg_Ok);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
+
+            return status == PermissionStatus.Granted;
+        }
+
+        /// <summary>
+        /// Устаревший метод, надо уходить от него
+        /// </summary>
+        /// <param name="permission"></param>
+        /// <param name="warningText"></param>
+        /// <returns></returns>
         public async System.Threading.Tasks.Task<bool> PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission permission, string warningText)
         {
             PermissionStatus status = PermissionStatus.Unknown;
@@ -50,7 +78,7 @@ namespace QuestHelper.Managers
 
         public async System.Threading.Tasks.Task<bool> PermissionGetCoordsGrantedAsync()
         {
-            var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Plugin.Permissions.Abstractions.Permission.Location);
+            var status = await CrossPermissions.Current.CheckPermissionStatusAsync<LocationPermission>();
             return (status == PermissionStatus.Granted);
         }
     }

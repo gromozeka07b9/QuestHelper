@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using QuestHelper.Model;
 
 namespace QuestHelper
 {
     public interface IOAuthService
     {
-        bool Login();
+        Task<OAuthUser> LoginAsync();
         void Logout();
 
     }

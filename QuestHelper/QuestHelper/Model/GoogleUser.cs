@@ -4,7 +4,7 @@ using System.Text;
 
 namespace QuestHelper.Model
 {
-    public class GoogleUser
+    public class OAuthUser
     {
         public string Id { get; set; }
         public string Name { get; set; }

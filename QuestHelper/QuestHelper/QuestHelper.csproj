@@ -77,9 +77,6 @@
     <Compile Update="View\MakeRouteLinkPage.xaml.cs">
       <DependentUpon>MakeRouteLinkPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="View\RequestToLocationPermissionPage.xaml.cs">
-      <DependentUpon>RequestToLocationPermissionPage.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>

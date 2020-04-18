@@ -48,7 +48,7 @@ namespace QuestHelper.ViewModel
         {
             SetStatusNoNeedShowOnboarding();
             PermissionManager permissions = new PermissionManager();
-            await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position);
+            await permissions.PermissionLocationGrantedAsync(CommonResource.Permission_Position);
             App.Current.MainPage = new View.MainPage();
         }
     }
