@@ -144,9 +144,6 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Auth0.OidcClient.iOS">
-      <Version>3.1.2</Version>
-    </PackageReference>
     <PackageReference Include="CardsView">
       <Version>2.5.1</Version>
     </PackageReference>

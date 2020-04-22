@@ -45,27 +45,20 @@ namespace QuestHelper.Droid
         {
             base.OnCreate(bundle);
             UserDialogs.Init(this);
-            if ((Intent.Data != null) && (Intent.Data.Host.Contains("auth0.com")))
+            if (Intent.Extras != null)
             {
-                Auth0.OidcClient.ActivityMediator.Instance.Send(Intent.DataString);
+                if (Intent.Extras.KeySet().Count > 0)
+                {
+                    //ToDo: несмотря на передачу extra в FirebaseNotificationService они почему-то не передаются
+                    //Актуально когда гош открываешь из сообщения в шторке
+                    string messageBody = Intent.Extras.GetString("messageBodyText");
+                    Xamarin.Forms.MessagingCenter.Send<ReceivePushMessage>(new ReceivePushMessage() { MessageBody = messageBody, MessageTitle = string.Empty }, string.Empty);
+                }
             }
-            else
-            {
-                if (Intent.Extras != null)
-                {
-                    if (Intent.Extras.KeySet().Count > 0)
-                    {
-                        //ToDo: несмотря на передачу extra в FirebaseNotificationService они почему-то не передаются
-                        //Актуально когда гош открываешь из сообщения в шторке
-                        string messageBody = Intent.Extras.GetString("messageBodyText");
-                        Xamarin.Forms.MessagingCenter.Send<ReceivePushMessage>(new ReceivePushMessage() { MessageBody = messageBody, MessageTitle = string.Empty }, string.Empty);
-                    }
-                }
 
-                if (Intent != null)
-                {
-                    processShareIntent(Intent);
-                }
+            if (Intent != null)
+            {
+                processShareIntent(Intent);
             }
         }
 

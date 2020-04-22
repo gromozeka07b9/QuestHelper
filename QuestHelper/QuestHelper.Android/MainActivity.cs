@@ -15,7 +15,6 @@ using QuestHelper.Droid.Intents;
 using QuestHelper.Consts;
 using Android.Gms.Auth.Api.SignIn;
 using Android.Gms.Auth.Api;
-using Auth0.OidcClient;
 
 namespace QuestHelper.Droid
 {

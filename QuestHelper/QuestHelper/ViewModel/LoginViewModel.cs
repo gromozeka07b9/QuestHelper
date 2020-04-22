@@ -58,7 +58,7 @@ namespace QuestHelper.ViewModel
         {
             IsWaitForServer = true;
 
-            var login = DependencyService.Get<IOAuthService>();
+            /*var login = DependencyService.Get<IOAuthService>();
             var resultAuthUser = await login.LoginAsync();
             if (!string.IsNullOrEmpty(resultAuthUser.Id))
             {
@@ -77,7 +77,7 @@ namespace QuestHelper.ViewModel
             else
             {
                 await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.Login_AuthError, "Ok");
-            }
+            }*/
         }
 
         private async Task<bool> TryToLoginServerWithOAuth(OAuthUser oauthUser)
