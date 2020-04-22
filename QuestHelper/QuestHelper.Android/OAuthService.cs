@@ -14,8 +14,8 @@ namespace QuestHelper.Droid
 
             var client = new Auth0Client(new Auth0ClientOptions
             {
-                Domain = Consts.Auth0Settings.Domain,
-                ClientId = Consts.Auth0Settings.ClientId
+                Domain = "gosh.eu.auth0.com",
+                ClientId = "QUseZnFk1LQu8F2XI9bmwEBBVZ90duuZ"
             });
 
             var loginResult = await client.LoginAsync();
