@@ -11,6 +11,7 @@ using QuestHelper.Consts;
 using QuestHelper.Managers;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
+using QuestHelper.OAuth;
 using QuestHelper.Resources;
 using QuestHelper.View;
 using QuestHelper.WS;
@@ -28,6 +29,8 @@ namespace QuestHelper.ViewModel
         private string _username;
         private string _apiUrl = "http://igosh.pro/api";
         private string _email;
+
+        //private IGoogleAuthManagerService _googleAuthManager;
 
         private bool _isWaitForServer;
 
@@ -54,10 +57,38 @@ namespace QuestHelper.ViewModel
         /// <summary>
         /// Здесь только старт авторизации, до появления окна Chrome - завершение через отдельное сообщение
         /// </summary>
-        private async void startLoginWithGoogleCommand()
+        private void startLoginWithGoogleCommand()
         {
             IsWaitForServer = true;
+            //_googleAuthManager = DependencyService.Get<IGoogleAuthManagerService>();
+            //_googleAuthManager.Login(OnLoginCompleteAsync);
+            MessagingCenter.Subscribe<OAuthResultMessage>(this, string.Empty, async (sender) =>
+            {
+                if (sender.IsAuthenticated)
+                {
+                    try
+                    {
+                        var result = await TryToLoginServerWithOAuth(new OAuthUser() {Id = sender.AuthenticatorUserId, Name = sender.Username, Email = sender.Email, ImgUrl = !String.IsNullOrEmpty(sender.ImgUrl) ? new Uri(sender.ImgUrl) : new Uri("") });
+                        if (result)
+                        {
+                            await Navigation.PopModalAsync();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        HandleError.Process("OAuthLogin", "OnLoginComplete", e, false);
+                    }
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.Login_AuthError, "Ok");
+                }
+            });
 
+            UserDialogs.Instance.ShowLoading(CommonResource.Login_AuthorizationProcess, MaskType.Black);
+            OAuthGoogleAuthenticator oAuth = new OAuthGoogleAuthenticator();
+            oAuth.Login();            
+            
             /*var login = DependencyService.Get<IOAuthService>();
             var resultAuthUser = await login.LoginAsync();
             if (!string.IsNullOrEmpty(resultAuthUser.Id))
@@ -80,6 +111,28 @@ namespace QuestHelper.ViewModel
             }*/
         }
 
+        /*private async void OnLoginCompleteAsync(OAuthUser user, string errorMsg)
+        {
+            if (user != null)
+            {
+                var taskRun = Task.Run(async () =>
+                {
+                    try
+                    {
+                        var result = await TryToLoginServerWithOAuth(user);
+                    }
+                    catch (Exception e)
+                    {
+                        HandleError.Process("OAuthLogin", "OnLoginComplete", e, false);
+                    }
+                });
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.Login_AuthError, "Ok");
+            }
+        }*/
+
         private async Task<bool> TryToLoginServerWithOAuth(OAuthUser oauthUser)
         {
             Username = oauthUser.Name;
@@ -96,10 +149,9 @@ namespace QuestHelper.ViewModel
                     ParameterManager par = new ParameterManager();
                     par.Set("GuestMode", "0");
                     Xamarin.Forms.MessagingCenter.Send<AuthResultMessage>(new AuthResultMessage() { IsAuthenticated = true, Username = oauthUser.Name }, string.Empty);
-#if !DEBUG
+//#if !DEBUG
                     Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
-#endif
-                    await Navigation.PopModalAsync();
+//#endif
                     return true;
                 }
             }

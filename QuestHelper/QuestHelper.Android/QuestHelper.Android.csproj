@@ -125,6 +125,9 @@
     <PackageReference Include="Xamarin.Forms.Maps">
       <Version>4.5.0.617</Version>
     </PackageReference>
+    <PackageReference Include="Xamarin.GooglePlayServices.Auth">
+      <Version>71.1600.0</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.GooglePlayServices.Basement">
       <Version>71.1620.0</Version>
     </PackageReference>
@@ -133,6 +136,7 @@
     <Compile Include="ApplicationInstalledService.cs" />
     <Compile Include="CustomEditorRenderer.cs" />
     <Compile Include="CustomEditTextRenderer.cs" />
+    <Compile Include="GoogleAuthInterceptor.cs" />
     <Compile Include="Renderers\BitmapConverter.cs" />
     <Compile Include="Renderers\BitmapTextWriter.cs" />
     <Compile Include="Renderers\CustomOverviewMapRenderer.cs" />
@@ -202,7 +206,6 @@
     <AndroidResource Include="Resources\drawable\nearme.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Auth\" />
     <Folder Include="Resources\menu\" />
   </ItemGroup>
   <ItemGroup>

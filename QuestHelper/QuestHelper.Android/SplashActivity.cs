@@ -27,13 +27,6 @@ namespace QuestHelper.Droid
     [IntentFilter(new[] { Intent.ActionView, Intent.ActionEdit, Intent.ActionSend, Intent.ActionMain }, Label = "Gosh!", Categories = new string[] { Intent.CategoryDefault, Intent.CategoryBrowsable }, DataMimeType = "text/plain")]
 #if DEBUG
     [Activity(Label = "Gosh! Debug", Icon = "@drawable/icon2", Theme = "@style/MainTheme.Splash", MainLauncher = true, NoHistory = true, LaunchMode = LaunchMode.SingleTask, ScreenOrientation = ScreenOrientation.Portrait)]
-    [IntentFilter(
-        new[] { Intent.ActionView},
-        Categories = new[] {Intent.CategoryDefault, Intent.CategoryBrowsable},
-        DataScheme = "com.sd.goshdebug",
-        DataHost = "gosh.eu.auth0.com",
-        DataPathPrefix = "/android/com.sd.goshdebug/callback"
-        )]
 #else
     [Activity(Label = "Gosh!", Icon = "@drawable/icon2", Theme = "@style/MainTheme.Splash", MainLauncher = true, NoHistory = true, LaunchMode = LaunchMode.SingleInstance, ScreenOrientation = ScreenOrientation.Portrait)]
 #endif
