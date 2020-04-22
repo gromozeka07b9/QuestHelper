@@ -30,12 +30,19 @@ namespace QuestHelper.Droid
     [IntentFilter(
         new[] { Intent.ActionView},
         Categories = new[] {Intent.CategoryDefault, Intent.CategoryBrowsable},
-        DataScheme = "com.sd.goshdebug",
-        DataHost = "gosh.eu.auth0.com",
-        DataPathPrefix = "/android/com.sd.goshdebug/callback"
+        DataScheme = Consts.Auth0Settings.DataSchemeDebug,
+        DataHost = Consts.Auth0Settings.Domain,
+        DataPathPrefix = Consts.Auth0Settings.DataPathPrefixDebug
         )]
 #else
-    [Activity(Label = "Gosh!", Icon = "@drawable/icon2", Theme = "@style/MainTheme.Splash", MainLauncher = true, NoHistory = true, LaunchMode = LaunchMode.SingleInstance, ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "Gosh!", Icon = "@drawable/icon2", Theme = "@style/MainTheme.Splash", MainLauncher = true, NoHistory = true, LaunchMode = LaunchMode.SingleTask, ScreenOrientation = ScreenOrientation.Portrait)]
+    [IntentFilter(
+        new[] { Intent.ActionView},
+        Categories = new[] {Intent.CategoryDefault, Intent.CategoryBrowsable},
+        DataScheme = Consts.Auth0Settings.DataSchemeRelease,
+        DataHost = Consts.Auth0Settings.Domain,
+        DataPathPrefix = Consts.Auth0Settings.DataPathPrefixRelease
+        )]
 #endif
     public class SplashActivity : AppCompatActivity
     {
