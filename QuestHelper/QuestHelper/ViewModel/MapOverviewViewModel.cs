@@ -165,13 +165,14 @@ namespace QuestHelper.ViewModel
             _currentViewPoi = poi;
             CurrentPoiName = poi.Name;
             CurrentPoiImage = Path.Combine(ImagePathManager.GetPicturesDirectory(), poi.ImgFilename);
+            CurrentPoiImage = File.Exists(CurrentPoiImage) ? CurrentPoiImage : "emptyphoto.png";
             CurrentPoiDescription = poi.Description;
             if (!string.IsNullOrEmpty(_currentViewPoi?.ByRouteId))
             {
                 var creator = new ViewUserInfo();
                 creator.Load(_currentViewPoi.CreatorId);
                 CurrentPoiCreatorName = creator?.Name;
-                CurrentPoiCreatorImg = creator?.ImgUrl;
+                CurrentPoiCreatorImg = !string.IsNullOrEmpty(creator?.ImgUrl)? creator?.ImgUrl : string.Empty;
                 if (string.IsNullOrEmpty(CurrentPoiCreatorName))
                 {
                     if (await creator.UpdateFromServerAsync())
@@ -181,6 +182,12 @@ namespace QuestHelper.ViewModel
                     }
                 }
             }
+            else
+            {
+                CurrentPoiCreatorName = string.Empty;
+                CurrentPoiCreatorImg = string.Empty;
+            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsVisibleCreator"));
         }
 
         private async Task refreshPoisAsync()
@@ -247,11 +254,16 @@ namespace QuestHelper.ViewModel
             }
             set
             {
-                if (!value.Equals(_currentPoiCreatorImg))
+                if ((value != null) && (!value.Equals(_currentPoiCreatorImg)))
                 {
                     _currentPoiCreatorImg = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentPoiCreatorImg"));
                 }
+                else
+                {
+                    _currentPoiCreatorImg = string.Empty;
+                }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentPoiCreatorImg"));
             }
         }
 
@@ -366,7 +378,14 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        
+        public bool IsVisibleCreator
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(CurrentPoiCreatorName);
+            }
+        }
+
         public bool IsPoisLoaded
         {
             get
