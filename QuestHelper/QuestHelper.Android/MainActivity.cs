@@ -19,6 +19,7 @@ using Microsoft.AppCenter.Analytics;
 using System;
 using Android.Gms.Auth.Api.SignIn;
 using Android.Gms.Auth.Api;
+using Xamarin.Auth;
 
 namespace QuestHelper.Droid
 {
@@ -52,6 +53,7 @@ namespace QuestHelper.Droid
             ImageCircleRenderer.Init();
             Xamarin.Essentials.Platform.Init(this, bundle);
             UserDialogs.Init(this);
+            CustomTabsConfiguration.CustomTabsClosingMessage = null;
 
             PushReceiverSetup pushReceiverSetup = new PushReceiverSetup(this);
             pushReceiverSetup.Setup();
