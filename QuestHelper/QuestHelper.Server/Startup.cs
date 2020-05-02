@@ -36,6 +36,18 @@ namespace QuestHelper.Server
                         ValidateIssuerSigningKey = true
                     };
                 });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                    });
+            });
             services.AddMvc();
             services.AddDbContext<ServerDbContext>();
             services.AddScoped<RequestFilter>();
@@ -64,6 +76,7 @@ namespace QuestHelper.Server
             }
 
             app.UseAuthentication();
+            app.UseCors("AllowAll");
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

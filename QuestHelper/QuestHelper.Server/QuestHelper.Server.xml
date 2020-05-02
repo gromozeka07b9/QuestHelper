@@ -116,6 +116,17 @@
             <param name="id">routepointmediaobjectId</param>
             <returns></returns>
         </member>
+        <member name="T:QuestHelper.Server.Controllers.v2.RoutesController">
+            <summary>
+            CRUD for routes
+            </summary>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.v2.RoutesController.Get(QuestHelper.Server.Controllers.v2.PagingParameters)">
+            <summary>
+            List all available routes for user
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:QuestHelper.Server.Integration.RawTextCleaner">
             <summary>
             Преобразователь сырого распознанного текста в текст с предложениями и пунктуацией
