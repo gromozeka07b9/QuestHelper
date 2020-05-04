@@ -27,6 +27,7 @@ namespace QuestHelper.Server.Controllers.v2
         [HttpGet]
         public IActionResult Get([FromQuery] PagingParameters pagingParameters)
         {
+            FilterParameters filters = new FilterParameters(pagingParameters.Filter);
             int pageNumber = pagingParameters.IndexesRangeToPageNumber(pagingParameters.Range, pagingParameters.PageSize);
             int totalCountRows = 0;
             List<RoutePoint> items = new List<RoutePoint>();
@@ -38,12 +39,20 @@ namespace QuestHelper.Server.Controllers.v2
                     var publishRoutes = db.Route.Where(r => r.IsPublished && r.IsDeleted == false).Select(r => r.RouteId).ToList();
                     var routeaccess = db.RouteAccess.Where(u => u.UserId == userId).Select(u => u.RouteId).ToList();
                     var withoutFilter = db.RoutePoint.Where(x=>routeaccess.Contains(x.RouteId) || (publishRoutes.Contains(x.RouteId)));
+
+                    withoutFilter = filters.isFilterPresent("isDeleted") ? withoutFilter.Where(r => r.IsDeleted == filters.GetBooleanByName("isDeleted")) : withoutFilter;
+                    withoutFilter = filters.isFilterPresent("routeId") ? withoutFilter.Where(r => r.RouteId.Equals(filters.GetStringByName("routeId"))) : withoutFilter;
+                    withoutFilter = filters.isFilterPresent("address") ? withoutFilter.Where(r => r.Name.Contains(filters.GetStringByName("address"))) : withoutFilter;
+                    withoutFilter = filters.isFilterPresent("name") ? withoutFilter.Where(r => r.Name.Contains(filters.GetStringByName("name"))) : withoutFilter;
+                    withoutFilter = filters.isFilterPresent("description") ? withoutFilter.Where(r => r.Description.Contains(filters.GetStringByName("description"))) : withoutFilter;
+                    if (filters.isFilterPresent("createDate"))
+                    {
+                        var cd = filters.GetDateTimeByName("createDate");
+                        withoutFilter = withoutFilter.Where(r => r.CreateDate.Year.Equals(cd.Year) && r.CreateDate.Month.Equals(cd.Month) && r.CreateDate.Day.Equals(cd.Day));
+                    }
+
                     totalCountRows = withoutFilter.Count();
-                    items = withoutFilter.Skip((pageNumber - 1) * pagingParameters.PageSize).Take(pagingParameters.PageSize).ToList();
-                    /*var routeaccess = db.RouteAccess.Where(u => u.UserId == userId).Select(u => u.RouteId).ToList();
-                    var withoutFilter = db.Route.Where(r => routeaccess.Contains(r.RouteId)).OrderBy(r => r.CreateDate);
-                    totalCountRows = withoutFilter.Count();
-                    items = withoutFilter.Skip((pageNumber - 1) * pagingParameters.PageSize).Take(pagingParameters.PageSize).ToList();*/
+                    items = withoutFilter.OrderBy(r => r.CreateDate).Skip((pageNumber - 1) * pagingParameters.PageSize).Take(pagingParameters.PageSize).ToList();
                 }
             }
             HttpContext.Response.Headers.Add("x-total-count", totalCountRows.ToString());

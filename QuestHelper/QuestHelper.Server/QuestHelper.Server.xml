@@ -116,6 +116,17 @@
             <param name="id">routepointmediaobjectId</param>
             <returns></returns>
         </member>
+        <member name="T:QuestHelper.Server.Controllers.v2.PoisController">
+            <summary>
+            Getting poi
+            </summary>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.v2.PoisController.GetPoi(QuestHelper.Server.Controllers.v2.PagingParameters)">
+            <summary>
+            Get all available POIs for current user - published other people, private
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:QuestHelper.Server.Controllers.v2.RoutePointsController">
             <summary>
             CRUD for route points

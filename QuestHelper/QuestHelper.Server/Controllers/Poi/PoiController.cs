@@ -30,6 +30,7 @@ namespace QuestHelper.Server.Controllers
             _mediaManager = new MediaManager();
             _pathToMediaCatalog = _mediaManager.PathToMediaCatalog;
         }
+
         /// <summary>
         /// Get all available POIs for current user - published other people, private
         /// </summary>

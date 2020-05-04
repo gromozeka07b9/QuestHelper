@@ -27,6 +27,7 @@ namespace QuestHelper.Server.Controllers.v2
         [HttpGet]
         public IActionResult Get([FromQuery] PagingParameters pagingParameters)
         {
+            FilterParameters filters = new FilterParameters(pagingParameters.Filter);
             int pageNumber = pagingParameters.IndexesRangeToPageNumber(pagingParameters.Range, pagingParameters.PageSize);
             int totalCountRows = 0;
             List<Route> items = new List<Route>();
@@ -36,9 +37,23 @@ namespace QuestHelper.Server.Controllers.v2
                 using (var db = new ServerDbContext(_dbOptions))
                 {
                     var routeaccess = db.RouteAccess.Where(u => u.UserId == userId).Select(u => u.RouteId).ToList();
-                    var withoutFilter = db.Route.Where(r => routeaccess.Contains(r.RouteId)).OrderBy(r => r.CreateDate);
-                    totalCountRows = withoutFilter.Count();
-                    items = withoutFilter.Skip((pageNumber - 1) * pagingParameters.PageSize).Take(pagingParameters.PageSize).ToList();
+                    var withoutFilter = db.Route.Where(r => routeaccess.Contains(r.RouteId));
+
+                    withoutFilter = filters.isFilterPresent("createDate") ? withoutFilter.Where(r => r.CreateDate.Equals(filters.GetDateTimeByName("createDate"))) : withoutFilter;
+                    withoutFilter = filters.isFilterPresent("isPublished") ? withoutFilter.Where(r => r.IsPublished == filters.GetBooleanByName("isPublished")) : withoutFilter;
+                    withoutFilter = filters.isFilterPresent("isDeleted") ? withoutFilter.Where(r => r.IsDeleted == filters.GetBooleanByName("isDeleted")) : withoutFilter;
+                    withoutFilter = filters.isFilterPresent("isShared") ? withoutFilter.Where(r => r.IsShared == filters.GetBooleanByName("isShared")) : withoutFilter;
+                    withoutFilter = filters.isFilterPresent("creatorId") ? withoutFilter.Where(r => r.CreatorId.Contains(filters.GetStringByName("creatorId"))) : withoutFilter;
+                    withoutFilter = filters.isFilterPresent("name") ? withoutFilter.Where(r => r.Name.Contains(filters.GetStringByName("name"))) : withoutFilter;
+                    withoutFilter = filters.isFilterPresent("description") ? withoutFilter.Where(r => r.Description.Contains(filters.GetStringByName("description"))) : withoutFilter;
+                    if (filters.isFilterPresent("createDate"))
+                    {
+                        var cd = filters.GetDateTimeByName("createDate");
+                        withoutFilter = withoutFilter.Where(r => r.CreateDate.Year.Equals(cd.Year) && r.CreateDate.Month.Equals(cd.Month) && r.CreateDate.Day.Equals(cd.Day));
+                    }
+
+                    totalCountRows = withoutFilter.Count();                    
+                    items = withoutFilter.OrderBy(r => r.CreateDate).Skip((pageNumber - 1) * pagingParameters.PageSize).Take(pagingParameters.PageSize).ToList();
                 }
             }
             HttpContext.Response.Headers.Add("x-total-count", totalCountRows.ToString());
@@ -104,71 +119,4 @@ namespace QuestHelper.Server.Controllers.v2
 
     }
 
-    public class PagingParameters
-    {
-        const int maxPageSize = 50;
-        private int _pageNumber = 1;
-        private int _pageSize = 3;
-        private string _range = string.Empty;
-
-        public int PageNumber
-        {
-            get
-            {
-                return _pageNumber;
-            }
-        }
-
-        public string Filter { get; set; } = string.Empty;
-
-        public string Range
-        {
-            get
-            {
-                return _range;
-            }
-            set
-            {
-                _range = value;
-            }
-        }
-
-        public int IndexesRangeToPageNumber(string range, int pageSize)
-        {
-            //[0,9]=1,[10,19]=2,PageSize=10
-            int idxFrom, idxTo = 0;
-            var arrIdx = range.Replace("[", "").Replace("]", "").Split(",");
-            if(arrIdx.Length == 2)
-            {
-                idxFrom = Convert.ToInt32(arrIdx[0]);
-                idxTo = Convert.ToInt32(arrIdx[1]);
-                if(idxFrom == 0)
-                {
-                    return 1;
-                }
-                else
-                {
-                    return (idxFrom / pageSize) + 1;
-                }
-            }
-            else
-            {
-                return 1;
-            }
-        }
-
-        public string Sort { get; set; } = string.Empty;
-
-        public int PageSize
-        {
-            get
-            {
-                return _pageSize;
-            }
-            set
-            {
-                _pageSize = (value > maxPageSize) ? maxPageSize : value;
-            }
-        }
     }
-}
