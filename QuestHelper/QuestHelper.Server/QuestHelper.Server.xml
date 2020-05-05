@@ -121,7 +121,7 @@
             Getting poi
             </summary>
         </member>
-        <member name="M:QuestHelper.Server.Controllers.v2.PoisController.GetPoi(QuestHelper.Server.Controllers.v2.PagingParameters)">
+        <member name="M:QuestHelper.Server.Controllers.v2.PoisController.GetPois(QuestHelper.Server.Controllers.v2.PagingParameters)">
             <summary>
             Get all available POIs for current user - published other people, private
             </summary>

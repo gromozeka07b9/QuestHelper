@@ -74,5 +74,78 @@ namespace QuestHelper.Server.Controllers.v2
             return new ObjectResult(point);
         }
 
+        [HttpPost]
+        public void Post([FromBody]RoutePoint routePointObject)
+        {
+            string userId = IdentityManager.GetUserId(HttpContext);
+            using (var db = new ServerDbContext(_dbOptions))
+            {
+                bool accessGranted = db.RouteAccess.Where(u => u.UserId == userId && u.RouteId == routePointObject.RouteId).Any();
+                if (accessGranted)
+                {
+                    var entity = db.RoutePoint.Find(routePointObject.RoutePointId);
+                    if (entity == null)
+                    {
+                        db.RoutePoint.Add(routePointObject);
+                        var entityRoute = db.Route.Find(routePointObject.RouteId);
+                        if (entityRoute != null)
+                        {
+                            entityRoute.VersionsHash = string.Empty;
+                            entityRoute.VersionsList = string.Empty;
+                            db.Entry(entityRoute).CurrentValues.SetValues(entityRoute);
+                        }
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        Response.StatusCode = 405;
+                    }
+                    /*else
+                    {
+                        db.Entry(entity).CurrentValues.SetValues(routePointObject);
+                    }*/
+                }
+                else
+                {
+                    Response.StatusCode = 400;
+                }
+            }
+        }
+
+        [HttpPut("{routePointId}")]
+        public void Put(string routePointId, [FromBody]RoutePoint routePointObject)
+        {
+            string userId = IdentityManager.GetUserId(HttpContext);
+            using (var db = new ServerDbContext(_dbOptions))
+            {
+                bool accessGranted = db.RouteAccess.Where(u => u.UserId == userId && u.RouteId == routePointObject.RouteId).Any();
+                if (accessGranted)
+                {
+                    var entity = db.RoutePoint.Find(routePointObject.RoutePointId);
+                    if (entity != null)
+                    {
+                        db.Entry(entity).CurrentValues.SetValues(routePointObject);
+                        var entityRoute = db.Route.Find(routePointObject.RouteId);
+                        if (entityRoute != null)
+                        {
+                            entityRoute.VersionsHash = string.Empty;
+                            entityRoute.VersionsList = string.Empty;
+                            db.Entry(entityRoute).CurrentValues.SetValues(entityRoute);
+                        }
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        Response.StatusCode = 405;
+                    }
+                }
+                else
+                {
+                    Response.StatusCode = 400;
+                }
+            }
+        }
+
+
     }
 }

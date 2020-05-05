@@ -21,6 +21,7 @@ const RoutePointFilter = (props) => (
     <Filter {...props}>
         <TextInput label="По названию..." source="name" alwaysOn />
         <TextInput label="По тексту..." source="description" alwaysOn />
+        <TextInput label="По id маршрута..." source="routeId" alwaysOn />
         <DateInput label="По дате создания..." source="createDate" alwaysOn />
         <ReferenceInput label="Route" source="routeId" reference="routes">
             <SelectInput optionText="name" />
@@ -41,7 +42,6 @@ export const RoutePointList = props => (
             <TextField source="address" label="Адрес" />
             <TextField source="version" label="Версия" />
             <BooleanField  source="isDeleted" label="Пометка удаления" />
-            <TextField source="description" label="Текст описания" multiline />
         </Datagrid>
     </List>
 );
@@ -53,14 +53,38 @@ export const RoutePointEdit = props => (
             <ReferenceInput source="routeId" reference="routes">
                <SelectInput optionText="name" />
             </ReferenceInput>
-            <TextInput source="name" />
-            <TextInput source="createDate" />
-            <TextInput source="version" />
-            <TextInput source="address" />
-            <TextInput source="latitude" />
-            <TextInput source="longitude" />
-            <BooleanInput source="isDeleted" />
-            <TextInput source="description" multiline />
+            <TextInput source="name" fullWidth/>
+            <DateInput source="createDate" fullWidth/>
+            <TextInput source="version" fullWidth/>
+            <TextInput source="updatedUserId" fullWidth/>
+            <DateInput source="updateDate" fullWidth/>
+
+            <TextInput source="address" fullWidth/>
+            <TextInput source="latitude" fullWidth/>
+            <TextInput source="longitude" fullWidth/>
+            <BooleanInput source="isDeleted" fullWidth/>
+            <TextInput source="description" multiline fullWidth/>
         </SimpleForm>
     </Edit>
+);
+
+export const RoutePointCreate = props => (
+    <Create {...props}>
+        <SimpleForm>
+            <ReferenceInput source="routeId" reference="routes">
+               <SelectInput optionText="name" />
+            </ReferenceInput>
+            <TextInput source="name" fullWidth/>
+            <DateInput source="createDate" fullWidth/>
+            <TextInput source="version" fullWidth/>
+            <TextInput source="updatedUserId" fullWidth/>
+            <DateInput source="updateDate" fullWidth/>
+
+            <TextInput source="address" fullWidth/>
+            <TextInput source="latitude" fullWidth/>
+            <TextInput source="longitude" fullWidth/>
+            <BooleanInput source="isDeleted" fullWidth/>
+            <TextInput source="description" multiline fullWidth/>
+        </SimpleForm>
+    </Create>
 );

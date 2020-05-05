@@ -40,13 +40,15 @@ export const PoiList = props => (
 export const PoiEdit = props => (
     <Edit {...props}>
         <SimpleForm>
-            <TextField source="id" label="id" />
-            <TextInput source="name" />
-            <TextInput source="createDate" />
-            <TextInput source="creatorId" />
-            <BooleanInput  source="isDeleted" />
-            <BooleanInput  source="isPublished" />
-            <TextInput source="description" multiline />
+            <TextField source="id" label="id" fullWidth />
+            <TextInput source="name" fullWidth />
+            <TextInput source="createDate" fullWidth />
+            <TextInput source="creatorId" fullWidth />
+            <BooleanInput  source="isDeleted" fullWidth />
+            <BooleanInput  source="isPublished" fullWidth />
+            <TextInput source="imgFilename" fullWidth />
+            <TextInput source="ImgBase64" fullWidth />
+            <TextInput source="description" multiline fullWidth />
         </SimpleForm>
     </Edit>
 );

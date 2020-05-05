@@ -36,7 +36,7 @@ namespace QuestHelper.Server.Controllers.v2
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult GetPoi([FromQuery] PagingParameters pagingParameters)
+        public IActionResult GetPois([FromQuery] PagingParameters pagingParameters)
         {
             DateTime startDate = DateTime.Now;
             FilterParameters filters = new FilterParameters(pagingParameters.Filter);
@@ -66,22 +66,90 @@ namespace QuestHelper.Server.Controllers.v2
             return new ObjectResult(items);
         }
 
-        /*private List<SharedModelsWS.Poi> selectPois(PoiFilter filter)
+        [HttpGet("{poiId}")]
+        public IActionResult GetPoiById(string poiId)
         {
-            List<SharedModelsWS.Poi> pois = new List<SharedModelsWS.Poi>();
+            DateTime startDate = DateTime.Now;
+            SharedModelsWS.Poi poi = new SharedModelsWS.Poi();
+            string userId = IdentityManager.GetUserId(HttpContext);
 
             using (var db = new ServerDbContext(_dbOptions))
             {
-                pois = db.Poi
-                    .Where(p =>
-                    (filter.IsPrivate && p.CreatorId.Equals(filter.CreatorId)) || (!filter.IsPrivate)
-                    && !p.IsDeleted
-                    )
-                    .Select(getWsModelPoi(db)).ToList();
+                poi = db.Poi.Where(p => p.PoiId.Equals(poiId)).Select(getWsModelPoi(db)).SingleOrDefault();
             }
 
-            return pois;
-        }*/
+            TimeSpan delay = DateTime.Now - startDate;
+            Console.WriteLine($"v2 GetPoiById: status 200, {userId}, delay:{delay.TotalMilliseconds}");
+
+            return new ObjectResult(poi);
+        }
+
+        [HttpPut("{PoiId}")]
+        public void PutPoi(string PoiId, [FromBody]SharedModelsWS.Poi poi)
+        {
+            DateTime startDate = DateTime.Now;
+            string userId = IdentityManager.GetUserId(HttpContext);
+
+            using (var db = new ServerDbContext(_dbOptions))
+            {
+                var poiObject = db.Poi.Where(p => p.PoiId.Equals(poi.Id)).FirstOrDefault();
+                if (!string.IsNullOrEmpty(poiObject?.PoiId))
+                {
+                    if (poiObject.CreatorId.Equals(userId))
+                    {
+                        if (!string.IsNullOrEmpty(poi.ImgBase64))
+                        {
+                            Base64Manager.SaveBase64ToFile(poi.ImgBase64, Path.Combine(_pathToMediaCatalog, poi.ImgFilename));
+                        }
+
+                        var convertedPoiDb = ConverterWsToDbModel.PoiConvert(poi);
+                        convertedPoiDb.CreatorId = userId;
+                        convertedPoiDb.Version = ++poiObject.Version;
+
+                        var poiDb = db.Poi.Find(convertedPoiDb.PoiId);
+                        db.Entry(poiDb).CurrentValues.SetValues(convertedPoiDb);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        Response.StatusCode = 403;
+                    }
+                }
+            }
+
+            TimeSpan delay = DateTime.Now - startDate;
+            Console.WriteLine($"v2 PutPoi: status 200, {userId}, delay:{delay.TotalMilliseconds}");
+        }
+
+        [HttpPost("{PoiId}")]
+        public void PostPoi(string PoiId, [FromBody]SharedModelsWS.Poi poi)
+        {
+            DateTime startDate = DateTime.Now;
+            string userId = IdentityManager.GetUserId(HttpContext);
+
+            using (var db = new ServerDbContext(_dbOptions))
+            {
+                var poiObject = db.Poi.Where(p => p.PoiId.Equals(poi.Id)).FirstOrDefault();
+                if (string.IsNullOrEmpty(poiObject?.PoiId))
+                {
+                    if (!string.IsNullOrEmpty(poi.ImgBase64))
+                    {
+                        Base64Manager.SaveBase64ToFile(poi.ImgBase64, Path.Combine(_pathToMediaCatalog, poi.ImgFilename));
+                    }
+                    var poiDb = ConverterWsToDbModel.PoiConvert(poi);
+                    db.Poi.Add(poiDb);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    Response.StatusCode = 405;
+                }
+            }
+
+            TimeSpan delay = DateTime.Now - startDate;
+            Console.WriteLine($"v2 PostPoi: status 200, {userId}, delay:{delay.TotalMilliseconds}");
+        }
+
         private static Expression<Func<Models.Poi, SharedModelsWS.Poi>> getWsModelPoi(ServerDbContext db)
         {
             return p => new SharedModelsWS.Poi()

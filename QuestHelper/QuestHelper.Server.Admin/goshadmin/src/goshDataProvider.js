@@ -1,7 +1,8 @@
 import { fetchUtils } from 'react-admin';
 import { stringify } from 'query-string';
 
-const apiUrl = 'http://localhost:31192/api/v2';
+//const apiUrl = 'http://localhost:31192/api/v2';
+const apiUrl = process.env.REACT_APP_API_URL;
 //const apiUrl = 'http://igosh.pro/api';
 
 const httpClient = (url, options = {}) => {
@@ -38,6 +39,8 @@ function getMappingByResource(json, resourceType){
             return json.map(resource => ({id:resource.routePointId,
                  name:resource.name,
                  createDate:resource.createDate,
+                 updateDate:resource.updateDate,
+                 updatedUserId:resource.updatedUserId,
                  routeId:resource.routeId,
                  latitude:resource.latitude,
                  longitude:resource.longitude,
@@ -152,7 +155,8 @@ export default {
             method: 'POST',
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({
-            data: { ...params.data, id: json.id },
+            data:  ''
+            //data: { ...params.data, id: json.id },
         })),
 
     delete: (resource, params) =>
