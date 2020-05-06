@@ -1,5 +1,6 @@
 // in src/authProvider.js
-const apiAuthUrl = 'http://localhost:31192/api/account';
+const apiAuthUrl = process.env.REACT_APP_API_AUTH_URL + '/account';
+//const apiAuthUrl = 'http://localhost:31192/api/account';
 
 export default {
     // called when the user attempts to log in

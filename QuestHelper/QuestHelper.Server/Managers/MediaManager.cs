@@ -13,10 +13,10 @@ namespace QuestHelper.Server.Managers
         public MediaManager()
         {
 #if DEBUG
-            //_pathToMediaCatalog = "d:\\diskmail.ru\\gosh\\pics\\pictures";
-            //_pathToMediaCatalogShared = "d:\\diskmail.ru\\gosh\\pics\\pictures\\shared";
-            _pathToMediaCatalog = "c:\\gosh.media\\pictures";
-            _pathToMediaCatalogShared = "c:\\gosh.media\\pictures\\shared";
+            _pathToMediaCatalog = "d:\\diskmail.ru\\gosh\\pics\\pictures";
+            _pathToMediaCatalogShared = "d:\\diskmail.ru\\gosh\\pics\\pictures\\shared";
+            //_pathToMediaCatalog = "c:\\gosh.media\\pictures";
+            //_pathToMediaCatalogShared = "c:\\gosh.media\\pictures\\shared";
 #else
             _pathToMediaCatalog = "/media/goshmedia";
             _pathToMediaCatalogShared = "/var/www/www-root/data/wwwroot/wwwroot/shared";            
