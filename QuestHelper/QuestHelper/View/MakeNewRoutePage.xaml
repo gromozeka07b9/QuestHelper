@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             mc:Ignorable="d"
+             x:Class="QuestHelper.View.MakeNewRoutePage" NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False" Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="7*" />
+            </Grid.RowDefinitions>
+            <CollectionView Grid.Row="0" Grid.Column="0" ItemsSource="{Binding RoutePoints}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal"></LinearItemsLayout>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Margin="15">
+                            <Label Text="{Binding Name}"/>
+                            <ffimageloading:CachedImage Source="icon.png" WidthRequest="100" HeightRequest="100">
+                            </ffimageloading:CachedImage>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <!--ScrollView Grid.Row="0" Grid.Column="0" HorizontalScrollBarVisibility="Always">
+                <StackLayout Orientation="Horizontal">
+                    <Frame HasShadow="True" CornerRadius="5" BackgroundColor="Red" Margin="15">
+                        <ffimageloading:CachedImage Source="icon.png" WidthRequest="100" HeightRequest="100">
+                        </ffimageloading:CachedImage>
+                    </Frame>
+                    <Frame HasShadow="True" CornerRadius="5" BackgroundColor="Red" Margin="15">
+                        <ffimageloading:CachedImage Source="icon.png" WidthRequest="100" HeightRequest="100">
+                        </ffimageloading:CachedImage>
+                    </Frame>
+                    <Frame HasShadow="True" CornerRadius="5" BackgroundColor="Red" Margin="15">
+                        <ffimageloading:CachedImage Source="icon.png" WidthRequest="100" HeightRequest="100">
+                        </ffimageloading:CachedImage>
+                    </Frame>
+                </StackLayout>
+            </-->
+            <CollectionView Grid.Row="1" Grid.Column="0" x:Name="colImages" ItemsSource="{Binding Images}" >
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Span="2" Orientation="Vertical"></GridItemsLayout>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Margin="0">
+                            <Frame HasShadow="True" CornerRadius="5" Padding="3" Margin="3">
+                                <ffimageloading:CachedImage Source="{Binding ImagePath}" WidthRequest="100" HeightRequest="100" DownsampleToViewSize="True" CacheType="All" CacheDuration="86400" BitmapOptimizations="True" Aspect="Fill" LoadingPlaceholder="icon.png">
+                                    <ffimageloading:CachedImage.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Path=BindingContext.ViewPhotoCommand, Source={x:Reference Name=colImages}}" CommandParameter="{Binding}"/>
+                                    </ffimageloading:CachedImage.GestureRecognizers>
+                                </ffimageloading:CachedImage>
+                            </Frame>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <!--ListView Grid.Row="1" Grid.Column="0" ItemsSource="{Binding RoutePoints}" RowHeight="100">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                <Frame HasShadow="True" CornerRadius="5" BackgroundColor="Red" Margin="5">
+                                    <ffimageloading:CachedImage Source="icon.png" WidthRequest="{Binding WidthImage}" HeightRequest="100">
+                                    </ffimageloading:CachedImage>
+                                </Frame>
+                                <Frame HasShadow="True" CornerRadius="5" BackgroundColor="Red" Margin="5">
+                                    <ffimageloading:CachedImage Source="icon.png" WidthRequest="{Binding WidthImage}" HeightRequest="100">
+                                    </ffimageloading:CachedImage>
+                                </Frame>
+                                <Frame HasShadow="True" CornerRadius="5" BackgroundColor="Red" Margin="5">
+                                    <ffimageloading:CachedImage Source="icon.png" WidthRequest="{Binding WidthImage}" HeightRequest="100">
+                                    </ffimageloading:CachedImage>
+                                </Frame>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </-->
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

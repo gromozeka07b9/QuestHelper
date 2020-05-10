@@ -28,7 +28,7 @@ namespace QuestHelper.Droid
 #if DEBUG
     [Activity(Label = "Gosh! Debug", Icon = "@drawable/icon2", Theme = "@style/MainTheme.Splash", MainLauncher = true, NoHistory = true, LaunchMode = LaunchMode.SingleTask, ScreenOrientation = ScreenOrientation.Portrait)]
 #else
-    [Activity(Label = "Gosh!", Icon = "@drawable/icon2", Theme = "@style/MainTheme.Splash", MainLauncher = true, NoHistory = true, LaunchMode = LaunchMode.SingleInstance, ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "Gosh!", Icon = "@drawable/icon2", Theme = "@style/MainTheme.Splash", MainLauncher = true, NoHistory = true, LaunchMode = LaunchMode.SingleTask, ScreenOrientation = ScreenOrientation.Portrait)]
 #endif
     public class SplashActivity : AppCompatActivity
     {

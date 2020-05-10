@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using System.Windows.Input;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
 using QuestHelper.Managers;
 using QuestHelper.Model.Messages;
 using QuestHelper.Resources;
@@ -49,6 +51,21 @@ namespace QuestHelper.ViewModel
             SetStatusNoNeedShowOnboarding();
             PermissionManager permissions = new PermissionManager();
             await permissions.PermissionLocationGrantedAsync(CommonResource.Permission_Position);
+
+            PermissionStatus status = PermissionStatus.Unknown;
+            try
+            {
+                status = await CrossPermissions.Current.CheckPermissionStatusAsync<StoragePermission>();
+                if (status != PermissionStatus.Granted)
+                {
+                    var statusRequest = await CrossPermissions.Current.RequestPermissionAsync<StoragePermission>();
+                }
+            }
+            catch (Exception)
+            {
+            }
+
+
             App.Current.MainPage = new View.MainPage();
         }
     }

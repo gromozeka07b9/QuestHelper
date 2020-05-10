@@ -34,6 +34,18 @@
             </NavigationPage.Icon>
         </NavigationPage>
 
+        <NavigationPage Title="Маршрут">
+            <x:Arguments>
+                <view:MakeNewRoutePage />
+            </x:Arguments>
+            <NavigationPage.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="iOS" Value="plus.png"/>
+                    <On Platform="Android" Value="plus.png"/>
+                </OnPlatform>
+            </NavigationPage.Icon>
+        </NavigationPage>
+
         <NavigationPage Title="{lang:Translation ScreenLoadedAlbumsName}">
             <x:Arguments>
                 <view:AlbumsPage />
