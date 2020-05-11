@@ -962,5 +962,8 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\onboarding_location.png" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\bigplus.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

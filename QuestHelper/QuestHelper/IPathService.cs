@@ -9,5 +9,7 @@ namespace QuestHelper
         string InternalFolder { get; }
         string PublicExternalFolder { get; }
         string PrivateExternalFolder { get; }
+        string PublicDirectoryPictures { get; }
+        string PublicDirectoryDcim { get; }
     }
 }

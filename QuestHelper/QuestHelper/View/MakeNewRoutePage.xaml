@@ -11,8 +11,9 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="3*" />
-                <RowDefinition Height="7*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="15*" />
             </Grid.RowDefinitions>
             <CollectionView Grid.Row="0" Grid.Column="0" ItemsSource="{Binding RoutePoints}">
                 <CollectionView.ItemsLayout>
@@ -22,7 +23,7 @@
                     <DataTemplate>
                         <StackLayout Margin="15">
                             <Label Text="{Binding Name}"/>
-                            <ffimageloading:CachedImage Source="icon.png" WidthRequest="100" HeightRequest="100">
+                            <ffimageloading:CachedImage Source="bigplus.png" WidthRequest="100" HeightRequest="100">
                             </ffimageloading:CachedImage>
                         </StackLayout>
                     </DataTemplate>
@@ -44,19 +45,31 @@
                     </Frame>
                 </StackLayout>
             </-->
-            <CollectionView Grid.Row="1" Grid.Column="0" x:Name="colImages" ItemsSource="{Binding Images}" >
+            <StackLayout Grid.Row="1" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="End">
+                <Label VerticalOptions="Center" Text="Все фотографии"/>
+                <CheckBox VerticalOptions="Center" IsChecked="{Binding IsShowAllImages}"></CheckBox>
+            </StackLayout>
+            <CollectionView Grid.Row="2" Grid.Column="0" x:Name="colImages" ItemsSource="{Binding Images}" RemainingItemsThreshold="5" RemainingItemsThresholdReachedCommand="{Binding ImagesTresholdReachedCommand}" IsGrouped="False" >
+                <CollectionView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding ImageCreateDateString}"></Label>
+                    </DataTemplate>
+                </CollectionView.GroupHeaderTemplate>
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Span="2" Orientation="Vertical"></GridItemsLayout>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Margin="0">
-                            <Frame HasShadow="True" CornerRadius="5" Padding="3" Margin="3">
-                                <ffimageloading:CachedImage Source="{Binding ImagePath}" WidthRequest="100" HeightRequest="100" DownsampleToViewSize="True" CacheType="All" CacheDuration="86400" BitmapOptimizations="True" Aspect="Fill" LoadingPlaceholder="icon.png">
-                                    <ffimageloading:CachedImage.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding Path=BindingContext.ViewPhotoCommand, Source={x:Reference Name=colImages}}" CommandParameter="{Binding}"/>
-                                    </ffimageloading:CachedImage.GestureRecognizers>
-                                </ffimageloading:CachedImage>
+                            <Frame HasShadow="True" CornerRadius="5" Padding="5" Margin="5">
+                                <StackLayout>
+                                    <Label Grid.Row="0" Text="{Binding ImageCreateDateString}" FontSize="10"></Label>
+                                    <ffimageloading:CachedImage Grid.Row="0" Grid.RowSpan="2" Source="{Binding ImagePath}" DownsampleToViewSize="True" CacheType="All" CacheDuration="86400" BitmapOptimizations="True" Aspect="AspectFill" LoadingPlaceholder="emptyphoto.png" >
+                                        <ffimageloading:CachedImage.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Path=BindingContext.ViewPhotoCommand, Source={x:Reference Name=colImages}}" CommandParameter="{Binding}"/>
+                                        </ffimageloading:CachedImage.GestureRecognizers>
+                                    </ffimageloading:CachedImage>
+                                </StackLayout>
                             </Frame>
                         </StackLayout>
                     </DataTemplate>

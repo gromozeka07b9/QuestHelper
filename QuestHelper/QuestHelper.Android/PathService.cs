@@ -48,5 +48,19 @@ namespace QuestHelper.Droid
                 return absPath;
             }
         }
+        public string PublicDirectoryPictures
+        {
+            get
+            {
+                return Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryPictures).AbsolutePath;
+            }
+        }
+        public string PublicDirectoryDcim
+        {
+            get
+            {
+                return Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim).AbsolutePath;
+            }
+        }
     }
 }
