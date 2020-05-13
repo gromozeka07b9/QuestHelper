@@ -50,6 +50,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CommonResource.resx</DependentUpon>
     </Compile>
+    <Compile Update="View\MakeNewRouteAutoPage.xaml.cs">
+      <DependentUpon>MakeNewRouteAutoPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="View\ReceivePushPage.xaml.cs">
       <DependentUpon>ReceivePushPage.xaml</DependentUpon>
     </Compile>

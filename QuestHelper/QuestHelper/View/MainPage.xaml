@@ -36,7 +36,7 @@
 
         <NavigationPage Title="Маршрут">
             <x:Arguments>
-                <view:MakeNewRoutePage />
+                <view:MakeNewRouteAutoPage />
             </x:Arguments>
             <NavigationPage.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">

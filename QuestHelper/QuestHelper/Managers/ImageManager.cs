@@ -34,6 +34,44 @@ namespace QuestHelper.Managers
                 return _previewImageQuality;
             }
         }
+
+        public (bool getMetadataPhotoResult, string newMediaId, Model.GpsCoordinates imageGpsCoordinates) GetPhoto(string photoFullPath)
+        {
+            bool getMetadataPhotoResult = false;
+            Model.GpsCoordinates imageGpsCoordinates = new Model.GpsCoordinates();
+            string mediaId = Guid.NewGuid().ToString();
+
+            string imgPathDirectory = ImagePathManager.GetPicturesDirectory();
+            //используем метод создания превью для того, чтобы сделать основное фото из оригинального, но с уменьшенным качеством
+
+            ImagePreviewManager resizedOriginal = new ImagePreviewManager();
+            resizedOriginal.PreviewQualityType = ImageQualityType.Q0x0x40;
+            FileInfo originalFileInfo = new FileInfo(photoFullPath);
+
+            if (resizedOriginal.CreateImagePreview(originalFileInfo.DirectoryName, originalFileInfo.Name, imgPathDirectory, ImagePathManager.GetMediaFilename(mediaId, MediaObjectTypeEnum.Image, false)))
+            {
+                ImagePreviewManager preview = new ImagePreviewManager();
+                preview.PreviewQualityType = _previewImageQuality;
+                if (preview.CreateImagePreview(originalFileInfo.DirectoryName, originalFileInfo.Name, imgPathDirectory, ImagePathManager.GetMediaFilename(mediaId, MediaObjectTypeEnum.Image, true)))
+                {
+                    ExifManager exif = new ExifManager();
+                    imageGpsCoordinates = exif.GetCoordinates(photoFullPath);
+                    getMetadataPhotoResult = true;
+                }
+                else
+                {
+                    Analytics.TrackEvent("ImageManager: add photo error create preview ", new Dictionary<string, string> { { "mediaId", mediaId } });
+                }
+            }
+            else
+            {
+                Analytics.TrackEvent("ImageManager: error resize photo ", new Dictionary<string, string> { { "mediaId", mediaId } });
+            }
+
+            return (getMetadataPhotoResult, mediaId, imageGpsCoordinates);
+        }
+
+
         public async Task<(bool pickPhotoResult, string newMediaId, Model.GpsCoordinates imageGpsCoordinates)> PickPhotoAsync()
         {
             bool pickPhotoResult = false;
