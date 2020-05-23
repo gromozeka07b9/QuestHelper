@@ -118,6 +118,28 @@ namespace QuestHelper.ViewModel
         {
 
         }
+
+        public List<string> NewRouteImgCollection
+        {
+            get
+            {
+                ImagesDataStoreManager imagesGalleryManager = new ImagesDataStoreManager(10, false, 7);
+                imagesGalleryManager.LoadListImages();
+                return imagesGalleryManager.GetItems(10).Select(x=>x.ImagePath).ToList();
+            }
+
+        }
+        public List<string> RandomImgCollection
+        {
+            get
+            {
+                ImagesDataStoreManager imagesGalleryManager = new ImagesDataStoreManager(10, false, 7);
+                imagesGalleryManager.LoadListImages();
+                var items = imagesGalleryManager.GetRandomItems(10);
+                return items.Select(x => x.ImagePath).ToList();
+            }
+
+        }
     }
 
 }

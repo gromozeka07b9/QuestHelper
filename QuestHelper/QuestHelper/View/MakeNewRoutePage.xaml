@@ -29,22 +29,7 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <!--ScrollView Grid.Row="0" Grid.Column="0" HorizontalScrollBarVisibility="Always">
-                <StackLayout Orientation="Horizontal">
-                    <Frame HasShadow="True" CornerRadius="5" BackgroundColor="Red" Margin="15">
-                        <ffimageloading:CachedImage Source="icon.png" WidthRequest="100" HeightRequest="100">
-                        </ffimageloading:CachedImage>
-                    </Frame>
-                    <Frame HasShadow="True" CornerRadius="5" BackgroundColor="Red" Margin="15">
-                        <ffimageloading:CachedImage Source="icon.png" WidthRequest="100" HeightRequest="100">
-                        </ffimageloading:CachedImage>
-                    </Frame>
-                    <Frame HasShadow="True" CornerRadius="5" BackgroundColor="Red" Margin="15">
-                        <ffimageloading:CachedImage Source="icon.png" WidthRequest="100" HeightRequest="100">
-                        </ffimageloading:CachedImage>
-                    </Frame>
-                </StackLayout>
-            </-->
+
             <StackLayout Grid.Row="1" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="End">
                 <Label VerticalOptions="Center" Text="Все фотографии"/>
                 <CheckBox VerticalOptions="Center" IsChecked="{Binding IsShowAllImages}"></CheckBox>
@@ -75,28 +60,7 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <!--ListView Grid.Row="1" Grid.Column="0" ItemsSource="{Binding RoutePoints}" RowHeight="100">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                                <Frame HasShadow="True" CornerRadius="5" BackgroundColor="Red" Margin="5">
-                                    <ffimageloading:CachedImage Source="icon.png" WidthRequest="{Binding WidthImage}" HeightRequest="100">
-                                    </ffimageloading:CachedImage>
-                                </Frame>
-                                <Frame HasShadow="True" CornerRadius="5" BackgroundColor="Red" Margin="5">
-                                    <ffimageloading:CachedImage Source="icon.png" WidthRequest="{Binding WidthImage}" HeightRequest="100">
-                                    </ffimageloading:CachedImage>
-                                </Frame>
-                                <Frame HasShadow="True" CornerRadius="5" BackgroundColor="Red" Margin="5">
-                                    <ffimageloading:CachedImage Source="icon.png" WidthRequest="{Binding WidthImage}" HeightRequest="100">
-                                    </ffimageloading:CachedImage>
-                                </Frame>
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </-->
+
 
         </Grid>
     </ContentPage.Content>

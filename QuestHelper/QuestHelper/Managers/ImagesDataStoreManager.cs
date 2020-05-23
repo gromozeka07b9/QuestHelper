@@ -58,6 +58,22 @@ namespace QuestHelper.Managers
 
             return _sortedImages.Skip(lastIndex).Take(_imgPageSize);
         }
+        public IEnumerable<GalleryImage> GetRandomItems(int count)
+        {
+            List<GalleryImage> images = new List<GalleryImage>();
+            if (_sortedImages == null)
+            {
+                LoadListImages();
+            }
+
+            Random rnd = new Random(DateTime.Now.Second);
+            for(int i = 0; i < count; i++)
+            {
+                int idx = rnd.Next(0, _sortedImages.Count);
+                images.Add(_sortedImages[idx]);
+            }
+            return images;
+        }
 
         public int Count()
         {
