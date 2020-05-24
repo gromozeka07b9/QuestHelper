@@ -5,6 +5,7 @@ using QuestHelper.Consts;
 using QuestHelper.LocalDB.Model;
 using QuestHelper.Managers;
 using QuestHelper.Resources;
+using QuestHelper.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -31,6 +32,8 @@ namespace QuestHelper.ViewModel
         public ICommand CreateLast3Days { get; private set; }
         public ICommand CreateLast7Days { get; private set; }
         public ICommand CreateLast30Days { get; private set; }
+        public ICommand ShowGalleryForMakeAlbumCommand { get; private set; }
+        public ICommand ShowAutoAlbumCommand { get; private set; }
 
         public bool IsBusy { get; set; }
 
@@ -42,8 +45,19 @@ namespace QuestHelper.ViewModel
             CreateLast3Days = new Command(createLast3Days);
             CreateLast7Days = new Command(createLast7Days);
             CreateLast30Days = new Command(createLast30Days);
+            ShowGalleryForMakeAlbumCommand = new Command(showGalleryForMakeAlbumCommand);
+            ShowAutoAlbumCommand = new Command(showAutoAlbumCommand);
             TokenStoreService tokenService = new TokenStoreService();
 
+        }
+
+        private void showGalleryForMakeAlbumCommand(object obj)
+        {
+            Navigation.PushModalAsync(new MakeNewRoutePage());
+        }
+
+        private void showAutoAlbumCommand(object obj)
+        {
         }
 
         private void createLast30Days(object obj)

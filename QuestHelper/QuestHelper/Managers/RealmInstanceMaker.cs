@@ -21,7 +21,8 @@ namespace QuestHelper.Managers
                         //v7 - added Poi
                         //v8 - Poi - deleted RouteId, +UpdateDate,Address,ByRoutePointId,IsPublished
                         //v9 - Poi = added ByRouteId
-                        SchemaVersion = 9,
+                        //v10 - added LocalFile
+                        SchemaVersion = 10,
                         MigrationCallback = (migration, oldSchemaVersion) =>
                         {
 

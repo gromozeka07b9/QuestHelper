@@ -62,7 +62,11 @@
                     </AbsoluteLayout>
                     <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="4" HorizontalOptions="Fill" VerticalOptions="Center">
                         <Image Source="ic_eye_1.png" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"></Image>
-                        <Label Text="Посмотреть альбом" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"></Label>
+                        <Label Text="Посмотреть альбом" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShowAutoAlbumCommand}"></TapGestureRecognizer>
+                            </Label.GestureRecognizers>
+                        </Label>
                     </StackLayout>
                 </Grid>
             </Frame>
@@ -124,7 +128,11 @@
                     </AbsoluteLayout>
                     <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Grid.RowSpan="4" HorizontalOptions="Fill" VerticalOptions="Center">
                         <Image Source="ic_eye_1.png" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"></Image>
-                        <Label Text="Выбрать фотографии" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"></Label>
+                        <Label Text="Выбрать фотографии" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShowGalleryForMakeAlbumCommand}"></TapGestureRecognizer>
+                            </Label.GestureRecognizers>
+                        </Label>
                     </StackLayout>
                 </Grid>
             </Frame>
