@@ -2,12 +2,13 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" xmlns:local="clr-namespace:QuestHelper.View.Converters"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" xmlns:local="clr-namespace:QuestHelper.View.Converters" xmlns:animationForms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms" xmlns:animationResource="clr-namespace:QuestHelper.Resources"
              mc:Ignorable="d"
              x:Class="QuestHelper.View.MakeNewRouteAutoPage" NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False" Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:ImageIndexConverter x:Key="imageIndexer" />
+            <local:NegativeBoolConverter  x:Key="inverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -34,39 +35,52 @@
                         <RowDefinition Height="2*" />
                         <RowDefinition Height="2*" />
                     </Grid.RowDefinitions>
-                    <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"  Text="Ваш маршрут за неделю состоит из 23 фотографий. Хотите просмотреть его?" TextColor="Black" FontSize="17" FontAttributes="None" Margin="0" HorizontalOptions="Start"></Label>
+                    <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"  Text="{Binding CountImagesInNewRouteText}" TextColor="Black" FontSize="17" FontAttributes="None" Margin="0" HorizontalOptions="Start"></Label>
                     <Frame Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="1" Grid.RowSpan="4" Padding="0" Margin="0" BorderColor="Black" HasShadow="False">
-                        <Image Source="{Binding NewRouteImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=0 }" Aspect="AspectFill"></Image>
+                        <ffimageloading:CachedImage Source="{Binding NewRouteImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=0 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
                     </Frame>
 
                     <Frame Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="1" Grid.RowSpan="2" Padding="0" BorderColor="Black" HasShadow="False">
-                        <Image  Source="{Binding NewRouteImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=1 }" Aspect="AspectFill"></Image>
+                        <ffimageloading:CachedImage  Source="{Binding NewRouteImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=1 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
                     </Frame>
                     <Frame Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="1" Grid.RowSpan="2" Padding="0" BorderColor="Black" HasShadow="False">
-                        <Image  Source="{Binding NewRouteImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=2 }" Aspect="AspectFill"></Image>
+                        <ffimageloading:CachedImage  Source="{Binding NewRouteImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=2 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
                     </Frame>
 
                     <Frame Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="1" Grid.RowSpan="1" Padding="0" BorderColor="Black" HasShadow="False">
-                        <Image  Source="{Binding NewRouteImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=3 }" Aspect="AspectFill"></Image>
+                        <ffimageloading:CachedImage  Source="{Binding NewRouteImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=3 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
                     </Frame>
                     <Frame Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="1" Grid.RowSpan="1" Padding="0" BorderColor="Black" HasShadow="False">
-                        <Image  Source="{Binding NewRouteImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=4 }" Aspect="AspectFill"></Image>
+                        <ffimageloading:CachedImage  Source="{Binding NewRouteImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=4 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
                     </Frame>
                     <Frame Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="1" Grid.RowSpan="1" Padding="0" BorderColor="Black" HasShadow="False">
-                        <Image  Source="{Binding NewRouteImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=5 }" Aspect="AspectFill"></Image>
+                        <ffimageloading:CachedImage  Source="{Binding NewRouteImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=5 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
                     </Frame>
                     <Frame Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="1" Grid.RowSpan="1" Padding="0" BorderColor="Black" HasShadow="False">
-                        <Image  Source="{Binding NewRouteImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=6 }" Aspect="AspectFill"></Image>
+                        <ffimageloading:CachedImage  Source="{Binding NewRouteImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=6 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
                     </Frame>
-                    <AbsoluteLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="4" VerticalOptions="Fill" HorizontalOptions="Fill" Opacity="0" BackgroundColor="LightCyan">
+                    <AbsoluteLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="4" VerticalOptions="Fill" HorizontalOptions="Fill" Opacity="0.8" BackgroundColor="LightCyan">
                     </AbsoluteLayout>
-                    <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="4" HorizontalOptions="Fill" VerticalOptions="Center">
+                    <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="4" HorizontalOptions="Fill" VerticalOptions="Center" IsVisible="{Binding IsLoadingNewRouteData, Converter={StaticResource inverter}}">
                         <Image Source="ic_eye_1.png" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"></Image>
                         <Label Text="Посмотреть альбом" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
                             <Label.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ShowAutoAlbumCommand}"></TapGestureRecognizer>
                             </Label.GestureRecognizers>
                         </Label>
+                    </StackLayout>
+                    <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="4" HorizontalOptions="Fill" VerticalOptions="Center" IsVisible="{Binding IsLoadingNewRouteData}">
+                        <animationForms:AnimationView
+                                Animation="{animationResource:AnimationResourceExtension usualloading}"
+                                Loop="True"
+                                AutoPlay="True"
+                                IsEnabled="True"
+                                WidthRequest="60"
+                                HeightRequest="60"
+                                Margin="15"
+                                IsVisible="{Binding IsLoadingNewRouteData}"
+                                VerticalOptions="Center" HorizontalOptions="Center"
+                                />
                     </StackLayout>
                 </Grid>
             </Frame>
@@ -88,40 +102,40 @@
                     </Grid.RowDefinitions>
                     <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"  Text="Так же вы можете самостоятельно выбрать фотографии для нового маршрута" TextColor="Black" FontSize="16" FontAttributes="None" Margin="0" HorizontalOptions="Start"></Label>
                     <Frame Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="1" Grid.RowSpan="4" Padding="0" Margin="0" BorderColor="Black" HasShadow="False">
-                        <Image  Source="{Binding RandomImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=0 }" Aspect="AspectFill"></Image>
+                        <ffimageloading:CachedImage  Source="{Binding RandomImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=0 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
                     </Frame>
 
                     <Frame Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="1" Grid.RowSpan="2" Padding="0">
-                        <Image  Source="{Binding RandomImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=1 }" Aspect="AspectFill"></Image>
+                        <ffimageloading:CachedImage  Source="{Binding RandomImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=1 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
                     </Frame>
                     <Frame Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="1" Grid.RowSpan="2" Padding="0">
-                        <Image  Source="{Binding RandomImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=2 }" Aspect="AspectFill"></Image>
+                        <ffimageloading:CachedImage  Source="{Binding RandomImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=2 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
                     </Frame>
 
                     <Frame Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="1" Grid.RowSpan="1" Padding="0">
-                        <Image  Source="{Binding RandomImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=3 }" Aspect="AspectFill"></Image>
+                        <ffimageloading:CachedImage  Source="{Binding RandomImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=3 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
                     </Frame>
                     <Frame Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="1" Grid.RowSpan="1" Padding="0">
-                        <Image  Source="{Binding RandomImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=4 }" Aspect="AspectFill"></Image>
+                        <ffimageloading:CachedImage  Source="{Binding RandomImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=4 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
                     </Frame>
                     <Frame Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="1" Grid.RowSpan="1" Padding="0">
-                        <Image  Source="{Binding RandomImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=5 }" Aspect="AspectFill"></Image>
+                        <ffimageloading:CachedImage  Source="{Binding RandomImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=5 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
                     </Frame>
                     <Frame Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="1" Grid.RowSpan="1" Padding="0">
-                        <Image  Source="{Binding RandomImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=6}" Aspect="AspectFill"></Image>
+                        <ffimageloading:CachedImage  Source="{Binding RandomImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=6}" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
                     </Frame>
 
                     <Frame Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="1" Grid.RowSpan="1" Padding="0">
-                        <Image  Source="{Binding RandomImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=7 }" Aspect="AspectFill"></Image>
+                        <ffimageloading:CachedImage  Source="{Binding RandomImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=7 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
                     </Frame>
                     <Frame Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="1" Grid.RowSpan="1" Padding="0">
-                        <Image  Source="{Binding RandomImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=8 }" Aspect="AspectFill"></Image>
+                        <ffimageloading:CachedImage  Source="{Binding RandomImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=8 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
                     </Frame>
                     <Frame Grid.Column="3" Grid.Row="3" Grid.ColumnSpan="1" Grid.RowSpan="1" Padding="0">
-                        <Image  Source="{Binding RandomImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=9 }" Aspect="AspectFill"></Image>
+                        <ffimageloading:CachedImage  Source="{Binding RandomImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=9 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
                     </Frame>
                     <Frame Grid.Column="3" Grid.Row="4" Grid.ColumnSpan="1" Grid.RowSpan="1" Padding="0" >
-                        <Image  Source="{Binding RandomImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=9 }" Aspect="AspectFill"></Image>
+                        <ffimageloading:CachedImage  Source="{Binding RandomImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=9 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
                     </Frame>
 
                     <AbsoluteLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Grid.RowSpan="4" VerticalOptions="Fill" HorizontalOptions="Fill" Opacity="0.8" BackgroundColor="LightCyan">

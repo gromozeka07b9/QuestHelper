@@ -24,14 +24,17 @@ namespace QuestHelper.ViewModel
     {
         TokenStoreService _tokenService = new TokenStoreService();
         private string _currentUserId;
+        private List<string> _randomImgCollection = new List<string>();
+        private List<string> _newRouteImgCollection = new List<string>();
+        private bool _viewModelBackgroundStarted;
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand ViewPhotoCommand { get; private set; }
-        public ICommand CreateLast3Days { get; private set; }
-        public ICommand CreateLast7Days { get; private set; }
-        public ICommand CreateLast30Days { get; private set; }
+        //public ICommand CreateLast3Days { get; private set; }
+        //public ICommand CreateLast7Days { get; private set; }
+        //public ICommand CreateLast30Days { get; private set; }
         public ICommand ShowGalleryForMakeAlbumCommand { get; private set; }
         public ICommand ShowAutoAlbumCommand { get; private set; }
 
@@ -42,13 +45,13 @@ namespace QuestHelper.ViewModel
         public MakeNewRouteAutoViewModel()
         {
             ViewPhotoCommand = new Command(viewPhotoAsync);
-            CreateLast3Days = new Command(createLast3Days);
-            CreateLast7Days = new Command(createLast7Days);
-            CreateLast30Days = new Command(createLast30Days);
+            //CreateLast3Days = new Command(createLast3Days);
+            //CreateLast7Days = new Command(createLast7Days);
+            //CreateLast30Days = new Command(createLast30Days);
             ShowGalleryForMakeAlbumCommand = new Command(showGalleryForMakeAlbumCommand);
             ShowAutoAlbumCommand = new Command(showAutoAlbumCommand);
             TokenStoreService tokenService = new TokenStoreService();
-
+            //_viewModelBackgroundStarted = true;
         }
 
         private void showGalleryForMakeAlbumCommand(object obj)
@@ -60,7 +63,7 @@ namespace QuestHelper.ViewModel
         {
         }
 
-        private void createLast30Days(object obj)
+        /*private void createLast30Days(object obj)
         {
             AutoRouteMakerManager routeMaker = new AutoRouteMakerManager();
             bool result = routeMaker.Make(30, _currentUserId);
@@ -97,7 +100,7 @@ namespace QuestHelper.ViewModel
                     UserDialogs.Instance.Alert("Внимание", "Маршрут с фотографиями за 3 дней создан", CommonResource.CommonMsg_Ok);
                 });
             }
-        }
+        }*/
 
         public void CloseDialog()
         {
@@ -107,24 +110,9 @@ namespace QuestHelper.ViewModel
         public async void StartDialog()
         {
             _currentUserId = await _tokenService.GetUserIdAsync();
-        }
-
-        public IEnumerable<NewRoutePoint> RoutePoints
-        {
-            get
+            if(NewRouteImgCollection.Count() == 0)
             {
-                //var list = _vpoint.MediaObjects.Where(x => !x.IsDeleted).Select(x => new MediaPreview() { SourceImg = ImagePathManager.GetImagePath(x.RoutePointMediaObjectId, (MediaObjectTypeEnum)x.MediaType, true), MediaId = x.RoutePointMediaObjectId, MediaType = (MediaObjectTypeEnum)x.MediaType }).ToList();
-                var list = new List<NewRoutePoint>();
-                list.Add(new NewRoutePoint() { Name = "Точка 1"});
-                /*list.Add(new NewRoutePoint() { Name = "Точка 2" });
-                list.Add(new NewRoutePoint() { Name = "Точка 3" });
-                list.Add(new NewRoutePoint() { Name = "Точка 4" });
-                list.Add(new NewRoutePoint() { Name = "Точка 5" });
-                list.Add(new NewRoutePoint() { Name = "Точка 6" });
-                list.Add(new NewRoutePoint() { Name = "Точка 7" });
-                list.Add(new NewRoutePoint() { Name = "Точка 8" });
-                list.Add(new NewRoutePoint() { Name = "Точка 9" });*/
-                return list;
+                await refresh();
             }
         }
 
@@ -133,24 +121,75 @@ namespace QuestHelper.ViewModel
 
         }
 
-        public List<string> NewRouteImgCollection
+        private async Task refresh()
+        {
+            Device.StartTimer(TimeSpan.FromSeconds(5), onTimerForUpdateImgNewRoute);
+            //Device.StartTimer(TimeSpan.FromMilliseconds(50000), onTimerForUpdateImgRandom);
+        }
+
+        private bool onTimerForUpdateImgNewRoute()
+        {
+            ImagesDataStoreManager imagesGalleryManager = new ImagesDataStoreManager(50, false, 7);
+            imagesGalleryManager.LoadListImages();
+            NewRouteImgCollection = imagesGalleryManager.GetItems(0).Select(x => x.ImagePath).ToList();
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsLoadingNewRouteData"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountImagesInNewRouteText"));
+            return false;
+        }
+        private bool onTimerForUpdateImgRandom()
+        {
+            ImagesDataStoreManager imagesGalleryManager = new ImagesDataStoreManager(10, false, 200);
+            imagesGalleryManager.LoadListImages();
+            var items = imagesGalleryManager.GetRandomItems(10);
+            RandomImgCollection = items.Select(x => x.ImagePath).ToList();
+            return false;
+        }
+
+        public bool IsLoadingNewRouteData
         {
             get
             {
-                ImagesDataStoreManager imagesGalleryManager = new ImagesDataStoreManager(10, false, 7);
-                imagesGalleryManager.LoadListImages();
-                return imagesGalleryManager.GetItems(10).Select(x=>x.ImagePath).ToList();
+                return NewRouteImgCollection.Count == 0;
+            }
+        }
+
+        public string CountImagesInNewRouteText
+        {
+            get
+            {
+                return $"Ваш маршрут за неделю состоит из {NewRouteImgCollection.Count.ToString()} фотографий. Хотите просмотреть его?";
+            }
+        }
+        public List<string> NewRouteImgCollection
+        {
+            set
+            {
+                if(value != _newRouteImgCollection)
+                {
+                    _newRouteImgCollection = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NewRouteImgCollection"));
+                }
+            }
+            get
+            {
+                return _newRouteImgCollection;
             }
 
         }
         public List<string> RandomImgCollection
         {
+            set
+            {
+                if(value != _randomImgCollection)
+                {
+                    _randomImgCollection = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RandomImgCollection"));
+                }
+            }
             get
             {
-                ImagesDataStoreManager imagesGalleryManager = new ImagesDataStoreManager(10, false, 7);
-                imagesGalleryManager.LoadListImages();
-                var items = imagesGalleryManager.GetRandomItems(10);
-                return items.Select(x => x.ImagePath).ToList();
+                return _randomImgCollection;
             }
 
         }

@@ -62,7 +62,11 @@
                                 <TapGestureRecognizer Command="{Binding StartShowAlbumCommand}" />
                             </ffimageloading:CachedImage.GestureRecognizers>
                         </ffimageloading:CachedImage>
-                        <StackLayout Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1" HorizontalOptions="EndAndExpand" VerticalOptions="Start" Orientation="Horizontal" Margin="0,5,0,0" IsVisible="{Binding IsVisibleCreator}">
+                        <StackLayout Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1" Opacity="0.6" BackgroundColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="End" Orientation="Vertical" Margin="0">
+                            <Label Text="{Binding CurrentPoiName}" TextColor="White" FontSize="14" HorizontalOptions="FillAndExpand" VerticalOptions="End" HorizontalTextAlignment="Start" Margin="5,0,5,0"></Label>
+                            <Label Text="{Binding CurrentPoiDescription}" LineBreakMode="TailTruncation" MaxLines="5" TextColor="White" FontSize="10" HorizontalOptions="FillAndExpand" VerticalOptions="End" HorizontalTextAlignment="Start" Margin="5,0,5,5"></Label>
+                        </StackLayout>
+                        <StackLayout Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="1" HorizontalOptions="EndAndExpand" VerticalOptions="Start" Orientation="Horizontal" Margin="0,5,0,0" IsVisible="{Binding IsVisibleCreator}">
                             <Label Text="{Binding CurrentPoiCreatorName}" TextColor="White" FontSize="8" HorizontalOptions="EndAndExpand" VerticalOptions="Center" HorizontalTextAlignment="End" Margin="0,0,0,0"></Label>
                             <circle:CircleImage Source="{Binding CurrentPoiCreatorImg}" WidthRequest="30" HeightRequest="30" BorderColor="#FFFFFF" BorderThickness="2" Margin="0,0,5,0" HorizontalOptions="EndAndExpand" VerticalOptions="Center">
                                 <circle:CircleImage.GestureRecognizers>
@@ -70,10 +74,7 @@
                                 </circle:CircleImage.GestureRecognizers>
                             </circle:CircleImage>
                         </StackLayout>
-                        <StackLayout Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="1" Opacity="0.6" BackgroundColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="End" Orientation="Vertical" Margin="0">
-                            <Label Text="{Binding CurrentPoiName}" TextColor="White" FontSize="14" HorizontalOptions="FillAndExpand" VerticalOptions="End" HorizontalTextAlignment="Start" Margin="5,0,5,0"></Label>
-                            <Label Text="{Binding CurrentPoiDescription}" LineBreakMode="TailTruncation" MaxLines="5" TextColor="White" FontSize="10" HorizontalOptions="FillAndExpand" VerticalOptions="End" HorizontalTextAlignment="Start" Margin="5,0,5,5"></Label>
-                        </StackLayout>
+                        <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1" Text="Дьяченко Сергей" TextColor="White" FontSize="12" HorizontalOptions="EndAndExpand" VerticalOptions="Center" HorizontalTextAlignment="End" Margin="10"></Label>
                     </Grid>
                 </Frame>
             </AbsoluteLayout>

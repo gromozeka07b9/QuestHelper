@@ -51,7 +51,7 @@ namespace QuestHelper.Managers
         {
             string returnid = string.Empty;
             RouteManager routeManager = new RouteManager();
-            if (vpoint.Version == 0) throw new Exception("point version = 0");
+            vpoint.Version = vpoint.Version == 0 ? 1 : vpoint.Version;
             if (vpoint.CreateDate.Year == 1) throw new Exception("create date year = 1");
             try
             {

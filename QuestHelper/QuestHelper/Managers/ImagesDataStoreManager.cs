@@ -61,16 +61,23 @@ namespace QuestHelper.Managers
         public IEnumerable<GalleryImage> GetRandomItems(int count)
         {
             List<GalleryImage> images = new List<GalleryImage>();
-            if (_sortedImages == null)
+            try
             {
-                LoadListImages();
-            }
+                if (_sortedImages == null)
+                {
+                    LoadListImages();
+                }
 
-            Random rnd = new Random(DateTime.Now.Second);
-            for(int i = 0; i < count; i++)
+                Random rnd = new Random(DateTime.Now.Second);
+                for (int i = 0; i < count; i++)
+                {
+                    int idx = rnd.Next(0, _sortedImages.Count);
+                    images.Add(_sortedImages[idx]);
+                }
+            }
+            catch (Exception)
             {
-                int idx = rnd.Next(0, _sortedImages.Count);
-                images.Add(_sortedImages[idx]);
+
             }
             return images;
         }

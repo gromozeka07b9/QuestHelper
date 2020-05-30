@@ -10,10 +10,13 @@ namespace QuestHelper.View.Converters
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             string imgPath = string.Empty;
-            List<string> imgPathArray = (List<string>)value;
-            if((imgPathArray.Count > 0) && (parameter != null))
+            if(value != null)
             {
-                imgPath = imgPathArray[Int32.Parse((string)parameter)];
+                List<string> imgPathArray = (List<string>)value;
+                if ((imgPathArray.Count > 0) && (parameter != null))
+                {
+                    imgPath = imgPathArray[Int32.Parse((string)parameter)];
+                }
             }
             return imgPath;
         }
