@@ -69,7 +69,7 @@ namespace QuestHelper.ViewModel
 
         public async void startDialog()
         {
-            MessagingCenter.Subscribe<SyncProgressRouteLoadingMessage>(this, string.Empty, (sender) =>
+            MessagingCenter.Subscribe<SyncProgressRouteLoadingMessage>(this, string.Empty, async (sender) =>
             {
                 if (string.IsNullOrEmpty(sender.RouteId))
                 {
@@ -87,7 +87,7 @@ namespace QuestHelper.ViewModel
                     //StopAnimateCallback.Invoke();
                 }
             });
-            MessagingCenter.Subscribe<AuthResultMessage>(this, string.Empty, async (sender) =>
+            MessagingCenter.Subscribe<AuthResultMessage>(this, string.Empty, (sender) =>
             {
                 if (sender.IsAuthenticated)
                 {
