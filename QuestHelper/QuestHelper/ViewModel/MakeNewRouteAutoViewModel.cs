@@ -129,7 +129,7 @@ namespace QuestHelper.ViewModel
 
         private bool onTimerForUpdateImgNewRoute()
         {
-            ImagesDataStoreManager imagesGalleryManager = new ImagesDataStoreManager(50, false, 7);
+            ImagesDataStoreManager imagesGalleryManager = new ImagesDataStoreManager(7, false, 7);
             imagesGalleryManager.LoadListImages();
             NewRouteImgCollection = imagesGalleryManager.GetItems(0).Select(x => x.ImagePath).ToList();
 

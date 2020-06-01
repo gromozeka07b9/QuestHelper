@@ -4,31 +4,41 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              mc:Ignorable="d"
-             x:Class="QuestHelper.View.MakeNewRoutePage" NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False" Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing">
+             x:Class="QuestHelper.View.MakeNewRoutePage" NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False" Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing" BackgroundColor="White">
     <ContentPage.Content>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="4*" />
+                <RowDefinition Height="7*" />
                 <RowDefinition Height="1*" />
-                <RowDefinition Height="15*" />
+                <RowDefinition Height="12*" />
             </Grid.RowDefinitions>
-            <CollectionView Grid.Row="0" Grid.Column="0" ItemsSource="{Binding RoutePoints}">
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Horizontal"></LinearItemsLayout>
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
+            <ListView Grid.Row="0" Grid.Column="0" ItemsSource="{Binding RoutePoints}" SeparatorVisibility="None">
+                <ListView.Header>
+                    <StackLayout>
+                        <Label Text="Начало маршрута"></Label>
+                    </StackLayout>
+                </ListView.Header>
+                <ListView.Footer>
+                    <StackLayout>
+                        <Label Text="Конец маршрута"></Label>
+                    </StackLayout>                   
+                </ListView.Footer>
+                <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout Margin="15">
-                            <Label Text="{Binding Name}"/>
-                            <ffimageloading:CachedImage Source="bigplus.png" WidthRequest="100" HeightRequest="100">
-                            </ffimageloading:CachedImage>
-                        </StackLayout>
+                        <ViewCell>
+                            <StackLayout Margin="0" Orientation="Horizontal" HorizontalOptions="Fill" VerticalOptions="FillAndExpand">
+                                <ffimageloading:CachedImage Source="connected_dot_black_48.png" WidthRequest="48" HeightRequest="48" HorizontalOptions="Start" VerticalOptions="Fill">
+                                </ffimageloading:CachedImage>
+                                <Label Text="{Binding Name}" HorizontalOptions="End" VerticalOptions="Center"/>
+                            </StackLayout>
+                        </ViewCell>
                     </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                </ListView.ItemTemplate>
+                
+            </ListView>
 
             <StackLayout Grid.Row="1" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="End">
                 <Label VerticalOptions="Center" Text="Все фотографии"/>
@@ -41,15 +51,15 @@
                     </DataTemplate>
                 </CollectionView.GroupHeaderTemplate>
                 <CollectionView.ItemsLayout>
-                    <GridItemsLayout Span="2" Orientation="Vertical"></GridItemsLayout>
+                    <GridItemsLayout Span="3" Orientation="Vertical"></GridItemsLayout>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Margin="0">
-                            <Frame HasShadow="True" CornerRadius="5" Padding="5" Margin="5">
+                            <Frame HasShadow="True" CornerRadius="0" Padding="2" Margin="1">
                                 <StackLayout>
                                     <Label Grid.Row="0" Text="{Binding ImageCreateDateString}" FontSize="10"></Label>
-                                    <ffimageloading:CachedImage Grid.Row="0" Grid.RowSpan="2" Source="{Binding ImagePath}" DownsampleToViewSize="True" CacheType="All" CacheDuration="86400" BitmapOptimizations="True" Aspect="AspectFill" LoadingPlaceholder="emptyphoto.png" >
+                                    <ffimageloading:CachedImage Grid.Row="0" Grid.RowSpan="2" Source="{Binding ImagePath}" DownsampleToViewSize="True" CacheType="All" CacheDuration="86400" BitmapOptimizations="False" Aspect="AspectFill" LoadingPlaceholder="emptyphoto.png" >
                                         <ffimageloading:CachedImage.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding Path=BindingContext.ViewPhotoCommand, Source={x:Reference Name=colImages}}" CommandParameter="{Binding}"/>
                                         </ffimageloading:CachedImage.GestureRecognizers>

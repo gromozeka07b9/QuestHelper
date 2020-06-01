@@ -84,14 +84,14 @@ namespace QuestHelper.ViewModel
                 //var list = _vpoint.MediaObjects.Where(x => !x.IsDeleted).Select(x => new MediaPreview() { SourceImg = ImagePathManager.GetImagePath(x.RoutePointMediaObjectId, (MediaObjectTypeEnum)x.MediaType, true), MediaId = x.RoutePointMediaObjectId, MediaType = (MediaObjectTypeEnum)x.MediaType }).ToList();
                 var list = new List<NewRoutePoint>();
                 list.Add(new NewRoutePoint() { Name = "Точка 1"});
-                /*list.Add(new NewRoutePoint() { Name = "Точка 2" });
+                list.Add(new NewRoutePoint() { Name = "Точка 2" });
                 list.Add(new NewRoutePoint() { Name = "Точка 3" });
                 list.Add(new NewRoutePoint() { Name = "Точка 4" });
                 list.Add(new NewRoutePoint() { Name = "Точка 5" });
                 list.Add(new NewRoutePoint() { Name = "Точка 6" });
                 list.Add(new NewRoutePoint() { Name = "Точка 7" });
                 list.Add(new NewRoutePoint() { Name = "Точка 8" });
-                list.Add(new NewRoutePoint() { Name = "Точка 9" });*/
+                list.Add(new NewRoutePoint() { Name = "Точка 9" });
                 return list;
             }
         }
@@ -135,7 +135,7 @@ namespace QuestHelper.ViewModel
 
     public class NewRoutePoint
     {
-        public string Name;
+        public string Name { get; set; }
 
     }
 
