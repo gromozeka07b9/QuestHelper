@@ -31,12 +31,7 @@ namespace QuestHelper.ViewModel
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ICommand ViewPhotoCommand { get; private set; }
-        //public ICommand CreateLast3Days { get; private set; }
-        //public ICommand CreateLast7Days { get; private set; }
-        //public ICommand CreateLast30Days { get; private set; }
-        public ICommand ShowGalleryForMakeAlbumCommand { get; private set; }
-        public ICommand ShowAutoAlbumCommand { get; private set; }
+        public ICommand ShowNewRouteCommand { get; private set; }
 
         public bool IsBusy { get; set; }
 
@@ -44,24 +39,16 @@ namespace QuestHelper.ViewModel
 
         public MakeNewRouteAutoViewModel()
         {
-            ViewPhotoCommand = new Command(viewPhotoAsync);
-            //CreateLast3Days = new Command(createLast3Days);
-            //CreateLast7Days = new Command(createLast7Days);
-            //CreateLast30Days = new Command(createLast30Days);
-            ShowGalleryForMakeAlbumCommand = new Command(showGalleryForMakeAlbumCommand);
-            ShowAutoAlbumCommand = new Command(showAutoAlbumCommand);
+            ShowNewRouteCommand = new Command(showNewRouteCommand);
             TokenStoreService tokenService = new TokenStoreService();
             //_viewModelBackgroundStarted = true;
         }
 
-        private void showGalleryForMakeAlbumCommand(object obj)
+        private void showNewRouteCommand(object obj)
         {
             Navigation.PushModalAsync(new MakeNewRoutePage());
         }
 
-        private void showAutoAlbumCommand(object obj)
-        {
-        }
 
         /*private void createLast30Days(object obj)
         {
@@ -129,20 +116,16 @@ namespace QuestHelper.ViewModel
 
         private bool onTimerForUpdateImgNewRoute()
         {
-            ImagesDataStoreManager imagesGalleryManager = new ImagesDataStoreManager(7, false, 7);
+            /*ImagesDataStoreManager imagesGalleryManager = new ImagesDataStoreManager(7, false, 7);
             imagesGalleryManager.LoadListImages();
-            NewRouteImgCollection = imagesGalleryManager.GetItems(0).Select(x => x.ImagePath).ToList();
+            NewRouteImgCollection = imagesGalleryManager.GetItems(0).Select(x => x.ImagePath).ToList();*/
+
+            AutoRouteMakerManager routeMaker = new AutoRouteMakerManager();
+            var autoRoute = routeMaker.Make(7, _currentUserId);
+            NewRouteImgCollection.AddRange(autoRoute.Points.Select(p=>p.Images[0]));
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsLoadingNewRouteData"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountImagesInNewRouteText"));
-            return false;
-        }
-        private bool onTimerForUpdateImgRandom()
-        {
-            ImagesDataStoreManager imagesGalleryManager = new ImagesDataStoreManager(10, false, 200);
-            imagesGalleryManager.LoadListImages();
-            var items = imagesGalleryManager.GetRandomItems(10);
-            RandomImgCollection = items.Select(x => x.ImagePath).ToList();
             return false;
         }
 
@@ -177,7 +160,7 @@ namespace QuestHelper.ViewModel
             }
 
         }
-        public List<string> RandomImgCollection
+        /*public List<string> RandomImgCollection
         {
             set
             {
@@ -192,7 +175,7 @@ namespace QuestHelper.ViewModel
                 return _randomImgCollection;
             }
 
-        }
+        }*/
     }
 
 }

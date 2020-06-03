@@ -22,6 +22,7 @@ namespace QuestHelper.ViewModel
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public ICommand BackNavigationCommand { get; private set; }
         public ICommand ViewPhotoCommand { get; private set; }
         public ICommand ImagesTresholdReachedCommand { get; private set; }
 
@@ -35,10 +36,16 @@ namespace QuestHelper.ViewModel
 
         public MakeNewRouteViewModel()
         {
+            BackNavigationCommand = new Command(backNavigationCommand);
             ViewPhotoCommand = new Command(viewPhotoAsync);
             ImagesTresholdReachedCommand = new Command(imagesTresholdReachedCommand);
             _imagesDataStore = new ImagesDataStoreManager(_imagesPageSize, IsShowAllImages);
             Images = new ObservableCollection<GalleryImage>();
+        }
+
+        private void backNavigationCommand(object obj)
+        {
+            Navigation.PopModalAsync();
         }
 
         private void imagesTresholdReachedCommand(object obj)
