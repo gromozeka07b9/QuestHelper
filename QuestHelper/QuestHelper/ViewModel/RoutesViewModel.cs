@@ -87,7 +87,7 @@ namespace QuestHelper.ViewModel
                     //StopAnimateCallback.Invoke();
                 }
             });
-            MessagingCenter.Subscribe<AuthResultMessage>(this, string.Empty, async (sender) =>
+            MessagingCenter.Subscribe<AuthResultMessage>(this, string.Empty, (sender) =>
             {
                 if (sender.IsAuthenticated)
                 {

@@ -20,13 +20,23 @@ using System;
 using Android.Gms.Auth.Api.SignIn;
 using Android.Gms.Auth.Api;
 using Xamarin.Auth;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 
 namespace QuestHelper.Droid
 {
-    [Activity(Label = "GoSh!", Icon = "@drawable/icon2", Theme = "@style/MainTheme", MainLauncher = false, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Portrait)]
+    [IntentFilter(new[] { Intent.ActionView, Intent.ActionEdit, Intent.ActionSend, Intent.ActionMain }, Label = "Gosh!", Categories = new string[] { Intent.CategoryDefault, Intent.CategoryBrowsable }, DataMimeType = "text/plain")]
+#if DEBUG
+    [Activity(Label = "Gosh! Debug", Icon = "@drawable/icon2", Theme = "@style/MainTheme", MainLauncher = true, NoHistory = true, LaunchMode = LaunchMode.SingleInstance, ScreenOrientation = ScreenOrientation.Portrait, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+#else
+    [Activity(Label = "Gosh!", Icon = "@drawable/icon2", Theme = "@style/MainTheme", MainLauncher = true, NoHistory = true, LaunchMode = LaunchMode.SingleTask, ScreenOrientation = ScreenOrientation.Portrait, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+#endif
+    //    [Activity(Label = "GoSh!", Icon = "@drawable/icon2", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
-        
+        private string shareSubject = string.Empty;
+        private string shareDescription = string.Empty;
+
         SyncPossibility _syncPossibility = new SyncPossibility();
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
@@ -41,6 +51,9 @@ namespace QuestHelper.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(bundle);
+
+            this.Window.DecorView.Background = null;
+            this.Window.DecorView.SetBackgroundColor(Android.Graphics.Color.White);
 
             CrossCurrentActivity.Current.Init(this, bundle);
 
@@ -65,6 +78,22 @@ namespace QuestHelper.Droid
             DeviceSize.FullScreenWidth = (int)(Resources.DisplayMetrics.WidthPixels / Resources.DisplayMetrics.Density);
 
             LoadApplication(new App());
+
+            if (Intent.Extras != null)
+            {
+                if (Intent.Extras.KeySet().Count > 0)
+                {
+                    //ToDo: несмотря на передачу extra в FirebaseNotificationService они почему-то не передаются
+                    //Актуально когда гош открываешь из сообщения в шторке
+                    string messageBody = Intent.Extras.GetString("messageBodyText");
+                    Xamarin.Forms.MessagingCenter.Send<ReceivePushMessage>(new ReceivePushMessage() { MessageBody = messageBody, MessageTitle = string.Empty }, string.Empty);
+                }
+            }
+
+            if (Intent != null)
+            {
+                processShareIntent(Intent);
+            }
 
             /*if (!string.IsNullOrEmpty(shareDescription))
             {
@@ -124,7 +153,22 @@ namespace QuestHelper.Droid
                     Xamarin.Forms.MessagingCenter.Send<UIAlertMessage>(new UIAlertMessage() { Title = "Error", Message = "Error syncing server. Try to open feed." }, string.Empty);
                 }
             });
+        }
 
+        private void processShareIntent(Intent shareIntent)
+        {
+            switch (shareIntent.Type)
+            {
+                case "text/plain":
+                    {
+                        shareSubject = Intent.GetStringExtra(Intent.ExtraSubject);
+                        shareDescription = Intent.GetStringExtra(Intent.ExtraText);
+                    }; break;
+                case "image/*":
+                    {
+
+                    }; break;
+            }
         }
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Android.Content.Intent data)

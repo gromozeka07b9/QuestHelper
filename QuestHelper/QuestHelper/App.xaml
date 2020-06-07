@@ -188,43 +188,6 @@
                 <Setter Property="Padding" Value="0"/>
             </Style>
             <!--Конец личные маршруты и профиль-->
-
-            <ControlTemplate x:Key="NavigationButtons">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <ContentPresenter Grid.Row="0"></ContentPresenter>
-                    <StackLayout Grid.Row="1" Orientation="Horizontal" Padding="0" HorizontalOptions="Center">
-                        <Image Source="list.png" Style="{StaticResource NavigationButton}">
-                            <Image.GestureRecognizers>
-                                <TapGestureRecognizer Command="{TemplateBinding Parent.BindingContext.MapOverviewCommand}"></TapGestureRecognizer>
-                            </Image.GestureRecognizers>
-                        </Image>
-                        <Image Source="earth.png" Style="{StaticResource NavigationButton}">
-                            <Image.GestureRecognizers>
-                                <TapGestureRecognizer Command="{TemplateBinding Parent.BindingContext.MapOverviewCommand}"></TapGestureRecognizer>
-                            </Image.GestureRecognizers>
-                        </Image>
-                        <Image Source="adjust.png" Style="{StaticResource NavigationButton}">
-                            <Image.GestureRecognizers>
-                                <TapGestureRecognizer Command="{TemplateBinding Parent.BindingContext.MapOverviewCommand}"></TapGestureRecognizer>
-                            </Image.GestureRecognizers>
-                        </Image>
-                        <Image Source="nearme.png" Style="{StaticResource NavigationButton}">
-                            <Image.GestureRecognizers>
-                                <TapGestureRecognizer Command="{TemplateBinding Parent.BindingContext.MapOverviewCommand}"></TapGestureRecognizer>
-                            </Image.GestureRecognizers>
-                        </Image>
-                        <Image Source="account.png" Style="{StaticResource NavigationButton}">
-                            <Image.GestureRecognizers>
-                                <TapGestureRecognizer Command="{TemplateBinding Parent.BindingContext.MapOverviewCommand}"></TapGestureRecognizer>
-                            </Image.GestureRecognizers>
-                        </Image>
-                    </StackLayout>
-                </Grid>
-            </ControlTemplate>
         </ResourceDictionary>
 	</Application.Resources>
 </Application>
