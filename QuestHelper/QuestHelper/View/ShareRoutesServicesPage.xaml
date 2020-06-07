@@ -4,7 +4,7 @@
              xmlns:controls="clr-namespace:QuestHelper.Controls;assembly=QuestHelper"
              xmlns:converters="clr-namespace:QuestHelper.View.Converters;assembly=QuestHelper"
              xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
-             x:Class="QuestHelper.View.ShareRoutesServicesPage" Appearing="ShareRoutesServicesPage_OnAppearing">
+             x:Class="QuestHelper.View.ShareRoutesServicesPage" Appearing="ShareRoutesServicesPage_OnAppearing" Style="{StaticResource ContentPage}">
     <ContentPage.ToolbarItems>
         <ToolbarItem NavigationPage.HasNavigationBar="False" Text="{lang:Translation ShareRoutes_ChooseCase}"></ToolbarItem>
     </ContentPage.ToolbarItems>
