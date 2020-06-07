@@ -161,7 +161,6 @@
     <Compile Include="UsernameService.cs" />
     <Compile Include="MediaService.cs" />
     <Compile Include="PathService.cs" />
-    <None Include="SplashActivity.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

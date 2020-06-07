@@ -52,6 +52,8 @@ namespace QuestHelper.ViewModel
             PermissionManager permissions = new PermissionManager();
             await permissions.PermissionLocationGrantedAsync(CommonResource.Permission_Position);
 
+
+            //Поправить, надо добавить запрос разрешения в PermissionManager!
             PermissionStatus status = PermissionStatus.Unknown;
             try
             {
@@ -64,6 +66,7 @@ namespace QuestHelper.ViewModel
             catch (Exception)
             {
             }
+            //Поправить, надо добавить запрос разрешения в PermissionManager!
 
 
             App.Current.MainPage = new View.MainPage();

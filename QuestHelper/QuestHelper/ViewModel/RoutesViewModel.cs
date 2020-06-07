@@ -69,7 +69,7 @@ namespace QuestHelper.ViewModel
 
         public async void startDialog()
         {
-            MessagingCenter.Subscribe<SyncProgressRouteLoadingMessage>(this, string.Empty, async (sender) =>
+            MessagingCenter.Subscribe<SyncProgressRouteLoadingMessage>(this, string.Empty, (sender) =>
             {
                 if (string.IsNullOrEmpty(sender.RouteId))
                 {
