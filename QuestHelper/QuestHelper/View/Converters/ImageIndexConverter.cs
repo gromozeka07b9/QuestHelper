@@ -13,9 +13,11 @@ namespace QuestHelper.View.Converters
             if(value != null)
             {
                 List<string> imgPathArray = (List<string>)value;
-                if ((imgPathArray.Count > 0) && (parameter != null))
+                int index = Int32.Parse((string)parameter);
+                if ((imgPathArray.Count > 0) && (parameter != null) && (index < imgPathArray.Count))
                 {
-                    imgPath = imgPathArray[Int32.Parse((string)parameter)];
+
+                    imgPath = imgPathArray[index];
                 }
             }
             return imgPath;

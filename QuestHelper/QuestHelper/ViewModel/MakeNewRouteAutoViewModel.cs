@@ -24,14 +24,13 @@ namespace QuestHelper.ViewModel
     {
         TokenStoreService _tokenService = new TokenStoreService();
         private string _currentUserId;
-        private List<string> _randomImgCollection = new List<string>();
         private List<string> _newRouteImgCollection = new List<string>();
-        private bool _viewModelBackgroundStarted;
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand ShowNewRouteCommand { get; private set; }
+        public ICommand GenerateNewRouteCommand { get; private set; }
 
         public bool IsBusy { get; set; }
 
@@ -40,8 +39,13 @@ namespace QuestHelper.ViewModel
         public MakeNewRouteAutoViewModel()
         {
             ShowNewRouteCommand = new Command(showNewRouteCommand);
+            GenerateNewRouteCommand = new Command(generateNewRouteCommand);
             TokenStoreService tokenService = new TokenStoreService();
-            //_viewModelBackgroundStarted = true;
+        }
+
+        private void generateNewRouteCommand(object obj)
+        {
+            onTimerForUpdateImgNewRoute();
         }
 
         private void showNewRouteCommand(object obj)
@@ -50,44 +54,6 @@ namespace QuestHelper.ViewModel
         }
 
 
-        /*private void createLast30Days(object obj)
-        {
-            AutoRouteMakerManager routeMaker = new AutoRouteMakerManager();
-            bool result = routeMaker.Make(30, _currentUserId);
-            if (result)
-            {
-                MainThread.BeginInvokeOnMainThread(() =>
-                {
-                    UserDialogs.Instance.Alert("Внимание", "Маршрут с фотографиями за 30 дней создан", CommonResource.CommonMsg_Ok);
-                });
-            }
-        }
-
-        private void createLast7Days(object obj)
-        {
-            AutoRouteMakerManager routeMaker = new AutoRouteMakerManager();
-            bool result = routeMaker.Make(7, _currentUserId);
-            if (result)
-            {
-                MainThread.BeginInvokeOnMainThread(() =>
-                {
-                    UserDialogs.Instance.Alert("Внимание", "Маршрут с фотографиями за 7 дней создан", CommonResource.CommonMsg_Ok);
-                });
-            }
-        }
-
-        private void createLast3Days(object obj)
-        {
-            AutoRouteMakerManager routeMaker = new AutoRouteMakerManager();
-            bool result = routeMaker.Make(3, _currentUserId);
-            if (result)
-            {
-                MainThread.BeginInvokeOnMainThread(() =>
-                {
-                    UserDialogs.Instance.Alert("Внимание", "Маршрут с фотографиями за 3 дней создан", CommonResource.CommonMsg_Ok);
-                });
-            }
-        }*/
 
         public void CloseDialog()
         {
@@ -97,33 +63,26 @@ namespace QuestHelper.ViewModel
         public async void StartDialog()
         {
             _currentUserId = await _tokenService.GetUserIdAsync();
-            if(NewRouteImgCollection.Count() == 0)
+            //Хотел сделать при формирование маршрута при открытии страницы, но пока не получилось. Для отладки остановился на кнопке.
+            /*if(NewRouteImgCollection.Count() == 0)
             {
                 await refresh();
-            }
-        }
-
-        private void viewPhotoAsync(object imageSource)
-        {
-
+            }*/
         }
 
         private async Task refresh()
         {
             Device.StartTimer(TimeSpan.FromSeconds(5), onTimerForUpdateImgNewRoute);
-            //Device.StartTimer(TimeSpan.FromMilliseconds(50000), onTimerForUpdateImgRandom);
         }
 
         private bool onTimerForUpdateImgNewRoute()
         {
-            /*ImagesDataStoreManager imagesGalleryManager = new ImagesDataStoreManager(7, false, 7);
-            imagesGalleryManager.LoadListImages();
-            NewRouteImgCollection = imagesGalleryManager.GetItems(0).Select(x => x.ImagePath).ToList();*/
 
             AutoRouteMakerManager routeMaker = new AutoRouteMakerManager();
             var autoRoute = routeMaker.Make(7, _currentUserId);
             NewRouteImgCollection.AddRange(autoRoute.Points.Select(p=>p.Images[0]));
 
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NewRouteImgCollection"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsLoadingNewRouteData"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountImagesInNewRouteText"));
             return false;
@@ -160,22 +119,6 @@ namespace QuestHelper.ViewModel
             }
 
         }
-        /*public List<string> RandomImgCollection
-        {
-            set
-            {
-                if(value != _randomImgCollection)
-                {
-                    _randomImgCollection = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RandomImgCollection"));
-                }
-            }
-            get
-            {
-                return _randomImgCollection;
-            }
-
-        }*/
     }
 
 }

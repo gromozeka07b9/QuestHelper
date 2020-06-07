@@ -25,7 +25,8 @@
                     <RowDefinition Height="2*" />
                     <RowDefinition Height="2*" />
                 </Grid.RowDefinitions>
-                <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"  Text="{Binding CountImagesInNewRouteText}" TextColor="Black" FontSize="17" FontAttributes="None" Margin="0" HorizontalOptions="Start"></Label>
+                <Button Grid.Column="1" Grid.Row="0" Text="Generate route" Command="{Binding GenerateNewRouteCommand}"></Button>
+                <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1"  Text="{Binding CountImagesInNewRouteText}" TextColor="Black" FontSize="17" FontAttributes="None" Margin="0" HorizontalOptions="Start"></Label>
                 <Frame Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="1" Grid.RowSpan="3" Padding="0" Margin="0" BorderColor="Black" HasShadow="False">
                     <ffimageloading:CachedImage Source="{Binding NewRouteImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=0 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
                 </Frame>
