@@ -35,6 +35,7 @@ namespace QuestHelper.Droid
             try
             {
                 Java.IO.File file = new Java.IO.File(filename);
+                //https://stackoverflow.com/questions/42516126/fileprovider-illegalargumentexception-failed-to-find-configured-root
                 var fileUri = FileProvider.GetUriForFile(Android.App.Application.Context, Android.App.Application.Context.PackageName + ".fileprovider", file);
                 if(Path.GetExtension(filename) == ".3gp")
                     intent.SetDataAndType(fileUri, "audio/*");
