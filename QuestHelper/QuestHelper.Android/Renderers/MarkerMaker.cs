@@ -13,19 +13,22 @@ namespace QuestHelper.Droid.Renderers
 {
     internal class MarkerMaker
     {
-        internal static MarkerOptions MakeMarkerByPOI(Pin poi, int imageSize)
+        internal static MarkerOptions MakeMarkerByPOI(Pin poi, int imageSize, float zoomLevel)
         {
             string imgPath = ((OverViewMapPin)poi).ImagePath;
             var latlng = new LatLng(poi.Position.Latitude, poi.Position.Longitude);
             var marker = new MarkerOptions();
             marker.Anchor(0.5f, 0.5f);
             marker.SetPosition(latlng);
-            //BitmapDescriptor pic = getBitmap(imgPath, imageSize, poi.Label) ;
+
             BitmapDescriptor pic = null;
-            if (pic == null)
+            if(zoomLevel > 0)
             {
-                //pic = BitmapDescriptorFactory.FromResource(Resource.Drawable.place_unknown);
-                pic = BitmapDescriptorFactory.FromPath(imgPath);
+                pic = getBitmap(imgPath, imageSize, poi.Label);
+            }
+            else
+            {
+                pic = BitmapDescriptorFactory.FromResource(Resource.Drawable.place_unknown);
             }
             marker.SetIcon(pic);
             return marker;
