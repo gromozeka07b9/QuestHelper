@@ -38,7 +38,7 @@ namespace QuestHelper.Managers
         public (bool getMetadataPhotoResult, string newMediaId, Model.GpsCoordinates imageGpsCoordinates) GetPhoto(string photoFullPath)
         {
             bool getMetadataPhotoResult = false;
-            Model.GpsCoordinates imageGpsCoordinates = new Model.GpsCoordinates();
+            Model.GpsCoordinates imageInfo = new Model.GpsCoordinates();
             string mediaId = Guid.NewGuid().ToString();
 
             string imgPathDirectory = ImagePathManager.GetPicturesDirectory();
@@ -55,7 +55,7 @@ namespace QuestHelper.Managers
                 if (preview.CreateImagePreview(originalFileInfo.DirectoryName, originalFileInfo.Name, imgPathDirectory, ImagePathManager.GetMediaFilename(mediaId, MediaObjectTypeEnum.Image, true)))
                 {
                     ExifManager exif = new ExifManager();
-                    imageGpsCoordinates = exif.GetCoordinates(photoFullPath);
+                    imageInfo = exif.GetCoordinates(photoFullPath);
                     getMetadataPhotoResult = true;
                 }
                 else
@@ -68,7 +68,7 @@ namespace QuestHelper.Managers
                 Analytics.TrackEvent("ImageManager: error resize photo ", new Dictionary<string, string> { { "mediaId", mediaId } });
             }
 
-            return (getMetadataPhotoResult, mediaId, imageGpsCoordinates);
+            return (getMetadataPhotoResult, mediaId, imageInfo);
         }
 
 

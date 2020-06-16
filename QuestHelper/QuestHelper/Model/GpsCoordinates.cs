@@ -1,4 +1,6 @@
-﻿namespace QuestHelper.Model
+﻿using System;
+
+namespace QuestHelper.Model
 {
     public class GpsCoordinates
     {
