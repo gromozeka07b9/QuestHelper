@@ -23,6 +23,7 @@ namespace QuestHelper.Droid.Renderers
         private CustomOverviewMap _map;
         private static int _sizeMarkerDivider = 3;//примерный делитель для получения более менее видимого маркера
         private int _sizeMarker = Convert.ToInt32(DeviceSize.FullScreenHeight / _sizeMarkerDivider);
+        private float _currentZoomLevel;
 
         public CustomOverviewMapRenderer(Context context) : base(context)
         {
@@ -59,9 +60,16 @@ namespace QuestHelper.Droid.Renderers
             base.OnElementPropertyChanged(sender, e);
         }
 
+        private void NativeMap_CameraIdle(object sender, EventArgs e)
+        {
+            var map = (Android.Gms.Maps.GoogleMap)sender;
+            _currentZoomLevel = map.CameraPosition.Zoom;
+        }
+
         protected override async void OnMapReady(Android.Gms.Maps.GoogleMap map)
         {
             base.OnMapReady(map);
+            NativeMap.CameraIdle += NativeMap_CameraIdle;
         }
 
         private void OnInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
@@ -70,7 +78,7 @@ namespace QuestHelper.Droid.Renderers
 
         protected override MarkerOptions CreateMarker(Pin pin)
         {
-            return MarkerMaker.MakeMarkerByPOI(pin, _sizeMarker);
+            return MarkerMaker.MakeMarkerByPOI(pin, _sizeMarker, _currentZoomLevel);
         }
     }
 }

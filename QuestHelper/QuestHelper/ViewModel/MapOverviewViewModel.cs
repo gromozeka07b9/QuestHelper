@@ -207,20 +207,14 @@ namespace QuestHelper.ViewModel
                     poi.Save();
                 });
                 _pois = poiManager.GetAllAvailablePois(userId);
-                _pois.AsParallel().ForAll(async p => await downloadPoiImgAsync(poiApi, p));
-                //IsLoadingPoi = false;
-                //IsPoisLoaded = _pois.Any();
-                Device.StartTimer(TimeSpan.FromMilliseconds(10), onTimerForUpdate);
+                await Task.WhenAll(_pois.Select(async p => await downloadPoiImgAsync(poiApi, p)));
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("POIs"));
+                    IsPoisLoaded = !IsPoisLoaded;
+                    IsLoadingPoi = !IsLoadingPoi;
+                });
             }
-        }
-
-        private bool onTimerForUpdate()
-        {
-            MainThread.BeginInvokeOnMainThread(() => {
-                IsPoisLoaded = !IsPoisLoaded;
-                IsLoadingPoi = !IsLoadingPoi;
-            });
-            return false;
         }
 
         private async Task<bool> downloadPoiImgAsync(PoiApiRequest api, ViewPoi viewPoi)
@@ -231,10 +225,6 @@ namespace QuestHelper.ViewModel
             {
                 result = await api.DownloadImg(viewPoi.Id, pathToImg);
             }
-            MainThread.BeginInvokeOnMainThread(() =>
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("POIs"));
-            });
             return result;
         }
 

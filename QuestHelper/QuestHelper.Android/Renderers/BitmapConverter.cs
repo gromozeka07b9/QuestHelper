@@ -34,12 +34,7 @@ namespace QuestHelper.Droid.Renderers
             Bitmap output = Bitmap.CreateBitmap(sbmp.Width, sbmp.Height, Bitmap.Config.Argb8888);
             Canvas canvas = new Canvas(output);
             Paint paint = new Paint();
-            paint.AntiAlias = true;
             paint.FilterBitmap = true;
-            paint.Dither = true;
-            canvas.DrawARGB(0, 0, 0, 0);
-            paint.Color = Android.Graphics.Color.ParseColor("#000000");
-
             canvas.DrawCircle(sbmp.Width / 2 + 0.0f, sbmp.Height / 2 + 0.0f, sbmp.Width / 2 + 0.0f, paint);
             paint.SetXfermode(new PorterDuffXfermode(PorterDuff.Mode.SrcIn));
             try
@@ -50,16 +45,8 @@ namespace QuestHelper.Droid.Renderers
             catch (System.Exception ex)
             {
             }
-            Paint paint1 = new Paint();
-            paint.AntiAlias = true;
-            paint.FilterBitmap = true;
-            paint.Dither = true;
-            var bitmapBackCircle = bitmapBackCircleSrc.Copy(Bitmap.Config.Argb8888, true);
-            Canvas canvas1 = new Canvas(bitmapBackCircle);
-            //Rect rectMin = new Rect(0, 0, bitmapBackCircle.Width - 100, bitmapBackCircle.Height - 100);
-            Rect rectMax = new Rect(10, 5, 290, 275);
-            canvas1.DrawBitmap(output, null, rectMax, paint1);
-            return bitmapBackCircle;
+
+            return output;
         }
     }
 }
