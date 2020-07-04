@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace QuestHelper.Managers
 {
-    public class ImageManager
+    public class ImageManager : IImageManager
     {
         private ImageQualityType _previewImageQuality;
 
