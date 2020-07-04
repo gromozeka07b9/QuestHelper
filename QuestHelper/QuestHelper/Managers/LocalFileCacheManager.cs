@@ -73,6 +73,7 @@ namespace QuestHelper.Managers
                     dbObject.Longitude = viewItem.Longitude;
                     dbObject.SourceFileName = viewItem.SourceFileName;
                     dbObject.SourcePath = viewItem.SourcePath;
+                    dbObject.Processed = viewItem.Processed;
                 });
                 result = true;
             }
@@ -85,9 +86,26 @@ namespace QuestHelper.Managers
 
         public bool Exist(string filename, DateTime fileCreationDate)
         {
-            var test = RealmInstance.All<LocalFile>().Select(x=>x.SourceFileName);
             return RealmInstance.All<LocalFile>().Where(f => f.SourceFileName.Equals(filename) && f.FileNameDate == fileCreationDate).Any();
         }
 
+        public List<ViewLocalFile> LocalFilesByDays(int depth)
+        {
+            var maxDate = DateTime.Now.AddDays(-depth);
+            var listCachedFiles = RealmInstance.All<LocalFile>().Where(f => f.FileNameDate >= maxDate).ToList().Select(f => new ViewLocalFile(f.LocalFileId)
+            {
+                Address = f.Address,
+                Country = f.Country,
+                CreateDate = f.CreateDate,
+                FileNameDate = f.FileNameDate,
+                ImagePreviewFileName = f.ImagePreviewFileName,
+                Latitude = (long)f.Latitude,
+                Longitude = (long)f.Longitude,
+                SourceFileName = f.SourceFileName,
+                SourcePath = f.SourcePath,
+                Processed = f.Processed
+            }).ToList();
+            return listCachedFiles;
+        }
     }
 }

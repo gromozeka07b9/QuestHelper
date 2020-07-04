@@ -1,0 +1,296 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>QuestHelper.Server</name>
+    </assembly>
+    <members>
+        <member name="T:QuestHelper.Server.Controllers.FeedController">
+            <summary>
+            Getting routes feed
+            </summary>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.FeedController.Get(QuestHelper.SharedModelsWS.FeedFilter)">
+            <summary>
+            Get feed with filter
+            </summary>
+            <returns>List of routes</returns>
+        </member>
+        <member name="T:QuestHelper.Server.Controllers.Likes.LikesController">
+            <summary>
+            Like and dislike for routes/points
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.Controllers.Likes.LikesController.Emotion.EmotionNum">
+            <summary>
+            0 - dislike, 1 - like
+            </summary>
+        </member>
+        <member name="T:QuestHelper.Server.Controllers.PoiController">
+            <summary>
+            Getting poi
+            </summary>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.PoiController.GetAllPoi">
+            <summary>
+            Get all available POIs for current user - published other people, private
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.PoiController.GetPrivatePoi">
+            <summary>
+            Get only private POI for current user
+            </summary>
+            <returns>List of POI</returns>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.PoiController.GetPoisByRouteId(System.String)">
+            <summary>
+            Возвращает список POI по всему маршруту, чтобы не получать их по отдельности
+            </summary>
+            <param name="routeId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.PoiController.GetPoiImage(System.String,System.String)">
+            <summary>
+            Получение самого маленького превью, для отображения на карте
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:QuestHelper.Server.Controllers.Routes.RoutesController">
+            <summary>
+            Obsolete!
+            </summary>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.Routes.RoutesController.Get">
+            <summary>
+            Returns list of available routes
+            </summary>
+            <returns>List routes</returns>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.Routes.RoutesController.MakeRouteShared(System.String)">
+            <summary>
+            Create short id for route (only if short id is absent yet)
+            </summary>
+            <param name="RouteId">Full route Id </param>
+            <response code="200">Returns short id</response>
+            <response code="401">Returns if user has no access to route</response>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.RouteSync.RouteSyncController.GetRouteVersion(System.String)">
+            <summary>
+            Get route hash
+            </summary>
+            <param name="routeId"></param>
+            <returns>Route hash structure</returns>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.RouteSync.RouteSyncController.GetCoverImage(System.String)">
+            <summary>
+            Get image cover for selected route
+            </summary>
+            <param name="routeId">route Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.RouteSync.RouteSyncController.AddViewed(System.String)">
+            <summary>
+            Route is viewed
+            </summary>
+            <param name="RouteId">Id</param>
+        </member>
+        <member name="T:QuestHelper.Server.Controllers.SpeechToText.Audio3gpToOggConverter">
+            <summary>
+            Конвертер файлов 3gp в ogg
+            </summary>
+        </member>
+        <member name="T:QuestHelper.Server.Controllers.SpeechToText.SpeechToTextController">
+            <summary>
+            Методы обработки запросов на распознавание аудиофайлов
+            </summary>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.SpeechToText.SpeechToTextController.#ctor">
+            <summary>
+            Распознавание аудио
+            </summary>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.SpeechToText.SpeechToTextController.TrySpeechParseAsync(System.String)">
+            <summary>
+            Распознавание одного файла (media)
+            </summary>
+            <param name="id">routepointmediaobjectId</param>
+            <returns></returns>
+        </member>
+        <member name="T:QuestHelper.Server.Controllers.v2.PoisController">
+            <summary>
+            Getting poi
+            </summary>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.v2.PoisController.GetPois(QuestHelper.Server.Controllers.v2.PagingParameters)">
+            <summary>
+            Get all available POIs for current user - published other people, private
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:QuestHelper.Server.Controllers.v2.RoutePointsController">
+            <summary>
+            CRUD for route points
+            </summary>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.v2.RoutePointsController.Get(QuestHelper.Server.Controllers.v2.PagingParameters)">
+            <summary>
+            List all available route points for user
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:QuestHelper.Server.Controllers.v2.RoutesController">
+            <summary>
+            CRUD for routes
+            </summary>
+        </member>
+        <member name="M:QuestHelper.Server.Controllers.v2.RoutesController.Get(QuestHelper.Server.Controllers.v2.PagingParameters)">
+            <summary>
+            List all available routes for user
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:QuestHelper.Server.Integration.RawTextCleaner">
+            <summary>
+            Преобразователь сырого распознанного текста в текст с предложениями и пунктуацией
+            </summary>
+        </member>
+        <member name="T:QuestHelper.Server.Integration.SpeechToTextProcess">
+            <summary>
+            Распознавание аудиофайлов в текст
+            </summary>
+        </member>
+        <member name="M:QuestHelper.Server.Integration.SpeechToTextProcess.#ctor(System.String)">
+            <summary>
+            Параметр - путь к каталогу сервера, где лежат файлы
+            </summary>
+            <param name="pathToMediaCatalog"></param>
+        </member>
+        <member name="M:QuestHelper.Server.Integration.SpeechToTextProcess.TrySpeechParseMediaAsync(System.String)">
+            <summary>
+            Распознавание конкретного media файла
+            </summary>
+            <param name="mediaId"></param>
+            <param name="text"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QuestHelper.Server.Integration.SpeechToTextRequest">
+            <summary>
+            Запросы к API Yandex для распознавания аудио
+            </summary>
+        </member>
+        <member name="M:QuestHelper.Server.Integration.SpeechToTextRequest.GetTextAsync(System.String)">
+            <summary>
+            Распознавание одного аудио файла
+            </summary>
+            <param name="pathToAudioFile"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuestHelper.Server.Managers.AvailableRoutes.GetByUserIdAndRouteId(System.String,System.String)">
+            <summary>
+            Get route by user id and route id
+            </summary>
+            <param name="userId"></param>
+            <param name="routeId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QuestHelper.Server.Managers.IdentityManager">
+            <summary>
+            Чтение/запись Identity
+            </summary>
+        </member>
+        <member name="T:QuestHelper.Server.Managers.IdGenerator">
+            <summary>
+            Генерация id из словаря, может быть неуникален.
+            </summary>
+        </member>
+        <member name="M:QuestHelper.Server.Managers.IdGenerator.Generate(System.Int32)">
+            <summary>
+            Генерация Id
+            </summary>
+            <param name="length">длина итогой строки идентификатора</param>
+            <returns></returns>
+        </member>
+        <member name="T:QuestHelper.Server.Models.ConverterWsToDbModel">
+            <summary>
+            Конвертер модели веб-сервиса в модель БД
+            </summary>
+        </member>
+        <member name="M:QuestHelper.Server.Models.ConverterWsToDbModel.PoiConvert(QuestHelper.SharedModelsWS.Poi)">
+            <summary>
+            Конвертер для модели POI
+            </summary>
+            <param name="wsObject"></param>
+            <returns></returns>
+        </member>
+        <member name="P:QuestHelper.Server.Models.FeedItem.Version">
+            <summary>
+            Версия записи
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.Models.OauthUser.Version">
+            <summary>
+            Версия записи
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.Models.Poi.ByRoutePointId">
+            <summary>
+            Создана на основе точки маршрута
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.Models.Poi.IsPublished">
+            <summary>
+            доступна всем
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.Models.Poi.ImgFilename">
+            <summary>
+            имя файла картинки обложки
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.Models.Poi.Version">
+            <summary>
+            Версия записи
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.Models.Route.Version">
+            <summary>
+            Версия записи
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.Models.RoutePoint.Version">
+            <summary>
+            Версия записи
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.Models.RoutePointMediaObject.Version">
+            <summary>
+            Версия записи
+            </summary>
+        </member>
+        <member name="T:QuestHelper.Server.Models.RouteView">
+            <summary>
+            Данные о количестве просмотров маршрутов
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.Models.User.Version">
+            <summary>
+            Версия записи
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.ServerDbContext.Poi">
+            <summary>
+            Таблица с POI
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.ServerDbContext.RouteLike">
+            <summary>
+            Таблица с лайками маршрутов
+            </summary>
+        </member>
+        <member name="P:QuestHelper.Server.ServerDbContext.RouteView">
+            <summary>
+            Просмотры маршрутов
+            </summary>
+        </member>
+    </members>
+</doc>

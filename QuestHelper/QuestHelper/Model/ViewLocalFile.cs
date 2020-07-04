@@ -16,11 +16,17 @@ namespace QuestHelper.Model
         private string _sourceFileName;
         private string _imagePreviewFileName;
         private string _sourcePath;
+        private bool _processed;
 
         public ViewLocalFile()
         {
             _id = Guid.NewGuid().ToString();
             CreateDate = DateTimeOffset.Now;
+        }
+
+        public ViewLocalFile(string id)
+        {
+            _id = id;
         }
 
         public string Id
@@ -138,6 +144,18 @@ namespace QuestHelper.Model
             get
             {
                 return _sourcePath;
+            }
+        }
+
+        public bool Processed
+        {
+            set
+            {
+                _processed = value;
+            }
+            get
+            {
+                return _processed;
             }
         }
 

@@ -15,11 +15,12 @@ namespace QuestHelper.LocalDB.Model
         public string SourcePath { get; set; }
         public string ImagePreviewFileName { get; set; }
         [Indexed]
-        public DateTimeOffset FileNameDate { get; set; } = DateTime.MinValue;
+        public DateTimeOffset FileNameDate { get; set; }
         public DateTimeOffset CreateDate { get; set; } = DateTime.Now;
         public string Address { get; set; }
         public string Country { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        public bool Processed { get; set; }
     }
 }
