@@ -67,6 +67,7 @@ namespace QuestHelper.Managers
                     dbObject.Address = viewItem.Address;
                     dbObject.Country = viewItem.Country;
                     dbObject.FileNameDate = viewItem.FileNameDate;
+                    dbObject.CreateDate = viewItem.CreateDate;
                     dbObject.ImagePreviewFileName = viewItem.ImagePreviewFileName;
                     dbObject.Latitude = viewItem.Latitude;
                     dbObject.Longitude = viewItem.Longitude;
@@ -80,6 +81,12 @@ namespace QuestHelper.Managers
                 HandleError.Process("LocalFileCacheManager", "Save", e, false);
             }
             return result;
+        }
+
+        public bool Exist(string filename, DateTime fileCreationDate)
+        {
+            var test = RealmInstance.All<LocalFile>().Select(x=>x.SourceFileName);
+            return RealmInstance.All<LocalFile>().Where(f => f.SourceFileName.Equals(filename) && f.FileNameDate == fileCreationDate).Any();
         }
 
     }
