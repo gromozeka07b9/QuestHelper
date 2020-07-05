@@ -9,8 +9,8 @@ namespace QuestHelper.Model
         private string _id = string.Empty;
         private DateTimeOffset _createDate;
         private string _address = string.Empty;
-        private long _latitude;
-        private long _longitude;
+        private double _latitude;
+        private double _longitude;
         private string _country;
         private DateTimeOffset _fileNameDate;
         private string _sourceFileName;
@@ -21,6 +21,10 @@ namespace QuestHelper.Model
         {
             _id = Guid.NewGuid().ToString();
             CreateDate = DateTimeOffset.Now;
+        }
+        public ViewLocalFile(string id)
+        {
+            _id = id;
         }
 
         public string Id
@@ -60,7 +64,7 @@ namespace QuestHelper.Model
             }
         }
 
-        public long Latitude
+        public double Latitude
         {
             get
             {
@@ -71,7 +75,7 @@ namespace QuestHelper.Model
                 _latitude = value;
             }
         }
-        public long Longitude
+        public double Longitude
         {
             get
             {

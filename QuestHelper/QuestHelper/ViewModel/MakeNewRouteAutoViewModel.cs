@@ -45,9 +45,9 @@ namespace QuestHelper.ViewModel
 
         private void generateNewRouteCommand(object obj)
         {
-            onTimerForUpdateImgNewRoute();
-            //ImagesCacheDbManager imagesCache = new ImagesCacheDbManager(7);
-            //imagesCache.Update();
+            //onTimerForUpdateImgNewRoute();
+            ImagesCacheDbManager imagesCache = new ImagesCacheDbManager(7);
+            imagesCache.Update();
         }
 
         private void showNewRouteCommand(object obj)

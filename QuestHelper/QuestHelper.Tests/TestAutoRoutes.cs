@@ -83,7 +83,7 @@ namespace QuestHelper.Tests
             Assert.True(parsedImages.Count == 3, "Должно быть именно 3 файла");
         }
 
-        [Fact]
+        /*[Fact]
         public void TestMust_LoadToCacheImages7DaysLast()
         {
             //Загружаем в БД метаданные изображений за последние 7 дней
@@ -92,10 +92,10 @@ namespace QuestHelper.Tests
 
             //Act
             ImagesCacheDbManager cacheDbManager = new ImagesCacheDbManager(7);
-            cacheDbManager.Update();
+            //cacheDbManager.Update();
 
             //Assert
             Assert.True(true, "Должны быть файлы за 7 дней");
-        }
+        }*/
     }
 }

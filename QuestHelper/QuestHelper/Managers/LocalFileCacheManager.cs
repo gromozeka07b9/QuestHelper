@@ -83,6 +83,26 @@ namespace QuestHelper.Managers
             return result;
         }
 
+        public IEnumerable<ViewLocalFile> GetImagesInfo(DateTimeOffset periodStart, DateTimeOffset periodEnd)
+        {
+            List<ViewLocalFile> listCachedImages = new List<ViewLocalFile>();
+
+            var listDbModel = RealmInstance.All<LocalFile>().Where(l => l.FileNameDate >= periodStart && l.FileNameDate <= periodEnd).OrderBy(l => l.FileNameDate).ToList();
+
+            return listDbModel.Select(l=>new ViewLocalFile(l.LocalFileId) 
+            { 
+                Address = l.Address,
+                Country = l.Country,
+                CreateDate = l.CreateDate,
+                FileNameDate = l.FileNameDate,
+                ImagePreviewFileName = l.ImagePreviewFileName,
+                Latitude = l.Latitude,
+                Longitude = l.Longitude,
+                SourceFileName = l.SourceFileName,
+                SourcePath = l.SourcePath
+            });
+        }
+
         public bool Exist(string filename, DateTime fileCreationDate)
         {
             var test = RealmInstance.All<LocalFile>().Select(x=>x.SourceFileName);
