@@ -45,10 +45,18 @@ namespace QuestHelper.ViewModel
 
         private void generateNewRouteCommand(object obj)
         {
-            onTimerForUpdateImgNewRoute();
-            //ImagesCacheDbManager imagesCache = new ImagesCacheDbManager(new ImageManager(), 7);
-            //imagesCache.UpdateFilenames();
-            //imagesCache.UpdateMetadata();
+            //onTimerForUpdateImgNewRoute();
+            ImagesCacheDbManager imagesCache = new ImagesCacheDbManager(new ImageManager(), 14);
+            imagesCache.UpdateFilenames();
+            imagesCache.UpdateMetadata();
+
+            AutoRouteMakerManager routeMaker = new AutoRouteMakerManager(new LocalFileCacheManager());
+            var autoRoute = routeMaker.Make(DateTimeOffset.Now.AddDays(-14), DateTimeOffset.Now);
+            NewRouteImgCollection.AddRange(autoRoute.Points.Select(p => p.Images[0]));
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NewRouteImgCollection"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsLoadingNewRouteData"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountImagesInNewRouteText"));
         }
 
         private void showNewRouteCommand(object obj)
@@ -75,10 +83,10 @@ namespace QuestHelper.ViewModel
 
         private async Task refresh()
         {
-            Device.StartTimer(TimeSpan.FromSeconds(5), onTimerForUpdateImgNewRoute);
+            //Device.StartTimer(TimeSpan.FromSeconds(5), onTimerForUpdateImgNewRoute);
         }
 
-        private bool onTimerForUpdateImgNewRoute()
+        /*private bool onTimerForUpdateImgNewRoute()
         {
 
             AutoRouteMakerManager routeMaker = new AutoRouteMakerManager();
@@ -89,7 +97,7 @@ namespace QuestHelper.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsLoadingNewRouteData"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountImagesInNewRouteText"));
             return false;
-        }
+        }*/
 
         public bool IsLoadingNewRouteData
         {
@@ -103,7 +111,7 @@ namespace QuestHelper.ViewModel
         {
             get
             {
-                return $"Ваш маршрут за неделю состоит из {NewRouteImgCollection.Count.ToString()} фотографий. Хотите просмотреть его?";
+                return $"Ваш маршрут состоит из {NewRouteImgCollection.Count.ToString()} фотографий. Хотите просмотреть его?";
             }
         }
         public List<string> NewRouteImgCollection

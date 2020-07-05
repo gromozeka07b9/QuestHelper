@@ -84,7 +84,7 @@ namespace QuestHelper.Managers
             return result;
         }
 
-        public IEnumerable<ViewLocalFile> GetImagesInfo(DateTimeOffset periodStart, DateTimeOffset periodEnd)
+        public List<ViewLocalFile> GetImagesInfo(DateTimeOffset periodStart, DateTimeOffset periodEnd)
         {
             List<ViewLocalFile> listCachedImages = new List<ViewLocalFile>();
 
@@ -101,7 +101,7 @@ namespace QuestHelper.Managers
                 Longitude = l.Longitude,
                 SourceFileName = l.SourceFileName,
                 SourcePath = l.SourcePath
-            });
+            }).ToList();
         }
 
         public bool Exist(string filename, DateTime fileCreationDate)

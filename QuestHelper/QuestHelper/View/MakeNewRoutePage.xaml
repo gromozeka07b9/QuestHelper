@@ -47,10 +47,6 @@
                                     <Label Text="{Binding Name}" HorizontalOptions="End" VerticalOptions="Center"/>
                                     <ffimageloading:CachedImage Source="land2.png" WidthRequest="70" HeightRequest="70" HorizontalOptions="Start" VerticalOptions="Fill" Aspect="AspectFit" Margin="2">
                                     </ffimageloading:CachedImage>
-                                    <ffimageloading:CachedImage Source="land2.png" WidthRequest="70" HeightRequest="70" HorizontalOptions="Start" VerticalOptions="Fill" Aspect="AspectFit" Margin="2">
-                                    </ffimageloading:CachedImage>
-                                    <ffimageloading:CachedImage Source="land2.png" WidthRequest="70" HeightRequest="70" HorizontalOptions="Start" VerticalOptions="Fill" Aspect="AspectFit" Margin="2">
-                                    </ffimageloading:CachedImage>
                                 </StackLayout>
                             </ViewCell>
                         </DataTemplate>

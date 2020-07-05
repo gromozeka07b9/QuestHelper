@@ -43,7 +43,7 @@ namespace QuestHelper.Managers
         {
             var startDate = DateTime.Now;
             LocalFileCacheManager cacheManager = new LocalFileCacheManager();
-            var files = cacheManager.LocalFilesByDays(7);
+            var files = cacheManager.LocalFilesByDays(_depthInDays);
             foreach(var currentFile in files)
             {
                 if(!currentFile.Processed && currentFile.Latitude == 0 && currentFile.Longitude == 0)
@@ -51,14 +51,17 @@ namespace QuestHelper.Managers
                     var currentMetadata = _imageManager.GetPhoto(Path.Combine(currentFile.SourcePath, currentFile.SourceFileName));
                     if (currentMetadata.getMetadataPhotoResult)
                     {
-                        currentFile.Latitude = (long)currentMetadata.imageGpsCoordinates.Latitude;
-                        currentFile.Longitude = (long)currentMetadata.imageGpsCoordinates.Longitude;
+                        currentFile.Latitude = currentMetadata.imageGpsCoordinates.Latitude;
+                        currentFile.Longitude = currentMetadata.imageGpsCoordinates.Longitude;
                         currentFile.ImagePreviewFileName = ImagePathManager.GetImagePath(currentMetadata.newMediaId, LocalDB.Model.MediaObjectTypeEnum.Image, true);
                     }
                     currentFile.Processed = true;
                     cacheManager.Save(currentFile);
                 }
             }
+
+            var lst = cacheManager.GetImagesInfo(DateTimeOffset.Now.AddDays(-7), DateTimeOffset.Now);
+
             var delay = DateTime.Now - startDate;
         }
 
