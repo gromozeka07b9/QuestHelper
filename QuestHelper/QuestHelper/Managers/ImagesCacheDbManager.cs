@@ -13,8 +13,8 @@ namespace QuestHelper.Managers
     /// </summary>
     public class ImagesCacheDbManager
     {
-        private int _depthInDays = 0;//depth in days for choose photos
-        private IImageManager _imageManager;
+        private readonly int _depthInDays = 0;//depth in days for choose photos
+        private readonly IImageManager _imageManager;
 
         public ImagesCacheDbManager(IImageManager imageManager, int depthInDays = 0)
         {
