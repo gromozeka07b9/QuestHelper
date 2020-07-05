@@ -16,6 +16,7 @@ namespace QuestHelper.Model
         private string _sourceFileName;
         private string _imagePreviewFileName;
         private string _sourcePath;
+        private bool _processed;
 
         public ViewLocalFile()
         {
@@ -142,6 +143,18 @@ namespace QuestHelper.Model
             get
             {
                 return _sourcePath;
+            }
+        }
+
+        public bool Processed
+        {
+            set
+            {
+                _processed = value;
+            }
+            get
+            {
+                return _processed;
             }
         }
 
