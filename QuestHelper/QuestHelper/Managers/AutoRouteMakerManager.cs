@@ -22,7 +22,6 @@ namespace QuestHelper.Managers
             var localCacheFiles =  _cacheManager.GetImagesInfo(periodStart, periodEnd);
             if (localCacheFiles.Count > 0)
             {
-                //route.SourceGalleryImages = imagesGalleryManager.GetItems(0);
                 route.Name = "Мой маршрут за 7 дней";
                 route.BuildOld(localCacheFiles);
             }

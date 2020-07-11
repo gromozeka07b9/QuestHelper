@@ -27,6 +27,7 @@ namespace QuestHelper.Managers
             var startDate = DateTime.Now;
             LocalFileCacheManager cacheManager = new LocalFileCacheManager();
             string pathToDCIMDirectory = DependencyService.Get<IPathService>().PublicDirectoryDcim;
+
             var listFiles = System.IO.Directory.EnumerateFiles(pathToDCIMDirectory, "*.jpg", SearchOption.AllDirectories);
             foreach(string filename in listFiles)
             {
@@ -46,7 +47,7 @@ namespace QuestHelper.Managers
             var files = cacheManager.LocalFilesByDays(_depthInDays);
             foreach(var currentFile in files)
             {
-                if(!currentFile.Processed && currentFile.Latitude == 0 && currentFile.Longitude == 0)
+                if(!currentFile.Processed)
                 {
                     var currentMetadata = _imageManager.GetPhoto(Path.Combine(currentFile.SourcePath, currentFile.SourceFileName));
                     if (currentMetadata.getMetadataPhotoResult)

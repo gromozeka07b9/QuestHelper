@@ -100,7 +100,8 @@ namespace QuestHelper.Managers
                 Latitude = l.Latitude,
                 Longitude = l.Longitude,
                 SourceFileName = l.SourceFileName,
-                SourcePath = l.SourcePath
+                SourcePath = l.SourcePath,
+                Processed = l.Processed
             }).ToList();
         }
 
