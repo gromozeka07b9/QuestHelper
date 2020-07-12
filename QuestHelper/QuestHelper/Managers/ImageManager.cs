@@ -42,32 +42,21 @@ namespace QuestHelper.Managers
             string mediaId = Guid.NewGuid().ToString();
 
             string imgPathDirectory = ImagePathManager.GetPicturesDirectory();
-            //используем метод создания превью для того, чтобы сделать основное фото из оригинального, но с уменьшенным качеством
 
-            ImagePreviewManager resizedOriginal = new ImagePreviewManager();
-            resizedOriginal.PreviewQualityType = ImageQualityType.Q0x0x40;
             FileInfo originalFileInfo = new FileInfo(photoFullPath);
-
-            if (resizedOriginal.CreateImagePreview(originalFileInfo.DirectoryName, originalFileInfo.Name, imgPathDirectory, ImagePathManager.GetMediaFilename(mediaId, MediaObjectTypeEnum.Image, false)))
+            ImagePreviewManager preview = new ImagePreviewManager();
+            preview.PreviewQualityType = _previewImageQuality;
+            if (preview.CreateImagePreview(originalFileInfo.DirectoryName, originalFileInfo.Name, imgPathDirectory, ImagePathManager.GetMediaFilename(mediaId, MediaObjectTypeEnum.Image, true)))
             {
-                ImagePreviewManager preview = new ImagePreviewManager();
-                preview.PreviewQualityType = _previewImageQuality;
-                if (preview.CreateImagePreview(originalFileInfo.DirectoryName, originalFileInfo.Name, imgPathDirectory, ImagePathManager.GetMediaFilename(mediaId, MediaObjectTypeEnum.Image, true)))
-                {
-                    ExifManager exif = new ExifManager();
-                    imageInfo = exif.GetCoordinates(photoFullPath);
-                    getMetadataPhotoResult = true;
-                }
-                else
-                {
-                    Analytics.TrackEvent("ImageManager: add photo error create preview ", new Dictionary<string, string> { { "mediaId", mediaId } });
-                }
+                ExifManager exif = new ExifManager();
+                imageInfo = exif.GetCoordinates(photoFullPath);
+                getMetadataPhotoResult = true;
             }
             else
             {
-                Analytics.TrackEvent("ImageManager: error resize photo ", new Dictionary<string, string> { { "mediaId", mediaId } });
+                Analytics.TrackEvent("ImageManager: error create preview for auto route", new Dictionary<string, string> { { "mediaId", mediaId } });
             }
-
+            
             return (getMetadataPhotoResult, mediaId, imageInfo);
         }
 

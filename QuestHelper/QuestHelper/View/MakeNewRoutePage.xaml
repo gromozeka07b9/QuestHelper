@@ -59,8 +59,8 @@
                                     </ffimageloading:CachedImage>
                                 </Frame>
                                 <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
-                                    <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="22" HorizontalOptions="Start" VerticalOptions="Center"/>
-                                    <Label Text="12.123213123, 54.323423423" FontSize="18" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                    <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="16" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                    <Label Text="12.123213123, 54.323423423" FontSize="14" HorizontalOptions="Start" VerticalOptions="Center"/>
                                 </StackLayout>
                                 <Image Source="baseline_clear_black_48.png" WidthRequest="32" HeightRequest="32" Margin="5" VerticalOptions="Center" HorizontalOptions="End">
                                     <Image.GestureRecognizers>
@@ -73,7 +73,7 @@
                 </ListView.ItemTemplate>
             </ListView>
             
-            <CollectionView Grid.Row="3" Grid.Column="0" x:Name="pointImages" BackgroundColor="Red" ItemsSource="{Binding SelectedRoutePointImages}" RemainingItemsThreshold="5" RemainingItemsThresholdReachedCommand="{Binding ImagesTresholdReachedCommand}" IsGrouped="False" >
+            <CollectionView Grid.Row="3" Grid.Column="0" x:Name="pointImages" ItemsSource="{Binding SelectedRoutePointImages}" RemainingItemsThreshold="5" RemainingItemsThresholdReachedCommand="{Binding ImagesTresholdReachedCommand}" IsGrouped="False" >
                 <!--CollectionView.GroupHeaderTemplate>
                     <DataTemplate>
                         <Label Text="{Binding ImageCreateDateString}"></Label>
@@ -84,13 +84,13 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill" BackgroundColor="Yellow">
+                        <StackLayout Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill">
                             <Image Source="baseline_clear_black_48.png" WidthRequest="32" HeightRequest="32" Margin="0" VerticalOptions="Center" HorizontalOptions="End">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer NumberOfTapsRequired="2" Command="{Binding DeleteImageFromPointCommand}" CommandParameter="{Binding .}"></TapGestureRecognizer>
                                 </Image.GestureRecognizers>
                             </Image>
-                            <ffimageloading:CachedImage Source="{Binding .}" Margin="5" DownsampleToViewSize="True" CacheType="All" CacheDuration="86400" BitmapOptimizations="False" Aspect="AspectFit"  LoadingPlaceholder="emptyphoto.png" >
+                            <ffimageloading:CachedImage Source="{Binding .}" Margin="1" DownsampleToViewSize="True" CacheType="All" CacheDuration="86400" BitmapOptimizations="False" Aspect="AspectFit"  LoadingPlaceholder="emptyphoto.png" >
                                 <ffimageloading:CachedImage.GestureRecognizers>
                                     <!--TapGestureRecognizer Command="{Binding Path=BindingContext.ViewPhotoCommand, Source={x:Reference Name=colImages}}" CommandParameter="{Binding}"-->
                                 </ffimageloading:CachedImage.GestureRecognizers>

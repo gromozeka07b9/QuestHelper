@@ -28,7 +28,7 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidSupportedAbis>x86;x86_64;arm64-v8a</AndroidSupportedAbis>
+    <AndroidSupportedAbis>x86;arm64-v8a;x86_64</AndroidSupportedAbis>
     <MandroidI18n />
     <AndroidDexTool>d8</AndroidDexTool>
     <AndroidUseAapt2>true</AndroidUseAapt2>
@@ -37,6 +37,7 @@
     <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
     <AndroidPackageFormat>apk</AndroidPackageFormat>
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
+    <AndroidCreatePackagePerAbi>false</AndroidCreatePackagePerAbi>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
