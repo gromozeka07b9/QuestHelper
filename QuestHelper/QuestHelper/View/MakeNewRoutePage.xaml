@@ -37,7 +37,7 @@
             </StackLayout>
             
             <StackLayout Grid.Row="1" Grid.Column="0" Margin="0">
-                <Label Text="Тестовый маршрут 2018" HorizontalTextAlignment="Center" TextColor="Blue" FontSize="25"></Label>
+                <Label Text="Тестовый маршрут 2018" HorizontalTextAlignment="Center" TextColor="Blue" FontSize="20"></Label>
             </StackLayout>
             <ListView Grid.Row="2" Grid.Column="0" Margin="0" RowHeight="80" ItemsSource="{Binding RoutePoints}" SeparatorVisibility="None" SelectedItem="{Binding SelectedRoutePoint}" SelectionMode="Single">
                 <ListView.Header>

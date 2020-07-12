@@ -110,10 +110,9 @@ namespace QuestHelper.Managers
             return RealmInstance.All<LocalFile>().Where(f => f.SourceFileName.Equals(filename) && f.FileNameDate == fileCreationDate).Any();
         }
 
-        public List<ViewLocalFile> LocalFilesByDays(int depth)
+        public List<ViewLocalFile> LocalFilesByDays(DateTime dateBegin, DateTime dateEnd)
         {
-            var maxDate = DateTime.Now.AddDays(-depth);
-            var listCachedFiles = RealmInstance.All<LocalFile>().Where(f => f.FileNameDate >= maxDate).ToList().Select(f => new ViewLocalFile(f.LocalFileId)
+            var listCachedFiles = RealmInstance.All<LocalFile>().Where(f => f.FileNameDate >= dateBegin && f.FileNameDate <= dateEnd).ToList().Select(f => new ViewLocalFile(f.LocalFileId)
             {
                 Address = f.Address,
                 Country = f.Country,

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Syncfusion.RangeNavigator.XForms;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -30,6 +30,12 @@ namespace QuestHelper.View
         private void ContentPage_Disappearing(object sender, EventArgs e)
         {
             _vm.CloseDialog();
+        }
+
+        private void SfDateTimeRangeNavigator_OnRangeChanged(object sender, RangeChangedEventArgs e)
+        {
+            _vm.PeriodRouteBegin = e.ViewRangeStartDate;
+            _vm.PeriodRouteEnd = e.ViewRangeEndDate;
         }
     }
 }

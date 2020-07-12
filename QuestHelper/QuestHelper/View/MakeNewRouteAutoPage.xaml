@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" xmlns:local="clr-namespace:QuestHelper.View.Converters" xmlns:animationForms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms" xmlns:animationResource="clr-namespace:QuestHelper.Resources"
+             xmlns:xForms="clr-namespace:Syncfusion.RangeNavigator.XForms;assembly=Syncfusion.SfChart.XForms"
              mc:Ignorable="d"
              x:Class="QuestHelper.View.MakeNewRouteAutoPage" NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False" Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing">
     <ContentPage.Resources>
@@ -25,8 +26,9 @@
                     <RowDefinition Height="2*" />
                     <RowDefinition Height="2*" />
                 </Grid.RowDefinitions>
-                <Button Grid.Column="1" Grid.Row="0" Text="Generate route" Command="{Binding GenerateNewRouteCommand}"></Button>
-                <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1"  Text="{Binding CountImagesInNewRouteText}" TextColor="Black" FontSize="17" FontAttributes="None" Margin="0" HorizontalOptions="Start"></Label>
+                <xForms:SfDateTimeRangeNavigator Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1"  Minimum="2020,01,01" Maximum="2021,01,01" RangeChanged="SfDateTimeRangeNavigator_OnRangeChanged" />
+                <Button Grid.Column="1" Grid.Row="0" Text="Make" Command="{Binding GenerateNewRouteCommand}"></Button>
+                <!--Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1"  Text="{Binding CountImagesInNewRouteText}" TextColor="Black" FontSize="17" FontAttributes="None" Margin="0" HorizontalOptions="Start"></Label-->
                 <Frame Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="1" Grid.RowSpan="3" Padding="0" Margin="0" BorderColor="Black" HasShadow="False">
                     <ffimageloading:CachedImage Source="{Binding NewRouteImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=0 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
                 </Frame>

@@ -13,13 +13,15 @@ namespace QuestHelper.Managers
     /// </summary>
     public class ImagesCacheDbManager
     {
-        private readonly int _depthInDays = 0;//depth in days for choose photos
         private readonly IImageManager _imageManager;
+        private DateTime _dateEnd;
+        private DateTime _dateBegin;
 
-        public ImagesCacheDbManager(IImageManager imageManager, int depthInDays = 0)
+        public ImagesCacheDbManager(IImageManager imageManager, DateTime dateBegin, DateTime dateEnd)
         {
             _imageManager = imageManager;
-            _depthInDays = depthInDays;
+            _dateBegin = dateBegin;
+            _dateEnd = dateEnd;
         }
 
         internal void UpdateFilenames()
@@ -44,7 +46,7 @@ namespace QuestHelper.Managers
         {
             var startDate = DateTime.Now;
             LocalFileCacheManager cacheManager = new LocalFileCacheManager();
-            var files = cacheManager.LocalFilesByDays(_depthInDays);
+            var files = cacheManager.LocalFilesByDays(_dateBegin, _dateEnd);
             foreach(var currentFile in files)
             {
                 if(!currentFile.Processed)
