@@ -87,7 +87,6 @@ namespace QuestHelper.Managers
         public List<ViewLocalFile> GetImagesInfo(DateTimeOffset periodStart, DateTimeOffset periodEnd)
         {
             List<ViewLocalFile> listCachedImages = new List<ViewLocalFile>();
-
             var listDbModel = RealmInstance.All<LocalFile>().Where(l => l.FileNameDate >= periodStart && l.FileNameDate <= periodEnd).OrderBy(l => l.FileNameDate).ToList();
 
             return listDbModel.Select(l=>new ViewLocalFile(l.LocalFileId) 
@@ -115,7 +114,6 @@ namespace QuestHelper.Managers
         {
             var countByDays = RealmInstance.All<LocalFile>()
                 .Where(f => f.FileNameDate >= dateBegin && f.FileNameDate <= dateEnd)
-                //.GroupBy(f => new DateTime(f.FileNameDate.Year, f.FileNameDate.Month, f.FileNameDate.Day));
                 .ToList();
             var grouped = countByDays.GroupBy(f =>
                     new DateTime(f.FileNameDate.Year, f.FileNameDate.Month, f.FileNameDate.Day))

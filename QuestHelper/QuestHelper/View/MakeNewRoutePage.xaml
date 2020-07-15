@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-             xmlns:converters="clr-namespace:QuestHelper.View.Converters;assembly=QuestHelper"
+             xmlns:converters="clr-namespace:QuestHelper.View.Converters;assembly=QuestHelper" xmlns:listView="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
              mc:Ignorable="d"
              x:Class="QuestHelper.View.MakeNewRoutePage" NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False" Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing" BackgroundColor="White">
     <ContentPage.Resources>
@@ -39,7 +39,43 @@
             <StackLayout Grid.Row="1" Grid.Column="0" Margin="0">
                 <Label Text="Тестовый маршрут 2018" HorizontalTextAlignment="Center" TextColor="Blue" FontSize="20"></Label>
             </StackLayout>
-            <ListView Grid.Row="2" Grid.Column="0" Margin="0" RowHeight="80" ItemsSource="{Binding RoutePoints}" SeparatorVisibility="None" SelectedItem="{Binding SelectedRoutePoint}" SelectionMode="Single">
+            <listView:SfListView Grid.Row="2" Grid.Column="0" Margin="0"
+                                 ItemsSource="{Binding RoutePoints}" TapCommand="{Binding SelectedRoutePoint}"
+                                 SwipeOffset="360" SwipeThreshold="30"
+                                 SwipeEnded="SfListView_SwipeEnded"
+                                 SelectionMode="Single" ItemSize="200" AutoFitMode="Height" AllowSwiping="True">
+                <listView:SfListView.LeftSwipeTemplate>
+                    <DataTemplate>
+                        <Grid>
+                          <Grid BackgroundColor="#009EDA" HorizontalOptions="Fill" VerticalOptions="Fill" Grid.Column="0">
+                            <Grid VerticalOptions="Center" HorizontalOptions="Center">
+                              <Image Grid.Column="0"
+                                    Grid.Row="0"
+                                    BackgroundColor="Transparent"
+                                    HeightRequest="35"
+                                    WidthRequest="35"
+                                    Source="delete.png" />
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </listView:SfListView.LeftSwipeTemplate>
+                <listView:SfListView.ItemTemplate>
+                    <DataTemplate>
+                                <StackLayout Margin="0" Orientation="Horizontal" HorizontalOptions="Fill" VerticalOptions="FillAndExpand">
+                                    <Frame CornerRadius="80" WidthRequest="70" HeightRequest="70" HorizontalOptions="Start" Padding="0" Margin="5">
+                                        <ffimageloading:CachedImage Source="{Binding Images, Converter={StaticResource imageIndexer}, ConverterParameter=0}" HorizontalOptions="Start" VerticalOptions="Fill" Aspect="Fill" Margin="0">
+                                        </ffimageloading:CachedImage>
+                                    </Frame>
+                                     <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                                        <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="16" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                        <Label Text="12.123213123, 54.323423423" FontSize="14" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                    </StackLayout>
+                                </StackLayout>
+                    </DataTemplate>
+                </listView:SfListView.ItemTemplate>
+            </listView:SfListView>
+            <!--ListView Grid.Row="2" Grid.Column="0" Margin="0" RowHeight="80" ItemsSource="{Binding RoutePoints}" SeparatorVisibility="None" SelectedItem="{Binding SelectedRoutePoint}">
                 <ListView.Header>
                     <StackLayout>
                         <Label Text="Начало маршрута" Margin="10,5,10,5"></Label>
@@ -53,46 +89,39 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout Margin="0" Orientation="Horizontal" HorizontalOptions="Fill" VerticalOptions="FillAndExpand">
-                                <Frame CornerRadius="80" WidthRequest="70" HeightRequest="70" HorizontalOptions="Start" Padding="0" Margin="5">
-                                    <ffimageloading:CachedImage Source="{Binding Images, Converter={StaticResource imageIndexer}, ConverterParameter=0}" HorizontalOptions="Start" VerticalOptions="Fill" Aspect="Fill" Margin="0">
-                                    </ffimageloading:CachedImage>
-                                </Frame>
-                                <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
-                                    <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="16" HorizontalOptions="Start" VerticalOptions="Center"/>
-                                    <Label Text="12.123213123, 54.323423423" FontSize="14" HorizontalOptions="Start" VerticalOptions="Center"/>
+                            <SwipeView BackgroundColor="White">
+                                <SwipeView.LeftItems> 
+                                    <SwipeItems>
+                                        <SwipeItem Text="Удалить" IconImageSource="baseline_clear_black_48.png" Command="{Binding DeletePointCommand}" CommandParameter="{Binding .}" Invoked="SwipeItem_Invoked" BackgroundColor="LightGray">
+                                           
+                                        </SwipeItem>
+                                    </SwipeItems>
+                                </SwipeView.LeftItems>
+                                <StackLayout Margin="0" Orientation="Horizontal" HorizontalOptions="Fill" VerticalOptions="FillAndExpand">
+                                    <Frame CornerRadius="80" WidthRequest="70" HeightRequest="70" HorizontalOptions="Start" Padding="0" Margin="5">
+                                        <ffimageloading:CachedImage Source="{Binding Images, Converter={StaticResource imageIndexer}, ConverterParameter=0}" HorizontalOptions="Start" VerticalOptions="Fill" Aspect="Fill" Margin="0">
+                                        </ffimageloading:CachedImage>
+                                    </Frame>
+                                     <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                                        <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="16" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                        <Label Text="12.123213123, 54.323423423" FontSize="14" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                    </StackLayout>
                                 </StackLayout>
-                                <Image Source="baseline_clear_black_48.png" WidthRequest="32" HeightRequest="32" Margin="5" VerticalOptions="Center" HorizontalOptions="End">
-                                    <Image.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding DeletePointCommand}" CommandParameter="{Binding .}"></TapGestureRecognizer>
-                                    </Image.GestureRecognizers>
-                                </Image>
-                            </StackLayout>
+                            </SwipeView>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-            </ListView>
+            </-->
             
-            <CollectionView Grid.Row="3" Grid.Column="0" x:Name="pointImages" ItemsSource="{Binding SelectedRoutePointImages}" RemainingItemsThreshold="5" RemainingItemsThresholdReachedCommand="{Binding ImagesTresholdReachedCommand}" IsGrouped="False" >
-                <!--CollectionView.GroupHeaderTemplate>
-                    <DataTemplate>
-                        <Label Text="{Binding ImageCreateDateString}"></Label>
-                    </DataTemplate>
-                </CollectionView.GroupHeaderTemplate-->
+            <CollectionView Grid.Row="3" Grid.Column="0" x:Name="pointImages" ItemsSource="{Binding SelectedRoutePointImages}" RemainingItemsThreshold="5" RemainingItemsThresholdReachedCommand="{Binding ImagesTresholdReachedCommand}" IsGrouped="False" SelectionMode="Single" >
                 <CollectionView.ItemsLayout>
-                    <GridItemsLayout Span="{Binding GridItemsPreviewCount}" Orientation="Vertical"></GridItemsLayout>
+                    <GridItemsLayout Span="{Binding GridItemsPreviewCount}" HorizontalItemSpacing="2" Orientation="Vertical"></GridItemsLayout>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill">
-                            <Image Source="baseline_clear_black_48.png" WidthRequest="32" HeightRequest="32" Margin="0" VerticalOptions="Center" HorizontalOptions="End">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer NumberOfTapsRequired="2" Command="{Binding DeleteImageFromPointCommand}" CommandParameter="{Binding .}"></TapGestureRecognizer>
-                                </Image.GestureRecognizers>
-                            </Image>
-                            <ffimageloading:CachedImage Source="{Binding .}" Margin="1" DownsampleToViewSize="True" CacheType="All" CacheDuration="86400" BitmapOptimizations="False" Aspect="AspectFit"  LoadingPlaceholder="emptyphoto.png" >
+                            <ffimageloading:CachedImage Source="{Binding .}" Margin="1" DownsampleToViewSize="True" CacheType="All" CacheDuration="86400" BitmapOptimizations="False" Aspect="AspectFill" HorizontalOptions="FillAndExpand"  LoadingPlaceholder="emptyphoto.png" >
                                 <ffimageloading:CachedImage.GestureRecognizers>
-                                    <!--TapGestureRecognizer Command="{Binding Path=BindingContext.ViewPhotoCommand, Source={x:Reference Name=colImages}}" CommandParameter="{Binding}"-->
                                 </ffimageloading:CachedImage.GestureRecognizers>
                             </ffimageloading:CachedImage>
                         </StackLayout>

@@ -35,7 +35,7 @@ namespace QuestHelper.View
         private void SfDateTimeRangeNavigator_OnRangeChanged(object sender, RangeChangedEventArgs e)
         {
             _vm.PeriodRouteBegin = e.ViewRangeStartDate;
-            _vm.PeriodRouteEnd = e.ViewRangeEndDate;
+            _vm.PeriodRouteEnd = e.ViewRangeEndDate.AddDays(1).Date.AddSeconds(-1);
         }
     }
 }

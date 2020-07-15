@@ -34,5 +34,14 @@ namespace QuestHelper.View
         {
             _vm.CloseDialog();
         }
+
+        void SwipeItem_Invoked(System.Object sender, System.EventArgs e)
+        {
+        }
+
+        void SfListView_SwipeEnded(System.Object sender, Syncfusion.ListView.XForms.SwipeEndedEventArgs e)
+        {
+            _vm.DeletePointCommand.Execute(e.ItemData);
+        }
     }
 }
