@@ -39,9 +39,14 @@ namespace QuestHelper.View
         {
         }
 
-        void SfListView_SwipeEnded(System.Object sender, Syncfusion.ListView.XForms.SwipeEndedEventArgs e)
+        void TapGestureRecognizer_Tapped(System.Object sender, System.EventArgs e)
         {
-            _vm.DeletePointCommand.Execute(e.ItemData);
+            _vm.DeletePointCommand.Execute(((TappedEventArgs)e).Parameter);
         }
+
+        void TapGestureRecognizer_Tapped_DeleteImage(System.Object sender, System.EventArgs e)
+        {
+            _vm.DeleteImageFromPointCommand.Execute(((TappedEventArgs)e).Parameter);
+        }        
     }
 }

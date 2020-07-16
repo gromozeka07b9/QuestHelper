@@ -12,12 +12,20 @@ namespace QuestHelper.View.Converters
             string imgPath = string.Empty;
             if(value != null)
             {
-                List<string> imgPathArray = (List<string>)value;
-                int index = Int32.Parse((string)parameter);
-                if ((imgPathArray.Count > 0) && (parameter != null) && (index < imgPathArray.Count))
+                try
+                {                    
+                    //List<string> imgPathArray = (List<string>)value;
+                    List<string> imgPathArray = new List<string>((IEnumerable<string>)value);
+                    int index = Int32.Parse((string)parameter);
+                    if ((imgPathArray.Count > 0) && (parameter != null) && (index < imgPathArray.Count))
+                    {
+
+                        imgPath = imgPathArray[index];
+                    }
+                }
+                catch
                 {
 
-                    imgPath = imgPathArray[index];
                 }
             }
             return imgPath;
