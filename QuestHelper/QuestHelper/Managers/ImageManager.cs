@@ -35,11 +35,10 @@ namespace QuestHelper.Managers
             }
         }
 
-        public (bool getMetadataPhotoResult, string newMediaId, Model.GpsCoordinates imageGpsCoordinates) GetPhoto(string photoFullPath)
+        public (bool getMetadataPhotoResult, Model.GpsCoordinates imageGpsCoordinates) GetPhoto(string mediaId, string photoFullPath)
         {
             bool getMetadataPhotoResult = false;
             Model.GpsCoordinates imageInfo = new Model.GpsCoordinates();
-            string mediaId = Guid.NewGuid().ToString();
 
             string imgPathDirectory = ImagePathManager.GetPicturesDirectory();
 
@@ -57,7 +56,7 @@ namespace QuestHelper.Managers
                 Analytics.TrackEvent("ImageManager: error create preview for auto route", new Dictionary<string, string> { { "mediaId", mediaId } });
             }
             
-            return (getMetadataPhotoResult, mediaId, imageInfo);
+            return (getMetadataPhotoResult, imageInfo);
         }
 
 

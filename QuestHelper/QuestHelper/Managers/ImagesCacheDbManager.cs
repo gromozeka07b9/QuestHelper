@@ -36,7 +36,7 @@ namespace QuestHelper.Managers
                 var fileInfo = new FileInfo(filename);
                 if(!cacheManager.Exist(fileInfo.Name, fileInfo.CreationTime))
                 {
-                    cacheManager.Save(new ViewLocalFile() { SourceFileName = fileInfo.Name, SourcePath = fileInfo.DirectoryName, FileNameDate = fileInfo.CreationTime });
+                    cacheManager.Save(new ViewLocalFile() {Id = Guid.NewGuid().ToString(), SourceFileName = fileInfo.Name, SourcePath = fileInfo.DirectoryName, FileNameDate = fileInfo.CreationTime });
                 }
             }
             var delay = DateTime.Now - startDate;
@@ -51,12 +51,12 @@ namespace QuestHelper.Managers
             {
                 if(!currentFile.Processed)
                 {
-                    var currentMetadata = _imageManager.GetPhoto(Path.Combine(currentFile.SourcePath, currentFile.SourceFileName));
+                    var currentMetadata = _imageManager.GetPhoto(currentFile.Id, Path.Combine(currentFile.SourcePath, currentFile.SourceFileName));
                     if (currentMetadata.getMetadataPhotoResult)
                     {
                         currentFile.Latitude = currentMetadata.imageGpsCoordinates.Latitude;
                         currentFile.Longitude = currentMetadata.imageGpsCoordinates.Longitude;
-                        currentFile.ImagePreviewFileName = ImagePathManager.GetImagePath(currentMetadata.newMediaId, LocalDB.Model.MediaObjectTypeEnum.Image, true);
+                        currentFile.ImagePreviewFileName = ImagePathManager.GetImagePath(currentFile.Id, LocalDB.Model.MediaObjectTypeEnum.Image, true);
                     }
                     currentFile.Processed = true;
                     cacheManager.Save(currentFile);

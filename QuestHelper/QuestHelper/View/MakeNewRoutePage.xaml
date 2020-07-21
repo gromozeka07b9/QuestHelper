@@ -32,12 +32,15 @@
                     </Image>
                     <StackLayout HorizontalOptions="FillAndExpand"></StackLayout>
                     <Image Source="baseline_done_black_48.png" WidthRequest="32" HeightRequest="32" Margin="0,5,5,0" VerticalOptions="Start" HorizontalOptions="End">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SaveRouteCommand}" />
+                        </Image.GestureRecognizers>
                     </Image>
                 </StackLayout>
             </StackLayout>
             
             <StackLayout Grid.Row="1" Grid.Column="0" Margin="0">
-                <Label Text="Тестовый маршрут 2018" HorizontalTextAlignment="Center" TextColor="Blue" FontSize="20"></Label>
+                <Label Text="{Binding Name}" HorizontalTextAlignment="Center" TextColor="Blue" FontSize="20"></Label>
             </StackLayout>
             <listView:SfListView Grid.Row="2" Grid.Column="0" Margin="0" x:Name="sfListRoutePoints"
                                  ItemsSource="{Binding RoutePoints}" TapCommand="{Binding SelectedRoutePoint}"
@@ -55,7 +58,7 @@
                                 </Frame>
                                     <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
                                     <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="16" HorizontalOptions="Start" VerticalOptions="Center"/>
-                                    <Label Text="12.123213123, 54.323423423" FontSize="14" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                    <Label Text="{Binding PointCoordinatesText}" FontSize="14" HorizontalOptions="Start" VerticalOptions="Center"/>
                                 </StackLayout>
                             </StackLayout>
                         </Frame>
@@ -164,7 +167,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <ffimageloading:CachedImage Grid.Column="0" Grid.Row="0" Source="{Binding .}" Margin="1"
+                            <ffimageloading:CachedImage Grid.Column="0" Grid.Row="0" Source="{Binding ImagePreviewFileName}" Margin="1"
                                                         DownsampleToViewSize="True" CacheType="All" CacheDuration="86400"
                                                         BitmapOptimizations="False" Aspect="AspectFill"
                                                         HorizontalOptions="FillAndExpand"

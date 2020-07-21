@@ -30,9 +30,6 @@
                 <Label Grid.Column="0" Grid.Row="0" Text="{Binding SelectedPeriodText}" TextColor="Black" FontSize="10" FontAttributes="None" Margin="0" HorizontalOptions="Start"></Label>
                 <Button Grid.Column="1" Grid.Row="0" Text="Make" Command="{Binding GenerateNewRouteCommand}"></Button>
                 <xForms:SfDateTimeRangeNavigator Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"  XBindingPath="XValue" YBindingPath="YValue" Minimum="{Binding MinRangeDate}" Maximum="{Binding MaxRangeDate}" ItemsSource="{Binding ImagesRangeData}" RangeChanged="SfDateTimeRangeNavigator_OnRangeChanged" >
-                    <xForms:SfDateTimeRangeNavigator.Content>
-                        
-                    </xForms:SfDateTimeRangeNavigator.Content>
                 </xForms:SfDateTimeRangeNavigator>
                 <Frame Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="1" Grid.RowSpan="3" Padding="0" Margin="0" BorderColor="Black" HasShadow="False">
                     <ffimageloading:CachedImage Source="{Binding NewRouteImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=0 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
