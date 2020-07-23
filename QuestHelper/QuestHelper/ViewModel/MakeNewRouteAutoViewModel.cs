@@ -33,12 +33,15 @@ namespace QuestHelper.ViewModel
         private LocalFileCacheManager _localFileCacheManager = new LocalFileCacheManager();
         private DateTime _minRangeDate = DateTime.Now;
         private int _selectedImagesCount = 0;
+        private bool _isGalleryIndexed = false;
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand ShowNewRouteCommand { get; private set; }
         public ICommand GenerateNewRouteCommand { get; private set; }
+        public ICommand StartIndexGalleryCommand { get; private set; }
+        
 
         public bool IsBusy { get; set; }
 
@@ -49,7 +52,18 @@ namespace QuestHelper.ViewModel
         {
             ShowNewRouteCommand = new Command(showNewRouteCommand);
             GenerateNewRouteCommand = new Command(generateNewRouteCommand);
+            StartIndexGalleryCommand = new Command(startIndexGalleryCommand);
             TokenStoreService tokenService = new TokenStoreService();
+        }
+
+        private async void startIndexGalleryCommand(object obj)
+        {
+            IsGalleryIndexed = false;
+            ImagesCacheDbManager imagesCache = new ImagesCacheDbManager(new ImageManager(), PeriodRouteBegin, PeriodRouteEnd);
+            imagesCache.UpdateFilenames();
+            MinRangeDate = _localFileCacheManager.GetMinDate();
+            IsGalleryIndexed = true;
+            await Task.Factory.StartNew(() => updateRangeContent());
         }
 
         private void generateNewRouteCommand(object obj)
@@ -91,28 +105,35 @@ namespace QuestHelper.ViewModel
         public async void StartDialog()
         {
             _currentUserId = await _tokenService.GetUserIdAsync();
-            ImagesCacheDbManager imagesCache = new ImagesCacheDbManager(new ImageManager(), PeriodRouteBegin, PeriodRouteEnd);
-            //Task updateTask = Task.Factory.StartNew(() => { imagesCache.UpdateFilenames(); });
-            //Task.WaitAny(updateTask);
+            /*ImagesCacheDbManager imagesCache = new ImagesCacheDbManager(new ImageManager(), PeriodRouteBegin, PeriodRouteEnd);
             imagesCache.UpdateFilenames();
             MinRangeDate = _localFileCacheManager.GetMinDate();
-            await Task.Factory.StartNew(() => updateRangeContentByTimer());
-            //Device.StartTimer(TimeSpan.FromSeconds(3), updateRangeContentByTimer);
-            //Хотел сделать при формирование маршрута при открытии страницы, но пока не получилось. Для отладки остановился на кнопке.
-            /*if(NewRouteImgCollection.Count() == 0)
-            {
-                await refresh();
-            }*/
+            await Task.Factory.StartNew(() => updateRangeContentByTimer());*/
         }
 
-        private bool updateRangeContentByTimer()
+        private void updateRangeContent()
         {
             var countByDays = _localFileCacheManager.GetCountImagesByDay(MinRangeDate, PeriodRouteEnd).OrderBy(c=>c.Item1);
             ImagesRangeData = new ObservableCollection<ChartDataPoint>(countByDays.Select(c => new ChartDataPoint(c.Item1, c.Item2)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagesRangeData"));
-            return false;
+            UpdateSelectedCountDays(PeriodRouteBegin, PeriodRouteEnd);
         }
         
+        public bool IsGalleryIndexed
+        {
+            set
+            {
+                if(value != _isGalleryIndexed)
+                {
+                    _isGalleryIndexed = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsGalleryIndexed"));
+                }
+            }
+            get
+            {
+                return _isGalleryIndexed;
+            }
+        }
 
         public bool IsLoadingNewRouteData
         {

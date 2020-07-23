@@ -95,7 +95,7 @@ namespace QuestHelper.Managers
                 Country = l.Country,
                 CreateDate = l.CreateDate,
                 FileNameDate = l.FileNameDate,
-                ImagePreviewFileName = l.ImagePreviewFileName,
+                ImagePreviewFileName = l.ImagePreviewFileName,                
                 Latitude = l.Latitude,
                 Longitude = l.Longitude,
                 SourceFileName = l.SourceFileName,
