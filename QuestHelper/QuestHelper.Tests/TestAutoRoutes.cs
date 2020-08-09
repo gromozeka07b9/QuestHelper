@@ -28,7 +28,7 @@ namespace QuestHelper.Tests
         {
             bool result = true;
 
-            AutoRouteMakerManager routeMaker = new AutoRouteMakerManager(new LocalFileCacheManager());
+            //AutoRouteMakerManager routeMaker = new AutoRouteMakerManager(new LocalFileCacheManager());
             //routeMaker.Make(1, "");
             Assert.True(result);
         }

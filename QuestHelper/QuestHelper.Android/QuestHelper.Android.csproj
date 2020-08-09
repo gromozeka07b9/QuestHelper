@@ -28,7 +28,7 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidSupportedAbis>arm64-v8a</AndroidSupportedAbis>
+    <AndroidSupportedAbis>arm64-v8a;x86;armeabi-v7a</AndroidSupportedAbis>
     <MandroidI18n />
     <AndroidDexTool>d8</AndroidDexTool>
     <AndroidUseAapt2>true</AndroidUseAapt2>
@@ -180,6 +180,10 @@
     <AndroidResource Include="Resources\layout\Toolbar.axml" />
     <AndroidResource Include="Resources\values\styles.xml">
       <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\btn1test.png">
+      <SubType></SubType>
+      <Generator></Generator>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>

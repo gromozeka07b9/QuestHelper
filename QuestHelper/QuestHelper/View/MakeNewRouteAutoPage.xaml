@@ -1,87 +1,190 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" xmlns:local="clr-namespace:QuestHelper.View.Converters" xmlns:animationForms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms" xmlns:animationResource="clr-namespace:QuestHelper.Resources"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:local="clr-namespace:QuestHelper.View.Converters" xmlns:animationForms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms" xmlns:animationResource="clr-namespace:QuestHelper.Resources"
              xmlns:xForms="clr-namespace:Syncfusion.RangeNavigator.XForms;assembly=Syncfusion.SfChart.XForms"
              mc:Ignorable="d"
-             x:Class="QuestHelper.View.MakeNewRouteAutoPage" NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False" Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing">
+             xmlns:listView="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+             x:Class="QuestHelper.View.MakeNewRouteAutoPage"
+             NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False"
+             Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:ImageIndexConverter x:Key="imageIndexer" />
             <local:NegativeBoolConverter  x:Key="inverter" />
+            <local:ExpandSelectedItemConverter  x:Key="expanderHeight" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="5" Margin="0">
+        <Grid Padding="0" Margin="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="6*" />
-                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="3*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="2*" />
-                <RowDefinition Height="2*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Label Grid.Column="0" Grid.Row="0" Text="{Binding SelectedPeriodText}" TextColor="Black" FontSize="10" FontAttributes="None" Margin="0" HorizontalOptions="Start"></Label>
-            <Button Grid.Column="1" Grid.Row="0" Text="Make" Command="{Binding GenerateNewRouteCommand}"></Button>
-            <xForms:SfDateTimeRangeNavigator Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"  XBindingPath="XValue" YBindingPath="YValue" Minimum="{Binding MinRangeDate}" Maximum="{Binding MaxRangeDate}" ItemsSource="{Binding ImagesRangeData}" RangeChanged="SfDateTimeRangeNavigator_OnRangeChanged" >
-            </xForms:SfDateTimeRangeNavigator>
-            <Frame Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="1" Grid.RowSpan="3" Padding="0" Margin="0" BorderColor="Black" HasShadow="False">
-                <ffimageloading:CachedImage Source="{Binding NewRouteImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=0 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
-            </Frame>
+            <listView:SfListView Grid.Row="0" Grid.Column="0" Margin="0" x:Name="sfListRoutePoints"
+                                 ItemsSource="{Binding PreviewRoutePoints}" TapCommand="{Binding SelectedRoutePoint}"
+                                 SwipeOffset="80" SwipeThreshold="30"
+                                 SelectionMode="None" AutoFitMode="DynamicHeight" AllowSwiping="False">
+                <listView:SfListView.HeaderTemplate>
+                    <DataTemplate>
+                        <StackLayout HorizontalOptions="FillAndExpand">
+                            <Grid HorizontalOptions="FillAndExpand" HeightRequest="200">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="4*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="3*" />
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="3*" />
+                                    <RowDefinition Height="1*" />
+                                </Grid.RowDefinitions>
 
-            <Frame Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="1" Grid.RowSpan="1" Padding="0" BorderColor="Black" HasShadow="False">
-                <ffimageloading:CachedImage  Source="{Binding NewRouteImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=1 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
-            </Frame>
-            <Frame Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="1" Grid.RowSpan="1" Padding="0" BorderColor="Black" HasShadow="False">
-                <ffimageloading:CachedImage  Source="{Binding NewRouteImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=2 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
-            </Frame>
-
-            <Frame Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="1" Grid.RowSpan="1" Padding="0" BorderColor="Black" HasShadow="False">
-                <ffimageloading:CachedImage  Source="{Binding NewRouteImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=3 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
-            </Frame>
-            <Frame Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="1" Grid.RowSpan="1" Padding="0" BorderColor="Black" HasShadow="False">
-                <ffimageloading:CachedImage  Source="{Binding NewRouteImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=4 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
-            </Frame>
-            <Frame Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="1" Grid.RowSpan="1" Padding="0" BorderColor="Black" HasShadow="False">
-                <ffimageloading:CachedImage  Source="{Binding NewRouteImgCollection, Converter={StaticResource imageIndexer}, ConverterParameter=5 }" BitmapOptimizations="True" DownsampleToViewSize="True" Aspect="AspectFill"></ffimageloading:CachedImage>
-            </Frame>
-            <AbsoluteLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="4" VerticalOptions="Fill" HorizontalOptions="Fill" Opacity="0.4" BackgroundColor="LightCyan">
-                <AbsoluteLayout.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ShowNewRouteCommand}"></TapGestureRecognizer>
-                </AbsoluteLayout.GestureRecognizers>
-            </AbsoluteLayout>
-            <StackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="4" HorizontalOptions="Fill" VerticalOptions="Center" IsVisible="{Binding IsLoadingNewRouteData, Converter={StaticResource inverter}}">
-                <StackLayout.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ShowNewRouteCommand}"></TapGestureRecognizer>
-                </StackLayout.GestureRecognizers>
-                <Image Source="ic_eye_1.png" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"></Image>
-                <Label Text="Посмотреть альбом" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ShowNewRouteCommand}"></TapGestureRecognizer>
-                    </Label.GestureRecognizers>
-                </Label>
-            </StackLayout>
-            <!--StackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="4" HorizontalOptions="Fill" VerticalOptions="Center" IsVisible="{Binding IsLoadingNewRouteData}">
-                <animationForms:AnimationView
-                            Animation="{animationResource:AnimationResourceExtension usualloading}"
-                            Loop="True"
-                            IsPlaying="True"
-                            IsEnabled="True"
-                            WidthRequest="60"
-                            HeightRequest="60"
-                            Margin="15"
-                            IsVisible="{Binding IsLoadingNewRouteData}"
-                            VerticalOptions="Center" HorizontalOptions="Center"
-                            />
-            </-->
-
-            <AbsoluteLayout Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="6" HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="0.7" BackgroundColor="White" IsVisible="{Binding IsGalleryIndexed, Converter={StaticResource inverter}}">
-            </AbsoluteLayout>
+                                <Image Grid.Column="0" Grid.Row="1" Margin="0" Source="btn1test.png" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}"></Image>
+                                <!--Frame Grid.Column="0" Grid.Row="1" Margin="0" HasShadow="True" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}" BackgroundColor="LightBlue">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}"></TapGestureRecognizer>
+                                    </Frame.GestureRecognizers>
+                                    <Label Text="Сегодня" FontSize="16" HorizontalTextAlignment="Center" TextColor="Black"></Label>
+                                </-->
+                                <Frame Grid.Column="0" Grid.Row="3" Margin="0" HasShadow="True" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}" BackgroundColor="LightBlue">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}"></TapGestureRecognizer>
+                                    </Frame.GestureRecognizers>
+                                    <Label Text="Вчера" FontSize="16" HorizontalTextAlignment="Center" TextColor="Black"></Label>
+                                </Frame>
+                                <Frame Grid.Column="2" Grid.Row="1" Margin="0" HasShadow="True" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}" BackgroundColor="LightBlue">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}"></TapGestureRecognizer>
+                                    </Frame.GestureRecognizers>
+                                    <Label Text="Неделя" FontSize="16" HorizontalTextAlignment="Center" TextColor="Black"></Label>
+                                </Frame>
+                                <Frame Grid.Column="2"   Grid.Row="3" Margin="0" HasShadow="True" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}" BackgroundColor="LightBlue">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ShowPeriodChartCommand}"></TapGestureRecognizer>
+                                    </Frame.GestureRecognizers>
+                                    <Label Text="Все дни" FontSize="16" HorizontalTextAlignment="Center" TextColor="Black"></Label>
+                                </Frame>
+                                <StackLayout Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="5" Margin="5" IsVisible="{Binding IsVisiblePeriodChart}">
+                                    <ImageButton Source="baseline_clear_black_48" Command="{Binding ShowMinimalPeriodCommand}" HorizontalOptions="End"></ImageButton>
+                                    <xForms:SfDateTimeRangeNavigator HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                     </xForms:SfDateTimeRangeNavigator>
+                                </StackLayout>
+                            </Grid>
+                        </StackLayout>
+                    </DataTemplate>
+                </listView:SfListView.HeaderTemplate>
+                <!--listView:SfListView.SelectedItemTemplate>
+                    <DataTemplate>
+                        <Frame CornerRadius="5" BorderColor="Black" BackgroundColor="LightGray" HasShadow="True" Padding="0" Margin="5" HeightRequest="80" HorizontalOptions="Fill" VerticalOptions="Fill">
+                            <StackLayout Margin="0" Orientation="Horizontal" HorizontalOptions="Fill" VerticalOptions="FillAndExpand">
+                                <Frame CornerRadius="50" WidthRequest="70" HeightRequest="70" HorizontalOptions="Start" Padding="0" Margin="5">
+                                    <ffimageloading:CachedImage Source="{Binding Images, Converter={StaticResource imageIndexer}, ConverterParameter=0}" HorizontalOptions="Start" VerticalOptions="Fill" Aspect="Fill" Margin="0">
+                                    </ffimageloading:CachedImage>
+                                </Frame>
+                                    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                                    <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="16" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                    <Label Text="{Binding PointCoordinatesText}" FontSize="14" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                </StackLayout>
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </-->
+                <listView:SfListView.LeftSwipeTemplate>
+                    <DataTemplate>
+                        <StackLayout HorizontalOptions="Fill" VerticalOptions="Fill">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer CommandParameter="{Binding .}" ></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                                <Image Grid.Column="0"
+                                    Grid.Row="0"
+                                    BackgroundColor="Transparent"
+                                    HeightRequest="35"
+                                    WidthRequest="35"
+                                    VerticalOptions="CenterAndExpand" HorizontalOptions="Center"
+                                    Source="delete.png" >
+                                </Image>
+                        </StackLayout>
+                    </DataTemplate>
+                </listView:SfListView.LeftSwipeTemplate>
+                <listView:SfListView.RightSwipeTemplate>
+                    <DataTemplate>
+                        <Grid HeightRequest="100">
+                          <Grid BackgroundColor="White" HorizontalOptions="Fill" VerticalOptions="Fill" Grid.Column="0">
+                            <Grid VerticalOptions="Center" HorizontalOptions="Center">
+                              <Image Grid.Column="0"
+                                    Grid.Row="0"
+                                    BackgroundColor="Transparent"
+                                    HeightRequest="35"
+                                    WidthRequest="35"
+                                    Source="edit.png" />
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </listView:SfListView.RightSwipeTemplate>
+                <listView:SfListView.ItemTemplate>
+                    <DataTemplate>
+                       <Frame CornerRadius="5" BackgroundColor="LightCyan" HasShadow="True" Padding="0" Margin="5" HeightRequest="{Binding IsSelected, Converter={StaticResource expanderHeight}}" HorizontalOptions="Fill" VerticalOptions="Fill">
+                           <StackLayout>
+                                <StackLayout Margin="0" HeightRequest="50" Orientation="Horizontal" HorizontalOptions="Fill" VerticalOptions="FillAndExpand">
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="ListItemTapGestureRecognizer_Tapped" CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                    </StackLayout.GestureRecognizers>
+                                    <Frame CornerRadius="50" HeightRequest="50" WidthRequest="50" HorizontalOptions="Start" Padding="0" Margin="5">
+                                        <ffimageloading:CachedImage HeightRequest="50" WidthRequest="50" DownsampleToViewSize="True" Source="{Binding Images, Converter={StaticResource imageIndexer}, ConverterParameter=0}" HorizontalOptions="Start" VerticalOptions="Fill" Aspect="Fill" Margin="0">
+                                        </ffimageloading:CachedImage>
+                                    </Frame>
+                                    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                                        <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="16" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                    </StackLayout>
+                                </StackLayout>
+                               <StackLayout Orientation="Vertical" IsVisible="{Binding IsSelected}">
+                                   <BoxView HeightRequest="1" BackgroundColor="Black" Margin="5,0,5,0"></BoxView>
+                                   <StackLayout Orientation="Horizontal" Margin="5">
+                                       <CollectionView ItemsSource="{Binding Images}" HeightRequest="200" IsGrouped="False" SelectionMode="Single" RemainingItemsThreshold="2">
+                                            <CollectionView.ItemsLayout>
+                                                <GridItemsLayout Span="1" HorizontalItemSpacing="2" Orientation="Horizontal"></GridItemsLayout>
+                                            </CollectionView.ItemsLayout>
+                                           <CollectionView.ItemTemplate>
+                                               <DataTemplate>
+                                                   <StackLayout>
+                                                        <ffimageloading:CachedImage Grid.Column="0" Grid.Row="0" Source="{Binding ImagePreviewFileName}" Margin="1"
+                                                                                    DownsampleToViewSize="True" CacheType="All" CacheDuration="86400"
+                                                                                    BitmapOptimizations="False" Aspect="AspectFill"
+                                                                                    HorizontalOptions="FillAndExpand"
+                                                                                    VerticalOptions="Fill"
+                                                                                    HeightRequest="200" WidthRequest="200"
+                                                                                    LoadingPlaceholder="emptyphoto.png" >
+                                                            <ffimageloading:CachedImage.GestureRecognizers>
+                                                            </ffimageloading:CachedImage.GestureRecognizers>
+                                                        </ffimageloading:CachedImage>
+                                                   </StackLayout>
+                                               </DataTemplate>
+                                           </CollectionView.ItemTemplate>
+                                       </CollectionView>
+                                        <!--ffimageloading:CachedImage Source="{Binding Images, Converter={StaticResource imageIndexer}, ConverterParameter=0}" HorizontalOptions="Start" VerticalOptions="Fill" Aspect="Fill" Margin="0" WidthRequest="100" HeightRequest="100">
+                                        </>
+                                        <ffimageloading:CachedImage Source="{Binding Images, Converter={StaticResource imageIndexer}, ConverterParameter=0}" HorizontalOptions="Start" VerticalOptions="Fill" Aspect="Fill" Margin="0" WidthRequest="100" HeightRequest="100">
+                                        </ffimageloading:CachedImage>
+                                        <ffimageloading:CachedImage Source="{Binding Images, Converter={StaticResource imageIndexer}, ConverterParameter=0}" HorizontalOptions="Start" VerticalOptions="Fill" Aspect="Fill" Margin="0" WidthRequest="100" HeightRequest="100">
+                                        </ffimageloading:CachedImage-->
+                                   </StackLayout>
+                               </StackLayout>
+                           </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </listView:SfListView.ItemTemplate>
+            </listView:SfListView>
+            <!--AbsoluteLayout Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="6" HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="0.7" BackgroundColor="White" IsVisible="{Binding IsGalleryIndexed, Converter={StaticResource inverter}}">
+            </>
 
             <AbsoluteLayout Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="6" IsVisible="{Binding IsGalleryIndexed, Converter={StaticResource inverter}}" HorizontalOptions="Center">
                 <StackLayout VerticalOptions="FillAndExpand" Orientation="Vertical" HorizontalOptions="Center" IsVisible="{Binding IsGalleryIndexed, Converter={StaticResource inverter}}">
@@ -100,7 +203,7 @@
                                         HeightRequest="100"                                        
                                         />
                 </StackLayout>
-            </AbsoluteLayout>
+            </AbsoluteLayout-->
         </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -8,6 +8,7 @@
             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
             xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
             android:TabbedPage.ToolbarPlacement="Bottom"
+            android:TabbedPage.IsSwipePagingEnabled="False"
             x:Class="QuestHelper.View.MainPage">
 
     <TabbedPage.Children>
@@ -34,7 +35,7 @@
             </NavigationPage.Icon>
         </NavigationPage>
 
-        <NavigationPage Title="Маршрут">
+        <NavigationPage Title="Альбом">
             <x:Arguments>
                 <view:MakeNewRouteAutoPage />
             </x:Arguments>

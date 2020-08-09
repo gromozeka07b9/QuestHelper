@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-             xmlns:converters="clr-namespace:QuestHelper.View.Converters;assembly=QuestHelper" xmlns:listView="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+             xmlns:converters="clr-namespace:QuestHelper.View.Converters;assembly=QuestHelper"
+             xmlns:listView="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
              mc:Ignorable="d"
              x:Class="QuestHelper.View.MakeNewRoutePage" NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False" Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing" BackgroundColor="White">
     <ContentPage.Resources>
@@ -47,7 +48,7 @@
                                  SwipeOffset="80" SwipeThreshold="30"
                                  SelectionChangedCommand="{Binding SelectPointCommand}"
                                  SelectionChangedCommandParameter="{Binding SelectedItem}"
-                                 SelectionMode="Single" AutoFitMode="Height" AllowSwiping="True">
+                                 SelectionMode="Single" AutoFitMode="Height" AllowSwiping="True">                
                 <listView:SfListView.SelectedItemTemplate>
                     <DataTemplate>
                         <Frame CornerRadius="5" BorderColor="Black" BackgroundColor="LightCyan" HasShadow="True" Padding="0" Margin="5" HeightRequest="80" HorizontalOptions="Fill" VerticalOptions="Fill">
