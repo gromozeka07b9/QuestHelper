@@ -228,7 +228,15 @@ namespace QuestHelper.Model
             {
                 get
                 {
-                    return $"{Latitude},{Longitude}";
+                    return $"{Latitude  },{Longitude}";
+                }
+            }
+
+            public string CreateDateText
+            {
+                get
+                {
+                    return CreateDate.ToString("MMM dd");
                 }
             }
 

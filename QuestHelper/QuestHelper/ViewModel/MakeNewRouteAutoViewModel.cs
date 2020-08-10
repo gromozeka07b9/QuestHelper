@@ -90,6 +90,20 @@ namespace QuestHelper.ViewModel
 
         private void generateNewRouteCommand(object obj)
         {
+            /*string depthParam = (string)obj;
+            if(depthParam.Equals("Today"))
+            {
+                PeriodRouteBegin = PeriodRouteEnd.AddDays(1).AddSeconds(-1);
+            }
+            if (depthParam.Equals("Yesterday"))
+            {
+                PeriodRouteBegin = PeriodRouteEnd.AddDays(-1);
+            }
+            if (depthParam.Equals("OneWeek"))
+            {
+                PeriodRouteBegin = PeriodRouteEnd.AddDays(-1);
+            }*/
+            UserDialogs.Instance.Toast("Построение альбома...");
             ImagesCacheDbManager imagesCache = new ImagesCacheDbManager(new ImageManager(), PeriodRouteBegin, PeriodRouteEnd);
             imagesCache.UpdateMetadata();
 

@@ -32,48 +32,47 @@
                                  SelectionMode="None" AutoFitMode="DynamicHeight" AllowSwiping="False">
                 <listView:SfListView.HeaderTemplate>
                     <DataTemplate>
-                        <StackLayout HorizontalOptions="FillAndExpand">
+                        <StackLayout HorizontalOptions="FillAndExpand" BackgroundColor="LightYellow" Padding="5">
                             <Grid HorizontalOptions="FillAndExpand" HeightRequest="200">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="4*" />
-                                    <ColumnDefinition Width="2*" />
-                                    <ColumnDefinition Width="4*" />
+                                    <ColumnDefinition Width="5*" />
+                                    <ColumnDefinition Width="5*" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="1*" />
-                                    <RowDefinition Height="3*" />
-                                    <RowDefinition Height="1*" />
-                                    <RowDefinition Height="3*" />
-                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="2*" />
+                                    <RowDefinition Height="4*" />
+                                    <RowDefinition Height="4*" />
                                 </Grid.RowDefinitions>
-
-                                <Image Grid.Column="0" Grid.Row="1" Margin="0" Source="btn1test.png" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}"></Image>
-                                <!--Frame Grid.Column="0" Grid.Row="1" Margin="0" HasShadow="True" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}" BackgroundColor="LightBlue">
+                                <Label Text="Создайте свой фотоальбом" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Margin="20,5,0,5" HorizontalOptions="Start" VerticalOptions="Start" HorizontalTextAlignment="Start" FontSize="14" FontAttributes="Bold"></Label>
+                                <!--Image Grid.Column="0" Grid.Row="1" Margin="0" Source="btn1test.png" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}"></-->
+                                <Frame Grid.Column="0" Grid.Row="1" Padding="0" Margin="20,0,7,10" x:Name="frameToday" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
                                     <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}"></TapGestureRecognizer>
+                                        <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}" CommandParameter="{Binding .}"></TapGestureRecognizer>
                                     </Frame.GestureRecognizers>
-                                    <Label Text="Сегодня" FontSize="16" HorizontalTextAlignment="Center" TextColor="Black"></Label>
-                                </-->
-                                <Frame Grid.Column="0" Grid.Row="3" Margin="0" HasShadow="True" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}" BackgroundColor="LightBlue">
-                                    <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}"></TapGestureRecognizer>
-                                    </Frame.GestureRecognizers>
-                                    <Label Text="Вчера" FontSize="16" HorizontalTextAlignment="Center" TextColor="Black"></Label>
+                                    <Label Text="Сегодня" FontSize="14" FontAttributes="None" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Fill" TextColor="Black"></Label>
                                 </Frame>
-                                <Frame Grid.Column="2" Grid.Row="1" Margin="0" HasShadow="True" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}" BackgroundColor="LightBlue">
+                                <Frame Grid.Column="0" Grid.Row="2" Padding="0" Margin="20,0,7,10" x:Name="frameYersterday" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
                                     <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}"></TapGestureRecognizer>
+                                        <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}" CommandParameter="{Binding .}"></TapGestureRecognizer>
                                     </Frame.GestureRecognizers>
-                                    <Label Text="Неделя" FontSize="16" HorizontalTextAlignment="Center" TextColor="Black"></Label>
+                                    <Label Text="Вчера" FontSize="14" FontAttributes="None" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Black"></Label>
                                 </Frame>
-                                <Frame Grid.Column="2"   Grid.Row="3" Margin="0" HasShadow="True" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}" BackgroundColor="LightBlue">
+                                <Frame Grid.Column="1" Grid.Row="1" Padding="0" Margin="7,0,20,10" x:Name="frameOneWeek" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}" CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                    </Frame.GestureRecognizers>
+                                    <Label Text="Неделя" FontSize="14" FontAttributes="None" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Black"></Label>
+                                </Frame>
+                                <Frame Grid.Column="1" Grid.Row="2" Padding="0" Margin="7,0,20,10" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ShowPeriodChartCommand}"></TapGestureRecognizer>
                                     </Frame.GestureRecognizers>
-                                    <Label Text="Все дни" FontSize="16" HorizontalTextAlignment="Center" TextColor="Black"></Label>
+                                    <Label Text="Все дни" FontSize="14" FontAttributes="None" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Black"></Label>
                                 </Frame>
-                                <StackLayout Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="5" Margin="5" IsVisible="{Binding IsVisiblePeriodChart}">
+                                <StackLayout Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="5" IsVisible="{Binding IsVisiblePeriodChart}">
                                     <ImageButton Source="baseline_clear_black_48" Command="{Binding ShowMinimalPeriodCommand}" HorizontalOptions="End"></ImageButton>
+                                </StackLayout>
+                                <StackLayout Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="5" IsVisible="{Binding IsVisiblePeriodChart}">
                                     <xForms:SfDateTimeRangeNavigator HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                      </xForms:SfDateTimeRangeNavigator>
                                 </StackLayout>
@@ -143,8 +142,15 @@
                                         </ffimageloading:CachedImage>
                                     </Frame>
                                     <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
-                                        <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="16" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                        <Label Text="{Binding CreateDateText}" FontSize="14" FontAttributes="Bold" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                        <Label Text="{Binding Name}" FontSize="12" HorizontalOptions="Start" VerticalOptions="Center"/>
                                     </StackLayout>
+                                    <ffimageloading:CachedImage BackgroundColor="Transparent"
+                                        HeightRequest="35"
+                                        WidthRequest="35"
+                                        VerticalOptions="Center" HorizontalOptions="End"
+                                        Source="delete.png">
+                                    </ffimageloading:CachedImage>
                                 </StackLayout>
                                <StackLayout Orientation="Vertical" IsVisible="{Binding IsSelected}">
                                    <BoxView HeightRequest="1" BackgroundColor="Black" Margin="5,0,5,0"></BoxView>
