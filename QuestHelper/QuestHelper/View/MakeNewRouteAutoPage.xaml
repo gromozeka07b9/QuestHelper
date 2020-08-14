@@ -8,10 +8,14 @@
              xmlns:xForms="clr-namespace:Syncfusion.RangeNavigator.XForms;assembly=Syncfusion.SfChart.XForms"
              mc:Ignorable="d"
              xmlns:listView="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              x:Class="QuestHelper.View.MakeNewRouteAutoPage"
              NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False"
              Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing">
     <ContentPage.Resources>
+        <system:Int32 x:Key="Days0">0</system:Int32>
+        <system:Int32 x:Key="Days1">1</system:Int32>
+        <system:Int32 x:Key="Days7">7</system:Int32>
         <ResourceDictionary>
             <local:ImageIndexConverter x:Key="imageIndexer" />
             <local:NegativeBoolConverter  x:Key="inverter" />
@@ -47,19 +51,19 @@
                                 <!--Image Grid.Column="0" Grid.Row="1" Margin="0" Source="btn1test.png" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}"></-->
                                 <Frame Grid.Column="0" Grid.Row="1" Padding="0" Margin="20,0,7,10" x:Name="frameToday" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
                                     <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}" CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                        <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}" CommandParameter="{StaticResource Days0}"></TapGestureRecognizer>
                                     </Frame.GestureRecognizers>
                                     <Label Text="Сегодня" FontSize="14" FontAttributes="None" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Fill" TextColor="Black"></Label>
                                 </Frame>
                                 <Frame Grid.Column="0" Grid.Row="2" Padding="0" Margin="20,0,7,10" x:Name="frameYersterday" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
                                     <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}" CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                        <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}" CommandParameter="{StaticResource Days1}"></TapGestureRecognizer>
                                     </Frame.GestureRecognizers>
                                     <Label Text="Вчера" FontSize="14" FontAttributes="None" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Black"></Label>
                                 </Frame>
                                 <Frame Grid.Column="1" Grid.Row="1" Padding="0" Margin="7,0,20,10" x:Name="frameOneWeek" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
                                     <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}" CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                        <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}" CommandParameter="{StaticResource Days7}"></TapGestureRecognizer>
                                     </Frame.GestureRecognizers>
                                     <Label Text="Неделя" FontSize="14" FontAttributes="None" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Black"></Label>
                                 </Frame>

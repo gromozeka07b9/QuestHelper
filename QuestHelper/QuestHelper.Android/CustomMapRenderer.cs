@@ -224,7 +224,7 @@ namespace QuestHelper.Droid
             paint.SetXfermode(new PorterDuffXfermode(PorterDuff.Mode.SrcIn));
             try
             {
-                Rect rect = new Rect(0, 0, sbmp.Width, sbmp.Height);
+                Android.Graphics.Rect rect = new Android.Graphics.Rect(0, 0, sbmp.Width, sbmp.Height);
                 //Rect rectDest = new Rect(0, 0, sbmp.Width, sbmp.Height);
                 canvas.DrawBitmap(sbmp, rect, rect, paint);
             }
