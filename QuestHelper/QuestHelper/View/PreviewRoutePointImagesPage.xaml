@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:Class="QuestHelper.View.PreviewRoutePointImagesPage"
+              Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing"
+             >
+    <ContentPage.Content>
+       <CollectionView ItemsSource="{Binding Images}" IsGrouped="False" SelectionMode="Single" RemainingItemsThreshold="2" BackgroundColor="White">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Span="1" FlexLayout.AlignSelf="Auto" Orientation="Vertical"></GridItemsLayout>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="0" Margin="15" IsClippedToBounds="True" CornerRadius="10" BorderColor="Black">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="9*" />
+                            </Grid.RowDefinitions>
+                                <Image Grid.Column="0"
+                                    Grid.Row="0"
+                                    BackgroundColor="Transparent"
+                                    HeightRequest="35"
+                                    WidthRequest="35"
+                                    VerticalOptions="Start" HorizontalOptions="End"
+                                    Source="delete.png" >
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding DeleteImageCommand}" CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                    </Image.GestureRecognizers>
+                                </Image>
+                                <StackLayout Grid.Column="0" Grid.Row="1" Margin="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HeightRequest="300" >
+                                        <ffimageloading:CachedImage Source="{Binding ImagePreviewFileName}" Margin="0"
+                                                                    CacheType="Disk" CacheDuration="86400"
+                                                                    BitmapOptimizations="False" Aspect="AspectFill"
+                                                                    HorizontalOptions="FillAndExpand"
+                                                                    VerticalOptions="FillAndExpand"                                                
+                                                                    LoadingPlaceholder="emptyphoto.png" >
+                                            <ffimageloading:CachedImage.GestureRecognizers>
+                                            </ffimageloading:CachedImage.GestureRecognizers>
+                                        </ffimageloading:CachedImage>
+                                </StackLayout>
+
+                        </Grid>
+                    </Frame>
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </ContentPage.Content>
+</ContentPage>

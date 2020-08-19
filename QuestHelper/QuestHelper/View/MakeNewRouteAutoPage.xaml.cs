@@ -53,7 +53,7 @@ namespace QuestHelper.View
             
             //_vm.SelectedPreviewRoutePoint = selectedPoint;
             Device.BeginInvokeOnMainThread(()=> { _listView.RefreshListViewItem(); });
-            
+            _vm.OpenImagesPreviewPoint(selectedPoint);
 
         }
 
