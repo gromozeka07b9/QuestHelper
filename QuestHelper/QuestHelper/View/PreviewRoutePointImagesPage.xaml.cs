@@ -32,5 +32,9 @@ namespace QuestHelper.View
         {
             _vm.CloseDialog();
         }
+
+        void ImageButton_Pressed(System.Object sender, System.EventArgs e)
+        {
+        }
     }
 }

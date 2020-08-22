@@ -8,6 +8,7 @@
              xmlns:xForms="clr-namespace:Syncfusion.RangeNavigator.XForms;assembly=Syncfusion.SfChart.XForms"
              mc:Ignorable="d"
              xmlns:listView="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+             xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              x:Class="QuestHelper.View.MakeNewRouteAutoPage"
              NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False"
@@ -32,11 +33,18 @@
             </Grid.RowDefinitions>
             <listView:SfListView Grid.Row="0" Grid.Column="0" Margin="0" x:Name="sfListRoutePoints"
                                  ItemsSource="{Binding PreviewRoutePoints}" TapCommand="{Binding SelectedRoutePoint}"
-                                 SwipeOffset="80" SwipeThreshold="30"
+                                 SwipeOffset="180" SwipeThreshold="30"
                                  SelectionMode="Single" AutoFitMode="Height" AllowSwiping="True">
+                <listView:SfListView.DataSource>
+                    <data:DataSource>
+                        <data:DataSource.GroupDescriptors>
+                            <data:GroupDescriptor PropertyName="CreateDateText"/>
+                        </data:DataSource.GroupDescriptors>
+                    </data:DataSource>
+                </listView:SfListView.DataSource>
                 <listView:SfListView.HeaderTemplate>
                     <DataTemplate>
-                        <StackLayout HorizontalOptions="FillAndExpand" BackgroundColor="LightYellow" Padding="0">
+                        <StackLayout HorizontalOptions="FillAndExpand" Padding="0">
                             <Grid HorizontalOptions="FillAndExpand" HeightRequest="200">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="5*" />
@@ -47,41 +55,41 @@
                                     <RowDefinition Height="4*" />
                                     <RowDefinition Height="4*" />
                                 </Grid.RowDefinitions>
-                                <Label Text="Создайте свой фотоальбом" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Margin="20,5,0,5" HorizontalOptions="Start" VerticalOptions="Start" HorizontalTextAlignment="Start" FontSize="14" FontAttributes="Bold"></Label>
+                                <Label Text="Создайте свой фотомаршрут" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Margin="10,5,0,5" HorizontalOptions="Start" VerticalOptions="Start" HorizontalTextAlignment="Start" FontSize="14" FontAttributes="Bold"></Label>
                                 <!--Image Grid.Column="0" Grid.Row="1" Margin="0" Source="btn1test.png" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}"></-->
-                                <Frame Grid.Column="0" Grid.Row="1" Padding="0" Margin="20,0,7,10" x:Name="frameToday" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
+                                <Frame Grid.Column="0" Grid.Row="1" Padding="0" Margin="10,0,7,10" x:Name="frameToday" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}" CommandParameter="{StaticResource Days0}"></TapGestureRecognizer>
                                     </Frame.GestureRecognizers>
                                     <StackLayout HorizontalOptions="Fill">
-                                        <Label Text="Сегодня" FontSize="14" FontAttributes="None" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Fill" TextColor="Black"></Label>
+                                        <Label Text="Сегодня" FontSize="14" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Fill" TextColor="Black"></Label>
                                         <Label Text="{Binding CountImagesForToday}" FontSize="12" FontAttributes="None" Margin="5" HorizontalTextAlignment="End" VerticalTextAlignment="End" HorizontalOptions="End" VerticalOptions="Fill" TextColor="Blue"></Label>
                                     </StackLayout>
                                 </Frame>
-                                <Frame Grid.Column="0" Grid.Row="2" Padding="0" Margin="20,0,7,10" x:Name="frameYersterday" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
+                                <Frame Grid.Column="0" Grid.Row="2" Padding="0" Margin="10,0,7,10" x:Name="frameYersterday" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}" CommandParameter="{StaticResource Days1}"></TapGestureRecognizer>
                                     </Frame.GestureRecognizers>
                                     <StackLayout>
-                                        <Label Text="Вчера" FontSize="14" FontAttributes="None" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Black"></Label>
+                                        <Label Text="Вчера" FontSize="14" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Black"></Label>
                                         <Label Text="{Binding CountImagesFor1Day}" FontSize="12" FontAttributes="None" Margin="5" HorizontalTextAlignment="End" VerticalTextAlignment="End" HorizontalOptions="End" VerticalOptions="Fill" TextColor="Blue"></Label>
                                     </StackLayout>
                                 </Frame>
-                                <Frame Grid.Column="1" Grid.Row="1" Padding="0" Margin="7,0,20,10" x:Name="frameOneWeek" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
+                                <Frame Grid.Column="1" Grid.Row="1" Padding="0" Margin="7,0,10,10" x:Name="frameOneWeek" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}" CommandParameter="{StaticResource Days7}"></TapGestureRecognizer>
                                     </Frame.GestureRecognizers>
                                     <StackLayout>
-                                        <Label Text="Неделя" FontSize="14" FontAttributes="None" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Black"></Label>
+                                        <Label Text="Неделя" FontSize="14" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Black"></Label>
                                         <Label Text="{Binding CountImagesFor7Day}" FontSize="12" FontAttributes="None" Margin="5" HorizontalTextAlignment="End" VerticalTextAlignment="End" HorizontalOptions="End" VerticalOptions="Start" TextColor="Blue"></Label>
                                     </StackLayout>
                                 </Frame>
-                                <Frame Grid.Column="1" Grid.Row="2" Padding="0" Margin="7,0,20,10" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
+                                <Frame Grid.Column="1" Grid.Row="2" Padding="0" Margin="7,0,10,10" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ShowPeriodChartCommand}"></TapGestureRecognizer>
                                     </Frame.GestureRecognizers>
                                     <StackLayout>
-                                        <Label Text="Все дни" FontSize="14" FontAttributes="None" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Black"></Label>
+                                        <Label Text="Все дни" FontSize="14" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Black"></Label>
                                         <Label Text="{Binding CountImagesForAllDays}" FontSize="12" FontAttributes="None" Margin="5" HorizontalTextAlignment="End" VerticalTextAlignment="End" HorizontalOptions="End" VerticalOptions="Start" TextColor="Blue"></Label>
                                     </StackLayout>
                                 </Frame>
@@ -117,25 +125,63 @@
                         </StackLayout>
                     </DataTemplate>
                 </listView:SfListView.LeftSwipeTemplate>
+                <listView:SfListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.View>
+                                <StackLayout Orientation="Horizontal" Margin="10,0,10,0">
+                                    <Label>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Key}" FontSize="18" FontAttributes="None"></Span>
+                                                <Span Text="  (" FontSize="18" FontAttributes="Bold"></Span>
+                                                <Span Text="{Binding Count}" FontSize="18" FontAttributes="Bold"></Span>
+                                                <Span Text=") " FontSize="18" FontAttributes="Bold"></Span>
+                                                <Span Text=", расстояние 23 км." FontSize="15" FontAttributes="None"></Span>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </listView:SfListView.GroupHeaderTemplate>
                 <listView:SfListView.ItemTemplate>
                     <DataTemplate>
-                       <Frame CornerRadius="5" BackgroundColor="LightCyan" HasShadow="True" Padding="0" Margin="5" HeightRequest="60" HorizontalOptions="Fill" VerticalOptions="Fill">
-                           <StackLayout>
-                                <StackLayout Margin="0" HeightRequest="50" Orientation="Horizontal" HorizontalOptions="Fill" VerticalOptions="FillAndExpand">
-                                    <StackLayout.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="ListItemTapGestureRecognizer_Tapped" CommandParameter="{Binding .}"></TapGestureRecognizer>
-                                    </StackLayout.GestureRecognizers>
-                                    <Frame CornerRadius="50" HeightRequest="50" WidthRequest="50" HorizontalOptions="Start" Padding="0" Margin="5">
-                                        <ffimageloading:CachedImage HeightRequest="50" WidthRequest="50" DownsampleToViewSize="True" Source="{Binding Images, Converter={StaticResource imageIndexer}, ConverterParameter=0}" HorizontalOptions="Start" VerticalOptions="Fill" Aspect="Fill" Margin="0">
+                        <ViewCell x:Name="ViewCellItem">
+                           <Frame InputTransparent="True" CornerRadius="5" HasShadow="True" Padding="5,0,0,0" Margin="5" HeightRequest="100" HorizontalOptions="Fill" VerticalOptions="Fill">
+                               <Frame.Triggers>
+                                   <DataTrigger TargetType="Frame" Binding="{Binding IsDeleted}" Value="True">
+                                       <Setter Property="Opacity" Value="0.2"></Setter>
+                                   </DataTrigger>
+                               </Frame.Triggers>
+                               <StackLayout>
+                                    <StackLayout x:Name="StackLayoutItem" Margin="0" HeightRequest="50" Orientation="Horizontal" HorizontalOptions="Fill" VerticalOptions="FillAndExpand">
+                                        <StackLayout.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="ListItemTapGestureRecognizer_Tapped" CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                        </StackLayout.GestureRecognizers>
+                                        <CollectionView x:Name="CollectionViewImagesFirst" ItemsSource="{Binding ImagesOnlyFirstThree}" >
+                                            <CollectionView.ItemsLayout>
+                                                <LinearItemsLayout Orientation="Horizontal"></LinearItemsLayout>
+                                            </CollectionView.ItemsLayout>
+                                            <CollectionView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackLayout Margin="5">
+                                                        <Frame CornerRadius="80" HeightRequest="90" WidthRequest="90" IsClippedToBounds="True" HorizontalOptions="Start" Padding="0" Margin="0" VerticalOptions="CenterAndExpand">
+                                                            <ffimageloading:CachedImage HeightRequest="90" WidthRequest="90" Margin="0" DownsampleToViewSize="True" Source="{Binding ImagePreviewFileName}" HorizontalOptions="Start" VerticalOptions="Fill" Aspect="Fill" CacheType="Memory">
+                                                            </ffimageloading:CachedImage>
+                                                        </Frame>
+                                                    </StackLayout>
+                                                </DataTemplate>
+                                            </CollectionView.ItemTemplate>
+                                        </CollectionView>
+                                        <ffimageloading:CachedImage HeightRequest="30" WidthRequest="30" VerticalOptions="Center" DownsampleToViewSize="True" Source="apps.png" Aspect="Fill" Margin="0,0,5,0">
                                         </ffimageloading:CachedImage>
-                                    </Frame>
-                                    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
-                                        <Label Text="{Binding CreateDateText}" FontSize="14" FontAttributes="Bold" HorizontalOptions="Start" VerticalOptions="Center"/>
-                                        <Label Text="{Binding Name}" FontSize="12" HorizontalOptions="Start" VerticalOptions="Center"/>
                                     </StackLayout>
-                                </StackLayout>
-                           </StackLayout>
-                        </Frame>
+                               </StackLayout>
+                            </Frame>
+                        </ViewCell>
+
                     </DataTemplate>
                 </listView:SfListView.ItemTemplate>
             </listView:SfListView>

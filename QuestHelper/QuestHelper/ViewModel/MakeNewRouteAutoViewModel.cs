@@ -91,7 +91,7 @@ namespace QuestHelper.ViewModel
 
         private async void startIndexGalleryCommand(object obj)
         {
-            UserDialogs.Instance.Toast("Индексирование галереи...");
+            //UserDialogs.Instance.Toast("Индексирование галереи...");
             IsGalleryIndexed = false;
             ImagesCacheDbManager imagesCache = new ImagesCacheDbManager(new ImageManager(), PeriodRouteBegin, PeriodRouteEnd);
             imagesCache.UpdateFilenames();
@@ -178,6 +178,7 @@ namespace QuestHelper.ViewModel
                 startIndexGalleryCommand(new object());
                 await Task.Factory.StartNew(() => updateRangeContent());
             }
+            //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("PreviewRoutePoints"));
         }
 
         private void updateRangeContent()
