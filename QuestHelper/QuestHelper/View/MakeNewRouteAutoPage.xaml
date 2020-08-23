@@ -108,6 +108,38 @@
                         </StackLayout>
                     </DataTemplate>
                 </listView:SfListView.HeaderTemplate>
+                <listView:SfListView.FooterTemplate>
+                    <DataTemplate>
+                        <Frame HasShadow="True" CornerRadius="10" Padding="0" BackgroundColor="LightSkyBlue" Margin="10">
+                            <StackLayout>
+                                <Label Margin="10,0,0,0">
+                                    <Label.FormattedText>
+                                        <FormattedString>           
+                                            <Span Text="Точек в маршруте: " FontSize="18" FontAttributes="None"></Span>
+                                            <Span Text="{Binding PointCount}" FontSize="18" FontAttributes="Bold"></Span>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label Margin="10,0,0,0">
+                                    <Label.FormattedText>
+                                        <FormattedString>           
+                                            <Span Text="Фотографий: " FontSize="18" FontAttributes="None"></Span>
+                                            <Span Text="{Binding ImageCount}" FontSize="18" FontAttributes="Bold"></Span>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+                                    <Label Text="Сохранить маршрут" VerticalOptions="Center" TextColor="Blue" FontSize="18"></Label>
+                                    <ffimageloading:CachedImage HeightRequest="60" WidthRequest="60" VerticalOptions="Center" HorizontalOptions="End" DownsampleToViewSize="True" Source="additem2.png" Aspect="Fill" Margin="10">
+                                        <ffimageloading:CachedImage.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding SaveRouteCommand}"></TapGestureRecognizer>
+                                        </ffimageloading:CachedImage.GestureRecognizers>
+                                    </ffimageloading:CachedImage>
+                                </StackLayout>
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </listView:SfListView.FooterTemplate>
                 <listView:SfListView.LeftSwipeTemplate>
                     <DataTemplate>
                         <StackLayout HorizontalOptions="Fill" VerticalOptions="Fill">
