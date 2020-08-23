@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Configurations>Debug;Release;Gorilla</Configurations>
+    <SolutionDir>..\</SolutionDir>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Realm.Database" Version="3.4.0" />
