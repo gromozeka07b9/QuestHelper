@@ -6,6 +6,8 @@ namespace QuestHelper.Model.Messages
 {
     public class PageNavigationMessage
     {
-        public MainPageMenuItem DestinationPageDescription = new MainPageMenuItem() { };
+        public MainPages PageToOpen = MainPages.Private;
     }
+
+    public enum MainPages { Feed = 0, OverviewMap, RouteMaker, Loaded, Private};
 }

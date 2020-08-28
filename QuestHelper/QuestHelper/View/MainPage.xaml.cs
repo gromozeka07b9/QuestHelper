@@ -11,6 +11,7 @@ using QuestHelper.WS;
 using static QuestHelper.WS.AccountApiRequest;
 using Newtonsoft.Json.Linq;
 using Xamarin.Essentials;
+using System.Linq;
 
 namespace QuestHelper.View
 {
@@ -25,7 +26,20 @@ namespace QuestHelper.View
             //Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
             //Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
 #endif
-
+            MessagingCenter.Subscribe<PageNavigationMessage>(this, "", (message)=>
+            {
+                switch(message.PageToOpen)
+                {
+                    case MainPages.Private:
+                        {
+                            CurrentPage = FindByName("PagePrivate") as NavigationPage;
+                        }; break;
+                    default:
+                        {
+                            CurrentPage = FindByName("PagePrivate") as NavigationPage;
+                        }; break;
+                }
+            });
         }
 
     }

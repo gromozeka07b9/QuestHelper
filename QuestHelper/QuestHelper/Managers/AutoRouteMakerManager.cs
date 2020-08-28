@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using QuestHelper.LocalDB.Model;
 using QuestHelper.Model;
 
@@ -21,7 +22,7 @@ namespace QuestHelper.Managers
                 vroute.Name = autoRoute.Name;
                 if (vroute.Save())
                 {
-                    foreach (var autoPoint in autoRoute.Points)
+                    foreach (var autoPoint in autoRoute.Points.Where(p=>!p.IsDeleted))
                     {
                         var vroutePoint = new ViewRoutePoint(vroute.RouteId, string.Empty);
                         vroutePoint.Name = autoPoint.Name;
@@ -30,7 +31,7 @@ namespace QuestHelper.Managers
                         vroutePoint.Version++;
                         if (vroutePoint.Save())
                         {
-                            foreach(var autoMedia in autoPoint.Images)
+                            foreach(var autoMedia in autoPoint.Images.Where(i=>!i.IsDeleted))
                             {
                                 vroutePoint.AddMediaItem(autoMedia.Id, MediaObjectTypeEnum.Image);
                             }

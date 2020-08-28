@@ -58,7 +58,7 @@
                 </OnPlatform>
             </NavigationPage.Icon>
         </NavigationPage>
-        <NavigationPage Title="{lang:Translation ScreenPrivateName}">
+        <NavigationPage x:Name="PagePrivate" Title="{lang:Translation ScreenPrivateName}">
             <x:Arguments>
                 <view:RoutesPage />
             </x:Arguments>

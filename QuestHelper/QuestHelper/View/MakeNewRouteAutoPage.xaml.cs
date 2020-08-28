@@ -34,10 +34,13 @@ namespace QuestHelper.View
         private void ContentPage_Appearing(object sender, EventArgs e)
         {
             _vm.StartDialog();
-            
-            Device.BeginInvokeOnMainThread(() => {
-                _listView.RefreshListViewItem(canReload: true);
-            });
+
+            if(_listView.DataSource.Items.Count() > 0)
+            {
+                Device.BeginInvokeOnMainThread(() => {
+                    _listView.RefreshListViewItem(canReload: true);
+                });
+            }
         }
 
         private void ContentPage_Disappearing(object sender, EventArgs e)

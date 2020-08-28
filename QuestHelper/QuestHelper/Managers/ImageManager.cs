@@ -44,7 +44,7 @@ namespace QuestHelper.Managers
 
             FileInfo originalFileInfo = new FileInfo(photoFullPath);
             ImagePreviewManager preview = new ImagePreviewManager();
-            preview.PreviewQualityType = _previewImageQuality;
+            preview.PreviewQualityType = ImageQualityType.Q320x240x40;
             if (preview.CreateImagePreview(originalFileInfo.DirectoryName, originalFileInfo.Name, imgPathDirectory, ImagePathManager.GetMediaFilename(mediaId, MediaObjectTypeEnum.Image, true)))
             {
                 ExifManager exif = new ExifManager();
