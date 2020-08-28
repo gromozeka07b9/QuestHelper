@@ -32,9 +32,9 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <listView:SfListView Grid.Row="0" Grid.Column="0" Margin="0" x:Name="sfListRoutePoints"
-                                 ItemsSource="{Binding PreviewRoutePoints}" TapCommand="{Binding SelectedRoutePoint}"
-                                 SwipeOffset="180" SwipeThreshold="30"
-                                 SelectionMode="Single" AutoFitMode="Height" AllowSwiping="True">
+                                 ItemsSource="{Binding PreviewRoutePoints}"
+                                 SwipeOffset="70" SwipeThreshold="30"
+                                 SelectionMode="None" AutoFitMode="Height" AllowSwiping="True">
                 <listView:SfListView.DataSource>
                     <data:DataSource>
                         <data:DataSource.GroupDescriptors>
@@ -110,7 +110,7 @@
                 </listView:SfListView.HeaderTemplate>
                 <listView:SfListView.FooterTemplate>
                     <DataTemplate>
-                        <Frame HasShadow="True" CornerRadius="10" Padding="0" BackgroundColor="LightSkyBlue" Margin="10">
+                        <Frame IsVisible="{Binding IsPreviewRouteMade}" HasShadow="True" CornerRadius="10" Padding="0" BackgroundColor="LightSkyBlue" Margin="10">
                             <StackLayout>
                                 <Label Margin="10,0,0,0">
                                     <Label.FormattedText>
@@ -189,16 +189,19 @@
                                </Frame.Triggers>
                                <StackLayout>
                                     <StackLayout x:Name="StackLayoutItem" Margin="0" HeightRequest="50" Orientation="Horizontal" HorizontalOptions="Fill" VerticalOptions="FillAndExpand">
-                                        <StackLayout.GestureRecognizers>
-                                            <TapGestureRecognizer Tapped="ListItemTapGestureRecognizer_Tapped" CommandParameter="{Binding .}"></TapGestureRecognizer>
-                                        </StackLayout.GestureRecognizers>
-                                        <CollectionView x:Name="CollectionViewImagesFirst" ItemsSource="{Binding ImagesOnlyFirstThree}" >
+                                            <!--StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding BindingContext.ShowImagesPreviewPointCommand, Source={x:Reference sfListRoutePoints}}" CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                            </-->
+                                        <CollectionView x:Name="CollectionViewImagesFirst" InputTransparent="True"  ItemsSource="{Binding ImagesOnlyFirstThree}" >
                                             <CollectionView.ItemsLayout>
                                                 <LinearItemsLayout Orientation="Horizontal"></LinearItemsLayout>
                                             </CollectionView.ItemsLayout>
                                             <CollectionView.ItemTemplate>
                                                 <DataTemplate>
                                                     <StackLayout Margin="5">
+                                                        <StackLayout.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding BindingContext.ShowImagesPreviewPointCommand, Source={x:Reference sfListRoutePoints}}" CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                                        </StackLayout.GestureRecognizers>
                                                         <Frame CornerRadius="80" HeightRequest="90" WidthRequest="90" IsClippedToBounds="True" HorizontalOptions="Start" Padding="0" Margin="0" VerticalOptions="CenterAndExpand">
                                                             <ffimageloading:CachedImage HeightRequest="90" WidthRequest="90" Margin="0" DownsampleToViewSize="True" Source="{Binding ImagePreviewFileName}" HorizontalOptions="Start" VerticalOptions="Fill" Aspect="Fill" CacheType="Memory">
                                                             </ffimageloading:CachedImage>
@@ -207,8 +210,21 @@
                                                 </DataTemplate>
                                             </CollectionView.ItemTemplate>
                                         </CollectionView>
-                                        <ffimageloading:CachedImage HeightRequest="30" WidthRequest="30" VerticalOptions="Center" DownsampleToViewSize="True" Source="apps.png" Aspect="Fill" Margin="0,0,5,0">
-                                        </ffimageloading:CachedImage>
+                                        <StackLayout VerticalOptions="Center" Margin="0,0,5,0" IsVisible="{Binding IsMoreThreeImages}">
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding BindingContext.ShowImagesPreviewPointCommand, Source={x:Reference sfListRoutePoints}}" CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                            </StackLayout.GestureRecognizers>
+                                            <Label HorizontalOptions="Center">
+                                                <Label.FormattedText>
+                                                    <FormattedString>           
+                                                        <Span Text="Еще " FontSize="8" FontAttributes="None"></Span>
+                                                        <Span Text="{Binding CountImagesMoreThree}" FontSize="8" FontAttributes="Bold"></Span>
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                            <ffimageloading:CachedImage HeightRequest="30" WidthRequest="30" VerticalOptions="Center" HorizontalOptions="Center" DownsampleToViewSize="True" Source="apps.png" Aspect="Fill">
+                                            </ffimageloading:CachedImage>
+                                        </StackLayout>
                                     </StackLayout>
                                </StackLayout>
                             </Frame>
@@ -217,20 +233,22 @@
                     </DataTemplate>
                 </listView:SfListView.ItemTemplate>
             </listView:SfListView>
-            <AbsoluteLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="0.7" BackgroundColor="White" IsVisible="{Binding IsRouteMaking}">
-                <StackLayout VerticalOptions="FillAndExpand" Orientation="Vertical" HorizontalOptions="Center" IsVisible="{Binding IsRouteMaking}" AbsoluteLayout.LayoutBounds=".5,.7,.5,.5" AbsoluteLayout.LayoutFlags="All">
-                    <animationForms:AnimationView HorizontalOptions="Center" VerticalOptions="CenterAndExpand" Margin="0" AbsoluteLayout.LayoutBounds=".5,.7,.5,.5" AbsoluteLayout.LayoutFlags="All"
-                                        Animation="{animationResource:AnimationResourceExtension hourglass}"
-                                        Loop="True"
-                                        AutoPlay="True"
-                                        IsEnabled="True"
-                                        IsPlaying="{Binding IsRouteMaking}"                                                                      
-                                        IsVisible="True"
-                                        WidthRequest="100"
-                                        HeightRequest="100"                                        
-                                        />
-                    <Label Text="Идет подготовка альбома..." TextColor="Black" FontSize="14" Margin="15" VerticalOptions="CenterAndExpand" HorizontalOptions="Center" HorizontalTextAlignment="Center"></Label>
-                </StackLayout>
+            <AbsoluteLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="0.9" BackgroundColor="White" IsVisible="{Binding IsRouteMaking}">
+                <Frame AbsoluteLayout.LayoutBounds=".5,.5,.6,.3" AbsoluteLayout.LayoutFlags="All" BackgroundColor="LightGray" BorderColor="Black" CornerRadius="10">
+                    <StackLayout VerticalOptions="FillAndExpand" Orientation="Vertical" HorizontalOptions="Center" IsVisible="{Binding IsRouteMaking}" >
+                        <animationForms:AnimationView HorizontalOptions="Center" VerticalOptions="CenterAndExpand" Margin="0" 
+                                            Animation="{animationResource:AnimationResourceExtension hourglass}"
+                                            Loop="True"
+                                            AutoPlay="True"
+                                            IsEnabled="True"
+                                            IsPlaying="{Binding IsRouteMaking}"                                                                      
+                                            IsVisible="True"
+                                            WidthRequest="100"
+                                            HeightRequest="100"                                        
+                                            />
+                        <Label Text="Идет подготовка альбома..." TextColor="Black" FontSize="14" Margin="15" VerticalOptions="CenterAndExpand" HorizontalOptions="Center" HorizontalTextAlignment="Center"></Label>
+                    </StackLayout>
+                </Frame>
             </AbsoluteLayout>
         </Grid>
     </ContentPage.Content>
