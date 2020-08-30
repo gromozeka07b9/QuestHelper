@@ -158,7 +158,7 @@ namespace QuestHelper.ViewModel
         {
             get
             {
-                int maxComfortableCount = 4;
+                int maxComfortableCount = 3;
                 int count = maxComfortableCount;
                 int countImages = SelectedRoutePointImages.Count;
                 if ((countImages > 0) && (countImages < count)) count = countImages;

@@ -41,7 +41,7 @@
             </StackLayout>
             
             <StackLayout Grid.Row="1" Grid.Column="0" Margin="0">
-                <Label Text="{Binding Name}" HorizontalTextAlignment="Center" TextColor="Blue" FontSize="20"></Label>
+                <Label Text="{Binding Name}" HorizontalTextAlignment="Center" TextColor="Blue" FontSize="16" Margin="5"></Label>
             </StackLayout>
             <listView:SfListView Grid.Row="2" Grid.Column="0" Margin="0" x:Name="sfListRoutePoints"
                                  ItemsSource="{Binding RoutePoints}" TapCommand="{Binding SelectedRoutePoint}"
@@ -58,8 +58,8 @@
                                     </ffimageloading:CachedImage>
                                 </Frame>
                                     <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
-                                    <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="16" HorizontalOptions="Start" VerticalOptions="Center"/>
-                                    <Label Text="{Binding PointCoordinatesText}" FontSize="14" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                    <Label Text="{Binding AutoName}" FontAttributes="Bold" FontSize="16" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                    <Label Text="{Binding PointCoordinatesText}" FontSize="10" HorizontalOptions="Start" VerticalOptions="Center"/>
                                 </StackLayout>
                             </StackLayout>
                         </Frame>
@@ -107,8 +107,8 @@
                                     </ffimageloading:CachedImage>
                                 </Frame>
                                     <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
-                                    <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="16" HorizontalOptions="Start" VerticalOptions="Center"/>
-                                    <Label Text="12.123213123, 54.323423423" FontSize="14" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                    <Label Text="{Binding AutoName}" FontAttributes="Bold" FontSize="16" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                    <Label Text="{Binding PointCoordinatesText}" FontSize="10" HorizontalOptions="Start" VerticalOptions="Center"/>
                                 </StackLayout>
                             </StackLayout>
                         </Frame>
@@ -173,7 +173,7 @@
                                                         BitmapOptimizations="False" Aspect="AspectFill"
                                                         HorizontalOptions="FillAndExpand"
                                                         VerticalOptions="Fill"
-                                                        HeightRequest="200"
+                                                        HeightRequest="240"
                                                         LoadingPlaceholder="emptyphoto.png" >
                                 <ffimageloading:CachedImage.GestureRecognizers>
                                 </ffimageloading:CachedImage.GestureRecognizers>
