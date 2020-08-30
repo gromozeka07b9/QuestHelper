@@ -13,11 +13,11 @@ namespace QuestHelper.Managers
         private int _width = 640;
         private int _height = 480;
         private int _quality = 70;
-        private ImageQualityType _previewQuality = ImageQualityType.Q640x480x70;
+        private ImageQualityType _previewQuality = ImageQualityType.MiddleSizeHiQuality;
 
         public ImagePreviewManager()
         {
-            PreviewQualityType = ImageQualityType.Q640x480x70;
+            PreviewQualityType = ImageQualityType.MiddleSizeHiQuality;
         }
 
         private byte[] GetPreviewImage(IMediaService mediaService, byte[] byteArrayOriginal, int width, int height, int quality)
@@ -115,23 +115,29 @@ namespace QuestHelper.Managers
                 {
                     switch (value)
                     {
-                        case ImageQualityType.Q640x480x70:
+                        case ImageQualityType.MiddleSizeHiQuality:
                             {
                                 _width = 640;
                                 _height = 480;
                                 _quality = 70;
                             };break;
-                        case ImageQualityType.Q320x240x40:
+                        case ImageQualityType.SmallSizeMiddleQuality:
                             {
                                 _width = 320;
                                 _height = 240;
                                 _quality = 40;
                             }; break;
-                        case ImageQualityType.Q0x0x40:
+                        case ImageQualityType.OriginalSizeLowQuality:
                             {
                                 _width = 0;
                                 _height = 0;
                                 _quality = 40;
+                            }; break;
+                        case ImageQualityType.MinimumSizeHiQuality:
+                            {
+                                _width = 240;
+                                _height = 200;
+                                _quality = 80;
                             }; break;
                         default:
                             {
@@ -150,10 +156,30 @@ namespace QuestHelper.Managers
     public enum ImageQualityType
     {
         //обычное превью
-        Q640x480x70, 
+        MiddleSizeHiQuality,
         //для меток на карте
-        Q320x240x40,
+        SmallSizeMiddleQuality,
         //для оригинальных изображений, размер тот же
-        Q0x0x40
+        OriginalSizeLowQuality,
+        //превью для построителя маршрутов
+        MinimumSizeHiQuality
     }
 }
+
+/*
+MinimumSizeHiQuality
+  240x200x80
+1. 6.3кб
+2. 9.2кб
+3. 7.8кб
+  320x240x80
+1. 8.2кб
+2. 12.3кб
+3. 10.5кб
+
+MiddleSizeHiQuality
+640x480x70
+1. 18.4кб
+2. 30кб
+3. 24кб
+*/

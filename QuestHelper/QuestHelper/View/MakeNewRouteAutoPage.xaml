@@ -203,7 +203,7 @@
                                                             <TapGestureRecognizer Command="{Binding BindingContext.ShowImagesPreviewPointCommand, Source={x:Reference sfListRoutePoints}}" CommandParameter="{Binding .}"></TapGestureRecognizer>
                                                         </StackLayout.GestureRecognizers>
                                                         <Frame CornerRadius="80" HeightRequest="90" WidthRequest="90" IsClippedToBounds="True" HorizontalOptions="Start" Padding="0" Margin="0" VerticalOptions="CenterAndExpand">
-                                                            <ffimageloading:CachedImage HeightRequest="90" WidthRequest="90" Margin="0" DownsampleToViewSize="True" Source="{Binding ImagePreviewFileName}" HorizontalOptions="Start" VerticalOptions="Fill" Aspect="Fill" CacheType="Memory">
+                                                            <ffimageloading:CachedImage HeightRequest="90" WidthRequest="90" Margin="0" DownsampleToViewSize="True" Source="{Binding ImagePreviewFullPath}" HorizontalOptions="Start" VerticalOptions="Fill" Aspect="Fill" CacheType="Memory">
                                                             </ffimageloading:CachedImage>
                                                         </Frame>
                                                     </StackLayout>
@@ -250,6 +250,13 @@
                     </StackLayout>
                 </Frame>
             </AbsoluteLayout>
+            <!--AbsoluteLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="0.9" BackgroundColor="White" IsVisible="{Binding IsPreviewRouteMade, Converter={StaticResource inverter}}">
+                <Frame AbsoluteLayout.LayoutBounds=".5,.5,.6,.3" AbsoluteLayout.LayoutFlags="All" BackgroundColor="LightGray" BorderColor="Black" CornerRadius="10">
+                    <StackLayout VerticalOptions="FillAndExpand" Orientation="Vertical" HorizontalOptions="Center" >
+                        <Label Text="Выберите период..." TextColor="Black" FontSize="14" Margin="15" VerticalOptions="CenterAndExpand" HorizontalOptions="Center" HorizontalTextAlignment="Center"></Label>
+                    </StackLayout>
+                </Frame>
+            </-->
         </Grid>
     </ContentPage.Content>
 </ContentPage>

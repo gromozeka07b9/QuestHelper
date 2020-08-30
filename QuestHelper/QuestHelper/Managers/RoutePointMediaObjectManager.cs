@@ -15,6 +15,12 @@ namespace QuestHelper.Managers
         {
         }
 
+        public bool MediaIsExists(string Id)
+        {
+            var mediaObject = RealmInstance.Find<RoutePointMediaObject>(Id);
+            return mediaObject != null;
+        }
+
         public bool SetSyncStatus(string Id, bool IsSyncPreview, bool Status)
         {
             bool result = false;

@@ -61,7 +61,7 @@ namespace QuestHelper.ViewModel
         private async void pickImageCommand(object obj)
         {
             ImageManager imageManager = new ImageManager();
-            imageManager.PreviewImageQuality = ImageQualityType.Q320x240x40;
+            imageManager.PreviewImageQuality = ImageQualityType.SmallSizeMiddleQuality;
             var pickPhotoResult = await imageManager.PickPhotoAsync();
             if (pickPhotoResult.pickPhotoResult)
             {

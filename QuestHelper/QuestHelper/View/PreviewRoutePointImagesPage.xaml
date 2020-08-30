@@ -2,10 +2,68 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              x:Class="QuestHelper.View.PreviewRoutePointImagesPage"
-              Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing"
-             >
+             xmlns:xForms="clr-namespace:Syncfusion.RangeNavigator.XForms;assembly=Syncfusion.SfChart.XForms"
+             xmlns:listView="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+             Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing">
     <ContentPage.Content>
-       <CollectionView x:Name="CollectionViewImages" ItemsSource="{Binding Images}" IsGrouped="False" SelectionMode="Single" RemainingItemsThreshold="2" BackgroundColor="White">
+        <StackLayout BackgroundColor="White" HeightRequest="45">
+                <Image Source="baseline_arrow_back_black_48.png" WidthRequest="40" HeightRequest="40" Margin="0,5,0,0" VerticalOptions="Start" HorizontalOptions="Start">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BackNavigationCommand}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <StackLayout HorizontalOptions="FillAndExpand"></StackLayout>
+            <listView:SfListView x:Name="sfListImages"
+                                     ItemsSource="{Binding Images}"
+                                     SwipeOffset="70" SwipeThreshold="30" 
+                                     SelectionMode="None" AutoFitMode="Height" AllowSwiping="True">
+                <listView:SfListView.LeftSwipeTemplate>
+                    <DataTemplate>
+                        <StackLayout HorizontalOptions="Fill" VerticalOptions="Fill">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" CommandParameter="{Binding .}" ></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                                <Image
+                                    BackgroundColor="Transparent"
+                                    HeightRequest="35"
+                                    WidthRequest="35"
+                                    VerticalOptions="CenterAndExpand" HorizontalOptions="Center"
+                                    Source="delete.png" >
+                                </Image>
+                        </StackLayout>
+                    </DataTemplate>
+                </listView:SfListView.LeftSwipeTemplate>
+                <listView:SfListView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="0" IsClippedToBounds="True" CornerRadius="5" HeightRequest="300" Margin="5,5,5,0">
+                            <Frame.Triggers>
+                                <DataTrigger TargetType="Frame" Binding="{Binding IsDeleted}" Value="True">
+                                    <Setter Property="Opacity" Value="0.2"></Setter>
+                                </DataTrigger>
+                            </Frame.Triggers>
+                            <StackLayout Margin="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BindingContext.OpenImageInViewerCommand, Source={x:Reference sfListImages}}" CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                </StackLayout.GestureRecognizers>
+                                    <ffimageloading:CachedImage Source="{Binding ImageOriginalFullPath}" Margin="0"
+                                                                CacheType="Memory"
+                                                                DownsampleToViewSize="True" 
+                                                                BitmapOptimizations="True" Aspect="AspectFill"
+                                                                HorizontalOptions="FillAndExpand"
+                                                                VerticalOptions="FillAndExpand"                                                
+                                                                LoadingPlaceholder="{Binding ImagePreviewFullPath}" >
+                                        <!--ffimageloading:CachedImage.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding OpenImageInViewerCommand}"></TapGestureRecognizer>
+                                        </-->
+                                    </ffimageloading:CachedImage>
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </listView:SfListView.ItemTemplate>
+            </listView:SfListView>
+        </StackLayout>
+
+       <!--CollectionView x:Name="CollectionViewImages" ItemsSource="{Binding Images}" IsGrouped="False" RemainingItemsThreshold="2" BackgroundColor="White" SelectionMode="None">
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Span="1" FlexLayout.AlignSelf="Auto" Orientation="Vertical"></GridItemsLayout>
             </CollectionView.ItemsLayout>
@@ -35,12 +93,13 @@
                                         Source="delete.png" BindingContext="{Binding Source={x:Reference CollectionViewImages}, Path=BindingContext}" Command="{Binding DeleteImageCommand}" CommandParameter="{Binding Source={x:Reference GridItem}, Path=BindingContext}">
                                     </ImageButton>
                                     <StackLayout Grid.Column="0" Grid.Row="1" Margin="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HeightRequest="300" >
-                                            <ffimageloading:CachedImage Source="{Binding ImagePreviewFileName}" Margin="0"
-                                                                        CacheType="Disk" CacheDuration="86400"
-                                                                        BitmapOptimizations="False" Aspect="AspectFill"
+                                            <ffimageloading:CachedImage Source="{Binding ImageOriginalFullPath}" Margin="0"
+                                                                        CacheType="Memory"
+                                                                        DownsampleToViewSize="True" 
+                                                                        BitmapOptimizations="True" Aspect="AspectFill"
                                                                         HorizontalOptions="FillAndExpand"
                                                                         VerticalOptions="FillAndExpand"                                                
-                                                                        LoadingPlaceholder="emptyphoto.png" >
+                                                                        LoadingPlaceholder="{Binding ImagePreviewFileName}" >
                                                 <ffimageloading:CachedImage.GestureRecognizers>
                                                 </ffimageloading:CachedImage.GestureRecognizers>
                                             </ffimageloading:CachedImage>
@@ -53,6 +112,6 @@
 
                 </DataTemplate>
             </CollectionView.ItemTemplate>
-        </CollectionView>
+        </-->
     </ContentPage.Content>
 </ContentPage>

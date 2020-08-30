@@ -17,7 +17,7 @@ namespace QuestHelper.Managers
 
         public ImageManager()
         {
-            _previewImageQuality = ImageQualityType.Q640x480x70;
+            _previewImageQuality = ImageQualityType.MiddleSizeHiQuality;
         }
 
         public ImageQualityType PreviewImageQuality
@@ -35,7 +35,7 @@ namespace QuestHelper.Managers
             }
         }
 
-        public (bool getMetadataPhotoResult, Model.GpsCoordinates imageGpsCoordinates) GetPhoto(string mediaId, string photoFullPath)
+        public (bool getMetadataPhotoResult, Model.GpsCoordinates imageGpsCoordinates) GetPhoto(string mediaId, string photoFullPath, bool IsPreview = true)
         {
             bool getMetadataPhotoResult = false;
             Model.GpsCoordinates imageInfo = new Model.GpsCoordinates();
@@ -44,8 +44,8 @@ namespace QuestHelper.Managers
 
             FileInfo originalFileInfo = new FileInfo(photoFullPath);
             ImagePreviewManager preview = new ImagePreviewManager();
-            preview.PreviewQualityType = ImageQualityType.Q320x240x40;
-            if (preview.CreateImagePreview(originalFileInfo.DirectoryName, originalFileInfo.Name, imgPathDirectory, ImagePathManager.GetMediaFilename(mediaId, MediaObjectTypeEnum.Image, true)))
+            preview.PreviewQualityType = _previewImageQuality;
+            if (preview.CreateImagePreview(originalFileInfo.DirectoryName, originalFileInfo.Name, imgPathDirectory, ImagePathManager.GetMediaFilename(mediaId, MediaObjectTypeEnum.Image, IsPreview)))
             {
                 ExifManager exif = new ExifManager();
                 imageInfo = exif.GetCoordinates(photoFullPath);
@@ -53,12 +53,21 @@ namespace QuestHelper.Managers
             }
             else
             {
-                Analytics.TrackEvent("ImageManager: error create preview for auto route", new Dictionary<string, string> { { "mediaId", mediaId } });
+                Analytics.TrackEvent("ImageManager: error create image for auto route", new Dictionary<string, string> { { "mediaId", mediaId }, { "quality", preview.PreviewQualityType.ToString()} });
             }
             
             return (getMetadataPhotoResult, imageInfo);
         }
 
+        public ImageQualityType GetPreviewImageQuality()
+        {
+            return PreviewImageQuality;
+        }
+
+        public void SetPreviewImageQuality(ImageQualityType qualityType)
+        {
+            PreviewImageQuality = qualityType;
+        }
 
         public async Task<(bool pickPhotoResult, string newMediaId, Model.GpsCoordinates imageGpsCoordinates)> PickPhotoAsync()
         {
@@ -89,7 +98,7 @@ namespace QuestHelper.Managers
                     //используем метод создания превью для того, чтобы сделать основное фото из оригинального, но с уменьшенным качеством
 
                     ImagePreviewManager resizedOriginal = new ImagePreviewManager();
-                    resizedOriginal.PreviewQualityType = ImageQualityType.Q0x0x40;
+                    resizedOriginal.PreviewQualityType = ImageQualityType.OriginalSizeLowQuality;
                     FileInfo originalFileInfo = new FileInfo(photoPicked.Path);
 
                     if (resizedOriginal.CreateImagePreview(originalFileInfo.DirectoryName, originalFileInfo.Name, imgPathDirectory, ImagePathManager.GetMediaFilename(mediaId, MediaObjectTypeEnum.Image, false)))
@@ -116,6 +125,7 @@ namespace QuestHelper.Managers
 
             return (pickPhotoResult, mediaId, imageGpsCoordinates);
         }
+
         public async Task<(bool result, string newMediaId)> TakePhotoAsync(double latitude, double longitude)
         {
             bool takePhotoResult = false;

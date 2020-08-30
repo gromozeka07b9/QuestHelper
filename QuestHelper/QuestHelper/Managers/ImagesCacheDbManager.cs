@@ -47,12 +47,12 @@ namespace QuestHelper.Managers
         internal void UpdateMetadata()
         {
             var startDate = DateTime.Now;
-            //LocalFileCacheManager cacheManager = new LocalFileCacheManager();
             var files = _cacheManager.LocalFilesByDays(_dateBegin, _dateEnd);
             foreach(var currentFile in files)
             {
                 if(!currentFile.Processed)
                 {
+                    _imageManager.SetPreviewImageQuality(ImageQualityType.MinimumSizeHiQuality);
                     var currentMetadata = _imageManager.GetPhoto(currentFile.Id, Path.Combine(currentFile.SourcePath, currentFile.SourceFileName));
                     if (currentMetadata.getMetadataPhotoResult)
                     {

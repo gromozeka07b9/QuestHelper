@@ -84,6 +84,12 @@ namespace QuestHelper.Managers
             return result;
         }
 
+        public string GetFullPathAndFilename(string mediaId)
+        {
+            var objLocalFile = RealmInstance.Find<LocalFile>(mediaId);
+            return Path.Combine(objLocalFile.SourcePath, objLocalFile.SourceFileName);
+        }
+
         public List<ViewLocalFile> GetImagesInfo(DateTimeOffset periodStart, DateTimeOffset periodEnd)
         {
             List<ViewLocalFile> listCachedImages = new List<ViewLocalFile>();
