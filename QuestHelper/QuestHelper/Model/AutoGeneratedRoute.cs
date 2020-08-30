@@ -382,14 +382,6 @@ namespace QuestHelper.Model
                     PropertyChanged(this, new PropertyChangedEventArgs(_PropertyName));
                 }
             }
-
-            public string AutoName
-            {
-                get
-                {
-                    return CreateDate.ToString("dd MMMM");
-                }
-            }
         }
 
     }
