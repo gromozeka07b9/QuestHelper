@@ -133,7 +133,7 @@
     <value>Лента</value>
   </data>
   <data name="ScreenLoadedAlbumsName" xml:space="preserve">
-    <value>Загруженные</value>
+    <value>Загрузки</value>
   </data>
   <data name="ScreenPrivateName" xml:space="preserve">
     <value>Личные</value>
