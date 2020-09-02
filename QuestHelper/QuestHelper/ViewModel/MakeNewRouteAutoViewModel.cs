@@ -176,7 +176,8 @@ namespace QuestHelper.ViewModel
         {
             var currentDate = DateTime.Now;
             var dateEnd = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 59);
-            PeriodRouteBegin = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day - daysDepth, 0, 0, 0);
+            var startedAt = currentDate.AddDays(-daysDepth);
+            PeriodRouteBegin = new DateTime(startedAt.Year, startedAt.Month, startedAt.Day, 0, 0, 0);
             PeriodRouteEnd = dateEnd;
         }
 
