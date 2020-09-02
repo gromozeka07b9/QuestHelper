@@ -44,7 +44,7 @@ namespace QuestHelper
 
         public App ()
 		{
-			
+            Xamarin.Forms.Device.SetFlags(new string[] { "Shapes_Experimental" });
 			Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mjg1MjI2QDMxMzgyZTMyMmUzME1vTVg1blhvekhMcmR6ck02MWpicWhYd1ovWHVkTENhTjMxZ0JXMS9uczQ9");
 			
 			InitializeComponent();
@@ -66,8 +66,8 @@ namespace QuestHelper
 			}
 		}
 
-		protected override async void OnStart ()
-		{
+        protected override void OnStart()
+        {
 
 #if DEBUG
             AppCenter.Start("android=e7661afa-ce82-4b68-b98d-e35a71bb75c1;", typeof(Analytics), typeof(Crashes));
@@ -82,10 +82,10 @@ namespace QuestHelper
 
             Setup();
 
-		    SubscribeMessages();
-		}
+            SubscribeMessages();
+        }
 
-		private void SubscribeMessages()
+        private void SubscribeMessages()
 	    {
 
 	        /*MessagingCenter.Subscribe<StartAppMessage>(this, string.Empty, (sender) =>

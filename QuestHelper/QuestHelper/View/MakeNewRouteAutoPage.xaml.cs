@@ -52,6 +52,7 @@ namespace QuestHelper.View
         {
             _vm.PeriodRouteBegin = e.ViewRangeStartDate;
             _vm.PeriodRouteEnd = e.ViewRangeEndDate.AddDays(1).Date.AddSeconds(-1);
+            _vm.UpdateSelectedCountDays(_vm.PeriodRouteBegin, _vm.PeriodRouteEnd);
         }
 
         void ListItemTapGestureRecognizer_Tapped(System.Object sender, System.EventArgs e)

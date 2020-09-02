@@ -45,7 +45,7 @@
                 <listView:SfListView.HeaderTemplate>
                     <DataTemplate>
                         <StackLayout HorizontalOptions="FillAndExpand" Padding="0">
-                            <Grid HorizontalOptions="FillAndExpand" HeightRequest="200">
+                            <Grid HorizontalOptions="FillAndExpand" HeightRequest="250">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="5*" />
                                     <ColumnDefinition Width="5*" />
@@ -61,7 +61,7 @@
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}" CommandParameter="{StaticResource Days0}"></TapGestureRecognizer>
                                     </Frame.GestureRecognizers>
-                                    <StackLayout HorizontalOptions="Fill">
+                                    <StackLayout HorizontalOptions="Fill" VerticalOptions="FillAndExpand">
                                         <Label Text="Сегодня" FontSize="14" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Fill" TextColor="Black"></Label>
                                         <Label Text="{Binding CountImagesForToday}" FontSize="12" FontAttributes="None" Margin="5" HorizontalTextAlignment="End" VerticalTextAlignment="End" HorizontalOptions="End" VerticalOptions="Fill" TextColor="Blue"></Label>
                                     </StackLayout>
@@ -93,16 +93,19 @@
                                         <Label Text="{Binding CountImagesForAllDays}" FontSize="12" FontAttributes="None" Margin="5" HorizontalTextAlignment="End" VerticalTextAlignment="End" HorizontalOptions="End" VerticalOptions="Start" TextColor="Blue"></Label>
                                     </StackLayout>
                                 </Frame>
-                                <StackLayout Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Margin="5" IsVisible="{Binding IsVisiblePeriodChart}" HorizontalOptions="End" Orientation="Horizontal" VerticalOptions="FillAndExpand">
-                                    <ImageButton Source="baseline_clear_black_48" WidthRequest="40" HeightRequest="40" Command="{Binding ShowMinimalPeriodCommand}" HorizontalOptions="End"></ImageButton>
-                                    <ImageButton Source="baseline_done_black_48" WidthRequest="40" HeightRequest="40" Command="{Binding GenerateNewRouteCommand}" HorizontalOptions="End"></ImageButton>
+                                <StackLayout Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Margin="5" IsVisible="{Binding IsVisiblePeriodChart}" HorizontalOptions="End" Orientation="Horizontal" VerticalOptions="FillAndExpand">                                   
+                                    <ImageButton Source="baseline_clear_black_48" WidthRequest="40" HeightRequest="40" Command="{Binding ShowMinimalPeriodCommand}" HorizontalOptions="End" BackgroundColor="White"></ImageButton>
                                 </StackLayout>
                                 <StackLayout Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="0" IsVisible="{Binding IsVisiblePeriodChart}" HorizontalOptions="Fill">
                                     <xForms:SfDateTimeRangeNavigator HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                                                                     XBindingPath="XValue" YBindingPath="YValue"
+                                                                     XBindingPath="XValue" YBindingPath="YValue" 
                                                                      Minimum="{Binding MinRangeDate}" Maximum="{Binding MaxRangeDate}"
                                                                      ItemsSource="{Binding ImagesRangeData}" RangeChanged="SfDateTimeRangeNavigator_OnRangeChanged">
                                      </xForms:SfDateTimeRangeNavigator>
+                                    <StackLayout Orientation="Horizontal" Margin="10,5,5,5" IsVisible="{Binding IsVisiblePeriodChart}">
+                                        <Label Text="{Binding SelectedPeriodText}" HorizontalOptions="Start" VerticalOptions="Start" HorizontalTextAlignment="Start" FontSize="14" FontAttributes="None"></Label>
+                                        <ImageButton Source="baseline_done_black_48" WidthRequest="40" HeightRequest="40" Command="{Binding GenerateNewRouteCommand}" HorizontalOptions="End" BackgroundColor="White"></ImageButton>
+                                    </StackLayout>
                                 </StackLayout>
                             </Grid>
                         </StackLayout>
@@ -168,8 +171,7 @@
                                                 <Span Text="{Binding Key}" FontSize="18" FontAttributes="None"></Span>
                                                 <Span Text="  (" FontSize="18" FontAttributes="Bold"></Span>
                                                 <Span Text="{Binding Count}" FontSize="18" FontAttributes="Bold"></Span>
-                                                <Span Text=") " FontSize="18" FontAttributes="Bold"></Span>
-                                                <Span Text=", расстояние 23 км." FontSize="15" FontAttributes="None"></Span>
+                                                <Span Text=")" FontSize="18" FontAttributes="Bold"></Span>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
