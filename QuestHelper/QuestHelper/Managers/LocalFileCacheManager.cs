@@ -112,13 +112,15 @@ namespace QuestHelper.Managers
 
         public DateTime GetMinDate()
         {
-            var minItem = RealmInstance.All<LocalFile>().OrderBy(l => l.FileNameDate).FirstOrDefault();
-            return minItem.FileNameDate.DateTime;
+            var localFiles = RealmInstance.All<LocalFile>().OrderBy(l => l.FileNameDate);
+            var minItem = localFiles.FirstOrDefault();
+            return minItem != null ? minItem.FileNameDate.DateTime : DateTime.Now;
         }
         
         public List<Tuple<DateTime,int>> GetCountImagesByDay(DateTime dateBegin, DateTime dateEnd)
         {
             var countByDays = RealmInstance.All<LocalFile>()
+                //.Where(f => f.FileNameDate >= dateBegin && f.FileNameDate <= dateEnd && f.Longitude != 0 && f.Latitude != 0)
                 .Where(f => f.FileNameDate >= dateBegin && f.FileNameDate <= dateEnd)
                 .ToList();
             var grouped = countByDays.GroupBy(f =>

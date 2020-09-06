@@ -46,6 +46,7 @@ namespace QuestHelper.ViewModel
         private int _countImagesForAllDays;
         private bool _isRouteMaking = false;
         private int _maxCountForWarning = 100;
+        private bool _isShowDialogNeedGalleryIndexed;
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -129,9 +130,16 @@ namespace QuestHelper.ViewModel
         private async void startIndexGalleryCommand(object obj)
         {
             //UserDialogs.Instance.Toast("Индексирование галереи...");
+            IsShowDialogNeedGalleryIndexed = false;
             IsGalleryIndexed = false;
+            IsRouteMaking = true;
+            setPeriodByDepth(14);
             ImagesCacheDbManager imagesCache = new ImagesCacheDbManager(new ImageManager(), PeriodRouteBegin, PeriodRouteEnd);
-            imagesCache.UpdateFilenames();
+            await Task.Factory.StartNew(() =>
+            {
+                updateRangeContent();
+                imagesCache.UpdateFilenames();
+            });
             MinRangeDate = _localFileCacheManager.GetMinDate();
             IsGalleryIndexed = true;
             await Task.Factory.StartNew(() => {
@@ -146,6 +154,7 @@ namespace QuestHelper.ViewModel
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountImagesFor1Day"));
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountImagesFor7Day"));
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountImagesForAllDays"));
+                    IsRouteMaking = false;
                 });
             });
         }
@@ -224,18 +233,9 @@ namespace QuestHelper.ViewModel
 
         public async void StartDialog()
         {
-            //if (string.IsNullOrEmpty(_currentUserId))
-            {
-                _currentUserId = await _tokenService.GetUserIdAsync();
-            }
+            _currentUserId = await _tokenService.GetUserIdAsync();
 
-            if(!IsGalleryIndexed)
-            {
-                setPeriodByDepth(14);
-                startIndexGalleryCommand(new object());
-                await Task.Factory.StartNew(() => updateRangeContent());
-            }
-            //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("PreviewRoutePoints"));
+            IsShowDialogNeedGalleryIndexed = !IsGalleryIndexed;
         }
 
         private void updateRangeContent()
@@ -267,6 +267,22 @@ namespace QuestHelper.ViewModel
             get
             {
                 return _isGalleryIndexed;
+            }
+        }
+        
+        public bool IsShowDialogNeedGalleryIndexed
+        {
+            set
+            {
+                if (value != _isShowDialogNeedGalleryIndexed)
+                {
+                    _isShowDialogNeedGalleryIndexed = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsShowDialogNeedGalleryIndexed"));
+                }
+            }
+            get
+            {
+                return _isShowDialogNeedGalleryIndexed;
             }
         }
 

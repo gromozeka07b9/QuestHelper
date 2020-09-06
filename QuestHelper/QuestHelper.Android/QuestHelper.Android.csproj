@@ -28,7 +28,7 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidSupportedAbis>arm64-v8a</AndroidSupportedAbis>
+    <AndroidSupportedAbis>arm64-v8a;x86</AndroidSupportedAbis>
     <MandroidI18n />
     <AndroidDexTool>d8</AndroidDexTool>
     <AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>

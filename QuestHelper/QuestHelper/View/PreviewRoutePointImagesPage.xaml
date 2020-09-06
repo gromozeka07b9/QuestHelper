@@ -35,7 +35,7 @@
                 </listView:SfListView.LeftSwipeTemplate>
                 <listView:SfListView.ItemTemplate>
                     <DataTemplate>
-                        <Frame Padding="0" IsClippedToBounds="True" CornerRadius="5" HeightRequest="300" Margin="5,5,5,0">
+                        <Frame Padding="0" IsClippedToBounds="True" CornerRadius="5" HeightRequest="240" Margin="5,5,5,2">
                             <Frame.Triggers>
                                 <DataTrigger TargetType="Frame" Binding="{Binding IsDeleted}" Value="True">
                                     <Setter Property="Opacity" Value="0.2"></Setter>
@@ -45,13 +45,13 @@
                                 <StackLayout.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding BindingContext.OpenImageInViewerCommand, Source={x:Reference sfListImages}}" CommandParameter="{Binding .}"></TapGestureRecognizer>
                                 </StackLayout.GestureRecognizers>
-                                    <ffimageloading:CachedImage Source="{Binding ImageOriginalFullPath}" Margin="0"
+                                    <ffimageloading:CachedImage Source="{Binding ImageOriginalFullPath}" Margin="0" WidthRequest="350" HeightRequest="240"
                                                                 CacheType="Memory"
                                                                 DownsampleToViewSize="True" 
                                                                 BitmapOptimizations="True" Aspect="AspectFill"
-                                                                HorizontalOptions="FillAndExpand"
-                                                                VerticalOptions="FillAndExpand"                                                
-                                                                LoadingPlaceholder="{Binding ImagePreviewFullPath}" >
+                                                                HorizontalOptions="CenterAndExpand"
+                                                                VerticalOptions="CenterAndExpand"                                                
+                                                                LoadingPlaceholder="defaultimg_small.png" >
                                         <!--ffimageloading:CachedImage.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding OpenImageInViewerCommand}"></TapGestureRecognizer>
                                         </-->

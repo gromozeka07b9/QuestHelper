@@ -99,21 +99,21 @@ namespace QuestHelper.ViewModel
 
         private async Task refreshFeed(bool force, string textFilter)
         {
-            IsRefreshing = true;
+            //IsRefreshing = true;
             List<FeedItem> feed = new List<FeedItem>();
             if (!force)
             {
                 if (!_memoryCache.TryGetValue(_feedCacheId, out feed))
                 {
-                    feed = await getFeedFromApi();
+                    feed = await refreshFeedWithScreenBlocking(feed);
                 }
             }
             else
             {
-                feed = await getFeedFromApi();
+                feed = await refreshFeedWithScreenBlocking(feed);
             }
 
-            if(feed != null)
+            if (feed != null)
             {
                 if(!string.IsNullOrEmpty(textFilter))
                 {
@@ -133,7 +133,24 @@ namespace QuestHelper.ViewModel
             }
 
             NoItemsWarningIsVisible = FeedItems?.Count() == 0;
-            IsRefreshing = false;
+            //IsRefreshing = false;
+        }
+
+        private async Task<List<FeedItem>> refreshFeedWithScreenBlocking(List<FeedItem> feed)
+        {
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                IsRefreshing = true;
+            });
+            await Task.Factory.StartNew(async () =>
+            {
+                feed = await getFeedFromApi();
+            });
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                IsRefreshing = false;
+            });
+            return feed;
         }
 
         private IEnumerable<ViewFeedItem> getSortedViewFeed(List<FeedItem> feed, string textFilter)
@@ -238,8 +255,7 @@ namespace QuestHelper.ViewModel
             }
             get
             {
-                //return _isRefreshing;
-                return false;
+                return _isRefreshing;
             }
         }
         public string FeedItemId
