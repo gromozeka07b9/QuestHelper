@@ -55,56 +55,96 @@
                                     <RowDefinition Height="4*" />
                                     <RowDefinition Height="4*" />
                                 </Grid.RowDefinitions>
-                                <Label Text="Создайте свой фотомаршрут" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Margin="10,5,0,5" HorizontalOptions="Start" VerticalOptions="Start" HorizontalTextAlignment="Start" FontSize="14" FontAttributes="Bold"></Label>
+                                <Label Text="Создайте свой фотомаршрут" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Margin="10,5,0,5" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}" HorizontalOptions="Start" VerticalOptions="Start" HorizontalTextAlignment="Start" FontSize="14" FontAttributes="Bold"></Label>
                                 <!--Image Grid.Column="0" Grid.Row="1" Margin="0" Source="btn1test.png" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}"></-->
-                                <Frame Grid.Column="0" Grid.Row="1" Padding="0" Margin="10,0,7,10" x:Name="frameToday" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
+                                <Frame Grid.Column="0" Grid.Row="1" Padding="0" Margin="10,0,7,10" BackgroundColor="#E0F7FA" x:Name="frameToday" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}" CommandParameter="{StaticResource Days0}"></TapGestureRecognizer>
                                     </Frame.GestureRecognizers>
                                     <StackLayout HorizontalOptions="Fill" VerticalOptions="FillAndExpand">
                                         <Label Text="Сегодня" FontSize="14" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Fill" TextColor="Black"></Label>
-                                        <Label Text="{Binding CountImagesForToday}" FontSize="12" FontAttributes="None" Margin="5" HorizontalTextAlignment="End" VerticalTextAlignment="End" HorizontalOptions="End" VerticalOptions="Fill" TextColor="Blue"></Label>
+                                        <Label Text="{Binding CountImagesForToday}" FontSize="30" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="End" VerticalTextAlignment="End" HorizontalOptions="End" VerticalOptions="Fill" TextColor="Blue"></Label>
                                     </StackLayout>
                                 </Frame>
-                                <Frame Grid.Column="0" Grid.Row="2" Padding="0" Margin="10,0,7,10" x:Name="frameYersterday" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
+                                <Frame Grid.Column="0" Grid.Row="2" Padding="0" Margin="10,0,7,10" BackgroundColor="#E0F7FA" x:Name="frameYersterday" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}" CommandParameter="{StaticResource Days1}"></TapGestureRecognizer>
                                     </Frame.GestureRecognizers>
                                     <StackLayout>
                                         <Label Text="Вчера" FontSize="14" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Black"></Label>
-                                        <Label Text="{Binding CountImagesFor1Day}" FontSize="12" FontAttributes="None" Margin="5" HorizontalTextAlignment="End" VerticalTextAlignment="End" HorizontalOptions="End" VerticalOptions="Fill" TextColor="Blue"></Label>
+                                        <Label Text="{Binding CountImagesFor1Day}" FontSize="30" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="End" VerticalTextAlignment="End" HorizontalOptions="End" VerticalOptions="Fill" TextColor="Blue"></Label>
                                     </StackLayout>
                                 </Frame>
-                                <Frame Grid.Column="1" Grid.Row="1" Padding="0" Margin="7,0,10,10" x:Name="frameOneWeek" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
+                                <Frame Grid.Column="1" Grid.Row="1" Padding="0" Margin="7,0,10,10" BackgroundColor="#E0F7FA" x:Name="frameOneWeek" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}" CommandParameter="{StaticResource Days7}"></TapGestureRecognizer>
                                     </Frame.GestureRecognizers>
                                     <StackLayout>
                                         <Label Text="Неделя" FontSize="14" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Black"></Label>
-                                        <Label Text="{Binding CountImagesFor7Day}" FontSize="12" FontAttributes="None" Margin="5" HorizontalTextAlignment="End" VerticalTextAlignment="End" HorizontalOptions="End" VerticalOptions="Start" TextColor="Blue"></Label>
+                                        <Label Text="{Binding CountImagesFor7Day}" FontSize="30" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="End" VerticalTextAlignment="End" HorizontalOptions="End" VerticalOptions="Start" TextColor="Blue"></Label>
                                     </StackLayout>
                                 </Frame>
-                                <Frame Grid.Column="1" Grid.Row="2" Padding="0" Margin="7,0,10,10" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
+                                <Frame Grid.Column="1" Grid.Row="2" Padding="0" Margin="7,0,10,10" BackgroundColor="#E0F7FA" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ShowPeriodChartCommand}"></TapGestureRecognizer>
                                     </Frame.GestureRecognizers>
                                     <StackLayout>
                                         <Label Text="Все дни" FontSize="14" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Black"></Label>
-                                        <Label Text="{Binding CountImagesForAllDays}" FontSize="12" FontAttributes="None" Margin="5" HorizontalTextAlignment="End" VerticalTextAlignment="End" HorizontalOptions="End" VerticalOptions="Start" TextColor="Blue"></Label>
+                                        <Label Text="{Binding CountImagesForAllDays}" FontSize="30" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="End" VerticalTextAlignment="End" HorizontalOptions="End" VerticalOptions="Start" TextColor="Blue"></Label>
                                     </StackLayout>
                                 </Frame>
-                                <StackLayout Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Margin="5" IsVisible="{Binding IsVisiblePeriodChart}" HorizontalOptions="End" Orientation="Horizontal" VerticalOptions="FillAndExpand">                                   
-                                    <ImageButton Source="baseline_clear_black_48" WidthRequest="40" HeightRequest="40" Command="{Binding ShowMinimalPeriodCommand}" HorizontalOptions="End" BackgroundColor="White"></ImageButton>
-                                </StackLayout>
-                                <StackLayout Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="0" IsVisible="{Binding IsVisiblePeriodChart}" HorizontalOptions="Fill">
+                                <!--StackLayout Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Margin="5" IsVisible="{Binding IsVisiblePeriodChart}" HorizontalOptions="FillAndExpand" Orientation="Horizontal" VerticalOptions="FillAndExpand">                                   
+                                    <Frame Padding="0" HorizontalOptions="Start" VerticalOptions="CenterAndExpand" BackgroundColor="LightBlue">
+                                        <Label Text="Август" WidthRequest="100" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"></Label>
+                                    </Frame>
+                                    <StackLayout BackgroundColor="Red" WidthRequest="100"></StackLayout>
+                                    <Frame Padding="0" HorizontalOptions="Start" VerticalOptions="CenterAndExpand" BackgroundColor="LightSkyBlue">
+                                        <Label Text="Сентябрь" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"></Label>
+                                    </Frame>
+                                    <Frame Padding="0" HorizontalOptions="Start" VerticalOptions="CenterAndExpand" BackgroundColor="LightBlue">
+                                        <Label Text="Октябрь" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"></Label>
+                                    </Frame>
+                                    <ImageButton Source="baseline_clear_black_48" WidthRequest="40" HeightRequest="40" Command="{Binding ShowMinimalPeriodCommand}" VerticalOptions="CenterAndExpand" HorizontalOptions="End" BackgroundColor="White"></ImageButton>
+                                </-->
+                                <!--Frame Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" IsVisible="{Binding IsVisiblePeriodChart}" HasShadow="True" Padding="5" CornerRadius="5" Margin="5" IsClippedToBounds="True" HorizontalOptions="FillAndExpand" BackgroundColor="LightSkyBlue">
                                     <xForms:SfDateTimeRangeNavigator HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                                                      XBindingPath="XValue" YBindingPath="YValue" 
                                                                      Minimum="{Binding MinRangeDate}" Maximum="{Binding MaxRangeDate}"
                                                                      ItemsSource="{Binding ImagesRangeData}" RangeChanged="SfDateTimeRangeNavigator_OnRangeChanged">
                                      </xForms:SfDateTimeRangeNavigator>
-                                    <StackLayout Orientation="Horizontal" Margin="10,5,5,5" IsVisible="{Binding IsVisiblePeriodChart}">
-                                        <Label Text="{Binding SelectedPeriodText}" HorizontalOptions="Start" VerticalOptions="Start" HorizontalTextAlignment="Start" FontSize="14" FontAttributes="None"></Label>
-                                        <ImageButton Source="baseline_done_black_48" WidthRequest="40" HeightRequest="40" Command="{Binding GenerateNewRouteCommand}" HorizontalOptions="End" BackgroundColor="White"></ImageButton>
+                                </-->
+                                <StackLayout Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="0" BackgroundColor="#E3F2FD" IsVisible="{Binding IsVisiblePeriodChart}" HorizontalOptions="Fill">
+                                    <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal" Margin="5,5,5,0">
+                                        <Frame Padding="0" HasShadow="True" HorizontalOptions="Start" VerticalOptions="EndAndExpand" BackgroundColor="LightBlue">
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding PreviousMonthPeriodCommand}"></TapGestureRecognizer>
+                                            </Frame.GestureRecognizers>
+                                            <Label Text="Август" FontSize="11" FontAttributes="None" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HeightRequest="30" WidthRequest="80" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"></Label>
+                                        </Frame>
+
+                                        <Frame Padding="0" HasShadow="True" HorizontalOptions="Start" VerticalOptions="EndAndExpand" BackgroundColor="LightSkyBlue">
+                                            <Label Text="Сентябрь" FontSize="13" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HeightRequest="40" WidthRequest="80" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"></Label>
+                                        </Frame>
+                                        <Frame Padding="0" HasShadow="True" HorizontalOptions="Start" VerticalOptions="EndAndExpand" BackgroundColor="LightBlue">
+                                            <Label Text="Октябрь" FontSize="11" FontAttributes="None" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HeightRequest="30" WidthRequest="80" HorizontalOptions="Center" VerticalOptions="FillAndExpand"></Label>
+                                        </Frame>
+                                        <StackLayout HorizontalOptions="FillAndExpand"></StackLayout>
+                                        <ImageButton Source="baseline_clear_black_48" WidthRequest="40" HeightRequest="40" Command="{Binding ShowMinimalPeriodCommand}" BackgroundColor="#E3F2FD" VerticalOptions="CenterAndExpand" HorizontalOptions="End"></ImageButton>
+                                    </StackLayout>
+                                    <xForms:SfDateTimeRangeNavigator HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                                                     XBindingPath="XValue" YBindingPath="YValue"
+                                                                     Minimum="{Binding MinRangeDate}" Maximum="{Binding MaxRangeDate}"
+                                                                     ItemsSource="{Binding ImagesRangeData}" RangeChanged="SfDateTimeRangeNavigator_OnRangeChanged">
+                                     </xForms:SfDateTimeRangeNavigator>
+                                    <StackLayout Orientation="Horizontal" Margin="10,5,5,5" IsVisible="{Binding IsVisiblePeriodChart}" HorizontalOptions="EndAndExpand">
+                                        <Label Text="Выбрано:" FontSize="15" FontAttributes="None" HorizontalOptions="Start" VerticalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"></Label>
+                                        <Label Text="{Binding SelectedPeriodText}" FontSize="15" FontAttributes="Bold" HorizontalOptions="Start" VerticalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"></Label>
+                                        <Frame BackgroundColor="LightSkyBlue" Padding="5" Margin="5" HasShadow="True">
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="Просмотр" FontSize="14" LineBreakMode="NoWrap" WidthRequest="100" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
+                                                <ImageButton Source="baseline_done_black_48" WidthRequest="30" HeightRequest="30" Command="{Binding GenerateNewRouteCommand}" HorizontalOptions="End" BackgroundColor="LightSkyBlue"></ImageButton>
+                                            </StackLayout>
+                                        </Frame>
                                     </StackLayout>
                                 </StackLayout>
                             </Grid>
