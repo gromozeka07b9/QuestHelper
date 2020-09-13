@@ -38,7 +38,14 @@ namespace QuestHelper.View
             if(_listView.DataSource.Items.Count() > 0)
             {
                 Device.BeginInvokeOnMainThread(() => {
-                    _listView.RefreshListViewItem(canReload: true);
+                    try
+                    {
+                        _listView.RefreshListViewItem(canReload: true);
+                    }
+                    catch(Exception ex)
+                    {
+
+                    }
                 });
             }
         }

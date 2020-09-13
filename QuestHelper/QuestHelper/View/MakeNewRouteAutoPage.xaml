@@ -117,22 +117,25 @@
                                     <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal" Margin="5,5,5,0">
                                         <Frame Padding="0" HasShadow="True" HorizontalOptions="Start" VerticalOptions="EndAndExpand" BackgroundColor="LightBlue">
                                             <Frame.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding PreviousMonthPeriodCommand}"></TapGestureRecognizer>
+                                                <TapGestureRecognizer Command="{Binding ChangeMonthPeriodCommand}" CommandParameter="-1"></TapGestureRecognizer>
                                             </Frame.GestureRecognizers>
-                                            <Label Text="Август" FontSize="11" FontAttributes="None" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HeightRequest="30" WidthRequest="80" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"></Label>
+                                            <Label Text="{Binding PrevMonthName}" FontSize="11" FontAttributes="None" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HeightRequest="30" WidthRequest="80" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"></Label>
                                         </Frame>
 
                                         <Frame Padding="0" HasShadow="True" HorizontalOptions="Start" VerticalOptions="EndAndExpand" BackgroundColor="LightSkyBlue">
-                                            <Label Text="Сентябрь" FontSize="13" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HeightRequest="40" WidthRequest="80" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"></Label>
+                                            <Label Text="{Binding CurrentMonthName}" FontSize="13" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HeightRequest="40" WidthRequest="80" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"></Label>
                                         </Frame>
                                         <Frame Padding="0" HasShadow="True" HorizontalOptions="Start" VerticalOptions="EndAndExpand" BackgroundColor="LightBlue">
-                                            <Label Text="Октябрь" FontSize="11" FontAttributes="None" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HeightRequest="30" WidthRequest="80" HorizontalOptions="Center" VerticalOptions="FillAndExpand"></Label>
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding ChangeMonthPeriodCommand}" CommandParameter="1"></TapGestureRecognizer>
+                                            </Frame.GestureRecognizers>
+                                            <Label Text="{Binding NextMonthName}" FontSize="11" FontAttributes="None" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HeightRequest="30" WidthRequest="80" HorizontalOptions="Center" VerticalOptions="FillAndExpand"></Label>
                                         </Frame>
                                         <StackLayout HorizontalOptions="FillAndExpand"></StackLayout>
                                         <ImageButton Source="baseline_clear_black_48" WidthRequest="40" HeightRequest="40" Command="{Binding ShowMinimalPeriodCommand}" BackgroundColor="#E3F2FD" VerticalOptions="CenterAndExpand" HorizontalOptions="End"></ImageButton>
                                     </StackLayout>
                                     <xForms:SfDateTimeRangeNavigator HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                                                                     XBindingPath="XValue" YBindingPath="YValue"
+                                                                     XBindingPath="XValue" YBindingPath="YValue" Intervals="Month" ViewRangeStart="{Binding PeriodRouteBegin}" ViewRangeEnd="{Binding PeriodRouteEnd}"
                                                                      Minimum="{Binding MinRangeDate}" Maximum="{Binding MaxRangeDate}"
                                                                      ItemsSource="{Binding ImagesRangeData}" RangeChanged="SfDateTimeRangeNavigator_OnRangeChanged">
                                      </xForms:SfDateTimeRangeNavigator>
