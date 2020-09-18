@@ -35,7 +35,7 @@
                 </listView:SfListView.LeftSwipeTemplate>
                 <listView:SfListView.ItemTemplate>
                     <DataTemplate>
-                        <Frame Padding="0" IsClippedToBounds="True" CornerRadius="5" HeightRequest="240" Margin="5,5,5,2">
+                        <Frame Padding="5" IsClippedToBounds="True" CornerRadius="5" WidthRequest="250" HeightRequest="140" Margin="5,5,5,2">
                             <Frame.Triggers>
                                 <DataTrigger TargetType="Frame" Binding="{Binding IsDeleted}" Value="True">
                                     <Setter Property="Opacity" Value="0.2"></Setter>
@@ -45,9 +45,9 @@
                                 <StackLayout.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding BindingContext.OpenImageInViewerCommand, Source={x:Reference sfListImages}}" CommandParameter="{Binding .}"></TapGestureRecognizer>
                                 </StackLayout.GestureRecognizers>
-                                    <ffimageloading:CachedImage Source="{Binding ImageOriginalFullPath}" Margin="0" WidthRequest="350" HeightRequest="240"
+                                    <ffimageloading:CachedImage Source="{Binding ImagePreviewFullPath}" Margin="0" WidthRequest="250" HeightRequest="140"
                                                                 CacheType="Memory"
-                                                                DownsampleToViewSize="True" 
+                                                                DownsampleToViewSize="False" 
                                                                 BitmapOptimizations="True" Aspect="AspectFill"
                                                                 HorizontalOptions="CenterAndExpand"
                                                                 VerticalOptions="CenterAndExpand"                                                
