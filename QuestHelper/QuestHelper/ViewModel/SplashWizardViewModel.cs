@@ -38,6 +38,7 @@ namespace QuestHelper.ViewModel
         private void skipTourCommand()
         {
             SetStatusNoNeedShowOnboarding();
+            //App.Current.MainPage = new View.MainPage();
 
             requestPermissionLocationCommand(new object());
         }
@@ -49,25 +50,9 @@ namespace QuestHelper.ViewModel
         private async void requestPermissionLocationCommand(object obj)
         {
             SetStatusNoNeedShowOnboarding();
+
             PermissionManager permissions = new PermissionManager();
             await permissions.PermissionLocationGrantedAsync(CommonResource.Permission_Position);
-
-
-            //Поправить, надо добавить запрос разрешения в PermissionManager!
-            PermissionStatus status = PermissionStatus.Unknown;
-            try
-            {
-                status = await CrossPermissions.Current.CheckPermissionStatusAsync<StoragePermission>();
-                if (status != PermissionStatus.Granted)
-                {
-                    var statusRequest = await CrossPermissions.Current.RequestPermissionAsync<StoragePermission>();
-                }
-            }
-            catch (Exception)
-            {
-            }
-            //Поправить, надо добавить запрос разрешения в PermissionManager!
-
 
             App.Current.MainPage = new View.MainPage();
         }

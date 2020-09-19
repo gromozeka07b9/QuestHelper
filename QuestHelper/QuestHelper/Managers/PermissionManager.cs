@@ -5,6 +5,8 @@ using QuestHelper.Resources;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+//using Xamarin.Essentials;
 
 namespace QuestHelper.Managers
 {
@@ -80,6 +82,35 @@ namespace QuestHelper.Managers
         {
             var status = await CrossPermissions.Current.CheckPermissionStatusAsync<LocationPermission>();
             return (status == PermissionStatus.Granted);
+        }
+
+
+
+
+        public async Task<Xamarin.Essentials.PermissionStatus> CheckAndRequestLocationPermission()
+        {
+            var status = await Xamarin.Essentials.Permissions.CheckStatusAsync<Xamarin.Essentials.Permissions.LocationWhenInUse>();
+            if (status != Xamarin.Essentials.PermissionStatus.Granted)
+            {
+                status = await Xamarin.Essentials.Permissions.RequestAsync<Xamarin.Essentials.Permissions.LocationWhenInUse>();
+            }
+
+            // Additionally could prompt the user to turn on in settings
+
+            return status;
+        }
+
+        public async Task<Xamarin.Essentials.PermissionStatus> CheckAndRequestStorageReadPermission()
+        {
+            var status = await Xamarin.Essentials.Permissions.CheckStatusAsync<Xamarin.Essentials.Permissions.StorageRead>();
+            if (status != Xamarin.Essentials.PermissionStatus.Granted)
+            {
+                status = await Xamarin.Essentials.Permissions.RequestAsync<Xamarin.Essentials.Permissions.StorageRead>();
+            }
+
+            // Additionally could prompt the user to turn on in settings
+
+            return status;
         }
     }
 }

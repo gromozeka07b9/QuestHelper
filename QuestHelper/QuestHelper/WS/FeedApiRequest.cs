@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Acr.UserDialogs;
+using Newtonsoft.Json;
 using QuestHelper.Managers;
 using QuestHelper.SharedModelsWS;
 using System;
@@ -72,6 +73,7 @@ namespace QuestHelper.WS
                         LastHttpStatusCode = api.LastHttpStatusCode;
                         if (LastHttpStatusCode != HttpStatusCode.OK)
                         {
+                            UserDialogs.Instance.Toast("Error downloading cover image");
                             HandleError.Process("FeedApiRequest", "GetCoverImage", new Exception(LastHttpStatusCode.ToString()), false, imgUrl);
                         }
                     }

@@ -22,7 +22,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Plugin.Permissions" Version="6.0.1" />
     <PackageReference Include="Realm.Database" Version="3.4.0" />
-    <PackageReference Include="Syncfusion.Xamarin.SfChart" Version="18.2.0.44" />
+    <PackageReference Include="Syncfusion.Xamarin.SfChart" Version="18.2.0.58" />
     <PackageReference Include="Xam.Plugin.Geolocator" Version="4.5.0.6" />
     <PackageReference Include="Xam.Plugin.Media" Version="5.0.1" />
     <PackageReference Include="Xam.Plugins.Forms.ImageCircle" Version="3.0.0.5" />

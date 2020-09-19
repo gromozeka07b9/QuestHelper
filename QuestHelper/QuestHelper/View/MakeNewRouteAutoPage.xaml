@@ -134,8 +134,8 @@
                                         <StackLayout HorizontalOptions="FillAndExpand"></StackLayout>
                                         <ImageButton Source="baseline_clear_black_48" WidthRequest="40" HeightRequest="40" Command="{Binding ShowMinimalPeriodCommand}" BackgroundColor="#E3F2FD" VerticalOptions="CenterAndExpand" HorizontalOptions="End"></ImageButton>
                                     </StackLayout>
-                                    <xForms:SfDateTimeRangeNavigator HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                                                                     XBindingPath="XValue" YBindingPath="YValue" Intervals="Month" ViewRangeStart="{Binding PeriodRouteBegin}" ViewRangeEnd="{Binding PeriodRouteEnd}"
+                                    <xForms:SfDateTimeRangeNavigator HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Intervals="Month,Days"
+                                                                     XBindingPath="XValue" YBindingPath="YValue" ViewRangeStart="{Binding PeriodRouteBegin}" ViewRangeEnd="{Binding PeriodRouteEnd}"
                                                                      Minimum="{Binding MinRangeDate}" Maximum="{Binding MaxRangeDate}"
                                                                      ItemsSource="{Binding ImagesRangeData}" RangeChanged="SfDateTimeRangeNavigator_OnRangeChanged">
                                      </xForms:SfDateTimeRangeNavigator>
