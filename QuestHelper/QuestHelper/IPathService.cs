@@ -11,5 +11,6 @@ namespace QuestHelper
         string PrivateExternalFolder { get; }
         string PublicDirectoryPictures { get; }
         string PublicDirectoryDcim { get; }
+        string GetLastUsedDCIMPath();
     }
 }

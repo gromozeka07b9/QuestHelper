@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Acr.UserDialogs;
 using Xamarin.Forms;
 
 namespace QuestHelper.Managers
@@ -29,10 +30,17 @@ namespace QuestHelper.Managers
         internal void UpdateFilenames()
         {
             var startDate = DateTime.Now;
-            //LocalFileCacheManager cacheManager = new LocalFileCacheManager();
-            string pathToDCIMDirectory = DependencyService.Get<IPathService>().PublicDirectoryDcim;
+            string pathToDCIMDirectory = DependencyService.Get<IPathService>().GetLastUsedDCIMPath();
+            if (string.IsNullOrEmpty(pathToDCIMDirectory))
+            {
+                pathToDCIMDirectory = DependencyService.Get<IPathService>().PublicDirectoryDcim + "/Camera";
+#if DEBUG                
+                UserDialogs.Instance.Toast("использован путь к фото по-умолчанию");
+#endif                
+            }
 
-            var listFiles = System.IO.Directory.EnumerateFiles(pathToDCIMDirectory, "*.jpg", SearchOption.AllDirectories);
+            IEnumerable<string> listFiles = getListFiles(pathToDCIMDirectory);
+            
             foreach(string filename in listFiles)
             {
                 var fileInfo = new FileInfo(filename);
@@ -44,6 +52,19 @@ namespace QuestHelper.Managers
             var delay = DateTime.Now - startDate;
         }
 
+        private IEnumerable<string> getListFiles(string pathToDCIMDirectory)
+        {
+            IEnumerable<string> listFiles = new List<string>();
+            try
+            {
+                listFiles = System.IO.Directory.EnumerateFiles(pathToDCIMDirectory, "*.jpg", SearchOption.TopDirectoryOnly);
+            }
+            catch (Exception e)
+            {
+            }
+            return listFiles;
+        }
+
         internal void UpdateMetadata()
         {
             var startDate = DateTime.Now;
@@ -52,7 +73,7 @@ namespace QuestHelper.Managers
             {
                 if(!currentFile.Processed)
                 {
-                    _imageManager.SetPreviewImageQuality(ImageQualityType.MinimumSizeHiQuality);
+                    _imageManager.SetPreviewImageQuality(ImageQualityType.MiddleSizeHiQuality);
                     var currentMetadata = _imageManager.GetPhoto(currentFile.Id, Path.Combine(currentFile.SourcePath, currentFile.SourceFileName));
                     if (currentMetadata.getMetadataPhotoResult)
                     {

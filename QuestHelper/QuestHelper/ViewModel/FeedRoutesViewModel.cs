@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Acr.UserDialogs;
 using QuestHelper.Managers;
 using Xamarin.Forms;
 using QuestHelper.View;
@@ -208,6 +209,7 @@ namespace QuestHelper.ViewModel
                 }
             }
 
+            var trackTimeStart = DateTime.Now;
             FeedApiRequest feedApi = new FeedApiRequest(token);
             feed = await feedApi.GetFeed();
             if (feedApi.LastHttpStatusCode == HttpStatusCode.OK)
@@ -218,6 +220,11 @@ namespace QuestHelper.ViewModel
                     await feedApi.GetCoverImage(item.ImgUrl);
                 }
             }
+
+            TimeSpan trackTimeDelay = trackTimeStart - DateTime.Now;
+#if DEBUG
+            UserDialogs.Instance.Toast(new ToastConfig($"длительность загрузки:{trackTimeDelay}"));            
+#endif
             bool AuthRequired = (feedApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || feedApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
             if (AuthRequired)
             {

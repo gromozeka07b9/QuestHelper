@@ -41,8 +41,8 @@
             </x:Arguments>
             <NavigationPage.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="iOS" Value="plus.png"/>
-                    <On Platform="Android" Value="plus.png"/>
+                    <On Platform="iOS" Value="photo.png"/>
+                    <On Platform="Android" Value="photo.png"/>
                 </OnPlatform>
             </NavigationPage.Icon>
         </NavigationPage>
