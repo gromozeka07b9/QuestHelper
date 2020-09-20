@@ -21,6 +21,7 @@ using Xamarin.Forms.Xaml;
 using Newtonsoft.Json.Linq;
 using Acr.UserDialogs;
 using System.IO;
+using QuestHelper.Resources;
 
 namespace QuestHelper.ViewModel
 {
@@ -62,7 +63,8 @@ namespace QuestHelper.ViewModel
         public ICommand FullScreenMapCommand { get; private set; }
         public ICommand PhotoAlbumCommand { get; private set; }
         public ICommand BackNavigationCommand { get; private set; }
-
+        
+        public ICommand DeleteRouteCommand { get; private set; }
         public RouteViewModel(string routeId, bool isFirstRoute)
         {
             _vroute = new ViewRoute(routeId);
@@ -78,6 +80,25 @@ namespace QuestHelper.ViewModel
             FullScreenMapCommand = new Command(fullScreenMapCommandAsync);
             PhotoAlbumCommand = new Command(photoAlbumCommandAsync);
             BackNavigationCommand = new Command(backNavigationCommand);
+            DeleteRouteCommand = new Command(deleteRouteCommand);
+        }
+
+        private async void deleteRouteCommand(object obj)
+        {
+            if (!string.IsNullOrEmpty(_vroute.ObjVerHash))
+            {
+                UserDialogs.Instance.Alert(new AlertConfig(){ Message = "Маршрут уже синхронизирован и не может быть удален", Title = "Внимание!"});
+            }
+            else
+            {
+                bool deleteRoute = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig() { Message = "Вы уверены что хотите удалить маршрут?", Title = "Внимание!", OkText = CommonResource.CommonMsg_Yes, CancelText = CommonResource.CommonMsg_No });
+                if (deleteRoute)
+                {
+                    _routeManager.DeleteRoutesDataFromStorage(new ViewRoute[]{_vroute});
+                    backNavigationCommand(new object());
+                    UserDialogs.Instance.Alert(new AlertConfig() {Message = "Маршрут успешно удален", Title = "Внимание!"});                    
+                }
+            }
         }
 
         private void backNavigationCommand(object obj)

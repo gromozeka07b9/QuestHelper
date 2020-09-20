@@ -4,10 +4,10 @@
     <color android:color="#8dacd9"/>
   </item>
   <item>
-    <bitmap
+    <bitmap 
         android:src="@drawable/logo"
         android:tileMode="disabled"
-        android:gravity="center"
+        android:gravity="fill_horizontal|fill_vertical"
         />
   </item>
 </layer-list>
