@@ -134,7 +134,7 @@
                                         <StackLayout HorizontalOptions="FillAndExpand"></StackLayout>
                                         <ImageButton Source="baseline_clear_black_48" WidthRequest="40" HeightRequest="40" Command="{Binding ShowMinimalPeriodCommand}" BackgroundColor="#E3F2FD" VerticalOptions="CenterAndExpand" HorizontalOptions="End"></ImageButton>
                                     </StackLayout>
-                                    <xForms:SfDateTimeRangeNavigator HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Intervals="Month,Days"
+                                    <xForms:SfDateTimeRangeNavigator HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Intervals="Month,Day"
                                                                      XBindingPath="XValue" YBindingPath="YValue" ViewRangeStart="{Binding PeriodRouteBegin}" ViewRangeEnd="{Binding PeriodRouteEnd}"
                                                                      Minimum="{Binding MinRangeDate}" Maximum="{Binding MaxRangeDate}"
                                                                      ItemsSource="{Binding ImagesRangeData}" RangeChanged="SfDateTimeRangeNavigator_OnRangeChanged">
@@ -143,9 +143,12 @@
                                         <Label Text="Выбрано:" FontSize="15" FontAttributes="None" HorizontalOptions="Start" VerticalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"></Label>
                                         <Label Text="{Binding SelectedPeriodText}" FontSize="15" FontAttributes="Bold" HorizontalOptions="Start" VerticalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"></Label>
                                         <Frame BackgroundColor="LightSkyBlue" Padding="5" Margin="5" HasShadow="True">
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}"></TapGestureRecognizer>
+                                            </Frame.GestureRecognizers>
                                             <StackLayout Orientation="Horizontal">
                                                 <Label Text="Просмотр" FontSize="14" LineBreakMode="NoWrap" WidthRequest="100" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
-                                                <ImageButton Source="baseline_done_black_48" WidthRequest="30" HeightRequest="30" Command="{Binding GenerateNewRouteCommand}" HorizontalOptions="End" BackgroundColor="LightSkyBlue"></ImageButton>
+                                                <Image Source="baseline_done_black_48" WidthRequest="30" HeightRequest="30" HorizontalOptions="End" BackgroundColor="LightSkyBlue"></Image>
                                             </StackLayout>
                                         </Frame>
                                     </StackLayout>
@@ -278,16 +281,59 @@
                     </DataTemplate>
                 </listView:SfListView.ItemTemplate>
             </listView:SfListView>
-            <AbsoluteLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="0.9" BackgroundColor="White" IsVisible="{Binding IsShowDialogNeedGalleryIndexed}">
-                <Frame AbsoluteLayout.LayoutBounds=".5,.5,.6,.3" AbsoluteLayout.LayoutFlags="All" BackgroundColor="LightGray" BorderColor="Black" CornerRadius="10">
-                    <StackLayout VerticalOptions="FillAndExpand" Orientation="Vertical" HorizontalOptions="Center" IsVisible="{Binding IsShowDialogNeedGalleryIndexed}" >
-                        <Label Text="Для автоматического создания маршрутов GoSh должен обновить список фото из вашей галереи." TextColor="Black" FontSize="12" Margin="5" HorizontalTextAlignment="Center"></Label>
-                        <Button Text="Обновить" Command="{Binding StartIndexGalleryCommand}" HorizontalOptions="Center" />
+            <AbsoluteLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="0.9" BackgroundColor="White" IsVisible="{Binding IsShowModalDialog}">
+                <Frame AbsoluteLayout.LayoutBounds=".5,.4,.8,.65" Padding="0" AbsoluteLayout.LayoutFlags="All" BackgroundColor="LightGray" BorderColor="Black" CornerRadius="10" IsVisible="{Binding IsShowWarningNeedIndexing}">
+                    <StackLayout VerticalOptions="FillAndExpand" Orientation="Vertical" HorizontalOptions="Center"  >
+                        <Label TextColor="Black" FontSize="12" Margin="5" HorizontalTextAlignment="Center">
+                            <Label.FormattedText>
+                                <FormattedString>           
+                                    <Span Text="Это бета-версия автоматического построителя маршрутов&#10;&#10;" FontSize="15" FontAttributes="Bold"></Span>
+                                    <Span Text="Маршруты строятся по фотографиям в вашей галерее и записанных в них геопозиций.&#10;" FontSize="12" FontAttributes="None"></Span>
+                                    <Span Text="GoSh проиндексирует фото за выбранный вами период и предложит вам маршрут, который вы сможете самостоятельно откорректировать.&#10;" FontSize="12" FontAttributes="None"></Span>
+                                    <Span Text="Если у вас есть замечания или предложения, пишите нам в канал Telegram:&#10;&#10;" FontSize="12" FontAttributes="None"></Span>
+                                    <Span Text="https://t.me/goshapp" TextDecorations="Underline" TextColor="Red" FontSize="14" FontAttributes="Bold">
+                                        <Span.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding TapLinkCommand}" CommandParameter="https://t.me/goshapp"></TapGestureRecognizer>
+                                        </Span.GestureRecognizers>
+                                    </Span>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Button Text="Индексировать" Command="{Binding StartIndexGalleryCommand}" HorizontalOptions="Center" />
+                    </StackLayout>
+                </Frame>
+                <Frame AbsoluteLayout.LayoutBounds=".5,.5,.6,.4" AbsoluteLayout.LayoutFlags="All" Padding="0" BackgroundColor="LightGray" BorderColor="Black" CornerRadius="10" IsVisible="{Binding IsShowWarningMakeRoute}">
+                    <StackLayout VerticalOptions="FillAndExpand" Orientation="Vertical" HorizontalOptions="Center" >
+                        <Label TextColor="Black" FontSize="12" Margin="5" HorizontalTextAlignment="Center">
+                            <Label.FormattedText>
+                                <FormattedString>           
+                                    <Span Text="Вы создаете новый маршрут&#10;&#10;" FontSize="15" FontAttributes="Bold"></Span>
+                                    <Span Text="Он будет составлен из выбранных вами точек и фотографий и будет&#10;" FontSize="12" FontAttributes="None"></Span>
+                                    <Span Text="доступен вам для дальнейшего редактирования&#10;" FontSize="12" FontAttributes="None"></Span>
+                                    <Span Text="на странице 'Личные'" FontSize="12" FontAttributes="None"></Span>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Button Text="Ок" Command="{Binding SaveRouteCommand}" HorizontalOptions="Center" />
+                    </StackLayout>
+                </Frame>
+                <Frame AbsoluteLayout.LayoutBounds=".5,.5,.6,.5" AbsoluteLayout.LayoutFlags="All" Padding="0" BackgroundColor="LightGray" BorderColor="Black" CornerRadius="10" IsVisible="{Binding IsShowWarningGuestMode}">
+                    <StackLayout VerticalOptions="FillAndExpand" Orientation="Vertical" HorizontalOptions="Center" >
+                        <Label TextColor="Black" FontSize="12" Margin="5" HorizontalTextAlignment="Center">
+                            <Label.FormattedText>
+                                <FormattedString>           
+                                    <Span Text="Для создания маршрута вам необходимо авторизоваться&#10;&#10;" FontSize="15" FontAttributes="Bold"></Span>
+                                    <Span Text="Авторизация позволит вам создавать маршруты и делиться ими.&#10;&#10;" FontSize="12" FontAttributes="None"></Span>
+                                    <Span Text="Бесплатно&#10;" FontSize="16" FontAttributes="Bold"></Span>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Button Text="Ок" Command="{Binding CloseWarningCommand}" HorizontalOptions="Center" />
                     </StackLayout>
                 </Frame>
             </AbsoluteLayout>
             <AbsoluteLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="0.9" BackgroundColor="White" IsVisible="{Binding IsRouteMaking}">
-                <Frame AbsoluteLayout.LayoutBounds=".5,.5,.6,.3" AbsoluteLayout.LayoutFlags="All" BackgroundColor="LightGray" BorderColor="Black" CornerRadius="10">
+                <Frame AbsoluteLayout.LayoutBounds=".5,.5,.6,.3" AbsoluteLayout.LayoutFlags="All" Padding="0" BackgroundColor="LightGray" BorderColor="Black" CornerRadius="10">
                     <StackLayout VerticalOptions="FillAndExpand" Orientation="Vertical" HorizontalOptions="Center" IsVisible="{Binding IsRouteMaking}" >
                         <animationForms:AnimationView HorizontalOptions="Center" VerticalOptions="CenterAndExpand" Margin="0" 
                                             Animation="{animationResource:AnimationResourceExtension hourglass}"
@@ -299,7 +345,7 @@
                                             WidthRequest="100"
                                             HeightRequest="100"                                        
                                             />
-                        <Label Text="Обработка фотографий..." TextColor="Black" FontSize="14" Margin="15" VerticalOptions="CenterAndExpand" HorizontalOptions="Center" HorizontalTextAlignment="Center"></Label>
+                        <Label Text="Обработка фотографий..." TextColor="Black" FontSize="12" Margin="10" VerticalOptions="CenterAndExpand" HorizontalOptions="Center" HorizontalTextAlignment="Center"></Label>
                     </StackLayout>
                 </Frame>
             </AbsoluteLayout>

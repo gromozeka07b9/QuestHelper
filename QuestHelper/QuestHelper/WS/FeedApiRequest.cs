@@ -75,15 +75,32 @@ namespace QuestHelper.WS
                         {
                             UserDialogs.Instance.Toast("Error downloading cover image");
                             HandleError.Process("FeedApiRequest", "GetCoverImage", new Exception(LastHttpStatusCode.ToString()), false, imgUrl);
+                            deleteFile(pathToMediaFile);
                         }
                     }
                     catch (Exception e)
                     {
-                        HandleError.Process("FeedApiRequest", "GetCoverImage", e, false);
+                        HandleError.Process("FeedApiRequest", "GetCoverImage", e, showWarning: false);
+                        deleteFile(pathToMediaFile);
                     }
                 }
             }
             return result;
+        }
+
+        private void deleteFile(string pathToFile)
+        {
+            try
+            {
+
+                File.Delete(pathToFile);
+
+            }catch(Exception e)
+            {
+
+                HandleError.Process("FeedApiRequest", "DeleteCorruptedFile", e, showWarning: false);
+
+            }
         }
 
         public HttpStatusCode GetLastHttpStatusCode()
