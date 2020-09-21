@@ -60,9 +60,15 @@ namespace QuestHelper.Droid
             //Forms.SetFlags("IndicatorView_Experimental");
             //Forms.SetFlags("CollectionView_Experimental");
             global::Xamarin.Forms.Forms.Init(this, bundle);
+            //https://github.com/roubachof/Xamarin.Forms.Nuke
+#if DEBUG
+            Android.Glide.Forms.Init(this, debug:true);
+#else
+            Android.Glide.Forms.Init(this);
+#endif
 
             Xamarin.FormsMaps.Init(this, bundle);
-            FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer: true);
+            //FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer: true);
             ImageCircleRenderer.Init();
             Xamarin.Essentials.Platform.Init(this, bundle);
             UserDialogs.Init(this);
