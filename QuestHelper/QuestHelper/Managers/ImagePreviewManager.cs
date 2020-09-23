@@ -30,13 +30,14 @@ namespace QuestHelper.Managers
             bool result = false;
             try
             {
-                byte[] originalByteArray = File.ReadAllBytes(pathToOriginalDirectory + "/" + originalFileName);
+                byte[] originalByteArray = readFileToByteArray(Path.Combine(pathToOriginalDirectory, originalFileName));
                 if (originalByteArray.Length > 0)
                 {
                     ImagePreviewManager previewManager = new ImagePreviewManager();
                     var mediaService = DependencyService.Get<IMediaService>();
                     byte[] imgPreviewByteArray = previewManager.GetPreviewImage(mediaService, originalByteArray, _width, _height, _quality);
                     File.WriteAllBytes(pathToPreviewDirectory + "/" + previewFileName, imgPreviewByteArray);
+                    imgPreviewByteArray = null;
                     result = true;
                 }
             }
@@ -47,6 +48,26 @@ namespace QuestHelper.Managers
 
             return result;
         }
+
+        private byte[] readFileToByteArray(string pathToFile)
+        {
+            byte[] bytes = null;
+            using (FileStream fs = new FileStream(pathToFile, FileMode.Open, FileAccess.Read))
+            {
+                bytes = new byte[fs.Length];
+                int numBytesToRead = (int)fs.Length;
+                int numBytesRead = 0;
+                while (numBytesToRead > 0)
+                {
+                    int n = fs.Read(bytes, numBytesRead, numBytesToRead);
+                    if (n == 0) break;
+                    numBytesRead += n;
+                    numBytesToRead -= n;
+                }
+            }
+            return bytes;
+        }
+
         public bool CreateImagePreview(string mediaId)
         {
             bool result = false;
@@ -55,7 +76,7 @@ namespace QuestHelper.Managers
             string pathToPreview = ImagePathManager.GetImagePath(mediaId, MediaObjectTypeEnum.Image, true);
             try
             {
-                byte[] originalByteArray = File.ReadAllBytes(pathToOriginal);
+                byte[] originalByteArray = readFileToByteArray(pathToOriginal);
                 if (originalByteArray.Length > 0)
                 {
                     ImagePreviewManager previewManager = new ImagePreviewManager();

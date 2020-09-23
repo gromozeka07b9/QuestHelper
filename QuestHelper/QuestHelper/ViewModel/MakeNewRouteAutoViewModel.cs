@@ -274,6 +274,7 @@ namespace QuestHelper.ViewModel
             }
             if (maxCountOk)
             {
+                GC.Collect();
                 IsRouteMaking = true;
                 await Task.Factory.StartNew(() =>
                  {

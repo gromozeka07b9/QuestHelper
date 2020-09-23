@@ -32,7 +32,7 @@
     <MandroidI18n />
     <AndroidDexTool>d8</AndroidDexTool>
     <AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>
-    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
     <AndroidPackageFormat>apk</AndroidPackageFormat>
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
 <AndroidLinkMode>None</AndroidLinkMode>
