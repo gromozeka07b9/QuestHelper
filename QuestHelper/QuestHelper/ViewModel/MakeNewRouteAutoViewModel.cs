@@ -220,33 +220,36 @@ namespace QuestHelper.ViewModel
                 IsGalleryIndexed = false;
                 IsRouteMaking = true;
             });
-            ImagesCacheDbManager imagesCache = new ImagesCacheDbManager(new ImageManager(), PeriodRouteBegin, PeriodRouteEnd);
-            await Task.Factory.StartNew(() =>
+            if(taskPermissionRead.HasFlag(Xamarin.Essentials.PermissionStatus.Granted))
             {
-                setPeriodByDepth(90);
-                imagesCache.UpdateFilenames();
-            });
-            await Task.Factory.StartNew(() => {
-                _countImagesForToday = imagesCache.GetCountImagesForDaysAgo(0);
-                _countImagesFor1Day = imagesCache.GetCountImagesForDaysAgo(1);
-                _countImagesFor7Day = imagesCache.GetCountImagesForDaysAgo(7);
-                _countImagesForAllDays = imagesCache.GetCountImagesForDaysAgo(1000);
+                ImagesCacheDbManager imagesCache = new ImagesCacheDbManager(new ImageManager(), PeriodRouteBegin, PeriodRouteEnd);
+                await Task.Factory.StartNew(() =>
+                {
+                    setPeriodByDepth(90);
+                    imagesCache.UpdateFilenames();
+                });
+                await Task.Factory.StartNew(() => {
+                    _countImagesForToday = imagesCache.GetCountImagesForDaysAgo(0);
+                    _countImagesFor1Day = imagesCache.GetCountImagesForDaysAgo(1);
+                    _countImagesFor7Day = imagesCache.GetCountImagesForDaysAgo(7);
+                    _countImagesForAllDays = imagesCache.GetCountImagesForDaysAgo(1000);
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountImagesForToday"));
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountImagesFor1Day"));
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountImagesFor7Day"));
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountImagesForAllDays"));
+                        IsRouteMaking = false;
+                    });
+                });
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountImagesForToday"));
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountImagesFor1Day"));
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountImagesFor7Day"));
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountImagesForAllDays"));
-                    IsRouteMaking = false;
+                    MinRangeDate = _localFileCacheManager.GetMinDate();
+                    IsGalleryIndexed = true;
+                    CurrentMonthChart = DateTime.Now;
+                    IsShowWarningNeedIndexing = false;
                 });
-            });
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                MinRangeDate = _localFileCacheManager.GetMinDate();
-                IsGalleryIndexed = true;
-                CurrentMonthChart = DateTime.Now;
-                IsShowWarningNeedIndexing = false;
-            });
+            }
         }
 
         private async void generateNewRouteCommand(object obj)
