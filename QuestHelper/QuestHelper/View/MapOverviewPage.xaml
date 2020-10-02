@@ -71,8 +71,16 @@
                             </circle:CircleImage>
                         </StackLayout>
                         <StackLayout Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="1" Opacity="0.6" BackgroundColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="End" Orientation="Vertical" Margin="0">
-                            <Label Text="{Binding CurrentPoiName}" TextColor="White" FontSize="14" HorizontalOptions="FillAndExpand" VerticalOptions="End" HorizontalTextAlignment="Start" Margin="5,0,5,0"></Label>
-                            <Label Text="{Binding CurrentPoiDescription}" LineBreakMode="TailTruncation" MaxLines="5" TextColor="White" FontSize="10" HorizontalOptions="FillAndExpand" VerticalOptions="End" HorizontalTextAlignment="Start" Margin="5,0,5,5"></Label>
+                            <Label Text="{Binding CurrentPoiName}" TextColor="White" FontSize="14" HorizontalOptions="FillAndExpand" VerticalOptions="End" HorizontalTextAlignment="Start" Margin="5,0,5,0">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding StartShowAlbumCommand}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <Label Text="{Binding CurrentPoiDescription}" LineBreakMode="TailTruncation" MaxLines="5" TextColor="White" FontSize="10" HorizontalOptions="FillAndExpand" VerticalOptions="End" HorizontalTextAlignment="Start" Margin="5,0,5,5">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding StartShowAlbumCommand}" />
+                                </Label.GestureRecognizers>
+                            </Label>
                         </StackLayout>
                     </Grid>
                 </Frame>
@@ -89,11 +97,11 @@
                 <StackLayout VerticalOptions="FillAndExpand" Orientation="Vertical" HorizontalOptions="Center" IsVisible="{Binding IsLoadingPoi}" AbsoluteLayout.LayoutBounds=".5,.1,.5,.5" AbsoluteLayout.LayoutFlags="All">
                     <animationForms:AnimationView HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand" Margin="0" AbsoluteLayout.LayoutBounds=".5,.1,.5,.5" AbsoluteLayout.LayoutFlags="All"
                                         Animation="{animationResource:AnimationResourceExtension hourglass}"
-                                        Loop="True"
-                                        AutoPlay="True"
-                                        IsEnabled="True"
-                                        IsPlaying="{Binding IsLoadingPoi}"                                                                      
-                                        IsVisible="True"
+                                        RepeatMode="Restart"
+                                        RepeatCount="999"
+                                        AutoPlay="{Binding IsLoadingPoi}"
+                                        IsEnabled="{Binding IsLoadingPoi}"                                                                      
+                                        IsVisible="{Binding IsLoadingPoi}"
                                         WidthRequest="100"
                                         HeightRequest="100"                                        
                                         />
