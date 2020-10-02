@@ -17,6 +17,7 @@ using Xamarin.Forms.Xaml;
 using QuestHelper.Model;
 using Microsoft.AppCenter.Analytics;
 using QuestHelper.Resources;
+using QuestHelper.Model.Messages;
 
 namespace QuestHelper.ViewModel
 {
@@ -52,6 +53,7 @@ namespace QuestHelper.ViewModel
                 _vroute.CreatorId = await tokenService.GetUserIdAsync();
                 if (_vroute.Save())
                 {
+                    //MessagingCenter.Send<PageNavigationMessage>(new PageNavigationMessage() { PageToOpen = MainPages.Private }, string.Empty);
                     await Navigation.PushAsync(new RouteCreatedPage(_vroute.Id));
                 }
             }

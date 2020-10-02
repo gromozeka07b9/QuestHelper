@@ -31,7 +31,7 @@
                 <ListView x:Name="RoutePointsListView" VerticalOptions="StartAndExpand" SeparatorVisibility="None" RowHeight="250" HasUnevenRows="True" ItemsSource="{Binding PointsOfRoute}" SelectedItem="{Binding SelectedRoutePointItem,Mode=TwoWay}" IsPullToRefreshEnabled="False" RefreshCommand="{Binding StartDialogCommand}" IsRefreshing="{Binding ListIsRefreshing}">
                     <ListView.Header>
                         <StackLayout Margin="0" Style="{StaticResource PrivateStackLayout}" IsVisible="{Binding NoPostsWarningIsVisible, Converter={StaticResource inverter}}" HeightRequest="240">
-                            <Frame Padding="0" Style="{StaticResource PrivateFrame}" Margin="0">
+                            <Frame Padding="0" Style="{StaticResource PrivateFrame}" Margin="0" HeightRequest="240">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="40" />
@@ -48,7 +48,7 @@
                                     </Grid.RowDefinitions>
                                     
 
-                                    <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Grid.RowSpan="3" Source="land2.png" Aspect="Fill" HorizontalOptions="StartAndExpand" VerticalOptions="FillAndExpand">
+                                    <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Grid.RowSpan="3" Source="land2.png" Aspect="AspectFill" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                         <Image.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding EditRouteCommand}"/>
                                         </Image.GestureRecognizers>
@@ -75,8 +75,8 @@
                                             </circle:CircleImage.GestureRecognizers>
                                         </circle:CircleImage>
                                     </StackLayout>
-                                    <Frame Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="2" Grid.RowSpan="2" CornerRadius="10" HasShadow="True" Padding="0" Margin="15,0,15,0" BorderColor="Blue" IsClippedToBounds="True">
-                                        <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0" BackgroundColor="White" Padding="0">
+                                    <Frame Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="2" Grid.RowSpan="2" CornerRadius="10" HasShadow="True" Padding="0" Margin="15,0,15,0" BorderColor="White" IsClippedToBounds="True">
+                                        <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0" Padding="0">
                                             <!--StackLayout Orientation="Vertical" VerticalOptions="StartAndExpand" BackgroundColor="Bisque">
                                                 <StackLayout.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding EditRouteCommand}"/>
@@ -166,19 +166,19 @@
                     <TapGestureRecognizer Command="{Binding EditRouteCommand}"/>
                 </AbsoluteLayout.GestureRecognizers>
             </AbsoluteLayout>
-            <AbsoluteLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="StartAndExpand" VerticalOptions="Center" IsVisible="{Binding IsVisibleModalRouteEdit}">
+            <StackLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Center" IsVisible="{Binding IsVisibleModalRouteEdit}">
                 <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="8*" />
-                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="20" />
                     </Grid.ColumnDefinitions>
-                    <Frame Grid.Column="1" CornerRadius="5" Padding="5" Margin="0" BackgroundColor="LightGray" WidthRequest="250">
+                    <Frame Grid.Column="1" CornerRadius="5" Padding="5" Margin="0" BackgroundColor="LightGray">
                         <StackLayout Orientation="Vertical">
-                            <Label Text="Name" FontSize="16" FontAttributes="Bold" Margin="5,0,0,0" Style="{StaticResource RouteTextLabel}" TextColor="Black" LineBreakMode="WordWrap" VerticalTextAlignment="Start" HorizontalOptions="FillAndExpand">
+                            <Label Text="Name" FontSize="16" FontAttributes="Bold" Margin="5,0,0,0" Style="{StaticResource RouteTextLabel}" TextColor="Black" MaxLines="1" LineBreakMode="WordWrap" VerticalTextAlignment="Start" HorizontalOptions="FillAndExpand">
                             </Label>
                             <StackLayout Orientation="Horizontal">
-                                <Editor x:Name="NameEditorCtrl" Margin="0" Text="{Binding NameForEdit}" FontSize="16" HeightRequest="40" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand"></Editor>
+                                <Editor x:Name="NameEditorCtrl" Margin="0" Text="{Binding NameForEdit}" FontSize="12" HeightRequest="50" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand"></Editor>
                             </StackLayout>
 
                             <Label Text="Description" FontSize="16" FontAttributes="Bold" Margin="5,0,0,0" Style="{StaticResource RouteTextLabel}" TextColor="Black" LineBreakMode="WordWrap" VerticalTextAlignment="Start" HorizontalOptions="FillAndExpand">
@@ -211,7 +211,7 @@
                         </StackLayout>
                     </Frame>
                 </Grid>
-            </AbsoluteLayout>
+            </StackLayout>
 
         </Grid>
     </ContentPage.Content>

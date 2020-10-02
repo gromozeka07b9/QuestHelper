@@ -49,7 +49,7 @@
             <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="3" IsVisible="{Binding IsWaitForServer}" BackgroundColor="White">
                 <animationForms:AnimationView x:Name="SyncAnimation" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" Margin="0"
                                         Animation="{animationResource:AnimationResourceExtension hourglass}"
-                                        Loop="True"
+                                        RepeatMode="Infinite"
                                         AutoPlay="True"
                                         IsEnabled="True"
                                         IsVisible="True"

@@ -30,7 +30,7 @@ namespace QuestHelper.View
         {
             var pages = Navigation.NavigationStack;
             Page lastpage = pages.LastOrDefault();
-            if (typeof(QuestHelper.View.RoutePointV2Page) != lastpage.GetType())
+            if (typeof(QuestHelper.View.RoutePointV2Page) != lastpage?.GetType())
             {
                 vm.startDialog();
             }

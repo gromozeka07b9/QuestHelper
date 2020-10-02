@@ -60,7 +60,7 @@ namespace QuestHelper.View
 		{
 			if (!_vm.IsVisibleProgress)
 			{
-				SyncAnimation.Play();
+				SyncAnimation.PlayAnimation();
 				Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);//Запуск новой синхронизации
 			}
 		}
@@ -74,7 +74,7 @@ namespace QuestHelper.View
 		{
 			if (_vm.IsVisibleProgress)
 			{
-				SyncAnimation.Play();
+				SyncAnimation.PlayAnimation();
 			}
 			else
 			{

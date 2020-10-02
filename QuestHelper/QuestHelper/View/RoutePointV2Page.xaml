@@ -12,7 +12,7 @@
              xmlns:animationForms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              xmlns:animationResource="clr-namespace:QuestHelper.Resources"
              mc:Ignorable="d"
-             x:Class="QuestHelper.View.RoutePointV2Page" NavigationPage.HasNavigationBar="True" NavigationPage.BackButtonTitle="Back" Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing" Style="{StaticResource ContentPage}">
+             x:Class="QuestHelper.View.RoutePointV2Page" NavigationPage.HasNavigationBar="False" NavigationPage.BackButtonTitle="Back" Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing" Style="{StaticResource ContentPage}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local1:AspectImageConverter  x:Key="aspectimage" />
@@ -205,7 +205,7 @@
                         <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
                             <animationForms:AnimationView
                                 Animation="{animationResource:AnimationResourceExtension usualloading}"
-                                Loop="True"
+                                RepeatMode="Infinite"
                                 AutoPlay="True"
                                 IsEnabled="True"
                                 WidthRequest="60"
@@ -231,7 +231,7 @@
             <AbsoluteLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Center" IsVisible="{Binding IsWaitRecognizeAudio}">
                 <animationForms:AnimationView
                                 Animation="{animationResource:AnimationResourceExtension usualloading}"
-                                Loop="True"
+                                RepeatMode="Infinite"
                                 AutoPlay="True"
                                 IsEnabled="True"
                                 WidthRequest="60"

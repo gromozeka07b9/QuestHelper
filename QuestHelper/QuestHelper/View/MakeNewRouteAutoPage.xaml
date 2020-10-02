@@ -337,10 +337,11 @@
                     <StackLayout VerticalOptions="FillAndExpand" Orientation="Vertical" HorizontalOptions="Center" IsVisible="{Binding IsRouteMaking}" >
                         <animationForms:AnimationView HorizontalOptions="Center" VerticalOptions="CenterAndExpand" Margin="0" 
                                             Animation="{animationResource:AnimationResourceExtension hourglass}"
-                                            Loop="True"
+                                            RepeatMode="Restart"
                                             AutoPlay="True"
                                             IsEnabled="True"
-                                            IsPlaying="{Binding IsRouteMaking}"                                                                      
+                                            IsAnimating="True"
+                                            RepeatCount="999"
                                             IsVisible="True"
                                             WidthRequest="100"
                                             HeightRequest="100"                                        

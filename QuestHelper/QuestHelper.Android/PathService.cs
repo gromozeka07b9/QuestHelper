@@ -86,7 +86,7 @@ namespace QuestHelper.Droid
                         null,
                         MediaStore.Images.ImageColumns.DateTaken + " DESC"
                     );
-                    if (cursor != null)
+                    if ((cursor != null) && (cursor.Count > 0))
                     {
                         cursor.MoveToFirst();
                         do

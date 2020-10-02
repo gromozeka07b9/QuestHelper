@@ -4,7 +4,7 @@
              xmlns:viewmodel="clr-namespace:QuestHelper.ViewModel;assembly=QuestHelper"
              xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
              xmlns:local="clr-namespace:QuestHelper.View.Converters"
-             x:Class="QuestHelper.View.NewRoutePage" Appearing="ContentPage_Appearing" Title="{lang:Translation NewRoute_Caption}">
+             x:Class="QuestHelper.View.NewRoutePage" Appearing="ContentPage_Appearing" NavigationPage.HasNavigationBar="True" NavigationPage.HasBackButton="False" Title="{lang:Translation NewRoute_Caption}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:NegativeBoolConverter  x:Key="inverter" />

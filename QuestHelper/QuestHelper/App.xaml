@@ -63,7 +63,7 @@
             </Style>
 
             <Style x:Key="WizardBottomTextLabel" TargetType="Label">
-                <Setter Property="TextColor" Value="LightGray"/>
+                <Setter Property="TextColor" Value="Gray"/>
                 <Setter Property="FontSize" Value="15"/>
                 <Setter Property="FontAttributes" Value="Bold"/>
                 <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
@@ -145,7 +145,7 @@
             <Style x:Key="RouteListSmallLabel" TargetType="Label">
                 <Setter Property="TextColor" Value="White"/>
                 <Setter Property="FontSize" Value="12"/>
-                <Setter Property="LineBreakMode" Value="NoWrap"/>
+                <Setter Property="LineBreakMode" Value="WordWrap"/>
             </Style>
             <Style x:Key="RouteListBigLabel" TargetType="Label">
                 <Setter Property="TextColor" Value="White"/>

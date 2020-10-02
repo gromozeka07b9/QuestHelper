@@ -157,6 +157,18 @@ namespace QuestHelper.ViewModel
         {
             IsWaitRecognizeAudio = true;
             IsVisibleBottomButtons = !IsWaitRecognizeAudio;
+            /*await Task.Factory.StartNew(async () => {
+                bool result = await recognizeSpeechToText();
+            });*/
+            bool result = await recognizeSpeechToText();
+
+            IsWaitRecognizeAudio = false;
+            IsVisibleBottomButtons = !IsWaitRecognizeAudio;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsVisibleButtonStartProcessAudio"));
+        }
+
+        private async Task<bool> recognizeSpeechToText()
+        {
             SyncServer syncRoute = new SyncServer();
             bool synced = !await syncRoute.SyncRouteIsNeedAsync(_vpoint.RouteId);
             if (!synced)
@@ -178,7 +190,7 @@ namespace QuestHelper.ViewModel
                     string textResult = await speechToText.TryRecognizeAudioAsync(audio.RoutePointMediaObjectId);
                     if (speechToText.LastHttpStatusCode == HttpStatusCode.OK)
                     {
-                        sb.AppendLine(string.IsNullOrEmpty(textResult) ? "Текст не распознан": textResult);
+                        sb.AppendLine(string.IsNullOrEmpty(textResult) ? "Текст не распознан" : textResult);
                         ViewRoutePointMediaObject vMediaObject = new ViewRoutePointMediaObject();
                         vMediaObject.Load(audio.RoutePointMediaObjectId);
                         vMediaObject.Processed = true;
@@ -195,12 +207,13 @@ namespace QuestHelper.ViewModel
                     _vpoint.Description += Environment.NewLine + newDescription;
                     _vpoint.Version++;
                     _vpoint.Save();
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Description"));
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Description"));
+                    });
                 }
             }
-            IsWaitRecognizeAudio = false;
-            IsVisibleBottomButtons = !IsWaitRecognizeAudio;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsVisibleButtonStartProcessAudio"));
+            return !string.IsNullOrEmpty(_vpoint.Description);
         }
 
         private async void updateAddressCommand(object obj)
