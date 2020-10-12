@@ -525,4 +525,73 @@ Coordinates are used only when creating your waypoints.</value>
   <data name="Permission_Warning" xml:space="preserve">
     <value>You can enable position determination permission through the system settings menu</value>
   </data>
+  <data name="AutoRoutes_NewRoute" xml:space="preserve">
+    <value>You are create a new route&amp;#10;&amp;#10;</value>
+  </data>
+  <data name="AutoRoutes_NewRouteLine2" xml:space="preserve">
+    <value>It will make from selected points and images and will&amp;#10;</value>
+  </data>
+  <data name="AutoRoutes_NewRouteLine3" xml:space="preserve">
+    <value>able to edit&amp;#10;</value>
+  </data>
+  <data name="AutoRoutes_NewRouteLine4" xml:space="preserve">
+    <value>on page 'Private'</value>
+  </data>
+  <data name="AutoRoutes_NeedAuth" xml:space="preserve">
+    <value>For make route you need login&amp;#10;&amp;#10;</value>
+  </data>
+  <data name="AutoRoutes_NeedAuthLine2" xml:space="preserve">
+    <value>It will able to make routes and share it.&amp;#10;&amp;#10;</value>
+  </data>
+  <data name="AutoRoutes_NeedAuthLine3" xml:space="preserve">
+    <value>Free&amp;#10;</value>
+  </data>
+  <data name="AutoRoutes_Processing" xml:space="preserve">
+    <value>Processing images...</value>
+  </data>
+  <data name="AutoRoutes_Index" xml:space="preserve">
+    <value>Index</value>
+  </data>
+  <data name="AutoRoutes_Welcome" xml:space="preserve">
+    <value>Welcome to test version image route maker!</value>
+  </data>
+  <data name="AutoRoutes_WelcomeLine2" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AutoRoutes_WelcomeLine3" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AutoRoutes_WelcomeLine4" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AutoRoutes_SaveRoute" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AutoRoutes_ViewRoute" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="AutoRoutes_MakeYourPhotoroute" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AutoRoutes_MakePeriod" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AutoRoutes_MakeWeek" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AutoRoutes_MakeYersterday" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AutoRoutes_MakeToday" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AutoRoutes_LabelSelected" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AutoRoutes_LabelPointsInRoute" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AutoRoutes_LabelImages" xml:space="preserve">
+    <value />
+  </data>
 </root>

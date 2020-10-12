@@ -525,4 +525,73 @@
   <data name="Permission_Warning" xml:space="preserve">
     <value>Включить разрешение определения позиции можно через меню настроек системы</value>
   </data>
+  <data name="AutoRoutes_NewRoute" xml:space="preserve">
+    <value>Вы создаете новый маршрут</value>
+  </data>
+  <data name="AutoRoutes_NewRouteLine2" xml:space="preserve">
+    <value>Он будет составлен из выбранных вами точек и фотографий и будет</value>
+  </data>
+  <data name="AutoRoutes_NewRouteLine3" xml:space="preserve">
+    <value>доступен вам для дальнейшего редактирования</value>
+  </data>
+  <data name="AutoRoutes_NewRouteLine4" xml:space="preserve">
+    <value>на странице 'Личные'</value>
+  </data>
+  <data name="AutoRoutes_NeedAuth" xml:space="preserve">
+    <value>Для создания маршрута вам необходимо авторизоваться</value>
+  </data>
+  <data name="AutoRoutes_NeedAuthLine2" xml:space="preserve">
+    <value>Авторизация позволит вам создавать маршруты и делиться ими.</value>
+  </data>
+  <data name="AutoRoutes_NeedAuthLine3" xml:space="preserve">
+    <value>Бесплатно</value>
+  </data>
+  <data name="AutoRoutes_Processing" xml:space="preserve">
+    <value>Обработка фотографий...</value>
+  </data>
+  <data name="AutoRoutes_Index" xml:space="preserve">
+    <value>Индексировать</value>
+  </data>
+  <data name="AutoRoutes_Welcome" xml:space="preserve">
+    <value>Добро пожаловать в тестовую версию построителя маршрутов по фотографиям!</value>
+  </data>
+  <data name="AutoRoutes_WelcomeLine2" xml:space="preserve">
+    <value>GoSh выберет фото за указанный период и предложит вам маршрут.</value>
+  </data>
+  <data name="AutoRoutes_WelcomeLine3" xml:space="preserve">
+    <value>Пожалуйста, убедитесь, что в вашем приложении камеры включено сохранение места съемки (геопозиция) и используется основная память для фотографий.</value>
+  </data>
+  <data name="AutoRoutes_WelcomeLine4" xml:space="preserve">
+    <value>Если у вас есть замечания или предложения, пишите нам в канал Telegram:</value>
+  </data>
+  <data name="AutoRoutes_SaveRoute" xml:space="preserve">
+    <value>Сохранить маршрут</value>
+  </data>
+  <data name="AutoRoutes_ViewRoute" xml:space="preserve">
+    <value>Просмотр</value>
+  </data>
+  <data name="AutoRoutes_MakeYourPhotoroute" xml:space="preserve">
+    <value>Создайте свой фотомаршрут</value>
+  </data>
+  <data name="AutoRoutes_MakePeriod" xml:space="preserve">
+    <value>Все дни</value>
+  </data>
+  <data name="AutoRoutes_MakeWeek" xml:space="preserve">
+    <value>Неделя</value>
+  </data>
+  <data name="AutoRoutes_MakeYersterday" xml:space="preserve">
+    <value>Вчера</value>
+  </data>
+  <data name="AutoRoutes_MakeToday" xml:space="preserve">
+    <value>Сегодня</value>
+  </data>
+  <data name="AutoRoutes_LabelSelected" xml:space="preserve">
+    <value>Выбрано:</value>
+  </data>
+  <data name="AutoRoutes_LabelPointsInRoute" xml:space="preserve">
+    <value>Точек в маршруте: </value>
+  </data>
+  <data name="AutoRoutes_LabelImages" xml:space="preserve">
+    <value>Фотографий: </value>
+  </data>
 </root>

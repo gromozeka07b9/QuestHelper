@@ -8,6 +8,7 @@
              xmlns:xForms="clr-namespace:Syncfusion.RangeNavigator.XForms;assembly=Syncfusion.SfChart.XForms"
              mc:Ignorable="d"
              xmlns:listView="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+             xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
              xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              x:Class="QuestHelper.View.MakeNewRouteAutoPage"
@@ -55,14 +56,13 @@
                                     <RowDefinition Height="4*" />
                                     <RowDefinition Height="4*" />
                                 </Grid.RowDefinitions>
-                                <Label Text="Создайте свой фотомаршрут" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Margin="10,5,0,5" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}" HorizontalOptions="Start" VerticalOptions="Start" HorizontalTextAlignment="Start" FontSize="14" FontAttributes="Bold"></Label>
-                                <!--Image Grid.Column="0" Grid.Row="1" Margin="0" Source="btn1test.png" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}"></-->
+                                <Label Text="{lang:Translation AutoRoutes_MakeYourPhotoroute}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Margin="10,5,0,5" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}" HorizontalOptions="Start" VerticalOptions="Start" HorizontalTextAlignment="Start" FontSize="14" FontAttributes="Bold"></Label>
                                 <Frame Grid.Column="0" Grid.Row="1" Padding="0" Margin="10,0,7,10" BackgroundColor="#E0F7FA" x:Name="frameToday" HasShadow="True" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsVisiblePeriodChart, Converter={StaticResource inverter}}">
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}" CommandParameter="{StaticResource Days0}"></TapGestureRecognizer>
                                     </Frame.GestureRecognizers>
                                     <StackLayout HorizontalOptions="Fill" VerticalOptions="FillAndExpand">
-                                        <Label Text="Сегодня" FontSize="14" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Fill" TextColor="Black"></Label>
+                                        <Label Text="{lang:Translation AutoRoutes_MakeToday}" FontSize="14" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Fill" TextColor="Black"></Label>
                                         <Label Text="{Binding CountImagesForToday}" FontSize="30" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="End" VerticalTextAlignment="End" HorizontalOptions="End" VerticalOptions="Fill" TextColor="Blue"></Label>
                                     </StackLayout>
                                 </Frame>
@@ -71,7 +71,7 @@
                                         <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}" CommandParameter="{StaticResource Days1}"></TapGestureRecognizer>
                                     </Frame.GestureRecognizers>
                                     <StackLayout>
-                                        <Label Text="Вчера" FontSize="14" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Black"></Label>
+                                        <Label Text="{lang:Translation AutoRoutes_MakeYersterday}" FontSize="14" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Black"></Label>
                                         <Label Text="{Binding CountImagesFor1Day}" FontSize="30" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="End" VerticalTextAlignment="End" HorizontalOptions="End" VerticalOptions="Fill" TextColor="Blue"></Label>
                                     </StackLayout>
                                 </Frame>
@@ -80,7 +80,7 @@
                                         <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}" CommandParameter="{StaticResource Days7}"></TapGestureRecognizer>
                                     </Frame.GestureRecognizers>
                                     <StackLayout>
-                                        <Label Text="Неделя" FontSize="14" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Black"></Label>
+                                        <Label Text="{lang:Translation AutoRoutes_MakeWeek}" FontSize="14" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Black"></Label>
                                         <Label Text="{Binding CountImagesFor7Day}" FontSize="30" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="End" VerticalTextAlignment="End" HorizontalOptions="End" VerticalOptions="Start" TextColor="Blue"></Label>
                                     </StackLayout>
                                 </Frame>
@@ -89,30 +89,10 @@
                                         <TapGestureRecognizer Command="{Binding ShowPeriodChartCommand}"></TapGestureRecognizer>
                                     </Frame.GestureRecognizers>
                                     <StackLayout>
-                                        <Label Text="Все дни" FontSize="14" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Black"></Label>
+                                        <Label Text="{lang:Translation AutoRoutes_MakePeriod}" FontSize="14" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Black"></Label>
                                         <Label Text="{Binding CountImagesForAllDays}" FontSize="30" FontAttributes="Bold" Margin="5" HorizontalTextAlignment="End" VerticalTextAlignment="End" HorizontalOptions="End" VerticalOptions="Start" TextColor="Blue"></Label>
                                     </StackLayout>
                                 </Frame>
-                                <!--StackLayout Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Margin="5" IsVisible="{Binding IsVisiblePeriodChart}" HorizontalOptions="FillAndExpand" Orientation="Horizontal" VerticalOptions="FillAndExpand">                                   
-                                    <Frame Padding="0" HorizontalOptions="Start" VerticalOptions="CenterAndExpand" BackgroundColor="LightBlue">
-                                        <Label Text="Август" WidthRequest="100" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"></Label>
-                                    </Frame>
-                                    <StackLayout BackgroundColor="Red" WidthRequest="100"></StackLayout>
-                                    <Frame Padding="0" HorizontalOptions="Start" VerticalOptions="CenterAndExpand" BackgroundColor="LightSkyBlue">
-                                        <Label Text="Сентябрь" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"></Label>
-                                    </Frame>
-                                    <Frame Padding="0" HorizontalOptions="Start" VerticalOptions="CenterAndExpand" BackgroundColor="LightBlue">
-                                        <Label Text="Октябрь" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"></Label>
-                                    </Frame>
-                                    <ImageButton Source="baseline_clear_black_48" WidthRequest="40" HeightRequest="40" Command="{Binding ShowMinimalPeriodCommand}" VerticalOptions="CenterAndExpand" HorizontalOptions="End" BackgroundColor="White"></ImageButton>
-                                </-->
-                                <!--Frame Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" IsVisible="{Binding IsVisiblePeriodChart}" HasShadow="True" Padding="5" CornerRadius="5" Margin="5" IsClippedToBounds="True" HorizontalOptions="FillAndExpand" BackgroundColor="LightSkyBlue">
-                                    <xForms:SfDateTimeRangeNavigator HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                                                                     XBindingPath="XValue" YBindingPath="YValue" 
-                                                                     Minimum="{Binding MinRangeDate}" Maximum="{Binding MaxRangeDate}"
-                                                                     ItemsSource="{Binding ImagesRangeData}" RangeChanged="SfDateTimeRangeNavigator_OnRangeChanged">
-                                     </xForms:SfDateTimeRangeNavigator>
-                                </-->
                                 <StackLayout Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="0" BackgroundColor="#E3F2FD" IsVisible="{Binding IsVisiblePeriodChart}" HorizontalOptions="Fill">
                                     <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal" Margin="5,5,5,0">
                                         <Frame Padding="0" HasShadow="True" HorizontalOptions="Start" VerticalOptions="EndAndExpand" BackgroundColor="LightBlue">
@@ -140,14 +120,14 @@
                                                                      ItemsSource="{Binding ImagesRangeData}" RangeChanged="SfDateTimeRangeNavigator_OnRangeChanged">
                                      </xForms:SfDateTimeRangeNavigator>
                                     <StackLayout Orientation="Horizontal" Margin="10,5,5,5" IsVisible="{Binding IsVisiblePeriodChart}" HorizontalOptions="EndAndExpand">
-                                        <Label Text="Выбрано:" FontSize="15" FontAttributes="None" HorizontalOptions="Start" VerticalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"></Label>
+                                        <Label Text="{lang:Translation AutoRoutes_LabelSelected}" FontSize="15" FontAttributes="None" HorizontalOptions="Start" VerticalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"></Label>
                                         <Label Text="{Binding SelectedPeriodText}" FontSize="15" FontAttributes="Bold" HorizontalOptions="Start" VerticalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"></Label>
                                         <Frame BackgroundColor="LightSkyBlue" Padding="5" Margin="5" HasShadow="True">
                                             <Frame.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding GenerateNewRouteCommand}"></TapGestureRecognizer>
                                             </Frame.GestureRecognizers>
                                             <StackLayout Orientation="Horizontal">
-                                                <Label Text="Просмотр" FontSize="14" LineBreakMode="NoWrap" WidthRequest="100" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
+                                                <Label Text="{lang:Translation AutoRoutes_ViewRoute}" FontSize="14" LineBreakMode="NoWrap" WidthRequest="100" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
                                                 <Image Source="baseline_done_black_48" WidthRequest="30" HeightRequest="30" HorizontalOptions="End" BackgroundColor="LightSkyBlue"></Image>
                                             </StackLayout>
                                         </Frame>
@@ -164,7 +144,7 @@
                                 <Label Margin="10,0,0,0">
                                     <Label.FormattedText>
                                         <FormattedString>           
-                                            <Span Text="Точек в маршруте: " FontSize="18" FontAttributes="None"></Span>
+                                            <Span Text="{lang:Translation AutoRoutes_LabelPointsInRoute}" FontSize="18" FontAttributes="None"></Span>
                                             <Span Text="{Binding PointCount}" FontSize="18" FontAttributes="Bold"></Span>
                                         </FormattedString>
                                     </Label.FormattedText>
@@ -172,13 +152,13 @@
                                 <Label Margin="10,0,0,0">
                                     <Label.FormattedText>
                                         <FormattedString>           
-                                            <Span Text="Фотографий: " FontSize="18" FontAttributes="None"></Span>
+                                            <Span Text="{lang:Translation AutoRoutes_LabelImages}" FontSize="18" FontAttributes="None"></Span>
                                             <Span Text="{Binding ImageCount}" FontSize="18" FontAttributes="Bold"></Span>
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
                                 <StackLayout Orientation="Horizontal" HorizontalOptions="End">
-                                    <Label Text="Сохранить маршрут" VerticalOptions="Center" TextColor="Blue" FontSize="18"></Label>
+                                    <Label Text="{lang:Translation AutoRoutes_SaveRoute}" VerticalOptions="Center" TextColor="Blue" FontSize="18"></Label>
                                     <ffimageloading:CachedImage HeightRequest="60" WidthRequest="60" VerticalOptions="Center" HorizontalOptions="End" DownsampleToViewSize="True" Source="additem2.png" Aspect="Fill" Margin="10">
                                         <ffimageloading:CachedImage.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding SaveRouteCommand}"></TapGestureRecognizer>
@@ -283,14 +263,18 @@
             </listView:SfListView>
             <AbsoluteLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="0.9" BackgroundColor="White" IsVisible="{Binding IsShowModalDialog}">
                 <Frame AbsoluteLayout.LayoutBounds=".5,.4,.8,.65" Padding="0" AbsoluteLayout.LayoutFlags="All" BackgroundColor="LightGray" BorderColor="Black" CornerRadius="10" IsVisible="{Binding IsShowWarningNeedIndexing}">
-                    <StackLayout VerticalOptions="FillAndExpand" Orientation="Vertical" HorizontalOptions="Center"  >
+                    <StackLayout VerticalOptions="FillAndExpand" Orientation="Vertical" HorizontalOptions="Center">
                         <Label TextColor="Black" FontSize="12" Margin="5" HorizontalTextAlignment="Center">
                             <Label.FormattedText>
                                 <FormattedString>           
-                                    <Span Text="Это бета-версия автоматического построителя маршрутов&#10;&#10;" FontSize="15" FontAttributes="Bold"></Span>
-                                    <Span Text="Маршруты строятся по фотографиям в вашей галерее и записанных в них геопозиций.&#10;" FontSize="12" FontAttributes="None"></Span>
-                                    <Span Text="GoSh проиндексирует фото за выбранный вами период и предложит вам маршрут, который вы сможете самостоятельно откорректировать.&#10;" FontSize="12" FontAttributes="None"></Span>
-                                    <Span Text="Если у вас есть замечания или предложения, пишите нам в канал Telegram:&#10;&#10;" FontSize="12" FontAttributes="None"></Span>
+                                    <Span Text="{lang:Translation AutoRoutes_Welcome}" FontSize="15" FontAttributes="Bold"></Span>
+                                    <Span Text="&#10;&#10;"></Span>
+                                    <Span Text="{lang:Translation AutoRoutes_WelcomeLine2}" FontSize="12" FontAttributes="None"></Span>
+                                    <Span Text="&#10;"></Span>
+                                    <Span Text="{lang:Translation AutoRoutes_WelcomeLine3}" FontSize="12" FontAttributes="None"></Span>
+                                    <Span Text="&#10;"></Span>
+                                    <Span Text="{lang:Translation AutoRoutes_WelcomeLine4}" FontSize="12" FontAttributes="None"></Span>
+                                    <Span Text="&#10;&#10;"></Span>
                                     <Span Text="https://t.me/goshapp" TextDecorations="Underline" TextColor="Red" FontSize="14" FontAttributes="Bold">
                                         <Span.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding TapLinkCommand}" CommandParameter="https://t.me/goshapp"></TapGestureRecognizer>
@@ -299,7 +283,7 @@
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
-                        <Button Text="Индексировать" Command="{Binding StartIndexGalleryCommand}" HorizontalOptions="Center" />
+                        <Button Text="{lang:Translation AutoRoutes_Index}" Command="{Binding StartIndexGalleryCommand}" HorizontalOptions="Center" />
                     </StackLayout>
                 </Frame>
                 <Frame AbsoluteLayout.LayoutBounds=".5,.5,.6,.4" AbsoluteLayout.LayoutFlags="All" Padding="0" BackgroundColor="LightGray" BorderColor="Black" CornerRadius="10" IsVisible="{Binding IsShowWarningMakeRoute}">
@@ -307,10 +291,13 @@
                         <Label TextColor="Black" FontSize="12" Margin="5" HorizontalTextAlignment="Center">
                             <Label.FormattedText>
                                 <FormattedString>           
-                                    <Span Text="Вы создаете новый маршрут&#10;&#10;" FontSize="15" FontAttributes="Bold"></Span>
-                                    <Span Text="Он будет составлен из выбранных вами точек и фотографий и будет&#10;" FontSize="12" FontAttributes="None"></Span>
-                                    <Span Text="доступен вам для дальнейшего редактирования&#10;" FontSize="12" FontAttributes="None"></Span>
-                                    <Span Text="на странице 'Личные'" FontSize="12" FontAttributes="None"></Span>
+                                    <Span Text="{lang:Translation AutoRoutes_NewRoute}" FontSize="15" FontAttributes="Bold"></Span>
+                                    <Span Text="&#10;&#10;"></Span>
+                                    <Span Text="{lang:Translation AutoRoutes_NewRouteLine2}" FontSize="12" FontAttributes="None"></Span>
+                                    <Span Text="&#10;&#10;"></Span>
+                                    <Span Text="{lang:Translation AutoRoutes_NewRouteLine3}" FontSize="12" FontAttributes="None"></Span>
+                                    <Span Text="&#10;"></Span>
+                                    <Span Text="{lang:Translation AutoRoutes_NewRouteLine4}" FontSize="12" FontAttributes="None"></Span>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
@@ -322,9 +309,11 @@
                         <Label TextColor="Black" FontSize="12" Margin="5" HorizontalTextAlignment="Center">
                             <Label.FormattedText>
                                 <FormattedString>           
-                                    <Span Text="Для создания маршрута вам необходимо авторизоваться&#10;&#10;" FontSize="15" FontAttributes="Bold"></Span>
-                                    <Span Text="Авторизация позволит вам создавать маршруты и делиться ими.&#10;&#10;" FontSize="12" FontAttributes="None"></Span>
-                                    <Span Text="Бесплатно&#10;" FontSize="16" FontAttributes="Bold"></Span>
+                                    <Span Text="{lang:Translation AutoRoutes_NeedAuth}" FontSize="15" FontAttributes="Bold"></Span>
+                                    <Span Text="&#10;&#10;"></Span>
+                                    <Span Text="{lang:Translation AutoRoutes_NeedAuthLine2}" FontSize="12" FontAttributes="None"></Span>
+                                    <Span Text="&#10;"></Span>
+                                    <Span Text="{lang:Translation AutoRoutes_NeedAuthLine3}" FontSize="16" FontAttributes="Bold"></Span>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
@@ -346,17 +335,10 @@
                                             WidthRequest="100"
                                             HeightRequest="100"                                        
                                             />
-                        <Label Text="Обработка фотографий..." TextColor="Black" FontSize="12" Margin="10" VerticalOptions="CenterAndExpand" HorizontalOptions="Center" HorizontalTextAlignment="Center"></Label>
+                        <Label Text="{lang:Translation AutoRoutes_Processing}" TextColor="Black" FontSize="12" Margin="10" VerticalOptions="CenterAndExpand" HorizontalOptions="Center" HorizontalTextAlignment="Center"></Label>
                     </StackLayout>
                 </Frame>
             </AbsoluteLayout>
-            <!--AbsoluteLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="0.9" BackgroundColor="White" IsVisible="{Binding IsPreviewRouteMade, Converter={StaticResource inverter}}">
-                <Frame AbsoluteLayout.LayoutBounds=".5,.5,.6,.3" AbsoluteLayout.LayoutFlags="All" BackgroundColor="LightGray" BorderColor="Black" CornerRadius="10">
-                    <StackLayout VerticalOptions="FillAndExpand" Orientation="Vertical" HorizontalOptions="Center" >
-                        <Label Text="Выберите период..." TextColor="Black" FontSize="14" Margin="15" VerticalOptions="CenterAndExpand" HorizontalOptions="Center" HorizontalTextAlignment="Center"></Label>
-                    </StackLayout>
-                </Frame>
-            </-->
         </Grid>
     </ContentPage.Content>
 </ContentPage>
