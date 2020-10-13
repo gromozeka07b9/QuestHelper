@@ -525,4 +525,91 @@ Las coordenadas se usan solo al crear sus waypoints.</value>
   <data name="Permission_Warning" xml:space="preserve">
     <value>Puede habilitar el permiso de determinación de posición a través del menú de configuración del sistema</value>
   </data>
+  <data name="AutoRoutes_WarningMakeRouteWillHugeTime" xml:space="preserve">
+    <value>La creación del álbum puede llevar mucho tiempo. ¿Continuar?</value>
+  </data>
+  <data name="AutoRoutes_WarningRouteNotSavedYet" xml:space="preserve">
+    <value>Álbum de fotos aún no guardado</value>
+  </data>
+  <data name="AutoRoutes_WarningSelectedManyImages" xml:space="preserve">
+    <value>Gran cantidad de fotos seleccionadas</value>
+  </data>
+  <data name="CommonMsg_ContinueWithoutSave" xml:space="preserve">
+    <value>¿Continuar sin guardar?</value>
+  </data>
+  <data name="AutoRoutes_WelcomeLine4" xml:space="preserve">
+    <value>Si tiene algún comentario o sugerencia, escríbanos en el canal de Telegram:</value>
+  </data>
+  <data name="AutoRoutes_WelcomeLine3" xml:space="preserve">
+    <value>Asegúrese de que la aplicación de su cámara tenga habilitado el guardado de ubicación (geolocalización) y que se use la memoria principal para las fotos.</value>
+  </data>
+  <data name="AutoRoutes_WelcomeLine2" xml:space="preserve">
+    <value>GoSh seleccionará una foto para el período especificado y le ofrecerá una ruta.</value>
+  </data>
+  <data name="AutoRoutes_Welcome" xml:space="preserve">
+    <value>¡Bienvenido a la versión de prueba de Photo Route Builder!</value>
+  </data>
+  <data name="AutoRoutes_ViewRoute" xml:space="preserve">
+    <value>Ver</value>
+  </data>
+  <data name="AutoRoutes_SaveRoute" xml:space="preserve">
+    <value>Guardar ruta</value>
+  </data>
+  <data name="AutoRoutes_RouteName" xml:space="preserve">
+    <value>Ruta para el período:</value>
+  </data>
+  <data name="AutoRoutes_RouteMade" xml:space="preserve">
+    <value>Ruta creada</value>
+  </data>
+  <data name="AutoRoutes_Processing" xml:space="preserve">
+    <value>Procesamiento de fotografías ...</value>
+  </data>
+  <data name="AutoRoutes_NewRouteLine4" xml:space="preserve">
+    <value>en la página 'Personal'</value>
+  </data>
+  <data name="AutoRoutes_NewRouteLine3" xml:space="preserve">
+    <value>a su disposición para su posterior edición</value>
+  </data>
+  <data name="AutoRoutes_NewRouteLine2" xml:space="preserve">
+    <value>Estará compuesto por los puntos y fotografías que hayas seleccionado y</value>
+  </data>
+  <data name="AutoRoutes_NewRoute" xml:space="preserve">
+    <value>Estás creando una nueva ruta</value>
+  </data>
+  <data name="AutoRoutes_NeedAuthLine3" xml:space="preserve">
+    <value>Es gratis</value>
+  </data>
+  <data name="AutoRoutes_NeedAuthLine2" xml:space="preserve">
+    <value>La autorización le permitirá crear y compartir rutas.</value>
+  </data>
+  <data name="AutoRoutes_NeedAuth" xml:space="preserve">
+    <value>Para crear una ruta es necesario iniciar sesión</value>
+  </data>
+  <data name="AutoRoutes_MakeYourPhotoroute" xml:space="preserve">
+    <value>Crea tu ruta fotográfica</value>
+  </data>
+  <data name="AutoRoutes_MakeYersterday" xml:space="preserve">
+    <value>Ayer</value>
+  </data>
+  <data name="AutoRoutes_MakeWeek" xml:space="preserve">
+    <value>Una semana</value>
+  </data>
+  <data name="AutoRoutes_MakeToday" xml:space="preserve">
+    <value>Hoy</value>
+  </data>
+  <data name="AutoRoutes_MakePeriod" xml:space="preserve">
+    <value>Todos los días</value>
+  </data>
+  <data name="AutoRoutes_LabelSelected" xml:space="preserve">
+    <value>Seleccionado:</value>
+  </data>
+  <data name="AutoRoutes_LabelPointsInRoute" xml:space="preserve">
+    <value>Puntos en la ruta:</value>
+  </data>
+  <data name="AutoRoutes_LabelImages" xml:space="preserve">
+    <value>Fotos:</value>
+  </data>
+  <data name="AutoRoutes_Index" xml:space="preserve">
+    <value>Index</value>
+  </data>
 </root>

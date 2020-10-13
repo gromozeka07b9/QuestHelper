@@ -526,13 +526,13 @@ Coordinates are used only when creating your waypoints.</value>
     <value>You can enable position determination permission through the system settings menu</value>
   </data>
   <data name="AutoRoutes_NewRoute" xml:space="preserve">
-    <value>You are create a new route&amp;#10;&amp;#10;</value>
+    <value>You are create a new route</value>
   </data>
   <data name="AutoRoutes_NewRouteLine2" xml:space="preserve">
-    <value>It will make from selected points and images and will&amp;#10;</value>
+    <value>It will make from selected points and images and will</value>
   </data>
   <data name="AutoRoutes_NewRouteLine3" xml:space="preserve">
-    <value>able to edit&amp;#10;</value>
+    <value>able to edit</value>
   </data>
   <data name="AutoRoutes_NewRouteLine4" xml:space="preserve">
     <value>on page 'Private'</value>
@@ -541,57 +541,75 @@ Coordinates are used only when creating your waypoints.</value>
     <value>For make route you need login&amp;#10;&amp;#10;</value>
   </data>
   <data name="AutoRoutes_NeedAuthLine2" xml:space="preserve">
-    <value>It will able to make routes and share it.&amp;#10;&amp;#10;</value>
+    <value>It will able to make routes and share it.</value>
   </data>
   <data name="AutoRoutes_NeedAuthLine3" xml:space="preserve">
-    <value>Free&amp;#10;</value>
+    <value>Free</value>
   </data>
   <data name="AutoRoutes_Processing" xml:space="preserve">
     <value>Processing images...</value>
   </data>
   <data name="AutoRoutes_Index" xml:space="preserve">
-    <value>Index</value>
+    <value>Indexing</value>
   </data>
   <data name="AutoRoutes_Welcome" xml:space="preserve">
     <value>Welcome to test version image route maker!</value>
   </data>
   <data name="AutoRoutes_WelcomeLine2" xml:space="preserve">
-    <value />
+    <value>GoSh will select a photo for the specified period and offer you a route.</value>
   </data>
   <data name="AutoRoutes_WelcomeLine3" xml:space="preserve">
-    <value />
+    <value>Please make sure your camera app has location saving (geolocation) enabled and main memory used for photos.</value>
   </data>
   <data name="AutoRoutes_WelcomeLine4" xml:space="preserve">
-    <value />
+    <value>If you have any comments or suggestions, write to us in the Telegram channel:</value>
   </data>
   <data name="AutoRoutes_SaveRoute" xml:space="preserve">
-    <value />
+    <value>Save route</value>
   </data>
   <data name="AutoRoutes_ViewRoute" xml:space="preserve">
     <value>Preview</value>
   </data>
   <data name="AutoRoutes_MakeYourPhotoroute" xml:space="preserve">
-    <value />
+    <value>Create your photoroute </value>
   </data>
   <data name="AutoRoutes_MakePeriod" xml:space="preserve">
-    <value />
+    <value>All days</value>
   </data>
   <data name="AutoRoutes_MakeWeek" xml:space="preserve">
-    <value />
+    <value>Week</value>
   </data>
   <data name="AutoRoutes_MakeYersterday" xml:space="preserve">
-    <value />
+    <value>Yesterday</value>
   </data>
   <data name="AutoRoutes_MakeToday" xml:space="preserve">
-    <value />
+    <value>Today</value>
   </data>
   <data name="AutoRoutes_LabelSelected" xml:space="preserve">
-    <value />
+    <value>Selected:</value>
   </data>
   <data name="AutoRoutes_LabelPointsInRoute" xml:space="preserve">
-    <value />
+    <value>Points:</value>
   </data>
   <data name="AutoRoutes_LabelImages" xml:space="preserve">
-    <value />
+    <value>Images:</value>
+  </data>
+  <data name="AutoRoutes_RouteMade" xml:space="preserve">
+    <value>Route created</value>
+  </data>
+  <data name="AutoRoutes_WarningRouteNotSavedYet" xml:space="preserve">
+    <value>Photo album not saved yet</value>
+  </data>
+  <data name="AutoRoutes_WarningSelectedManyImages" xml:space="preserve">
+    <value>Large number of photos selected</value>
+  </data>
+  <data name="AutoRoutes_WarningMakeRouteWillHugeTime" xml:space="preserve">
+    <value>Album creation can take a long time. Proceed?</value>
+  </data>
+  <data name="CommonMsg_ContinueWithoutSave" xml:space="preserve">
+    <value>Continue without saving?</value>
+  </data>
+  <data name="AutoRoutes_RouteName" xml:space="preserve">
+    <value>Route for period:</value>
   </data>
 </root>

@@ -986,5 +986,41 @@ namespace QuestHelper.Resources {
                 return ResourceManager.GetString("AutoRoutes_LabelImages", resourceCulture);
             }
         }
+        
+        public static string AutoRoutes_RouteMade {
+            get {
+                return ResourceManager.GetString("AutoRoutes_RouteMade", resourceCulture);
+            }
+        }
+        
+        public static string AutoRoutes_WarningRouteNotSavedYet {
+            get {
+                return ResourceManager.GetString("AutoRoutes_WarningRouteNotSavedYet", resourceCulture);
+            }
+        }
+        
+        public static string AutoRoutes_WarningSelectedManyImages {
+            get {
+                return ResourceManager.GetString("AutoRoutes_WarningSelectedManyImages", resourceCulture);
+            }
+        }
+        
+        public static string AutoRoutes_WarningMakeRouteWillHugeTime {
+            get {
+                return ResourceManager.GetString("AutoRoutes_WarningMakeRouteWillHugeTime", resourceCulture);
+            }
+        }
+        
+        public static string CommonMsg_ContinueWithoutSave {
+            get {
+                return ResourceManager.GetString("CommonMsg_ContinueWithoutSave", resourceCulture);
+            }
+        }
+        
+        public static string AutoRoutes_RouteName {
+            get {
+                return ResourceManager.GetString("AutoRoutes_RouteName", resourceCulture);
+            }
+        }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using QuestHelper.Model;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using Acr.UserDialogs;
+using Microsoft.AppCenter.Analytics;
 using Xamarin.Forms;
 
 namespace QuestHelper.Managers
@@ -40,7 +42,7 @@ namespace QuestHelper.Managers
             }
 
             IEnumerable<string> listFiles = getListFiles(pathToDCIMDirectory);
-            
+            int countFiles = 0;
             foreach(string filename in listFiles)
             {
                 var fileInfo = new FileInfo(filename);
@@ -48,8 +50,11 @@ namespace QuestHelper.Managers
                 {
                     _cacheManager.Save(new ViewLocalFile() {Id = Guid.NewGuid().ToString(), SourceFileName = fileInfo.Name, SourcePath = fileInfo.DirectoryName, FileNameDate = fileInfo.CreationTime });
                 }
+
+                countFiles++;
             }
             var delay = DateTime.Now - startDate;
+            Analytics.TrackEvent("ImagesCacheDb:Update filenames", new Dictionary<string, string> {{"delay", delay.ToString()}, {"pathToDCIMDirectory", pathToDCIMDirectory}, {"countFiles", countFiles.ToString()} });
         }
 
         private IEnumerable<string> getListFiles(string pathToDCIMDirectory)
@@ -87,6 +92,12 @@ namespace QuestHelper.Managers
             }
 
             var delay = DateTime.Now - startDate;
+            Analytics.TrackEvent("ImagesCacheDb:Update metadata", new Dictionary<string, string> {
+                {"delay", delay.ToString()}, 
+                {"dateBegin", _dateBegin.ToString(DateTimeFormatInfo.InvariantInfo)}, 
+                {"dateEnd", _dateEnd.ToString(DateTimeFormatInfo.InvariantInfo)},
+                {"countFiles", files.Count().ToString()} });
+
         }
 
         internal int GetCountImagesForDaysAgo(int countDaysAgo)

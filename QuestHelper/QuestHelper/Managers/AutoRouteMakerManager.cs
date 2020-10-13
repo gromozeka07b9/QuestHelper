@@ -2,6 +2,7 @@
 using System.Linq;
 using QuestHelper.LocalDB.Model;
 using QuestHelper.Model;
+using QuestHelper.Resources;
 
 namespace QuestHelper.Managers
 {
@@ -23,7 +24,6 @@ namespace QuestHelper.Managers
                 var vroute = new ViewRoute(string.Empty);
                 vroute.CreatorId = creatorId;
                 vroute.CreateDate = DateTime.Now;
-                vroute.Description = "Автоматически созданный маршрут";
                 vroute.Name = autoRoute.Name;
                 if (vroute.Save())
                 {

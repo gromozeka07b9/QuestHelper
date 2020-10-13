@@ -594,4 +594,22 @@
   <data name="AutoRoutes_LabelImages" xml:space="preserve">
     <value>Фотографий: </value>
   </data>
+  <data name="AutoRoutes_RouteMade" xml:space="preserve">
+    <value>Маршрут создан</value>
+  </data>
+  <data name="AutoRoutes_WarningRouteNotSavedYet" xml:space="preserve">
+    <value>Фотоальбом еще не сохранен</value>
+  </data>
+  <data name="AutoRoutes_WarningSelectedManyImages" xml:space="preserve">
+    <value>Выбрано большое количество фотографий</value>
+  </data>
+  <data name="AutoRoutes_WarningMakeRouteWillHugeTime" xml:space="preserve">
+    <value>Создание альбома может занять продолжительное время. Продолжить?</value>
+  </data>
+  <data name="CommonMsg_ContinueWithoutSave" xml:space="preserve">
+    <value>Продолжить без сохранения?</value>
+  </data>
+  <data name="AutoRoutes_RouteName" xml:space="preserve">
+    <value>Маршрут за период:</value>
+  </data>
 </root>

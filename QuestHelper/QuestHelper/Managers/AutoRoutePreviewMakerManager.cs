@@ -3,6 +3,7 @@ using QuestHelper.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using QuestHelper.Resources;
 
 namespace QuestHelper.Managers
 {
@@ -22,7 +23,8 @@ namespace QuestHelper.Managers
             var localCacheFiles =  _cacheManager.GetImagesInfo(periodStart, periodEnd);
             if (localCacheFiles.Count > 0)
             {
-                route.Name = $"Маршрут за период с { periodStart.DateTime.ToShortDateString() } по { periodEnd.DateTime.ToShortDateString() }";
+                
+                route.Name = $"{CommonResource.AutoRoutes_RouteName} { periodStart.DateTime.ToShortDateString() } - { periodEnd.DateTime.ToShortDateString() }";
                 route.BuildOld(localCacheFiles); 
             }
             return route;
