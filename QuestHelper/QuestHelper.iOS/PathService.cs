@@ -40,5 +40,14 @@ namespace QuestHelper.iOS
                 return absPath;
             }
         }
+
+        string IPathService.PublicDirectoryPictures => throw new NotImplementedException();
+
+        string IPathService.PublicDirectoryDcim => throw new NotImplementedException();
+
+        string IPathService.GetLastUsedDCIMPath()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

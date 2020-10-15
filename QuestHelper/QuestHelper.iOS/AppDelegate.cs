@@ -4,7 +4,7 @@ using System.Linq;
 using Acr.UserDialogs;
 using Foundation;
 using ImageCircle.Forms.Plugin.iOS;
-using Lottie.Forms.iOS.Renderers;
+//using Lottie.Forms.iOS.Renderers;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
@@ -41,7 +41,7 @@ namespace QuestHelper.iOS
             DeviceSize.FullScreenHeight = (int)UIScreen.MainScreen.Bounds.Height;
 
             LoadApplication(new App());
-            AnimationViewRenderer.Init();
+            //AnimationViewRenderer.Init();
             Xamarin.FormsMaps.Init();
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(); 
             ImageCircleRenderer.Init();
