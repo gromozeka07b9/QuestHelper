@@ -201,6 +201,26 @@
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_album.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_download.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_feed.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_map.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_personal.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_album.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_download.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_feed.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_map.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_personal.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_album.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_download.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_feed.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_map.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_personal.png" />
+    <AndroidResource Include="Resources\drawable\ic_album.png" />
+    <AndroidResource Include="Resources\drawable\ic_download.png" />
+    <AndroidResource Include="Resources\drawable\ic_feed.png" />
+    <AndroidResource Include="Resources\drawable\ic_map.png" />
+    <AndroidResource Include="Resources\drawable\ic_personal.png" />
     <AndroidResource Include="Resources\layout\Toolbar.axml" />
     <AndroidResource Include="Resources\values\styles.xml">
       <SubType>Designer</SubType>
@@ -448,17 +468,8 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\cloud_upload.png" />
     <AndroidResource Include="Resources\drawable\emptylist.png" />
     <AndroidResource Include="Resources\drawable\emptysearch.png" />
-    <AndroidResource Include="Resources\drawable\person2.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\person2.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\person2.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\person2.png" />
-    <AndroidResource Include="Resources\drawable\feed.png" />
-    <AndroidResource Include="Resources\drawable\loaded.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\feed.png" />
     <AndroidResource Include="Resources\drawable-hdpi\loaded.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\feed.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\loaded.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\feed.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\loaded.png" />
   </ItemGroup>
   <ItemGroup>
@@ -712,18 +723,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\baseline_beenhere_black_48.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\map_menu.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\map_menu.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\map_menu.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\map_menu.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\markerback7.png" />

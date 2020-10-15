@@ -18,8 +18,8 @@
             </x:Arguments>
             <NavigationPage.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="iOS" Value="feed.png"/>
-                    <On Platform="Android" Value="feed.png"/>
+                    <On Platform="iOS" Value="ic_feed.png"/>
+                    <On Platform="Android" Value="ic_feed.png"/>
                 </OnPlatform>
             </NavigationPage.Icon>
         </NavigationPage>
@@ -29,8 +29,8 @@
             </x:Arguments>
             <NavigationPage.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="iOS" Value="map_menu.png"/>
-                    <On Platform="Android" Value="map_menu.png"/>
+                    <On Platform="iOS" Value="ic_map.png"/>
+                    <On Platform="Android" Value="ic_map.png"/>
                 </OnPlatform>
             </NavigationPage.Icon>
         </NavigationPage>
@@ -41,8 +41,8 @@
             </x:Arguments>
             <NavigationPage.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="iOS" Value="photo.png"/>
-                    <On Platform="Android" Value="photo.png"/>
+                    <On Platform="iOS" Value="ic_album.png"/>
+                    <On Platform="Android" Value="ic_album.png"/>
                 </OnPlatform>
             </NavigationPage.Icon>
         </NavigationPage>
@@ -53,8 +53,8 @@
             </x:Arguments>
             <NavigationPage.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="iOS" Value="loaded.png"/>
-                    <On Platform="Android" Value="loaded.png"/>
+                    <On Platform="iOS" Value="ic_download.png"/>
+                    <On Platform="Android" Value="ic_download.png"/>
                 </OnPlatform>
             </NavigationPage.Icon>
         </NavigationPage>
@@ -64,8 +64,8 @@
             </x:Arguments>
             <NavigationPage.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="iOS" Value="person2.png"/>
-                    <On Platform="Android" Value="person2.png"/>
+                    <On Platform="iOS" Value="ic_personal.png"/>
+                    <On Platform="Android" Value="ic_personal.png"/>
                 </OnPlatform>
             </NavigationPage.Icon>
         </NavigationPage>
