@@ -1022,5 +1022,23 @@ namespace QuestHelper.Resources {
                 return ResourceManager.GetString("AutoRoutes_RouteName", resourceCulture);
             }
         }
+        
+        public static string ScreenGenerateAlbumName {
+            get {
+                return ResourceManager.GetString("ScreenGenerateAlbumName", resourceCulture);
+            }
+        }
+        
+        public static string CommonMsg_Refresh {
+            get {
+                return ResourceManager.GetString("CommonMsg_Refresh", resourceCulture);
+            }
+        }
+        
+        public static string MapOverview_RefreshForLoadingPoints {
+            get {
+                return ResourceManager.GetString("MapOverview_RefreshForLoadingPoints", resourceCulture);
+            }
+        }
     }
 }

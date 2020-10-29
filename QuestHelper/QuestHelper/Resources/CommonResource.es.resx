@@ -612,4 +612,13 @@ Las coordenadas se usan solo al crear sus waypoints.</value>
   <data name="AutoRoutes_Index" xml:space="preserve">
     <value>Index</value>
   </data>
+  <data name="ScreenGenerateAlbumName" xml:space="preserve">
+    <value>Álbum</value>
+  </data>
+  <data name="CommonMsg_Refresh" xml:space="preserve">
+    <value>Actualizar</value>
+  </data>
+  <data name="MapOverview_RefreshForLoadingPoints" xml:space="preserve">
+    <value>Presione "Actualizar" para cargar pines</value>
+  </data>
 </root>

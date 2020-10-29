@@ -591,4 +591,13 @@ Ihre Routen, speichern Sie Ihre Eindrücke!</value>
   <data name="AutoRoutes_Index" xml:space="preserve">
     <value>Índice</value>
   </data>
+  <data name="ScreenGenerateAlbumName" xml:space="preserve">
+    <value>Album</value>
+  </data>
+  <data name="CommonMsg_Refresh" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
+  <data name="MapOverview_RefreshForLoadingPoints" xml:space="preserve">
+    <value>Drücken Sie "Aktualisieren", um die Pins zu laden</value>
+  </data>
 </root>

@@ -612,4 +612,13 @@
   <data name="AutoRoutes_RouteName" xml:space="preserve">
     <value>Маршрут за период:</value>
   </data>
+  <data name="ScreenGenerateAlbumName" xml:space="preserve">
+    <value>Альбом</value>
+  </data>
+  <data name="CommonMsg_Refresh" xml:space="preserve">
+    <value>Обновить</value>
+  </data>
+  <data name="MapOverview_RefreshForLoadingPoints" xml:space="preserve">
+    <value>Нажмите "Обновить" для загрузки меток</value>
+  </data>
 </root>

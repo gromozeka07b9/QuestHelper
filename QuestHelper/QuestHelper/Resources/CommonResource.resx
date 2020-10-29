@@ -612,4 +612,13 @@ Coordinates are used only when creating your waypoints.</value>
   <data name="AutoRoutes_RouteName" xml:space="preserve">
     <value>Route for period:</value>
   </data>
+  <data name="ScreenGenerateAlbumName" xml:space="preserve">
+    <value>Album</value>
+  </data>
+  <data name="CommonMsg_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="MapOverview_RefreshForLoadingPoints" xml:space="preserve">
+    <value>Press "Refresh" to loading pins</value>
+  </data>
 </root>

@@ -93,23 +93,6 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <!--AbsoluteLayout Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="0.9" BackgroundColor="White" IsVisible="{Binding IsRefreshing}">
-                <Frame AbsoluteLayout.LayoutBounds=".5,.5,.6,.3" AbsoluteLayout.LayoutFlags="All" BackgroundColor="LightGray" BorderColor="Black" CornerRadius="10">
-                    <StackLayout VerticalOptions="FillAndExpand" Orientation="Vertical" HorizontalOptions="Center" IsVisible="{Binding IsRefreshing}" >
-                        <animationForms:AnimationView HorizontalOptions="Center" VerticalOptions="CenterAndExpand" Margin="0" 
-                                            Animation="{animationResource:AnimationResourceExtension hourglass}"
-                                            RepeatMode="Infinite"
-                                            AutoPlay="True"
-                                            IsEnabled="True"
-                                            IsAnimating="{Binding IsRefreshing}"                                                                      
-                                            IsVisible="True"
-                                            WidthRequest="100"
-                                            HeightRequest="100"                                        
-                                            />
-                        <Label Text="Обновление ленты..." TextColor="Black" FontSize="14" Margin="15" VerticalOptions="CenterAndExpand" HorizontalOptions="Center" HorizontalTextAlignment="Center"></Label>
-                    </StackLayout>
-                </Frame>
-            </-->
         </Grid>    
     </ContentPage.Content>
 </ContentPage>
