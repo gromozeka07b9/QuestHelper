@@ -343,7 +343,8 @@ namespace QuestHelper.ViewModel
 
         public async void StartDialog()
         {
-            Analytics.TrackEvent("AutoRoute:Dialog started", new Dictionary<string, string> { });
+            var modalInfoPage = Navigation.PushModalAsync(new MakeNewRouteAutoInfoPage());
+            /*Analytics.TrackEvent("AutoRoute:Dialog started", new Dictionary<string, string> { });
             MaxRangeDate = DateTime.Now;
 
             _currentUserId = await _tokenService.GetUserIdAsync();
@@ -354,7 +355,7 @@ namespace QuestHelper.ViewModel
             if(_selectedPreviewRoutePoint != null)
             {
                 _selectedPreviewRoutePoint.RaisedOnPropertyChanged("ImagesOnlyFirstThree");
-            }
+            }*/
             
 
         }
