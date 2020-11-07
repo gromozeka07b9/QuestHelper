@@ -9,24 +9,24 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="2*" />
-                <RowDefinition Height="2*" />
-                <RowDefinition Height="3*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="4*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="2*" />
             </Grid.RowDefinitions>
             <StackLayout Orientation="Horizontal" HorizontalOptions="Fill">
-                <Label HorizontalOptions="StartAndExpand" Margin="15">
+                <Label HorizontalOptions="StartAndExpand" VerticalOptions="Center" Margin="15,0,15,0">
                     <Label.FormattedText>
                         <FormattedString>           
-                            <Span Text="Любите" FontSize="29" FontAttributes="None" TextColor="White"></Span>
+                            <Span Text="Любите" FontSize="22" FontAttributes="None" TextColor="White"></Span>
                             <Span Text="&#10;"></Span>
-                            <Span Text="фотографировать?" FontSize="29" TextColor="White"></Span>
+                            <Span Text="фотографировать?" FontSize="22" TextColor="White"></Span>
                         </FormattedString>    
                     </Label.FormattedText>
                 </Label>
                 <StackLayout HorizontalOptions="FillAndExpand"></StackLayout>
-                <Frame WidthRequest="52" HeightRequest="52" HorizontalOptions="End" VerticalOptions="Start" Margin="15" Padding="0" CornerRadius="26" BackgroundColor="White">
+                <Frame WidthRequest="52" HeightRequest="52" HorizontalOptions="End" VerticalOptions="Center" Margin="15,0,15,0" Padding="0" CornerRadius="26" BackgroundColor="White">
                     <Image BackgroundColor="Wheat" Source="avatar1.png" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="Center" Margin="0">
                         <Image.Clip>
                             <EllipseGeometry Center="25,25" RadiusX="25" RadiusY="25"></EllipseGeometry>
@@ -35,22 +35,20 @@
                 </Frame>
 
             </StackLayout>
-            <Label Grid.Row="1" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" Margin="15">
+            <Label Grid.Row="1" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" Margin="15,0,15,0">
                 <Label.FormattedText>
                     <FormattedString>           
-                        <Span Text="Снимайте фотографии с локацией" FontSize="16" FontAttributes="None" TextColor="White"></Span>
+                        <Span Text="Снимайте фотографии с локацией" FontSize="12" FontAttributes="None" TextColor="White"></Span>
                         <Span Text="&#10;"></Span>
+                        <Span Text="и GoSh! автоматически построит маршрут," FontSize="12" FontAttributes="None" TextColor="White"></Span>
                         <Span Text="&#10;"></Span>
-                        <Span Text="и GoSh! автоматически построит маршрут," FontSize="16" FontAttributes="None" TextColor="White"></Span>
-                        <Span Text="&#10;"></Span>
-                        <Span Text="&#10;"></Span>
-                        <Span Text="которым вы сможете поделиться с друзьями!" FontSize="16" FontAttributes="None" TextColor="White"></Span>
+                        <Span Text="которым вы сможете поделиться с друзьями!" FontSize="12" FontAttributes="None" TextColor="White"></Span>
                     </FormattedString>    
                 </Label.FormattedText>
             </Label>
-            <Frame Grid.Row="2"  CornerRadius="10" Padding="0" Margin="15">
+            <Frame Grid.Row="2" Grid.RowSpan="3"  CornerRadius="0" Padding="0" Margin="0">
                 <StackLayout HorizontalOptions="Fill" VerticalOptions="Fill">
-                    <Image Source="land2.png" WidthRequest="400" HeightRequest="200" Aspect="Fill"  Margin="0">
+                    <Image Source="land2.png" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  Aspect="AspectFill"  Margin="0">
                     </Image>                    
                 </StackLayout>
             </Frame>

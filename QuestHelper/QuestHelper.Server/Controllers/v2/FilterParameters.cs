@@ -9,7 +9,7 @@ namespace QuestHelper.Server.Controllers.v2
 
         public FilterParameters(string jsonFilter)
         {
-            this._jsonFilter = JObject.Parse(jsonFilter);
+            this._jsonFilter = !string.IsNullOrEmpty(jsonFilter) ? JObject.Parse(jsonFilter) : new JObject();
         }
 
         internal bool isFilterPresent(string name)

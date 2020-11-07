@@ -66,7 +66,9 @@ namespace QuestHelper.ViewModel
         public ICommand SaveRouteCommand { get; private set; }
         public ICommand ChangeMonthPeriodCommand { get; private set; }
         public ICommand TapLinkCommand { get; private set; }
-        public ICommand CloseWarningCommand { get; private set; }        
+        public ICommand CloseWarningCommand { get; private set; }
+        public ICommand OpenSettingsCommand { get; private set; }
+        
 
         public bool IsBusy { get; set; }
 
@@ -83,7 +85,13 @@ namespace QuestHelper.ViewModel
             ChangeMonthPeriodCommand = new Command(changeMonthPeriodCommand);
             TapLinkCommand = new Command<string>(tapLinkCommand);
             CloseWarningCommand = new Command(closeWarningCommand);
+            OpenSettingsCommand = new Command(openSettingsCommand);
             TokenStoreService tokenService = new TokenStoreService();
+        }
+
+        private void openSettingsCommand(object obj)
+        {
+            var modalSettingsPageTask = Navigation.PushModalAsync(new SettingsPage());
         }
 
         private void closeWarningCommand(object obj)
@@ -343,8 +351,8 @@ namespace QuestHelper.ViewModel
 
         public async void StartDialog()
         {
-            var modalInfoPage = Navigation.PushModalAsync(new MakeNewRouteAutoInfoPage());
-            /*Analytics.TrackEvent("AutoRoute:Dialog started", new Dictionary<string, string> { });
+            //var modalInfoPage = Navigation.PushModalAsync(new MakeNewRouteAutoInfoPage());
+            Analytics.TrackEvent("AutoRoute:Dialog started", new Dictionary<string, string> { });
             MaxRangeDate = DateTime.Now;
 
             _currentUserId = await _tokenService.GetUserIdAsync();
@@ -355,7 +363,7 @@ namespace QuestHelper.ViewModel
             if(_selectedPreviewRoutePoint != null)
             {
                 _selectedPreviewRoutePoint.RaisedOnPropertyChanged("ImagesOnlyFirstThree");
-            }*/
+            }
             
 
         }
