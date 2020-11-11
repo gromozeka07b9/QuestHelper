@@ -29,19 +29,42 @@ namespace QuestHelper.Managers
             _cacheManager = new LocalFileCacheManager();
         }
 
+        internal string GetPathToCameraDirectory()
+        {
+            string pathToDCIMDirectory = DependencyService.Get<IPathService>().GetLastUsedDCIMPath();
+            if (GetListFiles(pathToDCIMDirectory).Any())
+            {
+                return pathToDCIMDirectory;
+            } else
+            {
+                pathToDCIMDirectory = DependencyService.Get<IPathService>().PublicDirectoryDcim + "/Camera";
+            }
+            return pathToDCIMDirectory;
+
+        }
+
         internal void UpdateFilenames()
         {
+            string pathToDCIMDirectory = DependencyService.Get<IPathService>().PublicDirectoryDcim + "/Camera";
             var startDate = DateTime.Now;
-            string pathToDCIMDirectory = DependencyService.Get<IPathService>().GetLastUsedDCIMPath();
+            ParameterManager parameterManager = new ParameterManager();
+            if(!parameterManager.Get("CameraDirectoryFullPath", out pathToDCIMDirectory))
+            {
+#if DEBUG                
+                UserDialogs.Instance.Toast("использован путь к фото по-умолчанию");
+#endif 
+            }
+
+            /*string pathToDCIMDirectory = DependencyService.Get<IPathService>().GetLastUsedDCIMPath();
             if (string.IsNullOrEmpty(pathToDCIMDirectory))
             {
                 pathToDCIMDirectory = DependencyService.Get<IPathService>().PublicDirectoryDcim + "/Camera";
 #if DEBUG                
                 UserDialogs.Instance.Toast("использован путь к фото по-умолчанию");
 #endif                
-            }
+            }*/
 
-            IEnumerable<string> listFiles = getListFiles(pathToDCIMDirectory);
+            IEnumerable<string> listFiles = GetListFiles(pathToDCIMDirectory);
             int countFiles = 0;
             foreach(string filename in listFiles)
             {
@@ -57,7 +80,7 @@ namespace QuestHelper.Managers
             Analytics.TrackEvent("ImagesCacheDb:Update filenames", new Dictionary<string, string> {{"delay", delay.ToString()}, {"pathToDCIMDirectory", pathToDCIMDirectory}, {"countFiles", countFiles.ToString()} });
         }
 
-        private IEnumerable<string> getListFiles(string pathToDCIMDirectory)
+        internal IEnumerable<string> GetListFiles(string pathToDCIMDirectory)
         {
             IEnumerable<string> listFiles = new List<string>();
             try
@@ -66,6 +89,7 @@ namespace QuestHelper.Managers
             }
             catch (Exception e)
             {
+                Analytics.TrackEvent("GetListFiles", new Dictionary<string, string> { { "path", pathToDCIMDirectory } , { "Error", e.Message } });
             }
             return listFiles;
         }

@@ -33,7 +33,8 @@
             </StackLayout>
             <StackLayout Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2">
                 <Label Text="В основной памяти найдено фотографий:" FontSize="14" VerticalOptions="Center" HorizontalOptions="Fill" HorizontalTextAlignment="Start"></Label>           
-                <Label Text="568" FontSize="14" VerticalOptions="Center" HorizontalOptions="Fill" HorizontalTextAlignment="End"></Label>           
+                <Label Text="{Binding PathToDCIM}" FontSize="14" VerticalOptions="Center" HorizontalOptions="Fill" HorizontalTextAlignment="End"></Label>
+                <Label Text="{Binding CountOfPhotoInDCIM}" FontSize="14" VerticalOptions="Center" HorizontalOptions="Fill" HorizontalTextAlignment="End"></Label>
             </StackLayout>
         </Grid>
     </ContentPage.Content>

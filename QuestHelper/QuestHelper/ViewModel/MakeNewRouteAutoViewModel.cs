@@ -242,6 +242,20 @@ namespace QuestHelper.ViewModel
             if(taskPermissionRead.HasFlag(Xamarin.Essentials.PermissionStatus.Granted))
             {
                 ImagesCacheDbManager imagesCache = new ImagesCacheDbManager(new ImageManager(), PeriodRouteBegin, PeriodRouteEnd);
+                string pathToDCIMDirectory = string.Empty;
+                ParameterManager parameterManager = new ParameterManager();
+                
+                if (!parameterManager.Get("CameraDirectoryFullPath", out pathToDCIMDirectory))
+                {
+                    pathToDCIMDirectory = imagesCache.GetPathToCameraDirectory();
+                    parameterManager.Set("CameraDirectoryFullPath", pathToDCIMDirectory);
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        UserDialogs.Instance.Alert("Путь к вашим фотографиям был определен автоматически. При необходимости, вы можете его поменять в настройках.", "Обнаружен первый запуск", "Ок");
+                    });
+                }
+
+                
                 await Task.Factory.StartNew(() =>
                 {
                     setPeriodByDepth(90);
