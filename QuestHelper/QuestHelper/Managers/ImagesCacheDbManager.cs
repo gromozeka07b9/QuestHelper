@@ -43,6 +43,11 @@ namespace QuestHelper.Managers
 
         }
 
+        internal string GetPublicDirectoryDcim()
+        {
+            return DependencyService.Get<IPathService>().PublicDirectoryDcim + "/Camera";
+        }
+
         internal void UpdateFilenames()
         {
             string pathToDCIMDirectory = DependencyService.Get<IPathService>().PublicDirectoryDcim + "/Camera";
