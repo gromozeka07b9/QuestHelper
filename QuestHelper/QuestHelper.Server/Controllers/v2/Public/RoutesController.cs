@@ -45,9 +45,22 @@ namespace QuestHelper.Server.Controllers.v2.Public
             {
                 using (var db = new ServerDbContext(_dbOptions))
                 {
-
-                    var sharedRoutes = db.RouteShare.Select(s => s.RouteId).ToList();
-                    var withoutFilter = db.Route.Where(r => !r.IsDeleted && r.IsPublished && sharedRoutes.Contains(r.RouteId));
+                    var withoutFilter = from route in db.Route
+                                         join share in db.RouteShare on route.RouteId equals share.RouteId
+                                         select new Route { RouteId = route.RouteId, 
+                                                            PublicReferenceHash = share.ReferenceHash,
+                                                            CreateDate = route.CreateDate,
+                                                            CreatorId = route.CreatorId,
+                                                            Description = route.Description,
+                                                            ImgFilename = route.ImgFilename,
+                                                            IsDeleted = route.IsDeleted,
+                                                            IsPublished = route.IsPublished,
+                                                            IsShared = route.IsShared,
+                                                            Name = route.Name,
+                                                            VersionsHash = route.VersionsHash,
+                                                            VersionsList = route.VersionsList,
+                                                            Version = route.Version
+                                         };
 
                     withoutFilter = filters.isFilterPresent("createDate") ? withoutFilter.Where(r => r.CreateDate.Equals(filters.GetDateTimeByName("createDate"))) : withoutFilter;
                     withoutFilter = filters.isFilterPresent("creatorId") ? withoutFilter.Where(r => r.CreatorId.Contains(filters.GetStringByName("creatorId"))) : withoutFilter;
