@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local1="clr-namespace:QuestHelper.View.Converters" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:resources="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
              mc:Ignorable="d"
              x:Class="QuestHelper.View.EditPoiPage" NavigationPage.HasNavigationBar="True" NavigationPage.BackButtonTitle="Back" Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing" Style="{StaticResource ContentPage}">
     <ContentPage.Resources>
@@ -73,7 +74,7 @@
                                 <TapGestureRecognizer Command="{Binding UpdatePoiCommand}"/>
                             </ffimageloading:CachedImage.GestureRecognizers>
                         </ffimageloading:CachedImage>
-                        <Label Text="Сохранить на карте" Style="{StaticResource RouteTextLabel}" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center">
+                        <Label Text="{resources:Translation EditPoi_SendPoi}" Style="{StaticResource RouteTextLabel}" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center">
                             <Label.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding UpdatePoiCommand}"/>
                             </Label.GestureRecognizers>

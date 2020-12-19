@@ -71,7 +71,8 @@ namespace QuestHelper.ViewModel
 
         private async void updatePoiCommand(object obj)
         {
-            if(validatePoi())
+            string resultValidateText = getValidatePoiText();
+            if(string.IsNullOrEmpty(resultValidateText))
             {
                 PoiApiRequest poiApi = new PoiApiRequest(_authToken);
                 _vpoi.UpdateDate = DateTimeOffset.Now;
@@ -86,32 +87,42 @@ namespace QuestHelper.ViewModel
                         var route = new ViewRoute(_vpoi.ByRouteId);
                         if ((!route.IsPublished) && (_vpoi.IsPublished))
                         {
-                            msgText = "Точка будет добавлена на карту, но ваш маршрут недоступен другим пользователям";
+                            msgText = CommonResource.PoiMsg_RouteAvailableOnlyForMe;
                         }
                     }
 
+                    MessagingCenter.Send<PoiUpdatedMessage>(new PoiUpdatedMessage() { PoiId = _vpoi.Id }, string.Empty);
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
                         UserDialogs.Instance.Alert(msgText, CommonResource.PoiMsg_Saved, CommonResource.CommonMsg_Ok);
                     });
 
-                    MessagingCenter.Send<PoiUpdatedMessage>(new PoiUpdatedMessage() { PoiId = _vpoi.Id }, string.Empty);
+
                     await Navigation.PopModalAsync();
                 }
             }
-        }
-
-        private bool validatePoi()
-        {
-            bool result = !string.IsNullOrEmpty(_vpoi.Name.Trim());
-            if (!result)
+            else
             {
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    UserDialogs.Instance.Alert(CommonResource.CommonMsg_NameIsEmpty, CommonResource.CommonMsg_Warning, CommonResource.CommonMsg_Ok);
+                    UserDialogs.Instance.Alert(resultValidateText, CommonResource.CommonMsg_Warning, CommonResource.CommonMsg_Ok);
                 });
             }
-            return result;
+        }
+
+        private string getValidatePoiText()
+        {
+            if (string.IsNullOrEmpty(_vpoi.Name.Trim()))
+            {
+                return CommonResource.PoiMsg_ValidationEmptyName;
+            }else if (string.IsNullOrEmpty(_vpoi.Description.Trim()))
+            {
+                return CommonResource.PoiMsg_ValidationEmptyDescription;
+            }else if (string.IsNullOrEmpty(_vpoi.ImgFilename))
+            {
+                return CommonResource.PoiMsg_ValidationEmptyImage;
+            }
+            return string.Empty;
         }
 
         private async void deleteCommand(object obj)
@@ -208,15 +219,18 @@ namespace QuestHelper.ViewModel
             if (_isNewPoi)
             {
                 PoiName = _vpoint.Name;
-                PoiDescription = _vpoint.Description;                
-                PoiImage = ImagePathManager.GetMediaFilename(_vpoint.ImageMediaId, _vpoint.ImageMediaType, true);
+                PoiDescription = _vpoint.Description;
                 _vpoi.Location = new Xamarin.Forms.Maps.Position(_vpoint.Latitude, _vpoint.Longitude);
                 _vpoi.CreatorId = _userId;
-                string pathToImg = Path.Combine(ImagePathManager.GetPicturesDirectory(), _vpoi.ImgFilename);
-                if (File.Exists(pathToImg))
+                if ((!string.IsNullOrEmpty(_vpoint.ImageMediaId) && _vpoint.ImageMediaType == MediaObjectTypeEnum.Image))
                 {
-                    var bytes = File.ReadAllBytes(pathToImg);
-                    _vpoi.ImgBase64 = Convert.ToBase64String(bytes);
+                    PoiImage = ImagePathManager.GetMediaFilename(_vpoint.ImageMediaId, _vpoint.ImageMediaType, true);                    
+                    string pathToImg = Path.Combine(ImagePathManager.GetPicturesDirectory(), _vpoi.ImgFilename);
+                    if (File.Exists(pathToImg))
+                    {
+                        var bytes = File.ReadAllBytes(pathToImg);
+                        _vpoi.ImgBase64 = Convert.ToBase64String(bytes);
+                    }
                 }
             }
         }

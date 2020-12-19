@@ -621,4 +621,19 @@ Coordinates are used only when creating your waypoints.</value>
   <data name="MapOverview_RefreshForLoadingPoints" xml:space="preserve">
     <value>Press "Refresh" to loading pins</value>
   </data>
+  <data name="EditPoi_SendPoi" xml:space="preserve">
+    <value>Add to map</value>
+  </data>
+  <data name="PoiMsg_RouteAvailableOnlyForMe" xml:space="preserve">
+    <value>To let other users see your route, publish it</value>
+  </data>
+  <data name="PoiMsg_ValidationEmptyImage" xml:space="preserve">
+    <value>To place a point on the map, you must select an image</value>
+  </data>
+  <data name="PoiMsg_ValidationEmptyDescription" xml:space="preserve">
+    <value>Please add a description of the point on the map</value>
+  </data>
+  <data name="PoiMsg_ValidationEmptyName" xml:space="preserve">
+    <value>Пожалуйста укажите название точки на карте</value>
+  </data>
 </root>

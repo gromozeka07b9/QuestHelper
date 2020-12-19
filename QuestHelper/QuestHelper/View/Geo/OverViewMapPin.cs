@@ -10,5 +10,6 @@ namespace QuestHelper.View.Geo
         //public string Url { get; set; }
         public string PoiId { get; set; }
         public string ImagePath { get; set; }
+        public string ImageMarkerPath { get; set; }
     }
 }

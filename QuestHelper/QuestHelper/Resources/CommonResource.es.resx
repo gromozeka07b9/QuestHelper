@@ -621,4 +621,19 @@ Las coordenadas se usan solo al crear sus waypoints.</value>
   <data name="MapOverview_RefreshForLoadingPoints" xml:space="preserve">
     <value>Presione "Actualizar" para cargar pines</value>
   </data>
+  <data name="EditPoi_SendPoi" xml:space="preserve">
+    <value>Agregar al mapa</value>
+  </data>
+  <data name="PoiMsg_RouteAvailableOnlyForMe" xml:space="preserve">
+    <value>Publica tu ruta para que otros puedan ver tu ruta.</value>
+  </data>
+  <data name="PoiMsg_ValidationEmptyImage" xml:space="preserve">
+    <value>Para colocar un punto en el mapa, debe seleccionar una imagen</value>
+  </data>
+  <data name="PoiMsg_ValidationEmptyDescription" xml:space="preserve">
+    <value>Añade una descripción del punto en el mapa.</value>
+  </data>
+  <data name="PoiMsg_ValidationEmptyName" xml:space="preserve">
+    <value>Indique el nombre del punto en el mapa.</value>
+  </data>
 </root>

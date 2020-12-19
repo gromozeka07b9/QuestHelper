@@ -79,7 +79,8 @@ namespace QuestHelper.View
                 PoiId = p.Id,
                 Label = p.Name,
                 Position = p.Location,
-                ImagePath = $"{_pathToPictures}/{p.ImgFilename}" 
+                ImagePath = $"{_pathToPictures}/{p.ImgFilename}",
+                ImageMarkerPath = $"{_pathToPictures}/map_{p.ImgFilename}"
             }))
             {
                 poi.MarkerClicked += Poi_MarkerClicked;

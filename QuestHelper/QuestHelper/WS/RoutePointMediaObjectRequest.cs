@@ -56,13 +56,15 @@ namespace QuestHelper.WS
                 while (!sendResult)
                 {
                     sendResult = await TryToSendFileAsync(pathToMediaFile, nameMediafile, routePointId, routePointMediaObjectId);
-                    if ((!sendResult)&&(triesCount < 10))
+                    if ((!sendResult)&&(triesCount < 3))
                     {
                         triesCount++;
                         Thread.Sleep(30);//ToDo: останавливает основной поток, UI будет тупить, надо на таймер переделать
+                        HandleError.Process("RoutePointMediaObjectApiRequest", "SendImage", new Exception($"Retry send {pathToMediaFile}"), false);
                     }
                     else
                     {
+                        HandleError.Process("RoutePointMediaObjectApiRequest", "SendImage", new Exception($"Error send {pathToMediaFile}"), false);
                         break;
                     }
                 }

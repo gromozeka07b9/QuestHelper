@@ -7,7 +7,7 @@
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
              xmlns:animationResource="clr-namespace:QuestHelper.Resources"
-             x:Class="QuestHelper.View.RouteCoverPage" NavigationPage.HasNavigationBar="False" Appearing="RouteCoverPage_OnAppearing" Disappearing="RouteCoverPage_OnDisappearing">
+             x:Class="QuestHelper.View.RouteCoverPage" NavigationPage.HasNavigationBar="False" Appearing="RouteCoverPage_OnAppearing" Disappearing="RouteCoverPage_OnDisappearing" Style="{StaticResource ContentPage}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:NegativeBoolConverter  x:Key="inverter" />
@@ -67,7 +67,8 @@
                                 WidthRequest="80"
                                 HeightRequest="80"
                                 VerticalOptions="Start" HorizontalOptions="Center"></animationForms:AnimationView>
-            <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="End">
+
+            <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="End" BackgroundColor="Black" Opacity="0.7">
                 <Image Source="baseline_arrow_back_white_48.png" WidthRequest="40" HeightRequest="40" Margin="10,10,0,0" VerticalOptions="Start" HorizontalOptions="Start">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding BackNavigationCommand}"/>

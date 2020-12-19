@@ -600,4 +600,19 @@ Ihre Routen, speichern Sie Ihre Eindrücke!</value>
   <data name="MapOverview_RefreshForLoadingPoints" xml:space="preserve">
     <value>Drücken Sie "Aktualisieren", um die Pins zu laden</value>
   </data>
+  <data name="EditPoi_SendPoi" xml:space="preserve">
+    <value>Zur Karte hinzufügen</value>
+  </data>
+  <data name="PoiMsg_RouteAvailableOnlyForMe" xml:space="preserve">
+    <value>Veröffentlichen Sie Ihre Route, damit andere Benutzer sie sehen können</value>
+  </data>
+  <data name="PoiMsg_ValidationEmptyImage" xml:space="preserve">
+    <value>Um einen Punkt auf der Karte zu platzieren, müssen Sie ein Bild auswählen</value>
+  </data>
+  <data name="PoiMsg_ValidationEmptyDescription" xml:space="preserve">
+    <value>Bitte fügen Sie eine Beschreibung des Punktes auf der Karte hinzu</value>
+  </data>
+  <data name="PoiMsg_ValidationEmptyName" xml:space="preserve">
+    <value>Bitte geben Sie den Namen des Punktes auf der Karte an</value>
+  </data>
 </root>

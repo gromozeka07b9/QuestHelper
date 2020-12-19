@@ -1040,5 +1040,35 @@ namespace QuestHelper.Resources {
                 return ResourceManager.GetString("MapOverview_RefreshForLoadingPoints", resourceCulture);
             }
         }
+        
+        public static string EditPoi_SendPoi {
+            get {
+                return ResourceManager.GetString("EditPoi_SendPoi", resourceCulture);
+            }
+        }
+        
+        public static string PoiMsg_RouteAvailableOnlyForMe {
+            get {
+                return ResourceManager.GetString("PoiMsg_RouteAvailableOnlyForMe", resourceCulture);
+            }
+        }
+        
+        public static string PoiMsg_ValidationEmptyImage {
+            get {
+                return ResourceManager.GetString("PoiMsg_ValidationEmptyImage", resourceCulture);
+            }
+        }
+        
+        public static string PoiMsg_ValidationEmptyDescription {
+            get {
+                return ResourceManager.GetString("PoiMsg_ValidationEmptyDescription", resourceCulture);
+            }
+        }
+        
+        public static string PoiMsg_ValidationEmptyName {
+            get {
+                return ResourceManager.GetString("PoiMsg_ValidationEmptyName", resourceCulture);
+            }
+        }
     }
 }

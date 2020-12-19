@@ -21,8 +21,8 @@ namespace QuestHelper.Droid.Renderers
     public class CustomOverviewMapRenderer : MapRenderer, GoogleMap.IInfoWindowAdapter
     {
         private CustomOverviewMap _map;
-        private static int _sizeMarkerDivider = 3;//примерный делитель для получения более менее видимого маркера
-        private int _sizeMarker = Convert.ToInt32(DeviceSize.FullScreenHeight / _sizeMarkerDivider);
+        //private static int _sizeMarkerDivider = 3;//примерный делитель для получения более менее видимого маркера
+        //private int _sizeMarker = Convert.ToInt32(DeviceSize.FullScreenHeight / _sizeMarkerDivider);
         private float _currentZoomLevel;
 
         public CustomOverviewMapRenderer(Context context) : base(context)
@@ -78,7 +78,7 @@ namespace QuestHelper.Droid.Renderers
 
         protected override MarkerOptions CreateMarker(Pin pin)
         {
-            return MarkerMaker.MakeMarkerByPOI(pin, _sizeMarker, _currentZoomLevel);
+            return MarkerMaker.MakeMarkerByPOI(pin, _currentZoomLevel);
         }
     }
 }

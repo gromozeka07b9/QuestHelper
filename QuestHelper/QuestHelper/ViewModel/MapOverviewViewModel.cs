@@ -220,14 +220,29 @@ namespace QuestHelper.ViewModel
         private async Task<bool> downloadPoiImgAsync(PoiApiRequest api, ViewPoi viewPoi)
         {
             bool result = false;
-            string pathToImg = Path.Combine(ImagePathManager.GetPicturesDirectory(), viewPoi.ImgFilename);
-            if (!File.Exists(pathToImg))
+            if (!string.IsNullOrEmpty(viewPoi.ImgFilename))
             {
-                result = await api.DownloadImg(viewPoi.Id, pathToImg);
+                string pathToImg = Path.Combine(ImagePathManager.GetPicturesDirectory(), viewPoi.ImgFilename);
+                string mapMarkerPreviewFilename = "map_" + viewPoi.ImgFilename;
+                string pathToImgMarker = Path.Combine(ImagePathManager.GetPicturesDirectory(), mapMarkerPreviewFilename);
+                if (!File.Exists(pathToImg) && (!string.IsNullOrEmpty(viewPoi.ImgFilename)))
+                {
+                    result = await api.DownloadImg(viewPoi.Id, pathToImg);
+                }
+                if (!File.Exists(pathToImgMarker) && File.Exists(pathToImg))
+                {
+                    int sizeMarkerDivider = 3;//примерный делитель для получения более менее видимого маркера
+                    int sizeMarker = Convert.ToInt32(DeviceSize.FullScreenHeight / sizeMarkerDivider);
+                    ImagePreviewManager preview = new ImagePreviewManager();
+                    preview.PreviewHeight = sizeMarker;
+                    preview.PreviewWidth = sizeMarker;
+                    preview.PreviewQuality = 30;
+                    preview.CreateImagePreview(ImagePathManager.GetPicturesDirectory(), viewPoi.ImgFilename, ImagePathManager.GetPicturesDirectory(),mapMarkerPreviewFilename);
+                }
             }
             return result;
         }
-
+        
         public List<ViewPoi> POIs
         {
             get

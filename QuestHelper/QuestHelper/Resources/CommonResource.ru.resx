@@ -621,4 +621,19 @@
   <data name="MapOverview_RefreshForLoadingPoints" xml:space="preserve">
     <value>Нажмите "Обновить" для загрузки меток</value>
   </data>
+  <data name="EditPoi_SendPoi" xml:space="preserve">
+    <value>Добавить на карту</value>
+  </data>
+  <data name="PoiMsg_RouteAvailableOnlyForMe" xml:space="preserve">
+    <value>Чтобы другие пользователи могли видеть ваш маршрут, опубликуйте его</value>
+  </data>
+  <data name="PoiMsg_ValidationEmptyImage" xml:space="preserve">
+    <value>Для размещения точки на карте необходимо выбрать изображение</value>
+  </data>
+  <data name="PoiMsg_ValidationEmptyDescription" xml:space="preserve">
+    <value>Пожалуйста добавьте описание точки на карте</value>
+  </data>
+  <data name="PoiMsg_ValidationEmptyName" xml:space="preserve">
+    <value>Пожалуйста укажите название точки на карте</value>
+  </data>
 </root>

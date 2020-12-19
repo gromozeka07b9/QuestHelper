@@ -13,9 +13,9 @@ namespace QuestHelper.Droid.Renderers
 {
     internal class MarkerMaker
     {
-        internal static MarkerOptions MakeMarkerByPOI(Pin poi, int imageSize, float zoomLevel)
+        internal static MarkerOptions MakeMarkerByPOI(Pin poi, float zoomLevel)
         {
-            string imgPath = ((OverViewMapPin)poi).ImagePath;
+            string imgPath = ((OverViewMapPin)poi).ImageMarkerPath;
             var latlng = new LatLng(poi.Position.Latitude, poi.Position.Longitude);
             var marker = new MarkerOptions();
             marker.Anchor(0.5f, 0.5f);
@@ -24,7 +24,7 @@ namespace QuestHelper.Droid.Renderers
             BitmapDescriptor pic = null;
             if(zoomLevel > 0)
             {
-                pic = getBitmap(imgPath, imageSize, poi.Label);
+                pic = getBitmap(imgPath, poi.Label);
             }
             else
             {
@@ -34,7 +34,7 @@ namespace QuestHelper.Droid.Renderers
             return marker;
         }
 
-        private static BitmapDescriptor getBitmap(string pathToPicture, int imageSize, string name)
+        private static BitmapDescriptor getBitmap(string pathToPicture, string name)
         {
             if (!string.IsNullOrEmpty(pathToPicture) && File.Exists(pathToPicture))
             {
@@ -43,7 +43,7 @@ namespace QuestHelper.Droid.Renderers
                     Android.Graphics.Bitmap bm = BitmapFactory.DecodeFile(pathToPicture);
                     if (bm != null)
                     {
-                        var croppedBitmap = BitmapConverter.Crop(bm, imageSize);
+                        var croppedBitmap = BitmapConverter.Crop(bm, bm.Width);
                         return BitmapDescriptorFactory.FromBitmap(croppedBitmap);
                     }
                 }
