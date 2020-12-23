@@ -16,7 +16,7 @@ namespace QuestHelper.ViewModel
     {
         private bool _isUsageMainMemory;
         private bool _isUsageExtMemory;
-        private ObservableCollection<string> _sourcePath = new ObservableCollection<string>();
+        private ObservableCollection<FileSystemElement> _sourcePath = new ObservableCollection<FileSystemElement>();
         private string _pathToImagesDir = string.Empty;
 
         public INavigation Navigation { get; set; }
@@ -25,12 +25,27 @@ namespace QuestHelper.ViewModel
         public ICommand MainMemoryCheckBoxCommand { get; private set; }
         public ICommand ExtMemoryCheckBoxCommand { get; private set; }
         public ICommand NavigateDirUpCommand { get; private set; }
+        public ICommand ChooseDirCommand { get; private set; }
         public SettingsViewModel()
         {
             BackNavigationCommand = new Command(backNavigationCommand);
             MainMemoryCheckBoxCommand = new Command(mainMemoryCheckBoxCommand);
             ExtMemoryCheckBoxCommand = new Command(extMemoryCheckBoxCommand);
             NavigateDirUpCommand = new Command(navigateDirUpCommand);
+            ChooseDirCommand = new Command(chooseDirCommand);
+        }
+
+        private void OnCollectionViewRemainingItemsThresholdReached(object sender, EventArgs e)
+        {
+            
+        }
+        private void chooseDirCommand(object obj)
+        {
+            var newDir = (FileSystemElement)obj;
+            if (newDir != null)
+            {
+                updateDirContent(new DirectoryInfo(Path.Combine(_pathToImagesDir, newDir.Path)));   
+            }
         }
 
         private void navigateDirUpCommand(object obj)
@@ -38,45 +53,70 @@ namespace QuestHelper.ViewModel
             var currentDirectory = Directory.GetParent(_pathToImagesDir);
             if (currentDirectory.Exists)
             {
-                ObservableCollection<string> files = new ObservableCollection<string>();
-                ObservableCollection<string> dirs = new ObservableCollection<string>();
-                try
-                {
-                    files = currentDirectory.GetFiles("*.jpg;*.jpeg;*.png").OrderBy(f => f.CreationTime)
-                        .Select(f => f.Name).ToArray().Take(10).ToObservableCollection();
-                    dirs = currentDirectory.GetDirectories().OrderBy(d => d.Name).Select(d => d.Name)
-                        .ToObservableCollection();
-                    _pathToImagesDir = currentDirectory.FullName;
-                    SourcePaths = new ObservableCollection<string>(dirs);
-                    CountOfPhotoInternalDCIM = files.Count();
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountOfPhotoInternalDCIM"));
-                    int index = 0;
-                    while (index < 10)
-                    {
-                        if (files.ElementAtOrDefault(index) != null)
-                        {
-                            SourcePaths.Add(files.ElementAt(index));
-                        }
-                        else
-                        {
-                            break;
-                        }
-
-                        index++;
-                    }
-                }
-                catch (IOException ioException)
-                {
-                    
-                }
-                catch (Exception e)
-                {
-                    
-                }
-                
+                updateDirContent(currentDirectory);
             }
         }
 
+        private void updateDirContent(DirectoryInfo currentDirectory)
+        {
+            (var files, var dirs) = getDirContent(currentDirectory);
+            if (files.Any() || dirs.Any())
+            {
+                SourcePaths =
+                    new ObservableCollection<FileSystemElement>(dirs
+                        .Select(i => new FileSystemElement() {Path = i, IsFile = false}).ToList());
+                addFilesToSourcePaths(files, 30);
+
+                _pathToImagesDir = currentDirectory.FullName;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SourcePaths"));
+                CountOfPhotoInternalDCIM = files.Count();
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountOfPhotoInternalDCIM"));
+            }
+        }
+
+        private void addFilesToSourcePaths(ObservableCollection<string> items, int count)
+        {
+            int index = 0;
+            while (index < count)
+            {
+                if (items.ElementAtOrDefault(index) != null)
+                {
+                    SourcePaths.Add(new FileSystemElement()
+                    {
+                        Path = items.ElementAt(index),
+                        IsFile = true
+                    });
+                }
+                else
+                {
+                    break;
+                }
+
+                index++;
+            }
+        }
+
+        private (ObservableCollection<string>, ObservableCollection<string>) getDirContent(DirectoryInfo currentDirectory)
+        {
+            ObservableCollection<string> files = new ObservableCollection<string>();
+            ObservableCollection<string> dirs = new ObservableCollection<string>();
+            try
+            {
+                files = currentDirectory.GetFiles("*.jpg").OrderBy(f => f.CreationTime)
+                    .Select(f => f.FullName).ToArray().ToObservableCollection();
+                dirs = currentDirectory.GetDirectories().OrderBy(d => d.Name).Select(d => d.Name)
+                    .ToObservableCollection();
+            }
+            catch (IOException ioException)
+            {
+                    
+            }
+            catch (Exception e)
+            {
+                    
+            }
+            return (files, dirs);
+        }
         private void extMemoryCheckBoxCommand(object obj)
         {
 
@@ -119,7 +159,9 @@ namespace QuestHelper.ViewModel
                 var files = imagesCache.GetListFiles(pathToDCIMDirectory);
                 CountOfPhotoInternalDCIM = files.Count();
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountOfPhotoInternalDCIM"));
-                SourcePaths = new ObservableCollection<string>(files.ToList());
+                //SourcePaths = new ObservableCollection<string>(files.ToList());
+                //navigateDirUpCommand(new object());
+                updateDirContent(new DirectoryInfo(_pathToImagesDir));
             }
         }
 
@@ -166,7 +208,7 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        public ObservableCollection<string> SourcePaths
+        public ObservableCollection<FileSystemElement> SourcePaths
         {
             get
             {
@@ -181,5 +223,11 @@ namespace QuestHelper.ViewModel
                 }
             }
         }
+    }
+
+    public class FileSystemElement
+    {
+        public string Path { get; set; }
+        public bool IsFile { get; set; }
     }
 }

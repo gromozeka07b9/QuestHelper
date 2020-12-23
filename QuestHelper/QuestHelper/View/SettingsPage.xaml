@@ -3,8 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="QuestHelper.View.SettingsPage"
              xmlns:system="clr-namespace:System;assembly=netstandard"
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:converters="clr-namespace:QuestHelper.View.Converters;assembly=QuestHelper"
+             xmlns:vm="clr-namespace:QuestHelper.ViewModel;assembly=QuestHelper"
              BackgroundColor="White"
              Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:NegativeBoolConverter  x:Key="inverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
@@ -55,11 +63,26 @@
                         </Label>          
                     </StackLayout>
                     <Button Text="Up" Command="{Binding NavigateDirUpCommand}"></Button>
-                    <CollectionView ItemsSource="{Binding SourcePaths}">
+                    <CollectionView ItemsSource="{Binding SourcePaths}" IsGrouped="False" RemainingItemsThreshold="10" RemainingItemsThresholdReachedCommand="{Binding OnCollectionViewRemainingItemsThresholdReached}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <StackLayout>
-                                <Label Text="{Binding .}" FontSize="14"></Label>
+                                <StackLayout Orientation="Horizontal" IsVisible="{Binding IsFile, Converter={StaticResource inverter}}">
+                                    <forms:CachedImage Source="ic_like_on_1.png" WidthRequest="40" HeightRequest="40" HorizontalOptions="Start" />
+                                    <Label Text="{Binding Path}" FontSize="14" HorizontalOptions="FillAndExpand" >
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding  Source={RelativeSource AncestorType={x:Type vm:SettingsViewModel }}, Path=ChooseDirCommand}" CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </StackLayout>
+                                <Frame IsVisible="{Binding IsFile}" IsEnabled="{Binding IsFile}" Padding="0" Margin="5" CornerRadius="10">
+                                    <forms:CachedImage Source="{Binding Path}" Margin="0" IsVisible="{Binding IsFile}" IsEnabled="{Binding IsFile}" WidthRequest="100" HeightRequest="100"
+                                                       CacheType="Disk"
+                                                       DownsampleToViewSize="True" 
+                                                       BitmapOptimizations="True" 
+                                                       Aspect="AspectFill">
+                                    </forms:CachedImage>
+                                </Frame>
                             </StackLayout>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
