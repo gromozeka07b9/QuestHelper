@@ -54,6 +54,7 @@ namespace QuestHelper.ViewModel
         private bool _isShowWarningNeedIndexing;
         private bool _isShowWarningMakeRoute;
         private bool _isShowWarningGuestMode;
+        private string _indexedDirectory = String.Empty;
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -255,6 +256,7 @@ namespace QuestHelper.ViewModel
                     });
                 }
 
+                _indexedDirectory = pathToDCIMDirectory;
                 
                 await Task.Factory.StartNew(() =>
                 {
@@ -360,7 +362,6 @@ namespace QuestHelper.ViewModel
 
         public void CloseDialog()
         {
-         
         }
 
         public async void StartDialog()
@@ -374,11 +375,17 @@ namespace QuestHelper.ViewModel
             IsShowModalDialog = !IsGalleryIndexed;
             IsShowWarningNeedIndexing = IsShowModalDialog;
 
-            if(_selectedPreviewRoutePoint != null)
+            _selectedPreviewRoutePoint?.RaisedOnPropertyChanged("ImagesOnlyFirstThree");
+
+            /*string pathToDCIMDirectory = string.Empty;
+            ParameterManager parameterManager = new ParameterManager();
+            if (parameterManager.Get("CameraDirectoryFullPath", out pathToDCIMDirectory))
             {
-                _selectedPreviewRoutePoint.RaisedOnPropertyChanged("ImagesOnlyFirstThree");
-            }
-            
+                if (!pathToDCIMDirectory.Equals(_indexedDirectory))
+                {
+                    startIndexGalleryCommand(new object());
+                }
+            }*/
 
         }
 
