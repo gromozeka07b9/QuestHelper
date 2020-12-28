@@ -59,22 +59,15 @@ namespace QuestHelper.Managers
                 UserDialogs.Instance.Toast("использован путь к фото по-умолчанию");
 #endif 
             }
-
-            /*string pathToDCIMDirectory = DependencyService.Get<IPathService>().GetLastUsedDCIMPath();
-            if (string.IsNullOrEmpty(pathToDCIMDirectory))
-            {
-                pathToDCIMDirectory = DependencyService.Get<IPathService>().PublicDirectoryDcim + "/Camera";
-#if DEBUG                
-                UserDialogs.Instance.Toast("использован путь к фото по-умолчанию");
-#endif                
-            }*/
-
+            
             IEnumerable<string> listFiles = GetListFiles(pathToDCIMDirectory);
+            List<string> listFilesDb = _cacheManager.GetFullFilenames(pathToDCIMDirectory);
+            var diffListFiles = listFiles.Except(listFilesDb);
             int countFiles = 0;
-            foreach(string filename in listFiles)
+            foreach(string filename in diffListFiles)
             {
                 var fileInfo = new FileInfo(filename);
-                if(!_cacheManager.Exist(fileInfo.Name, fileInfo.CreationTime))
+                if(!_cacheManager.Exist(fileInfo.Name, pathToDCIMDirectory, fileInfo.CreationTime))
                 {
                     _cacheManager.Save(new ViewLocalFile() {Id = Guid.NewGuid().ToString(), SourceFileName = fileInfo.Name, SourcePath = fileInfo.DirectoryName, FileNameDate = fileInfo.CreationTime });
                 }
@@ -99,10 +92,10 @@ namespace QuestHelper.Managers
             return listFiles;
         }
 
-        internal void UpdateMetadata()
+        internal void UpdateMetadata(string pathToImageDirectory)
         {
             var startDate = DateTime.Now;
-            var files = _cacheManager.LocalFilesByDays(_dateBegin, _dateEnd);
+            var files = _cacheManager.LocalFilesByDays(_dateBegin, _dateEnd, pathToImageDirectory);
             foreach(var currentFile in files)
             {
                 if(!currentFile.Processed)
@@ -129,12 +122,12 @@ namespace QuestHelper.Managers
 
         }
 
-        internal int GetCountImagesForDaysAgo(int countDaysAgo)
+        internal int GetCountImagesForDaysAgo(int countDaysAgo, string pathToImageDirectory)
         {
             var currentDate = DateTime.Now;
             var dateEnd = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 59);
             var dateStart = (new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 0, 0, 0)).AddDays(-countDaysAgo);
-            int count = _cacheManager.GetCountImagesByDay(dateStart, dateEnd).ToList().Sum(x=>x.Item2);
+            int count = _cacheManager.GetCountImagesByDay(dateStart, dateEnd, pathToImageDirectory).ToList().Sum(x=>x.Item2);
             return count;
         }
     }

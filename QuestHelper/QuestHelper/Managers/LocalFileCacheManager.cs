@@ -90,10 +90,11 @@ namespace QuestHelper.Managers
             return Path.Combine(objLocalFile.SourcePath, objLocalFile.SourceFileName);
         }
 
-        public List<ViewLocalFile> GetImagesInfo(DateTimeOffset periodStart, DateTimeOffset periodEnd)
+        public List<ViewLocalFile> GetImagesInfo(DateTimeOffset periodStart, DateTimeOffset periodEnd,
+            string pathToImageDirectory)
         {
             List<ViewLocalFile> listCachedImages = new List<ViewLocalFile>();
-            var listDbModel = RealmInstance.All<LocalFile>().Where(l => l.FileNameDate >= periodStart && l.FileNameDate <= periodEnd).OrderBy(l => l.FileNameDate).ToList();
+            var listDbModel = RealmInstance.All<LocalFile>().Where(l => l.FileNameDate >= periodStart && l.FileNameDate <= periodEnd && l.SourcePath.Equals(pathToImageDirectory)).OrderBy(l => l.FileNameDate).ToList();
 
             return listDbModel.Select(l=>new ViewLocalFile(l.LocalFileId) 
             { 
@@ -109,19 +110,34 @@ namespace QuestHelper.Managers
                 Processed = l.Processed
             }).ToList();
         }
-
-        public DateTime GetMinDate()
+        
+        public List<string> GetFullFilenames(string pathToImageDirectory)
         {
-            var localFiles = RealmInstance.All<LocalFile>().OrderBy(l => l.FileNameDate);
+            List<string> listCachedImages = new List<string>();
+            var listDbModel = RealmInstance.All<LocalFile>().Where(l => l.SourcePath.Equals(pathToImageDirectory)).ToList();
+
+            return listDbModel.Select(l => Path.Combine(pathToImageDirectory, l.SourceFileName)).ToList();
+        }
+
+        public DateTime GetMinDate(string pathToImageDirectory)
+        {
+            var localFiles = RealmInstance.All<LocalFile>().Where(l=>l.SourcePath.Equals(pathToImageDirectory)).OrderBy(l => l.FileNameDate);
             var minItem = localFiles.FirstOrDefault();
-            return minItem != null ? minItem.FileNameDate.DateTime : DateTime.Now;
+            return minItem?.FileNameDate.DateTime ?? DateTime.Now;
+        }
+
+        public DateTime GetMaxDate(string pathToImageDirectory)
+        {
+            var localFiles = RealmInstance.All<LocalFile>().Where(l=>l.SourcePath.Equals(pathToImageDirectory)).OrderBy(l => l.FileNameDate);
+            var maxItem = localFiles.LastOrDefault();
+            return maxItem?.FileNameDate.DateTime ?? DateTime.Now;
         }
         
-        public List<Tuple<DateTime,int>> GetCountImagesByDay(DateTime dateBegin, DateTime dateEnd)
+        public List<Tuple<DateTime, int>> GetCountImagesByDay(DateTime dateBegin, DateTime dateEnd,
+            string pathToImageDirectory)
         {
             var countByDays = RealmInstance.All<LocalFile>()
-                //.Where(f => f.FileNameDate >= dateBegin && f.FileNameDate <= dateEnd && f.Longitude != 0 && f.Latitude != 0)
-                .Where(f => f.FileNameDate >= dateBegin && f.FileNameDate <= dateEnd)
+                .Where(f => f.FileNameDate >= dateBegin && f.FileNameDate <= dateEnd && f.SourcePath.Equals(pathToImageDirectory))
                 .ToList();
             var grouped = countByDays.GroupBy(f =>
                     new DateTime(f.FileNameDate.Year, f.FileNameDate.Month, f.FileNameDate.Day))
@@ -129,14 +145,14 @@ namespace QuestHelper.Managers
             return grouped;
         }
 
-        public bool Exist(string filename, DateTime fileCreationDate)
+        public bool Exist(string filename, string pathToDcimDirectory, DateTime fileCreationDate)
         {
-            return RealmInstance.All<LocalFile>().Where(f => f.SourceFileName.Equals(filename) && f.FileNameDate == fileCreationDate).Any();
+            return RealmInstance.All<LocalFile>().Any(f => f.SourceFileName.Equals(filename) && f.FileNameDate == fileCreationDate && f.SourcePath.Equals(pathToDcimDirectory));
         }
 
-        public List<ViewLocalFile> LocalFilesByDays(DateTime dateBegin, DateTime dateEnd)
+        public List<ViewLocalFile> LocalFilesByDays(DateTime dateBegin, DateTime dateEnd, string pathToImageDirectory)
         {
-            var listCachedFiles = RealmInstance.All<LocalFile>().Where(f => f.FileNameDate >= dateBegin && f.FileNameDate <= dateEnd).ToList().Select(f => new ViewLocalFile(f.LocalFileId)
+            var listCachedFiles = RealmInstance.All<LocalFile>().Where(f => f.FileNameDate >= dateBegin && f.FileNameDate <= dateEnd && f.SourcePath.Equals(pathToImageDirectory)).ToList().Select(f => new ViewLocalFile(f.LocalFileId)
             {
                 Address = f.Address,
                 Country = f.Country,

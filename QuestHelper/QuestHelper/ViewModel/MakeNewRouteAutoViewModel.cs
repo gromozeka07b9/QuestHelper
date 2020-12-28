@@ -54,7 +54,8 @@ namespace QuestHelper.ViewModel
         private bool _isShowWarningNeedIndexing;
         private bool _isShowWarningMakeRoute;
         private bool _isShowWarningGuestMode;
-        private string _indexedDirectory = String.Empty;
+        private string _pathToImageDirectory;
+        private ModalParameters _settingsParams = new ModalParameters();
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -72,6 +73,7 @@ namespace QuestHelper.ViewModel
         
 
         public bool IsBusy { get; set; }
+        public bool SettingsIsModified { get; set; }
 
         public ObservableCollection<ChartDataPoint> ImagesRangeData { get; set; }
 
@@ -92,7 +94,8 @@ namespace QuestHelper.ViewModel
 
         private void openSettingsCommand(object obj)
         {
-            var modalSettingsPageTask = Navigation.PushModalAsync(new SettingsPage());
+            _settingsParams =  new ModalParameters();
+            var modalSettingsPageTask = Navigation.PushModalAsync(new SettingsPage(ref _settingsParams));
         }
 
         private void closeWarningCommand(object obj)
@@ -120,8 +123,15 @@ namespace QuestHelper.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMonthName"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("PrevMonthName"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NextMonthName"));
-            initRangeContent();
+            
+            initRangeContent(CurrentMonthChart);
+            ViewRangeStartDate = new DateTime(CurrentMonthChart.Year, CurrentMonthChart.Month, 1);
+            ViewRangeEndDate = CurrentMonthChart;
         }
+
+        public DateTime ViewRangeEndDate { get; set; }
+
+        public DateTime ViewRangeStartDate { get; set; }
 
         private async void saveRouteCommand(object obj)
         {
@@ -216,7 +226,11 @@ namespace QuestHelper.ViewModel
 
         private void showPeriodChartCommand(object obj)
         {
-            initRangeContent();
+            CurrentMonthChart = MaxRangeDate;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMonthName"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("PrevMonthName"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NextMonthName"));
+            initRangeContent(MaxRangeDate);
             IsVisiblePeriodChart = true;
         }
 
@@ -256,7 +270,7 @@ namespace QuestHelper.ViewModel
                     });
                 }
 
-                _indexedDirectory = pathToDCIMDirectory;
+                PathToImageDirectory = pathToDCIMDirectory;
                 
                 await Task.Factory.StartNew(() =>
                 {
@@ -264,10 +278,10 @@ namespace QuestHelper.ViewModel
                     imagesCache.UpdateFilenames();
                 });
                 await Task.Factory.StartNew(() => {
-                    _countImagesForToday = imagesCache.GetCountImagesForDaysAgo(0);
-                    _countImagesFor1Day = imagesCache.GetCountImagesForDaysAgo(1);
-                    _countImagesFor7Day = imagesCache.GetCountImagesForDaysAgo(7);
-                    _countImagesForAllDays = imagesCache.GetCountImagesForDaysAgo(1000);
+                    _countImagesForToday = imagesCache.GetCountImagesForDaysAgo(0, PathToImageDirectory);
+                    _countImagesFor1Day = imagesCache.GetCountImagesForDaysAgo(1, PathToImageDirectory);
+                    _countImagesFor7Day = imagesCache.GetCountImagesForDaysAgo(7, PathToImageDirectory);
+                    _countImagesForAllDays = imagesCache.GetCountImagesForDaysAgo(1000, PathToImageDirectory);
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountImagesForToday"));
@@ -279,7 +293,8 @@ namespace QuestHelper.ViewModel
                 });
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    MinRangeDate = _localFileCacheManager.GetMinDate();
+                    MinRangeDate = _localFileCacheManager.GetMinDate(PathToImageDirectory);
+                    MaxRangeDate = _localFileCacheManager.GetMaxDate(PathToImageDirectory);
                     IsGalleryIndexed = true;
                     CurrentMonthChart = DateTime.Now;
                     IsShowWarningNeedIndexing = false;
@@ -318,9 +333,9 @@ namespace QuestHelper.ViewModel
                 await Task.Factory.StartNew(() =>
                  {
                      ImagesCacheDbManager imagesCache = new ImagesCacheDbManager(new ImageManager(), PeriodRouteBegin, PeriodRouteEnd);
-                     imagesCache.UpdateMetadata();
+                     imagesCache.UpdateMetadata(PathToImageDirectory);
                      AutoRoutePreviewMakerManager routeMaker = new AutoRoutePreviewMakerManager(new LocalFileCacheManager());
-                     _autoGeneratedRoute = routeMaker.Make(PeriodRouteBegin, PeriodRouteEnd);
+                     _autoGeneratedRoute = routeMaker.Make(PeriodRouteBegin, PeriodRouteEnd, PathToImageDirectory);
                      Device.BeginInvokeOnMainThread(() =>
                      {
                          IsRouteMaking = false;
@@ -355,7 +370,7 @@ namespace QuestHelper.ViewModel
 
         public void UpdateSelectedCountDays(DateTime minDate, DateTime maxDate)
         {
-            var countByDays = _localFileCacheManager.GetCountImagesByDay(minDate, maxDate).OrderBy(c=>c.Item1);
+            var countByDays = _localFileCacheManager.GetCountImagesByDay(minDate, maxDate, PathToImageDirectory).OrderBy(c=>c.Item1);
             _selectedImagesCount = countByDays.Sum(x=>x.Item2);
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedPeriodText"));
         }
@@ -366,7 +381,8 @@ namespace QuestHelper.ViewModel
 
         public async void StartDialog()
         {
-            //var modalInfoPage = Navigation.PushModalAsync(new MakeNewRouteAutoInfoPage());
+
+
             Analytics.TrackEvent("AutoRoute:Dialog started", new Dictionary<string, string> { });
             MaxRangeDate = DateTime.Now;
 
@@ -376,34 +392,43 @@ namespace QuestHelper.ViewModel
             IsShowWarningNeedIndexing = IsShowModalDialog;
 
             _selectedPreviewRoutePoint?.RaisedOnPropertyChanged("ImagesOnlyFirstThree");
-
-            /*string pathToDCIMDirectory = string.Empty;
-            ParameterManager parameterManager = new ParameterManager();
-            if (parameterManager.Get("CameraDirectoryFullPath", out pathToDCIMDirectory))
+            
+            if (_settingsParams.SettingsIsModified)
             {
-                if (!pathToDCIMDirectory.Equals(_indexedDirectory))
-                {
-                    startIndexGalleryCommand(new object());
-                }
-            }*/
+                _settingsParams.SettingsIsModified = false;
+                startIndexGalleryCommand(new object());
+            }
 
         }
 
-        private void initRangeContent()
+        private void initRangeContent(DateTime currentMonthDate)
         {
-            var beginCurrentMonth = new DateTime(CurrentMonthChart.Year, CurrentMonthChart.Month, 1);
+            //var beginCurrentMonth = new DateTime(CurrentMonthChart.Year, CurrentMonthChart.Month, 1);
+            
+            var beginCurrentMonth = new DateTime(currentMonthDate.Year, currentMonthDate.Month, 1);
             var endCurrentMonth = beginCurrentMonth.AddMonths(1).AddSeconds(-1);
-            MinRangeDate = beginCurrentMonth;
-            MaxRangeDate = endCurrentMonth;
-            var countByDays = _localFileCacheManager.GetCountImagesByDay(beginCurrentMonth, endCurrentMonth).OrderBy(c=>c.Item1);
+            //MinRangeDate = beginCurrentMonth;
+            //MaxRangeDate = endCurrentMonth;
+            var countByDays = _localFileCacheManager.GetCountImagesByDay(beginCurrentMonth, endCurrentMonth, PathToImageDirectory).OrderBy(c=>c.Item1);
             PeriodRouteBegin = beginCurrentMonth;
-            PeriodRouteEnd = DateTime.Now;
-            //ImagesRangeData = new ObservableCollection<ChartDataPoint>();
-            //ImagesRangeData.Add(new ChartDataPoint(new DateTime(2020, 8, 15), 100, 200));
+            //PeriodRouteEnd = DateTime.Now;
+            PeriodRouteEnd = endCurrentMonth;
 
-            ImagesRangeData = new ObservableCollection<ChartDataPoint>(countByDays.Select(c => new ChartDataPoint(new DateTime(c.Item1.Year, c.Item1.Month, c.Item1.Day), c.Item2, 100)));
+            var imagesData = new ObservableCollection<ChartDataPoint>(countByDays.Select(c => new ChartDataPoint(new DateTime(c.Item1.Year, c.Item1.Month, c.Item1.Day), c.Item2, 100)));
+            if (imagesData.Count < 2)
+            {
+                ImagesRangeData = new ObservableCollection<ChartDataPoint>();
+                ImagesRangeData.Add(new ChartDataPoint(beginCurrentMonth, 0));
+                if (imagesData.Count > 0)
+                {
+                    ImagesRangeData.Add(imagesData[0]);   
+                }
+                ImagesRangeData.Add(new ChartDataPoint(endCurrentMonth, 0));
+            } else ImagesRangeData = imagesData;
             UpdateSelectedCountDays(beginCurrentMonth, endCurrentMonth);
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImagesRangeData"));
+            ViewRangeStartDate = PeriodRouteBegin;
+            ViewRangeEndDate = PeriodRouteEnd;
         }
 
         
@@ -411,10 +436,25 @@ namespace QuestHelper.ViewModel
         {
             get
             {
-                return PreviewRoutePoints.Where(p=>!p.IsDeleted).Count() > 0;
+                return PreviewRoutePoints.Any(p => !p.IsDeleted);
             }
         }
-
+        
+        public string PathToImageDirectory
+        {
+            set
+            {
+                if (!value.Equals(_pathToImageDirectory))
+                {
+                    _pathToImageDirectory = value;
+                }
+            }
+            get
+            {
+                return _pathToImageDirectory;
+            }
+        }
+        
         public bool IsGalleryIndexed
         {
             set
@@ -709,4 +749,8 @@ namespace QuestHelper.ViewModel
 
     }
 
+    public class ModalParameters
+    {
+        public bool SettingsIsModified { get; set; }
+    }
 }

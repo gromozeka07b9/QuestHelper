@@ -538,7 +538,7 @@ Coordinates are used only when creating your waypoints.</value>
     <value>on page 'Private'</value>
   </data>
   <data name="AutoRoutes_NeedAuth" xml:space="preserve">
-    <value>For make route you need login&amp;#10;&amp;#10;</value>
+    <value>For make route you need login</value>
   </data>
   <data name="AutoRoutes_NeedAuthLine2" xml:space="preserve">
     <value>It will able to make routes and share it.</value>

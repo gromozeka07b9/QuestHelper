@@ -25,6 +25,7 @@ namespace QuestHelper.ViewModel
         private string _pathToCustomDCIM = String.Empty;
         private string _pathToDefaultDCIM = String.Empty;
         private string _initDCIMDirectory = String.Empty;
+        private ModalParameters _modalParameters;
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -33,8 +34,9 @@ namespace QuestHelper.ViewModel
         //public ICommand ExtMemoryCheckBoxCommand { get; private set; }
         public ICommand NavigateDirUpCommand { get; private set; }
         public ICommand ChooseDirCommand { get; private set; }
-        public SettingsViewModel()
+        public SettingsViewModel(ref ModalParameters modalParameters)
         {
+            _modalParameters = modalParameters;
             BackNavigationCommand = new Command(backNavigationCommand);
             MainMemoryCheckBoxCommand = new Command(mainMemoryCheckBoxCommand);
             //ExtMemoryCheckBoxCommand = new Command(extMemoryCheckBoxCommand);
@@ -116,7 +118,7 @@ namespace QuestHelper.ViewModel
             bool userHaveAccess = false; 
             try
             {
-                files = currentDirectory.GetFiles("*.jpg").OrderBy(f => f.CreationTime)
+                files = currentDirectory.GetFiles("*.jpg").OrderByDescending(f => f.CreationTime)
                     .Select(f => f.FullName).ToArray().ToObservableCollection();
                 dirs = currentDirectory.GetDirectories().OrderBy(d => d.Name).Select(d => d.Name)
                     .ToObservableCollection();
@@ -138,36 +140,28 @@ namespace QuestHelper.ViewModel
 
         private void backNavigationCommand(object obj)
         {
+            int totalCount = 0;
+            string newPathToImages;
+            if (IsUsageMainMemory)
+            {
+                totalCount = CountOfPhotoDefaultDCIM;
+                newPathToImages = PathToDefaultDCIM;
+            }
+            else
+            {
+                totalCount = CountOfPhotoCustomDCIM;     
+                newPathToImages = PathToCustomDCIM;
+            }
             MainThread.BeginInvokeOnMainThread(async () =>
             {
-                int totalCount = 0;
-                if (IsUsageMainMemory)
-                {
-                    totalCount = CountOfPhotoDefaultDCIM;
-                }
-                else
-                {
-                    totalCount = CountOfPhotoCustomDCIM;                    
-                }
-
                 if (totalCount == 0)
                 {
                     var answerYes = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig(){Message = "Вы выбрали источник без фотографий. Отменить изменения?", Title = "Внимание! Нет фотографий", OkText = CommonResource.CommonMsg_Yes, CancelText = CommonResource.CommonMsg_Cancel});
                     if(answerYes)    
-                        Navigation.PopModalAsync();
+                        await Navigation.PopModalAsync();
                 }
                 else
                 {
-                    string newPathToImages = string.Empty;
-                    if ((IsUsageMainMemory) && (_initDCIMDirectory.Equals(PathToDefaultDCIM)))
-                    {
-                        newPathToImages = PathToDefaultDCIM;
-                    }
-                    if ((!IsUsageMainMemory) && (!_initDCIMDirectory.Equals(PathToCustomDCIM)))
-                    {
-                        newPathToImages = PathToCustomDCIM;
-                    }
-
                     if (!newPathToImages.Equals(_initDCIMDirectory))
                     {
                         var answerYes = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig(){Message = "Сохранить изменения?", Title = "Выбран источник фотографий", OkText = CommonResource.CommonMsg_Yes, CancelText = CommonResource.CommonMsg_No});
@@ -175,11 +169,10 @@ namespace QuestHelper.ViewModel
                         {
                             ParameterManager parameterManager = new ParameterManager();
                             parameterManager.Set("CameraDirectoryFullPath", newPathToImages);
-                            Xamarin.Forms.MessagingCenter.Send<ImagesPathLocationChangedMessage>(new ImagesPathLocationChangedMessage() { FullPath = newPathToImages}, string.Empty);
-
+                            _modalParameters.SettingsIsModified = true;
                         }                        
                     }
-                    Navigation.PopModalAsync();
+                    await Navigation.PopModalAsync();
                 }
             });
         }
@@ -199,22 +192,14 @@ namespace QuestHelper.ViewModel
                     _initDCIMDirectory = imagesCache.GetPublicDirectoryDcim();
                 }
 
-                if (_initDCIMDirectory.Equals(imagesCache.GetPublicDirectoryDcim()))
-                {
-                    IsUsageMainMemory = true;
-                    PathToDefaultDCIM = _initDCIMDirectory;
-                }
-                else
-                {
-                    IsUsageMainMemory = false;
-                    PathToCustomDCIM = _initDCIMDirectory;                    
-                }
-
-
+                PathToDefaultDCIM = imagesCache.GetPublicDirectoryDcim();
+                PathToCustomDCIM = _initDCIMDirectory;
+                IsUsageMainMemory = _initDCIMDirectory.Equals(PathToDefaultDCIM);
                 
+                CountOfPhotoDefaultDCIM = imagesCache.GetListFiles(PathToDefaultDCIM).Count();
                 _pathToImagesDir = _initDCIMDirectory;
-                var files = imagesCache.GetListFiles(_initDCIMDirectory);
-                CountOfPhotoDefaultDCIM = files.Count();
+                CountOfPhotoCustomDCIM = imagesCache.GetListFiles(_initDCIMDirectory).Count();
+                
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountOfPhotoDefaultDCIM"));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountOfPhotoCustomDCIM"));
                 updateDirContent(new DirectoryInfo(_pathToImagesDir));
