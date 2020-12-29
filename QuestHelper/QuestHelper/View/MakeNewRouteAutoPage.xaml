@@ -11,6 +11,7 @@
              xmlns:lang="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
              xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:progressBar="clr-namespace:Syncfusion.XForms.ProgressBar;assembly=Syncfusion.SfProgressBar.XForms"
              x:Class="QuestHelper.View.MakeNewRouteAutoPage"
              NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False"
              Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing">
@@ -329,7 +330,7 @@
             <AbsoluteLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="0.9" BackgroundColor="White" IsVisible="{Binding IsRouteMaking}">
                 <Frame AbsoluteLayout.LayoutBounds=".5,.5,.6,.3" AbsoluteLayout.LayoutFlags="All" Padding="0" BackgroundColor="LightGray" BorderColor="Black" CornerRadius="10">
                     <StackLayout VerticalOptions="FillAndExpand" Orientation="Vertical" HorizontalOptions="Center" IsVisible="{Binding IsRouteMaking}" >
-                        <animationForms:AnimationView HorizontalOptions="Center" VerticalOptions="CenterAndExpand" Margin="0" 
+                        <!--animationForms:AnimationView HorizontalOptions="Center" VerticalOptions="CenterAndExpand" Margin="0" 
                                             Animation="{animationResource:AnimationResourceExtension hourglass}"
                                             RepeatMode="Restart"
                                             AutoPlay="True"
@@ -339,7 +340,8 @@
                                             IsVisible="True"
                                             WidthRequest="100"
                                             HeightRequest="100"                                        
-                                            />
+                                            /-->
+                        <progressBar:SfCircularProgressBar Minimum="0" Maximum="{Binding MaxCountProgressItems}" SegmentCount="10" Progress="{Binding CurrentProgressIndex}" />
                         <Label Text="{lang:Translation AutoRoutes_Processing}" TextColor="Black" FontSize="12" Margin="10" VerticalOptions="CenterAndExpand" HorizontalOptions="Center" HorizontalTextAlignment="Center"></Label>
                     </StackLayout>
                 </Frame>

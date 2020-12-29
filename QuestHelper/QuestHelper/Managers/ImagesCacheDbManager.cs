@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using Acr.UserDialogs;
 using Microsoft.AppCenter.Analytics;
+using QuestHelper.Model.Messages;
 using Xamarin.Forms;
 
 namespace QuestHelper.Managers
@@ -50,15 +51,6 @@ namespace QuestHelper.Managers
 
         internal List<string> GetFilenamesForIndexing(string pathToDCIMDirectory)
         {
-            //string pathToDCIMDirectory = DependencyService.Get<IPathService>().PublicDirectoryDcim + "/Camera";
-            /*ParameterManager parameterManager = new ParameterManager();
-            if(!parameterManager.Get("CameraDirectoryFullPath", out pathToDCIMDirectory))
-            {
-#if DEBUG                
-                UserDialogs.Instance.Toast("использован путь к фото по-умолчанию");
-#endif 
-            }*/
-            
             IEnumerable<string> listFiles = GetListFiles(pathToDCIMDirectory);
             List<string> listFilesDb = _cacheManager.GetFullFilenames(pathToDCIMDirectory);
             return listFiles.Except(listFilesDb).ToList();
@@ -75,6 +67,10 @@ namespace QuestHelper.Managers
                     _cacheManager.Save(new ViewLocalFile() {Id = Guid.NewGuid().ToString(), SourceFileName = fileInfo.Name, SourcePath = fileInfo.DirectoryName, FileNameDate = fileInfo.CreationTime });
                 }
 
+                if (countFiles % 50 == 0)
+                {
+                    Xamarin.Forms.MessagingCenter.Send<CurrentProgressIndexMessage>(new CurrentProgressIndexMessage() {Index = countFiles}, string.Empty);
+                }
                 countFiles++;
             }
             var delay = DateTime.Now - startDate;
@@ -98,6 +94,7 @@ namespace QuestHelper.Managers
         internal void UpdateMetadata(string pathToImageDirectory)
         {
             var startDate = DateTime.Now;
+            int countFiles = 0;
             var files = _cacheManager.LocalFilesByDays(_dateBegin, _dateEnd, pathToImageDirectory);
             foreach(var currentFile in files)
             {
@@ -113,6 +110,12 @@ namespace QuestHelper.Managers
                     }
                     currentFile.Processed = true;
                     _cacheManager.Save(currentFile);
+                    if (countFiles % 10 == 0)
+                    {
+                        Xamarin.Forms.MessagingCenter.Send<CurrentProgressIndexMessage>(new CurrentProgressIndexMessage() {Index = countFiles}, string.Empty);
+                    }
+
+                    countFiles++;
                 }
             }
 
