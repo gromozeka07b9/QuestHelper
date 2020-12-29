@@ -48,21 +48,24 @@ namespace QuestHelper.Managers
             return DependencyService.Get<IPathService>().PublicDirectoryDcim + "/Camera";
         }
 
-        internal void UpdateFilenames()
+        internal List<string> GetFilenamesForIndexing(string pathToDCIMDirectory)
         {
-            string pathToDCIMDirectory = DependencyService.Get<IPathService>().PublicDirectoryDcim + "/Camera";
-            var startDate = DateTime.Now;
-            ParameterManager parameterManager = new ParameterManager();
+            //string pathToDCIMDirectory = DependencyService.Get<IPathService>().PublicDirectoryDcim + "/Camera";
+            /*ParameterManager parameterManager = new ParameterManager();
             if(!parameterManager.Get("CameraDirectoryFullPath", out pathToDCIMDirectory))
             {
 #if DEBUG                
                 UserDialogs.Instance.Toast("использован путь к фото по-умолчанию");
 #endif 
-            }
+            }*/
             
             IEnumerable<string> listFiles = GetListFiles(pathToDCIMDirectory);
             List<string> listFilesDb = _cacheManager.GetFullFilenames(pathToDCIMDirectory);
-            var diffListFiles = listFiles.Except(listFilesDb);
+            return listFiles.Except(listFilesDb).ToList();
+        }
+        internal void UpdateFilenames(List<string> diffListFiles, string pathToDCIMDirectory)
+        {
+            var startDate = DateTime.Now;
             int countFiles = 0;
             foreach(string filename in diffListFiles)
             {

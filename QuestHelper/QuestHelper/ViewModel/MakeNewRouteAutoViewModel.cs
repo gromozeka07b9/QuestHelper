@@ -56,6 +56,8 @@ namespace QuestHelper.ViewModel
         private bool _isShowWarningGuestMode;
         private string _pathToImageDirectory;
         private ModalParameters _settingsParams = new ModalParameters();
+        private DateTime _viewRangeStartDate;
+        private DateTime _viewRangeEndDate;
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -125,13 +127,9 @@ namespace QuestHelper.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NextMonthName"));
             
             initRangeContent(CurrentMonthChart);
-            ViewRangeStartDate = new DateTime(CurrentMonthChart.Year, CurrentMonthChart.Month, 1);
-            ViewRangeEndDate = CurrentMonthChart;
+            //ViewRangeStartDate = new DateTime(CurrentMonthChart.Year, CurrentMonthChart.Month, 1);
+            //ViewRangeEndDate = CurrentMonthChart;
         }
-
-        public DateTime ViewRangeEndDate { get; set; }
-
-        public DateTime ViewRangeStartDate { get; set; }
 
         private async void saveRouteCommand(object obj)
         {
@@ -248,12 +246,6 @@ namespace QuestHelper.ViewModel
         {
             PermissionManager permissions = new PermissionManager();
             var taskPermissionRead = await permissions.CheckAndRequestStorageReadPermission();
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                IsShowModalDialog = false;
-                IsGalleryIndexed = false;
-                IsRouteMaking = true;
-            });
             if(taskPermissionRead.HasFlag(Xamarin.Essentials.PermissionStatus.Granted))
             {
                 ImagesCacheDbManager imagesCache = new ImagesCacheDbManager(new ImageManager(), PeriodRouteBegin, PeriodRouteEnd);
@@ -274,8 +266,12 @@ namespace QuestHelper.ViewModel
                 
                 await Task.Factory.StartNew(() =>
                 {
-                    setPeriodByDepth(90);
-                    imagesCache.UpdateFilenames();
+                    int maxCountFilesForShowModalDialog = 20; //кол-во файлов которое считаем большим и достаточным для отображения диалога обработки
+                    var listFilesForIndexing = imagesCache.GetFilenamesForIndexing(PathToImageDirectory);
+                    IsShowModalDialog = false;
+                    IsGalleryIndexed = !(listFilesForIndexing.Count > 0);
+                    IsRouteMaking = listFilesForIndexing.Count > maxCountFilesForShowModalDialog;
+                    imagesCache.UpdateFilenames(listFilesForIndexing, PathToImageDirectory);
                 });
                 await Task.Factory.StartNew(() => {
                     _countImagesForToday = imagesCache.GetCountImagesForDaysAgo(0, PathToImageDirectory);
@@ -317,7 +313,6 @@ namespace QuestHelper.ViewModel
                 {
                 }
                 Analytics.TrackEvent("AutoRoute:Generate new started", new Dictionary<string, string> {{"daysDepth",daysDepth.ToString()} });
-                setPeriodByDepth(daysDepth);
             }
 
             bool maxCountOk = true;
@@ -350,17 +345,7 @@ namespace QuestHelper.ViewModel
             }
 
         }
-
-        private void setPeriodByDepth(int daysDepth)
-        {
-            var currentDate = DateTime.Now;
-            var dateEnd = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 59);
-            var startedAt = currentDate.AddDays(-daysDepth);
-            PeriodRouteBegin = new DateTime(startedAt.Year, startedAt.Month, startedAt.Day, 0, 0, 0);
-            PeriodRouteEnd = dateEnd;
-            UpdateSelectedCountDays(PeriodRouteBegin, PeriodRouteEnd);
-        }
-
+        
         public void UpdateRouteInfo()
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsPreviewRouteMade"));
@@ -398,20 +383,14 @@ namespace QuestHelper.ViewModel
                 _settingsParams.SettingsIsModified = false;
                 startIndexGalleryCommand(new object());
             }
-
         }
 
         private void initRangeContent(DateTime currentMonthDate)
         {
-            //var beginCurrentMonth = new DateTime(CurrentMonthChart.Year, CurrentMonthChart.Month, 1);
-            
             var beginCurrentMonth = new DateTime(currentMonthDate.Year, currentMonthDate.Month, 1);
             var endCurrentMonth = beginCurrentMonth.AddMonths(1).AddSeconds(-1);
-            //MinRangeDate = beginCurrentMonth;
-            //MaxRangeDate = endCurrentMonth;
             var countByDays = _localFileCacheManager.GetCountImagesByDay(beginCurrentMonth, endCurrentMonth, PathToImageDirectory).OrderBy(c=>c.Item1);
             PeriodRouteBegin = beginCurrentMonth;
-            //PeriodRouteEnd = DateTime.Now;
             PeriodRouteEnd = endCurrentMonth;
 
             var imagesData = new ObservableCollection<ChartDataPoint>(countByDays.Select(c => new ChartDataPoint(new DateTime(c.Item1.Year, c.Item1.Month, c.Item1.Day), c.Item2, 100)));
@@ -431,6 +410,36 @@ namespace QuestHelper.ViewModel
             ViewRangeEndDate = PeriodRouteEnd;
         }
 
+        public DateTime ViewRangeStartDate
+        {
+            get
+            {
+                return _viewRangeStartDate;
+            } 
+            set
+            {
+                if (value != _viewRangeStartDate)
+                {
+                    _viewRangeStartDate = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ViewRangeStartDate"));
+                }   
+            }
+        }
+        public DateTime ViewRangeEndDate
+        {
+            get
+            {
+                return _viewRangeEndDate;
+            } 
+            set
+            {
+                if (value != _viewRangeEndDate)
+                {
+                    _viewRangeEndDate = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ViewRangeEndDate"));
+                }   
+            }
+        }
         
         public bool IsPreviewRouteMade
         {
