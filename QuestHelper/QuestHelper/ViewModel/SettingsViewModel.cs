@@ -5,8 +5,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Acr.UserDialogs;
+using Plugin.Permissions;
 using QuestHelper.Managers;
 using QuestHelper.Model.Messages;
 using QuestHelper.Resources;
@@ -53,19 +56,34 @@ namespace QuestHelper.ViewModel
             var newDir = (FileSystemElement)obj;
             if (newDir != null)
             {
-                updateDirContent(new DirectoryInfo(Path.Combine(_pathToImagesDir, newDir.Path)));   
+                string path = Path.Combine(_pathToImagesDir, newDir.Path);
+                /*if (!path.Contains("/storage/emulated/0") && path.Contains("/storage/emulated"))
+                {
+                    path = path.Replace($"/storage/emulated",$"/storage/emulated/0");
+                } */
+                updateDirContent(new DirectoryInfo(path));   
             }
         }
 
         private void navigateDirUpCommand(object obj)
         {
-            var currentDirectory = Directory.GetParent(_pathToImagesDir);
-            if ((currentDirectory != null) && (currentDirectory.Exists))
+            var currentDirectory = getParentDir(_pathToImagesDir);
+            if (currentDirectory.Exists)
             {
                 updateDirContent(currentDirectory);
             }
         }
 
+        DirectoryInfo getParentDir(string path)
+        {
+            var currentDirectory = Directory.GetParent(path);
+            if (path.Equals("/storage/emulated/0"))
+            {
+                currentDirectory = new DirectoryInfo("/storage");
+            }
+
+            return currentDirectory;
+        }
         private void updateDirContent(DirectoryInfo currentDirectory)
         {
             (var files, var dirs, bool userHaveAccess) = getDirContent(currentDirectory);
@@ -83,7 +101,7 @@ namespace QuestHelper.ViewModel
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountOfPhotoCustomDCIM"));
 
                 PathToCustomDCIM = _pathToImagesDir;
-                var topDirectory = Directory.GetParent(currentDirectory.FullName);
+                var topDirectory = getParentDir(currentDirectory.FullName);
                 NavigationToRootIsVisible = (topDirectory != null) && (topDirectory.Exists);
             }
             else NavigationToRootIsVisible = false;
@@ -115,13 +133,24 @@ namespace QuestHelper.ViewModel
         {
             ObservableCollection<string> files = new ObservableCollection<string>();
             ObservableCollection<string> dirs = new ObservableCollection<string>();
-            bool userHaveAccess = false; 
+            bool userHaveAccess = false;
             try
             {
-                files = currentDirectory.GetFiles("*.jpg").OrderByDescending(f => f.CreationTime)
-                    .Select(f => f.FullName).ToArray().ToObservableCollection();
-                dirs = currentDirectory.GetDirectories().OrderBy(d => d.Name).Select(d => d.Name)
-                    .ToObservableCollection();
+                if (currentDirectory.FullName.Equals("/storage"))
+                {
+                    dirs = currentDirectory.GetDirectories().Where(d=>!d.Name.Equals("emulated")).OrderBy(d => d.Name).Select(d => d.Name)
+                        .ToObservableCollection();
+                    dirs.Add("/storage/emulated/0");
+                }
+                else
+                {
+                    dirs = currentDirectory.GetDirectories().OrderBy(d => d.Name).Select(d => d.Name)
+                        .ToObservableCollection();
+                }
+
+                MediaFileManager mediaFileManager = new MediaFileManager();
+                files = mediaFileManager.GetMediaFilesFromDirectory(currentDirectory).OrderByDescending(f => f.CreationTime)
+                    .Select(f => f.FullName).ToArray().ToObservableCollection();;
                 userHaveAccess = true;
             }
             catch (IOException ioException)
@@ -196,13 +225,16 @@ namespace QuestHelper.ViewModel
                 PathToCustomDCIM = _initDCIMDirectory;
                 IsUsageMainMemory = _initDCIMDirectory.Equals(PathToDefaultDCIM);
                 
-                CountOfPhotoDefaultDCIM = imagesCache.GetListFiles(PathToDefaultDCIM).Count();
-                _pathToImagesDir = _initDCIMDirectory;
-                CountOfPhotoCustomDCIM = imagesCache.GetListFiles(_initDCIMDirectory).Count();
-                
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountOfPhotoDefaultDCIM"));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountOfPhotoCustomDCIM"));
-                updateDirContent(new DirectoryInfo(_pathToImagesDir));
+                await Task.Run(() =>
+                {
+                    MediaFileManager mediaFileManager = new MediaFileManager();
+                    CountOfPhotoDefaultDCIM = mediaFileManager.GetMediaFilesFromDirectory(new DirectoryInfo(PathToDefaultDCIM)).Count();
+                    _pathToImagesDir = _initDCIMDirectory;
+                    CountOfPhotoCustomDCIM = mediaFileManager.GetMediaFilesFromDirectory(new DirectoryInfo(_initDCIMDirectory)).Count();
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountOfPhotoDefaultDCIM"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CountOfPhotoCustomDCIM"));
+                    updateDirContent(new DirectoryInfo(_pathToImagesDir));
+                });
             }
         }
 

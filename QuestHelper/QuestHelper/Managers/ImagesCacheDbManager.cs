@@ -33,7 +33,8 @@ namespace QuestHelper.Managers
         internal string GetPathToCameraDirectory()
         {
             string pathToDCIMDirectory = DependencyService.Get<IPathService>().GetLastUsedDCIMPath();
-            if (GetListFiles(pathToDCIMDirectory).Any())
+            MediaFileManager mediaFileManager = new MediaFileManager();
+            if(mediaFileManager.GetMediaFilesFromDirectory(new DirectoryInfo(pathToDCIMDirectory)).Any())
             {
                 return pathToDCIMDirectory;
             } else
@@ -51,7 +52,9 @@ namespace QuestHelper.Managers
 
         internal List<string> GetFilenamesForIndexing(string pathToDCIMDirectory)
         {
-            IEnumerable<string> listFiles = GetListFiles(pathToDCIMDirectory);
+            MediaFileManager mediaFileManager = new MediaFileManager();
+            IEnumerable<string> listFiles = mediaFileManager.GetMediaFilesFromDirectory(new DirectoryInfo(pathToDCIMDirectory)).Select(f=>f.FullName);
+            //IEnumerable<string> listFiles = GetListFiles(pathToDCIMDirectory);
             List<string> listFilesDb = _cacheManager.GetFullFilenames(pathToDCIMDirectory);
             return listFiles.Except(listFilesDb).ToList();
         }
@@ -77,7 +80,7 @@ namespace QuestHelper.Managers
             Analytics.TrackEvent("ImagesCacheDb:Update filenames", new Dictionary<string, string> {{"delay", delay.ToString()}, {"pathToDCIMDirectory", pathToDCIMDirectory}, {"countFiles", countFiles.ToString()} });
         }
 
-        internal IEnumerable<string> GetListFiles(string pathToDCIMDirectory)
+        /*internal IEnumerable<string> GetListFiles(string pathToDCIMDirectory)
         {
             IEnumerable<string> listFiles = new List<string>();
             try
@@ -89,7 +92,7 @@ namespace QuestHelper.Managers
                 Analytics.TrackEvent("GetListFiles", new Dictionary<string, string> { { "path", pathToDCIMDirectory } , { "Error", e.Message } });
             }
             return listFiles;
-        }
+        }*/
 
         internal void UpdateMetadata(string pathToImageDirectory)
         {

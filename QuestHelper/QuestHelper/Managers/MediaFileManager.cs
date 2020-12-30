@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using QuestHelper.LocalDB.Model;
+using FileInfo = System.IO.FileInfo;
 
 namespace QuestHelper.Managers
 {
@@ -35,6 +37,23 @@ namespace QuestHelper.Managers
             catch (Exception)
             {
             }
+        }
+
+        public IEnumerable<FileInfo> GetMediaFilesFromDirectory(DirectoryInfo directory)
+        {
+            IEnumerable<FileInfo> files = new List<FileInfo>();
+            try
+            {
+                files =  directory.GetFiles("*")
+                    .Where(f => f.Name.EndsWith(".jpg") || f.Name.EndsWith(".jpeg") || f.Name.EndsWith(".png") ||
+                                f.Name.EndsWith(".PNG") || f.Name.EndsWith(".JPEG") || f.Name.EndsWith(".JPG"));
+                
+            }
+            catch (Exception e)
+            {
+            }
+
+            return files;
         }
     }
 }

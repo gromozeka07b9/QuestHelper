@@ -109,7 +109,6 @@ namespace QuestHelper.Managers
             }
 
             // Additionally could prompt the user to turn on in settings
-
             return status;
         }
     }
