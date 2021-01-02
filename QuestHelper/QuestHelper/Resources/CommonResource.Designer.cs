@@ -1070,5 +1070,65 @@ namespace QuestHelper.Resources {
                 return ResourceManager.GetString("PoiMsg_ValidationEmptyName", resourceCulture);
             }
         }
+        
+        public static string Settings_Text_FromMainMemory {
+            get {
+                return ResourceManager.GetString("Settings_Text_FromMainMemory", resourceCulture);
+            }
+        }
+        
+        public static string Settings_Text_SourceImages {
+            get {
+                return ResourceManager.GetString("Settings_Text_SourceImages", resourceCulture);
+            }
+        }
+        
+        public static string Settings_Text_ImagesCount {
+            get {
+                return ResourceManager.GetString("Settings_Text_ImagesCount", resourceCulture);
+            }
+        }
+        
+        public static string Settings_Text_FromSelectedSource {
+            get {
+                return ResourceManager.GetString("Settings_Text_FromSelectedSource", resourceCulture);
+            }
+        }
+        
+        public static string AutoRoutes_More {
+            get {
+                return ResourceManager.GetString("AutoRoutes_More", resourceCulture);
+            }
+        }
+        
+        public static string Settings_Text_SourceWithoutImages {
+            get {
+                return ResourceManager.GetString("Settings_Text_SourceWithoutImages", resourceCulture);
+            }
+        }
+        
+        public static string Settings_Text_SourceSelected {
+            get {
+                return ResourceManager.GetString("Settings_Text_SourceSelected", resourceCulture);
+            }
+        }
+        
+        public static string Settings_Text_SelectedSourceWithoutImages {
+            get {
+                return ResourceManager.GetString("Settings_Text_SelectedSourceWithoutImages", resourceCulture);
+            }
+        }
+        
+        public static string AutoRoutes_WarningDefaultImagePath {
+            get {
+                return ResourceManager.GetString("AutoRoutes_WarningDefaultImagePath", resourceCulture);
+            }
+        }
+        
+        public static string CommonMsg_FirstStartDetected {
+            get {
+                return ResourceManager.GetString("CommonMsg_FirstStartDetected", resourceCulture);
+            }
+        }
     }
 }

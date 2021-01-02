@@ -183,8 +183,9 @@ namespace QuestHelper.ViewModel
                 Analytics.TrackEvent("AutoRoute:Try save route in guest mode", new Dictionary<string, string> { });
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    IsShowModalDialog = true;
-                    IsShowWarningGuestMode = true;
+                    //IsShowModalDialog = true;
+                    //IsShowWarningGuestMode = true;
+                    Navigation.PushAsync(new RoutesPage(true));
                 });
             }
         }
@@ -270,7 +271,7 @@ namespace QuestHelper.ViewModel
                     parameterManager.Set("CameraDirectoryFullPath", pathToDCIMDirectory);
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
-                        UserDialogs.Instance.Alert("Путь к вашим фотографиям был определен автоматически. При необходимости, вы можете его поменять в настройках.", "Обнаружен первый запуск", "Ок");
+                        UserDialogs.Instance.Alert(CommonResource.AutoRoutes_WarningDefaultImagePath,CommonResource.CommonMsg_FirstStartDetected, "Ок");
                     });
                 }
 

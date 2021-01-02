@@ -42,14 +42,13 @@ namespace QuestHelper.ViewModel
             _modalParameters = modalParameters;
             BackNavigationCommand = new Command(backNavigationCommand);
             MainMemoryCheckBoxCommand = new Command(mainMemoryCheckBoxCommand);
-            //ExtMemoryCheckBoxCommand = new Command(extMemoryCheckBoxCommand);
             NavigateDirUpCommand = new Command(navigateDirUpCommand);
             ChooseDirCommand = new Command(chooseDirCommand);
         }
 
         private void OnCollectionViewRemainingItemsThresholdReached(object sender, EventArgs e)
         {
-            
+            //пока показываю только первые несколько, для настроек достаточно
         }
         private void chooseDirCommand(object obj)
         {
@@ -57,10 +56,6 @@ namespace QuestHelper.ViewModel
             if (newDir != null)
             {
                 string path = Path.Combine(_pathToImagesDir, newDir.Path);
-                /*if (!path.Contains("/storage/emulated/0") && path.Contains("/storage/emulated"))
-                {
-                    path = path.Replace($"/storage/emulated",$"/storage/emulated/0");
-                } */
                 updateDirContent(new DirectoryInfo(path));   
             }
         }
@@ -185,7 +180,7 @@ namespace QuestHelper.ViewModel
             {
                 if (totalCount == 0)
                 {
-                    var answerYes = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig(){Message = "Вы выбрали источник без фотографий. Отменить изменения?", Title = "Внимание! Нет фотографий", OkText = CommonResource.CommonMsg_Yes, CancelText = CommonResource.CommonMsg_Cancel});
+                    var answerYes = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig(){Message = CommonResource.Settings_Text_SelectedSourceWithoutImages, Title = CommonResource.Settings_Text_SourceWithoutImages, OkText = CommonResource.CommonMsg_Yes, CancelText = CommonResource.CommonMsg_Cancel});
                     if(answerYes)    
                         await Navigation.PopModalAsync();
                 }
@@ -193,7 +188,7 @@ namespace QuestHelper.ViewModel
                 {
                     if (!newPathToImages.Equals(_initDCIMDirectory))
                     {
-                        var answerYes = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig(){Message = "Сохранить изменения?", Title = "Выбран источник фотографий", OkText = CommonResource.CommonMsg_Yes, CancelText = CommonResource.CommonMsg_No});
+                        var answerYes = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig(){Message = CommonResource.CommonMsg_OkAndSave, Title = CommonResource.Settings_Text_SourceSelected, OkText = CommonResource.CommonMsg_Yes, CancelText = CommonResource.CommonMsg_No});
                         if (answerYes)
                         {
                             ParameterManager parameterManager = new ParameterManager();

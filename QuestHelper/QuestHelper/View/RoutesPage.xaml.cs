@@ -21,6 +21,13 @@ namespace QuestHelper.View
 	        _vm = new RoutesViewModel() { Navigation = this.Navigation };
 	        BindingContext = _vm;
 	    }
+	    public RoutesPage(bool authenticateOnly)
+	    {
+		    InitializeComponent();
+		    _vm = new RoutesViewModel() { Navigation = this.Navigation };
+		    _vm.AuthenticateOnly = authenticateOnly;
+		    BindingContext = _vm;
+	    }
 	    public RoutesPage(ShareFromGoogleMapsMessage msg)
 	    {
 	        InitializeComponent();
@@ -34,17 +41,7 @@ namespace QuestHelper.View
 			bool auth = _vm.IsAutorizedMode;
             _vm.startDialog();
             _vm.RefreshListRoutesCommand.Execute(new object());
-			//SyncAnimation.IsVisible = false;
-			/*if (_vm.IsVisibleProgress)
-			{
-				SyncAnimation.Play();//Какой-то глюк есть - когда анимация уходит в невидимую область списка, при возврате она уже не работает, приходится повторно пинать
-			}
-			else
-			{
-				SyncAnimation.Pause();
-			}*/
-
-		}
+        }
 
 		private void RoutesPage_OnDisappearing(object sender, EventArgs e)
 	    {

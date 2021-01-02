@@ -223,9 +223,6 @@
                                </Frame.Triggers>
                                <StackLayout>
                                     <StackLayout x:Name="StackLayoutItem" Margin="0" HeightRequest="50" Orientation="Horizontal" HorizontalOptions="Fill" VerticalOptions="FillAndExpand">
-                                            <!--StackLayout.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding BindingContext.ShowImagesPreviewPointCommand, Source={x:Reference sfListRoutePoints}}" CommandParameter="{Binding .}"></TapGestureRecognizer>
-                                            </-->
                                         <CollectionView x:Name="CollectionViewImagesFirst" InputTransparent="True"  ItemsSource="{Binding ImagesOnlyFirstThree}" >
                                             <CollectionView.ItemsLayout>
                                                 <LinearItemsLayout Orientation="Horizontal"></LinearItemsLayout>
@@ -251,7 +248,13 @@
                                             <Label HorizontalOptions="Center">
                                                 <Label.FormattedText>
                                                     <FormattedString>           
-                                                        <Span Text="Еще " FontSize="8" FontAttributes="None"></Span>
+                                                        <Span Text="{lang:Translation AutoRoutes_More}" FontSize="8" FontAttributes="None"></Span>
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                            <Label HorizontalOptions="Center">
+                                                <Label.FormattedText>
+                                                    <FormattedString>           
                                                         <Span Text="{Binding CountImagesMoreThree}" FontSize="8" FontAttributes="Bold"></Span>
                                                     </FormattedString>
                                                 </Label.FormattedText>

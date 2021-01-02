@@ -615,4 +615,34 @@ Ihre Routen, speichern Sie Ihre Eindrücke!</value>
   <data name="PoiMsg_ValidationEmptyName" xml:space="preserve">
     <value>Bitte geben Sie den Namen des Punktes auf der Karte an</value>
   </data>
+  <data name="AutoRoutes_More" xml:space="preserve">
+    <value>Mehr</value>
+  </data>
+  <data name="Settings_Text_FromMainMemory" xml:space="preserve">
+    <value>Haupterinnerung</value>
+  </data>
+  <data name="Settings_Text_FromSelectedSource" xml:space="preserve">
+    <value>Ausgewählte Quelle</value>
+  </data>
+  <data name="Settings_Text_ImagesCount" xml:space="preserve">
+    <value>Gefundene Bilder:</value>
+  </data>
+  <data name="Settings_Text_SelectedSourceWithoutImages" xml:space="preserve">
+    <value>Ausgewählte Bildquelle ohne Bilder. Änderungen abbrechen?</value>
+  </data>
+  <data name="Settings_Text_SourceImages" xml:space="preserve">
+    <value>Quelle für Bilder in neuen Alben:</value>
+  </data>
+  <data name="Settings_Text_SourceSelected" xml:space="preserve">
+    <value>Bildquelle ausgewählt</value>
+  </data>
+  <data name="Settings_Text_SourceWithoutImages" xml:space="preserve">
+    <value>Warnung! Es gibt keine Bilder!</value>
+  </data>
+  <data name="AutoRoutes_WarningDefaultImagePath" xml:space="preserve">
+    <value>Der Pfad zu Ihren Fotos wurde automatisch festgelegt. Bei Bedarf können Sie dies auf dem Einstellungsbildschirm ändern.</value>
+  </data>
+  <data name="CommonMsg_FirstStartDetected" xml:space="preserve">
+    <value>Erster Start erkannt</value>
+  </data>
 </root>

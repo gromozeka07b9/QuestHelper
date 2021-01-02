@@ -636,4 +636,34 @@ Las coordenadas se usan solo al crear sus waypoints.</value>
   <data name="PoiMsg_ValidationEmptyName" xml:space="preserve">
     <value>Indique el nombre del punto en el mapa.</value>
   </data>
+  <data name="AutoRoutes_More" xml:space="preserve">
+    <value>más</value>
+  </data>
+  <data name="Settings_Text_FromMainMemory" xml:space="preserve">
+    <value>Memoria principal</value>
+  </data>
+  <data name="Settings_Text_FromSelectedSource" xml:space="preserve">
+    <value>Fuente seleccionada</value>
+  </data>
+  <data name="Settings_Text_ImagesCount" xml:space="preserve">
+    <value>Imágenes encontradas:</value>
+  </data>
+  <data name="Settings_Text_SelectedSourceWithoutImages" xml:space="preserve">
+    <value>Fuente de imágenes seleccionadas sin imágenes. ¿Cancelar cambios?</value>
+  </data>
+  <data name="Settings_Text_SourceImages" xml:space="preserve">
+    <value>Fuente de imágenes en álbumes nuevos:</value>
+  </data>
+  <data name="Settings_Text_SourceSelected" xml:space="preserve">
+    <value>Fuente de imágenes seleccionada</value>
+  </data>
+  <data name="Settings_Text_SourceWithoutImages" xml:space="preserve">
+    <value>¡Advertencia! ¡No hay imágenes!</value>
+  </data>
+  <data name="AutoRoutes_WarningDefaultImagePath" xml:space="preserve">
+    <value>La ruta a sus fotos se ha determinado automáticamente. Si es necesario, puede cambiarlo en la pantalla de configuración.</value>
+  </data>
+  <data name="CommonMsg_FirstStartDetected" xml:space="preserve">
+    <value>Primer lanzamiento detectado</value>
+  </data>
 </root>

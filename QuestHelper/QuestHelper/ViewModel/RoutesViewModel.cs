@@ -57,7 +57,6 @@ namespace QuestHelper.ViewModel
         {
             AddNewRouteCommand = new Command(addNewRouteCommandAsync);
             RefreshListRoutesCommand = new Command(refreshListRoutesCommand);
-            //SyncStartCommand = new Command(syncStartCommand);
             AuthorizationCommand = new Command(authorizationCommand);
 
         }
@@ -97,9 +96,11 @@ namespace QuestHelper.ViewModel
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Username"));
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Email"));
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("UserImgUrl"));
+                    if(AuthenticateOnly) Navigation.PopAsync();
                 }
             });
             await updateUserInfo();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsAutorizedMode"));
         }
 
         private async Task updateUserInfo()
@@ -170,10 +171,8 @@ namespace QuestHelper.ViewModel
         {
             await Navigation.PushAsync(new NewRoutePage(!Routes.Any()));
         }
-        /*private void syncStartCommand(object obj)
-        {
-            Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
-        }*/
+
+        public bool AuthenticateOnly { get; set; }
 
         public double ProgressValue
         {

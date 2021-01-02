@@ -636,4 +636,34 @@ Coordinates are used only when creating your waypoints.</value>
   <data name="PoiMsg_ValidationEmptyName" xml:space="preserve">
     <value>Пожалуйста укажите название точки на карте</value>
   </data>
+  <data name="Settings_Text_FromMainMemory" xml:space="preserve">
+    <value>Main memory</value>
+  </data>
+  <data name="Settings_Text_SourceImages" xml:space="preserve">
+    <value>Source for images in new albums:</value>
+  </data>
+  <data name="Settings_Text_ImagesCount" xml:space="preserve">
+    <value>Found images:</value>
+  </data>
+  <data name="Settings_Text_FromSelectedSource" xml:space="preserve">
+    <value>Selected source</value>
+  </data>
+  <data name="AutoRoutes_More" xml:space="preserve">
+    <value>More</value>
+  </data>
+  <data name="Settings_Text_SourceWithoutImages" xml:space="preserve">
+    <value>Warning! There no images!</value>
+  </data>
+  <data name="Settings_Text_SourceSelected" xml:space="preserve">
+    <value>Images source selected</value>
+  </data>
+  <data name="Settings_Text_SelectedSourceWithoutImages" xml:space="preserve">
+    <value>Selected images source without images. Cancel changes?</value>
+  </data>
+  <data name="AutoRoutes_WarningDefaultImagePath" xml:space="preserve">
+    <value>The path to your photos has been determined automatically. If necessary, you can change it on the settings screen.</value>
+  </data>
+  <data name="CommonMsg_FirstStartDetected" xml:space="preserve">
+    <value>First launch detected</value>
+  </data>
 </root>

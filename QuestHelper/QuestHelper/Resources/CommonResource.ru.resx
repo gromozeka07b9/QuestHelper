@@ -636,4 +636,34 @@
   <data name="PoiMsg_ValidationEmptyName" xml:space="preserve">
     <value>Пожалуйста укажите название точки на карте</value>
   </data>
+  <data name="Settings_Text_FromMainMemory" xml:space="preserve">
+    <value>Основная память</value>
+  </data>
+  <data name="Settings_Text_SourceImages" xml:space="preserve">
+    <value>Источник фотографий для создания альбомов:</value>
+  </data>
+  <data name="Settings_Text_ImagesCount" xml:space="preserve">
+    <value>Найдено фотографий:</value>
+  </data>
+  <data name="Settings_Text_FromSelectedSource" xml:space="preserve">
+    <value>Выбранное вами расположение</value>
+  </data>
+  <data name="AutoRoutes_More" xml:space="preserve">
+    <value>Ещё</value>
+  </data>
+  <data name="Settings_Text_SourceWithoutImages" xml:space="preserve">
+    <value>Внимание! Нет фотографий!</value>
+  </data>
+  <data name="Settings_Text_SourceSelected" xml:space="preserve">
+    <value>Выбран источник фотографий</value>
+  </data>
+  <data name="Settings_Text_SelectedSourceWithoutImages" xml:space="preserve">
+    <value>Вы выбрали источник без фотографий. Отменить изменения?</value>
+  </data>
+  <data name="AutoRoutes_WarningDefaultImagePath" xml:space="preserve">
+    <value>Путь к вашим фотографиям был определен автоматически. При необходимости, вы можете его поменять на экране настроек.</value>
+  </data>
+  <data name="CommonMsg_FirstStartDetected" xml:space="preserve">
+    <value>Обнаружен первый запуск</value>
+  </data>
 </root>

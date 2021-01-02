@@ -130,7 +130,7 @@ namespace QuestHelper.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("FeedItems"));
             if (FeedItems?.Count() == 0)
             {
-                Device.StartTimer(TimeSpan.FromSeconds(3), OnTimerForUpdate);
+                Device.StartTimer(TimeSpan.FromSeconds(5), OnTimerForUpdate);
             }
 
             NoItemsWarningIsVisible = FeedItems?.Count() == 0;
@@ -239,7 +239,7 @@ namespace QuestHelper.ViewModel
         private bool OnTimerForUpdate()
         {
             _countOfUpdateListByTimer++;
-            if ((_countOfUpdateListByTimer > 2) || (FeedItems.Count() > 0))
+            if ((_countOfUpdateListByTimer > 3) || (FeedItems.Any()))
             {
                 _countOfUpdateListByTimer = 0;
             }

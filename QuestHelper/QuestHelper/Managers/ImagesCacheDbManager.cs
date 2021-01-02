@@ -80,20 +80,6 @@ namespace QuestHelper.Managers
             Analytics.TrackEvent("ImagesCacheDb:Update filenames", new Dictionary<string, string> {{"delay", delay.ToString()}, {"pathToDCIMDirectory", pathToDCIMDirectory}, {"countFiles", countFiles.ToString()} });
         }
 
-        /*internal IEnumerable<string> GetListFiles(string pathToDCIMDirectory)
-        {
-            IEnumerable<string> listFiles = new List<string>();
-            try
-            {
-                listFiles = System.IO.Directory.EnumerateFiles(pathToDCIMDirectory, "*.jpg", SearchOption.TopDirectoryOnly);
-            }
-            catch (Exception e)
-            {
-                Analytics.TrackEvent("GetListFiles", new Dictionary<string, string> { { "path", pathToDCIMDirectory } , { "Error", e.Message } });
-            }
-            return listFiles;
-        }*/
-
         internal void UpdateMetadata(string pathToImageDirectory)
         {
             var startDate = DateTime.Now;
