@@ -15,6 +15,8 @@ namespace QuestHelper.WS
 {
     public class ApiRequest
     {
+        //static readonly HttpClient httpClient = new HttpClient(); ToDo: Переделать на GetAsync!
+
         private HttpStatusCode _lastHttpStatusCode = 0;
         public ApiRequest()
         {
@@ -39,7 +41,7 @@ namespace QuestHelper.WS
                     {
                         using (var reader = new StreamReader(stream))
                         {
-                            result = await reader.ReadToEndAsync();
+                            result = reader.ReadToEnd();
                             _lastHttpStatusCode = webresponse.StatusCode;
                         }
                     }
@@ -56,6 +58,28 @@ namespace QuestHelper.WS
             }
             return result;
         }
+
+        //ToDo: Переделать на httpClient! Сейчас запросы GET СИНХРОННЫЕ!!!
+        /*public async Task<string> HttpRequestGET(string url, string authToken)
+        {
+            string result = string.Empty;
+            try
+            {
+                httpClient.DefaultRequestHeaders.Clear();
+                httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + authToken);
+                HttpResponseMessage response = await httpClient.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+                }
+                _lastHttpStatusCode = response.StatusCode;
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("ApiRequest", "HttpRequestGET", e, false);
+            }
+            return result;
+        }*/
 
         public async Task<bool> HttpRequestGetFile(string url, string fullNameFile, string authToken)
         {
