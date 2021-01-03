@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="QuestHelper.View.SettingsPage"
-             xmlns:system="clr-namespace:System;assembly=netstandard"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:converters="clr-namespace:QuestHelper.View.Converters;assembly=QuestHelper"
              xmlns:vm="clr-namespace:QuestHelper.ViewModel;assembly=QuestHelper"
@@ -20,7 +19,7 @@
                 <RowDefinition Height="40"></RowDefinition>
                 <RowDefinition Height="40"></RowDefinition>
                 <RowDefinition Height="2*"></RowDefinition>
-                <RowDefinition Height="8*"></RowDefinition>
+                <RowDefinition Height="10*"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*"></ColumnDefinition>
@@ -41,27 +40,23 @@
             <Frame Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="1" BackgroundColor="LightBlue" Padding="5" CornerRadius="10" Margin="10,0,10,5" BorderColor="Blue">
                 <StackLayout>
                     <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Margin="5,0,5,0">
-                        <Label VerticalOptions="Center" HorizontalOptions="Fill" HorizontalTextAlignment="Start">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="{resources:Translation Settings_Text_FromMainMemory}" FontSize="15" FontAttributes="Bold"></Span>
-                                    <Span Text="{x:Static system:Environment.NewLine}"></Span>
-                                    <Span Text="{Binding PathToDefaultDCIM}" FontSize="12" FontAttributes="None" TextDecorations="Underline" ></Span>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                        <StackLayout HorizontalOptions="FillAndExpand"></StackLayout>
+                        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                            <Label Text="{resources:Translation Settings_Text_FromMainMemory}" FontSize="15" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Fill" HorizontalTextAlignment="Start">
+                            </Label>                            
+                            <Label Text="{Binding PathToDefaultDCIM}" FontSize="12" TextDecorations="Underline" VerticalOptions="Center" HorizontalOptions="Fill" HorizontalTextAlignment="Start">
+                            </Label>                            
+                        </StackLayout>
                         <CheckBox VerticalOptions="Center" HorizontalOptions="End" WidthRequest="48" HeightRequest="48" IsChecked="{Binding IsUsageMainMemory}">
                             <CheckBox.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding MainMemoryCheckBoxCommand}"></TapGestureRecognizer>
                             </CheckBox.GestureRecognizers>
                         </CheckBox>
                     </StackLayout>
-                    <StackLayout Margin="5,0,5,0">
+                    <StackLayout Margin="5,0,5,0" VerticalOptions="Center">
                        <Label>
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="{resources:Translation Settings_Text_ImagesCount}" FontSize="12" FontAttributes="None"></Span>
+                                    <Span Text="{resources:Translation Settings_Text_ImagesCount}" FontSize="14" FontAttributes="None"></Span>
                                     <Span Text="{Binding CountOfPhotoDefaultDCIM}" FontSize="16" FontAttributes="Bold"></Span>
                                 </FormattedString>
                             </Label.FormattedText>
@@ -72,24 +67,23 @@
             <Frame Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="1" BackgroundColor="LightBlue" Padding="5" CornerRadius="10" Margin="10,0,10,5" BorderColor="Blue" IsVisible="{Binding IsUsageMainMemory, Converter={StaticResource inverter}}">
                 <StackLayout>
                     <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Margin="5,0,5,0">
-                        <Label VerticalOptions="Center" HorizontalOptions="Fill" HorizontalTextAlignment="Start">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="{resources:Translation Settings_Text_FromSelectedSource}" FontSize="15" FontAttributes="Bold"></Span>
-                                    <Span Text="{x:Static system:Environment.NewLine}"></Span>
-                                    <Span Text="{Binding PathToCustomDCIM}" FontSize="12" FontAttributes="None" TextDecorations="Underline" ></Span>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                        <StackLayout HorizontalOptions="FillAndExpand"></StackLayout>
+                        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                            <Label Text="{resources:Translation Settings_Text_FromSelectedSource}" FontSize="15" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Fill" HorizontalTextAlignment="Start">
+                            </Label>                            
+                            <Label Text="{Binding PathToCustomDCIM}" FontSize="12" TextDecorations="Underline" VerticalOptions="Center" HorizontalOptions="Fill" HorizontalTextAlignment="Start">
+                            </Label>                            
+                        </StackLayout>
                         <CheckBox VerticalOptions="Center" HorizontalOptions="End" WidthRequest="48" HeightRequest="48" IsChecked="True" IsEnabled="False">
+                            <CheckBox.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding MainMemoryCheckBoxCommand}"></TapGestureRecognizer>
+                            </CheckBox.GestureRecognizers>
                         </CheckBox>
                     </StackLayout>
                     <StackLayout Margin="5,0,5,0">
                        <Label>
                             <Label.FormattedText>
                                 <FormattedString>           
-                                    <Span Text="{resources:Translation Settings_Text_ImagesCount}" FontSize="12" FontAttributes="None"></Span>
+                                    <Span Text="{resources:Translation Settings_Text_ImagesCount}" FontSize="14" FontAttributes="None"></Span>
                                     <Span Text="{Binding CountOfPhotoCustomDCIM}" FontSize="16" FontAttributes="Bold"></Span>
                                 </FormattedString>
                             </Label.FormattedText>

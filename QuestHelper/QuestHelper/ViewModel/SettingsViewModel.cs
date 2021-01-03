@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Acr.UserDialogs;
-using Plugin.Permissions;
+using Microsoft.AppCenter.Analytics;
 using QuestHelper.Managers;
-using QuestHelper.Model.Messages;
 using QuestHelper.Resources;
 using Syncfusion.DataSource.Extensions;
 using Xamarin.Essentials;
@@ -150,9 +147,11 @@ namespace QuestHelper.ViewModel
             }
             catch (IOException ioException)
             {
+                HandleError.Process("Settings", "getDirContent", ioException, false, currentDirectory.FullName);
             }
             catch (UnauthorizedAccessException e)
             {
+                HandleError.Process("Settings", "getDirContent", e, false, currentDirectory.FullName);
             }
             return (files, dirs, userHaveAccess);
         }
@@ -194,6 +193,7 @@ namespace QuestHelper.ViewModel
                             ParameterManager parameterManager = new ParameterManager();
                             parameterManager.Set("CameraDirectoryFullPath", newPathToImages);
                             _modalParameters.SettingsIsModified = true;
+                            Analytics.TrackEvent("Settings: path changed", new Dictionary<string, string>{{"new path", newPathToImages}});
                         }                        
                     }
                     await Navigation.PopModalAsync();

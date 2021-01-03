@@ -135,7 +135,7 @@ namespace QuestHelper.Droid
             }
         }
 
-        protected override async void OnMapReady(Android.Gms.Maps.GoogleMap map)
+        protected override void OnMapReady(Android.Gms.Maps.GoogleMap map)
         {
             map.MapClick += Map_MapClick;
             NativeMap.InfoWindowClick += OnInfoWindowClick;
@@ -195,7 +195,7 @@ namespace QuestHelper.Droid
                 {
                     NativeMap.MoveCamera(CameraUpdateFactory.NewLatLngBounds(bounds.Build(), 100));
                 }
-                catch (Java.Lang.Exception e)
+                catch (Java.Lang.Exception)
                 {
 
                 }
@@ -228,7 +228,7 @@ namespace QuestHelper.Droid
                 //Rect rectDest = new Rect(0, 0, sbmp.Width, sbmp.Height);
                 canvas.DrawBitmap(sbmp, rect, rect, paint);
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
             }
             return output;

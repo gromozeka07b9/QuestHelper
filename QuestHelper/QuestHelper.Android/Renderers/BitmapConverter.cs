@@ -42,7 +42,7 @@ namespace QuestHelper.Droid.Renderers
                 Rect rect = new Rect(0, 0, sbmp.Width, sbmp.Height);
                 canvas.DrawBitmap(sbmp, rect, rect, paint);
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
             }
 

@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using System.ComponentModel;
 using System.Windows.Input;
-using Plugin.Permissions;
-using Plugin.Permissions.Abstractions;
 using QuestHelper.Managers;
-using QuestHelper.Model.Messages;
 using QuestHelper.Resources;
-using QuestHelper.View;
 using Xamarin.Forms;
 
 namespace QuestHelper.ViewModel

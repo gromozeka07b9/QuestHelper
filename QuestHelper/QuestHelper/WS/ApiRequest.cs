@@ -39,7 +39,7 @@ namespace QuestHelper.WS
                     {
                         using (var reader = new StreamReader(stream))
                         {
-                            result = reader.ReadToEnd();
+                            result = await reader.ReadToEndAsync();
                             _lastHttpStatusCode = webresponse.StatusCode;
                         }
                     }

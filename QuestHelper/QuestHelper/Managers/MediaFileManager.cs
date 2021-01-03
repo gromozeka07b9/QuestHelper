@@ -51,6 +51,7 @@ namespace QuestHelper.Managers
             }
             catch (Exception e)
             {
+                HandleError.Process("MediaFileManager", "GetMediaFilesFromDirectory", e, false, directory.FullName);
             }
 
             return files;

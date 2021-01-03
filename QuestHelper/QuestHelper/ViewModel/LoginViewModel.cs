@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Acr.UserDialogs;
@@ -15,7 +13,6 @@ using QuestHelper.OAuth;
 using QuestHelper.Resources;
 using QuestHelper.View;
 using QuestHelper.WS;
-using Xamarin.Auth;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using static QuestHelper.WS.AccountApiRequest;
@@ -158,7 +155,7 @@ namespace QuestHelper.ViewModel
             else
             {
                 Analytics.TrackEvent("Login OAuth error", new Dictionary<string, string> { { "Username", _username } });
-                MainThread.BeginInvokeOnMainThread(async () =>
+                MainThread.BeginInvokeOnMainThread(() =>
                 {
                     UserDialogs.Instance.Alert(CommonResource.Login_AuthError, CommonResource.CommonMsg_Warning, "Ок");
                 });

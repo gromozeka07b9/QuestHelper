@@ -1,19 +1,8 @@
-﻿using Plugin.Geolocator;
-using QuestHelper.Managers;
-using QuestHelper.LocalDB.Model;
+﻿using QuestHelper.Managers;
 using QuestHelper.View;
-using QuestHelper.WS;
-using Realms;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 using QuestHelper.Model;
 using QuestHelper.Resources;
 
@@ -31,7 +20,6 @@ namespace QuestHelper.ViewModel
         public RouteCreatedViewModel(string routeId)
         {
             _vroute = new ViewRoute(routeId);
-            //_vroute.Load(routeId);
             OpenRoutePointDialogCommand = new Command(openRoutePointDialog);
         }
 

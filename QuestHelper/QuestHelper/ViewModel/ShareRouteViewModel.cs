@@ -1,14 +1,11 @@
-﻿using Acr.UserDialogs;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using QuestHelper.Model;
 using QuestHelper.Model.WS;
 using QuestHelper.Resources;
 using QuestHelper.WS;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 

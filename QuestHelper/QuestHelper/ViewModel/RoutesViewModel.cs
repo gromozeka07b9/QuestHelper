@@ -1,20 +1,14 @@
 ﻿using QuestHelper.Managers;
-using QuestHelper.Managers;
-using QuestHelper.LocalDB.Model;
 using QuestHelper.View;
 using QuestHelper.WS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 using QuestHelper.Model.Messages;
 using QuestHelper.Model;
-using Acr.UserDialogs;
-using Xamarin.Essentials;
 using System.Threading.Tasks;
 
 namespace QuestHelper.ViewModel

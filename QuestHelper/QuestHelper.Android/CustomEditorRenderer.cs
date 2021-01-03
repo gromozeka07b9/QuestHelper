@@ -22,7 +22,6 @@ namespace QuestHelper.Droid
 {
     public class CustomEditorRenderer : EditorRenderer
     {
-        private bool _inititialized = false;
         public CustomEditorRenderer(Context context) : base(context)
         {
         }

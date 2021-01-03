@@ -33,16 +33,15 @@ namespace QuestHelper.Managers
         internal string GetPathToCameraDirectory()
         {
             string pathToDCIMDirectory = DependencyService.Get<IPathService>().GetLastUsedDCIMPath();
-            MediaFileManager mediaFileManager = new MediaFileManager();
-            if(mediaFileManager.GetMediaFilesFromDirectory(new DirectoryInfo(pathToDCIMDirectory)).Any())
+            if (!string.IsNullOrEmpty(pathToDCIMDirectory))
             {
-                return pathToDCIMDirectory;
-            } else
-            {
-                pathToDCIMDirectory = DependencyService.Get<IPathService>().PublicDirectoryDcim + "/Camera";
+                MediaFileManager mediaFileManager = new MediaFileManager();
+                if(mediaFileManager.GetMediaFilesFromDirectory(new DirectoryInfo(pathToDCIMDirectory)).Any())
+                {
+                    return pathToDCIMDirectory;
+                }                
             }
-            return pathToDCIMDirectory;
-
+            return DependencyService.Get<IPathService>().PublicDirectoryDcim + "/Camera";
         }
 
         internal string GetPublicDirectoryDcim()

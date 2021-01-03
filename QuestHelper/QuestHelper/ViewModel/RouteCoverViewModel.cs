@@ -1,16 +1,11 @@
-﻿using QuestHelper.LocalDB.Model;
-using QuestHelper.Managers;
-using QuestHelper.Managers.Sync;
+﻿using QuestHelper.Managers;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
 using QuestHelper.Resources;
 using QuestHelper.View;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -23,7 +18,6 @@ namespace QuestHelper.ViewModel
 
         private RoutePointManager _routePointManager = new RoutePointManager();
         private ViewRoute _vroute;
-        private ViewRoutePoint _pointItem;
         private readonly string _routeId;
         private string _creatorName;
         private double _progressValue;

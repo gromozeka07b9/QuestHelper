@@ -26,8 +26,6 @@ namespace QuestHelper.Droid
             //ToDo:Этот вариант есть смысл использовать вместо Chrome, как сейчас!
             //var intent = Android.Gms.Common.AccountPicker.NewChooseAccountIntent(null, null, new String[] { "com.google" }, false, null, null, null, null);
             FormsAppCompatActivity activity = CrossCurrentActivity.Current.Activity as FormsAppCompatActivity;
-            //activity.StartActivityForResult(intent, 0);
-            //FormsAppCompatActivity activity = CrossCurrentActivity.Current.Activity as FormsAppCompatActivity;
             AccountManager manager = AccountManager.Get(activity);
             Account[] accounts = manager.GetAccountsByType("com.google");
             if (accounts.Length > 0)

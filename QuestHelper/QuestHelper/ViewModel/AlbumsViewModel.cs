@@ -3,11 +3,9 @@ using QuestHelper.Model;
 using QuestHelper.Model.Messages;
 using QuestHelper.Resources;
 using QuestHelper.View;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 

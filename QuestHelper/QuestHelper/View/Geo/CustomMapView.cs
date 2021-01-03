@@ -16,12 +16,10 @@ namespace QuestHelper.View.Geo
     {
         IGeolocator _locator = CrossGeolocator.Current;
         CustomMap _customMapView;
-        Plugin.Geolocator.Abstractions.Position _currentPosition;
         int _timeoutInSeconds = 15;
         private string _lastError = string.Empty;
 
         public string LastError { get => _lastError;}
-        public Plugin.Geolocator.Abstractions.Position CurrentPosition { get => _currentPosition;}
         public List<Xamarin.Forms.Maps.Position> RouteCoordinates { get; set; }
 
         public CustomMapView(CustomMap customMapView, int timeoutInSeconds)
@@ -46,30 +44,6 @@ namespace QuestHelper.View.Geo
             }
             return result;
         }
-        /*public async Task<bool> GetPositionAsync()
-        {
-            bool result = false;
-            _lastError = string.Empty;
-            if ((_locator.IsGeolocationAvailable)&&(_locator.IsGeolocationEnabled))
-            {
-                try
-                {
-                    _currentPosition = await _locator.GetPositionAsync(TimeSpan.FromSeconds(_timeoutInSeconds));
-                    ParameterManager par = new ParameterManager();
-                    par.Set("LastPositionLatitude", _currentPosition.Latitude.ToString());
-                    par.Set("LastPositionLongitude", _currentPosition.Longitude.ToString());
-                    result = true;
-                }
-                catch (Exception)
-                {
-                    _lastError = "Ошибка определения позиции. Убедитесь, что сервис геолокации включен и попробуйте еще раз.";
-                }
-            } else
-            {
-                _lastError = "Сервис геолокации недоступен. Убедитесь, что он включен и попробуйте еще раз.";
-            }
-            return result;
-        }*/
 
         public void ClearPins()
         {

@@ -66,7 +66,7 @@ namespace QuestHelper.Droid.Renderers
             _currentZoomLevel = map.CameraPosition.Zoom;
         }
 
-        protected override async void OnMapReady(Android.Gms.Maps.GoogleMap map)
+        protected override void OnMapReady(Android.Gms.Maps.GoogleMap map)
         {
             base.OnMapReady(map);
             NativeMap.CameraIdle += NativeMap_CameraIdle;

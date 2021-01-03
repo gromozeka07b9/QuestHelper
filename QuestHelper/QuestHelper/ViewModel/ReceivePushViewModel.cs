@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using System.ComponentModel;
 using System.Windows.Input;
-using Acr.UserDialogs;
-using Microsoft.AppCenter.Analytics;
-using QuestHelper.Model;
-using QuestHelper.Model.Messages;
 using QuestHelper.Resources;
 using Xamarin.Forms;
 
