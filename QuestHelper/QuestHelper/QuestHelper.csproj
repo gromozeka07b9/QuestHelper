@@ -23,8 +23,8 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Plugin.Permissions" Version="6.0.1" />
     <PackageReference Include="Realm.Database" Version="3.4.0" />
-    <PackageReference Include="Syncfusion.Xamarin.SfChart" Version="18.2.0.59" />
-    <PackageReference Include="Syncfusion.Xamarin.SfProgressBar" Version="18.2.0.59" />
+    <PackageReference Include="Syncfusion.Xamarin.SfChart" Version="18.4.0.32" />
+    <PackageReference Include="Syncfusion.Xamarin.SfProgressBar" Version="18.4.0.32" />
     <PackageReference Include="Xam.Plugin.Geolocator" Version="4.5.0.6" />
     <PackageReference Include="Xam.Plugin.Media" Version="5.0.1" />
     <PackageReference Include="Xam.Plugins.Forms.ImageCircle" Version="3.0.0.5" />
@@ -35,7 +35,7 @@
     <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1451" />
     <PackageReference Include="Xamarin.Forms.Maps" Version="4.8.0.1451" />
-    <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="18.2.0.59" />
+    <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="18.4.0.32" />
     <PackageReference Include="QuestHelper.SharedModelsWS" Version="1.1.0" />
   </ItemGroup>
   <ItemGroup>
