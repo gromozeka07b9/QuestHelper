@@ -7,15 +7,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using Autofac;
+using Xamarin.Forms;
 
 namespace QuestHelper.WS
 {
     public class FeedApiRequest : IHTTPStatusCode
     {
-        private const string _apiUrl = "http://igosh.pro/api";
-        private const string _feedCacheId = "FeedApiCache";
-        //private IMemoryCache _memoryCache;
-        private string _authToken = string.Empty;
+        //private const string _apiUrl = "http://igosh.pro/api";
+        //private const string _feedCacheId = "FeedApiCache";
+        private readonly IServerRequest _serverRequest = App.Container.Resolve<IServerRequest>();
+
+        private readonly string _authToken;
 
         public HttpStatusCode LastHttpStatusCode;
 
@@ -23,7 +26,6 @@ namespace QuestHelper.WS
         public FeedApiRequest(string authToken)
         {
             _authToken = authToken;
-            //_memoryCache = App.Container.Resolve<IMemoryCache>();
         }
 
         public async Task<List<FeedItem>> GetFeed()
@@ -44,9 +46,8 @@ namespace QuestHelper.WS
         {
             try
             {
-                ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{_apiUrl}/feed", _authToken);
-                LastHttpStatusCode = api.LastHttpStatusCode;
+                var response = await _serverRequest.HttpRequestGet("/api/feed", _authToken);
+                LastHttpStatusCode = _serverRequest.GetLastStatusCode();
                 return JsonConvert.DeserializeObject<List<FeedItem>>(response);
             }
             catch (Exception e)
@@ -68,9 +69,8 @@ namespace QuestHelper.WS
                 {
                     try
                     {
-                        ApiRequest api = new ApiRequest();
-                        result = await api.HttpRequestGetFile(imgUrl, pathToMediaFile, _authToken);
-                        LastHttpStatusCode = api.LastHttpStatusCode;
+                        result = await _serverRequest.HttpRequestGetFile(imgUrl, pathToMediaFile, _authToken);
+                        LastHttpStatusCode = _serverRequest.GetLastStatusCode();
                         if (LastHttpStatusCode != HttpStatusCode.OK)
                         {
                             UserDialogs.Instance.Toast("Error downloading cover image");

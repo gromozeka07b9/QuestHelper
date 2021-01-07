@@ -13,10 +13,9 @@ using Newtonsoft.Json.Linq;
 
 namespace QuestHelper.WS
 {
+    [Obsolete("Use ServerRequest with System.Net.Http")]
     public class ApiRequest
     {
-        //static readonly HttpClient httpClient = new HttpClient(); ToDo: Переделать на GetAsync!
-
         private HttpStatusCode _lastHttpStatusCode = 0;
         public ApiRequest()
         {
@@ -58,70 +57,7 @@ namespace QuestHelper.WS
             }
             return result;
         }
-
-        //ToDo: Переделать на httpClient! Сейчас запросы GET СИНХРОННЫЕ!!!
-        /*public async Task<string> HttpRequestGET(string url, string authToken)
-        {
-            string result = string.Empty;
-            try
-            {
-                httpClient.DefaultRequestHeaders.Clear();
-                httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + authToken);
-                HttpResponseMessage response = await httpClient.GetAsync(url);
-                if (response.IsSuccessStatusCode)
-                {
-                    result = await response.Content.ReadAsStringAsync();
-                }
-                _lastHttpStatusCode = response.StatusCode;
-            }
-            catch (Exception e)
-            {
-                HandleError.Process("ApiRequest", "HttpRequestGET", e, false);
-            }
-            return result;
-        }*/
-
-        public async Task<bool> HttpRequestGetFile(string url, string fullNameFile, string authToken)
-        {
-            _lastHttpStatusCode = 0;
-            bool result = false;
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(new Uri(url));
-            request.Method = "GET";
-            request.Headers.Add("Authorization", "Bearer " + authToken);
-            request.PreAuthenticate = !string.IsNullOrEmpty(authToken);
-
-            try
-            {
-                using (WebResponse response = await request.GetResponseAsync())
-                {
-                    var webresponse = (HttpWebResponse)response;
-                    
-                    using (System.IO.Stream stream = response.GetResponseStream())
-                    {
-                        if (stream != null)
-                        {
-                            using (FileStream outputfile = File.Create(fullNameFile))
-                            {
-                                stream.CopyTo(outputfile);
-                                _lastHttpStatusCode = webresponse.StatusCode;
-                                result = true;
-                            }
-                        }
-                    }
-                }
-            }
-            catch (WebException webException)
-            {
-                _lastHttpStatusCode = ((HttpWebResponse)webException.Response).StatusCode;
-                HandleError.Process("ApiRequest", "HttpRequestGETFile", webException, false, $"Fullnamefile:{fullNameFile}");
-            }
-            catch (Exception e)
-            {
-                HandleError.Process("ApiRequest", "HttpRequestGETFile", e, false, $"Fullnamefile:{fullNameFile}");
-            }
-            return result;
-        }
-
+        
         public async Task<string> HttpRequestPOST(string url, string parameters, string authToken)
         {
             _lastHttpStatusCode = 0;

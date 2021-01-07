@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
+using Autofac;
 using QuestHelper.LocalDB.Model;
 using Newtonsoft.Json.Linq;
 using QuestHelper.Managers;
@@ -24,6 +25,8 @@ namespace QuestHelper.WS
         private string _hostUrl = string.Empty;
         private string _authToken = string.Empty;
         public HttpStatusCode LastHttpStatusCode;
+        private readonly IServerRequest _serverRequest = App.Container.Resolve<IServerRequest>();
+
         public RoutePointMediaObjectRequest(string hostUrl, string authToken)
         {
             _hostUrl = hostUrl;
@@ -34,10 +37,10 @@ namespace QuestHelper.WS
             bool result = false;
             try
             {
-                ApiRequest api = new ApiRequest();
                 string pathToMediaFile = Path.Combine(pathToPictures, filename);
-                result = await api.HttpRequestGetFile($"{this._hostUrl}/routepointmediaobjects/{routePointId}/{routePointMediaObjectId}/{filename}", pathToMediaFile, _authToken);
-                LastHttpStatusCode = api.LastHttpStatusCode;
+                result = await _serverRequest.HttpRequestGetFile($"/api/routepointmediaobjects/{routePointId}/{routePointMediaObjectId}/{filename}", pathToMediaFile, _authToken);
+                LastHttpStatusCode = _serverRequest.GetLastStatusCode();
+                
             }
             catch (Exception e)
             {

@@ -20,6 +20,7 @@ using QuestHelper.Model;
 using QuestHelper.Model.Messages;
 using Xamarin.Essentials;
 using QuestHelper.Resources;
+using QuestHelper.WS;
 
 namespace QuestHelper
 {
@@ -28,6 +29,8 @@ namespace QuestHelper
         public static IContainer Container { get; set; }
 
         private ITextfileLogger _log;
+        
+        private const string _apiUrl = "http://igosh.pro";
 
 	    static App()
 	    {
@@ -39,6 +42,7 @@ namespace QuestHelper
 	        var builder = new ContainerBuilder();
             builder.RegisterInstance(new MemoryCache(new MemoryCacheOptions())).As<IMemoryCache>();
 	        builder.RegisterInstance(new Logger(true)).As<ITextfileLogger>();
+	        builder.Register((c,p) => new ServerRequest(_apiUrl)).As<IServerRequest>();
             Container = builder.Build();
 	    }
 

@@ -7,14 +7,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using Autofac;
 
 namespace QuestHelper.WS
 {
     public class PoiApiRequest : IHTTPStatusCode
     {
         private const string _apiUrl = "http://igosh.pro/api";
-        //private const string _cacheId = "PoiApiCache";
-        private string _authToken = string.Empty;
+        private readonly IServerRequest _serverRequest = App.Container.Resolve<IServerRequest>();
+
+        private string _authToken;
 
         public HttpStatusCode LastHttpStatusCode;
 
@@ -28,9 +30,8 @@ namespace QuestHelper.WS
         {
             try
             {
-                ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{_apiUrl}/poi", _authToken);
-                LastHttpStatusCode = api.LastHttpStatusCode;
+                var response = await _serverRequest.HttpRequestGet("/api/poi", _authToken);
+                LastHttpStatusCode = _serverRequest.GetLastStatusCode();
                 return JsonConvert.DeserializeObject<List<Poi>>(response);
             }
             catch (Exception e)
@@ -45,9 +46,8 @@ namespace QuestHelper.WS
         {
             try
             {
-                ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{_apiUrl}/poi/byRoutePointId/{routePointId}", _authToken);
-                LastHttpStatusCode = api.LastHttpStatusCode;
+                var response = await _serverRequest.HttpRequestGet($"/api/poi/byRoutePointId/{routePointId}", _authToken);
+                LastHttpStatusCode = _serverRequest.GetLastStatusCode();
                 return JsonConvert.DeserializeObject<Poi>(response);
             }
             catch (Exception e)
@@ -100,10 +100,9 @@ namespace QuestHelper.WS
             bool result = false;
             try
             {
-                ApiRequest api = new ApiRequest();
                 string fileName = System.IO.Path.GetFileName(pathToMediaFile);
-                result = await api.HttpRequestGetFile($"{_apiUrl}/poi/{poiId}/image/{fileName}", pathToMediaFile, _authToken);
-                LastHttpStatusCode = api.LastHttpStatusCode;
+                result = await _serverRequest.HttpRequestGetFile($"/api/poi/{poiId}/image/{fileName}", pathToMediaFile, _authToken);
+                LastHttpStatusCode = _serverRequest.GetLastStatusCode();
             }
             catch (Exception e)
             {

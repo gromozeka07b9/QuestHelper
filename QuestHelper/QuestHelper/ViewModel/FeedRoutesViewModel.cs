@@ -143,10 +143,11 @@ namespace QuestHelper.ViewModel
             {
                 IsRefreshing = true;
             });
-            await Task.Factory.StartNew(async () =>
+            feed = await getFeedFromApi();
+            /*await Task.Factory.StartNew(async () =>
             {
                 feed = await getFeedFromApi();
-            });
+            });*/
             Device.BeginInvokeOnMainThread(() =>
             {
                 IsRefreshing = false;

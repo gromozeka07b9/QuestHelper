@@ -22,6 +22,7 @@ namespace QuestHelper.WS
         private IMemoryCache _memoryCache;
         private string _hostUrl = string.Empty;
         private string _authToken = string.Empty;
+        private readonly IServerRequest _serverRequest = App.Container.Resolve<IServerRequest>();
 
         private const string routesVersionsCacheId = "routesVersions";
         public HttpStatusCode LastHttpStatusCode;
@@ -64,9 +65,9 @@ namespace QuestHelper.WS
             RouteRoot deserializedValue = new RouteRoot();
             try
             {
-                ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{this._hostUrl}/route/{routeId}", _authToken);
-                LastHttpStatusCode = api.LastHttpStatusCode;
+                var response = await _serverRequest.HttpRequestGet($"/api/route/{routeId}", _authToken);
+                LastHttpStatusCode = _serverRequest.GetLastStatusCode();
+
                 deserializedValue = JsonConvert.DeserializeObject<RouteRoot>(response);
             }
             catch (Exception e)
@@ -80,9 +81,9 @@ namespace QuestHelper.WS
             RouteVersion routeVersion = new RouteVersion();
             try
             {
-                ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{this._hostUrl}/route/{routeId}/version", _authToken);
-                LastHttpStatusCode = api.LastHttpStatusCode;
+                var response = await _serverRequest.HttpRequestGet($"/api/route/{routeId}/version", _authToken);
+                LastHttpStatusCode = _serverRequest.GetLastStatusCode();
+
                 var deserializedValue = JsonConvert.DeserializeObject<List<RouteVersion>>(response);
                 if (deserializedValue.Any())
                 {
@@ -204,9 +205,9 @@ namespace QuestHelper.WS
 
             try
             {
-                ApiRequest api = new ApiRequest();
-                var resultRequest = await api.HttpRequestGET($"{_hostUrl}/routes/{routeId}/linkhash", _authToken);
-                LastHttpStatusCode = api.LastHttpStatusCode;
+                var resultRequest = await _serverRequest.HttpRequestGet($"/api/routes/{routeId}/linkhash", _authToken);
+                LastHttpStatusCode = _serverRequest.GetLastStatusCode();
+
                 if (LastHttpStatusCode == HttpStatusCode.OK)
                 {
                     routeShortId = resultRequest;
@@ -280,10 +281,9 @@ namespace QuestHelper.WS
             bool result = false;
             try
             {
-                ApiRequest api = new ApiRequest();
                 string pathToMediaFile = Path.Combine(ImagePathManager.GetPicturesDirectory(), imgFilename);
-                result = await api.HttpRequestGetFile($"{this._hostUrl}/route/{routeId}/cover", pathToMediaFile, _authToken);
-                LastHttpStatusCode = api.LastHttpStatusCode;
+                result = await _serverRequest.HttpRequestGetFile($"/api/route/{routeId}/cover", pathToMediaFile, _authToken);
+                LastHttpStatusCode = _serverRequest.GetLastStatusCode();
             }
             catch (Exception e)
             {
