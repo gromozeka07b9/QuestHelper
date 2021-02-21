@@ -49,7 +49,7 @@ namespace QuestHelper
         public App ()
 		{
             Xamarin.Forms.Device.SetFlags(new string[] { "Shapes_Experimental" });
-			Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mjg1MjI2QDMxMzgyZTMyMmUzME1vTVg1blhvekhMcmR6ck02MWpicWhYd1ovWHVkTENhTjMxZ0JXMS9uczQ9");
+			Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("");
 			
 			InitializeComponent();
 		    _log = App.Container.Resolve<ITextfileLogger>();

@@ -146,9 +146,9 @@ namespace QuestHelper.ViewModel
                     ParameterManager par = new ParameterManager();
                     par.Set("GuestMode", "0");
                     Xamarin.Forms.MessagingCenter.Send<AuthResultMessage>(new AuthResultMessage() { IsAuthenticated = true, Username = oauthUser.Name }, string.Empty);
-//#if !DEBUG
+#if !DEBUG
                     Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
-//#endif
+#endif
                     return true;
                 }
             }

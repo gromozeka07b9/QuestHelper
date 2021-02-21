@@ -10,6 +10,7 @@ using Xamarin.Forms;
 using QuestHelper.Model.Messages;
 using QuestHelper.Model;
 using System.Threading.Tasks;
+using QuestHelper.LocalDB.Model;
 
 namespace QuestHelper.ViewModel
 {
@@ -29,6 +30,7 @@ namespace QuestHelper.ViewModel
         //private bool _syncProgressIsVisible = false;
         private string _syncProgressDetailText = string.Empty;
         private string _currentUserId = string.Empty;
+        private string _currentUserToken = string.Empty;
         private string _username = string.Empty;
         private string _email = string.Empty;
         private string _userRole;
@@ -38,7 +40,8 @@ namespace QuestHelper.ViewModel
         private int _countRoutesPublishedMe = 0;
         private int _countLikesMe = 0;
         private int _countViewsMe = 0;
-        
+        private int maxPageSize = 1000;//Сколько максимально элементов маршрутов можем получить с сервера. Актуально если пейджинг используется, но пока что нет.
+
 
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -50,7 +53,7 @@ namespace QuestHelper.ViewModel
         public RoutesViewModel()
         {
             AddNewRouteCommand = new Command(addNewRouteCommandAsync);
-            RefreshListRoutesCommand = new Command(refreshListRoutesCommand);
+            RefreshListRoutesCommand = new Command(refreshListRoutesCommandAsync);
             AuthorizationCommand = new Command(authorizationCommand);
 
         }
@@ -68,7 +71,7 @@ namespace QuestHelper.ViewModel
                 {
                     if (!IsVisibleProgress) IsVisibleProgress = true;
                     ProgressValue = sender.ProgressValue;
-                    refreshListRoutesCommand();
+                    refreshListRoutesCommandAsync();
                 }
             });
 
@@ -101,6 +104,7 @@ namespace QuestHelper.ViewModel
         {
             TokenStoreService tokenService = new TokenStoreService();
             _currentUserId = await tokenService.GetUserIdAsync();
+            _currentUserToken = await tokenService.GetAuthTokenAsync();
             Username = await tokenService.GetUsernameAsync();
             Email = await tokenService.GetEmailAsync();
             UserRole = await tokenService.GetRoleAsync();
@@ -125,10 +129,13 @@ namespace QuestHelper.ViewModel
             _sharePointMessage = msg;
         }
 
-        void refreshListRoutesCommand()
+        private async void refreshListRoutesCommandAsync()
         {
-            Routes = _routeManager.GetRoutes(_currentUserId);
-            if (Routes.Count() > 0)
+            RoutesApiRequest api = new RoutesApiRequest(_currentUserToken);
+            List<Route> routes = await api.GetPrivateRoutes(maxPageSize, 0, maxPageSize);
+            
+            Routes = _routeManager.MergeRoutesAndGet(_currentUserId, routes);
+            if (Routes.Any())
             {
                 CountRoutesCreatedMe = _routeManager.GetCountRoutesByCreator(_currentUserId);
                 CountRoutesPublishedMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
@@ -156,7 +163,7 @@ namespace QuestHelper.ViewModel
                 {
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsAutorizedMode"));
                 }
-                refreshListRoutesCommand();
+                refreshListRoutesCommandAsync();
             }
             return false;
         }

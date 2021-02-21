@@ -35,6 +35,30 @@ namespace QuestHelper.WS
             _memoryCache = App.Container.Resolve<IMemoryCache>();
         }
 
+        //для перехода на IServerRequest
+        public RoutesApiRequest(string authToken)
+        {
+            _authToken = authToken;
+            _memoryCache = App.Container.Resolve<IMemoryCache>();
+        }
+        public async Task<List<LocalDB.Model.Route>> GetPrivateRoutes(int pageSize, int indexStart, int count)
+        {
+            List<LocalDB.Model.Route> deserializedValue = new List<LocalDB.Model.Route>();
+            try
+            {
+                string filter = @"&filter={""isDeleted"":""False""}";
+                var response = await _serverRequest.HttpRequestGet($"/api/v2/routes?pageSize={pageSize}&range=%5B{indexStart}%2C{indexStart + count}%5D{filter}", _authToken);
+                LastHttpStatusCode = _serverRequest.GetLastStatusCode();
+
+                deserializedValue = JsonConvert.DeserializeObject<List<LocalDB.Model.Route>>(response);
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RoutesApiRequest", "GetPrivateRoutes", e, false);
+            }
+            return deserializedValue;
+        }
+        
         public async Task<List<RouteVersion>> GetRoutesVersions(bool onlyPersonal)
         {
             List<RouteVersion> deserializedValue = new List<RouteVersion>();
@@ -49,7 +73,7 @@ namespace QuestHelper.WS
                     deserializedValue = JsonConvert.DeserializeObject<List<RouteVersion>>(response);
                     _memoryCache.Set(cacheKey, deserializedValue, new MemoryCacheEntryOptions()
                     {
-                        AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(20)
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
                     });
                 }
                 catch (Exception e)

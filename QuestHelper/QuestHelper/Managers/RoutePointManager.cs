@@ -52,7 +52,12 @@ namespace QuestHelper.Managers
             string returnid = string.Empty;
             RouteManager routeManager = new RouteManager();
             vpoint.Version = vpoint.Version == 0 ? 1 : vpoint.Version;
-            if (vpoint.CreateDate.Year == 1) throw new Exception("create date year = 1");
+            if (vpoint.CreateDate.Year == 1)
+            {
+                HandleError.Process("RoutePointManager", "Save", new Exception("CreateDate is empty"), false,$"routePointId:[{vpoint.RoutePointId}]" );
+                //throw new Exception("create date year = 1");
+                //vpoint.CreateDate = new DateTime(2020,1,1);
+            }
             try
             {
                 RealmInstance.Write(() =>

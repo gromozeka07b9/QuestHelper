@@ -238,5 +238,33 @@ namespace QuestHelper.Managers
 
             return (countPoints, length);
         }
+
+        public IEnumerable<ViewRoute> MergeRoutesAndGet(string currentUserId, List<Route> serverRoutes)
+        {
+            List<ViewRoute> vroutes = new List<ViewRoute>();
+            var routes = RealmInstance.All<Route>().Where(u=>(!u.IsDeleted && !u.IsPublished)||(!u.IsDeleted && u.IsPublished && u.CreatorId == currentUserId));
+            if (routes.Any())
+            {
+                foreach (var route in routes)
+                {
+                    vroutes.Add(new ViewRoute(route.RouteId));
+                }
+            }
+
+            var routesIds = vroutes.Select(r => r.RouteId);
+            foreach (var serverRoute in serverRoutes.Where(sr => !routesIds.Contains(sr.RouteId)))
+            {
+                vroutes.Add(new ViewRoute(String.Empty)
+                {
+                    Id = serverRoute.RouteId,
+                    Name = serverRoute.Name,
+                    Description = serverRoute.Description,
+                    CreateDate = serverRoute.CreateDate,
+                    CreatorId = serverRoute.CreatorId,
+                    Version = serverRoute.Version
+                });
+            };
+            return vroutes.OrderByDescending(r=>r.CreateDate);            
+        }
     }
 }
