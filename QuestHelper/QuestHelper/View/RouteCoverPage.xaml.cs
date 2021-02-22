@@ -20,10 +20,10 @@ namespace QuestHelper.View
 			InitializeComponent ();
     	}
 
-	    public RouteCoverPage(ViewRoute vRoute)
+	    public RouteCoverPage(ViewRoute vRoute, bool isNeedShowAlbum)
 	    {
 	        InitializeComponent();
-	        _vm = new RouteCoverViewModel(vRoute) { Navigation = this.Navigation };
+	        _vm = new RouteCoverViewModel(vRoute, isNeedShowAlbum) { Navigation = this.Navigation };
 	        BindingContext = _vm;
 	    }
 

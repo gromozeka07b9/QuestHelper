@@ -81,11 +81,11 @@
                     </Label.GestureRecognizers>
                 </Label>
                 <StackLayout Orientation="Vertical" HeightRequest="300" HorizontalOptions="Fill">
-                    <ffimageloading:CachedImage Source="map2.png" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Aspect="Fill" Margin="30" IsVisible="{Binding IsMapShow, Converter={StaticResource inverter}}" >
+                    <!--ffimageloading:CachedImage Source="map2.png" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Aspect="Fill" Margin="30" IsVisible="{Binding IsMapShow, Converter={StaticResource inverter}}" >
                         <ffimageloading:CachedImage.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding MapIconTappedCommand}" />
                         </ffimageloading:CachedImage.GestureRecognizers>                        
-                    </ffimageloading:CachedImage>
+                    </ffimageloading:CachedImage-->
                     <view1:CustomMap HeightRequest="300" x:Name="MapRouteOverview" VerticalOptions="FillAndExpand"  IsEnabled="{Binding IsMapShow}" IsVisible="{Binding IsMapShow}"                                    
                                 IsShowingUser="False"
                                 UseInterceptTouchEvent="true"

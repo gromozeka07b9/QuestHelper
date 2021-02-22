@@ -101,7 +101,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Frame IsClippedToBounds="True" CornerRadius="10" Margin="5,10,5,5" Style="{StaticResource RouteListFrame}">
+                            <Frame IsClippedToBounds="True" Opacity="0.3" CornerRadius="10" Margin="5,10,5,5" Style="{StaticResource RouteListFrame}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="2*"/>
@@ -125,7 +125,8 @@
                                     </StackLayout>
                                     <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Text="{Binding Name}" Style="{StaticResource RouteListBigLabel}" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="End" Margin="5,3,5,0" />
 
-                                    <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding RouteLengthKm}" Style="{StaticResource RouteListSmallLabel}" Margin="0,0,10,0" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="End"></Label>
+                                    <!--Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding RouteLengthKm}" Style="{StaticResource RouteListSmallLabel}" Margin="0,0,10,0" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="End"></Label-->
+                                    <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding IsSyncNeed}" Style="{StaticResource RouteListSmallLabel}" Margin="0,0,10,0" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="End"></Label>
                                     <Label Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding RouteLengthSteps}" Style="{StaticResource RouteListSmallLabel}" Margin="0,0,10,0" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="End"></Label>
                                     <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="2" Text="{Binding RouteDays}" Style="{StaticResource RouteListSmallLabel}" Margin="10,0,0,10" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center"></Label>
                                     <Label Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding RoutePointsCount}" Style="{StaticResource RouteListSmallLabel}" Margin="10,0,0,0" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="End"></Label>

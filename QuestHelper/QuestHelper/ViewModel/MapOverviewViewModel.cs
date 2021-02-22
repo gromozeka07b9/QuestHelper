@@ -89,7 +89,7 @@ namespace QuestHelper.ViewModel
                     {
                         vRoute.ImgFilename = _currentPoiImage;
                     }
-                    await Navigation.PushModalAsync(new RouteCoverPage(vRoute));
+                    await Navigation.PushModalAsync(new RouteCoverPage(vRoute, true));
                 }
             }
         }

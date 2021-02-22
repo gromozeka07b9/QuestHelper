@@ -24,6 +24,7 @@ namespace QuestHelper.ViewModel
         private bool _isVisibleProgress;
         private bool _isVisibleStartRoute;
         private bool _isVisibleList;
+        private bool _isNeedShowAlbum;
         private ObservableCollection<ViewRoutePoint> _viewPointsOfRoute = new ObservableCollection<ViewRoutePoint>();
         private string _creatorImgUrl;
 
@@ -34,10 +35,11 @@ namespace QuestHelper.ViewModel
         /// Вызывается при открытии обложки из страницы альбомов, когда маршрут уже существует в локальной БД
         /// </summary>
         /// <param name="viewRoute"></param>
-        public RouteCoverViewModel(ViewRoute viewRoute)
+        public RouteCoverViewModel(ViewRoute viewRoute, bool isNeedShowAlbum)
         {
             init();
 
+            _isNeedShowAlbum = isNeedShowAlbum;
             if (!string.IsNullOrEmpty(viewRoute.Id))
             {
                 _routeId = viewRoute.Id;
@@ -53,7 +55,7 @@ namespace QuestHelper.ViewModel
         public RouteCoverViewModel(ViewFeedItem viewFeedItem)
         {
             init();
-
+            _isNeedShowAlbum = true;
             if (!string.IsNullOrEmpty(viewFeedItem.Id))
             {
                 _routeId = viewFeedItem.Id;
@@ -102,7 +104,6 @@ namespace QuestHelper.ViewModel
                 if (sender.RouteId.Equals(_vroute.Id) && sender.SuccessSync)
                 {
                     _vroute = new ViewRoute(_vroute.Id);
-                    //updatePoints();
                     IsVisibleList = true;
                     IsVisibleProgress = false;
                     IsVisibleStartRoute = !IsVisibleProgress;
@@ -113,7 +114,11 @@ namespace QuestHelper.ViewModel
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CreateDateText"));
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Author"));
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RowHeightForDescription"));
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RowHeightForImage"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RowHeightForImage"));                        
+                    if (!_isNeedShowAlbum)
+                    {
+                        Navigation.PopModalAsync(false);
+                    }
                 }
             });
             MessagingCenter.Subscribe<SyncProgressImageLoadingMessage>(this, string.Empty, (sender) =>

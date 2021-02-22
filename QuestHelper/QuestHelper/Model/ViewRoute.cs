@@ -36,6 +36,7 @@ namespace QuestHelper.Model
         private string _routePointCountText = string.Empty;
         private string _routeLengthStepsText = string.Empty;
         private string _coverImage = string.Empty;
+        private bool _isSyncNeed = false;
 
         public ViewRoute(string routeId)
         {
@@ -375,6 +376,17 @@ namespace QuestHelper.Model
             }
         }
 
+        public bool IsSyncNeed
+        {
+            get
+            {
+                return _isSyncNeed;
+            }
+            set
+            {
+                _isSyncNeed = value;
+            }
+        }
         public bool IsHaveAnyPhotos
         {
             get

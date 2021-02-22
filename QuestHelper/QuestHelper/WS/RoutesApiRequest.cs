@@ -41,16 +41,22 @@ namespace QuestHelper.WS
             _authToken = authToken;
             _memoryCache = App.Container.Resolve<IMemoryCache>();
         }
-        public async Task<List<LocalDB.Model.Route>> GetPrivateRoutes(int pageSize, int indexStart, int count)
+        public async Task<List<Route>> GetPrivateRoutes(int pageSize, int indexStart, int count)
         {
-            List<LocalDB.Model.Route> deserializedValue = new List<LocalDB.Model.Route>();
+            List<Route> deserializedValue = new List<Route>();
             try
             {
                 string filter = @"&filter={""isDeleted"":""False""}";
                 var response = await _serverRequest.HttpRequestGet($"/api/v2/routes?pageSize={pageSize}&range=%5B{indexStart}%2C{indexStart + count}%5D{filter}", _authToken);
                 LastHttpStatusCode = _serverRequest.GetLastStatusCode();
-
-                deserializedValue = JsonConvert.DeserializeObject<List<LocalDB.Model.Route>>(response);
+                if (LastHttpStatusCode == HttpStatusCode.OK)
+                {
+                    deserializedValue = JsonConvert.DeserializeObject<List<Route>>(response);
+                }
+                else
+                {
+                    throw new HttpRequestException(LastHttpStatusCode.ToString());
+                }
             }
             catch (Exception e)
             {

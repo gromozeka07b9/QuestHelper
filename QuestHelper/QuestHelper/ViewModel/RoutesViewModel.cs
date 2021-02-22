@@ -132,22 +132,23 @@ namespace QuestHelper.ViewModel
         private async void refreshListRoutesCommandAsync()
         {
             RoutesApiRequest api = new RoutesApiRequest(_currentUserToken);
-            List<Route> routes = await api.GetPrivateRoutes(maxPageSize, 0, maxPageSize);
+            var routes = await api.GetPrivateRoutes(maxPageSize, 0, maxPageSize);
             
             Routes = _routeManager.MergeRoutesAndGet(_currentUserId, routes);
             if (Routes.Any())
             {
-                CountRoutesCreatedMe = _routeManager.GetCountRoutesByCreator(_currentUserId);
+                _routeManager.SaveMergedRoute(_currentUserId, Routes);
+                /*CountRoutesCreatedMe = _routeManager.GetCountRoutesByCreator(_currentUserId);
                 CountRoutesPublishedMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
                 CountLikesMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
-                CountViewsMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
+                CountViewsMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);*/
                 IsRefreshing = false;
             }
             else
             {
                 Device.StartTimer(TimeSpan.FromSeconds(3), OnTimerForUpdate);
             }
-            NoRoutesWarningIsVisible = Routes.Count() == 0;
+            NoRoutesWarningIsVisible = !Routes.Any();
         }
 
         private bool OnTimerForUpdate()
@@ -373,8 +374,16 @@ namespace QuestHelper.ViewModel
                 {
                     _routeItem = value;
 
-                    var routePage = new RoutePage(value.RouteId, false);
-                    Navigation.PushModalAsync(routePage);
+                    if (_routeItem.IsSyncNeed)
+                    {
+                        var coverPage = new RouteCoverPage(value, false);
+                        Navigation.PushModalAsync(coverPage);
+                    }
+                    else
+                    {
+                        var routePage = new RoutePage(value.RouteId, false);
+                        Navigation.PushModalAsync(routePage);
+                    }
                     PropertyChanged(this, new PropertyChangedEventArgs("SelectedRouteItem"));
                     addNewPointFromShareAsync(_routeItem.Name);
                     _routeItem = null;

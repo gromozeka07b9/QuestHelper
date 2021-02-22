@@ -40,7 +40,7 @@ namespace QuestHelper.ViewModel
         public ICommand ShowOtherPhotoCommand { get; private set; }
         public ICommand SwipeDescriptionRightCommand { get; private set; }
         public ICommand SwipeDescriptionLeftCommand { get; private set; }
-        public ICommand MapIconTappedCommand { get; private set; }
+        //public ICommand MapIconTappedCommand { get; private set; }
 
         public RouteCarouselRootViewModel(string routeId)
         {
@@ -49,14 +49,14 @@ namespace QuestHelper.ViewModel
             ShowOtherPhotoCommand = new Command(showOtherPhotoCommand);
             SwipeDescriptionRightCommand = new Command(swipeDescriptionRightCommand);
             SwipeDescriptionLeftCommand = new Command(swipeDescriptionLeftCommand);
-            MapIconTappedCommand = new Command(mapIconTappedCommand);
+            //MapIconTappedCommand = new Command(mapIconTappedCommand);
             _vRoute = new ViewRoute(routeId);
         }
 
-        private void mapIconTappedCommand(object obj)
+        /*private void mapIconTappedCommand(object obj)
         {
             IsMapShow = !IsMapShow;
-        }
+        }*/
 
         private void swipeDescriptionLeftCommand(object obj)
         {
@@ -273,17 +273,17 @@ namespace QuestHelper.ViewModel
 
         public bool IsMapShow
         {
-            set
+            /*set
             {
                 if(_isMapShow != value)
                 {
                     _isMapShow = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsMapShow"));
                 }
-            }
+            }*/
             get
             {
-                return _isMapShow;
+                return true;
             }
         }
         public List<PointForMap> PointsOnMap

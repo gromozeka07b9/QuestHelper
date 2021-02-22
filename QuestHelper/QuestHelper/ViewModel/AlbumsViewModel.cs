@@ -108,7 +108,7 @@ namespace QuestHelper.ViewModel
                 if (_routeItem != value)
                 {
                     _routeItem = value;
-                    var coverPage = new RouteCoverPage(value);
+                    var coverPage = new RouteCoverPage(value, true);
                     Navigation.PushModalAsync(coverPage);
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedRouteItem"));
                     _routeItem = null;
