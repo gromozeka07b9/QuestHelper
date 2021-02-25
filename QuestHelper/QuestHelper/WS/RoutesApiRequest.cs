@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using QuestHelper.Model;
 using System.Threading;
 using Autofac;
+using Microsoft.AppCenter.Analytics;
 using QuestHelper.SharedModelsWS;
 using QuestHelper.Managers;
 using Microsoft.Extensions.Caching.Memory;
@@ -23,6 +24,8 @@ namespace QuestHelper.WS
         private string _hostUrl = string.Empty;
         private string _authToken = string.Empty;
         private readonly IServerRequest _serverRequest = App.Container.Resolve<IServerRequest>();
+        private IMediaFileManager _mediaFileManager = App.Container.Resolve<IMediaFileManager>();
+
 
         private const string routesVersionsCacheId = "routesVersions";
         public HttpStatusCode LastHttpStatusCode;
@@ -319,6 +322,102 @@ namespace QuestHelper.WS
             {
                 HandleError.Process("RoutesApiRequest", "DownloadCoverImage", e, false);
             }
+            return result;
+        }
+
+        public async Task<string> DownloadRoutesCovers(IEnumerable<string> routesWithoutImg)
+        {
+            string result = string.Empty;
+            DateTime dStart = DateTime.Now;
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                StringWriter sw = new StringWriter(sb);
+
+                using (JsonWriter writer = new JsonTextWriter(sw))
+                {
+                    writer.Formatting = Formatting.Indented;
+                    writer.WriteStartObject();
+                    writer.WritePropertyName("IdArray");
+                    writer.WriteStartArray();
+
+                    foreach (var id in routesWithoutImg)
+                    {
+                        writer.WriteValue(id);
+                    }
+                    
+                    writer.WriteEnd();
+                    writer.WriteEndObject();
+                } 
+                result = await _serverRequest.HttpRequestGet("/api/v2/routes/covers/list", sb.ToString(), _authToken);
+                LastHttpStatusCode = _serverRequest.GetLastStatusCode();
+                if ((LastHttpStatusCode == HttpStatusCode.OK) && !string.IsNullOrEmpty(result))
+                {
+                    Analytics.TrackEvent("Route covers: network", new Dictionary<string, string> { { "Count", routesWithoutImg.Count().ToString() }, { "Delay", (dStart - DateTime.Now).Milliseconds.ToString() } });
+
+                    JsonTextReader reader = new JsonTextReader(new StringReader(result));
+                    string routeId = string.Empty;
+                    string imgCoverFilename = string.Empty;
+                    string imgCover = string.Empty;
+                    bool routeIdIsGot = false, imgCoverFilenameIsGot = false, imgCoverIsGot = false;
+                    while (reader.Read())
+                    {
+                        if ((reader.Value != null) && (reader.TokenType == JsonToken.PropertyName))
+                        {
+                            Console.WriteLine(reader.TokenType);
+                            Console.WriteLine(reader.Value);
+                            switch (reader.Value)
+                            {
+                                case "routeId":
+                                {
+                                    routeIdIsGot = true;
+                                };break;
+                                case "imgCoverFilename":
+                                {
+                                    imgCoverFilenameIsGot = true;
+                                };break;
+                                case "imgCover":
+                                {
+                                    imgCoverIsGot = true;
+                                };break;
+                       
+                            }
+                        }
+
+                        if ((reader.Value != null) && (reader.TokenType == JsonToken.String))
+                        {
+                            if (routeIdIsGot)
+                            {
+                                routeId = reader.Value.ToString();
+                                routeIdIsGot = false;
+                            } else if (imgCoverFilenameIsGot)
+                            {
+                                imgCoverFilename = reader.Value.ToString();
+                                imgCoverFilenameIsGot = false;
+                            } else if (imgCoverIsGot)
+                            {
+                                imgCover = reader.Value.ToString();
+                                imgCoverIsGot = false;
+                            }
+                        }
+
+                        if (!string.IsNullOrEmpty(routeId) && !string.IsNullOrEmpty(imgCoverFilename) && !string.IsNullOrEmpty(imgCover))
+                        {
+                            _mediaFileManager.SaveMediaFileFromBase64(imgCoverFilename, imgCover);
+                            routeId = string.Empty;
+                            imgCoverFilename = String.Empty;
+                            imgCover = String.Empty;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RoutesApiRequest", "DownloadRoutesCovers", e, false);
+            }
+            
+            Analytics.TrackEvent("Route covers: full", new Dictionary<string, string> { { "Count", routesWithoutImg.Count().ToString() }, { "Delay", (dStart - DateTime.Now).Milliseconds.ToString() } });
+            
             return result;
         }
 

@@ -42,6 +42,7 @@ namespace QuestHelper
 	        var builder = new ContainerBuilder();
             builder.RegisterInstance(new MemoryCache(new MemoryCacheOptions())).As<IMemoryCache>();
 	        builder.RegisterInstance(new Logger(true)).As<ITextfileLogger>();
+	        builder.RegisterInstance(new MediaFileManager()).As<IMediaFileManager>();
 	        builder.Register((c,p) => new ServerRequest(_apiUrl)).As<IServerRequest>();
             Container = builder.Build();
 	    }

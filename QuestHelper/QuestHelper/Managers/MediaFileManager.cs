@@ -8,16 +8,16 @@ using FileInfo = System.IO.FileInfo;
 
 namespace QuestHelper.Managers
 {
-    public class MediaFileManager
+    public class MediaFileManager : IMediaFileManager
     {
+        string _pictureDir = ImagePathManager.GetPicturesDirectory();
         public void Delete(string mediaId, MediaObjectTypeEnum mediaType)
         {
             string mediaPath = ImagePathManager.GetMediaFilename(mediaId, mediaType, false);
             string mediaPreviewPath = ImagePathManager.GetMediaFilename(mediaId, mediaType, true);
-            string pictureDir = ImagePathManager.GetPicturesDirectory();
             try
             {
-                string fileToDelete = Path.Combine(pictureDir, mediaPath);
+                string fileToDelete = Path.Combine(_pictureDir, mediaPath);
                 if (File.Exists(fileToDelete))
                 {
                     File.Delete(fileToDelete);
@@ -28,7 +28,7 @@ namespace QuestHelper.Managers
             }
             try
             {
-                string fileToDelete = Path.Combine(pictureDir, mediaPreviewPath);
+                string fileToDelete = Path.Combine(_pictureDir, mediaPreviewPath);
                 if (File.Exists(fileToDelete))
                 {
                     File.Delete(fileToDelete);
@@ -56,5 +56,48 @@ namespace QuestHelper.Managers
 
             return files;
         }
+
+        public bool FileExistInMediaCatalog(string imgFilename)
+        {
+            try
+            {
+                string fullpath = Path.Combine(_pictureDir, imgFilename);
+                return File.Exists(fullpath);
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("MediaFileManager", "FileExistInMediaCatalog", e, false, imgFilename);
+            }
+
+            return false;
+        }
+
+        public bool SaveMediaFileFromBase64(string filename, string contentBase64)
+        {
+            try
+            {
+                string fullpath = Path.Combine(_pictureDir, filename);
+                var bytes = Convert.FromBase64String(contentBase64);
+                using (FileStream fs = new FileStream(fullpath, FileMode.Create))
+                {
+                    fs.Write(bytes, 0, bytes.Length);
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("MediaFileManager", "SaveMediaFileFromBase64", e, false, filename);
+            }
+
+            return false;
+        }
+    }
+
+    public interface IMediaFileManager
+    {
+        void Delete(string mediaId, MediaObjectTypeEnum mediaType);
+        IEnumerable<FileInfo> GetMediaFilesFromDirectory(DirectoryInfo directory);
+        bool FileExistInMediaCatalog(string imgFilename);
+        bool SaveMediaFileFromBase64(string filename, string contentBase64);
     }
 }

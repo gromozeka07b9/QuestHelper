@@ -248,6 +248,9 @@ namespace QuestHelper.Managers
                 foreach (var route in routes)
                 {
                     var vRoute = new ViewRoute(route.RouteId);
+
+                    var test = serverRoutes.Where(sr => sr.Id.Equals(vRoute.Id)).DefaultIfEmpty()
+                        .Select(sr => sr.VersionsHash);
                     var syncNeed = !serverRoutes.Where(sr => sr.Id.Equals(vRoute.Id)).DefaultIfEmpty()
                         .Select(sr => sr.VersionsHash).SingleOrDefault()?.Equals(vRoute.ObjVerHash);
                     vRoute.IsSyncNeed = !syncNeed.HasValue || syncNeed.Value;

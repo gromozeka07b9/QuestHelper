@@ -10,7 +10,11 @@ using Xamarin.Forms;
 using QuestHelper.Model.Messages;
 using QuestHelper.Model;
 using System.Threading.Tasks;
-using QuestHelper.LocalDB.Model;
+using Acr.UserDialogs;
+using Autofac;
+using QuestHelper.Managers.Sync;
+using QuestHelper.Resources;
+using Xamarin.Essentials;
 
 namespace QuestHelper.ViewModel
 {
@@ -20,6 +24,7 @@ namespace QuestHelper.ViewModel
         private IEnumerable<ViewRoute> _routes;
         private ViewRoute _routeItem;
         private RouteManager _routeManager = new RouteManager();
+        private IMediaFileManager _mediaFileManager = App.Container.Resolve<IMediaFileManager>();
 
         private bool _noRoutesWarningIsVisible = false;
         private bool _isRefreshing = false;
@@ -138,6 +143,8 @@ namespace QuestHelper.ViewModel
             if (Routes.Any())
             {
                 _routeManager.SaveMergedRoute(_currentUserId, Routes);
+                var routeWithoutImg = Routes.Where(r => !string.IsNullOrEmpty(r.ImgFilename) && !fileExist(r.ImgFilename)).Select(r=>r.RouteId);
+                await api.DownloadRoutesCovers(routeWithoutImg);
                 /*CountRoutesCreatedMe = _routeManager.GetCountRoutesByCreator(_currentUserId);
                 CountRoutesPublishedMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
                 CountLikesMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
@@ -149,6 +156,11 @@ namespace QuestHelper.ViewModel
                 Device.StartTimer(TimeSpan.FromSeconds(3), OnTimerForUpdate);
             }
             NoRoutesWarningIsVisible = !Routes.Any();
+        }
+
+        private bool fileExist(string imgFilename)
+        {
+            return _mediaFileManager.FileExistInMediaCatalog(imgFilename);
         }
 
         private bool OnTimerForUpdate()
@@ -376,8 +388,21 @@ namespace QuestHelper.ViewModel
 
                     if (_routeItem.IsSyncNeed)
                     {
-                        var coverPage = new RouteCoverPage(value, false);
-                        Navigation.PushModalAsync(coverPage);
+                        //var coverPage = new RouteCoverPage(value, false);
+                        //Navigation.PushModalAsync(coverPage);
+                        UserDialogs.Instance.Alert("Синхронизация", "Ok", "Ок");
+                        SyncServer syncSrv = new SyncServer();
+                        Task.Factory.StartNew(async () =>
+                        {
+                            bool syncResult = await syncSrv.Sync(value.RouteId);
+                            MainThread.BeginInvokeOnMainThread(() =>
+                            {
+                                UserDialogs.Instance.Alert("Синхронизация:" + syncResult, "Внимание", "Ok");
+                            });
+                        });
+                        
+
+                        //Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage() { RouteId = value.RouteId, NeedCheckVersionRoute = true}, string.Empty);
                     }
                     else
                     {

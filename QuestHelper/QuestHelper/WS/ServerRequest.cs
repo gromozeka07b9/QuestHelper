@@ -3,6 +3,8 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Http;
+using System.Net.Mime;
+using System.Text;
 using Autofac;
 
 namespace QuestHelper.WS
@@ -25,6 +27,37 @@ namespace QuestHelper.WS
             return _lastHttpStatusCode;
         }
 
+        public async Task<string> HttpRequestGet(string relativeUrl, string bodyText, string authToken)
+        {
+            string result = string.Empty;
+            string url = new Uri(_apiBaseUri, relativeUrl).AbsoluteUri;
+            _logger.AddStringEvent($"GET start:{url}");
+            fillHeaders(authToken);
+            DateTime dStart = DateTime.Now;
+            var request = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(url),
+                //Content = new StringContent(bodyText)
+                Content = new StringContent(bodyText, Encoding.UTF8, "application/json")
+            };
+            try
+            {
+                HttpResponseMessage response = await _httpClient.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+                }
+                _lastHttpStatusCode = response.StatusCode;
+            }
+            catch (Exception e)
+            {
+                _logger.AddStringEvent($"GET error:[{url}], delay [{(dStart - DateTime.Now).Milliseconds}], error [{e.Message}]");
+                HandleError.Process("ServerRequest", "HttpRequestGETwithBody", e, false);
+            }
+            _logger.AddStringEvent($"GET end:[{url}], delay [{(dStart - DateTime.Now).Milliseconds}]");
+            return result;
+        }
         public async Task<string> HttpRequestGet(string relativeUrl, string authToken)
         {
             string result = string.Empty;
