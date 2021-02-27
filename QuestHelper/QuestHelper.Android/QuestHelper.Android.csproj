@@ -223,6 +223,7 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_personal.png" />
     <AndroidResource Include="Resources\drawable\baseline_arrow_upward_black_48.png" />
     <AndroidResource Include="Resources\drawable\baseline_folder_black_48.png" />
+    <AndroidResource Include="Resources\drawable\emptyphoto2.png" />
     <AndroidResource Include="Resources\drawable\ic_album.png" />
     <AndroidResource Include="Resources\drawable\ic_download.png" />
     <AndroidResource Include="Resources\drawable\ic_feed.png" />

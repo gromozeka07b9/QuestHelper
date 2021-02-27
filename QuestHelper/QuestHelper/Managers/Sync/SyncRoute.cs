@@ -87,6 +87,7 @@ namespace QuestHelper.Managers.Sync
             else return false;
 
             var updatedLocalRoute = _routeManager.GetViewRouteById(_routeId);
+            updatedLocalRoute.ServerSynced = true;
             if (!updatedLocalRoute.IsDeleted)
             {
                 //ToDo: Пока не придумал, как быть, если был сбой загрузки картинки - повторно ее уже хрен загрузишь

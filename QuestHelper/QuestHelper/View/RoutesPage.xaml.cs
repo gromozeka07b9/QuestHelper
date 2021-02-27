@@ -48,26 +48,26 @@ namespace QuestHelper.View
 	        _vm.closeDialog();
 		}
 
-		private void AnimationView_OnClick(object sender, EventArgs e)
+		/*private void AnimationView_OnClick(object sender, EventArgs e)
 		{
 			startSync();
-		}
+		}*/
 
-		private void startSync()
+		/*private void startSync()
 		{
 			if (!_vm.IsVisibleProgress)
 			{
 				SyncAnimation.PlayAnimation();
 				Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);//Запуск новой синхронизации
 			}
-		}
+		}*/
 
-		private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+		/*private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
 		{
 			startSync();
-		}
+		}*/
 
-		private void SyncAnimation_OnFinish(object sender, EventArgs e)
+		/*private void SyncAnimation_OnFinish(object sender, EventArgs e)
 		{
 			if (_vm.IsVisibleProgress)
 			{
@@ -78,6 +78,6 @@ namespace QuestHelper.View
 				//SyncAnimation.IsVisible = false;
 				//SyncAnimation.IsPlaying = true;
 			}
-		}
+		}*/
 	}
 }

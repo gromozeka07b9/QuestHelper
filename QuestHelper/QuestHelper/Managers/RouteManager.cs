@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,18 +18,15 @@ namespace QuestHelper.Managers
         {
         }
 
-        internal IEnumerable<ViewRoute> GetRoutes(string UserId)
+        internal ObservableCollection<ViewRoute> GetRoutes(string userId)
         {
-            List<ViewRoute> vroutes = new List<ViewRoute>();
-            var routes = RealmInstance.All<Route>().Where(u=>(!u.IsDeleted && !u.IsPublished)||(!u.IsDeleted && u.IsPublished && u.CreatorId == UserId)).OrderByDescending(r => r.CreateDate);
-            if (routes.Any())
+            ObservableCollection<ViewRoute> vRoutes = new ObservableCollection<ViewRoute>();
+            var routes = RealmInstance.All<Route>().Where(u=>(!u.IsDeleted && !u.IsPublished)||(!u.IsDeleted && u.IsPublished && u.CreatorId == userId)).OrderByDescending(r => r.CreateDate);
+            foreach (var route in routes)
             {
-                foreach (var route in routes)
-                {
-                    vroutes.Add(new ViewRoute(route.RouteId));
-                }
+                vRoutes.Add(new ViewRoute(route.RouteId));
             }
-            return vroutes;
+            return vRoutes;
         }
 
         internal int GetCountRoutesByCreator(string UserId)
@@ -185,6 +183,11 @@ namespace QuestHelper.Managers
                     route.ObjVerHash = viewRoute.ObjVerHash;
                     route.ImgFilename = viewRoute.ImgFilename;
                     route.Description = viewRoute.Description;
+                    if (!route.ServerSynced.Equals(viewRoute.ServerSynced) && viewRoute.ServerSynced)
+                    {
+                        route.ServerSyncedDate = DateTimeOffset.Now;                                            
+                    }
+                    route.ServerSynced = viewRoute.ServerSynced;
                     viewRoute.Refresh(route.RouteId);
                 });
                 result = true;
@@ -239,58 +242,45 @@ namespace QuestHelper.Managers
             return (countPoints, length);
         }
 
-        public IEnumerable<ViewRoute> MergeRoutesAndGet(string currentUserId, List<SharedModelsWS.Route> serverRoutes)
+        public void MergeRoutes(string currentUserId, List<SharedModelsWS.Route> serverRoutes)
         {
-            List<ViewRoute> vroutes = new List<ViewRoute>();
+            List<string> mergedRoutes = new List<string>();
             var routes = RealmInstance.All<Route>().Where(u=>(!u.IsDeleted && !u.IsPublished)||(!u.IsDeleted && u.IsPublished && u.CreatorId == currentUserId));
-            if (routes.Any())
+            foreach (var route in routes)
             {
-                foreach (var route in routes)
+                var vRoute = new ViewRoute(route.RouteId);
+                var serverRoute = serverRoutes.Where(sr => sr.Id.Equals(vRoute.Id)).DefaultIfEmpty().SingleOrDefault();
+                if (serverRoute != null)
                 {
-                    var vRoute = new ViewRoute(route.RouteId);
-
-                    var test = serverRoutes.Where(sr => sr.Id.Equals(vRoute.Id)).DefaultIfEmpty()
-                        .Select(sr => sr.VersionsHash);
-                    var syncNeed = !serverRoutes.Where(sr => sr.Id.Equals(vRoute.Id)).DefaultIfEmpty()
-                        .Select(sr => sr.VersionsHash).SingleOrDefault()?.Equals(vRoute.ObjVerHash);
-                    vRoute.IsSyncNeed = !syncNeed.HasValue || syncNeed.Value;
-                    vroutes.Add(vRoute);
+                    vRoute.ServerSynced = serverRoute.VersionsHash.Equals(vRoute.ObjVerHash);
                 }
+                else
+                {
+                    vRoute.ServerSynced = false;
+                }
+                vRoute.Save();
+                mergedRoutes.Add(route.RouteId);
             }
 
-            var routesIds = vroutes.Select(r => r.RouteId);
-            foreach (var serverRoute in serverRoutes.Where(sr => !routesIds.Contains(sr.Id)))
+            foreach (var serverRoute in serverRoutes.Where(sr => !mergedRoutes.Contains(sr.Id)))
             {
-                vroutes.Add(new ViewRoute(String.Empty)
+                var vRoute = new ViewRoute(String.Empty)
                 {
                     Id = serverRoute.Id,
                     Name = serverRoute.Name,
                     Description = serverRoute.Description,
                     CreateDate = serverRoute.CreateDate,
                     CreatorId = serverRoute.CreatorId,
-                    Version = serverRoute.Version,
+                    Version = 0,
                     ImgFilename = serverRoute.ImgFilename,
                     IsDeleted = serverRoute.IsDeleted,
                     IsPublished = serverRoute.IsPublished,
                     UserId = serverRoute.CreatorId,
-                    ObjVerHash = serverRoute.VersionsHash,
-                    IsSyncNeed = true
-                });
+                    ObjVerHash = "",
+                    ServerSynced = false
+                };
+                vRoute.Save();
             };
-            return vroutes.OrderByDescending(r=>r.CreateDate);            
-        }
-
-        public void SaveMergedRoute(string currentUserId, IEnumerable<ViewRoute> viewRoutes)
-        {
-            foreach (var route in viewRoutes)
-            {
-                if (!RealmInstance.All<Route>().Any(r => r.RouteId.Equals(route.Id)))
-                {
-                    route.ObjVerHash = string.Empty;
-                    route.Version = 0;
-                    route.Save();
-                }
-            }
         }
     }
 }

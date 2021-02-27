@@ -7,6 +7,7 @@ using QuestHelper.WS;
 using Realms;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -18,7 +19,7 @@ using Route = QuestHelper.LocalDB.Model.Route;
 
 namespace QuestHelper.Model
 {
-    public class ViewRoute : ISaveable
+    public class ViewRoute : ISaveable, INotifyPropertyChanged
     {
         private string _id = string.Empty;
         private string _name = string.Empty;
@@ -36,7 +37,10 @@ namespace QuestHelper.Model
         private string _routePointCountText = string.Empty;
         private string _routeLengthStepsText = string.Empty;
         private string _coverImage = string.Empty;
-        private bool _isSyncNeed = false;
+        private bool _serverSynced = false;
+        private bool _isLoading = false;
+        public event PropertyChangedEventHandler PropertyChanged;
+
 
         public ViewRoute(string routeId)
         {
@@ -84,10 +88,6 @@ namespace QuestHelper.Model
             else return false;
         }
 
-        /*public ViewRoute()
-        {
-        }*/
-
         public void Load(string routeId)
         {
             RouteManager manager = new RouteManager();
@@ -105,6 +105,7 @@ namespace QuestHelper.Model
                 _description = route.Description;
                 _imgFilename = route.ImgFilename;
                 _objVerHash = route.ObjVerHash;
+                _serverSynced = route.ServerSynced;
             }
         }
         internal void FillFromWSModel(RouteRoot routeRoot, string routeHash)
@@ -271,7 +272,7 @@ namespace QuestHelper.Model
                                 imgCover = ImagePathManager.GetImagePath(vMedia.RoutePointMediaObjectId, MediaObjectTypeEnum.Image, true);
                             }
                         }
-                        else imgCover = "mount1.png";
+                        else imgCover = "emptyphoto2.png";
                     }
                     _coverImage = imgCover;
                 }
@@ -376,15 +377,30 @@ namespace QuestHelper.Model
             }
         }
 
-        public bool IsSyncNeed
+        public bool ServerSynced
         {
             get
             {
-                return _isSyncNeed;
+                return _serverSynced;
             }
             set
             {
-                _isSyncNeed = value;
+                _serverSynced = value;
+            }
+        }
+        public bool IsLoading
+        {
+            get
+            {
+                return _isLoading;
+            }
+            set
+            {
+                if (_isLoading != value)
+                {
+                    _isLoading = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsLoading"));
+                }
             }
         }
         public bool IsHaveAnyPhotos
@@ -397,6 +413,13 @@ namespace QuestHelper.Model
             }
         }
 
+        /*public void InvokeAllPropertyChanged()
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CoverImage"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ServerSynced"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ObjVerHash"));
+        }*/
+        
         public bool Save()
         {
             RouteManager routeManager = new RouteManager();

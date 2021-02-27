@@ -3,6 +3,7 @@ using QuestHelper.View;
 using QuestHelper.WS;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
@@ -21,14 +22,14 @@ namespace QuestHelper.ViewModel
     class RoutesViewModel : INotifyPropertyChanged
     {
         private string _routeId;
-        private IEnumerable<ViewRoute> _routes;
+        private ObservableCollection<ViewRoute> _routes;
         private ViewRoute _routeItem;
         private RouteManager _routeManager = new RouteManager();
         private IMediaFileManager _mediaFileManager = App.Container.Resolve<IMediaFileManager>();
 
         private bool _noRoutesWarningIsVisible = false;
         private bool _isRefreshing = false;
-        private bool _isVisibleProgress = false;
+        //private bool _isVisibleProgress = false;
         private bool _isFireworksMode = false;
         private int _countOfUpdateListByTimer = 0;
         private ShareFromGoogleMapsMessage _sharePointMessage;
@@ -74,9 +75,9 @@ namespace QuestHelper.ViewModel
             {
                 if (string.IsNullOrEmpty(sender.RouteId))
                 {
-                    if (!IsVisibleProgress) IsVisibleProgress = true;
+                    /*if (!IsVisibleProgress) IsVisibleProgress = true;
                     ProgressValue = sender.ProgressValue;
-                    refreshListRoutesCommandAsync();
+                    refreshListRoutesCommandAsync();*/
                 }
             });
 
@@ -84,7 +85,7 @@ namespace QuestHelper.ViewModel
             {
                 if (string.IsNullOrEmpty(sender.RouteId))
                 {
-                    if (IsVisibleProgress) IsVisibleProgress = false;
+                    //if (IsVisibleProgress) IsVisibleProgress = false;
                     //StopAnimateCallback.Invoke();
                 }
             });
@@ -139,10 +140,11 @@ namespace QuestHelper.ViewModel
             RoutesApiRequest api = new RoutesApiRequest(_currentUserToken);
             var routes = await api.GetPrivateRoutes(maxPageSize, 0, maxPageSize);
             
-            Routes = _routeManager.MergeRoutesAndGet(_currentUserId, routes);
+            _routeManager.MergeRoutes(_currentUserId, routes);
+            Routes = _routeManager.GetRoutes(_currentUserId);
             if (Routes.Any())
             {
-                _routeManager.SaveMergedRoute(_currentUserId, Routes);
+                //_routeManager.SaveMergedRoute(_currentUserId, Routes);
                 var routeWithoutImg = Routes.Where(r => !string.IsNullOrEmpty(r.ImgFilename) && !fileExist(r.ImgFilename)).Select(r=>r.RouteId);
                 await api.DownloadRoutesCovers(routeWithoutImg);
                 /*CountRoutesCreatedMe = _routeManager.GetCountRoutesByCreator(_currentUserId);
@@ -204,7 +206,7 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        public bool IsVisibleProgress
+        /*public bool IsVisibleProgress
         {
             set
             {
@@ -221,7 +223,7 @@ namespace QuestHelper.ViewModel
             {
                 return _isVisibleProgress;
             }
-        }
+        }*/
 
         public bool IsRefreshing
         {
@@ -385,22 +387,34 @@ namespace QuestHelper.ViewModel
                 if (_routeItem != value)
                 {
                     _routeItem = value;
-
-                    if (_routeItem.IsSyncNeed)
+                    if (!value.ServerSynced)
                     {
-                        //var coverPage = new RouteCoverPage(value, false);
-                        //Navigation.PushModalAsync(coverPage);
-                        UserDialogs.Instance.Alert("Синхронизация", "Ok", "Ок");
+                        _routeItem.IsLoading = true;
+                        string routeId = value.Id;
                         SyncServer syncSrv = new SyncServer();
                         Task.Factory.StartNew(async () =>
                         {
-                            bool syncResult = await syncSrv.Sync(value.RouteId);
-                            MainThread.BeginInvokeOnMainThread(() =>
+                            await syncSrv.Sync(value.RouteId).ContinueWith(syncResult =>
                             {
-                                UserDialogs.Instance.Alert("Синхронизация:" + syncResult, "Внимание", "Ok");
-                            });
+                                if (!syncResult.Result)
+                                {
+                                    MainThread.BeginInvokeOnMainThread(() =>
+                                    {
+                                        UserDialogs.Instance.Alert("Ошибка синхронизации", "Внимание", "Ok");
+                                    });
+                                }
+                                else
+                                {
+                                    Routes = _routeManager.GetRoutes(_currentUserId);
+                                    MainThread.BeginInvokeOnMainThread(() =>
+                                    {
+                                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Routes"));
+                                        _routeItem = null;
+                                    });
+                                }                           
+                            }, TaskContinuationOptions.OnlyOnRanToCompletion);
                         });
-                        
+
 
                         //Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage() { RouteId = value.RouteId, NeedCheckVersionRoute = true}, string.Empty);
                     }
@@ -409,8 +423,7 @@ namespace QuestHelper.ViewModel
                         var routePage = new RoutePage(value.RouteId, false);
                         Navigation.PushModalAsync(routePage);
                     }
-                    PropertyChanged(this, new PropertyChangedEventArgs("SelectedRouteItem"));
-                    addNewPointFromShareAsync(_routeItem.Name);
+                    addNewPointFromShareAsync(value.Name);
                     _routeItem = null;
                 }
             }
@@ -513,7 +526,7 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        public IEnumerable<ViewRoute> Routes
+        public ObservableCollection<ViewRoute> Routes
         {
             set
             {
@@ -523,7 +536,7 @@ namespace QuestHelper.ViewModel
                     if (PropertyChanged != null)
                     {
                         PropertyChanged(this, new PropertyChangedEventArgs("Routes"));
-                        NoRoutesWarningIsVisible = _routes.Count() == 0;
+                        NoRoutesWarningIsVisible = !_routes.Any();
                     }
                 }
             }
