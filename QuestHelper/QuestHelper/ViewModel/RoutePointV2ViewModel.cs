@@ -32,6 +32,7 @@ namespace QuestHelper.ViewModel
         public ICommand DeleteCommand { get; internal set; }
         public ICommand TakePhotoCommand { get; private set; }
         public ICommand ViewPhotoCommand { get; private set; }
+        public ICommand PressPhotoCommand { get; private set; }
         public ICommand PlayMediaCommand { get; private set; }
         public ICommand DeletePhotoCommand { get; private set; }
         public ICommand DeletePointCommand { get; private set; }
@@ -75,6 +76,7 @@ namespace QuestHelper.ViewModel
             BackNavigationCommand = new Command(backNavigationCommand);
             TakePhotoCommand = new Command(takePhotoAsync);
             ViewPhotoCommand = new Command(viewPhotoAsync);
+            PressPhotoCommand = new Command(pressPhotoCommand);
             PlayMediaCommand = new Command(playMediaAsync);
             DeletePhotoCommand = new Command(deletePhotoAsync);
             DeletePointCommand = new Command(deletePoint);
@@ -101,6 +103,19 @@ namespace QuestHelper.ViewModel
             _newPoint = string.IsNullOrEmpty(routePointId);
 
             Analytics.TrackEvent("Dialog point opened");
+        }
+
+        private void pressPhotoCommand(object obj)
+        {
+            if (Images.Any())
+            {
+                viewPhotoAsync(obj);
+            }
+            else
+            {
+                addPhotoAsync(obj);
+            }
+
         }
 
         private async void editPoiDialogCommand(object obj)

@@ -71,7 +71,7 @@
                         <StackLayout Orientation="Vertical" VerticalOptions="Start" HeightRequest="300">
                             <Image Source="{Binding OneImagePath, Converter={StaticResource typeImageConverter}}" Margin="0" Aspect="{Binding OneImagePath, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                                 <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding ViewPhotoCommand}" CommandParameter="{Binding}"/>
+                                    <TapGestureRecognizer Command="{Binding PressPhotoCommand}" CommandParameter="{Binding}"/>
                                     <TapGestureRecognizer Command="{Binding DeletePhotoCommand}" NumberOfTapsRequired="2"/>
                                 </Image.GestureRecognizers>
                             </Image>
@@ -96,7 +96,7 @@
                                            HorizontalOptions="FillAndExpand"
                                            VerticalOptions="FillAndExpand">
                                             <Frame.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding Path=BindingContext.ViewPhotoCommand, Source={x:Reference Name=myCarouselViewCtrl}}" CommandParameter="{Binding}"/>
+                                                <TapGestureRecognizer Command="{Binding Path=BindingContext.PressPhotoCommand, Source={x:Reference Name=myCarouselViewCtrl}}" CommandParameter="{Binding}"/>
                                                 <!--TapGestureRecognizer Command="{Binding Path=BindingContext.DeletePhotoCommand, Source={x:Reference Name=myCarouselViewCtrl}}" NumberOfTapsRequired="2"/-->
                                             </Frame.GestureRecognizers>
                                             <Grid>

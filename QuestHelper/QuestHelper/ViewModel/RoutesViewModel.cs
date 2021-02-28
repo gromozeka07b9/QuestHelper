@@ -144,13 +144,12 @@ namespace QuestHelper.ViewModel
             Routes = _routeManager.GetRoutes(_currentUserId);
             if (Routes.Any())
             {
-                //_routeManager.SaveMergedRoute(_currentUserId, Routes);
+                CountRoutesCreatedMe = _routeManager.GetCountRoutesByCreator(_currentUserId);
+                CountRoutesPublishedMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
+                //CountLikesMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
+                //CountViewsMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
                 var routeWithoutImg = Routes.Where(r => !string.IsNullOrEmpty(r.ImgFilename) && !fileExist(r.ImgFilename)).Select(r=>r.RouteId);
                 await api.DownloadRoutesCovers(routeWithoutImg);
-                /*CountRoutesCreatedMe = _routeManager.GetCountRoutesByCreator(_currentUserId);
-                CountRoutesPublishedMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
-                CountLikesMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
-                CountViewsMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);*/
                 IsRefreshing = false;
             }
             else
