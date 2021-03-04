@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
 using System.Windows.Input;
 using Xamarin.Forms;
 using QuestHelper.Model.Messages;
@@ -47,6 +48,7 @@ namespace QuestHelper.ViewModel
         private int _countLikesMe = 0;
         private int _countViewsMe = 0;
         private int maxPageSize = 1000;//Сколько максимально элементов маршрутов можем получить с сервера. Актуально если пейджинг используется, но пока что нет.
+        private bool _isServerRequestsOk = false;
 
 
         public INavigation Navigation { get; set; }
@@ -139,15 +141,11 @@ namespace QuestHelper.ViewModel
         {
             RoutesApiRequest api = new RoutesApiRequest(_currentUserToken);
             var routes = await api.GetPrivateRoutes(maxPageSize, 0, maxPageSize);
-            
-            _routeManager.MergeRoutes(_currentUserId, routes);
-            Routes = _routeManager.GetRoutes(_currentUserId);
-            if (Routes.Any())
+            IsServerRequestsOk = api.LastHttpStatusCode == HttpStatusCode.OK;
+            if (IsServerRequestsOk)
             {
-                CountRoutesCreatedMe = _routeManager.GetCountRoutesByCreator(_currentUserId);
-                CountRoutesPublishedMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
-                //CountLikesMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
-                //CountViewsMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
+                _routeManager.MergeRoutes(_currentUserId, routes);
+                Routes = _routeManager.GetRoutes(_currentUserId);
                 var routeWithoutImg = Routes.Where(r => !string.IsNullOrEmpty(r.ImgFilename) && !fileExist(r.ImgFilename)).Select(r=>r.RouteId);
                 await api.DownloadRoutesCovers(routeWithoutImg);
                 IsRefreshing = false;
@@ -156,6 +154,17 @@ namespace QuestHelper.ViewModel
             {
                 Device.StartTimer(TimeSpan.FromSeconds(3), OnTimerForUpdate);
             }
+            
+            CountRoutesCreatedMe = _routeManager.GetCountRoutesByCreator(_currentUserId);
+            CountRoutesPublishedMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
+            /*if (Routes.Any())
+            {
+                //CountLikesMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
+                //CountViewsMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
+            }
+            else
+            {
+            }*/
             NoRoutesWarningIsVisible = !Routes.Any();
         }
 
@@ -243,6 +252,24 @@ namespace QuestHelper.ViewModel
             }
         }
 
+        public bool IsServerRequestsOk
+        {
+            set
+            {
+                if (_isServerRequestsOk != value)
+                {
+                    _isServerRequestsOk = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("IsServerRequestsOk"));
+                    }
+                }
+            }
+            get
+            {
+                return _isServerRequestsOk;
+            }
+        }
         public bool IsFireworksMode
         {
             set
@@ -383,48 +410,49 @@ namespace QuestHelper.ViewModel
         {
             set
             {
-                if (_routeItem != value)
+                bool workOffline = true;
+                /*if (!IsServerRequestsOk)
                 {
-                    _routeItem = value;
-                    if (!value.ServerSynced)
+                    workOffline = UserDialogs.Instance.Confirm(new ConfirmConfig() { Message = "Открыть маршрут?", Title = "Ошибка доступа к сети", OkText = CommonResource.CommonMsg_Yes, CancelText = CommonResource.CommonMsg_No });
+                }*/
+                _routeItem = value;
+                if ((!value.ServerSynced))
+                {
+                    _routeItem.IsLoading = true;
+                    string routeId = value.Id;
+                    SyncServer syncSrv = new SyncServer();
+                    Task.Factory.StartNew(async () =>
                     {
-                        _routeItem.IsLoading = true;
-                        string routeId = value.Id;
-                        SyncServer syncSrv = new SyncServer();
-                        Task.Factory.StartNew(async () =>
+                        await syncSrv.Sync(value.RouteId).ContinueWith(syncResult =>
                         {
-                            await syncSrv.Sync(value.RouteId).ContinueWith(syncResult =>
+                            if (!syncResult.Result)
                             {
-                                if (!syncResult.Result)
+                                MainThread.BeginInvokeOnMainThread(() =>
                                 {
-                                    MainThread.BeginInvokeOnMainThread(() =>
-                                    {
-                                        UserDialogs.Instance.Alert("Ошибка синхронизации", "Внимание", "Ok");
-                                    });
-                                }
-                                else
+                                    UserDialogs.Instance.Alert("Ошибка синхронизации", "Внимание", "Ok");
+                                });
+                            }
+                            else
+                            {
+                                Routes = _routeManager.GetRoutes(_currentUserId);
+                                MainThread.BeginInvokeOnMainThread(() =>
                                 {
-                                    Routes = _routeManager.GetRoutes(_currentUserId);
-                                    MainThread.BeginInvokeOnMainThread(() =>
-                                    {
-                                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Routes"));
-                                        _routeItem = null;
-                                    });
-                                }                           
-                            }, TaskContinuationOptions.OnlyOnRanToCompletion);
-                        });
-
-
-                        //Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage() { RouteId = value.RouteId, NeedCheckVersionRoute = true}, string.Empty);
-                    }
-                    else
-                    {
-                        var routePage = new RoutePage(value.RouteId, false);
-                        Navigation.PushModalAsync(routePage);
-                    }
-                    addNewPointFromShareAsync(value.Name);
-                    _routeItem = null;
+                                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Routes"));
+                                    _routeItem = null;
+                                });
+                            }
+                        }, TaskContinuationOptions.OnlyOnRanToCompletion);
+                    });
+                    return;
                 }
+
+                if (workOffline)
+                {
+                    var routePage = new RoutePage(value.RouteId, false);
+                    Navigation.PushModalAsync(routePage);
+                }
+                addNewPointFromShareAsync(value.Name);
+                _routeItem = null;
             }
         }
 

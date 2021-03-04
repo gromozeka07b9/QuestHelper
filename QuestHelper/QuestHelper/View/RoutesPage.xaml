@@ -140,6 +140,11 @@
                                     </StackLayout>
                                     <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Text="{Binding Name}" Style="{StaticResource RouteListBigLabel}" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="End" Margin="5,3,5,0" />
 
+                                    <ffimageloading:CachedImage Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="1" IsVisible="{Binding IsServerRequestsOk, Converter={StaticResource inverter}, Source={RelativeSource AncestorType={x:Type viewmodel:RoutesViewModel}}}"
+                                     Source="ic_feed.png" Margin="0" WidthRequest="40" HeightRequest="40"
+                                     DownsampleToViewSize="True" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    </ffimageloading:CachedImage>
+
                                     <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" IsVisible="{Binding ServerSynced}" Text="{Binding RouteLengthKm}" Style="{StaticResource RouteListSmallLabel}" Margin="0,0,10,0" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="End"></Label>
                                     <Label Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" IsVisible="{Binding ServerSynced}" Text="{Binding RouteLengthSteps}" Style="{StaticResource RouteListSmallLabel}" Margin="0,0,10,0" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="End"></Label>
                                     <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="2" IsVisible="{Binding ServerSynced}" Text="{Binding RouteDays}" Style="{StaticResource RouteListSmallLabel}" Margin="10,0,0,10" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center"></Label>

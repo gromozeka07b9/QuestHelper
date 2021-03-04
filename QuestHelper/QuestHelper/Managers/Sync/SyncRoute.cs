@@ -86,12 +86,35 @@ namespace QuestHelper.Managers.Sync
             }
             else return false;
 
-            var updatedLocalRoute = _routeManager.GetViewRouteById(_routeId);
-            updatedLocalRoute.ServerSynced = true;
-            if (!updatedLocalRoute.IsDeleted)
+            var serverHash = await _routesApi.UpdateHash(_routeId);
+            if (_routesApi.LastHttpStatusCode == HttpStatusCode.OK)
             {
-                //ToDo: Пока не придумал, как быть, если был сбой загрузки картинки - повторно ее уже хрен загрузишь
-                //if (!syncImgHasErrors)
+                var updatedLocalRoute = _routeManager.GetViewRouteById(_routeId);
+                updatedLocalRoute.ServerSynced = true;
+                updatedLocalRoute.ObjVerHash = HashManager.Generate(getVersionsForRoute(updatedLocalRoute).ToString());
+                if (updatedLocalRoute.ObjVerHash.Equals(serverHash))
+                {
+                    _log.AddStringEvent($"set route {_routeId}, versions {serverHash}");
+                    updatedLocalRoute.Save();
+                }
+                else
+                {
+                    _log.AddStringEvent($"failed set route {_routeId}, versions {serverHash}");
+                    HandleError.Process("SyncRoute", "ErrorUpdateHash", new Exception("Client and Server hash different"), false, $"server:[{serverHash}], client:[{updatedLocalRoute.ObjVerHash}]");
+                }
+
+                if (updatedLocalRoute.IsDeleted)
+                {
+                    _log.AddStringEvent($"set delete route {_routeId}");
+                    deleteRouteContain(updatedLocalRoute);
+                }
+            }
+            else
+            {
+                HandleError.Process("SyncRoute", "ErrorUpdateHash", new Exception("Http error:" + _routesApi.LastHttpStatusCode.ToString()), false);
+            }
+            /*if (!updatedLocalRoute.IsDeleted)
+            {
                 {
                     StringBuilder sbVersions = getVersionsForRoute(updatedLocalRoute);
                     _log.AddStringEvent($"set route {_routeId}, versions {sbVersions.ToString()}");
@@ -103,7 +126,7 @@ namespace QuestHelper.Managers.Sync
                 _log.AddStringEvent($"set delete route {_routeId}");
                 refreshHashForRouteByString(updatedLocalRoute, routeServerHash);
                 deleteRouteContain(updatedLocalRoute);
-            }
+            }*/
 
             return true;
         }

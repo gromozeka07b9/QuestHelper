@@ -58,7 +58,7 @@ namespace QuestHelper.WS
                 }
                 else
                 {
-                    throw new HttpRequestException(LastHttpStatusCode.ToString());
+                    HandleError.Process("RoutesApiRequest", "GetPrivateRoutes", new HttpRequestException(LastHttpStatusCode.ToString()), false);
                 }
             }
             catch (Exception e)
@@ -67,7 +67,30 @@ namespace QuestHelper.WS
             }
             return deserializedValue;
         }
-        
+
+        public async Task<string> UpdateHash(string routeId)
+        {
+            string serverHash = String.Empty;
+            try
+            {
+                var response = await _serverRequest.HttpRequestPost($"/api/v2/routes/{routeId}/updatehash", _authToken, String.Empty);
+                LastHttpStatusCode = _serverRequest.GetLastStatusCode();
+                if (LastHttpStatusCode == HttpStatusCode.OK)
+                {
+                    serverHash = response;
+                }
+                else
+                {
+                    throw new HttpRequestException(LastHttpStatusCode.ToString());
+                }
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("RoutesApiRequest", "UpdateHash", e, false);
+            }
+            return serverHash;
+        }
+
         public async Task<List<RouteVersion>> GetRoutesVersions(bool onlyPersonal)
         {
             List<RouteVersion> deserializedValue = new List<RouteVersion>();

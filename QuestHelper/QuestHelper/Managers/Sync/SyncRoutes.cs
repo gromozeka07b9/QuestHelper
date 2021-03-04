@@ -144,6 +144,14 @@ namespace QuestHelper.Managers.Sync
                     result = await syncRouteContext.SyncAsync(serverRouteVersion?.ObjVerHash, true);
                     _log.AddStringEvent($"diff route result, {serverRouteVersion?.Id} :" + result);
                 }
+                else if (serverRouteVersion == null)
+                {
+                    SyncRoute syncRouteContext = new SyncRoute(localRoute.RouteId, _authToken);
+                    syncRouteContext.SyncImages = true;
+                    _log.AddStringEvent($"start sync diff route {localRoute.RouteId}");
+                    result = await syncRouteContext.SyncAsync(localRoute.ObjVerHash, true);
+                    _log.AddStringEvent($"diff route result, {localRoute.RouteId} :" + result);
+                }
             }
             else
             {

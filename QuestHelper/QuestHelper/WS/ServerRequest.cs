@@ -82,7 +82,32 @@ namespace QuestHelper.WS
             _logger.AddStringEvent($"GET end:[{url}], delay [{(dStart - DateTime.Now).Milliseconds}]");
             return result;
         }
-        
+
+        public async Task<string> HttpRequestPost(string relativeUrl, string authToken, string parameters)
+        {
+            string result = string.Empty;
+            string url = new Uri(_apiBaseUri, relativeUrl).AbsoluteUri;
+            _logger.AddStringEvent($"POST start:{url}");
+            DateTime dStart = DateTime.Now;
+            fillHeaders(authToken);
+            try
+            {
+                HttpResponseMessage response = await _httpClient.PostAsync(url, new StringContent(parameters, System.Text.Encoding.UTF8, "application/json"));
+                if (response.IsSuccessStatusCode)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+                }
+                _lastHttpStatusCode = response.StatusCode;
+            }
+            catch (Exception e)
+            {
+                _logger.AddStringEvent($"POST error:[{url}], delay [{(dStart - DateTime.Now).Milliseconds}], error [{e.Message}]");
+                HandleError.Process("ServerRequest", "HttpRequestPost", e, false);
+            }
+            _logger.AddStringEvent($"POST end:[{url}], delay [{(dStart - DateTime.Now).Milliseconds}]");
+            return result;
+            
+        }
         public async Task<bool> HttpRequestGetFile(string fileUrl, string fullNameFile, string authToken, bool urlRelative = true)
         {
             _lastHttpStatusCode = 0;
