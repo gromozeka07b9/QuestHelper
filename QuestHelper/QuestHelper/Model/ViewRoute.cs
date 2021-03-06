@@ -38,7 +38,11 @@ namespace QuestHelper.Model
         private string _routeLengthStepsText = string.Empty;
         private string _coverImage = string.Empty;
         private bool _serverSynced = false;
-        private bool _isLoading = false;
+        private bool _isServerOnlyRoute = false;
+        private bool _isShowLoadingProcess = false;
+        private bool _isShowRouteDetail = false;
+        private bool _isShowNeedLoadRoute = false;
+        private bool _isNeedSyncRoute = false;
         public event PropertyChangedEventHandler PropertyChanged;
 
 
@@ -388,21 +392,68 @@ namespace QuestHelper.Model
                 _serverSynced = value;
             }
         }
-        public bool IsLoading
+        public bool IsShowLoadingProcess
         {
             get
             {
-                return _isLoading;
+                return _isShowLoadingProcess;
             }
             set
             {
-                if (_isLoading != value)
+                if (_isShowLoadingProcess != value)
                 {
-                    _isLoading = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsLoading"));
+                    _isShowLoadingProcess = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsShowLoadingProcess"));
                 }
             }
         }
+        public bool IsShowRouteDetail
+        {
+            get
+            {
+                return _isShowRouteDetail;
+            }
+            set
+            {
+                if (_isShowRouteDetail != value)
+                {
+                    _isShowRouteDetail = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsShowRouteDetail"));
+                }
+            }
+        }        
+        public bool IsShowNeedLoadRoute
+        {
+            get
+            {
+                return _isShowNeedLoadRoute;
+            }
+            set
+            {
+                if (_isShowNeedLoadRoute != value)
+                {
+                    _isShowNeedLoadRoute = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsShowNeedLoadRoute"));
+                }
+                
+            }
+        }  
+        public bool IsNeedSyncRoute
+        {
+            get
+            {
+                return _isNeedSyncRoute;
+            }
+            set
+            {
+                if (_isNeedSyncRoute != value)
+                {
+                    _isNeedSyncRoute = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsNeedSyncRoute"));
+                }
+                
+            }
+        }        
         public bool IsHaveAnyPhotos
         {
             get
@@ -424,6 +475,44 @@ namespace QuestHelper.Model
         {
             RouteManager routeManager = new RouteManager();
             return routeManager.Save(this);
+        }
+
+        public void SetViewStateSynced()
+        {
+            IsShowRouteDetail = true;
+            IsNeedSyncRoute = false;
+            IsShowLoadingProcess = false;
+            IsShowNeedLoadRoute = false;
+        }
+
+        public void SetViewStateNeedLoad()
+        {
+            IsShowRouteDetail = false;
+            IsNeedSyncRoute = false;
+            IsShowLoadingProcess = false;
+            IsShowNeedLoadRoute = true;
+        }
+        public void SetViewStateLoadingProcess()
+        {
+            IsShowRouteDetail = false;
+            IsNeedSyncRoute = false;
+            IsShowLoadingProcess = true;
+            IsShowNeedLoadRoute = false;
+        }
+        public void SetViewStateNeedSync()
+        {
+            IsShowRouteDetail = true;
+            IsNeedSyncRoute = true;
+            IsShowLoadingProcess = false;
+            IsShowNeedLoadRoute = false;
+        }
+
+        public void SetViewStateNoNetwork()
+        {
+            IsShowRouteDetail = true;
+            IsNeedSyncRoute = true;
+            IsShowLoadingProcess = false;
+            IsShowNeedLoadRoute = false;
         }
     }
 }

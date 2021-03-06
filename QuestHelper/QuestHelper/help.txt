@@ -43,3 +43,9 @@ transparent navigation bar:
 https://xamgirl.com/transparent-navigation-bar-in-xamarin-forms/
 
 https://docs.microsoft.com/ru-ru/xamarin/xamarin-forms/user-interface/listview/performance
+
+read from ancestor
+<!--ffimageloading:CachedImage Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="1" IsVisible="{Binding IsServerRequestsOk, Converter={StaticResource inverter}, Source={RelativeSource AncestorType={x:Type viewmodel:RoutesViewModel}}}"
+ Source="ic_feed.png" Margin="0" WidthRequest="40" HeightRequest="40"
+ DownsampleToViewSize="True" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+</ffimageloading:CachedImage-->

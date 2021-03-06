@@ -24,10 +24,10 @@ namespace QuestHelper.View
         public RoutePage()
 		{
             InitializeComponent ();
-		    _vm = new RouteViewModel(string.Empty, false) { Navigation = this.Navigation };
+		    _vm = new RouteViewModel(string.Empty, false, true) { Navigation = this.Navigation };
             BindingContext = _vm;
         }
-        public RoutePage(string routeId, bool isFirstRoute)
+        public RoutePage(string routeId, bool isFirstRoute, bool isNeedSyncRoute)
         {
 
             InitializeComponent();
@@ -37,14 +37,14 @@ namespace QuestHelper.View
                 _route = manager.GetRouteById(routeId);
             }
             Title = _route.Name;
-            _vm = new RouteViewModel(_route.RouteId, isFirstRoute) { Navigation = this.Navigation };
+            _vm = new RouteViewModel(_route.RouteId, isFirstRoute, isNeedSyncRoute) { Navigation = this.Navigation };
             BindingContext = _vm;
         }
 
         private async void ContentPage_Appearing(object sender, EventArgs e)
         {
-            _vm.startDialog();
-            if (!ToolbarItems.Where(x => x.Command == _vm.ShareRouteCommand).Any())
+            _vm.startDialogAsync();
+            if (!ToolbarItems.Any(x => x.Command == _vm.ShareRouteCommand))
             {
                 if (await _vm.UserCanShareAsync())
                 {

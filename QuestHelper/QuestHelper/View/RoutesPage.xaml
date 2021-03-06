@@ -123,32 +123,35 @@
                                     <!--Image x:Name="ImgRoute" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="4" Source="{Binding CoverImage}" Opacity="1" Margin="0,0,0,0" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                                     </-->
 
-                                    <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="1" IsVisible="{Binding ServerSynced}" Style="{StaticResource RouteListStackLayoutTop}">
+                                    <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="1" IsVisible="{Binding IsShowRouteDetail}" Style="{StaticResource RouteListStackLayoutTop}">
                                     </StackLayout>
-                                    <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="3" IsVisible="{Binding ServerSynced, Converter={StaticResource inverter}}" Style="{StaticResource RouteListStackLayoutTop}">
+                                    <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="3" IsVisible="{Binding IsShowRouteDetail, Converter={StaticResource inverter}}" Style="{StaticResource RouteListStackLayoutTop}">
                                     </StackLayout>
 
-                                    <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" IsVisible="{Binding ServerSynced}" Style="{StaticResource RouteListStackLayoutBottom}">
+                                    <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" IsVisible="{Binding IsShowRouteDetail}" Style="{StaticResource RouteListStackLayoutBottom}">
                                     </StackLayout>
-                                    <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" IsVisible="{Binding ServerSynced, Converter={StaticResource inverter}}" BackgroundColor="SkyBlue" Orientation="Horizontal" HorizontalOptions="Fill">
+                                    <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" IsVisible="{Binding IsShowNeedLoadRoute}" BackgroundColor="SkyBlue" Orientation="Horizontal" HorizontalOptions="Fill">
                                         <StackLayout HorizontalOptions="FillAndExpand"></StackLayout>
-                                        <Label IsVisible="{Binding IsLoading}" Text="Идёт загрузка..." TextColor="Black" FontSize="14" Margin="0" HorizontalOptions="EndAndExpand" VerticalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="End"></Label>
-                                        <Label IsVisible="{Binding IsLoading, Converter={StaticResource inverter}}" Text="Загрузить маршрут" TextColor="Black" FontSize="14" Margin="0" HorizontalOptions="EndAndExpand" VerticalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="End"></Label>
-                                        <ffimageloading:CachedImage IsVisible="{Binding IsLoading, Converter={StaticResource inverter}}" WidthRequest="40" HeightRequest="32" Source="ic_download.png" Margin="0" DownsampleToViewSize="True" VerticalOptions="Center" HorizontalOptions="End">
+                                        <Label IsVisible="{Binding IsShowNeedLoadRoute}" Text="Загрузить маршрут" TextColor="Black" FontSize="14" Margin="0" HorizontalOptions="EndAndExpand" VerticalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="End"></Label>
+                                        <ffimageloading:CachedImage IsVisible="{Binding IsShowNeedLoadRoute}" WidthRequest="40" HeightRequest="32" Source="ic_download.png" Margin="0" DownsampleToViewSize="True" VerticalOptions="Center" HorizontalOptions="End">
                                         </ffimageloading:CachedImage>
-                                        <progressBar:SfCircularProgressBar IsVisible="{Binding IsLoading}" WidthRequest="40" HeightRequest="40" IndeterminateEasingEffect="Linear" IsIndeterminate="True" HorizontalOptions="End" VerticalOptions="Center"/>
+                                    </StackLayout>
+                                    <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" IsVisible="{Binding IsShowLoadingProcess}" BackgroundColor="SkyBlue" Orientation="Horizontal" HorizontalOptions="Fill">
+                                        <StackLayout HorizontalOptions="FillAndExpand"></StackLayout>
+                                        <Label IsVisible="{Binding IsShowLoadingProcess}" Text="Идёт загрузка..." TextColor="Black" FontSize="14" Margin="0" HorizontalOptions="EndAndExpand" VerticalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="End"></Label>
+                                        <progressBar:SfCircularProgressBar IsVisible="{Binding IsShowLoadingProcess}" WidthRequest="40" HeightRequest="40" IndeterminateEasingEffect="Linear" IsIndeterminate="True" HorizontalOptions="End" VerticalOptions="Center"/>
                                     </StackLayout>
                                     <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Text="{Binding Name}" Style="{StaticResource RouteListBigLabel}" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="End" Margin="5,3,5,0" />
 
-                                    <ffimageloading:CachedImage Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="1" IsVisible="{Binding IsServerRequestsOk, Converter={StaticResource inverter}, Source={RelativeSource AncestorType={x:Type viewmodel:RoutesViewModel}}}"
-                                     Source="ic_feed.png" Margin="0" WidthRequest="40" HeightRequest="40"
-                                     DownsampleToViewSize="True" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <ffimageloading:CachedImage Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="1" IsVisible="{Binding IsNeedSyncRoute}"
+                                                                Source="cloud_upload2.png" Margin="0" WidthRequest="40" HeightRequest="40"
+                                                                DownsampleToViewSize="True" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                                     </ffimageloading:CachedImage>
 
-                                    <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" IsVisible="{Binding ServerSynced}" Text="{Binding RouteLengthKm}" Style="{StaticResource RouteListSmallLabel}" Margin="0,0,10,0" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="End"></Label>
-                                    <Label Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" IsVisible="{Binding ServerSynced}" Text="{Binding RouteLengthSteps}" Style="{StaticResource RouteListSmallLabel}" Margin="0,0,10,0" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="End"></Label>
-                                    <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="2" IsVisible="{Binding ServerSynced}" Text="{Binding RouteDays}" Style="{StaticResource RouteListSmallLabel}" Margin="10,0,0,10" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center"></Label>
-                                    <Label Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" IsVisible="{Binding ServerSynced}" Text="{Binding RoutePointsCount}" Style="{StaticResource RouteListSmallLabel}" Margin="10,0,0,0" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="End"></Label>
+                                    <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" IsVisible="{Binding IsShowRouteDetail}" Text="{Binding RouteLengthKm}" Style="{StaticResource RouteListSmallLabel}" Margin="0,0,10,0" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="End"></Label>
+                                    <Label Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" IsVisible="{Binding IsShowRouteDetail}" Text="{Binding RouteLengthSteps}" Style="{StaticResource RouteListSmallLabel}" Margin="0,0,10,0" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="End"></Label>
+                                    <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="2" IsVisible="{Binding IsShowRouteDetail}" Text="{Binding RouteDays}" Style="{StaticResource RouteListSmallLabel}" Margin="10,0,0,10" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center"></Label>
+                                    <Label Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" IsVisible="{Binding IsShowRouteDetail}" Text="{Binding RoutePointsCount}" Style="{StaticResource RouteListSmallLabel}" Margin="10,0,0,0" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="End"></Label>
                                 </Grid>
                             </Frame>
                         </ViewCell>

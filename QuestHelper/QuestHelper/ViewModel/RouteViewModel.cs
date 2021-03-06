@@ -11,7 +11,9 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using Acr.UserDialogs;
 using System.IO;
+using QuestHelper.Managers.Sync;
 using QuestHelper.Resources;
+using Xamarin.Essentials;
 
 namespace QuestHelper.ViewModel
 {
@@ -37,10 +39,13 @@ namespace QuestHelper.ViewModel
         private string _nameForEdit;
         private string _coverImagePathForEdit;
         private string _imgFilenameForEdit;
+        private bool _isNeedSyncRoute = false;
+        private bool _isNeedSyncRouteInit = false;
 
         public INavigation Navigation { get; set; }
         
         public event PropertyChangedEventHandler PropertyChanged;
+        public ICommand SyncRouteCommand { get; private set; }
         public ICommand ChooseImageForCoverCommand { get; private set; }
         public ICommand ShowNewRouteDialogCommand { get; private set; }
         public ICommand AddNewRoutePointCommand { get; private set; }
@@ -55,14 +60,17 @@ namespace QuestHelper.ViewModel
         public ICommand BackNavigationCommand { get; private set; }
         
         public ICommand DeleteRouteCommand { get; private set; }
-        public RouteViewModel(string routeId, bool isFirstRoute)
+        public RouteViewModel(string routeId, bool isFirstRoute, bool isNeedSyncRoute)
         {
             _vroute = new ViewRoute(routeId);
             _isFirstRoute = isFirstRoute;
+            _vroute.ServerSynced = !isNeedSyncRoute;
+            IsNeedSyncRoute = isNeedSyncRoute;
+            SyncRouteCommand = new Command(syncRouteCommandAsync);
             ChooseImageForCoverCommand = new Command(chooseImageForCoverCommand);
             ShowNewRouteDialogCommand = new Command(showNewRouteData);
             AddNewRoutePointCommand = new Command(addNewRoutePointAsync);
-            StartDialogCommand = new Command(startDialog);
+            StartDialogCommand = new Command(startDialogAsync);
             EditRouteCommand = new Command(editRouteCommandAsync);
             EditRouteCompleteCommand = new Command(editRouteCompleteCommand);
             CancelEditRouteCommand = new Command(cancelEditRouteCommand);
@@ -73,6 +81,11 @@ namespace QuestHelper.ViewModel
             DeleteRouteCommand = new Command(deleteRouteCommand);
         }
 
+        private async void syncRouteCommandAsync(object obj)
+        {
+            await syncRouteAsync(_vroute.Id);
+        }
+        
         private async void deleteRouteCommand(object obj)
         {
             if (!string.IsNullOrEmpty(_vroute.ObjVerHash))
@@ -172,11 +185,14 @@ namespace QuestHelper.ViewModel
             }
         }
 
-        public void startDialog()
+        public async void startDialogAsync()
         {
+            _vroute.Refresh(_vroute.Id);
+            //IsNeedSyncRoute = !_vroute.ServerSynced;
+            IsNeedSyncRoute = string.IsNullOrEmpty(_vroute.ObjVerHash);
             if (!string.IsNullOrEmpty(_vroute.Name))
             {
-                refreshRouteData();
+                await refreshRouteDataAsync();
             }
             else
             {
@@ -197,11 +213,65 @@ namespace QuestHelper.ViewModel
             RouteScreenIsVisible = !SplashStartScreenIsVisible;
         }
 
-        private void refreshRouteData()
+        private async Task refreshRouteDataAsync()
         {
             SplashStartScreenIsVisible = false;
             RouteScreenIsVisible = !SplashStartScreenIsVisible;
             IsRefreshing = true;
+            updatePoints();
+            IsRefreshing = false;
+
+            /*if (_isNeedSyncRoute)
+            {
+                SyncServer syncSrv = new SyncServer();
+                await syncSrv.Sync(_vroute.Id).ContinueWith(result =>
+                {
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        if (!result.Result)
+                        {
+                            UserDialogs.Instance.Alert("Ошибка синхронизации", "Внимание", "Ok");
+                        }
+                        else
+                        {
+                            _isNeedSyncRoute = false;
+                        }
+                        updatePoints();
+                        IsRefreshing = false;
+                    });
+
+                }, TaskContinuationOptions.OnlyOnRanToCompletion);
+            }
+            else
+            {
+                updatePoints();
+                IsRefreshing = false;
+            }*/
+        }
+        private async Task syncRouteAsync(string routeId)
+        {
+            SyncServer syncSrv = new SyncServer();
+            await syncSrv.Sync(_vroute.Id).ContinueWith(result =>
+            {
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    if (!result.Result)
+                    {
+                        UserDialogs.Instance.Alert("Ошибка синхронизации", "Внимание", "Ok");
+                    }
+                    else
+                    {
+                        IsNeedSyncRoute = false;
+                        updatePoints();
+                    }
+                    IsRefreshing = false;
+                });
+
+            }, TaskContinuationOptions.OnlyOnRanToCompletion);
+        }
+
+        private void updatePoints()
+        {
             var points = _routePointManager.GetPointsByRouteId(_vroute.Id);
             if (!points.Any())
             {
@@ -211,9 +281,10 @@ namespace QuestHelper.ViewModel
             {
                 PointsOfRoute = new ObservableCollection<ViewRoutePoint>(points);
             }
+
             NoPointWarningIsVisible = PointsOfRoute.Count == 0;
-            IsRefreshing = false;
         }
+
         void showNewRouteData()
         {
             SplashStartScreenIsVisible = false;
@@ -223,7 +294,6 @@ namespace QuestHelper.ViewModel
 
         async void addNewRoutePointAsync()
         {
-            //var routePointPage = new RoutePointPage(_vroute.Id, string.Empty);
             var routePointPage = new RoutePointV2Page(_vroute.Id, string.Empty);
             await Navigation.PushModalAsync(routePointPage, true);
         }
@@ -486,6 +556,21 @@ namespace QuestHelper.ViewModel
             }
         }
 
+        public bool IsNeedSyncRoute
+        {
+            set
+            {
+                if (_isNeedSyncRoute != value)
+                {
+                    _isNeedSyncRoute = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsNeedSyncRoute"));
+                }
+            }
+            get
+            {
+                return _isNeedSyncRoute;
+            }
+        }
         public bool IsVisibleModalRouteEdit
         {
             set

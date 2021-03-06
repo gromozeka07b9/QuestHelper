@@ -187,7 +187,7 @@ namespace QuestHelper.Managers
                     {
                         route.ServerSyncedDate = DateTimeOffset.Now;                                            
                     }
-                    route.ServerSynced = viewRoute.ServerSynced;
+                    route.ServerSynced = !string.IsNullOrEmpty(viewRoute.ObjVerHash) && viewRoute.ServerSynced;
                     viewRoute.Refresh(route.RouteId);
                 });
                 result = true;
