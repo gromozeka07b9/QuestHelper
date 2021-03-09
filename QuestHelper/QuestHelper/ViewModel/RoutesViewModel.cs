@@ -198,6 +198,9 @@ namespace QuestHelper.ViewModel
                             if (route.Version == 0 && !route.ServerSynced && string.IsNullOrEmpty(route.ObjVerHash))
                             {
                                 route.SetViewStateNeedLoad();
+                            } else if (route.Version < serverRoute.Version)
+                            {
+                                route.SetViewStateNeedLoad();
                             }
                             else
                             {

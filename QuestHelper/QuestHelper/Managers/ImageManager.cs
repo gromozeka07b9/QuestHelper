@@ -84,7 +84,7 @@ namespace QuestHelper.Managers
                 {
                     try
                     {
-                        photoPicked = await CrossMedia.Current.PickPhotoAsync();
+                        photoPicked = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions(){ SaveMetaData = true});
                     }
                     catch (Exception e)
                     {

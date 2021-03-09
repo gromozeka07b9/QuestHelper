@@ -40,7 +40,7 @@ namespace QuestHelper.ViewModel
         private string _coverImagePathForEdit;
         private string _imgFilenameForEdit;
         private bool _isNeedSyncRoute = false;
-        private bool _isNeedSyncRouteInit = false;
+        private bool _isNeedSyncRouteInitial = false;
 
         public INavigation Navigation { get; set; }
         
@@ -65,7 +65,8 @@ namespace QuestHelper.ViewModel
             _vroute = new ViewRoute(routeId);
             _isFirstRoute = isFirstRoute;
             _vroute.ServerSynced = !isNeedSyncRoute;
-            IsNeedSyncRoute = isNeedSyncRoute;
+            _isNeedSyncRouteInitial = isNeedSyncRoute;
+            _isNeedSyncRoute = _isNeedSyncRouteInitial;
             SyncRouteCommand = new Command(syncRouteCommandAsync);
             ChooseImageForCoverCommand = new Command(chooseImageForCoverCommand);
             ShowNewRouteDialogCommand = new Command(showNewRouteData);
@@ -188,8 +189,15 @@ namespace QuestHelper.ViewModel
         public async void startDialogAsync()
         {
             _vroute.Refresh(_vroute.Id);
-            //IsNeedSyncRoute = !_vroute.ServerSynced;
-            IsNeedSyncRoute = string.IsNullOrEmpty(_vroute.ObjVerHash);
+            if (_isNeedSyncRouteInitial)
+            {
+                IsNeedSyncRoute = _isNeedSyncRouteInitial;
+                _isNeedSyncRouteInitial = false;
+            }
+            else
+            {
+                IsNeedSyncRoute = string.IsNullOrEmpty(_vroute.ObjVerHash);
+            }
             if (!string.IsNullOrEmpty(_vroute.Name))
             {
                 await refreshRouteDataAsync();
