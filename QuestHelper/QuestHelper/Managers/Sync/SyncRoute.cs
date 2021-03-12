@@ -11,6 +11,8 @@ using QuestHelper.LocalDB.Model;
 using System.IO;
 using Autofac;
 using QuestHelper.Model.Messages;
+using Syncfusion.DataSource.Extensions;
+using RoutePointMediaObject = QuestHelper.LocalDB.Model.RoutePointMediaObject;
 
 namespace QuestHelper.Managers.Sync
 {
@@ -63,11 +65,17 @@ namespace QuestHelper.Managers.Sync
                     updateResult = await updatePoints(routeRoot);
                     if (!updateResult) return false;
 
-                    updateResult = await updateMedias(routeRoot);
+                    List<ViewRoutePointMediaObject> mediaForDownload = new List<ViewRoutePointMediaObject>();
+                    List<ViewRoutePointMediaObject> mediaForUpload = new List<ViewRoutePointMediaObject>();
+                    (updateResult, mediaForUpload, mediaForDownload) = await updateMedias(routeRoot);
                     if (!updateResult) return false;
-
+                    
                     if (_syncMediaFiles)
                     {
+                        /*if (mediaForDownload.Count > 0)
+                        {
+                            downloadImages(mediaForDownload, loadOnlyPreviewImg);
+                        }*/
                         var medias = _routePointMediaManager.GetMediaObjectsByRouteId(routeRoot.Route.Id).Where(m => !m.OriginalServerSynced || !m.PreviewServerSynced).Select(m => new MediaForUpdate { RoutePointId = m.RoutePointId, RoutePointMediaObjectId = m.RoutePointMediaObjectId, OriginalServerSynced = m.OriginalServerSynced, PreviewServerSynced = m.PreviewServerSynced, IsDeleted = m.IsDeleted, MediaType = (MediaObjectTypeEnum)m.MediaType }).ToList();
                         _log.AddStringEvent($"media files sync,  route {_routeId}, media count:{medias.Count.ToString()}");
 
@@ -129,6 +137,23 @@ namespace QuestHelper.Managers.Sync
             }*/
 
             return true;
+        }
+
+        private void downloadImages(List<ViewRoutePointMediaObject> mediaForDownload, bool loadOnlyPreviewImg)
+        {
+            _log.AddStringEvent($"media files downloading,  route {_routeId}, media count:{mediaForDownload.Count.ToString()}");
+
+            int count = mediaForDownload.Count;
+            int index = 0;
+            foreach (var media in mediaForDownload)
+            {
+                //bool result = await updateImages(media, loadOnlyPreviewImg);
+                //if (!result) syncImgHasErrors = !result;
+                index++;
+                double percent = (double)index * 100 / (double)count / 100;
+                Xamarin.Forms.MessagingCenter.Send<SyncProgressImageLoadingMessage>(new SyncProgressImageLoadingMessage() { RouteId = _routeId, ProgressValue = percent }, string.Empty);
+            }
+            
         }
 
         private async Task<bool> updateImages(MediaForUpdate media, bool loadOnlyPreviewImg)
@@ -259,11 +284,13 @@ namespace QuestHelper.Managers.Sync
             return versions;
         }
 
-        private async Task<bool> updateMedias(RouteRoot routeRoot)
+        private async Task<(bool, List<ViewRoutePointMediaObject>, List<ViewRoutePointMediaObject>)> updateMedias(RouteRoot routeRoot)
         {
             bool updateResult = true;
 
-            List<string> mediasToUpload = new List<string>();
+            //List<string> mediasToUpload = new List<string>();
+            List<ViewRoutePointMediaObject> mediasToUpload = new List<ViewRoutePointMediaObject>();
+            List<ViewRoutePointMediaObject> mediasToDowload = new List<ViewRoutePointMediaObject>();
 
             var medias = _routePointMediaManager.GetMediaObjectsByRouteId(routeRoot.Route.Id);
 
@@ -275,7 +302,10 @@ namespace QuestHelper.Managers.Sync
 
             var newMedias = medias.Where(m => !serverMedias.Any(sm => sm.Id == m.RoutePointMediaObjectId));
             //новые медиа
-            mediasToUpload.AddRange(newMedias.Select(m=>m.RoutePointMediaObjectId));
+            //mediasToUpload.AddRange(newMedias.Select(m=>m.RoutePointMediaObjectId));
+            var refreshedNewMedias = newMedias.Select(m => new ViewRoutePointMediaObject() {Id = m.RoutePointMediaObjectId});
+            refreshedNewMedias.ForEach(x=>x.Refresh());
+            mediasToUpload.AddRange(refreshedNewMedias);
 
             foreach (var serverMedia in serverMedias)
             {
@@ -285,30 +315,35 @@ namespace QuestHelper.Managers.Sync
                     ViewRoutePointMediaObject updateMedia = new ViewRoutePointMediaObject();
                     updateMedia.FillFromWSModel(serverMedia);
                     updateResult = updateMedia.Save();
+                    mediasToDowload.Add(updateMedia);
                 }
                 else if (serverMedia.Version < localMedia.Version)
                 {
                     //в очередь на отправку
-                    mediasToUpload.Add(serverMedia.Id);
+                    //mediasToUpload.Add(serverMedia.Id);
+                    var media = new ViewRoutePointMediaObject() {Id = serverMedia.Id};
+                    media.Refresh();
+                    mediasToUpload.Add(media);
                 }
-                if (!updateResult) return false;
+                if (!updateResult) break;
 
             }
 
             if (mediasToUpload.Count > 0)
             {
-                List<ViewRoutePointMediaObject> viewMediasToUpload = new List<ViewRoutePointMediaObject>();
+                /*List<ViewRoutePointMediaObject> viewMediasToUpload = new List<ViewRoutePointMediaObject>();
                 foreach (string mediaId in mediasToUpload)
                 {
                     var media = new ViewRoutePointMediaObject();
                     media.Load(mediaId);
                     viewMediasToUpload.Add(media);
-                }
+                }*/
 
-                updateResult = await UploadAsync(GetJsonStructuresMedias(viewMediasToUpload), _routePointMediaObjectsApi);
+                //updateResult = await UploadAsync(GetJsonStructuresMedias(viewMediasToUpload), _routePointMediaObjectsApi);
+                updateResult = await UploadAsync(GetJsonStructuresMedias(mediasToUpload), _routePointMediaObjectsApi);
             }
 
-            return updateResult;
+            return (updateResult, mediasToUpload, mediasToDowload);
         }
 
         private async Task<bool> updatePoints(RouteRoot routeRoot)

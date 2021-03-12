@@ -57,11 +57,11 @@ namespace QuestHelper.Model
             }
         }
 
-        public void Refresh(string mediaId)
+        public void Refresh()
         {
-            if(!string.IsNullOrEmpty(mediaId))
+            if(!string.IsNullOrEmpty(Id))
             {
-                Load(mediaId);
+                Load(Id);
             }
         }
         public string Id
