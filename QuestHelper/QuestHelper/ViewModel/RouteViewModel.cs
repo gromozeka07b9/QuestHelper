@@ -142,7 +142,8 @@ namespace QuestHelper.ViewModel
                 _vroute.Version++;
                 _vroute.ObjVerHash = string.Empty;
                 _vroute.Save();
-                Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage() { }, string.Empty);
+                IsNeedSyncRoute = true;
+                //Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage() { }, string.Empty);
             }
             IsVisibleModalRouteEdit = !IsVisibleModalRouteEdit;
             IsVisibleNavigationToolbar = !IsVisibleModalRouteEdit;
@@ -225,51 +226,27 @@ namespace QuestHelper.ViewModel
         {
             SplashStartScreenIsVisible = false;
             RouteScreenIsVisible = !SplashStartScreenIsVisible;
+            //IsNeedSyncRoute = false;
             IsRefreshing = true;
             updatePoints();
             IsRefreshing = false;
-
-            /*if (_isNeedSyncRoute)
-            {
-                SyncServer syncSrv = new SyncServer();
-                await syncSrv.Sync(_vroute.Id).ContinueWith(result =>
-                {
-                    MainThread.BeginInvokeOnMainThread(() =>
-                    {
-                        if (!result.Result)
-                        {
-                            UserDialogs.Instance.Alert("Ошибка синхронизации", "Внимание", "Ok");
-                        }
-                        else
-                        {
-                            _isNeedSyncRoute = false;
-                        }
-                        updatePoints();
-                        IsRefreshing = false;
-                    });
-
-                }, TaskContinuationOptions.OnlyOnRanToCompletion);
-            }
-            else
-            {
-                updatePoints();
-                IsRefreshing = false;
-            }*/
         }
         private async Task syncRouteAsync(string routeId)
         {
+            IsNeedSyncRoute = false;
+            IsRefreshing = true;
             SyncServer syncSrv = new SyncServer();
-            await syncSrv.Sync(_vroute.Id).ContinueWith(result =>
+            await syncSrv.Sync(_vroute.Id, false).ContinueWith(result =>
             {
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
                     if (!result.Result)
                     {
+                        IsNeedSyncRoute = true;
                         UserDialogs.Instance.Alert("Ошибка синхронизации", "Внимание", "Ok");
                     }
                     else
                     {
-                        IsNeedSyncRoute = false;
                         updatePoints();
                     }
                     IsRefreshing = false;
@@ -521,7 +498,6 @@ namespace QuestHelper.ViewModel
                 if(_selectedPoint != value)
                 {
                     ViewRoutePoint point = value;
-                    //var page = new RoutePointPage(_vroute.Id, point.Id);
                     var page = new RoutePointV2Page(_vroute.Id, point.Id);
                     Navigation.PushModalAsync(page);
                     _selectedPoint = null;

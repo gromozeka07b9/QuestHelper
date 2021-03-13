@@ -10,6 +10,7 @@ using System.Text;
 using QuestHelper.LocalDB.Model;
 using System.IO;
 using Autofac;
+using Microsoft.AppCenter.Analytics;
 using QuestHelper.Model.Messages;
 using Syncfusion.DataSource.Extensions;
 using RoutePointMediaObject = QuestHelper.LocalDB.Model.RoutePointMediaObject;
@@ -27,7 +28,7 @@ namespace QuestHelper.Managers.Sync
         private readonly RouteManager _routeManager = new RouteManager();
         private readonly RoutePointManager _routePointManager = new RoutePointManager();
         private readonly RoutePointMediaObjectManager _routePointMediaManager = new RoutePointMediaObjectManager();
-        private bool _syncMediaFiles = false;
+        //private bool _syncMediaFiles = false;
         private ITextfileLogger _log;
 
 
@@ -70,12 +71,20 @@ namespace QuestHelper.Managers.Sync
                     (updateResult, mediaForUpload, mediaForDownload) = await updateMedias(routeRoot);
                     if (!updateResult) return false;
                     
-                    if (_syncMediaFiles)
+                    if (mediaForDownload.Count > 0)
                     {
-                        /*if (mediaForDownload.Count > 0)
+                        await downloadMedias(mediaForDownload, loadOnlyPreviewImg);
+                    }
+                    if (mediaForUpload.Count > 0)
+                    {
+                        await uploadMedias(mediaForUpload);
+                    }
+                    /*if (_syncMediaFiles)
+                    {
+                        if (mediaForDownload.Count > 0)
                         {
-                            downloadImages(mediaForDownload, loadOnlyPreviewImg);
-                        }*/
+                            downloadMedias(mediaForDownload, loadOnlyPreviewImg);
+                        }
                         var medias = _routePointMediaManager.GetMediaObjectsByRouteId(routeRoot.Route.Id).Where(m => !m.OriginalServerSynced || !m.PreviewServerSynced).Select(m => new MediaForUpdate { RoutePointId = m.RoutePointId, RoutePointMediaObjectId = m.RoutePointMediaObjectId, OriginalServerSynced = m.OriginalServerSynced, PreviewServerSynced = m.PreviewServerSynced, IsDeleted = m.IsDeleted, MediaType = (MediaObjectTypeEnum)m.MediaType }).ToList();
                         _log.AddStringEvent($"media files sync,  route {_routeId}, media count:{medias.Count.ToString()}");
 
@@ -89,7 +98,7 @@ namespace QuestHelper.Managers.Sync
                             double percent = (double)index * 100 / (double)count / 100;
                             Xamarin.Forms.MessagingCenter.Send<SyncProgressImageLoadingMessage>(new SyncProgressImageLoadingMessage() { RouteId = _routeId, ProgressValue = percent }, string.Empty);
                         }
-                    }
+                    }*/
                 }
             }
             else return false;
@@ -121,39 +130,95 @@ namespace QuestHelper.Managers.Sync
             {
                 HandleError.Process("SyncRoute", "ErrorUpdateHash", new Exception("Http error:" + _routesApi.LastHttpStatusCode.ToString()), false);
             }
-            /*if (!updatedLocalRoute.IsDeleted)
-            {
-                {
-                    StringBuilder sbVersions = getVersionsForRoute(updatedLocalRoute);
-                    _log.AddStringEvent($"set route {_routeId}, versions {sbVersions.ToString()}");
-                    refreshHashForRoute(updatedLocalRoute, sbVersions);
-                }
-            }
-            else
-            {
-                _log.AddStringEvent($"set delete route {_routeId}");
-                refreshHashForRouteByString(updatedLocalRoute, routeServerHash);
-                deleteRouteContain(updatedLocalRoute);
-            }*/
 
             return true;
         }
 
-        private void downloadImages(List<ViewRoutePointMediaObject> mediaForDownload, bool loadOnlyPreviewImg)
+        private async Task uploadMedias(List<ViewRoutePointMediaObject> mediaForUpload)
         {
-            _log.AddStringEvent($"media files downloading,  route {_routeId}, media count:{mediaForDownload.Count.ToString()}");
+            Analytics.TrackEvent("SyncRoute", new Dictionary<string, string> {{"RouteId", _routeId}, {"uploadMediasCount", mediaForUpload.Count.ToString()}});
+            int count = mediaForUpload.Count;
+            int index = 0;
+            foreach (var media in mediaForUpload)
+            {
+                await uploadMedia(media.RoutePointId, media.Id, media.MediaType, true);
+                if (media.MediaType == MediaObjectTypeEnum.Image)
+                {
+                    await uploadMedia(media.RoutePointId, media.Id, media.MediaType, false);
+                }
+                index++;
+                double percent = (double)index * 100 / (double)count / 100;
+                Xamarin.Forms.MessagingCenter.Send<SyncProgressImageLoadingMessage>(new SyncProgressImageLoadingMessage() { RouteId = _routeId, ProgressValue = percent }, string.Empty);
+            }
+        }
+
+        private async Task<bool> uploadMedia(string routePointId, string mediaId, MediaObjectTypeEnum mediaMediaType, bool loadOnlyPreviewImg)
+        {
+            string filename = ImagePathManager.GetMediaFilename(mediaId, mediaMediaType, loadOnlyPreviewImg);
+            bool uploadResult = await _routePointMediaObjectsApi.SendImage(routePointId, mediaId, mediaMediaType, loadOnlyPreviewImg);
+            
+            if (!uploadResult)
+            {
+                HandleError.Process("SyncRoute", "ErrorUploadMedia", new Exception("ErrorUploadMedia"), false, $"filename:[{filename}], status:[{_routePointMediaObjectsApi.LastHttpStatusCode.ToString()}]");
+            }
+            
+            return uploadResult;
+
+        }
+
+        private async Task downloadMedias(List<ViewRoutePointMediaObject> mediaForDownload, bool loadOnlyPreviewImg)
+        {
+            Analytics.TrackEvent("SyncRoute", new Dictionary<string, string> {{"RouteId", _routeId}, {"downloadMediasCount", mediaForDownload.Count.ToString()}});
 
             int count = mediaForDownload.Count;
             int index = 0;
             foreach (var media in mediaForDownload)
             {
-                //bool result = await updateImages(media, loadOnlyPreviewImg);
-                //if (!result) syncImgHasErrors = !result;
+                if (!media.IsDeleted)
+                {
+                    await downloadMedia(media.RoutePointId, media.Id, media.MediaType, true);
+                    if ((!loadOnlyPreviewImg) && (media.MediaType == MediaObjectTypeEnum.Image))
+                    {
+                        await downloadMedia(media.RoutePointId, media.Id, media.MediaType, loadOnlyPreviewImg);
+                    }
+                }
+                else
+                {
+                    deleteMedia(media);
+                }
                 index++;
                 double percent = (double)index * 100 / (double)count / 100;
                 Xamarin.Forms.MessagingCenter.Send<SyncProgressImageLoadingMessage>(new SyncProgressImageLoadingMessage() { RouteId = _routeId, ProgressValue = percent }, string.Empty);
             }
             
+        }
+
+        private async Task<bool> downloadMedia(string routePointId, string mediaId, MediaObjectTypeEnum mediaMediaType, bool loadOnlyPreviewImg)
+        {
+            bool downloadResult = false;
+            string filename = ImagePathManager.GetMediaFilename(mediaId, mediaMediaType, loadOnlyPreviewImg);
+            string pathToMediaFile = ImagePathManager.GetImagePath(mediaId, mediaMediaType, loadOnlyPreviewImg);
+
+            downloadResult = File.Exists(pathToMediaFile);
+            if (!downloadResult)
+            {
+                downloadResult = await _routePointMediaObjectsApi.GetImage(routePointId, mediaId, ImagePathManager.GetPicturesDirectory(), filename);
+                if (!downloadResult)
+                {
+                    HandleError.Process("SyncRoute", "ErrorDownloadMedia", new Exception("ErrorDownloadMedia"), false, $"filename:[{filename}], status:[{_routePointMediaObjectsApi.LastHttpStatusCode.ToString()}]");
+                }
+            }
+
+            return downloadResult;
+        }
+
+        private void deleteMedia(ViewRoutePointMediaObject media)
+        {
+            _log.AddStringEvent($"image deleted, passed mediaid:{media.RoutePointMediaObjectId}");
+            _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, false, true);
+            _routePointMediaManager.SetSyncStatus(media.RoutePointMediaObjectId, true, true);
+            MediaFileManager fileManager = new MediaFileManager();
+            fileManager.Delete(media.RoutePointMediaObjectId, media.MediaType);
         }
 
         private async Task<bool> updateImages(MediaForUpdate media, bool loadOnlyPreviewImg)
@@ -302,9 +367,14 @@ namespace QuestHelper.Managers.Sync
 
             var newMedias = medias.Where(m => !serverMedias.Any(sm => sm.Id == m.RoutePointMediaObjectId));
             //новые медиа
-            //mediasToUpload.AddRange(newMedias.Select(m=>m.RoutePointMediaObjectId));
-            var refreshedNewMedias = newMedias.Select(m => new ViewRoutePointMediaObject() {Id = m.RoutePointMediaObjectId});
-            refreshedNewMedias.ForEach(x=>x.Refresh());
+            //var refreshedNewMedias = newMedias.Select(m => new ViewRoutePointMediaObject() {Id = m.RoutePointMediaObjectId});
+            var refreshedNewMedias = new List<ViewRoutePointMediaObject>();
+            foreach (var mediaItem in newMedias)
+            {
+                ViewRoutePointMediaObject media = new ViewRoutePointMediaObject();
+                media.Load(mediaItem.RoutePointMediaObjectId);
+                refreshedNewMedias.Add(media);
+            }
             mediasToUpload.AddRange(refreshedNewMedias);
 
             foreach (var serverMedia in serverMedias)
@@ -437,7 +507,7 @@ namespace QuestHelper.Managers.Sync
             return updateResult;
         }
 
-        public bool SyncImages
+        /*public bool SyncImages
         {
             set
             {
@@ -447,7 +517,7 @@ namespace QuestHelper.Managers.Sync
             {
                 return _syncMediaFiles;
             }
-        }
+        }*/
 
         private class MediaForUpdate
         {

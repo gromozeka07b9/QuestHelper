@@ -163,7 +163,8 @@ namespace QuestHelper.ViewModel
             creator.Load(_vroute.CreatorId);
             Author = creator.Name;
             CreatorImgUrl = creator.ImgUrl;
-            if (string.IsNullOrEmpty(Author))
+
+            if (string.IsNullOrEmpty(creator.ImgUrl))
             {
                 if(await creator.UpdateFromServerAsync())
                 {

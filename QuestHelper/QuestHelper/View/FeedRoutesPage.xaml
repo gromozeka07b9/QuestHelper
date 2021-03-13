@@ -30,7 +30,7 @@
                 <Image Source="emptylist.png" Style="{StaticResource NoDataWarinigIconImage}" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" />
             </StackLayout>
 
-            <ListView x:Name="FeedListView" Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="0,0,0,0" SeparatorVisibility="None" ItemsSource="{Binding FeedItems}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshFeedCommand}" RowHeight="240"  SelectedItem="{Binding SelectedFeedItem,Mode=TwoWay}" CachingStrategy="RecycleElementAndDataTemplate">
+            <ListView x:Name="FeedListView" Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="0,0,0,0" SeparatorVisibility="None" ItemsSource="{Binding FeedItems}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsRefreshing}" RefreshCommand="{Binding RefreshFeedCommand}" RowHeight="440"  SelectedItem="{Binding SelectedFeedItem,Mode=TwoWay}" CachingStrategy="RecycleElementAndDataTemplate">
                 <ListView.Header>
                     <StackLayout Margin="0" Style="{StaticResource InfoBlockStackLayout}">
                         <Frame Padding="0" Style="{StaticResource InfoBlockFrame}">
@@ -49,10 +49,10 @@
                                         <ColumnDefinition Width="4*"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="4*"/>
-                                        <RowDefinition Height="8*"/>
                                         <RowDefinition Height="2*"/>
-                                        <RowDefinition Height="2*"/>
+                                        <RowDefinition Height="10*"/>
+                                        <RowDefinition Height="1*"/>
+                                        <RowDefinition Height="1*"/>
                                     </Grid.RowDefinitions>
 
                                     <ffimageloading:CachedImage Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="4" Source="{Binding CoverImage}" Margin="0,0,0,0" Aspect="{Binding CoverImage, Converter={StaticResource aspectimage}}" DownsampleToViewSize="True" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" CacheType="None">
@@ -62,7 +62,7 @@
 
                                     <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Style="{StaticResource RouteListStackLayoutTop}">
                                     </StackLayout>
-                                    <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" Style="{StaticResource RouteListStackLayoutBottom}">
+                                    <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" Style="{StaticResource RouteListStackLayoutBottom}" IsVisible="{Binding IsDescriptionExist}">
                                     </StackLayout>
 
                                     <StackLayout Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">

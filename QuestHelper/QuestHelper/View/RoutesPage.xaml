@@ -193,7 +193,7 @@
                                 VerticalOptions="Center" HorizontalOptions="Center"
                                 />
             </AbsoluteLayout>
-            <ProgressBar Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="FillAndExpand" ProgressColor="Blue" BackgroundColor="White" Progress="{Binding ProgressValue}" Margin="0" IsVisible="{Binding IsVisibleProgress}" ></ProgressBar>
+            <!--ProgressBar Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="FillAndExpand" ProgressColor="Blue" BackgroundColor="White" Progress="{Binding ProgressValue}" Margin="0" IsVisible="{Binding IsVisibleProgress}" ></ProgressBar-->
         </Grid>
     </ContentPage.Content>
 </ContentPage>

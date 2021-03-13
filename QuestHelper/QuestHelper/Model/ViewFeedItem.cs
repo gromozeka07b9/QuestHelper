@@ -118,6 +118,11 @@ namespace QuestHelper.Model
             }
         }
 
+        public bool IsDescriptionExist
+        {
+            get => Description?.Length > 0;
+        }
+
         public string Description
         {
             set

@@ -141,6 +141,8 @@ namespace QuestHelper.ViewModel
 
         private async void refreshListRoutesCommandAsync()
         {
+            NoRoutesWarningIsVisible = !Routes?.Any()??false;
+            IsRefreshing = true;
             RoutesApiRequest api = new RoutesApiRequest(_currentUserToken);
             await api.GetPrivateRoutes(maxPageSize, 0, maxPageSize).ContinueWith(requestResult =>
             {
@@ -150,28 +152,24 @@ namespace QuestHelper.ViewModel
                     _routeManager.MergeRoutes(_currentUserId, _serverRoutes);
                 }    
                 Routes = getViewStateRoute(_routeManager.GetRoutes(_currentUserId), _serverRoutes, api.LastHttpStatusCode == HttpStatusCode.OK);
+            }).ContinueWith(async (result) =>
+            {
+                IsRefreshing = false;
+                if (Routes.Count > 0)
+                {
+                    var routeWithoutImg = Routes.Where(r => !string.IsNullOrEmpty(r.ImgFilename) && !fileExist(r.ImgFilename)).Select(r=>r.RouteId);
+                    await api.DownloadRoutesCovers(routeWithoutImg).ContinueWith((resultDownloadCovers) =>
+                    {
+                        CountRoutesCreatedMe = _routeManager.GetCountRoutesByCreator(_currentUserId);
+                        CountRoutesPublishedMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
+                        NoRoutesWarningIsVisible = !Routes.Any();
+                    });
+                }
+            
+                CountRoutesCreatedMe = _routeManager.GetCountRoutesByCreator(_currentUserId);
+                CountRoutesPublishedMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
+                NoRoutesWarningIsVisible = !Routes.Any();
             });
-            IsRefreshing = false;
-            if (Routes.Count > 0)
-            {
-                var routeWithoutImg = Routes.Where(r => !string.IsNullOrEmpty(r.ImgFilename) && !fileExist(r.ImgFilename)).Select(r=>r.RouteId);
-                await api.DownloadRoutesCovers(routeWithoutImg);
-            }
-
-            
-            /*IsServerRequestsOk = api.LastHttpStatusCode == HttpStatusCode.OK;
-            if (IsServerRequestsOk)
-            {
-            }
-            else
-            {
-                //Device.StartTimer(TimeSpan.FromSeconds(3), OnTimerForUpdate);
-                
-            }*/
-            
-            CountRoutesCreatedMe = _routeManager.GetCountRoutesByCreator(_currentUserId);
-            CountRoutesPublishedMe = _routeManager.GetCountPublishedRoutesByCreator(_currentUserId);
-            NoRoutesWarningIsVisible = !Routes.Any();
         }
 
         //Определяет тип состояния для отображения
@@ -226,24 +224,6 @@ namespace QuestHelper.ViewModel
         {
             return _mediaFileManager.FileExistInMediaCatalog(imgFilename);
         }
-
-        /*private bool OnTimerForUpdate()
-        {
-            _countOfUpdateListByTimer++;
-            if ((_countOfUpdateListByTimer > 2)||(Routes.Count() > 0))
-            {
-                _countOfUpdateListByTimer = 0;
-            }
-            else
-            {
-                if (IsAutorizedMode)
-                {
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsAutorizedMode"));
-                }
-                refreshListRoutesCommandAsync();
-            }
-            return false;
-        }*/
 
         async void addNewRouteCommandAsync()
         {
@@ -435,7 +415,7 @@ namespace QuestHelper.ViewModel
                     SyncServer syncSrv = new SyncServer();
                     Task.Factory.StartNew(async () =>
                     {
-                        await syncSrv.Sync(value.RouteId).ContinueWith(syncResult =>
+                        await syncSrv.Sync(value.RouteId, false).ContinueWith(syncResult =>
                         {
                             MainThread.BeginInvokeOnMainThread(() =>
                             {
@@ -444,7 +424,7 @@ namespace QuestHelper.ViewModel
                                     if(value.IsNeedSyncRoute)
                                         value.SetViewStateNeedSync();
                                     else value.SetViewStateNeedLoad();
-                                    UserDialogs.Instance.Alert("Ошибка синхронизации", "Внимание", "Ok");
+                                    UserDialogs.Instance.Alert("Sync error, check network", "Warning", "Ok");
                                 }
                                 else
                                 {

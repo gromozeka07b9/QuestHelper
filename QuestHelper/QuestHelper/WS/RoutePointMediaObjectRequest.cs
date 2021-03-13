@@ -55,20 +55,22 @@ namespace QuestHelper.WS
             string pathToMediaFile = ImagePathManager.GetImagePath(routePointMediaObjectId, mediaType, isPreview);
             if (File.Exists(pathToMediaFile))
             {
-                int triesCount = 0;
-                while (!sendResult)
+                int maxRetryCount = 3;
+                for(int triesCount = 0; triesCount < maxRetryCount; triesCount++)
                 {
                     sendResult = await TryToSendFileAsync(pathToMediaFile, nameMediafile, routePointId, routePointMediaObjectId);
-                    if ((!sendResult)&&(triesCount < 3))
+                    if (sendResult)
                     {
-                        triesCount++;
-                        Thread.Sleep(30);//ToDo: останавливает основной поток, UI будет тупить, надо на таймер переделать
-                        HandleError.Process("RoutePointMediaObjectApiRequest", "SendImage", new Exception($"Retry send {pathToMediaFile}"), false);
+                        return sendResult;
                     }
                     else
                     {
-                        HandleError.Process("RoutePointMediaObjectApiRequest", "SendImage", new Exception($"Error send {pathToMediaFile}"), false);
-                        break;
+                        Thread.Sleep(30); //ToDo: останавливает основной поток, UI будет тупить, надо на таймер переделать
+                        HandleError.Process("RoutePointMediaObjectApiRequest", "SendImage",new Exception($"Retry send {nameMediafile}"), false);
+                        if (triesCount >= maxRetryCount - 1)
+                        {
+                            HandleError.Process("RoutePointMediaObjectApiRequest", "SendImage", new Exception($"Error send {nameMediafile}"), false);
+                        }
                     }
                 }
             }

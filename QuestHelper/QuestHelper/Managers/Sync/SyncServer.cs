@@ -30,7 +30,7 @@ namespace QuestHelper.Managers.Sync
         {
             _log = App.Container.Resolve<ITextfileLogger>();
         }
-        private async System.Threading.Tasks.Task<Tuple<bool, string>> SyncRoute(string routeId = "")
+        private async System.Threading.Tasks.Task<Tuple<bool, string>> SyncRoute(string routeId, bool loadOnlyPreview)
         {
             string errorMsg = string.Empty;
             bool syncResult = false;
@@ -40,18 +40,10 @@ namespace QuestHelper.Managers.Sync
             if (!string.IsNullOrEmpty(authToken))
             {
                 SyncRoutes syncRoutes = new SyncRoutes(authToken);
-                syncResult = string.IsNullOrEmpty(routeId)
-                    ? await syncRoutes.Sync()
-                    : await syncRoutes.Sync(routeId);
+                syncResult = await syncRoutes.Sync(routeId, loadOnlyPreview);
                 if (syncRoutes.AuthRequired)
                 {
                     Xamarin.Forms.MessagingCenter.Send<UIAlertMessage>(new UIAlertMessage() { Title = "Error", Message = "Error syncing server. Try to open feed."}, string.Empty);
-                    /*errorMsg = "Auth required";
-                    var pageCollections = new PagesCollection();
-                    MainPageMenuItem destinationPage = pageCollections.GetLoginPage();
-                    Xamarin.Forms.MessagingCenter.Send<PageNavigationMessage>(
-                        new PageNavigationMessage() { DestinationPageDescription = destinationPage }, string.Empty);*/
-
                 }
             }
             return new Tuple<bool, string>(syncResult, errorMsg);
@@ -87,7 +79,7 @@ namespace QuestHelper.Managers.Sync
         /// Обновление всех маршрутов, доступных пользователю
         /// </summary>
         /// <returns></returns>
-        public async Task<bool> Sync()
+        /*public async Task<bool> Sync()
         {
             bool allSynced = false;
             if (!SynchronizeStarted)
@@ -114,21 +106,21 @@ namespace QuestHelper.Managers.Sync
                 MessagingCenter.Send<UIToastMessage>(new UIToastMessage() { Delay = 3, Message = CommonResource.Sync_SyncAlreadyStarted }, string.Empty);
             }
             return allSynced;
-        }
+        }*/
 
         /// <summary>
         /// Обновление только указанного маршрута
         /// </summary>
         /// <param name="routeId">Id маршрута</param>
         /// <returns></returns>
-        public async Task<bool> Sync(string routeId)
+        public async Task<bool> Sync(string routeId, bool loadOnlyPreview)
         {
             bool allSynced = false;
             string statusSyncKey = "SyncRouteStatus";
             Analytics.TrackEvent("Sync route");
             var startTime = prepareProcessSync(statusSyncKey);
-            Tuple<bool, string> syncResult = new Tuple<bool, string>(false, string.Empty);
-            syncResult = await SyncRoute(routeId);
+            //Tuple<bool, string> syncResult = new Tuple<bool, string>(false, string.Empty);
+            Tuple<bool, string> syncResult = await SyncRoute(routeId, loadOnlyPreview);
             if (!syncResult.Item1)
             {
                 processError(startTime, syncResult, statusSyncKey);

@@ -39,7 +39,7 @@ namespace QuestHelper.Managers.Sync
             _log = App.Container.Resolve<ITextfileLogger>();
         }
 
-        public async Task<bool> Sync()
+        /*public async Task<bool> Sync()
         {
             bool result = true;
             int mainIndex = 4;//совершенно притянуто за уши, количество этапов, но нужно как-то показать что прогресс идет
@@ -106,7 +106,7 @@ namespace QuestHelper.Managers.Sync
             }
 
             return result;
-        }
+        }*/
 
         private static void sendProgress(string routeId, int currentCountRoutesForSync, int countRoutesForSync)
         {
@@ -115,7 +115,7 @@ namespace QuestHelper.Managers.Sync
                 new SyncProgressRouteLoadingMessage() {RouteId = routeId, ProgressValue = percent}, string.Empty);
         }
 
-        public async Task<bool> Sync(string routeId)
+        public async Task<bool> Sync(string routeId, bool loadOnlyPreview)
         {
             if (string.IsNullOrEmpty(routeId))
             {
@@ -139,17 +139,17 @@ namespace QuestHelper.Managers.Sync
                 if ((localRoute == null) || (serverRouteVersion != null && !serverRouteVersion.ObjVerHash.Equals(localRoute.ObjVerHash)))
                 {
                     SyncRoute syncRouteContext = new SyncRoute(serverRouteVersion?.Id, _authToken);
-                    syncRouteContext.SyncImages = true;
+                    //syncRouteContext.SyncImages = true;
                     _log.AddStringEvent($"start sync diff route {serverRouteVersion?.Id}");
-                    result = await syncRouteContext.SyncAsync(serverRouteVersion?.ObjVerHash, true);
+                    result = await syncRouteContext.SyncAsync(serverRouteVersion?.ObjVerHash, loadOnlyPreview);
                     _log.AddStringEvent($"diff route result, {serverRouteVersion?.Id} :" + result);
                 }
                 else if (serverRouteVersion == null)
                 {
                     SyncRoute syncRouteContext = new SyncRoute(localRoute.RouteId, _authToken);
-                    syncRouteContext.SyncImages = true;
+                    //syncRouteContext.SyncImages = true;
                     _log.AddStringEvent($"start sync diff route {localRoute.RouteId}");
-                    result = await syncRouteContext.SyncAsync(localRoute.ObjVerHash, true);
+                    result = await syncRouteContext.SyncAsync(localRoute.ObjVerHash, false);
                     _log.AddStringEvent($"diff route result, {localRoute.RouteId} :" + result);
                 }
             }

@@ -185,7 +185,7 @@ namespace QuestHelper.ViewModel
             bool synced = !await syncRoute.SyncRouteIsNeedAsync(_vpoint.RouteId);
             if (!synced)
             {
-                synced = await syncRoute.Sync(_vpoint.RouteId);
+                synced = await syncRoute.Sync(_vpoint.RouteId, false);
             }
             if (synced)
             {
@@ -705,6 +705,10 @@ namespace QuestHelper.ViewModel
                 {
 
                     pathToSingleImage = ImagePathManager.GetImagePath(listObjects[0].RoutePointMediaObjectId, (MediaObjectTypeEnum)listObjects[0].MediaType, true);
+                    if (!File.Exists(pathToSingleImage))
+                    {
+                        pathToSingleImage = ImagePathManager.GetImagePath(listObjects[0].RoutePointMediaObjectId, (MediaObjectTypeEnum)listObjects[0].MediaType, false);
+                    }
                 }
                 return pathToSingleImage;
             }
