@@ -51,7 +51,7 @@ namespace QuestHelper.Droid.Intents
         {
             Console.WriteLine("SyncIntentService sync started");
             SyncServer syncSrv = new SyncServer();
-            bool syncResult = await syncSrv.Sync(routeId, false);
+            bool syncResult = await syncSrv.Sync(routeId, true);
             /*if (string.IsNullOrEmpty(routeId))
             {
                 syncResult = await syncSrv.Sync();
