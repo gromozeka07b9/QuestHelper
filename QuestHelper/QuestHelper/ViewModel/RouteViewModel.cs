@@ -58,6 +58,7 @@ namespace QuestHelper.ViewModel
         public ICommand FullScreenMapCommand { get; private set; }
         public ICommand PhotoAlbumCommand { get; private set; }
         public ICommand BackNavigationCommand { get; private set; }
+        public ICommand ShareCommand { get; private set; }
         
         public ICommand DeleteRouteCommand { get; private set; }
         public RouteViewModel(string routeId, bool isFirstRoute, bool isNeedSyncRoute)
@@ -67,6 +68,8 @@ namespace QuestHelper.ViewModel
             _vroute.ServerSynced = !isNeedSyncRoute;
             _isNeedSyncRouteInitial = isNeedSyncRoute;
             _isNeedSyncRoute = _isNeedSyncRouteInitial;
+            //ShareCommand = new Command(shareCommandAsync);
+            ShareRouteCommand = new Command(shareRouteCommandAsync);
             SyncRouteCommand = new Command(syncRouteCommandAsync);
             ChooseImageForCoverCommand = new Command(chooseImageForCoverCommand);
             ShowNewRouteDialogCommand = new Command(showNewRouteData);
@@ -75,11 +78,37 @@ namespace QuestHelper.ViewModel
             EditRouteCommand = new Command(editRouteCommandAsync);
             EditRouteCompleteCommand = new Command(editRouteCompleteCommand);
             CancelEditRouteCommand = new Command(cancelEditRouteCommand);
-            ShareRouteCommand = new Command(shareRouteCommandAsync);
             FullScreenMapCommand = new Command(fullScreenMapCommandAsync);
             PhotoAlbumCommand = new Command(photoAlbumCommandAsync);
             BackNavigationCommand = new Command(backNavigationCommand);
             DeleteRouteCommand = new Command(deleteRouteCommand);
+        }
+
+        private async void shareRouteCommandAsync(object obj)
+        {
+            if ((IsNeedSyncRoute) && (!IsRefreshing))
+            {
+                await syncRouteAsync(_vroute.Id).ContinueWith(async (result) =>
+                {
+                    if (result.IsCompleted)
+                    {
+                        MainThread.BeginInvokeOnMainThread(async () =>
+                        {
+                            await startShareRouteDialogAsync(_vroute.RouteId);
+                        });
+                    }
+                });
+            }
+            else
+            {
+                await startShareRouteDialogAsync(_vroute.RouteId);
+            }
+        }
+
+        private async Task startShareRouteDialogAsync(string routeId)
+        {
+            var shareRoutePage = new ShareRoutesServicesPage(routeId);
+            await Navigation.PushModalAsync(shareRoutePage, true);
         }
 
         private async void syncRouteCommandAsync(object obj)
@@ -161,13 +190,7 @@ namespace QuestHelper.ViewModel
             string userId = await tokenService.GetUserIdAsync();
             return userId.Equals(_vroute.CreatorId);
         }
-
-        private async void shareRouteCommandAsync(object obj)
-        {
-            var shareRoutePage = new ShareRoutesServicesPage(_vroute.RouteId);
-            await Navigation.PushModalAsync(shareRoutePage, true);
-        }
-
+        
         private void fullScreenMapCommandAsync(object obj)
         {
             var mapRoutePage = new MapRouteOverviewPage(_vroute.RouteId);

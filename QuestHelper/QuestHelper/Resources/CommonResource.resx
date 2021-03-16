@@ -232,16 +232,16 @@
     <value>Choose a way</value>
   </data>
   <data name="ShareRoutes_Other" xml:space="preserve">
-    <value>Other</value>
+    <value>Share with other applications</value>
   </data>
   <data name="ShareRoutes_PublicAccess" xml:space="preserve">
-    <value>General access</value>
+    <value>Make link to album for browsing</value>
   </data>
   <data name="ShareRoutes_AlbumInGosh" xml:space="preserve">
-    <value>GoSh! album</value>
+    <value>Publish you album in feed for all</value>
   </data>
   <data name="ShareRoutes_AddPersonAccess" xml:space="preserve">
-    <value>Add access</value>
+    <value>Update your album with your frieds!</value>
   </data>
   <data name="Onboarding_Hello" xml:space="preserve">
     <value>Welcome to

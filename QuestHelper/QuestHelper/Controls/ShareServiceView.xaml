@@ -6,14 +6,14 @@
     <Frame CornerRadius="5" Padding="10" BackgroundColor="LightGray" BorderColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="6*" />
+                <ColumnDefinition Width="4*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="6*"></RowDefinition>
-                <RowDefinition Height="4*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Image Grid.Column="0" Grid.Row="0" Source="{Binding ImgSource, Source={x:Reference RootGrid}}" WidthRequest="150" HeightRequest="150" VerticalOptions="Center"></Image>
-            <Label Grid.Column="0" Grid.Row="1" Text="{Binding Text, Source={x:Reference RootGrid}}" FontSize="12" HorizontalTextAlignment="Center" VerticalOptions="Center"></Label>
+            <Label Grid.Column="0" Grid.Row="0" Text="{Binding Text, Source={x:Reference RootGrid}}" FontSize="16" HorizontalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Center"></Label>
+            <Image Grid.Column="1" Grid.Row="0" Source="{Binding ImgSource, Source={x:Reference RootGrid}}" WidthRequest="64" HeightRequest="64" HorizontalOptions="End" VerticalOptions="Center"></Image>
         </Grid>
     </Frame>
 </Grid>

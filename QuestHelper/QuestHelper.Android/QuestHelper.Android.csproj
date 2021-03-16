@@ -164,11 +164,6 @@
     <Compile Include="Intents\SetEmotionRouteIntentService.cs" />
     <Compile Include="Intents\SendRouteViewedIntentService.cs" />
     <Compile Include="Renderers\MarkerMaker.cs" />
-    <Compile Include="ShareServices\InstagramShareService.cs" />
-    <Compile Include="ShareServices\WhatsappShareService.cs" />
-    <Compile Include="ShareServices\ViberShareService.cs" />
-    <Compile Include="ShareServices\FacebookShareService.cs" />
-    <Compile Include="ShareServices\TelegramShareService.cs" />
     <Compile Include="ShareServices\CommonShareService.cs" />
     <Compile Include="PushReceiverSetup.cs" />
     <Compile Include="NotificationService.cs" />
@@ -223,6 +218,8 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_personal.png" />
     <AndroidResource Include="Resources\drawable\baseline_arrow_upward_black_48.png" />
     <AndroidResource Include="Resources\drawable\baseline_folder_black_48.png" />
+    <AndroidResource Include="Resources\drawable\circle_cloud.png" />
+    <AndroidResource Include="Resources\drawable\circle_share.png" />
     <AndroidResource Include="Resources\drawable\cloud_upload2.png" />
     <AndroidResource Include="Resources\drawable\emptyphoto2.png" />
     <AndroidResource Include="Resources\drawable\ic_album.png" />
@@ -233,12 +230,6 @@
     <AndroidResource Include="Resources\layout\Toolbar.axml" />
     <AndroidResource Include="Resources\values\styles.xml">
       <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\btn1test.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>

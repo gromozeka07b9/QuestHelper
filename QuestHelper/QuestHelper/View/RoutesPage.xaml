@@ -144,8 +144,8 @@
                                     <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Text="{Binding Name}" Style="{StaticResource RouteListBigLabel}" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="End" Margin="5,3,5,0" />
 
                                     <ffimageloading:CachedImage Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="1" IsVisible="{Binding IsNeedSyncRoute}"
-                                                                Source="cloud_upload2.png" Margin="0" WidthRequest="40" HeightRequest="40"
-                                                                DownsampleToViewSize="True" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                                                Source="circle_cloud.png" Margin="0,0,5,0" WidthRequest="24" HeightRequest="24" VerticalOptions="End" HorizontalOptions="End"
+                                                                DownsampleToViewSize="True">
                                     </ffimageloading:CachedImage>
 
                                     <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" IsVisible="{Binding IsShowRouteDetail}" Text="{Binding RouteLengthKm}" Style="{StaticResource RouteListSmallLabel}" Margin="0,0,10,0" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="End"></Label>

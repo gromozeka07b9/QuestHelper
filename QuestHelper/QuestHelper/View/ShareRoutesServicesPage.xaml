@@ -17,72 +17,74 @@
     <ContentPage.Content>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*" />
-                <ColumnDefinition Width="3*" />
-                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
-                <RowDefinition Height="4*" />
-                <RowDefinition Height="4*" />
-                <RowDefinition Height="4*" />
-                <RowDefinition Height="4*" />
-                <RowDefinition Height="4*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="2*" />
             </Grid.RowDefinitions>
             <Image Grid.Row="0" Grid.Column="0" Source="baseline_arrow_back_black_48.png" WidthRequest="40" HeightRequest="40" Margin="10,10,0,0" VerticalOptions="Start" HorizontalOptions="Start">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding BackNavigationCommand}"/>
                 </Image.GestureRecognizers>
             </Image>
-            <controls:ShareServiceView Grid.Column="0" Grid.Row="1" Text="{lang:Translation ShareRoutes_AddPersonAccess}" ImgSource="person_add.png"  Margin="10,5,0,0">
-                <controls:ShareServiceView.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding TapAddUserCommand}"></TapGestureRecognizer>
-                </controls:ShareServiceView.GestureRecognizers>
-            </controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="1" Grid.Row="1" Text="{lang:Translation ShareRoutes_AlbumInGosh}" ImgSource="icon2.png"  Margin="0,5,0,0">
+            <controls:ShareServiceView Grid.Column="0" Grid.Row="1" Text="{lang:Translation ShareRoutes_AlbumInGosh}" ImgSource="icon2.png"  Margin="5,0,5,0">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapPublishAlbumCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
             </controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="2" Grid.Row="1" Text="{lang:Translation ShareRoutes_PublicAccess}" ImgSource="link.png"  Margin="0,5,10,0" Opacity="{Binding IsUserCanMakeLink, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsUserCanMakeLink}">
+            <controls:ShareServiceView Grid.Column="0" Grid.Row="2" Text="{lang:Translation ShareRoutes_PublicAccess}" ImgSource="link.png" Margin="5,0,5,0" Opacity="{Binding IsUserCanMakeLink, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsUserCanMakeLink}">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapMakeReferenceCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
             </controls:ShareServiceView>
+            <controls:ShareServiceView Grid.Column="0" Grid.Row="3" Text="{lang:Translation ShareRoutes_AddPersonAccess}" ImgSource="person_add.png" Margin="5,0,5,0">
+                <controls:ShareServiceView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding TapAddUserCommand}"></TapGestureRecognizer>
+                </controls:ShareServiceView.GestureRecognizers>
+            </controls:ShareServiceView>
 
-            <controls:ShareServiceView Grid.Column="0" Grid.Row="2" Text="Instagram" ImgSource="instagram.png"  Margin="10,0,0,0" Opacity="{Binding IsAppInstagramInstalled, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsAppInstagramInstalled}">
+            <!--controls:ShareServiceView Grid.Column="0" Grid.Row="2" Text="Instagram" ImgSource="instagram.png"  Margin="10,0,0,0" Opacity="{Binding IsAppInstagramInstalled, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsAppInstagramInstalled}">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapInstagramCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
-            </controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="1" Grid.Row="2" Text="Facebook" ImgSource="facebook.png"  Margin="0,0,0,0" Opacity="{Binding IsAppFacebookInstalled, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsAppFacebookInstalled}">
+            </controls:ShareServiceView-->
+            <!--controls:ShareServiceView Grid.Column="1" Grid.Row="2" Text="Facebook" ImgSource="facebook.png"  Margin="0,0,0,0" Opacity="{Binding IsAppFacebookInstalled, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsAppFacebookInstalled}">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapFacebookCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
-            </controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="2" Grid.Row="2" Text="Telegram" ImgSource="telegram.png"  Margin="0,0,10,0" Opacity="{Binding IsAppTelegramInstalled, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsAppTelegramInstalled}">
+            </controls:ShareServiceView-->
+            <!--controls:ShareServiceView Grid.Column="2" Grid.Row="2" Text="Telegram" ImgSource="telegram.png"  Margin="0,0,10,0" Opacity="{Binding IsAppTelegramInstalled, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsAppTelegramInstalled}">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapTelegramCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
-            </controls:ShareServiceView>
+            </controls:ShareServiceView-->
 
-            <controls:ShareServiceView Grid.Column="0" Grid.Row="3" Text="Viber" ImgSource="viber.png"  Margin="10,0,0,0" Opacity="{Binding IsAppViberInstalled, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsAppViberInstalled}">
+            <!--controls:ShareServiceView Grid.Column="0" Grid.Row="3" Text="Viber" ImgSource="viber.png"  Margin="10,0,0,0" Opacity="{Binding IsAppViberInstalled, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsAppViberInstalled}">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapViberCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
-            </controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="1" Grid.Row="3" Text="Whatsapp" ImgSource="whatsapp.png"  Margin="0,0,0,0" Opacity="{Binding IsAppWhatsappInstalled, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsAppWhatasppInstalled}">
+            </controls:ShareServiceView-->
+            <!--controls:ShareServiceView Grid.Column="1" Grid.Row="3" Text="Whatsapp" ImgSource="whatsapp.png"  Margin="0,0,0,0" Opacity="{Binding IsAppWhatsappInstalled, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsAppWhatasppInstalled}">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapWhatsappCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
-            </controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="2" Grid.Row="3" Text="Gmail" ImgSource="mail.png"  Margin="0,0,10,0" Opacity="{Binding IsAppGMailInstalled, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsAppGMailInstalled}">
+            </controls:ShareServiceView-->
+            <!--controls:ShareServiceView Grid.Column="2" Grid.Row="3" Text="Gmail" ImgSource="mail.png"  Margin="0,0,10,0" Opacity="{Binding IsAppGMailInstalled, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsAppGMailInstalled}">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapGMailCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
-            </controls:ShareServiceView>
+            </controls:ShareServiceView-->
 
-            <controls:ShareServiceView Grid.Column="1" Grid.Row="4" Text="{lang:Translation ShareRoutes_Other}" ImgSource="apps.png"  Margin="5,0,0,0">
+            <controls:ShareServiceView Grid.Column="0" Grid.Row="4" Text="{lang:Translation ShareRoutes_Other}" ImgSource="apps.png" Margin="5,0,5,0">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapOtherCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>

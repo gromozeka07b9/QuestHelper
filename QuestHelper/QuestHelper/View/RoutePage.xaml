@@ -152,20 +152,29 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </StackLayout>
-            <AbsoluteLayout Grid.Column="0" Grid.Row="0" IsVisible="{Binding RouteScreenIsVisible}" HorizontalOptions="End" VerticalOptions="End">
-                <StackLayout Orientation="Horizontal" HorizontalOptions="End" Margin="15">
-                    <Image Source="cloud_upload2.png" WidthRequest="50" HeightRequest="50" Margin="0" IsVisible="{Binding IsNeedSyncRoute}">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding SyncRouteCommand}" />
-                        </Image.GestureRecognizers>
-                    </Image>
-                    <progressBar:SfCircularProgressBar IsVisible="{Binding IsRefreshing}" WidthRequest="50" HeightRequest="50" IndeterminateEasingEffect="CubicInOut" IsIndeterminate="True" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <AbsoluteLayout Grid.Column="0" Grid.Row="0" IsVisible="{Binding RouteScreenIsVisible}" HorizontalOptions="End" VerticalOptions="End" >
+                <StackLayout Orientation="Horizontal" HorizontalOptions="End" VerticalOptions="EndAndExpand" Margin="15">
+                    <StackLayout VerticalOptions="End">
+                        <Image Source="circle_cloud.png" WidthRequest="50" HeightRequest="50" Margin="0,0,0,10" IsVisible="{Binding IsNeedSyncRoute}">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SyncRouteCommand}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <progressBar:SfCircularProgressBar IsVisible="{Binding IsRefreshing}" Margin="0,0,0,10" WidthRequest="50" HeightRequest="50" IndeterminateEasingEffect="CubicInOut" IsIndeterminate="True" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    </StackLayout>
 
-                    <Image Source="additem2.png" WidthRequest="70" HeightRequest="70" Margin="0">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding AddNewRoutePointCommand}" />
-                        </Image.GestureRecognizers>
-                    </Image>
+                    <StackLayout VerticalOptions="End">
+                        <Image Source="circle_share.png" VerticalOptions="Center" WidthRequest="50" HeightRequest="50" Margin="0" IsVisible="True">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShareRouteCommand}" />
+                            </Image.GestureRecognizers>
+                        </Image>                
+                        <Image Source="additem2.png" VerticalOptions="Center" WidthRequest="70" HeightRequest="70" Margin="0">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding AddNewRoutePointCommand}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </StackLayout>
                 </StackLayout>
             </AbsoluteLayout>
 

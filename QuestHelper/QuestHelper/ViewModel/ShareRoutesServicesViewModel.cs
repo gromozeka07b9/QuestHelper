@@ -4,11 +4,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Acr.UserDialogs;
 using QuestHelper.View;
 using Xamarin.Forms;
 using QuestHelper.Model.Messages;
 using Microsoft.AppCenter.Analytics;
+using QuestHelper.Managers.Sync;
 using QuestHelper.Resources;
+using Xamarin.Essentials;
 
 namespace QuestHelper.ViewModel
 {
@@ -63,7 +66,7 @@ namespace QuestHelper.ViewModel
             _appInstalledService = DependencyService.Get<IApplicationInstalledService>();
 
             TapAddUserCommand = new Command(tapAddUserCommandAsync);
-            TapPublishAlbumCommand = new Command(tapPublishAlbumCommand);
+            TapPublishAlbumCommand = new Command(tapPublishAlbumCommandAsync);
             TapMakeReferenceCommand = new Command(tapMakeReferenceCommand);
             TapOtherCommand = new Command(tapOtherCommand);
             TapTelegramCommand = new Command(tapTelegramCommand);
@@ -110,7 +113,7 @@ namespace QuestHelper.ViewModel
             Navigation.PushModalAsync(page);
         }
 
-        private async void tapPublishAlbumCommand(object obj)
+        private async void tapPublishAlbumCommandAsync(object obj)
         {
             Analytics.TrackEvent("Share service", new Dictionary<string, string> { { "TypeShare", "publish" } });
             bool answerYesIsNo = await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.ShareRoute_AreYouSureToPublishRoute, CommonResource.CommonMsg_No, CommonResource.CommonMsg_Yes);
@@ -121,9 +124,9 @@ namespace QuestHelper.ViewModel
                     _vroute.IsPublished = true;
                     _vroute.Version++;
                     _vroute.ObjVerHash = string.Empty;
+                    _vroute.ServerSynced = false;
                     _vroute.Save();
-                    await Application.Current.MainPage.DisplayAlert(CommonResource.CommonMsg_Warning, CommonResource.ShareRoute_RouteWillBePublishAfterSync, CommonResource.CommonMsg_Ok);
-                    Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage() { RouteId = _vroute.Id, ShowErrorMessageIfExist = false }, string.Empty);
+                    await startSyncRouteAsync(_vroute.Id);
                 }
                 else
                 {
@@ -131,6 +134,27 @@ namespace QuestHelper.ViewModel
                 }
             }
         }
+
+        private async Task startSyncRouteAsync(string routeId)
+        {
+            SyncServer syncSrv = new SyncServer();
+            await syncSrv.Sync(routeId, false).ContinueWith(result =>
+            {
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    if (!result.Result)
+                    {
+                        UserDialogs.Instance.Alert("Ошибка синхронизации", "Внимание", "Ok");
+                    }
+                    else
+                    {
+                        UserDialogs.Instance.Alert("Альбом успешно опубликован", "Всё отлично!", "Ok");
+                    }
+                });
+
+            }, TaskContinuationOptions.OnlyOnRanToCompletion);
+        }
+
         internal async Task<bool> UserCanShareAsync()
         {
             TokenStoreService tokenService = new TokenStoreService();

@@ -232,16 +232,16 @@
     <value>Выберите способ</value>
   </data>
   <data name="ShareRoutes_AddPersonAccess" xml:space="preserve">
-    <value>Добавить доступ</value>
+    <value>Обновляйте альбом вместе с друзьями!</value>
   </data>
   <data name="ShareRoutes_AlbumInGosh" xml:space="preserve">
-    <value>Альбом в GoSh!</value>
+    <value>Опубликуйте ваш альбом в ленте для всех</value>
   </data>
   <data name="ShareRoutes_PublicAccess" xml:space="preserve">
-    <value>Общий доступ</value>
+    <value>Сделайте ссылку для просмотра в браузере</value>
   </data>
   <data name="ShareRoutes_Other" xml:space="preserve">
-    <value>Другие</value>
+    <value>Поделиться через другие приложения</value>
   </data>
   <data name="Onboarding_Hello" xml:space="preserve">
     <value>Добро пожаловать GoSh!</value>
@@ -405,7 +405,7 @@
     <value>Публиковать можно только созданные вами маршруты</value>
   </data>
   <data name="ShareRoute_AreYouSureAfterPublishYouCantDelete" xml:space="preserve">
-    <value>После того, как пригласите друзей, вы не сможете удалить маршрут. Вы уверены?</value>
+    <value>ы</value>
   </data>
   <data name="ShareRoute_ErrorShareRoute" xml:space="preserve">
     <value>Не получилось поделиться маршрутом</value>
