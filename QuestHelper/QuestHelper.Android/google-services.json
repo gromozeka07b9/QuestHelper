@@ -10,12 +10,20 @@
       "client_info": {
         "mobilesdk_app_id": "1:167237391521:android:88b66891ddb8f6c1",
         "android_client_info": {
-          "package_name": "com.sd.goshdebug"
+          "package_name": "com.sd.gosh"
         }
       },
       "oauth_client": [
         {
-          "client_id": "784308315468-60546t9i4ptqqmvd13bgespdbamflcrb.apps.googleusercontent.com",
+          "client_id": "167237391521-stq1isqlogtfve5hj50l1osalvpfgaon.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sd.gosh",
+            "certificate_hash": "c9fb067c7788a2fad1ce4dae3cd17d6fedd28cf6"
+          }
+        },
+        {
+          "client_id": "167237391521-vnt1vjk16gttiea12ihk6bksevp75qrm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -28,7 +36,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "784308315468-60546t9i4ptqqmvd13bgespdbamflcrb.apps.googleusercontent.com",
+              "client_id": "167237391521-vnt1vjk16gttiea12ihk6bksevp75qrm.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
