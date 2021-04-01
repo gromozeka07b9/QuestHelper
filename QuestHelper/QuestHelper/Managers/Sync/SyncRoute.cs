@@ -53,7 +53,6 @@ namespace QuestHelper.Managers.Sync
             }
 
             //независимо от того, новый маршрут или нет, проверяем, что изменилось - придется пройтись по всему маршруту и узнать
-            bool syncImgHasErrors = false;
             RouteRoot routeRoot = await _routesApi.GetRouteRoot(_routeId);
             bool AuthRequired = (_routesApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routesApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
             if ((!AuthRequired) && (routeRoot != null))

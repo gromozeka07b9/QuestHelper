@@ -329,8 +329,7 @@ namespace QuestHelper.ViewModel
 
         public async void StartRegisterDialogAsync()
         {
-            string username = await DependencyService.Get<IUsernameService>().GetUsername();
-            Email = username;
+            Email = DependencyService.Get<IUsernameService>().GetUsername();
         }
         public void StartLoginDialog()
         {

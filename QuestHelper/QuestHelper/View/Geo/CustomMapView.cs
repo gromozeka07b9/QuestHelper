@@ -50,7 +50,7 @@ namespace QuestHelper.View.Geo
             _customMapView.Pins.Clear();
         }
 
-        public void AddPin(double latitude, double longitude, string name, string address, EventHandler pin_clicked)
+        public void AddPin(double latitude, double longitude, string name, string address)
         {
             _lastError = string.Empty;
             var position = new Xamarin.Forms.Maps.Position(latitude, longitude);
@@ -61,8 +61,8 @@ namespace QuestHelper.View.Geo
                 Label = name,
                 Address = address
             };
-            pointPin.Clicked += pin_clicked;
             _customMapView.Pins.Add(pointPin);
         }
+
     }
 }

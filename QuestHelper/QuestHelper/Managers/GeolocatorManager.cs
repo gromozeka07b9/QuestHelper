@@ -21,7 +21,14 @@ namespace QuestHelper.Managers
             var locator = CrossGeolocator.Current;
             if ((locator.IsGeolocationAvailable) && (locator.IsGeolocationEnabled))
             {
-                currentPosition = await locator.GetPositionAsync(TimeSpan.FromSeconds(10));
+                try
+                {
+                    currentPosition = await locator.GetPositionAsync(TimeSpan.FromSeconds(10));
+                }
+                catch(Exception e)
+                {
+                    Crashes.TrackError(e);
+                }
             }
             else
             {

@@ -81,7 +81,7 @@ namespace QuestHelper.View
             if (customMap.CenterMapToPosition(latitude, longitude, 1))
             {
                 customMap.ClearPins();
-                customMap.AddPin(latitude, longitude, name, address, PointPin_Clicked);
+                customMap.AddPin(latitude, longitude, name, address);
             }
             else
             {
@@ -89,9 +89,6 @@ namespace QuestHelper.View
             }
         }
 
-        private void PointPin_Clicked(object sender, EventArgs e)
-        {
-        }
 
         private void Image_Unfocused(object sender, FocusEventArgs e)
         {

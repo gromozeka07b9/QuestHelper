@@ -44,11 +44,11 @@ namespace QuestHelper.View
         private async void ContentPage_Appearing(object sender, EventArgs e)
         {
             _vm.startDialogAsync();
-            if (!ToolbarItems.Any(x => x.Command == _vm.ShareRouteCommand))
+            if (ToolbarItems.All(x => x.Command != _vm.ShareRouteCommand))
             {
                 if (await _vm.UserCanShareAsync())
                 {
-                    ToolbarItems.Add(new ToolbarItem() { Command = _vm.ShareRouteCommand, Icon = "share.png" });
+                    ToolbarItems.Add(new ToolbarItem() { Command = _vm.ShareRouteCommand, IconImageSource = "share.png" });
                 }
             }
         }

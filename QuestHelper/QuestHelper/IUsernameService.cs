@@ -7,6 +7,6 @@ namespace QuestHelper
 {
     public interface IUsernameService
     {
-        Task<string> GetUsername();
+        string GetUsername();
     }
 }

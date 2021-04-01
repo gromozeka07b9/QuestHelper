@@ -21,17 +21,21 @@ namespace QuestHelper.Droid
 {
     public class UsernameService : IUsernameService
     {
-        public async Task<string> GetUsername()
+        public string GetUsername()
         {
             //ToDo:Этот вариант есть смысл использовать вместо Chrome, как сейчас!
             //var intent = Android.Gms.Common.AccountPicker.NewChooseAccountIntent(null, null, new String[] { "com.google" }, false, null, null, null, null);
             FormsAppCompatActivity activity = CrossCurrentActivity.Current.Activity as FormsAppCompatActivity;
             AccountManager manager = AccountManager.Get(activity);
-            Account[] accounts = manager.GetAccountsByType("com.google");
-            if (accounts.Length > 0)
+            if (manager != null)
             {
-                return accounts.First().Name;
+                Account[] accounts = manager.GetAccountsByType("com.google");
+                if (accounts.Length > 0)
+                {
+                    return accounts.First().Name;
+                }
             }
+
             return "";
         }
     }

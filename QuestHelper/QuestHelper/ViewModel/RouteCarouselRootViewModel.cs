@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace QuestHelper.ViewModel
@@ -153,6 +154,8 @@ namespace QuestHelper.ViewModel
 
         public async void StartDialogAsync()
         {
+            IsMaximumQualityPhoto = (Connectivity.ConnectionProfiles.Contains(ConnectionProfile.WiFi) ||
+                                     Connectivity.ConnectionProfiles.Contains(ConnectionProfile.Ethernet));
             await initApi();
             string _userId = await getUserId();
 

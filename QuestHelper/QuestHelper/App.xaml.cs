@@ -163,7 +163,6 @@ namespace QuestHelper
             else
             {
                 Analytics.TrackEvent("MigrationRequired");
-                ShowWarning("Изменена схема БД, нужно удалить приложение и установить новую версию. Это временно, починим.");
                 Quit();
             }
 

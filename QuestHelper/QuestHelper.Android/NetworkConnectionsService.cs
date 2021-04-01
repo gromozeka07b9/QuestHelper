@@ -21,7 +21,17 @@ namespace QuestHelper.Droid
         public bool IsRoaming()
         {
             ConnectivityManager connectivity = ConnectivityManager.FromContext(Application.Context);
-            return connectivity.ActiveNetworkInfo != null ? connectivity.ActiveNetworkInfo.IsRoaming : false;
+            
+            if (connectivity?.ActiveNetwork != null)
+            {
+                var capabilities = connectivity.GetNetworkCapabilities(connectivity.ActiveNetwork);
+                if (capabilities != null)
+                {
+                    return !capabilities.HasCapability(NetCapability.NotRoaming);
+                }
+            }
+
+            return false;
         }
 
     }

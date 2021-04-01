@@ -29,7 +29,7 @@ namespace QuestHelper.Model
         private bool _isPublished = false;
         private string _creatorId = string.Empty;
         private bool _isDeleted = false;
-        private string _imagePreviewPathForList = string.Empty;
+        //private string _imagePreviewPathForList = string.Empty;
         private string _objVerHash = string.Empty;
         private string _imgFilename = string.Empty;
         private string _description = string.Empty;
@@ -38,7 +38,7 @@ namespace QuestHelper.Model
         private string _routeLengthStepsText = string.Empty;
         private string _coverImage = string.Empty;
         private bool _serverSynced = false;
-        private bool _isServerOnlyRoute = false;
+        //private bool _isServerOnlyRoute = false;
         private bool _isShowLoadingProcess = false;
         private bool _isShowRouteDetail = false;
         private bool _isShowNeedLoadRoute = false;

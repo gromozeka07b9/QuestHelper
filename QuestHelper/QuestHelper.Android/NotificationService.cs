@@ -41,7 +41,7 @@ namespace QuestHelper.Droid
             notificationManager.Notify(0, notificationBuilder.Build());
         }
 
-        public void ShowProgress(int progressMax, int progressCurrent)
+        /*public void ShowProgress(int progressMax, int progressCurrent)
         {
             var intent = new Intent(Application.Context, typeof(MainActivity));
             intent.AddFlags(ActivityFlags.ClearTop);
@@ -74,7 +74,7 @@ namespace QuestHelper.Droid
                 progressBuilder.Dispose();
                 progressBuilder = null;
             }
-        }
+        }*/
 
         public void HideProgress()
         {

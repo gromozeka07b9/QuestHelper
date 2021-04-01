@@ -33,7 +33,7 @@ namespace QuestHelper.ViewModel
         private bool _isRefreshing = false;
         //private bool _isVisibleProgress = false;
         private bool _isFireworksMode = false;
-        private int _countOfUpdateListByTimer = 0;
+        //private int _countOfUpdateListByTimer = 0;
         private ShareFromGoogleMapsMessage _sharePointMessage;
         //private bool _syncProgressIsVisible = false;
         private string _syncProgressDetailText = string.Empty;
@@ -49,7 +49,7 @@ namespace QuestHelper.ViewModel
         private int _countLikesMe = 0;
         private int _countViewsMe = 0;
         private int maxPageSize = 1000;//Сколько максимально элементов маршрутов можем получить с сервера. Актуально если пейджинг используется, но пока что нет.
-        private bool _isServerRequestsOk = false;
+        //private bool _isServerRequestsOk = false;
         private List<Route> _serverRoutes = new List<Route>();
 
 

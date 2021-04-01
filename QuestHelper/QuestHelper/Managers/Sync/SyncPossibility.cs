@@ -19,8 +19,7 @@ namespace QuestHelper.Managers.Sync
             bool isRoaming = DependencyService.Get<INetworkConnectionsService>().IsRoaming();
             if (isRoaming)
             {
-                object storedWorkInRoaming;
-                if (Application.Current.Properties.TryGetValue("WorkInRoaming", out storedWorkInRoaming))
+                if (Application.Current.Properties.TryGetValue("WorkInRoaming", out var storedWorkInRoaming))
                 {
                     workInRoaming = (bool)storedWorkInRoaming;
                     possibility = workInRoaming;

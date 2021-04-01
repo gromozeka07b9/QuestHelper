@@ -22,7 +22,7 @@ namespace QuestHelper.Managers.Sync
     {
         private const string _apiUrl = "http://igosh.pro/api";
         public static bool AuthRequired = false;
-        private static bool SynchronizeStarted = false;
+        //private static bool SynchronizeStarted = false;
 
         private ITextfileLogger _log;
 
