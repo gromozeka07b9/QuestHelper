@@ -145,10 +145,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CardsView">
-      <Version>2.6.3</Version>
+      <Version>2.7.1</Version>
     </PackageReference>
     <PackageReference Include="Com.Airbnb.Xamarin.Forms.Lottie">
-      <Version>4.0.2</Version>
+      <Version>4.0.9</Version>
     </PackageReference>
     <PackageReference Include="Plugin.Permissions">
       <Version>6.0.1</Version>
@@ -163,7 +163,7 @@
       <Version>5.0.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Essentials">
-      <Version>1.6.0</Version>
+      <Version>1.6.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.FFImageLoading">
       <Version>2.4.11.982</Version>
@@ -174,9 +174,9 @@
     <PackageReference Include="Xamarin.FFImageLoading.Transformations">
       <Version>2.4.11.982</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1451" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
     <PackageReference Include="Xamarin.Forms.Maps">
-      <Version>4.8.0.1451</Version>
+      <Version>5.0.0.2012</Version>
     </PackageReference>
     <PackageReference Include="Syncfusion.Xamarin.SfListView">
       <Version>18.2.0.59</Version>
@@ -257,9 +257,6 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\ic_eye_1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\feed.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\facebook.png" />
@@ -390,57 +387,67 @@
     <BundleResource Include="Resources\map2.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\emptyphoto2.png">
+    <BundleResource Include="Resources\emptyphoto2.png">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\ic_album.png">
+    </BundleResource>
+    <BundleResource Include="Resources\ic_album.png">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\ic_download.png">
+    </BundleResource>
+    <BundleResource Include="Resources\ic_download.png">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\ic_feed.png">
+    </BundleResource>
+    <BundleResource Include="Resources\ic_feed.png">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\ic_map.png">
+    </BundleResource>
+    <BundleResource Include="Resources\ic_map.png">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\ic_personal.png">
+    </BundleResource>
+    <BundleResource Include="Resources\ic_personal.png">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\onboarding1.jpg">
+    </BundleResource>
+    <BundleResource Include="Resources\onboarding1.jpg">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\onboarding2.jpg">
+    </BundleResource>
+    <BundleResource Include="Resources\onboarding2.jpg">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\onboarding3.jpg">
+    </BundleResource>
+    <BundleResource Include="Resources\onboarding3.jpg">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\onboarding4.jpg">
+    </BundleResource>
+    <BundleResource Include="Resources\onboarding4.jpg">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\onboarding5.jpg">
+    </BundleResource>
+    <BundleResource Include="Resources\onboarding5.jpg">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\onboarding6.jpg">
+    </BundleResource>
+    <BundleResource Include="Resources\onboarding6.jpg">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\onboarding7.jpg">
+    </BundleResource>
+    <BundleResource Include="Resources\onboarding7.jpg">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-    </AndroidResource>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\circle_cloud.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </BundleResource>
+    <BundleResource Include="Resources\circle_share.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </BundleResource>
   </ItemGroup>
 </Project>

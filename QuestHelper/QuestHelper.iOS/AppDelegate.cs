@@ -35,16 +35,14 @@ namespace QuestHelper.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            Forms.SetFlags("IndicatorView_Experimental");
-            Forms.SetFlags("CollectionView_Experimental");
             global::Xamarin.Forms.Forms.Init();
             SfListViewRenderer.Init();
             CachedImageRenderer.Init();
             Syncfusion.XForms.iOS.ProgressBar.SfCircularProgressBarRenderer.Init();
             Syncfusion.SfChart.XForms.iOS.Renderers.SfChartRenderer.Init();
 
-            DeviceSize.FullScreenWidth = (int)UIScreen.MainScreen.Bounds.Width;
-            DeviceSize.FullScreenHeight = (int)UIScreen.MainScreen.Bounds.Height;
+            DeviceSize.FullScreenWidth = (int)UIScreen.MainScreen.Bounds.Size.Width;
+            DeviceSize.FullScreenHeight = (int)UIScreen.MainScreen.Bounds.Size.Height;
 
             LoadApplication(new App());
             Xamarin.FormsMaps.Init();

@@ -9,7 +9,8 @@ namespace QuestHelper.Resources
     {
         public static string GetPath(string filename)
         {
-            return Device.RuntimePlatform == Device.iOS ? $"./Animations/{filename}.json" : $"Animations/{filename}.json";
+            //return Device.RuntimePlatform == Device.iOS ? $"Animations/{filename}.json" : $"Animations/{filename}.json";
+            return $"Animations/{filename}.json";
         }
 
     }
