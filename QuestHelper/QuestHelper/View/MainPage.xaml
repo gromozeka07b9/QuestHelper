@@ -16,23 +16,17 @@
             <x:Arguments>
                 <view:FeedRoutesPage />
             </x:Arguments>
-            <NavigationPage.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
+            <NavigationPage.IconImageSource>
+                <OnPlatform x:TypeArguments="ImageSource">
                     <On Platform="iOS" Value="ic_feed.png"/>
                     <On Platform="Android" Value="ic_feed.png"/>
                 </OnPlatform>
-            </NavigationPage.Icon>
+            </NavigationPage.IconImageSource>
         </NavigationPage>
-        <NavigationPage Title="{lang:Translation ScreenMapName}">
+        <NavigationPage Title="{lang:Translation ScreenMapName}" IconImageSource="ic_map.png">
             <x:Arguments>
                 <view:MapOverviewPage />
             </x:Arguments>
-            <NavigationPage.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="iOS" Value="ic_map.png"/>
-                    <On Platform="Android" Value="ic_map.png"/>
-                </OnPlatform>
-            </NavigationPage.Icon>
         </NavigationPage>
 
         <NavigationPage Title="{lang:Translation ScreenGenerateAlbumName}">

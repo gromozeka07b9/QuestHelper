@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Acr.UserDialogs;
+using FFImageLoading.Forms.Platform;
 using Foundation;
 using ImageCircle.Forms.Plugin.iOS;
 //using Lottie.Forms.iOS.Renderers;
@@ -38,6 +39,7 @@ namespace QuestHelper.iOS
             Forms.SetFlags("CollectionView_Experimental");
             global::Xamarin.Forms.Forms.Init();
             SfListViewRenderer.Init();
+            CachedImageRenderer.Init();
             Syncfusion.XForms.iOS.ProgressBar.SfCircularProgressBarRenderer.Init();
             Syncfusion.SfChart.XForms.iOS.Renderers.SfChartRenderer.Init();
 
@@ -45,9 +47,7 @@ namespace QuestHelper.iOS
             DeviceSize.FullScreenHeight = (int)UIScreen.MainScreen.Bounds.Height;
 
             LoadApplication(new App());
-            //AnimationViewRenderer.Init();
             Xamarin.FormsMaps.Init();
-            FFImageLoading.Forms.Platform.CachedImageRenderer.Init(); 
             ImageCircleRenderer.Init();
 
             AppCenter.Start("f091513f-6c14-4845-8737-dbdc8dbeff2f", typeof(Analytics), typeof(Crashes));

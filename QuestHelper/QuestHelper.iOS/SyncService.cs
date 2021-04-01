@@ -42,11 +42,11 @@ namespace QuestHelper.iOS
             bool syncResult;
             if (string.IsNullOrEmpty(routeId))
             {
-                syncResult = await syncSrv.Sync();
+                //syncResult = await syncSrv.Sync();
             }
             else
             {
-                syncResult = await syncSrv.Sync(routeId);
+                syncResult = await syncSrv.Sync(routeId, true);
             }
             Console.WriteLine("SyncIntentService sync ended");
         }
