@@ -167,7 +167,7 @@ namespace QuestHelper.Droid
 
         protected override void OnNewIntent(Intent intent)
         {
-            if (intent.ClipData.ItemCount > 0)
+            if (intent?.ClipData?.ItemCount > 0)
             {
                 var file = intent.ClipData.GetItemAt(0);
                 if (file?.Uri != null)
