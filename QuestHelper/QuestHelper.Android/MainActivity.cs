@@ -17,15 +17,19 @@ using QuestHelper.Resources;
 using System.Collections.Generic;
 using Microsoft.AppCenter.Analytics;
 using System;
+using System.IO;
 using Android.Gms.Auth.Api.SignIn;
 using Android.Gms.Auth.Api;
 using Xamarin.Auth;
 using Android.Graphics;
 using Android.Graphics.Drawables;
+using Java.IO;
+using QuestHelper.Managers;
 
 namespace QuestHelper.Droid
 {
     [IntentFilter(new[] { Intent.ActionView, Intent.ActionEdit, Intent.ActionSend, Intent.ActionMain }, Label = "Gosh!", Categories = new string[] { Intent.CategoryDefault, Intent.CategoryBrowsable }, DataMimeType = "text/plain")]
+    [IntentFilter(new[] { Intent.ActionView, Intent.ActionEdit, Intent.ActionSend, Intent.ActionMain }, Label = "Gosh!", Categories = new string[] { Intent.CategoryDefault, Intent.CategoryBrowsable }, DataMimeType = "*/*")]
 #if DEBUG
     [Activity(Label = "Gosh! Debug", Icon = "@drawable/icon2", Theme = "@style/MainTheme", MainLauncher = true, NoHistory = false, LaunchMode = LaunchMode.SingleTask, ScreenOrientation = ScreenOrientation.Portrait, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
 #else
@@ -85,9 +89,9 @@ namespace QuestHelper.Droid
 
             LoadApplication(new App());
 
-            if (Intent.Extras != null)
+            if (Intent?.Extras != null)
             {
-                if (Intent.Extras.KeySet().Count > 0)
+                if (Intent.Extras?.KeySet()?.Count > 0)
                 {
                     //ToDo: несмотря на передачу extra в FirebaseNotificationService они почему-то не передаются
                     //Актуально когда гош открываешь из сообщения в шторке
@@ -96,10 +100,10 @@ namespace QuestHelper.Droid
                 }
             }
 
-            if (Intent != null)
+            /*if (Intent != null)
             {
                 processShareIntent(Intent);
-            }
+            }*/
 
             /*if (!string.IsNullOrEmpty(shareDescription))
             {
@@ -161,7 +165,22 @@ namespace QuestHelper.Droid
             });
         }
 
-        private void processShareIntent(Intent shareIntent)
+        protected override void OnNewIntent(Intent intent)
+        {
+            if (intent.ClipData.ItemCount > 0)
+            {
+                var file = intent.ClipData.GetItemAt(0);
+                if (file?.Uri != null)
+                {
+                    var fileStream = ContentResolver?.OpenInputStream(file.Uri);
+                    var memoryStream = new MemoryStream();
+                    fileStream?.CopyTo(memoryStream);
+                    string filename = file?.Uri?.LastPathSegment??"unknown.dat";
+                    System.IO.File.WriteAllBytes(System.IO.Path.Combine(ImagePathManager.GetPicturesDirectory(), filename), memoryStream.ToArray());
+                }
+            }
+        }
+        /*private void processShareIntent(Intent shareIntent)
         {
             switch (shareIntent.Type)
             {
@@ -175,7 +194,7 @@ namespace QuestHelper.Droid
 
                     }; break;
             }
-        }
+        }*/
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Android.Content.Intent data)
         {
