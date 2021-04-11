@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resources="clr-namespace:QuestHelper.Resources;assembly=QuestHelper"
+             xmlns:viewModel="clr-namespace:QuestHelper.ViewModel;assembly=QuestHelper"
+             x:Class="QuestHelper.View.SelectTrackFilePage" Appearing="SelectTrackFilePage_OnAppearing" Disappearing="SelectTrackFilePage_OnDisappearing" Style="{StaticResource ContentPage}">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Column="0" Grid.Row="0" Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                <ListView HasUnevenRows="False" SeparatorVisibility="Default" ItemsSource="{Binding TrackFileNames}" SelectedItem="{Binding SelectedReceivedTrackItem,Mode=TwoWay}" IsPullToRefreshEnabled="False" RefreshCommand="{Binding UpdateTracksCommand}">
+                    <ListView.Header>
+                        <Frame>
+                            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                                <Label Text="Выберите трек для маршрута:"></Label>
+                            </StackLayout>
+                        </Frame>
+                    </ListView.Header>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Frame CornerRadius="5" HasShadow="True" Padding="0" IsClippedToBounds="False" Margin="5">
+                                    <StackLayout Orientation="Horizontal" Margin="5">
+                                        <Label Text="{Binding Filename}" TextColor="Black"></Label>
+                                        <Label Text="{Binding CreateDateText}"></Label>
+                                    </StackLayout>
+                                </Frame>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

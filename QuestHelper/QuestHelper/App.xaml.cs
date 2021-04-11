@@ -134,14 +134,24 @@ namespace QuestHelper
 
             });
 
-			/*switch (Xamarin.Forms.Device.RuntimePlatform)
-			{
-				case Xamarin.Forms.Device.iOS:
-					Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
-					break;
-				default:
-					break;
-			}*/
+	        MessagingCenter.Subscribe<ReceiveTrackFile>(this, string.Empty, (sender) =>
+	        {
+		        string filename = sender.Filename;
+		        MainThread.BeginInvokeOnMainThread(() =>
+		        {
+			        UserDialogs.Instance.Alert("Track file received", filename, "Ок");
+			        ShowWarning("Track file received");
+		        });
+
+	        });
+	        /*switch (Xamarin.Forms.Device.RuntimePlatform)
+	        {
+		        case Xamarin.Forms.Device.iOS:
+			        Xamarin.Forms.MessagingCenter.Send<SyncMessage>(new SyncMessage(), string.Empty);
+			        break;
+		        default:
+			        break;
+	        }*/
 		}
 
         private bool Setup()
@@ -157,6 +167,11 @@ namespace QuestHelper
                 if (!Directory.Exists(pathToPicturesDirectory))
                 {
                     Directory.CreateDirectory(pathToPicturesDirectory);
+                }
+                string pathToTracksDirectory = Path.Combine(DependencyService.Get<IPathService>().PrivateExternalFolder, "tracks");
+                if (!Directory.Exists(pathToTracksDirectory))
+                {
+	                Directory.CreateDirectory(pathToTracksDirectory);
                 }
                 result = true;
             }

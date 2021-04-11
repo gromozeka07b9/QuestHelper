@@ -37,5 +37,9 @@ namespace QuestHelper.Managers
         {
             return Path.Combine(DependencyService.Get<IPathService>().PrivateExternalFolder, "pictures");
         }
+        public static string GetTracksDirectory()
+        {
+            return Path.Combine(DependencyService.Get<IPathService>().PrivateExternalFolder, "tracks");
+        }
     }
 }

@@ -23,8 +23,10 @@ using Android.Gms.Auth.Api;
 using Xamarin.Auth;
 using Android.Graphics;
 using Android.Graphics.Drawables;
+using Android.Provider;
 using Java.IO;
 using QuestHelper.Managers;
+using File = Java.IO.File;
 
 namespace QuestHelper.Droid
 {
@@ -167,16 +169,36 @@ namespace QuestHelper.Droid
 
         protected override void OnNewIntent(Intent intent)
         {
-            if (intent?.ClipData?.ItemCount > 0)
+            //if (intent?.ClipData?.ItemCount > 0)
+            //var file = intent.ClipData.GetItemAt(0);
+            var fileUri = intent?.Data;
+            if (fileUri != null)
             {
-                var file = intent.ClipData.GetItemAt(0);
-                if (file?.Uri != null)
+                var cursor = ContentResolver?.Query(fileUri, null, null, null, null);
+                string filename = String.Empty;
+                if (cursor != null && cursor.MoveToFirst())
                 {
-                    var fileStream = ContentResolver?.OpenInputStream(file.Uri);
+                    filename = cursor.GetString(cursor.GetColumnIndex(OpenableColumns.DisplayName));
+                }
+                if (!string.IsNullOrEmpty(filename))
+                {
+                    var fileStream = ContentResolver?.OpenInputStream(fileUri);
                     var memoryStream = new MemoryStream();
                     fileStream?.CopyTo(memoryStream);
-                    string filename = file?.Uri?.LastPathSegment??"unknown.dat";
-                    System.IO.File.WriteAllBytes(System.IO.Path.Combine(ImagePathManager.GetPicturesDirectory(), filename), memoryStream.ToArray());
+                    //string filename = fileUri.LastPathSegment??string.Empty;
+                    if (!string.IsNullOrEmpty(filename))
+                    {
+                        System.IO.File.WriteAllBytes(System.IO.Path.Combine(ImagePathManager.GetTracksDirectory(), filename), memoryStream.ToArray());
+                        Xamarin.Forms.MessagingCenter.Send<ReceiveTrackFile>(new ReceiveTrackFile() { Filename = filename}, string.Empty);
+                    }
+                    else
+                    {
+                        Xamarin.Forms.MessagingCenter.Send<UIAlertMessage>(new UIAlertMessage() { Title = CommonResource.CommonMsg_Warning, Message = $"Error while loading track file [{fileUri}]" }, string.Empty);
+                    }
+                }
+                else
+                {
+                    Xamarin.Forms.MessagingCenter.Send<UIAlertMessage>(new UIAlertMessage() { Title = CommonResource.CommonMsg_Warning, Message = $"Error while loading track file [{fileUri}]" }, string.Empty);
                 }
             }
         }

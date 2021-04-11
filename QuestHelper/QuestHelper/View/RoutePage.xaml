@@ -105,6 +105,11 @@
                                                         <TapGestureRecognizer Command="{Binding FullScreenMapCommand}"/>
                                                     </Image.GestureRecognizers>
                                                 </Image>
+                                                <Image Source="baseline_gps_fixed_black_48.png" WidthRequest="32" HeightRequest="32" Margin="0,0,0,5" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding SelectTrackCommand}"/>
+                                                    </Image.GestureRecognizers>
+                                                </Image>
                                                 <Image Source="share.png" WidthRequest="32" HeightRequest="32" Margin="0,0,0,5" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
                                                     <Image.GestureRecognizers>
                                                         <TapGestureRecognizer Command="{Binding ShareRouteCommand}"/>

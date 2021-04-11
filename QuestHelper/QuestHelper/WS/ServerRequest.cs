@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Text;
 using Autofac;
@@ -105,6 +106,37 @@ namespace QuestHelper.WS
                 HandleError.Process("ServerRequest", "HttpRequestPost", e, false);
             }
             _logger.AddStringEvent($"POST end:[{url}], delay [{(dStart - DateTime.Now).Milliseconds}]");
+            return result;
+            
+        }
+        public async Task<bool> HttpRequestPostFile(string relativeUrl, string authToken, byte[] fileBytes, string filename)
+        {
+            bool result = false;
+            string url = new Uri(_apiBaseUri, relativeUrl).AbsoluteUri;
+            _logger.AddStringEvent($"POST file start:{url}");
+            DateTime dStart = DateTime.Now;
+            fillHeaders(authToken);
+            try
+            {
+                using (var content = new ByteArrayContent(fileBytes))
+                {
+                    content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");   
+                    content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data") { Name = "file", FileName = filename };
+                    using (var formData = new MultipartFormDataContent())
+                    {
+                        formData.Add(content);
+                        HttpResponseMessage response = await _httpClient.PostAsync(url, formData);
+                        _lastHttpStatusCode = response.StatusCode;
+                        result = _lastHttpStatusCode == HttpStatusCode.OK;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.AddStringEvent($"POST file error:[{url}], delay [{(dStart - DateTime.Now).Milliseconds}], error [{e.Message}]");
+                HandleError.Process("ServerRequest", "HttpRequestPostFile", e, false);
+            }
+            _logger.AddStringEvent($"POST file end:[{url}], delay [{(dStart - DateTime.Now).Milliseconds}]");
             return result;
             
         }

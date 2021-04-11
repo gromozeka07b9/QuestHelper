@@ -58,6 +58,7 @@ namespace QuestHelper.ViewModel
         public ICommand FullScreenMapCommand { get; private set; }
         public ICommand PhotoAlbumCommand { get; private set; }
         public ICommand BackNavigationCommand { get; private set; }
+        public ICommand SelectTrackCommand { get; private set; }
         public ICommand ShareCommand { get; private set; }
         
         public ICommand DeleteRouteCommand { get; private set; }
@@ -82,6 +83,21 @@ namespace QuestHelper.ViewModel
             PhotoAlbumCommand = new Command(photoAlbumCommandAsync);
             BackNavigationCommand = new Command(backNavigationCommand);
             DeleteRouteCommand = new Command(deleteRouteCommand);
+            SelectTrackCommand = new Command(selectTrackCommand);
+        }
+
+        private void selectTrackCommand(object obj)
+        {
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                await startSelectTrackDialogAsync(_vroute.RouteId);
+            });
+        }
+
+        private async Task startSelectTrackDialogAsync(string routeId)
+        {
+            var selectTrackPage = new SelectTrackFilePage(routeId);
+            await Navigation.PushModalAsync(selectTrackPage, false);
         }
 
         private async void shareRouteCommandAsync(object obj)
