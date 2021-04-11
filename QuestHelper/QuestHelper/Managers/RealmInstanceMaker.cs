@@ -23,8 +23,8 @@ namespace QuestHelper.Managers
                         //v9 - Poi = added ByRouteId
                         //v10 - added LocalFile
                         //v11 - added indexes into LocalFile
-                        //v12 - added RouteTrackPlace
-                        SchemaVersion = 11,
+                        //v12 - added RouteTrackPlace, upgrade Realm from 3.4 to 10.1.2
+                        SchemaVersion = 12,
                         MigrationCallback = (migration, oldSchemaVersion) =>
                         {
 

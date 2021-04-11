@@ -1,10 +1,14 @@
 using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Autofac;
+using Newtonsoft.Json;
 using QuestHelper.Managers;
+using QuestHelper.SharedModelsWS;
+using QuestHelper.ViewModel;
 
 namespace QuestHelper.WS
 {
@@ -18,6 +22,21 @@ namespace QuestHelper.WS
             _authToken = authToken;
         }
 
+        public async Task<RouteTracking> GetTrackPlacesAsync(string routeId)
+        {
+            RouteTracking result = new RouteTracking();
+            try
+            {
+                var response = await _serverRequest.HttpRequestGet($"/api/v2/routes/{routeId}/tracks", _authToken);
+                result = JsonConvert.DeserializeObject<RouteTracking>(response);
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("TrackRouteRequest", "GetTrackPlacesAsync", e, false);
+            }
+
+            return result;
+        }
         public async Task<bool> SendTrackFileAsync(string trackFilename, string routeId)
         {
             bool result = false;
@@ -38,39 +57,5 @@ namespace QuestHelper.WS
 
             return result;
         }
-        /*private async Task<bool> TryToSendFileAsync(string pathToMediaFile, string nameMediafile, string routePointId, string routePointMediaObjectId)
-        {
-            bool result = false;
-            try
-            {
-                using (Stream image = File.Open(pathToMediaFile, FileMode.Open))
-                {
-                    using (HttpContent content = new StreamContent(image))
-                    {
-                        content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data") { Name = "file", FileName = nameMediafile };
-                        content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                        using (var client = new HttpClient())
-                        {
-                            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authToken);
-                            using (var formData = new MultipartFormDataContent())
-                            {
-                                formData.Add(content);
-                                HttpResponseMessage response = await client.PostAsync($"{ this._hostUrl }/routepointmediaobjects/{ routePointId }/{ routePointMediaObjectId }/uploadfile", formData);
-                                LastHttpStatusCode = response.StatusCode;
-                                result = response.IsSuccessStatusCode;
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                HandleError.Process("RoutePointMediaObjectApiRequest", "TryToSendFileAsync", e, false);
-                result = false;
-            }
-
-            return result;
-        }*/
-
     }
 }

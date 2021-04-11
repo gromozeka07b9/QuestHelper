@@ -1,9 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using Acr.UserDialogs;
 using QuestHelper.Managers;
+using QuestHelper.Resources;
+using QuestHelper.SharedModelsWS;
 using QuestHelper.WS;
 using Syncfusion.DataSource.Extensions;
 using Xamarin.Forms;
@@ -44,7 +49,21 @@ namespace QuestHelper.ViewModel
         public void CloseDialog()
         {
         }
-        
+
+        private async Task<bool> tryParseAndGetTrackAsync(string filename, string routeId)
+        {
+            RouteTracking places = new RouteTracking();
+            TokenStoreService tokenService = new TokenStoreService();
+            string currentUserToken = await tokenService.GetAuthTokenAsync();
+            TrackRouteRequest sendTrackRequest = new TrackRouteRequest(currentUserToken);
+            bool sendResult = await sendTrackRequest.SendTrackFileAsync(filename, routeId);
+            if (sendResult)
+            {
+                places = await sendTrackRequest.GetTrackPlacesAsync(routeId);
+            }
+
+            return sendResult && places.Places.Length > 0;
+        }
         public ObservableCollection<TrackFileElement> TrackFileNames
         {
             get
@@ -65,10 +84,14 @@ namespace QuestHelper.ViewModel
         {
             set
             {
-                TokenStoreService tokenService = new TokenStoreService();
-                string _currentUserToken = tokenService.GetAuthTokenAsync().Result;
-                TrackRouteRequest sendTrackRequest = new TrackRouteRequest(_currentUserToken);
-                sendTrackRequest.SendTrackFileAsync(value.Filename, _routeId);
+                Task.Run(async () =>
+                {
+                    bool result = await tryParseAndGetTrackAsync(value.Filename, _routeId);
+                    UserDialogs.Instance.Alert(title: "Парсинг и загрузка",
+                        message: "Result:" + result, okText: "Ok");
+
+                    value = null;
+                });
             }
         }
         
@@ -85,6 +108,5 @@ namespace QuestHelper.ViewModel
                 }
             }
         }
-
     }
 }
