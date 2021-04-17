@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using QuestHelper.Managers;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
@@ -18,12 +19,15 @@ namespace QuestHelper.View
     {
         MapRouteOverviewViewModel vm;
         public string CurrentRouteId = string.Empty;
+        private readonly string _routeId;
+
         public MapRouteOverviewPage()
         {
             InitializeComponent();
         }
         public MapRouteOverviewPage(string routeId)
         {
+            _routeId = routeId;
             InitializeComponent();
             vm = new MapRouteOverviewViewModel(routeId);
             vm.Navigation = this.Navigation;
@@ -39,13 +43,20 @@ namespace QuestHelper.View
         private async void ContentPage_AppearingAsync(object sender, EventArgs e)
         {
             var customMap = this.FindByName<CustomMap>("MapRouteOverview");
-            var points = await vm.GetPointsForOverviewRouteAsync();
+            /*var points = await vm.GetPointsForOverviewRouteAsync();
             customMap.Points = points.Select(x => new PointForMap()
             {
                 Latitude = x.Latitude, Longitude = x.Longitude, PathToPicture = x.ImagePreviewPathForList, Name = x.Name, Description = x.Description
+            }).ToList();*/
+            TrackFileManager trackFileManager = new TrackFileManager();
+            var track = trackFileManager.GetTrackByRoute(_routeId);
+            customMap.Points = track.Select(t => new PointForMap()
+            {
+                Latitude = t.Item1 ?? 0.0,
+                Longitude = t.Item2 ?? 0.0
             }).ToList();
             CustomMapView customMapView = new CustomMapView(customMap, 15);
-            if (customMap.Points.Count() > 0)
+            if (customMap.Points.Any())
             {
                 await centerMap(customMapView, customMap.Points.First().Latitude, customMap.Points.First().Longitude);
             }

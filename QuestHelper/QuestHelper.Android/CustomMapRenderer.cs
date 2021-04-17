@@ -153,7 +153,7 @@ namespace QuestHelper.Droid
             {
                 var latlng = new LatLng(point.Latitude, point.Longitude);
                 latLngList.Add(latlng);
-                var marker = new MarkerOptions();
+                /*var marker = new MarkerOptions();
                 marker.Anchor(0.5f, 0.5f);
                 marker.SetPosition(latlng);
                 BitmapDescriptor pic = null;
@@ -176,7 +176,7 @@ namespace QuestHelper.Droid
 
                 marker.SetIcon(pic);
                 NativeMap.AddMarker(marker);
-                bounds.Include(latlng);
+                bounds.Include(latlng);*/
             }
             List<PatternItem> pattern_lines = new List<PatternItem>();
             pattern_lines.Add(new Gap(20));
@@ -186,7 +186,7 @@ namespace QuestHelper.Droid
             {
                 lineOptions.Add(point);
             }
-            lineOptions.InvokePattern(pattern_lines);
+            //lineOptions.InvokePattern(pattern_lines);
             lineOptions.InvokeWidth(10);
             NativeMap.AddPolyline(lineOptions);
             if(customMap.Points.Count > 1)

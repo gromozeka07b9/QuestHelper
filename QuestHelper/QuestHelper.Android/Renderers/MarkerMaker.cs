@@ -28,7 +28,7 @@ namespace QuestHelper.Droid.Renderers
             }
             else
             {
-                pic = BitmapDescriptorFactory.FromResource(Resource.Drawable.place_unknown);
+                //pic = BitmapDescriptorFactory.FromResource(Resource.Drawable.place_unknown);
             }
             marker.SetIcon(pic);
             return marker;

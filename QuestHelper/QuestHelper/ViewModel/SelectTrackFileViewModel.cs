@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Acr.UserDialogs;
 using QuestHelper.Managers;
+using QuestHelper.Model;
 using QuestHelper.Resources;
 using QuestHelper.SharedModelsWS;
 using QuestHelper.WS;
@@ -52,17 +53,35 @@ namespace QuestHelper.ViewModel
 
         private async Task<bool> tryParseAndGetTrackAsync(string filename, string routeId)
         {
-            RouteTracking places = new RouteTracking();
+            RouteTracking trackResponse = new RouteTracking();
             TokenStoreService tokenService = new TokenStoreService();
             string currentUserToken = await tokenService.GetAuthTokenAsync();
             TrackRouteRequest sendTrackRequest = new TrackRouteRequest(currentUserToken);
             bool sendResult = await sendTrackRequest.SendTrackFileAsync(filename, routeId);
             if (sendResult)
             {
-                places = await sendTrackRequest.GetTrackPlacesAsync(routeId);
+                trackResponse = await sendTrackRequest.GetTrackPlacesAsync(routeId);
+                if (trackResponse.Places.Length > 0)
+                {
+                    var places = trackResponse.Places.Select(p => new ViewTrackPlace()
+                    {
+                        Id = p.Id,
+                        Latitude = p.Latitude,
+                        Longitude = p.Longitude,
+                        Name = p.Name,
+                        Description = p.Description,
+                        Address = p.Address,
+                        Category = p.Category,
+                        Distance = p.Distance,
+                        DateTimeBegin = !p.DateTimeBegin.Equals(DateTime.MinValue)? new DateTimeOffset(p.DateTimeBegin) : DateTimeOffset.MinValue,
+                        DateTimeEnd = !p.DateTimeEnd.Equals(DateTime.MinValue)? new DateTimeOffset(p.DateTimeEnd) : DateTimeOffset.MinValue,
+                        Elevation = 0
+                    }).ToArray();
+                    _trackFileManager.SaveTrack(routeId, places);
+                }
             }
 
-            return sendResult && places.Places.Length > 0;
+            return sendResult && trackResponse.Places.Length > 0;
         }
         public ObservableCollection<TrackFileElement> TrackFileNames
         {
