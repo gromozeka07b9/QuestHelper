@@ -179,8 +179,8 @@ namespace QuestHelper.Droid
                 bounds.Include(latlng);*/
             }
             List<PatternItem> pattern_lines = new List<PatternItem>();
-            pattern_lines.Add(new Gap(20));
-            pattern_lines.Add(new Dash(20));
+            pattern_lines.Add(new Gap(10));
+            //pattern_lines.Add(new Dash(20));
             PolylineOptions lineOptions = new PolylineOptions();
             foreach(var point in latLngList)
             {

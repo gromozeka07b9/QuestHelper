@@ -209,7 +209,7 @@ namespace QuestHelper.ViewModel
         
         private void fullScreenMapCommandAsync(object obj)
         {
-            var mapRoutePage = new MapRouteOverviewPage(_vroute.RouteId);
+            var mapRoutePage = new MapRouteOverviewV2Page(_vroute.RouteId);
             Navigation.PushModalAsync(mapRoutePage, true);
         }
 

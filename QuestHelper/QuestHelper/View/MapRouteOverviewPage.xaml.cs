@@ -55,6 +55,7 @@ namespace QuestHelper.View
                 Latitude = t.Item1 ?? 0.0,
                 Longitude = t.Item2 ?? 0.0
             }).ToList();
+            Pin pin = new Pin();
             CustomMapView customMapView = new CustomMapView(customMap, 15);
             if (customMap.Points.Any())
             {
