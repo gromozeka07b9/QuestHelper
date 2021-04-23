@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Crashes;
+using QuestHelper.Model;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
@@ -62,7 +63,7 @@ namespace QuestHelper.View.Geo
                 Polyline trace = new Polyline()
                 {
                     StrokeColor = Color.Blue,
-                    StrokeWidth = 6,
+                    StrokeWidth = 12,
                 };
                 foreach (var place in trackPlaces)
                 {
@@ -86,6 +87,20 @@ namespace QuestHelper.View.Geo
                     FillColor = Color.Black
                 });
                 await this.CenterMap(trackPlaces.FirstOrDefault().Item1??0, trackPlaces.FirstOrDefault().Item2??0);
+            }
+        }
+
+        public async Task UpdatePointsOnMap(IEnumerable<ViewRoutePoint> getRoutePoints)
+        {
+            foreach (var routePoint in getRoutePoints)
+            {
+                this.Pins.Add(new Pin()
+                {
+                    Position = new Position(routePoint.Latitude, routePoint.Longitude),
+                    Type = PinType.SearchResult,
+                    Label = routePoint.Name,
+                    //Effects = { }
+                });
             }
         }
     }

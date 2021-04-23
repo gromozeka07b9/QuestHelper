@@ -37,8 +37,7 @@ namespace QuestHelper.View
             _vm.StartDialog();
             Task.Run(async () => { await mapControl.CenterMapOnLastPosition(); });
             Task.Run(async () => { await mapControl.UpdateTrackOnMap(_vm.GetTrackPlaces()); });
-            ;
-            //Task.Run(async () => { await mapControl.UpdatePointsOnMap(); });
+            Task.Run(async () => { await mapControl.UpdatePointsOnMap(_vm.GetRoutePoints()); });
         }
 
         private void MapRouteOverviewV2Page_OnDisappearing(object sender, EventArgs e)
