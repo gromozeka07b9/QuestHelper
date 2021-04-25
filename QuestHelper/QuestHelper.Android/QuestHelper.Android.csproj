@@ -153,17 +153,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationInstalledService.cs" />
-    <Compile Include="CustomEditorRenderer.cs" />
-    <Compile Include="CustomEditTextRenderer.cs" />
     <Compile Include="GoogleAuthInterceptor.cs" />
+    <Compile Include="Renderers\BaseMarkerMaker.cs" />
     <Compile Include="Renderers\BitmapConverter.cs" />
     <Compile Include="Renderers\BitmapTextWriter.cs" />
+    <Compile Include="Renderers\CustomEditorRenderer.cs" />
+    <Compile Include="Renderers\CustomEditTextRenderer.cs" />
+    <Compile Include="Renderers\CustomMapRenderer.cs" />
     <Compile Include="Renderers\CustomOverviewMapRenderer.cs" />
-    <Compile Include="CustomMapRenderer.cs" />
     <Compile Include="FirebaseNotificationService.cs" />
     <Compile Include="Intents\SetEmotionRouteIntentService.cs" />
     <Compile Include="Intents\SendRouteViewedIntentService.cs" />
-    <Compile Include="Renderers\MarkerMaker.cs" />
+    <Compile Include="Renderers\PoiMarkerMaker.cs" />
+    <Compile Include="Renderers\RoutePointMarkerMaker.cs" />
+    <Compile Include="Renderers\TrackMap\TrackMapRenderer.cs" />
     <Compile Include="ShareServices\CommonShareService.cs" />
     <Compile Include="PushReceiverSetup.cs" />
     <Compile Include="NotificationService.cs" />

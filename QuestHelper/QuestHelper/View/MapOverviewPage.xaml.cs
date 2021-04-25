@@ -38,7 +38,7 @@ namespace QuestHelper.View
 
         private void Poi_MarkerClicked(object sender, PinClickedEventArgs e)
         {
-            var selectedPin = (OverViewMapPin)sender;            
+            var selectedPin = (PoiPin)sender;            
             _vm.SelectedPin(selectedPin.PoiId);
         }
 
@@ -74,12 +74,12 @@ namespace QuestHelper.View
             MapOverview.Pins.Clear();
             string _pathToPictures = ImagePathManager.GetPicturesDirectory();
 
-            foreach (var poi in _vm.POIs.Select(p => new OverViewMapPin()
+            foreach (var poi in _vm.POIs.Select(p => new PoiPin()
             {
                 PoiId = p.Id,
                 Label = p.Name,
                 Position = p.Location,
-                ImagePath = $"{_pathToPictures}/{p.ImgFilename}",
+                //ImagePath = $"{_pathToPictures}/{p.ImgFilename}",
                 ImageMarkerPath = $"{_pathToPictures}/map_{p.ImgFilename}"
             }))
             {

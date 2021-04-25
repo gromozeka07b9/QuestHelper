@@ -5,11 +5,10 @@ using Xamarin.Forms.Maps;
 
 namespace QuestHelper.View.Geo
 {
-    public class OverViewMapPin : Pin
+    public class PoiPin : Pin
     {
-        //public string Url { get; set; }
         public string PoiId { get; set; }
-        public string ImagePath { get; set; }
+        //public string ImagePath { get; set; }
         public string ImageMarkerPath { get; set; }
     }
 }

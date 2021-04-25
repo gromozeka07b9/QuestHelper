@@ -20,6 +20,7 @@ using Java.Lang;
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
 using QuestHelper.Droid;
+using QuestHelper.Droid.Renderers;
 using QuestHelper.Managers;
 using QuestHelper.Model;
 using QuestHelper.Model.Messages;
@@ -32,7 +33,7 @@ using Xamarin.Forms.Maps;
 using Xamarin.Forms.Maps.Android;
 
 [assembly: ExportRenderer(typeof(CustomMap), typeof(CustomMapRenderer))]
-namespace QuestHelper.Droid
+namespace QuestHelper.Droid.Renderers
 {
     public class CustomMapRenderer : MapRenderer, GoogleMap.IInfoWindowAdapter
     {

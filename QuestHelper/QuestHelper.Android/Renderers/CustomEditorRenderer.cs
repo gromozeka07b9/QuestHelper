@@ -13,12 +13,13 @@ using Android.Views.InputMethods;
 using Android.Widget;
 using Java.Lang;
 using QuestHelper.Droid;
+using QuestHelper.Droid.Renderers;
 using QuestHelper.View;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
 [assembly: ExportRenderer(typeof(CustomEditor), typeof(CustomEditorRenderer))]
-namespace QuestHelper.Droid
+namespace QuestHelper.Droid.Renderers
 {
     public class CustomEditorRenderer : EditorRenderer
     {

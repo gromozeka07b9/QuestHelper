@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Crashes;
+using QuestHelper.Managers;
 using QuestHelper.Model;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -90,18 +91,23 @@ namespace QuestHelper.View.Geo
             }
         }
 
-        public async Task UpdatePointsOnMap(IEnumerable<ViewRoutePoint> getRoutePoints)
+        public async Task UpdatePointsOnMap(IEnumerable<ViewRoutePoint> getRoutePoints, EventHandler<PinClickedEventArgs> routePointMarkerClicked)
         {
+            string pathToPictures = ImagePathManager.GetPicturesDirectory();
             foreach (var routePoint in getRoutePoints)
             {
-                this.Pins.Add(new Pin()
+                var pin = new RoutePointPin()
                 {
+                    RoutePointId = routePoint.Id,
                     Position = new Position(routePoint.Latitude, routePoint.Longitude),
-                    Type = PinType.SearchResult,
                     Label = routePoint.Name,
-                    //Effects = { }
-                });
+                    //ImageMarkerPath = !string.IsNullOrEmpty(routePoint.ImagePreviewPath) ? $"{_pathToPictures}/map_{routePoint.ImagePreviewPath}" : string.Empty
+                    ImageMarkerPath = !string.IsNullOrEmpty(routePoint.ImagePreviewPath) ? routePoint.ImagePreviewPath : string.Empty
+                };
+                pin.MarkerClicked += routePointMarkerClicked;
+                this.Pins.Add(pin);
             }
         }
+
     }
 }

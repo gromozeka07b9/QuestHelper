@@ -11,7 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Xamarin.Forms.Platform.Android;
 
-namespace QuestHelper.Droid
+namespace QuestHelper.Droid.Renderers
 {
     public class CustomEditTextRenderer : FormsEditText
     {

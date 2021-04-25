@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Crashes;
+using QuestHelper.View.Geo;
 using QuestHelper.ViewModel;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -35,14 +36,35 @@ namespace QuestHelper.View
         private void MapRouteOverviewV2Page_OnAppearing(object sender, EventArgs e)
         {
             _vm.StartDialog();
-            Task.Run(async () => { await mapControl.CenterMapOnLastPosition(); });
-            Task.Run(async () => { await mapControl.UpdateTrackOnMap(_vm.GetTrackPlaces()); });
-            Task.Run(async () => { await mapControl.UpdatePointsOnMap(_vm.GetRoutePoints()); });
+            if (!string.IsNullOrEmpty(_vm.SelectedRoutePoint.Id))
+            {
+                Task.Run(async () =>
+                {
+                    await mapControl.CenterMap(_vm.SelectedRoutePoint.Latitude, _vm.SelectedRoutePoint.Longitude);
+                });
+            }
+            else
+            {
+                Task.Run(async () => { await mapControl.CenterMapOnLastPosition(); });
+                Task.Run(async () => { await mapControl.UpdateTrackOnMap(_vm.GetTrackPlaces()); });
+                Task.Run(async () => { await mapControl.UpdatePointsOnMap(_vm.GetRoutePoints(), RoutePoint_MarkerClicked); });
+            }
+        }
+
+        private void RoutePoint_MarkerClicked(object sender, PinClickedEventArgs e)
+        {
+            var selectedPin = (RoutePointPin)sender;            
+            _vm.SelectRoutePointPin(selectedPin.RoutePointId);
         }
 
         private void MapRouteOverviewV2Page_OnDisappearing(object sender, EventArgs e)
         {
             _vm.CloseDialog();
+        }
+
+        private void MapControl_OnMapClicked(object sender, MapClickedEventArgs e)
+        {
+            _vm.SetNewLocation(e.Position);
         }
     }
 }
