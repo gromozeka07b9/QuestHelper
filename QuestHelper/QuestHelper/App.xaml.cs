@@ -144,6 +144,7 @@ namespace QuestHelper
 		        });
 
 	        });
+
 	        /*switch (Xamarin.Forms.Device.RuntimePlatform)
 	        {
 		        case Xamarin.Forms.Device.iOS:

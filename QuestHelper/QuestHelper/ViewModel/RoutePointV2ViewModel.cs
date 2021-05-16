@@ -757,7 +757,6 @@ namespace QuestHelper.ViewModel
         {
             _vpoint.Refresh(_vpoint.Id);
             //Пока не знаю как поймать событие того, редактировалось описание на другой странице и вернулись на текущую уже с модифицированным описанием
-            //Ловля события не помогает, поскольку ловится предидущим активити...
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Description"));
             MessagingCenter.Subscribe<RoutePointDescriptionModifiedMessage>(this, string.Empty, (sender) =>
             {
@@ -770,6 +769,19 @@ namespace QuestHelper.ViewModel
             {
                 setNewCoordinates(sender.Latitude, sender.Longitude);
             });
+
+            
+            /*MessagingCenter.Subscribe<PageNavigationMessage>(this, string.Empty, (sender) =>
+            {
+                if (sender.PageToOpen == MainPages.OverviewRouteMap)
+                {
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        var mapRoutePage = new MapRouteOverviewV2Page(_vpoint.RouteId);
+                        Navigation.PushModalAsync(mapRoutePage, false);
+                    });
+                }
+            });*/
 
             if ((_newPoint) && (_vpoint.Latitude == 0) && (_vpoint.Longitude == 0))
             {

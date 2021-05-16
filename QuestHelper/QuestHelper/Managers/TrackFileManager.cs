@@ -44,8 +44,6 @@ namespace QuestHelper.Managers
             bool result = false;
             try
             {
-                //var test = RealmInstance.All<RouteTrackPlace>().Where(p => p.RouteTrackId.Equals(routeId));
-                //int cnt = test.Count();
                 RealmInstance.Write(() =>
                 {
                     RealmInstance.RemoveRange(RealmInstance.All<RouteTrackPlace>()
@@ -74,6 +72,26 @@ namespace QuestHelper.Managers
             catch (Exception e)
             {
                 HandleError.Process("TrackFileManager", "SaveTrack", e, false);
+            }
+
+            return result;
+        }
+
+        public bool RemoveAllTracksFromRoute(string routeId)
+        {
+            bool result = false;
+            try
+            {
+                RealmInstance.Write(() =>
+                {
+                    RealmInstance.RemoveRange(RealmInstance.All<RouteTrackPlace>()
+                        .Where(p => p.RouteTrackId.Equals(routeId)));
+                });
+                result = true;
+            }
+            catch (Exception e)
+            {
+                HandleError.Process("TrackFileManager", "RemoveAllTracksFromRoute", e, false);
             }
 
             return result;

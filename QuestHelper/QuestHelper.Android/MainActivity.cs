@@ -166,12 +166,17 @@ namespace QuestHelper.Droid
 
         protected override void OnNewIntent(Intent intent)
         {
-            //if (intent?.ClipData?.ItemCount > 0)
-            //var file = intent.ClipData.GetItemAt(0);
-            var fileUri = intent?.Data;
-            if (fileUri != null)
+            Android.Net.Uri importedResourceUri = null;
+            if (intent?.ClipData?.ItemCount > 0)
             {
-                var cursor = ContentResolver?.Query(fileUri, null, null, null, null);
+                importedResourceUri = intent.ClipData.GetItemAt(0)?.Uri;
+            }
+
+            importedResourceUri ??= intent?.Data;
+            
+            if (importedResourceUri != null)
+            {
+                var cursor = ContentResolver?.Query(importedResourceUri, null, null, null, null);
                 string filename = String.Empty;
                 if (cursor != null && cursor.MoveToFirst())
                 {
@@ -179,10 +184,9 @@ namespace QuestHelper.Droid
                 }
                 if (!string.IsNullOrEmpty(filename))
                 {
-                    var fileStream = ContentResolver?.OpenInputStream(fileUri);
+                    var fileStream = ContentResolver?.OpenInputStream(importedResourceUri);
                     var memoryStream = new MemoryStream();
                     fileStream?.CopyTo(memoryStream);
-                    //string filename = fileUri.LastPathSegment??string.Empty;
                     if (!string.IsNullOrEmpty(filename))
                     {
                         System.IO.File.WriteAllBytes(System.IO.Path.Combine(ImagePathManager.GetTracksDirectory(), filename), memoryStream.ToArray());
@@ -190,12 +194,12 @@ namespace QuestHelper.Droid
                     }
                     else
                     {
-                        Xamarin.Forms.MessagingCenter.Send<UIAlertMessage>(new UIAlertMessage() { Title = CommonResource.CommonMsg_Warning, Message = $"Error while loading track file [{fileUri}]" }, string.Empty);
+                        Xamarin.Forms.MessagingCenter.Send<UIAlertMessage>(new UIAlertMessage() { Title = CommonResource.CommonMsg_Warning, Message = $"Error while loading track file [{importedResourceUri}]" }, string.Empty);
                     }
                 }
                 else
                 {
-                    Xamarin.Forms.MessagingCenter.Send<UIAlertMessage>(new UIAlertMessage() { Title = CommonResource.CommonMsg_Warning, Message = $"Error while loading track file [{fileUri}]" }, string.Empty);
+                    Xamarin.Forms.MessagingCenter.Send<UIAlertMessage>(new UIAlertMessage() { Title = CommonResource.CommonMsg_Warning, Message = $"Error while loading track file [{importedResourceUri}]" }, string.Empty);
                 }
             }
         }

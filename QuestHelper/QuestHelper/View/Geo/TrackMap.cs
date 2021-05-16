@@ -101,7 +101,6 @@ namespace QuestHelper.View.Geo
                     RoutePointId = routePoint.Id,
                     Position = new Position(routePoint.Latitude, routePoint.Longitude),
                     Label = routePoint.Name,
-                    //ImageMarkerPath = !string.IsNullOrEmpty(routePoint.ImagePreviewPath) ? $"{_pathToPictures}/map_{routePoint.ImagePreviewPath}" : string.Empty
                     ImageMarkerPath = !string.IsNullOrEmpty(routePoint.ImagePreviewPath) ? routePoint.ImagePreviewPath : string.Empty
                 };
                 pin.MarkerClicked += routePointMarkerClicked;
@@ -109,5 +108,19 @@ namespace QuestHelper.View.Geo
             }
         }
 
+        public void DeletePointsOnMap()
+        {
+            this.Pins.Clear();
+        }
+        
+        public void UpdateLocationPointOnMap(string routePointId, double latitude, double longitude)
+        {
+            var pinAsRoutePoints = this.Pins.Cast<RoutePointPin>();
+            var pin = pinAsRoutePoints.FirstOrDefault(p => p.RoutePointId.Equals(routePointId));
+            if (pin != null)
+            {
+                pin.Position = new Position(latitude, longitude);
+            }
+        }
     }
 }

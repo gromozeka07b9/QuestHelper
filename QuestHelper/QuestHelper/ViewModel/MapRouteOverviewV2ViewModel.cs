@@ -6,6 +6,7 @@ using System.Windows.Input;
 using QuestHelper.Consts;
 using QuestHelper.Managers;
 using QuestHelper.Model;
+using QuestHelper.Model.Messages;
 using QuestHelper.View;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
@@ -27,12 +28,16 @@ namespace QuestHelper.ViewModel
         public ICommand HidePoiDialogCommand { get; private set; }
         public ICommand OpenRoutePointDialogCommand { get; private set; }
         public ICommand SetNewLocationCommand { get; private set; }
+        public ICommand BackNavigationCommand { get; private set; }
+        public ICommand CancelSetLocationCommand { get; private set; }
 
         public MapRouteOverviewV2ViewModel(string routeId)
         {
             HidePoiDialogCommand = new Command(hidePoiDialogCommand);
             OpenRoutePointDialogCommand = new Command(openRoutePointDialogCommand);
             SetNewLocationCommand = new Command(setNewLocationCommand);
+            BackNavigationCommand = new Command(backNavigationCommandAsync);
+            CancelSetLocationCommand = new Command(cancelSetLocationCommand);
             _routeId = routeId;
             _trackFileManager = new TrackFileManager();
             _routePointManager = new RoutePointManager();
@@ -41,6 +46,16 @@ namespace QuestHelper.ViewModel
 
         }
 
+        private async void backNavigationCommandAsync(object obj)
+        {
+            await Navigation.PopModalAsync();
+        }
+
+        private void cancelSetLocationCommand(object obj)
+        {
+            SetNewLocationMode = false;
+        }
+        
         private void setNewLocationCommand(object obj)
         {
             _setNewLocationMode = true;
@@ -48,12 +63,23 @@ namespace QuestHelper.ViewModel
             IsVisibleTextForSetNewLocation = _setNewLocationMode;
         }
 
+        public bool SetNewLocationMode
+        {
+            get => _setNewLocationMode;
+            set
+            {
+                if (value != _setNewLocationMode)
+                {
+                    _setNewLocationMode = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SetNewLocationMode"));
+                    IsVisibleTextForSetNewLocation = _setNewLocationMode;
+                }
+            }
+        }
+
         public bool IsVisibleTextForSetNewLocation
         {
-            get
-            {
-                return _isVisibleTextForSetNewLocation;
-            }
+            get => _isVisibleTextForSetNewLocation;
             set
             {
                 if (value != _isVisibleTextForSetNewLocation)
@@ -66,14 +92,19 @@ namespace QuestHelper.ViewModel
 
         public void SetNewLocation(Position position)
         {
-            if (!string.IsNullOrEmpty(SelectedRoutePoint.Id) && _setNewLocationMode)
+            if (!string.IsNullOrEmpty(SelectedRoutePoint.Id) && SetNewLocationMode)
             {
                 SelectedRoutePoint.Latitude = position.Latitude;
                 SelectedRoutePoint.Longitude = position.Longitude;
                 SelectedRoutePoint.Version++;
                 SelectedRoutePoint.Save();
-                _setNewLocationMode = false;
-                IsVisibleTextForSetNewLocation = _setNewLocationMode;
+                SetNewLocationMode = false;
+                MessagingCenter.Send<MapUpdateLocationPointMessage>(new MapUpdateLocationPointMessage()
+                {
+                    RoutePointId = SelectedRoutePoint.Id,
+                    Latitude = SelectedRoutePoint.Latitude,
+                    Longitude = SelectedRoutePoint.Longitude
+                }, string.Empty);
             }
         }
 

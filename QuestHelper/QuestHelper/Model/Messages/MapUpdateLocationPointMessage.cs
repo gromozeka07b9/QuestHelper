@@ -10,5 +10,6 @@ namespace QuestHelper.Model.Messages
         public double Longitude;
         public string Name;
         public string Address;
+        public string RoutePointId;
     }
 }

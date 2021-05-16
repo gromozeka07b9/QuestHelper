@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Crashes;
+using QuestHelper.Model.Messages;
 using QuestHelper.View.Geo;
 using QuestHelper.ViewModel;
 using Xamarin.Essentials;
@@ -35,6 +36,10 @@ namespace QuestHelper.View
 
         private void MapRouteOverviewV2Page_OnAppearing(object sender, EventArgs e)
         {
+            MessagingCenter.Subscribe<MapUpdateLocationPointMessage>(this, string.Empty, async (msgSender) =>
+            {
+                mapControl.UpdateLocationPointOnMap(msgSender.RoutePointId, msgSender.Latitude, msgSender.Longitude);
+            });
             _vm.StartDialog();
             if (!string.IsNullOrEmpty(_vm.SelectedRoutePoint.Id))
             {
@@ -60,6 +65,7 @@ namespace QuestHelper.View
         private void MapRouteOverviewV2Page_OnDisappearing(object sender, EventArgs e)
         {
             _vm.CloseDialog();
+            MessagingCenter.Unsubscribe<MapUpdateLocationPointMessage>(this, string.Empty);
         }
 
         private void MapControl_OnMapClicked(object sender, MapClickedEventArgs e)

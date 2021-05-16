@@ -98,6 +98,12 @@ namespace QuestHelper.ViewModel
         {
             var selectTrackPage = new SelectTrackFilePage(routeId);
             await Navigation.PushModalAsync(selectTrackPage, false);
+            var isSelectTrackResult = await selectTrackPage.PageClosedTask;
+            if (isSelectTrackResult.Result)
+            {
+                var mapRoutePage = new MapRouteOverviewV2Page(_vroute.RouteId);
+                await Navigation.PushModalAsync(mapRoutePage, false);
+            }
         }
 
         private async void shareRouteCommandAsync(object obj)
@@ -655,5 +661,10 @@ namespace QuestHelper.ViewModel
                 return _viewPointsOfRoute;
             }
         }
+    }
+
+    public class OperationResult
+    {
+        public bool Result = false;
     }
 }

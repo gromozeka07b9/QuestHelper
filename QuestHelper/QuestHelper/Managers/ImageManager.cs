@@ -84,7 +84,7 @@ namespace QuestHelper.Managers
                 {
                     try
                     {
-                        photoPicked = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions(){ SaveMetaData = true});
+                        photoPicked = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions(){ SaveMetaData = true,  });
                     }
                     catch (Exception e)
                     {
@@ -109,6 +109,14 @@ namespace QuestHelper.Managers
                         {
                             ExifManager exif = new ExifManager();
                             imageGpsCoordinates = exif.GetCoordinates(photoPicked.Path);
+                            if((Double.IsNaN(imageGpsCoordinates.Latitude))||(Double.IsNaN(imageGpsCoordinates.Longitude)))
+                            {
+                                //ToDo:Затычка, по другому не назвать.
+                                //По какой то причине перестало работать получение координат при выборе фото, связываю это либо с апдейтом компонента CrossMedia либо Huawei галереи
+                                //storage/emulated/0/DCIM/Camera/IMG_20210503_230047.jpg - координаты читаются
+                                //storage/emulated/0/Android/data/com.sd.goshdebug/files/Pictures/temp/IMG_20210503_230047.jpg - уже нет
+                                imageGpsCoordinates = exif.GetCoordinates(Path.Combine("/storage/emulated/0/DCIM/Camera",originalFileInfo.Name));
+                            }
                             pickPhotoResult = true;
                         }
                         else

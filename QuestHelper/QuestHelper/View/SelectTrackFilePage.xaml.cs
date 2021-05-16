@@ -13,12 +13,13 @@ namespace QuestHelper.View
     public partial class SelectTrackFilePage : ContentPage
     {
         private SelectTrackFileViewModel _vm;
+
         public SelectTrackFilePage(string routeId)
         {
             InitializeComponent();
-            _vm = new SelectTrackFileViewModel(routeId);
-            _vm.Navigation = this.Navigation;
+            _vm = new SelectTrackFileViewModel(routeId) {Navigation = this.Navigation};
             BindingContext = _vm;
+            tcs = new System.Threading.Tasks.TaskCompletionSource<OperationResult>();
         }
 
         private void SelectTrackFilePage_OnAppearing(object sender, EventArgs e)
@@ -28,7 +29,13 @@ namespace QuestHelper.View
 
         private void SelectTrackFilePage_OnDisappearing(object sender, EventArgs e)
         {
+            base.OnDisappearing();
             _vm.CloseDialog();
+            tcs.SetResult(_vm.DialogResult);
         }
+
+        private TaskCompletionSource<OperationResult> tcs { get; set; }
+        public Task<OperationResult> PageClosedTask => tcs.Task;
+        
     }
 }

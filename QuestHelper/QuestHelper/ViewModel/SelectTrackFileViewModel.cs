@@ -8,8 +8,10 @@ using System.Windows.Input;
 using Acr.UserDialogs;
 using QuestHelper.Managers;
 using QuestHelper.Model;
+using QuestHelper.Model.Messages;
 using QuestHelper.Resources;
 using QuestHelper.SharedModelsWS;
+using QuestHelper.View;
 using QuestHelper.WS;
 using Syncfusion.DataSource.Extensions;
 using Xamarin.Forms;
@@ -21,15 +23,40 @@ namespace QuestHelper.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
         public INavigation Navigation { get; set; }
         public ICommand UpdateTracksCommand { get; private set; }
+        public ICommand BackNavigationCommand { get; private set; }
+        public ICommand CancelCommand { get; private set; }
 
-        private TrackFileManager _trackFileManager = new TrackFileManager();
+        TokenStoreService _tokenService = new TokenStoreService();
+        private readonly TrackFileManager _trackFileManager = new TrackFileManager();
         private ObservableCollection<TrackFileElement> _trackFileNames;
-        private string _routeId;
-
+        private readonly string _routeId;
+        private bool _isVisibleProgress;
         public SelectTrackFileViewModel(string routeId)
         {
             _routeId = routeId;
             UpdateTracksCommand = new Command(updateTracksCommand);
+            BackNavigationCommand = new Command(backNavigationCommandAsync);
+            CancelCommand = new Command(cancelCommandAsync);
+            DialogResult = new OperationResult();
+        }
+
+        private async void cancelCommandAsync(object obj)
+        {
+            //bool delete = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig() { Message = CommonResource.Route_DeleteAllTracksFromMessage, Title = CommonResource.CommonMsg_Warning, OkText = CommonResource.CommonMsg_Yes, CancelText = CommonResource.CommonMsg_No });
+            bool delete = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig() { Message = "Удалить треки из маршрута?", Title = CommonResource.CommonMsg_Warning, OkText = CommonResource.CommonMsg_Yes, CancelText = CommonResource.CommonMsg_No });
+            if (delete)
+            {
+                string currentUserToken = await _tokenService.GetAuthTokenAsync();
+                TrackRouteRequest trackRequest = new TrackRouteRequest(currentUserToken);
+                //trackRequest.RemoveAllTracksFromRoute(_routeId);
+                _trackFileManager.RemoveAllTracksFromRoute(_routeId);
+                await Navigation.PopModalAsync();
+            }
+        }
+
+        private async void backNavigationCommandAsync(object obj)
+        {
+            await Navigation.PopModalAsync();
         }
 
         private void updateTracksCommand()
@@ -38,7 +65,7 @@ namespace QuestHelper.ViewModel
             {
                 Filename = t.Name,
                 CreateDate = t.CreationTime
-            }).ToObservableCollection();
+            }).OrderBy(f=>f.Filename).ToObservableCollection();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TrackFileNames"));
         }
 
@@ -81,6 +108,7 @@ namespace QuestHelper.ViewModel
                 }
             }
 
+
             return sendResult && trackResponse.Places.Length > 0;
         }
         public ObservableCollection<TrackFileElement> TrackFileNames
@@ -105,20 +133,34 @@ namespace QuestHelper.ViewModel
             {
                 Task.Run(async () =>
                 {
-                    bool result = await tryParseAndGetTrackAsync(value.Filename, _routeId);
-                    UserDialogs.Instance.Alert(title: "Парсинг и загрузка",
-                        message: "Result:" + result, okText: "Ok");
-
+                    IsVisibleProgress = true;
+                    DialogResult.Result = await tryParseAndGetTrackAsync(value.Filename, _routeId);
+                    IsVisibleProgress = false;
+                    await Navigation.PopModalAsync();
                     value = null;
                 });
             }
         }
+
+        public OperationResult DialogResult { get; set; }
         
+        public bool IsVisibleProgress
+        {
+            get => _isVisibleProgress;
+            set
+            {
+                if (value != _isVisibleProgress)
+                {
+                    _isVisibleProgress = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsVisibleProgress"));
+                }
+            }
+        }
+
         public class TrackFileElement
         {
             public string Filename { get; set; }
             public DateTime CreateDate { get; set; }
-
             public string CreateDateText
             {
                 get

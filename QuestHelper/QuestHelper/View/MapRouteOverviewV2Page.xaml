@@ -21,13 +21,14 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="3*"></RowDefinition>
                 <RowDefinition Height="4*"></RowDefinition>
-                <RowDefinition Height="3*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="2*"></RowDefinition>
             </Grid.RowDefinitions>
             <geo:TrackMap x:Name="mapControl" MapClicked="MapControl_OnMapClicked"
-                Grid.Row="0" Grid.Column="0" Grid.RowSpan="3"
+                Grid.Row="0" Grid.Column="0" Grid.RowSpan="4"
                 IsShowingUser="true" MapType="Street">
             </geo:TrackMap>
-            <StackLayout Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Orientation="Vertical" VerticalOptions="Start">
+            <StackLayout Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Orientation="Vertical" VerticalOptions="Start">
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                     <Image Source="baseline_arrow_back_black_48.png" WidthRequest="40" HeightRequest="40" Margin="10,10,0,0" VerticalOptions="Start" HorizontalOptions="Start">
                         <Image.GestureRecognizers>
@@ -38,7 +39,7 @@
                 <Label Text="{Binding RouteName}" FontAttributes="Bold" TextColor="Black" FontSize="20" HorizontalTextAlignment="Center" Margin="10" VerticalOptions="Start"></Label>
             </StackLayout>
             
-            <AbsoluteLayout Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="0.7" BackgroundColor="White" IsVisible="{Binding IsRoutePointDialogVisible}">
+            <AbsoluteLayout Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="0.7" BackgroundColor="White" IsVisible="{Binding IsRoutePointDialogVisible}">
                 <AbsoluteLayout.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding HidePoiDialogCommand}"/>
                 </AbsoluteLayout.GestureRecognizers>
@@ -83,8 +84,21 @@
                 </Frame>
             </StackLayout>
 
-            <StackLayout Grid.Row="2" IsVisible="{Binding IsVisibleTextForSetNewLocation}">
-                <Label Text="Укажите на карте новое расположение точки" FontSize="20" HorizontalOptions="Center" HorizontalTextAlignment="Center"></Label>
+            <StackLayout Grid.Row="2" IsVisible="{Binding IsVisibleTextForSetNewLocation}" Margin="10">
+                <Frame CornerRadius="10" Padding="0" BackgroundColor="Cyan" HasShadow="True">
+                    <StackLayout Orientation="Horizontal" Margin="10">
+                        <Label Text="Укажите на карте новое расположение точки" FontSize="20" HorizontalOptions="Center" HorizontalTextAlignment="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding CancelSetLocationCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Image Source="baseline_clear_black_48.png" WidthRequest="32" HeightRequest="32" Margin="0,5,5,0" VerticalOptions="Center" HorizontalOptions="End">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding CancelSetLocationCommand}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </StackLayout>
+                </Frame>
             </StackLayout>
         </Grid>
     </ContentPage.Content>
