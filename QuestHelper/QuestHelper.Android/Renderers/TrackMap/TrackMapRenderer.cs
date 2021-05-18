@@ -32,6 +32,14 @@ namespace QuestHelper.Droid.Renderers.TrackMap
         
         protected override MarkerOptions CreateMarker(Pin pin)
         {
+            if(pin.Label.Equals("Start") && pin.GetType() == typeof(Pin))
+            {
+                return BaseMarkerMaker.MakeStartMarker(pin, 40);
+            } 
+            if(pin.Label.Equals("Finish") && pin.GetType() == typeof(Pin))
+            {
+                return BaseMarkerMaker.MakeFinishMarker(pin, 40);
+            } 
             return RoutePointMarkerMaker.Make(pin as RoutePointPin, _maxWidthImage);
         }
     }

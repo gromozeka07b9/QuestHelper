@@ -49,32 +49,41 @@
                 <StackLayout.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding OpenRoutePointDialogCommand}" />
                 </StackLayout.GestureRecognizers>
-                <forms:CachedImage Source="baseline_gps_fixed_black_48.png" WidthRequest="40" HeightRequest="40" HorizontalOptions="End"  Margin="0,0,10,0">
-                    <forms:CachedImage.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding SetNewLocationCommand}" />
-                    </forms:CachedImage.GestureRecognizers>
-                </forms:CachedImage>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+                    <forms:CachedImage Source="ic_map.png" WidthRequest="32" HeightRequest="32" HorizontalOptions="End"  Margin="0,0,10,0">
+                        <forms:CachedImage.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SetNewLocationCommand}" />
+                        </forms:CachedImage.GestureRecognizers>
+                    </forms:CachedImage>
+                    <forms:CachedImage Source="baseline_clear_black_48.png" WidthRequest="32" HeightRequest="32" HorizontalOptions="End"  Margin="0,0,10,0">
+                        <forms:CachedImage.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding HidePoiDialogCommand}" />
+                        </forms:CachedImage.GestureRecognizers>
+                    </forms:CachedImage>
+                </StackLayout>
                 <Frame CornerRadius="5" HasShadow="True" HorizontalOptions="Center" IsClippedToBounds="True" WidthRequest="{Binding RoutePointFrameWidth}" HeightRequest="{Binding RoutePointFrameHeight}" Margin="10,0,10,0" Padding="0" IsVisible="{Binding IsPoiDialogVisible}" BorderColor="Blue" BackgroundColor="Red">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="20*"/>
-                            <RowDefinition Height="80*"/>
+                            <RowDefinition Height="65*"/>
+                            <RowDefinition Height="35*"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <forms:CachedImage Grid.Row="0" Grid.RowSpan="2" Source="{Binding SelectedRoutePointImage}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Aspect="{Binding SelectedRoutePointImage, Converter={StaticResource AspectImage}}" Margin="0" BackgroundColor="White">
-                            <forms:CachedImage.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding OpenRoutePointDialogCommand}" />
-                            </forms:CachedImage.GestureRecognizers>
-                        </forms:CachedImage>
-                        <StackLayout Grid.Column="0" Grid.Row="1" Opacity="0.6" BackgroundColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="End" Orientation="Vertical" Margin="0">
-                            <Label Text="{Binding SelectedRoutePointName}" TextColor="White" FontSize="14" HorizontalOptions="FillAndExpand" VerticalOptions="End" HorizontalTextAlignment="Start" Margin="5,0,5,0">
+                        <StackLayout Grid.Row="0" VerticalOptions="FillAndExpand" BackgroundColor="Beige">
+                            <forms:CachedImage Source="{Binding SelectedRoutePointImage}" VerticalOptions="End" HorizontalOptions="FillAndExpand" Aspect="{Binding SelectedRoutePointImage, Converter={StaticResource AspectImage}}" Margin="0" BackgroundColor="White">
+                                <forms:CachedImage.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding OpenRoutePointDialogCommand}" />
+                                </forms:CachedImage.GestureRecognizers>
+                            </forms:CachedImage>
+                        </StackLayout>
+                        <StackLayout Grid.Column="0" Grid.Row="1" BackgroundColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Vertical" Margin="0">
+                            <Label Text="{Binding SelectedRoutePointName}" TextColor="White" FontSize="14" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand" HorizontalTextAlignment="Start" Margin="5,0,5,0">
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding OpenRoutePointDialogCommand}" />
                                 </Label.GestureRecognizers>
                             </Label>
-                            <Label Text="{Binding SelectedRoutePointDescription}" LineBreakMode="TailTruncation" MaxLines="5" TextColor="White" FontSize="10" HorizontalOptions="FillAndExpand" VerticalOptions="End" HorizontalTextAlignment="Start" Margin="5,0,5,5">
+                            <Label Text="{Binding SelectedRoutePointDescription}" LineBreakMode="TailTruncation" MaxLines="3" TextColor="White" FontSize="10" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand" HorizontalTextAlignment="Start" Margin="5,0,5,0">
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding OpenRoutePointDialogCommand}" />
                                 </Label.GestureRecognizers>
@@ -84,10 +93,10 @@
                 </Frame>
             </StackLayout>
 
-            <StackLayout Grid.Row="2" IsVisible="{Binding IsVisibleTextForSetNewLocation}" Margin="10">
-                <Frame CornerRadius="10" Padding="0" BackgroundColor="Cyan" HasShadow="True">
-                    <StackLayout Orientation="Horizontal" Margin="10">
-                        <Label Text="Укажите на карте новое расположение точки" FontSize="20" HorizontalOptions="Center" HorizontalTextAlignment="Center">
+            <StackLayout Grid.Row="2" IsVisible="{Binding IsVisibleTextForSetNewLocation}" Margin="5">
+                <Frame CornerRadius="10" Padding="5" BackgroundColor="Cyan" HasShadow="True">
+                    <StackLayout Orientation="Horizontal" Margin="0">
+                        <Label Text="Укажите на карте новое расположение точки" FontSize="15" HorizontalOptions="Center" HorizontalTextAlignment="Center">
                             <Label.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding CancelSetLocationCommand}"/>
                             </Label.GestureRecognizers>

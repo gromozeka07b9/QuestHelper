@@ -42,7 +42,7 @@ namespace QuestHelper.ViewModel
             _trackFileManager = new TrackFileManager();
             _routePointManager = new RoutePointManager();
             RoutePointFrameWidth = Convert.ToInt32(DeviceSize.FullScreenWidth * 0.9);
-            RoutePointFrameHeight = Convert.ToInt32(DeviceSize.FullScreenHeight * 0.5);
+            RoutePointFrameHeight = Convert.ToInt32(DeviceSize.FullScreenHeight * 0.7);
 
         }
 

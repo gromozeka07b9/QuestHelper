@@ -7,6 +7,7 @@ using QuestHelper.View.Geo;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using QuestHelper.Consts;
 using Xamarin.Forms.Maps;
 
@@ -17,11 +18,10 @@ namespace QuestHelper.Droid.Renderers
         public static MarkerOptions Make(Pin poi, int maxWidthImage, string imageMarkerPath)
         {
             var marker = new MarkerOptions();
-            marker.Anchor(0.5f, 0.5f);
+            marker.Anchor(0.0f, 0.0f);
             marker.SetPosition(new LatLng(poi.Position.Latitude, poi.Position.Longitude));
 
-            BitmapDescriptor pic = null;
-            pic = !string.IsNullOrEmpty(imageMarkerPath) ? getBitmap(imageMarkerPath, maxWidthImage) : BitmapDescriptorFactory.FromResource(Resource.Drawable.place_unknown);
+            BitmapDescriptor pic = !string.IsNullOrEmpty(imageMarkerPath) ? getBitmap(imageMarkerPath, maxWidthImage) : BitmapDescriptorFactory.FromResource(Resource.Drawable.place_unknown);
             marker.SetIcon(pic);
             return marker;
         }
@@ -45,6 +45,24 @@ namespace QuestHelper.Droid.Renderers
                 }
             }
             return null;
+        }
+
+        public static MarkerOptions MakeStartMarker(Pin poi, int maxWidthImage)
+        {
+            var marker = new MarkerOptions();
+            marker.Anchor(0.0f, 0.0f);
+            marker.SetPosition(new LatLng(poi.Position.Latitude, poi.Position.Longitude));
+            marker.SetIcon(BitmapDescriptorFactory.FromResource(Resource.Drawable.start));
+            return marker;
+        }
+
+        public static MarkerOptions MakeFinishMarker(Pin poi, int maxWidthImage)
+        {
+            var marker = new MarkerOptions();
+            marker.Anchor(0.0f, 0.0f);
+            marker.SetPosition(new LatLng(poi.Position.Latitude, poi.Position.Longitude));
+            marker.SetIcon(BitmapDescriptorFactory.FromResource(Resource.Drawable.finish));
+            return marker;
         }
     }
 }

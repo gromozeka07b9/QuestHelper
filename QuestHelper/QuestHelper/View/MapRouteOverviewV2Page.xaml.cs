@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Crashes;
+using QuestHelper.Model;
 using QuestHelper.Model.Messages;
 using QuestHelper.View.Geo;
 using QuestHelper.ViewModel;
@@ -50,9 +51,22 @@ namespace QuestHelper.View
             }
             else
             {
-                Task.Run(async () => { await mapControl.CenterMapOnLastPosition(); });
-                Task.Run(async () => { await mapControl.UpdateTrackOnMap(_vm.GetTrackPlaces()); });
-                Task.Run(async () => { await mapControl.UpdatePointsOnMap(_vm.GetRoutePoints(), RoutePoint_MarkerClicked); });
+                var points = _vm.GetRoutePoints();
+                var firstPoint = points.FirstOrDefault();
+                if(firstPoint != null)
+                {
+                    Task.Run(async () => { await mapControl.CenterMap(firstPoint.Latitude, firstPoint.Longitude); });
+                }
+                else
+                {
+                    Task.Run(async () => { await mapControl.CenterMapOnLastPosition(); });
+                }
+                Task.Run(async () =>
+                {
+                    await mapControl.UpdateTrackOnMap(_vm.GetTrackPlaces());
+                    await mapControl.UpdatePointsOnMap(points, RoutePoint_MarkerClicked);
+                });
+                //Task.Run(async () => { await mapControl.UpdatePointsOnMap(points, RoutePoint_MarkerClicked); });
             }
         }
 

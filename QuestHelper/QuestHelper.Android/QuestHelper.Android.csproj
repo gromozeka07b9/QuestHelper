@@ -224,11 +224,13 @@
     <AndroidResource Include="Resources\drawable\circle_share.png" />
     <AndroidResource Include="Resources\drawable\cloud_upload2.png" />
     <AndroidResource Include="Resources\drawable\emptyphoto2.png" />
+    <AndroidResource Include="Resources\drawable\finish.png" />
     <AndroidResource Include="Resources\drawable\ic_album.png" />
     <AndroidResource Include="Resources\drawable\ic_download.png" />
     <AndroidResource Include="Resources\drawable\ic_feed.png" />
     <AndroidResource Include="Resources\drawable\ic_map.png" />
     <AndroidResource Include="Resources\drawable\ic_personal.png" />
+    <AndroidResource Include="Resources\drawable\start.png" />
     <AndroidResource Include="Resources\layout\Toolbar.axml" />
     <AndroidResource Include="Resources\values\styles.xml">
       <SubType>Designer</SubType>

@@ -61,6 +61,7 @@ namespace QuestHelper.View.Geo
         {
             if (trackPlaces.Any())
             {
+                this.Pins.Add(getStartFinishPin(new Position(trackPlaces.FirstOrDefault().Item1??0, trackPlaces.FirstOrDefault().Item2??0), true));
                 Polyline trace = new Polyline()
                 {
                     StrokeColor = Color.Blue,
@@ -70,7 +71,9 @@ namespace QuestHelper.View.Geo
                 {
                     trace.Geopath.Add(new Position(place.Item1??0, place.Item2??0));
                 }
-                this.MapElements.Add(new Circle()
+                this.Pins.Add(getStartFinishPin(new Position(trackPlaces.LastOrDefault().Item1??0, trackPlaces.LastOrDefault().Item2??0), false));
+                this.MapElements.Add(trace);
+                /*this.MapElements.Add(new Circle()
                 {
                     Center = new Position(trackPlaces.FirstOrDefault().Item1??0, trackPlaces.FirstOrDefault().Item2??0),
                     Radius = new Distance(250),
@@ -86,9 +89,19 @@ namespace QuestHelper.View.Geo
                     StrokeColor = Color.FromHex("#88FF0000"),
                     StrokeWidth = 8,
                     FillColor = Color.Black
-                });
-                await this.CenterMap(trackPlaces.FirstOrDefault().Item1??0, trackPlaces.FirstOrDefault().Item2??0);
+                });*/
+                //this.Pins.Add(Pin);
+                //await this.CenterMap(trackPlaces.FirstOrDefault().Item1??0, trackPlaces.FirstOrDefault().Item2??0);
             }
+        }
+
+        private Pin getStartFinishPin(Position position, bool isStart)
+        {
+            return new Pin()
+            {
+                Label = isStart ? "Start" : "Finish",
+                Position = position,
+            };
         }
 
         public async Task UpdatePointsOnMap(IEnumerable<ViewRoutePoint> getRoutePoints, EventHandler<PinClickedEventArgs> routePointMarkerClicked)
@@ -115,7 +128,7 @@ namespace QuestHelper.View.Geo
         
         public void UpdateLocationPointOnMap(string routePointId, double latitude, double longitude)
         {
-            var pinAsRoutePoints = this.Pins.Cast<RoutePointPin>();
+            var pinAsRoutePoints = this.Pins.Where(p=>p.GetType() == typeof(RoutePointPin)).Cast<RoutePointPin>();
             var pin = pinAsRoutePoints.FirstOrDefault(p => p.RoutePointId.Equals(routePointId));
             if (pin != null)
             {
