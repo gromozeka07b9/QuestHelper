@@ -18,7 +18,7 @@ namespace QuestHelper.Droid.Renderers
         public static MarkerOptions Make(Pin poi, int maxWidthImage, string imageMarkerPath)
         {
             var marker = new MarkerOptions();
-            marker.Anchor(0.0f, 0.0f);
+            marker.Anchor(0.5f, 0.5f);
             marker.SetPosition(new LatLng(poi.Position.Latitude, poi.Position.Longitude));
 
             BitmapDescriptor pic = !string.IsNullOrEmpty(imageMarkerPath) ? getBitmap(imageMarkerPath, maxWidthImage) : BitmapDescriptorFactory.FromResource(Resource.Drawable.place_unknown);
@@ -50,7 +50,7 @@ namespace QuestHelper.Droid.Renderers
         public static MarkerOptions MakeStartMarker(Pin poi, int maxWidthImage)
         {
             var marker = new MarkerOptions();
-            marker.Anchor(0.0f, 0.0f);
+            marker.Anchor(0.5f, 0.5f);
             marker.SetPosition(new LatLng(poi.Position.Latitude, poi.Position.Longitude));
             marker.SetIcon(BitmapDescriptorFactory.FromResource(Resource.Drawable.start));
             return marker;
@@ -59,7 +59,7 @@ namespace QuestHelper.Droid.Renderers
         public static MarkerOptions MakeFinishMarker(Pin poi, int maxWidthImage)
         {
             var marker = new MarkerOptions();
-            marker.Anchor(0.0f, 0.0f);
+            marker.Anchor(0.5f, 0.5f);
             marker.SetPosition(new LatLng(poi.Position.Latitude, poi.Position.Longitude));
             marker.SetIcon(BitmapDescriptorFactory.FromResource(Resource.Drawable.finish));
             return marker;

@@ -30,14 +30,20 @@
             </Image>
             <Label Grid.Row="1" FontSize="Medium" Text="{Binding CaptionText}" VerticalTextAlignment="End" HorizontalTextAlignment="Center" Margin="20"></Label>
             <StackLayout Grid.Row="2" Orientation="Vertical" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Margin="20" IsVisible="{Binding MakeLinkIsVisible, Converter={StaticResource inverter}}">
-                <Label FontSize="12" Text="Вы можете скопировать ссылку:" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Margin="5"></Label>
-                <Label FontSize="14" Text="{Binding UrlPresentationText}" TextDecorations="Underline" HorizontalTextAlignment="Center">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding UrlTappedCommand}"></TapGestureRecognizer>
-                    </Label.GestureRecognizers>
-                </Label>
-                <Label FontSize="12" Text="Или сразу поделиться ею:" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Margin="5,40,5,5"></Label>
-                <Image Source="circle_share.png" Margin="5" WidthRequest="80" HeightRequest="80">
+                <!--Label FontSize="12" Text="Вы можете скопировать ссылку:" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Margin="5"></Label-->
+                <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+                    <Label FontSize="14" Text="{Binding UrlPresentationText}" TextDecorations="Underline" HorizontalTextAlignment="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding UrlTappedCommand}"></TapGestureRecognizer>
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Image Source="baseline_file_copy_black_48.png" WidthRequest="28" HeightRequest="28" VerticalOptions="Center" HorizontalOptions="End">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding CopyUrlCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                </StackLayout>
+                <Image Source="circle_share.png" Margin="35" WidthRequest="64" HeightRequest="64">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer  Command="{Binding ShareRouteCommand}"></TapGestureRecognizer>
                     </Image.GestureRecognizers>

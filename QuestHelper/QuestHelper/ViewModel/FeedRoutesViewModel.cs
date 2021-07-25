@@ -222,10 +222,6 @@ namespace QuestHelper.ViewModel
                 }
             }
 
-            TimeSpan trackTimeDelay = trackTimeStart - DateTime.Now;
-#if DEBUG
-            UserDialogs.Instance.Toast(new ToastConfig($"длительность загрузки:{trackTimeDelay}"));            
-#endif
             bool AuthRequired = (feedApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || feedApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
             if (AuthRequired)
             {

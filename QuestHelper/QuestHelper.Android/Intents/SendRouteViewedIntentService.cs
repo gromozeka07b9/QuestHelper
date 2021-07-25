@@ -20,7 +20,7 @@ namespace QuestHelper.Droid.Intents
     [Service]
     public class SendRouteViewedIntentService : IntentService
     {
-        private const string _apiUrl = "http://igosh.pro/api";
+        private const string _apiUrl = "https://igosh.pro/api";
         public SendRouteViewedIntentService() : base("SendRouteViewedIntentService")
         {
         }

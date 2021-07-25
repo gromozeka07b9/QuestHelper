@@ -19,7 +19,7 @@ namespace QuestHelper.Managers.Sync
 {
     public class SyncRoute : SyncRouteBase
     {
-        private const string _apiUrl = "http://igosh.pro/api";
+        private const string _apiUrl = "https://igosh.pro/api";
         private string _authToken = string.Empty;
         private readonly string _routeId = string.Empty;
         private readonly RoutesApiRequest _routesApi;

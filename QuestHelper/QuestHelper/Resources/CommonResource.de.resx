@@ -151,9 +151,6 @@
   <data name="Login_GoogleAuth" xml:space="preserve">
     <value>Fahren Sie mit Google fort</value>
   </data>
-  <data name="MakeRouteLink_EnableShareAccess" xml:space="preserve">
-    <value>Aktivieren Sie die Linkfreigabe</value>
-  </data>
   <data name="MainPage_CurrentSyncStatus" xml:space="preserve">
     <value>Aktueller Synchronisierungsstatus:</value>
   </data>
@@ -267,12 +264,6 @@
   </data>
   <data name="Login_AuthError" xml:space="preserve">
     <value>Benutzerautorisierung fehlgeschlagen.</value>
-  </data>
-  <data name="MakeRouteLink_PublicAccessEnabled" xml:space="preserve">
-    <value>Routenfreigabe aktiviert</value>
-  </data>
-  <data name="MakeRouteLink_PublicAccessDisabled" xml:space="preserve">
-    <value>Linkfreigabe deaktiviert</value>
   </data>
   <data name="MakeRouteLink_PublicReferenceCreated" xml:space="preserve">
     <value>Link zum Teilen der Route erstellt</value>
@@ -644,5 +635,17 @@ Ihre Routen, speichern Sie Ihre Eindrücke!</value>
   </data>
   <data name="CommonMsg_FirstStartDetected" xml:space="preserve">
     <value>Erster Start erkannt</value>
+  </data>
+  <data name="MakeRouteLink_PublicAccessEnabled" xml:space="preserve">
+    <value>Das Album wurde veröffentlicht und ist unter folgendem Link verfügbar:</value>
+  </data>
+  <data name="MakeRouteLink_PublicAccessDisabled" xml:space="preserve">
+    <value>Album wurde noch nicht veröffentlicht</value>
+  </data>
+  <data name="MakeRouteLink_EnableShareAccess" xml:space="preserve">
+    <value>Veröffentlichen</value>
+  </data>
+  <data name="ShareRoute_Published" xml:space="preserve">
+    <value>Route erfolgreich veröffentlicht!</value>
   </data>
 </root>

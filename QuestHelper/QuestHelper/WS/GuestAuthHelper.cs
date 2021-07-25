@@ -10,7 +10,7 @@ namespace QuestHelper.WS
 {
     public class GuestAuthHelper
     {
-        private string _apiUrl = "http://igosh.pro/api";
+        private string _apiUrl = "https://igosh.pro/api";
         private string _username = "demo";
         private string _password = "demo";
 

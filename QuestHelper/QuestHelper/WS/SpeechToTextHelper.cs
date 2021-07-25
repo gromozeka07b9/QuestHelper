@@ -11,7 +11,7 @@ namespace QuestHelper.WS
 {
     public class SpeechToTextHelper
     {
-        private string _hostUrl = "http://igosh.pro/api";
+        private string _hostUrl = "https://igosh.pro/api";
         private string _authToken = string.Empty;
 
         public SpeechToTextHelper(string authToken)

@@ -4,6 +4,7 @@ using QuestHelper.WS;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using Microsoft.AppCenter.Analytics;
 
 namespace QuestHelper.Managers.Sync
 {
@@ -24,7 +25,8 @@ namespace QuestHelper.Managers.Sync
                     result = resultId;
                 }
             }
-            //_errorReport += sbErrors.ToString();
+            Analytics.TrackEvent("Route sync, upload", new Dictionary<string, string> { { "Errors", sbErrors.ToString() } });
+
             return result;
         }
 

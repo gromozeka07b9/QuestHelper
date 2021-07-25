@@ -19,7 +19,7 @@ namespace QuestHelper.Managers.Sync
 {
     public class SyncRoutes
     {
-        private const string _apiUrl = "http://igosh.pro/api";
+        private const string _apiUrl = "https://igosh.pro/api";
         private readonly RoutesApiRequest _routesApi;
         private readonly RoutePointsApiRequest _routePointsApi;
         private readonly RoutePointMediaObjectRequest _routePointMediaObjectsApi;
@@ -38,75 +38,6 @@ namespace QuestHelper.Managers.Sync
             _routePointMediaObjectsApi = new RoutePointMediaObjectRequest(_apiUrl, _authToken);
             _log = App.Container.Resolve<ITextfileLogger>();
         }
-
-        /*public async Task<bool> Sync()
-        {
-            bool result = true;
-            int mainIndex = 4;//совершенно притянуто за уши, количество этапов, но нужно как-то показать что прогресс идет
-            int currentIndex = 0;
-
-            TokenStoreService tokenService = new TokenStoreService();
-            string _userId = await tokenService.GetUserIdAsync();
-            var notify = DependencyService.Get<INotificationService>();
-            sendProgress(string.Empty,++currentIndex, mainIndex);
-            var listRoutesVersions = await _routesApi.GetRoutesVersions(true);
-            sendProgress(string.Empty, ++currentIndex, mainIndex);
-            AuthRequired = (_routesApi.GetLastHttpStatusCode() == HttpStatusCode.Forbidden || _routesApi.GetLastHttpStatusCode() == HttpStatusCode.Unauthorized);
-            if (!AuthRequired)
-            {
-                sendProgress(string.Empty, ++currentIndex, mainIndex);
-                _log.AddStringEvent("GetRoutesVersions, count:" + listRoutesVersions?.Count.ToString());
-                if (listRoutesVersions?.Count > 0)
-                {
-                    var routesLocal = _routeManager.GetRoutesForSync().Select(x => new { x.RouteId, x.Version, x.ObjVerHash, x.IsPublished });
-                    var differentRoutes = listRoutesVersions.Where(r => (!routesLocal.Any(l => (l.RouteId == r.Id && l.ObjVerHash == r.ObjVerHash))));
-                    var newClientRoutes = routesLocal.Where(r => !r.IsPublished && !listRoutesVersions.Any(d => d.Id == r.RouteId)).Select(r => r.RouteId).ToList();
-
-                    sendProgress(string.Empty, ++currentIndex, mainIndex);
-
-                    int countRoutesForSync = differentRoutes.Count() + newClientRoutes.Count();
-                    int currentCountRoutesForSync = 0;
-
-                    _log.AddStringEvent($"--------------------------------------------------------");
-                    foreach (var logRoute in differentRoutes)
-                    {
-                        _log.AddStringEvent($"differentRoute:{logRoute.Id}");
-                    }
-                    foreach (var serverRouteVersion in differentRoutes)
-                    {
-                        SyncRoute syncRouteContext = new SyncRoute(serverRouteVersion.Id, _authToken);
-                        syncRouteContext.SyncImages = true;
-                        _log.AddStringEvent($"start sync diff route {serverRouteVersion.Id}");
-                        result = await syncRouteContext.SyncAsync(serverRouteVersion.ObjVerHash);
-                        _log.AddStringEvent($"diff route result, {serverRouteVersion.Id} :" + result);
-                        currentCountRoutesForSync++;
-                        sendProgress(string.Empty,currentCountRoutesForSync + currentIndex, countRoutesForSync + mainIndex);
-                    }
-
-                    foreach (var logRoute in newClientRoutes)
-                    {
-                        _log.AddStringEvent($"newRoute:{logRoute}");
-                    }
-                    foreach (var localRouteId in newClientRoutes)
-                    {
-                        SyncRoute syncRouteContext = new SyncRoute(localRouteId, _authToken);
-                        syncRouteContext.SyncImages = true;
-                        _log.AddStringEvent($"start sync new route {localRouteId}");
-                        result = await syncRouteContext.SyncAsync(string.Empty);
-                        _log.AddStringEvent($"new route result, {localRouteId} :" + result);
-                        currentCountRoutesForSync++;
-                        sendProgress(string.Empty, currentCountRoutesForSync + currentIndex, countRoutesForSync + mainIndex);
-                    }
-                    Xamarin.Forms.MessagingCenter.Send<SyncRouteCompleteMessage>(new SyncRouteCompleteMessage() { RouteId = string.Empty, SuccessSync = result }, string.Empty);
-                }
-            }
-            else
-            {
-                result = false;
-            }
-
-            return result;
-        }*/
 
         private static void sendProgress(string routeId, int currentCountRoutesForSync, int countRoutesForSync)
         {

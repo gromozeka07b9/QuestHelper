@@ -1130,5 +1130,11 @@ namespace QuestHelper.Resources {
                 return ResourceManager.GetString("CommonMsg_FirstStartDetected", resourceCulture);
             }
         }
+        
+        public static string ShareRoute_Published {
+            get {
+                return ResourceManager.GetString("ShareRoute_Published", resourceCulture);
+            }
+        }
     }
 }

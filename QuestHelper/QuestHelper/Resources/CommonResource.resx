@@ -172,7 +172,7 @@
     <value>Continue with Google</value>
   </data>
   <data name="MakeRouteLink_EnableShareAccess" xml:space="preserve">
-    <value>Enable public access by link</value>
+    <value>Publish</value>
   </data>
   <data name="MainPage_CurrentSyncStatus" xml:space="preserve">
     <value>Current state synchronization:</value>
@@ -235,13 +235,13 @@
     <value>Share with other applications</value>
   </data>
   <data name="ShareRoutes_PublicAccess" xml:space="preserve">
-    <value>Make link to album for browsing</value>
+    <value>Publish album</value>
   </data>
   <data name="ShareRoutes_AlbumInGosh" xml:space="preserve">
     <value>Publish you album in feed for all</value>
   </data>
   <data name="ShareRoutes_AddPersonAccess" xml:space="preserve">
-    <value>Update your album with your frieds!</value>
+    <value>Access for your friends only</value>
   </data>
   <data name="Onboarding_Hello" xml:space="preserve">
     <value>Welcome to
@@ -309,10 +309,10 @@ photos, text</value>
     <value>User authorization failed.</value>
   </data>
   <data name="MakeRouteLink_PublicAccessEnabled" xml:space="preserve">
-    <value>Route sharing enabled</value>
+    <value>Album has been published and available by url:</value>
   </data>
   <data name="MakeRouteLink_PublicAccessDisabled" xml:space="preserve">
-    <value>Link sharing disabled</value>
+    <value>Album not published yet</value>
   </data>
   <data name="MakeRouteLink_PublicReferenceCreated" xml:space="preserve">
     <value>Link created for sharing the route</value>
@@ -665,5 +665,8 @@ Coordinates are used only when creating your waypoints.</value>
   </data>
   <data name="CommonMsg_FirstStartDetected" xml:space="preserve">
     <value>First launch detected</value>
+  </data>
+  <data name="ShareRoute_Published" xml:space="preserve">
+    <value>Album published!</value>
   </data>
 </root>

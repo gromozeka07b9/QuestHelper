@@ -13,7 +13,7 @@ namespace QuestHelper.WS
 {
     public class PoiApiRequest : IHTTPStatusCode
     {
-        private const string _apiUrl = "http://igosh.pro/api";
+        private const string _apiUrl = "https://igosh.pro/api";
         private readonly IServerRequest _serverRequest = App.Container.Resolve<IServerRequest>();
 
         private string _authToken;

@@ -27,16 +27,13 @@
                 <RowDefinition Height="2*" />
                 <RowDefinition Height="2*" />
                 <RowDefinition Height="2*" />
-                <RowDefinition Height="2*" />
-                <RowDefinition Height="2*" />
-                <RowDefinition Height="2*" />
             </Grid.RowDefinitions>
             <Image Grid.Row="0" Grid.Column="0" Source="baseline_arrow_back_black_48.png" WidthRequest="40" HeightRequest="40" Margin="10,10,0,0" VerticalOptions="Start" HorizontalOptions="Start">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding BackNavigationCommand}"/>
                 </Image.GestureRecognizers>
             </Image>
-            <controls:ShareServiceView Grid.Column="0" Grid.Row="1" Text="{lang:Translation ShareRoutes_AlbumInGosh}" ImgSource="icon2.png"  Margin="5,0,5,0">
+            <!--controls:ShareServiceView Grid.Column="0" Grid.Row="1" Text="{lang:Translation ShareRoutes_AlbumInGosh}" ImgSource="icon2.png"  Margin="5,0,5,0">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapPublishAlbumCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
@@ -45,8 +42,13 @@
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapMakeReferenceCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
+            </controls:ShareServiceView-->
+            <controls:ShareServiceView Grid.Column="0" Grid.Row="1" Text="{lang:Translation ShareRoutes_PublicAccess}" ImgSource="icon2.png" Margin="15,10,15,0" Opacity="{Binding IsUserCanMakeLink, Converter={StaticResource boolToOpacity}}" IsEnabled="{Binding IsUserCanMakeLink}">
+                <controls:ShareServiceView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding TapMakeReferenceCommand}"></TapGestureRecognizer>
+                </controls:ShareServiceView.GestureRecognizers>
             </controls:ShareServiceView>
-            <controls:ShareServiceView Grid.Column="0" Grid.Row="3" Text="{lang:Translation ShareRoutes_AddPersonAccess}" ImgSource="person_add.png" Margin="5,0,5,0">
+            <controls:ShareServiceView Grid.Column="0" Grid.Row="2" Text="{lang:Translation ShareRoutes_AddPersonAccess}" ImgSource="person_add.png" Margin="15,10,15,0">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapAddUserCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
@@ -84,11 +86,11 @@
                 </controls:ShareServiceView.GestureRecognizers>
             </controls:ShareServiceView-->
 
-            <controls:ShareServiceView Grid.Column="0" Grid.Row="4" Text="{lang:Translation ShareRoutes_Other}" ImgSource="apps.png" Margin="5,0,5,0">
+            <!--controls:ShareServiceView Grid.Column="0" Grid.Row="4" Text="{lang:Translation ShareRoutes_Other}" ImgSource="apps.png" Margin="5,0,5,0">
                 <controls:ShareServiceView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapOtherCommand}"></TapGestureRecognizer>
                 </controls:ShareServiceView.GestureRecognizers>
-            </controls:ShareServiceView>
+            </controls:ShareServiceView-->
         </Grid>
     </ContentPage.Content>
 </ContentPage>

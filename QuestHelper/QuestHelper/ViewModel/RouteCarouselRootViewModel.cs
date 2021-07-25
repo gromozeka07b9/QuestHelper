@@ -17,7 +17,7 @@ namespace QuestHelper.ViewModel
 {
     public class RouteCarouselRootViewModel : INotifyPropertyChanged
     {
-        private const string _apiUrl = "http://igosh.pro/api";
+        private const string _apiUrl = "https://igosh.pro/api";
         private readonly ViewRoute _vRoute;
         private RouteManager _routeManager = new RouteManager();
         private RoutePointManager _routePointManager = new RoutePointManager();

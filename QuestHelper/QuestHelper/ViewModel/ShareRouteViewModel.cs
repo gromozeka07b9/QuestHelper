@@ -13,7 +13,7 @@ namespace QuestHelper.ViewModel
 {
     public class ShareRouteViewModel : INotifyPropertyChanged
     {
-        private const string _apiUrl = "http://igosh.pro/api";
+        private const string _apiUrl = "https://igosh.pro/api";
         private IEnumerable<ViewUserInfo> _usersForShare = new List<ViewUserInfo>();
         private List<ViewUserInfo> _usersFullList;
         public event PropertyChangedEventHandler PropertyChanged;

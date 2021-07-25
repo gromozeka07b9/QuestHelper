@@ -6,7 +6,7 @@ namespace QuestHelper.Consts
 {
     public class DefaultUrls
     {
-        public const string ApiUrl = "http://igosh.pro/api";
+        public const string ApiUrl = "https://igosh.pro/api";
 
     }
 }

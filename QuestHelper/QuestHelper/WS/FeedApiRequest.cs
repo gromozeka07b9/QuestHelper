@@ -14,8 +14,6 @@ namespace QuestHelper.WS
 {
     public class FeedApiRequest : IHTTPStatusCode
     {
-        //private const string _apiUrl = "http://igosh.pro/api";
-        //private const string _feedCacheId = "FeedApiCache";
         private readonly IServerRequest _serverRequest = App.Container.Resolve<IServerRequest>();
 
         private readonly string _authToken;

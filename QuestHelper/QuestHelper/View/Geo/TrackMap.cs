@@ -64,8 +64,8 @@ namespace QuestHelper.View.Geo
                 this.Pins.Add(getStartFinishPin(new Position(trackPlaces.FirstOrDefault().Item1??0, trackPlaces.FirstOrDefault().Item2??0), true));
                 Polyline trace = new Polyline()
                 {
-                    StrokeColor = Color.Blue,
-                    StrokeWidth = 12,
+                    StrokeColor = Color.DodgerBlue,
+                    StrokeWidth = 10,
                 };
                 foreach (var place in trackPlaces)
                 {

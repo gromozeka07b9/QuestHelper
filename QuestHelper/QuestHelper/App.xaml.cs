@@ -30,7 +30,7 @@ namespace QuestHelper
 
         private ITextfileLogger _log;
         
-        private const string _apiUrl = "http://igosh.pro";
+        private const string _apiUrl = "https://igosh.pro";
 
 	    static App()
 	    {

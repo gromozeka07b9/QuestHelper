@@ -172,7 +172,7 @@
     <value>Продолжить с Google</value>
   </data>
   <data name="MakeRouteLink_EnableShareAccess" xml:space="preserve">
-    <value>Включить общий доступ по ссылке</value>
+    <value>Опубликовать</value>
   </data>
   <data name="MainPage_CurrentSyncStatus" xml:space="preserve">
     <value>Текущий статус синхронизации:</value>
@@ -232,13 +232,13 @@
     <value>Выберите способ</value>
   </data>
   <data name="ShareRoutes_AddPersonAccess" xml:space="preserve">
-    <value>Обновляйте альбом вместе с друзьями!</value>
+    <value>Добавить доступ друзьям</value>
   </data>
   <data name="ShareRoutes_AlbumInGosh" xml:space="preserve">
     <value>Опубликуйте ваш альбом в ленте для всех</value>
   </data>
   <data name="ShareRoutes_PublicAccess" xml:space="preserve">
-    <value>Сделайте ссылку для просмотра в браузере</value>
+    <value>Опубликовать альбом</value>
   </data>
   <data name="ShareRoutes_Other" xml:space="preserve">
     <value>Поделиться через другие приложения</value>
@@ -309,10 +309,10 @@
     <value>Ошибка авторизации пользователя.</value>
   </data>
   <data name="MakeRouteLink_PublicAccessEnabled" xml:space="preserve">
-    <value>Общий доступ к маршруту включен</value>
+    <value>Альбом опубликован и доступен по ссылке:</value>
   </data>
   <data name="MakeRouteLink_PublicAccessDisabled" xml:space="preserve">
-    <value>Общий доступ по ссылке отключен</value>
+    <value>Альбом еще не опубликован</value>
   </data>
   <data name="MakeRouteLink_PublicReferenceCreated" xml:space="preserve">
     <value>Создана ссылка для общего доступа к маршруту</value>
@@ -405,7 +405,7 @@
     <value>Публиковать можно только созданные вами маршруты</value>
   </data>
   <data name="ShareRoute_AreYouSureAfterPublishYouCantDelete" xml:space="preserve">
-    <value>ы</value>
+    <value>После добавления пользователей вы не сможете удалить маршрут. Продолжить?</value>
   </data>
   <data name="ShareRoute_ErrorShareRoute" xml:space="preserve">
     <value>Не получилось поделиться маршрутом</value>
@@ -665,5 +665,8 @@
   </data>
   <data name="CommonMsg_FirstStartDetected" xml:space="preserve">
     <value>Обнаружен первый запуск</value>
+  </data>
+  <data name="ShareRoute_Published" xml:space="preserve">
+    <value>Маршрут успешно опубликован!</value>
   </data>
 </root>

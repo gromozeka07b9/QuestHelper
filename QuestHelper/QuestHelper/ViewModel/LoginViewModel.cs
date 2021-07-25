@@ -24,7 +24,7 @@ namespace QuestHelper.ViewModel
         private string _password;
         private string _passwordConfirm;
         private string _username;
-        private string _apiUrl = "http://igosh.pro/api";
+        private string _apiUrl = "https://igosh.pro/api";
         private string _email;
 
         //private IGoogleAuthManagerService _googleAuthManager;

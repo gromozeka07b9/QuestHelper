@@ -171,9 +171,6 @@
   <data name="Login_GoogleAuth" xml:space="preserve">
     <value>Continuar con google</value>
   </data>
-  <data name="MakeRouteLink_EnableShareAccess" xml:space="preserve">
-    <value>Habilitar el acceso público por enlace</value>
-  </data>
   <data name="MainPage_CurrentSyncStatus" xml:space="preserve">
     <value>Sincronización del estado actual:</value>
   </data>
@@ -307,12 +304,6 @@ fotos, texto</value>
   </data>
   <data name="Login_AuthError" xml:space="preserve">
     <value>Autorización de usuario fallida.</value>
-  </data>
-  <data name="MakeRouteLink_PublicAccessEnabled" xml:space="preserve">
-    <value>Intercambio de enlaces activado</value>
-  </data>
-  <data name="MakeRouteLink_PublicAccessDisabled" xml:space="preserve">
-    <value>Intercambio de enlaces desactivado</value>
   </data>
   <data name="MakeRouteLink_PublicReferenceCreated" xml:space="preserve">
     <value>Enlace creado para compartir la ruta</value>
@@ -665,5 +656,17 @@ Las coordenadas se usan solo al crear sus waypoints.</value>
   </data>
   <data name="CommonMsg_FirstStartDetected" xml:space="preserve">
     <value>Primer lanzamiento detectado</value>
+  </data>
+  <data name="MakeRouteLink_PublicAccessEnabled" xml:space="preserve">
+    <value>El álbum ha sido publicado y disponible en el enlace:</value>
+  </data>
+  <data name="MakeRouteLink_PublicAccessDisabled" xml:space="preserve">
+    <value>El álbum aún no se ha publicado.</value>
+  </data>
+  <data name="MakeRouteLink_EnableShareAccess" xml:space="preserve">
+    <value>Publicar</value>
+  </data>
+  <data name="ShareRoute_Published" xml:space="preserve">
+    <value>¡Ruta publicada con éxito!</value>
   </data>
 </root>
