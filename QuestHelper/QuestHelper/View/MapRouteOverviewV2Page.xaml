@@ -61,7 +61,7 @@
                         </forms:CachedImage.GestureRecognizers>
                     </forms:CachedImage>
                 </StackLayout>
-                <Frame CornerRadius="5" HasShadow="True" HorizontalOptions="Center" IsClippedToBounds="True" WidthRequest="{Binding RoutePointFrameWidth}" HeightRequest="{Binding RoutePointFrameHeight}" Margin="10,0,10,0" Padding="0" IsVisible="{Binding IsPoiDialogVisible}" BorderColor="Blue" BackgroundColor="Red">
+                <Frame CornerRadius="5" HasShadow="True" HorizontalOptions="Center" IsClippedToBounds="True" WidthRequest="{Binding RoutePointFrameWidth}" HeightRequest="{Binding RoutePointFrameHeight}" Margin="10,0,10,0" Padding="0"  BorderColor="Blue" BackgroundColor="Red">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="65*"/>
@@ -77,7 +77,7 @@
                                 </forms:CachedImage.GestureRecognizers>
                             </forms:CachedImage>
                         </StackLayout>
-                        <StackLayout Grid.Column="0" Grid.Row="1" BackgroundColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Vertical" Margin="0">
+                        <StackLayout Grid.Column="0" Grid.Row="1" BackgroundColor="Blue" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Vertical" Margin="0">
                             <Label Text="{Binding SelectedRoutePointName}" TextColor="White" FontSize="14" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand" HorizontalTextAlignment="Start" Margin="5,0,5,0">
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding OpenRoutePointDialogCommand}" />

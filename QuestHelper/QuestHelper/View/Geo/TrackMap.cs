@@ -15,6 +15,8 @@ namespace QuestHelper.View.Geo
     public class TrackMap : Map
     {
         public bool UseInterceptTouchEvent { get; set; }
+        public IEnumerable<ViewRoutePoint> RoutePoints { get; set; }
+        public bool IsShowConnectedRoutePointsLines = false;
         public TrackMap()
         {
             UseInterceptTouchEvent = true;
@@ -99,15 +101,15 @@ namespace QuestHelper.View.Geo
         {
             return new Pin()
             {
-                Label = isStart ? "Start" : "Finish",
+                Label = isStart ? "StartTrackPin" : "FinishTrackPin",
                 Position = position,
             };
         }
 
-        public async Task UpdatePointsOnMap(IEnumerable<ViewRoutePoint> getRoutePoints, EventHandler<PinClickedEventArgs> routePointMarkerClicked)
+        public async Task UpdatePointsOnMap(EventHandler<PinClickedEventArgs> routePointMarkerClicked)
         {
             string pathToPictures = ImagePathManager.GetPicturesDirectory();
-            foreach (var routePoint in getRoutePoints)
+            foreach (var routePoint in RoutePoints)
             {
                 var pin = new RoutePointPin()
                 {

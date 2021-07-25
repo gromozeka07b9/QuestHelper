@@ -63,10 +63,15 @@ namespace QuestHelper.View
                 }
                 Task.Run(async () =>
                 {
-                    await mapControl.UpdateTrackOnMap(_vm.GetTrackPlaces());
-                    await mapControl.UpdatePointsOnMap(points, RoutePoint_MarkerClicked);
+                    mapControl.RoutePoints = points;
+                    var trackPlaces = _vm.GetTrackPlaces();
+                    if (trackPlaces.Any())
+                    {
+                        await mapControl.UpdateTrackOnMap(trackPlaces);
+                    }
+                    mapControl.IsShowConnectedRoutePointsLines = !trackPlaces.Any();
+                    await mapControl.UpdatePointsOnMap(RoutePoint_MarkerClicked);
                 });
-                //Task.Run(async () => { await mapControl.UpdatePointsOnMap(points, RoutePoint_MarkerClicked); });
             }
         }
 
