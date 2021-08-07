@@ -90,21 +90,8 @@ namespace QuestHelper.ViewModel
                 trackResponse = await sendTrackRequest.GetTrackPlacesAsync(routeId);
                 if (trackResponse.Places.Length > 0)
                 {
-                    var places = trackResponse.Places.Select(p => new ViewTrackPlace()
-                    {
-                        Id = p.Id,
-                        Latitude = p.Latitude,
-                        Longitude = p.Longitude,
-                        Name = p.Name,
-                        Description = p.Description,
-                        Address = p.Address,
-                        Category = p.Category,
-                        Distance = p.Distance,
-                        DateTimeBegin = !p.DateTimeBegin.Equals(DateTime.MinValue)? new DateTimeOffset(p.DateTimeBegin) : DateTimeOffset.MinValue,
-                        DateTimeEnd = !p.DateTimeEnd.Equals(DateTime.MinValue)? new DateTimeOffset(p.DateTimeEnd) : DateTimeOffset.MinValue,
-                        Elevation = 0
-                    }).ToArray();
-                    _trackFileManager.SaveTrack(routeId, places);
+                    var viewTrackPlaces = sendTrackRequest.GetViewTrackPlaces(trackResponse.Places);
+                    _trackFileManager.SaveTrack(routeId, viewTrackPlaces);
                 }
             }
 

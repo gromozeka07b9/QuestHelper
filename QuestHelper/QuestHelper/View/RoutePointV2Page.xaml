@@ -193,6 +193,8 @@
                                 UseInterceptTouchEvent="true"
                                 MapType="Street"  HasScrollEnabled="True" 
                                 />
+                        <!--local:TrackMap HeightRequest="350" HasZoomEnabled="True" x:Name="PointMapOverview" IsShowingUser="{Binding IsRightsToGetLocationPresented}" 
+                                        UseInterceptTouchEvent="True" MapType="Street" HasScrollEnabled="True" /-->
                     </StackLayout>
                 </StackLayout>
             </ScrollView>

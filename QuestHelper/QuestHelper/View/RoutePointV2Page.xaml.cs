@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
+using Xamarin.Forms.Maps;
 using Xamarin.Forms.Xaml;
 
 namespace QuestHelper.View
@@ -26,7 +27,6 @@ namespace QuestHelper.View
         public RoutePointV2Page(string routeId, string routePointId)
         {
             InitializeComponent();
-            RoutePointManager manager = new RoutePointManager();
             _vm = new RoutePointV2ViewModel(routeId, routePointId) 
             { 
                 Navigation = this.Navigation 
@@ -48,10 +48,10 @@ namespace QuestHelper.View
             }
         }
 
-        private void ContentPage_Appearing(object sender, EventArgs e)
+        private async void ContentPage_Appearing(object sender, EventArgs e)
         {
             _vm.PropertyChanged += Vm_PropertyChanged;
-            Task.Run(async () => 
+            /*await Task.Run(async () => 
             {
                 PermissionManager permissions = new PermissionManager();
 
@@ -59,9 +59,18 @@ namespace QuestHelper.View
                 {
                     _vm.IsRightsToGetLocationPresented = await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position);
                 }
-            });
+            });*/
+            PermissionManager permissions = new PermissionManager();
+
+            if (!await permissions.PermissionGetCoordsGrantedAsync())
+            {
+                _vm.IsRightsToGetLocationPresented = await permissions.PermissionGrantedAsync(Plugin.Permissions.Abstractions.Permission.Location, CommonResource.Permission_Position);
+            }
 
             _vm.StartDialog();
+            //PointMapOverview.RoutePoints = _vm.RoutePoints;
+            //await PointMapOverview.UpdatePointsOnMap(RoutePoint_MarkerClicked);
+            //await CenterMap(_vm.Latitude, _vm.Longitude, _vm.Name, _vm.Address);
             MessagingCenter.Subscribe<MapUpdateLocationPointMessage>(this, string.Empty, async (msgSender) =>
             {
                 await CenterMap(_vm.Latitude, _vm.Longitude, _vm.Name, _vm.Address);
@@ -87,6 +96,21 @@ namespace QuestHelper.View
             {
                 await DisplayAlert("Error while centering map", customMap.LastError, "Ок");
             }
+            //await PointMapOverview.CenterMap(latitude, longitude);
+            /*mapControl.RoutePoints = points;
+            var trackPlaces = _vm.GetTrackPlaces();
+            if (trackPlaces.Any())
+            {
+                await mapControl.UpdateTrackOnMap(trackPlaces);
+            }
+            mapControl.IsShowConnectedRoutePointsLines = !trackPlaces.Any();
+            await mapControl.UpdatePointsOnMap(RoutePoint_MarkerClicked);*/
+        }
+
+        private void RoutePoint_MarkerClicked(object sender, PinClickedEventArgs e)
+        {
+            var selectedPin = (RoutePointPin)sender;            
+            //_vm.SelectRoutePointPin(selectedPin.RoutePointId);
         }
 
 

@@ -4,8 +4,11 @@ using Android.Gms.Maps.Model;
 using QuestHelper.View.Geo;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using Android.Views;
 using QuestHelper.Consts;
 using QuestHelper.Droid.Renderers.TrackMap;
+using QuestHelper.Model.Messages;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 using Xamarin.Forms.Maps.Android;
@@ -47,16 +50,33 @@ namespace QuestHelper.Droid.Renderers.TrackMap
                 Control.GetMapAsync(this);
             }
         }
+        
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            base.OnElementPropertyChanged(sender, e);
+
+            if (this.Element == null || this.Control == null)
+                return;
+
+            if (e.PropertyName == "")
+            {
+
+            }
+        }
         protected override void OnMapReady(Android.Gms.Maps.GoogleMap map)
         {
-            //map.MapClick += Map_MapClick;
-            
+            //map.
             if (trackMapContext.IsShowConnectedRoutePointsLines)
             {
                 drawConnectedLines();
             }
             base.OnMapReady(map);
         }
+
+        /*private void OnInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
+        {
+            Xamarin.Forms.MessagingCenter.Send<MapOpenPointMessage>(new MapOpenPointMessage() { Latitude = e.Marker.Position.Latitude, Longitude = e.Marker.Position.Longitude }, string.Empty);
+        }*/
 
         private void drawConnectedLines()
         {
@@ -72,6 +92,17 @@ namespace QuestHelper.Droid.Renderers.TrackMap
             lineOptions.InvokePattern(pattern_lines);
             lineOptions.InvokeWidth(10);
             NativeMap.AddPolyline(lineOptions);
+        }
+        public override bool DispatchTouchEvent(MotionEvent e)
+        {
+            if (trackMapContext.UseInterceptTouchEvent)
+            {
+                Parent.Parent.Parent.Parent.RequestDisallowInterceptTouchEvent(true);
+                Parent.Parent.Parent.RequestDisallowInterceptTouchEvent(true);
+            }
+            var dispatchEvent = base.DispatchTouchEvent(e);
+            
+            return dispatchEvent;
         }
 
         protected override MarkerOptions CreateMarker(Pin pin)

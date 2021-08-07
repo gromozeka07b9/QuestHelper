@@ -5,6 +5,7 @@ using QuestHelper.Model;
 using QuestHelper.WS;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace QuestHelper.ViewModel
         private RouteManager _routeManager = new RouteManager();
         private RoutePointManager _routePointManager = new RoutePointManager();
         private RoutePointMediaObjectManager routePointMediaObjectManager = new RoutePointMediaObjectManager();
+        private readonly TrackFileManager _trackFileManager;
         private RoutePointMediaObjectRequest _routePointMediaObjectsApi;
         private CarouselItem _currentItem;
         private bool _isMaximumQualityPhoto = false;
@@ -31,6 +33,7 @@ namespace QuestHelper.ViewModel
         private int _prevCarouselPointsSelectedIndex;
         private int _carouselPointsSelectedIndex;
         private bool _isMapShow;
+        private ObservableCollection<ViewRoutePoint> _routePoints;
 
         //private string _currentPreviewFile;
 
@@ -41,7 +44,8 @@ namespace QuestHelper.ViewModel
         public ICommand ShowOtherPhotoCommand { get; private set; }
         public ICommand SwipeDescriptionRightCommand { get; private set; }
         public ICommand SwipeDescriptionLeftCommand { get; private set; }
-        //public ICommand MapIconTappedCommand { get; private set; }
+        public ICommand ViewPhotoCommand { get; private set; }
+        public ICommand ChangeImageAspectCommand { get; private set; }
 
         public RouteCarouselRootViewModel(string routeId)
         {
@@ -50,15 +54,27 @@ namespace QuestHelper.ViewModel
             ShowOtherPhotoCommand = new Command(showOtherPhotoCommand);
             SwipeDescriptionRightCommand = new Command(swipeDescriptionRightCommand);
             SwipeDescriptionLeftCommand = new Command(swipeDescriptionLeftCommand);
-            //MapIconTappedCommand = new Command(mapIconTappedCommand);
+            ViewPhotoCommand = new Command(viewPhotoCommand);
+            ChangeImageAspectCommand = new Command(changeImageAspectCommand);
+            _trackFileManager = new TrackFileManager();
             _vRoute = new ViewRoute(routeId);
         }
 
-        /*private void mapIconTappedCommand(object obj)
+        private void changeImageAspectCommand(object obj)
         {
-            IsMapShow = !IsMapShow;
-        }*/
+            if (CurrentItem != null)
+            {
+                CurrentItem.ChangeImageAspectCommand.Execute(obj);
+            }
+        }
 
+        private void viewPhotoCommand(object obj)
+        {
+            if (CurrentItem != null)
+            {
+                CurrentItem.ViewPhotoCommand.Execute(obj);
+            }
+        }
         private void swipeDescriptionLeftCommand(object obj)
         {
             if((_carouselPages != null) && (CarouselPointsSelectedIndex < _carouselPages.Count - 1))
@@ -73,6 +89,22 @@ namespace QuestHelper.ViewModel
             {
                 CarouselPointsSelectedIndex--;
             }
+        }
+
+        public void SelectRoutePointPin(string routePointId)
+        {
+            /*if (_carouselPages != null)
+            {
+                //var item = _carouselPages.Find(i => i.RoutePointId.Equals(routePointId));
+                //_carouselPages.
+                var index = _carouselPages.FindIndex(i => i.RoutePointId.Equals(routePointId));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CarouselPointsSelectedIndex"));
+            }*/
+        }
+
+        public IEnumerable<Tuple<double?, double?>> GetTrackPlaces()
+        {
+            return _trackFileManager.GetTrackByRoute(_vRoute.Id);
         }
 
         private void showOtherPhotoCommand(object obj)
@@ -273,23 +305,8 @@ namespace QuestHelper.ViewModel
                 return _isMaximumQualityPhoto;
             }
         }
-
-        public bool IsMapShow
-        {
-            /*set
-            {
-                if(_isMapShow != value)
-                {
-                    _isMapShow = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsMapShow"));
-                }
-            }*/
-            get
-            {
-                return true;
-            }
-        }
-        public List<PointForMap> PointsOnMap
+        
+        /*public List<PointForMap> PointsOnMap
         {
             get
             {
@@ -304,7 +321,14 @@ namespace QuestHelper.ViewModel
 
                 return points;
             }
-        }
+        }*/
+        /*public ObservableCollection<ViewRoutePoint> RoutePoints
+        {
+            get
+            {
+                return CarouselPages
+            }
+        }*/
 
         public CarouselItem CurrentItem
         {
@@ -356,6 +380,13 @@ namespace QuestHelper.ViewModel
             }
         }
 
+        public ObservableCollection<ViewRoutePoint> RoutePoints
+        {
+            get
+            {
+                return _routePoints ?? (_routePoints = new ObservableCollection<ViewRoutePoint>(_routePointManager.GetPointsByRouteId(_vRoute.RouteId)));
+            }
+        }
         public List<CarouselItem> CarouselPages
         {
             get

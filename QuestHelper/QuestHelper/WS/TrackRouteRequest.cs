@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using Autofac;
 using Newtonsoft.Json;
 using QuestHelper.Managers;
+using QuestHelper.Model;
 using QuestHelper.SharedModelsWS;
 using QuestHelper.ViewModel;
 
@@ -56,6 +58,36 @@ namespace QuestHelper.WS
             }
 
             return result;
+        }
+
+        public ViewTrackPlace[] GetViewTrackPlaces(RouteTracking.RouteTrackingPlace[] places)
+        {
+            if (places.Length > 0)
+            {
+                var viewPlaces = places.Select(p => new ViewTrackPlace()
+                {
+                    Id = p.Id,
+                    Latitude = p.Latitude,
+                    Longitude = p.Longitude,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Address = p.Address,
+                    Category = p.Category,
+                    Distance = p.Distance,
+                    DateTimeBegin = !p.DateTimeBegin.Equals(DateTime.MinValue)
+                        ? new DateTimeOffset(p.DateTimeBegin)
+                        : DateTimeOffset.MinValue,
+                    DateTimeEnd = !p.DateTimeEnd.Equals(DateTime.MinValue)
+                        ? new DateTimeOffset(p.DateTimeEnd)
+                        : DateTimeOffset.MinValue,
+                    Elevation = 0
+                }).ToArray();
+                return viewPlaces;
+            }
+
+            return new ViewTrackPlace[]
+            {
+            };
         }
     }
 }

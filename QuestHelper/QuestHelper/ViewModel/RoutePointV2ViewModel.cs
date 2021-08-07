@@ -12,6 +12,7 @@ using QuestHelper.View;
 using QuestHelper.WS;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -69,6 +70,7 @@ namespace QuestHelper.ViewModel
         private string _currentRecordedAudioMediaId;
         private bool _isAudioRecordFinished;
         private bool _isPoiExists;
+        private readonly RoutePointManager _routePointManager;
         private const int _maxRecordAudioLength = 30;
 
         public RoutePointV2ViewModel(string routeId, string routePointId)
@@ -100,6 +102,7 @@ namespace QuestHelper.ViewModel
             EditPoiDialogCommand = new Command(editPoiDialogCommand);
 
             _vpoint = new ViewRoutePoint(routeId, routePointId);
+            _routePointManager = new RoutePointManager();
             _newPoint = string.IsNullOrEmpty(routePointId);
 
             Analytics.TrackEvent("Dialog point opened");
@@ -475,6 +478,13 @@ namespace QuestHelper.ViewModel
             _vpoint.Save();
         }
 
+        public ObservableCollection<ViewRoutePoint> RoutePoints
+        {
+            get
+            {
+                return new ObservableCollection<ViewRoutePoint>(_routePointManager.GetPointsByRouteId(_vpoint.RouteId, false));
+            }
+        }
         public IEnumerable<MediaPreview> Images
         {
             get

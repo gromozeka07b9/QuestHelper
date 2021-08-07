@@ -24666,70 +24666,76 @@ namespace QuestHelper.Droid
 			public const int point_share2 = 2131165453;
 			
 			// aapt resource value: 0x7F07010E
-			public const int point_takephoto2 = 2131165454;
+			public const int point_size = 2131165454;
 			
 			// aapt resource value: 0x7F07010F
-			public const int roundedbg = 2131165455;
+			public const int point_takephoto2 = 2131165455;
 			
 			// aapt resource value: 0x7F070110
-			public const int roundedbgdark = 2131165456;
+			public const int point_view = 2131165456;
 			
 			// aapt resource value: 0x7F070111
-			public const int settings = 2131165457;
+			public const int roundedbg = 2131165457;
 			
 			// aapt resource value: 0x7F070112
-			public const int sfprogressbar_determinate_linear = 2131165458;
+			public const int roundedbgdark = 2131165458;
 			
 			// aapt resource value: 0x7F070113
-			public const int sfprogressbar_indeterminate_circular = 2131165459;
+			public const int settings = 2131165459;
 			
 			// aapt resource value: 0x7F070114
-			public const int sfprogressbar_indeterminate_linear = 2131165460;
+			public const int sfprogressbar_determinate_linear = 2131165460;
 			
 			// aapt resource value: 0x7F070115
-			public const int share = 2131165461;
+			public const int sfprogressbar_indeterminate_circular = 2131165461;
 			
 			// aapt resource value: 0x7F070116
-			public const int smile_dissatisfied = 2131165462;
+			public const int sfprogressbar_indeterminate_linear = 2131165462;
 			
 			// aapt resource value: 0x7F070117
-			public const int smile_satisfied = 2131165463;
+			public const int share = 2131165463;
 			
 			// aapt resource value: 0x7F070118
-			public const int sound = 2131165464;
+			public const int smile_dissatisfied = 2131165464;
 			
 			// aapt resource value: 0x7F070119
-			public const int splash_screen = 2131165465;
+			public const int smile_satisfied = 2131165465;
 			
 			// aapt resource value: 0x7F07011A
-			public const int start = 2131165466;
+			public const int sound = 2131165466;
 			
 			// aapt resource value: 0x7F07011B
-			public const int sync = 2131165467;
+			public const int splash_screen = 2131165467;
 			
 			// aapt resource value: 0x7F07011C
-			public const int telegram = 2131165468;
+			public const int start = 2131165468;
 			
 			// aapt resource value: 0x7F07011D
-			public const int test_custom_background = 2131165469;
+			public const int sync = 2131165469;
 			
 			// aapt resource value: 0x7F07011E
-			public const int tooltip_frame_dark = 2131165470;
+			public const int telegram = 2131165470;
 			
 			// aapt resource value: 0x7F07011F
-			public const int tooltip_frame_light = 2131165471;
+			public const int test_custom_background = 2131165471;
 			
 			// aapt resource value: 0x7F070120
-			public const int triple = 2131165472;
+			public const int tooltip_frame_dark = 2131165472;
 			
 			// aapt resource value: 0x7F070121
-			public const int viber = 2131165473;
+			public const int tooltip_frame_light = 2131165473;
 			
 			// aapt resource value: 0x7F070122
-			public const int vk = 2131165474;
+			public const int triple = 2131165474;
 			
 			// aapt resource value: 0x7F070123
-			public const int whatsapp = 2131165475;
+			public const int viber = 2131165475;
+			
+			// aapt resource value: 0x7F070124
+			public const int vk = 2131165476;
+			
+			// aapt resource value: 0x7F070125
+			public const int whatsapp = 2131165477;
 			
 			static Drawable()
 			{

@@ -28,6 +28,7 @@ namespace QuestHelper.Managers.Sync
         private readonly RouteManager _routeManager = new RouteManager();
         private readonly RoutePointManager _routePointManager = new RoutePointManager();
         private readonly RoutePointMediaObjectManager _routePointMediaManager = new RoutePointMediaObjectManager();
+        private readonly TrackFileManager _trackFileManager = new TrackFileManager();
         //private bool _syncMediaFiles = false;
         private ITextfileLogger _log;
 
@@ -78,26 +79,14 @@ namespace QuestHelper.Managers.Sync
                     {
                         await uploadMedias(mediaForUpload);
                     }
-                    /*if (_syncMediaFiles)
+                    TrackRouteRequest trackRequest = new TrackRouteRequest(_authToken);
+                    var trackResponse = await trackRequest.GetTrackPlacesAsync(_routeId);
+                    if ((trackResponse != null) && (trackResponse.Places.Any()))
                     {
-                        if (mediaForDownload.Count > 0)
-                        {
-                            downloadMedias(mediaForDownload, loadOnlyPreviewImg);
-                        }
-                        var medias = _routePointMediaManager.GetMediaObjectsByRouteId(routeRoot.Route.Id).Where(m => !m.OriginalServerSynced || !m.PreviewServerSynced).Select(m => new MediaForUpdate { RoutePointId = m.RoutePointId, RoutePointMediaObjectId = m.RoutePointMediaObjectId, OriginalServerSynced = m.OriginalServerSynced, PreviewServerSynced = m.PreviewServerSynced, IsDeleted = m.IsDeleted, MediaType = (MediaObjectTypeEnum)m.MediaType }).ToList();
-                        _log.AddStringEvent($"media files sync,  route {_routeId}, media count:{medias.Count.ToString()}");
-
-                        int count = medias.Count;
-                        int index = 0;
-                        foreach (var media in medias)
-                        {
-                            bool result = await updateImages(media, loadOnlyPreviewImg);
-                            if (!result) syncImgHasErrors = !result;
-                            index++;
-                            double percent = (double)index * 100 / (double)count / 100;
-                            Xamarin.Forms.MessagingCenter.Send<SyncProgressImageLoadingMessage>(new SyncProgressImageLoadingMessage() { RouteId = _routeId, ProgressValue = percent }, string.Empty);
-                        }
-                    }*/
+                        _trackFileManager.RemoveAllTracksFromRoute(_routeId);
+                        var viewTrackPlaces = trackRequest.GetViewTrackPlaces(trackResponse.Places);
+                        _trackFileManager.SaveTrack(_routeId, viewTrackPlaces);
+                    }
                 }
             }
             else return false;

@@ -142,6 +142,7 @@ namespace QuestHelper.ViewModel
         {
             IsRoutePointDialogVisible = true;
             SelectedRoutePoint = new ViewRoutePoint(_routeId, routePointId);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsNotEmptySelectedRoutePointName"));
         }
 
         public ViewRoutePoint SelectedRoutePoint
@@ -162,6 +163,14 @@ namespace QuestHelper.ViewModel
 
         public string SelectedRoutePointImage => SelectedRoutePoint?.ImagePreviewPath?? String.Empty;
         public string SelectedRoutePointName => SelectedRoutePoint?.Name?? String.Empty;
+
+        public bool IsNotEmptySelectedRoutePointName
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(SelectedRoutePointName);
+            }
+        }
         public string SelectedRoutePointDescription => SelectedRoutePoint?.Description?? String.Empty;
         public int RoutePointFrameHeight { get; set; }
         public int RoutePointFrameWidth { get; set; }
