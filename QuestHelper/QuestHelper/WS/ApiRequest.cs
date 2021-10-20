@@ -24,7 +24,7 @@ namespace QuestHelper.WS
 
         public HttpStatusCode LastHttpStatusCode => _lastHttpStatusCode;
 
-        public async Task<string> HttpRequestGET(string url, string authToken)
+        /*public async Task<string> HttpRequestGET(string url, string authToken)
         {
             _lastHttpStatusCode = 0;
             string result = string.Empty;
@@ -57,7 +57,7 @@ namespace QuestHelper.WS
                 HandleError.Process("ApiRequest", "HttpRequestGET", e, false);
             }
             return result;
-        }
+        }*/
         
         public async Task<string> HttpRequestPOST(string url, string parameters, string authToken)
         {

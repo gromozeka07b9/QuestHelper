@@ -7,6 +7,7 @@ using System.Net;
 using System.IO;
 using Newtonsoft.Json;
 using System.Net.Http;
+using Autofac;
 using QuestHelper.LocalDB.Model;
 using Newtonsoft.Json.Linq;
 using QuestHelper.Model;
@@ -18,6 +19,8 @@ namespace QuestHelper.WS
         private string _hostUrl = string.Empty;
         private string _authToken = string.Empty;
         public HttpStatusCode LastHttpStatusCode;
+        private readonly IServerRequest _serverRequest = App.Container.Resolve<IServerRequest>();
+
         public RoutePointsApiRequest(string hostUrl, string authToken)
         {
             _hostUrl = hostUrl;
@@ -57,9 +60,10 @@ namespace QuestHelper.WS
             List<RoutePoint> deserializedValue = new List<RoutePoint>();
             try
             {
-                ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{this._hostUrl}/routepoints/{routeId}", _authToken);
-                LastHttpStatusCode = api.LastHttpStatusCode;
+                //ApiRequest api = new ApiRequest();
+                //var response = await api.HttpRequestGET($"{this._hostUrl}/routepoints/{routeId}", _authToken);
+                //LastHttpStatusCode = api.LastHttpStatusCode;
+                var response = await _serverRequest.HttpRequestGet($"/routepoints/{routeId}", _authToken);
                 deserializedValue = JsonConvert.DeserializeObject<List<RoutePoint>>(response);
             }
             catch (Exception e)
