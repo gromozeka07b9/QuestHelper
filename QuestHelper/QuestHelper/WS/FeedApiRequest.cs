@@ -67,6 +67,7 @@ namespace QuestHelper.WS
                 {
                     try
                     {
+                        imgUrl = imgUrl.Replace("http:", "https:");
                         result = await _serverRequest.HttpRequestGetFile(imgUrl, pathToMediaFile, _authToken);
                         LastHttpStatusCode = _serverRequest.GetLastStatusCode();
                         if (LastHttpStatusCode != HttpStatusCode.OK)
