@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Autofac;
 using static QuestHelper.WS.AccountApiRequest;
 
 namespace QuestHelper.WS
@@ -13,6 +14,8 @@ namespace QuestHelper.WS
     {
         private string _hostUrl = "https://igosh.pro/api";
         private string _authToken = string.Empty;
+        private readonly IServerRequest _serverRequest = App.Container.Resolve<IServerRequest>();
+
 
         public SpeechToTextHelper(string authToken)
         {
@@ -27,8 +30,9 @@ namespace QuestHelper.WS
             ApiRequest api = new ApiRequest();
             try
             {
-                result = await api.HttpRequestGET($"{this._hostUrl}/SpeechToText/parse/routepointmediaobject/{mediaObjectId}", _authToken);
-                LastHttpStatusCode = api.LastHttpStatusCode;
+                var response = await _serverRequest.HttpRequestGet($"/api/SpeechToText/parse/routepointmediaobject/{mediaObjectId}", _authToken);
+                //result = await api.HttpRequestGET($"{this._hostUrl}/SpeechToText/parse/routepointmediaobject/{mediaObjectId}", _authToken);
+                LastHttpStatusCode = _serverRequest.GetLastStatusCode();
             }
             catch (Exception e)
             {

@@ -99,9 +99,10 @@ namespace QuestHelper.WS
             {
                 try
                 {
-                    ApiRequest api = new ApiRequest();
-                    var response = await api.HttpRequestGET($"{this._hostUrl}/route/version/get?onlyPersonal={onlyPersonal}", _authToken);
-                    LastHttpStatusCode = api.LastHttpStatusCode;
+                    var response = await _serverRequest.HttpRequestGet("/api/route/version/get?onlyPersonal={onlyPersonal}", _authToken);
+                    //ApiRequest api = new ApiRequest();
+                    //var response = await api.HttpRequestGET($"{this._hostUrl}/route/version/get?onlyPersonal={onlyPersonal}", _authToken);
+                    LastHttpStatusCode = _serverRequest.GetLastStatusCode();
                     deserializedValue = JsonConvert.DeserializeObject<List<RouteVersion>>(response);
                     _memoryCache.Set(cacheKey, deserializedValue, new MemoryCacheEntryOptions()
                     {

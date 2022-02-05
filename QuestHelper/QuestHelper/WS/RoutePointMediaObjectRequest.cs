@@ -83,11 +83,14 @@ namespace QuestHelper.WS
 
         public async Task<HttpStatusCode> ImageExist(string nameMediafile)
         {
-            ApiRequest api = new ApiRequest();
+            //ApiRequest api = new ApiRequest();
             try
             {
-                var result = await api.HttpRequestGET($"{this._hostUrl}/routepointmediaobjects/{nameMediafile}/imageexist", _authToken);
-                LastHttpStatusCode = api.LastHttpStatusCode;
+                //var result = await api.HttpRequestGET($"{this._hostUrl}/routepointmediaobjects/{nameMediafile}/imageexist", _authToken);
+                //LastHttpStatusCode = api.LastHttpStatusCode;
+                var result =
+                    await _serverRequest.HttpRequestGet($"/api/routepointmediaobjects/{nameMediafile}/imageexist", _authToken);
+                LastHttpStatusCode = _serverRequest.GetLastStatusCode();
             }
             catch (Exception e)
             {
