@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<resources>
-	<string name="pageFeed">Лента</string>
-	<string name="pageLoadedAlbums">Загруженные</string>
-  <string name="pagePrivate">Мои</string>
-  <string name="server_client_id">167237391521-vnt1vjk16gttiea12ihk6bksevp75qrm.apps.googleusercontent.com</string>
-</resources>
