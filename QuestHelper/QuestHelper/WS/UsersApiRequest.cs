@@ -7,6 +7,7 @@ using System.Net;
 using System.IO;
 using Newtonsoft.Json;
 using System.Net.Http;
+using Autofac;
 using Newtonsoft.Json.Linq;
 using QuestHelper.LocalDB.Model;
 using QuestHelper.Model;
@@ -18,6 +19,7 @@ namespace QuestHelper.WS
         private string _hostUrl = string.Empty;
         private string _authToken = string.Empty;
         public HttpStatusCode LastHttpStatusCode;
+        private readonly IServerRequest _serverRequest = App.Container.Resolve<IServerRequest>();
 
         public UsersApiRequest(string hostUrl, string authToken)
         {
@@ -30,9 +32,11 @@ namespace QuestHelper.WS
             List<ViewUserInfo> deserializedValue = new List<ViewUserInfo>();
             try
             {
-                ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{this._hostUrl}/user/search/{textForSearch}", _authToken);
-                LastHttpStatusCode = api.LastHttpStatusCode;
+                var response = await _serverRequest.HttpRequestGet($"/api/user/search/{textForSearch}", _authToken);
+
+                //ApiRequest api = new ApiRequest();
+                //var response = await api.HttpRequestGET($"{this._hostUrl}/user/search/{textForSearch}", _authToken);
+                LastHttpStatusCode = _serverRequest.GetLastStatusCode();
                 deserializedValue = JsonConvert.DeserializeObject<List<ViewUserInfo>>(response);
             }
             catch (Exception e)
@@ -46,9 +50,10 @@ namespace QuestHelper.WS
         {
             try
             {
-                ApiRequest api = new ApiRequest();
-                var response = await api.HttpRequestGET($"{_hostUrl}/account/{userId}", _authToken);
-                LastHttpStatusCode = api.LastHttpStatusCode;
+                //ApiRequest api = new ApiRequest();
+                //var response = await api.HttpRequestGET($"{_hostUrl}/account/{userId}", _authToken);
+                var response = await _serverRequest.HttpRequestGet($"/api/account/{userId}", _authToken);
+                LastHttpStatusCode = _serverRequest.GetLastStatusCode();
                 return JsonConvert.DeserializeObject<ViewUserInfo>(response);
             }
             catch (Exception e)
