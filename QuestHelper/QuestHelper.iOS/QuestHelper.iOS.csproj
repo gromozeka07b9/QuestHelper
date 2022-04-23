@@ -136,7 +136,7 @@
       <Version>6.0.1</Version>
     </PackageReference>
     <PackageReference Include="Realm">
-      <Version>10.6.0</Version>
+      <Version>10.11.2</Version>
     </PackageReference>
     <PackageReference Include="Xam.Plugin.Geolocator">
       <Version>4.5.0.6</Version>

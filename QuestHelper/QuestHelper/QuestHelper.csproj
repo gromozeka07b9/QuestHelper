@@ -28,7 +28,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Plugin.Permissions" Version="6.0.1" />
     <PackageReference Include="QuestHelper.SharedModelsWS" Version="1.5.0" />
-    <PackageReference Include="Realm" Version="10.1.2" />
+    <PackageReference Include="Realm" Version="10.11.2" />
     <PackageReference Include="Syncfusion.Xamarin.SfChart" Version="18.2.0.59" />
     <PackageReference Include="Syncfusion.Xamarin.SfProgressBar" Version="18.2.0.59" />
     <PackageReference Include="Xam.Plugin.Geolocator" Version="4.5.0.6" />
