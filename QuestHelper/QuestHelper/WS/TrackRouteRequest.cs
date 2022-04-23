@@ -78,7 +78,7 @@ namespace QuestHelper.WS
                         ? new DateTimeOffset(p.DateTimeBegin)
                         : DateTimeOffset.MinValue,
                     DateTimeEnd = !p.DateTimeEnd.Equals(DateTime.MinValue)
-                        ? new DateTimeOffset(p.DateTimeEnd)
+                        ? new DateTimeOffset(p.DateTimeEnd.HasValue ? p.DateTimeEnd.Value : p.DateTimeBegin)
                         : DateTimeOffset.MinValue,
                     Elevation = 0
                 }).ToArray();

@@ -1,9 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
 	<RunCodeAnalysis>False</RunCodeAnalysis>
 	<Configurations>Debug;Release;Gorilla</Configurations>
+	<LangVersion>latestmajor</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugType>pdbonly</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,6 +27,7 @@
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Plugin.Permissions" Version="6.0.1" />
+    <PackageReference Include="QuestHelper.SharedModelsWS" Version="1.5.0" />
     <PackageReference Include="Realm" Version="10.1.2" />
     <PackageReference Include="Syncfusion.Xamarin.SfChart" Version="18.2.0.59" />
     <PackageReference Include="Syncfusion.Xamarin.SfProgressBar" Version="18.2.0.59" />
@@ -36,7 +42,6 @@
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
     <PackageReference Include="Xamarin.Forms.Maps" Version="5.0.0.2012" />
     <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="18.2.0.59" />
-    <PackageReference Include="QuestHelper.SharedModelsWS" Version="1.4.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\QuestHelper.LocalDB\QuestHelper.LocalDB.csproj" />
