@@ -44,6 +44,7 @@
     <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="18.2.0.59" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Lighter\Lighter.csproj" />
     <ProjectReference Include="..\QuestHelper.LocalDB\QuestHelper.LocalDB.csproj" />
   </ItemGroup>
 
