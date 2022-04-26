@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
 using Autofac;
+using Lighter.Components;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using QuestHelper.Managers;
@@ -34,19 +35,17 @@ namespace QuestHelper
 
 	    static App()
 	    {
-	        InitializeIOCContainer();
+		    var fileContent = ResourceLoader.GetResourceTextFile("onboarding.json");
+		    OnboardingCarouselDeserializer onboardingCarouselDeserializer = new OnboardingCarouselDeserializer();
+		    var deserializedOnboardingComponent = onboardingCarouselDeserializer.Deserialize(fileContent);
+		    var builder = new ContainerBuilder();
+		    builder.RegisterInstance(new MemoryCache(new MemoryCacheOptions())).As<IMemoryCache>();
+		    builder.RegisterInstance(new Logger(true)).As<ITextfileLogger>();
+		    builder.RegisterInstance(new MediaFileManager()).As<IMediaFileManager>();
+		    builder.Register((c,p) => new ServerRequest(_apiUrl)).As<IServerRequest>();
+		    Container = builder.Build();
 	    }
-
-	    private static void InitializeIOCContainer()
-	    {
-	        var builder = new ContainerBuilder();
-            builder.RegisterInstance(new MemoryCache(new MemoryCacheOptions())).As<IMemoryCache>();
-	        builder.RegisterInstance(new Logger(true)).As<ITextfileLogger>();
-	        builder.RegisterInstance(new MediaFileManager()).As<IMediaFileManager>();
-	        builder.Register((c,p) => new ServerRequest(_apiUrl)).As<IServerRequest>();
-            Container = builder.Build();
-	    }
-
+	    
         public App ()
 		{
             Xamarin.Forms.Device.SetFlags(new string[] { "Shapes_Experimental" });

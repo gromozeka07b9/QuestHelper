@@ -1,6 +1,6 @@
 using Lighter.Components.Common;
 
-namespace Lighter.Components.OnboardingCarousel
+namespace Lighter.Components
 {
     public class OnboardingCarousel : Root
     {
@@ -14,6 +14,6 @@ namespace Lighter.Components.OnboardingCarousel
         public Text Headline { get; set; }
         public Text Subhead { get; set; }
         public Text StartCaption { get; set; }
-        public Text ImageFilename { get; set; }
+        public Image Image { get; set; }
     }
 }

@@ -1,0 +1,120 @@
+{
+	"lighterVersion":"0.1",
+	"info":
+	{
+		"type":"onboardingCarousel",
+		"version":"1.0",
+		"description":"Карусель для отображения приветственного экрана"
+	},
+	"canSkipEnabled":true,
+	"application":
+	{
+		"name":"GoSh",
+		"iconFilename":"gosh.png"
+	},
+	"welcomeScreen":
+	{
+		"firstActionKey":
+		{
+			"font":"Roboto",
+			"content":"Поделитесь своими впечатлениями от путешествий",
+			"size":"15sp",
+			"color":"#00000000"
+		},
+		"headline":
+		{
+			"font":"Roboto",
+			"content":"Ваши впечатления",
+			"size":"24sp",
+			"color":"#ffffffff"
+		},
+		"subhead":
+		{
+			"font":"Roboto",
+			"content":"Расскажите о своем путешествии",
+			"size":"15sp",
+			"color":"#ffffffff"
+		},
+		"startCaption":
+		{
+			"font":"Roboto",
+			"content":"Начать",
+			"size":"20sp",
+			"color":"#00000000"
+		},
+		"image":
+		{
+			"filename":"screen1.png",
+			"isOpacity":false
+		}
+	},
+	"onboardingScreens":
+	[
+		{
+			"order":1,
+			"image":
+			{
+				"filename":"screen1.png",
+				"isOpacity":false
+			},
+			"headline":
+			{
+				"font":"Roboto",
+				"content":"Экран 1, смысл 1",
+				"size":"24sp",
+				"color":"#ffffffff"
+			},
+			"subhead":
+			{
+				"font":"Roboto",
+				"content":"Призыв к действию 1 - сделай это!",
+				"size":"15sp",
+				"color":"#ffffffff"
+			}
+		},
+		{
+			"order":2,
+			"image":
+			{
+				"filename":"screen2.png",
+				"isOpacity":false
+			},
+			"headline":
+			{
+				"font":"Roboto",
+				"content":"Экран 2, смысл 2",
+				"size":"24sp",
+				"color":"#ffffffff"
+			},
+			"subhead":
+			{
+				"font":"Roboto",
+				"content":"Призыв к действию 2 - сделай это!",
+				"size":"15sp",
+				"color":"#ffffffff"
+			}
+		},
+		{
+			"order":3,
+			"image":
+			{
+				"filename":"screen3.png",
+				"isOpacity":false
+			},
+			"headline":
+			{
+				"font":"Roboto",
+				"content":"Экран 3, смысл 3",
+				"size":"24sp",
+				"color":"#ffffffff"
+			},
+			"subhead":
+			{
+				"font":"Roboto",
+				"content":"Призыв к действию 3 - сделай это!",
+				"size":"15sp",
+				"color":"#ffffffff"
+			}
+		}
+	]
+}

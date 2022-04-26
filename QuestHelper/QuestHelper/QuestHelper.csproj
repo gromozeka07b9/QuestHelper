@@ -44,7 +44,7 @@
     <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="18.2.0.59" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Lighter\Lighter.csproj" />
+    <ProjectReference Include="..\Lighter\Lighter.csproj" />
     <ProjectReference Include="..\QuestHelper.LocalDB\QuestHelper.LocalDB.csproj" />
   </ItemGroup>
 
@@ -148,6 +148,7 @@
     <EmbeddedResource Update="View\UserProfilePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="onboarding.json" />
   </ItemGroup>
 
   <ItemGroup>
