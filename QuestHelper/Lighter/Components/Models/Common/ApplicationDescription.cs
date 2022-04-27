@@ -1,4 +1,4 @@
-namespace Lighter.Components.Common
+namespace Lighter.Components.Models.Common
 {
     public class ApplicationDescription
     {

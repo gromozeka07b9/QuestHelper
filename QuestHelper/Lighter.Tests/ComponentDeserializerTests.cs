@@ -2,11 +2,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Lighter.Components;
+using Lighter.Components.OnboardingCarousel;
 using NUnit.Framework;
 
 namespace Lighter.Tests
 {
-    public class ComponentDeserializer
+    public class ComponentDeserializerTests
     {
         [SetUp]
         public void Setup()
@@ -20,6 +21,7 @@ namespace Lighter.Tests
             OnboardingCarouselDeserializer deserializer = new OnboardingCarouselDeserializer();
             var onboardingCarousel = deserializer.Deserialize(jsonFile);
             Assert.That(onboardingCarousel, Is.Not.Null);
+            Assert.That(onboardingCarousel.WelcomeScreen, Is.Not.Null);
         }
         
         public string GetResourceTextFile(string filename)

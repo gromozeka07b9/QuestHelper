@@ -5,7 +5,7 @@ namespace QuestHelper
 {
     public class ResourceLoader
     {
-        public static string GetResourceTextFile(string filename)
+        public string GetResourceTextFile(string filename)
         {
             var resourceName = GetType().Module.Assembly.GetManifestResourceNames().FirstOrDefault(x => x.EndsWith(filename)) ?? string.Empty;
             var stream = GetType().Module.Assembly.GetManifestResourceStream(resourceName);

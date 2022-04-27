@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Acr.UserDialogs;
 using Autofac;
 using Lighter.Components;
+using Lighter.Components.OnboardingCarousel;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using QuestHelper.Managers;
@@ -35,9 +36,6 @@ namespace QuestHelper
 
 	    static App()
 	    {
-		    var fileContent = ResourceLoader.GetResourceTextFile("onboarding.json");
-		    OnboardingCarouselDeserializer onboardingCarouselDeserializer = new OnboardingCarouselDeserializer();
-		    var deserializedOnboardingComponent = onboardingCarouselDeserializer.Deserialize(fileContent);
 		    var builder = new ContainerBuilder();
 		    builder.RegisterInstance(new MemoryCache(new MemoryCacheOptions())).As<IMemoryCache>();
 		    builder.RegisterInstance(new Logger(true)).As<ITextfileLogger>();
@@ -53,21 +51,27 @@ namespace QuestHelper
 			
 			InitializeComponent();
 		    _log = App.Container.Resolve<ITextfileLogger>();
-
-            _log.NewFile();
+		    _log.NewFile();
 		    Analytics.TrackEvent("Start app");
             Application.Current.Properties.Remove("SyncStatus");
 		    Application.Current.Properties.Remove("WorkInRoaming");
-			ParameterManager par = new ParameterManager();
-		    string showOnboarding = string.Empty;
-		    if (!par.Get("NeedShowOnboarding", out showOnboarding))
+
+		    ResourceLoader resourceLoader = new ResourceLoader();
+		    var fileOnboardingComponentContent = resourceLoader.GetResourceTextFile("onboarding.json");
+		    OnboardingCarouselDeserializer onboardingCarouselDeserializer = new OnboardingCarouselDeserializer();
+		    var deserializedOnboardingComponent = onboardingCarouselDeserializer.Deserialize(fileOnboardingComponentContent);
+
+		    MainPage = new OnboardingCarouselPage(deserializedOnboardingComponent);
+		    /*ParameterManager par = new ParameterManager();
+	        string showOnboarding = string.Empty;
+	        if (!par.Get("NeedShowOnboarding", out showOnboarding))
+	        {
+			    MainPage = new SplashWizardPage();
+		    }
+		    else
 		    {
-				MainPage = new SplashWizardPage();
-			}
-			else
-			{
-				MainPage = new View.MainPage();
-			}
+			    MainPage = new View.MainPage();
+		    }*/
 		}
 
         protected override void OnStart()

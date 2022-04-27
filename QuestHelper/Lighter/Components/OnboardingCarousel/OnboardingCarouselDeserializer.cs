@@ -1,18 +1,16 @@
-using System.ComponentModel;
 using System.Text.Json;
-using Lighter.Components.Common;
 
-namespace Lighter.Components
+namespace Lighter.Components.OnboardingCarousel
 {
     public class OnboardingCarouselDeserializer
     {
-        public OnboardingCarousel Deserialize(string jsonData)
+        public Models.OnboardingCarousel Deserialize(string jsonData)
         {
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             };
-            return JsonSerializer.Deserialize<OnboardingCarousel>(jsonData, options);
+            return JsonSerializer.Deserialize<Models.OnboardingCarousel>(jsonData, options);
         } 
     }
 }
