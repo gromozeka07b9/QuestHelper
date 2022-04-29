@@ -2,12 +2,9 @@
 <CarouselPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               x:Class="Lighter.Components.OnboardingCarousel.OnboardingCarouselPage" NavigationPage.HasNavigationBar="False" Appearing="OnboardingCarouselPage_OnAppearing">
-    <ContentPage>
-        <Label Text="111111"></Label>        
-    </ContentPage>
-    <ContentPage>
-        <Label Text="2222"></Label>        
-    </ContentPage>
+    <!--ContentPage>
+        <Label Text="first screen"></Label>        
+    </ContentPage-->
     <!--ContentPage>
         <controls:OnboardingView ImgSource="onboarding1.jpg" Text="{lang:Translation Onboarding_Hello}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></controls:OnboardingView>
     <ContentPage>

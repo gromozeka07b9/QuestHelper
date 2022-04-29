@@ -54,7 +54,7 @@
 			"order":1,
 			"image":
 			{
-				"filename":"screen1.png",
+				"filename":"onboarding1.jpg",
 				"isOpacity":false
 			},
 			"headline":
@@ -76,7 +76,7 @@
 			"order":2,
 			"image":
 			{
-				"filename":"screen2.png",
+				"filename":"onboarding2.jpg",
 				"isOpacity":false
 			},
 			"headline":
@@ -98,7 +98,7 @@
 			"order":3,
 			"image":
 			{
-				"filename":"screen3.png",
+				"filename":"onboarding3.jpg",
 				"isOpacity":false
 			},
 			"headline":
