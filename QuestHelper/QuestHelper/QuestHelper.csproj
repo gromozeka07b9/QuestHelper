@@ -142,13 +142,11 @@
     <EmbeddedResource Update="View\ShareRoutesServicesPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="View\SplashWizardPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="View\UserProfilePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="onboarding.json" />
+    <EmbeddedResource Remove="View\SplashWizardPage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -193,4 +191,8 @@
         <_Parameter1>QuestHelper.Tests</_Parameter1>
     </AssemblyAttribute>
 </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="View\SplashWizardPage.xaml" />
+  </ItemGroup>
 </Project>

@@ -17,7 +17,7 @@ namespace QuestHelper.View
 	    private SplashWizardViewModel _vm;
         public SplashWizardPage ()
 		{
-			InitializeComponent ();
+			//InitializeComponent ();
 		    _vm = new SplashWizardViewModel() { Navigation = this.Navigation };
 		    BindingContext = _vm;
 		}

@@ -54,20 +54,20 @@
 			"order":1,
 			"image":
 			{
-				"filename":"onboarding1.jpg",
+				"filename":"lighterdefault.png",
 				"isOpacity":false
 			},
 			"headline":
 			{
 				"font":"Roboto",
-				"content":"Экран 1, смысл 1",
+				"content":"Больше чем фото",
 				"size":"24sp",
 				"color":"#ffffffff"
 			},
 			"subhead":
 			{
 				"font":"Roboto",
-				"content":"Призыв к действию 1 - сделай это!",
+				"content":"Превратите ваши путешествия в увлекательные рассказы!",
 				"size":"15sp",
 				"color":"#ffffffff"
 			}
@@ -76,20 +76,20 @@
 			"order":2,
 			"image":
 			{
-				"filename":"onboarding2.jpg",
+				"filename":"lighterdefault.png",
 				"isOpacity":false
 			},
 			"headline":
 			{
 				"font":"Roboto",
-				"content":"Экран 2, смысл 2",
+				"content":"Открывай новое",
 				"size":"24sp",
 				"color":"#ffffffff"
 			},
 			"subhead":
 			{
 				"font":"Roboto",
-				"content":"Призыв к действию 2 - сделай это!",
+				"content":"В маршрутах друзей вы можете найти интересные места, где еще не были.",
 				"size":"15sp",
 				"color":"#ffffffff"
 			}
@@ -98,20 +98,20 @@
 			"order":3,
 			"image":
 			{
-				"filename":"onboarding3.jpg",
+				"filename":"lighterdefault.png",
 				"isOpacity":false
 			},
 			"headline":
 			{
 				"font":"Roboto",
-				"content":"Экран 3, смысл 3",
+				"content":"Мобильность и доступность",
 				"size":"24sp",
 				"color":"#ffffffff"
 			},
 			"subhead":
 			{
 				"font":"Roboto",
-				"content":"Призыв к действию 3 - сделай это!",
+				"content":"Начните создание Вашего рассказа в приложении и опубликуйте его для просмотра через веб-браузер для всех.",
 				"size":"15sp",
 				"color":"#ffffffff"
 			}

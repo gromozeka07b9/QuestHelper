@@ -59,7 +59,8 @@ namespace Lighter.Components.OnboardingCarousel
                 //var label = new Label();
                 //label.Text = screen.Headline.Content;
                 var onboardingView = new OnboardingView();
-                onboardingView.Text = screen.Headline.Content;
+                onboardingView.HeadlineText = screen.Headline.Content;
+                onboardingView.SubheadText = screen.Subhead.Content;
                 onboardingView.ImgSource = screen.Image.Filename;
                 //grid.Children.Add(onboardingView, 1, 1);
                 contentPage.Content = onboardingView;

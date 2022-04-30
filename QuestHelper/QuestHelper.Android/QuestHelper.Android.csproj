@@ -232,6 +232,7 @@
     <AndroidResource Include="Resources\drawable\ic_feed.png" />
     <AndroidResource Include="Resources\drawable\ic_map.png" />
     <AndroidResource Include="Resources\drawable\ic_personal.png" />
+    <AndroidResource Include="Resources\drawable\lighterdefault.png" />
     <AndroidResource Include="Resources\drawable\point_size.png" />
     <AndroidResource Include="Resources\drawable\point_view.png" />
     <AndroidResource Include="Resources\drawable\start.png" />
