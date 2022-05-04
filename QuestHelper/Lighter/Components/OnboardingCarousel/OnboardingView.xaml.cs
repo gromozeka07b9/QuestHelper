@@ -12,6 +12,8 @@ namespace Lighter.Components.OnboardingCarousel
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class OnboardingView : Grid
     {
+        public static readonly BindableProperty HeadlineTextFontSizeProperty = BindableProperty.Create(nameof(HeadlineTextFontSize), typeof(double), typeof(OnboardingView));
+        public static readonly BindableProperty SubheadTextFontSizeProperty = BindableProperty.Create(nameof(SubheadTextFontSize), typeof(double), typeof(OnboardingView));
         public static readonly BindableProperty HeadlineTextProperty = BindableProperty.Create(nameof(HeadlineText), typeof(string), typeof(OnboardingView));
         public static readonly BindableProperty SubheadTextProperty = BindableProperty.Create(nameof(SubheadText), typeof(string), typeof(OnboardingView));
         public static readonly BindableProperty ImgSourceProperty = BindableProperty.Create(nameof(ImgSource), typeof(string), typeof(OnboardingView));
@@ -19,6 +21,17 @@ namespace Lighter.Components.OnboardingCarousel
         public OnboardingView()
         {
             InitializeComponent();
+        }
+
+        public double HeadlineTextFontSize
+        {
+            get => (double) GetValue(HeadlineTextFontSizeProperty);
+            set => SetValue(HeadlineTextFontSizeProperty, value);
+        }
+        public double SubheadTextFontSize
+        {
+            get => (double) GetValue(SubheadTextFontSizeProperty);
+            set => SetValue(SubheadTextFontSizeProperty, value);
         }
 
         public string HeadlineText

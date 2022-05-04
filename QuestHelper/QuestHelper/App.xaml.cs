@@ -26,7 +26,7 @@ using QuestHelper.WS;
 
 namespace QuestHelper
 {
-	public partial class App : Application
+	public sealed partial class App : Application
 	{
         public static IContainer Container { get; set; }
 
@@ -61,7 +61,7 @@ namespace QuestHelper
 		    OnboardingCarouselDeserializer onboardingCarouselDeserializer = new OnboardingCarouselDeserializer();
 		    var deserializedOnboardingComponent = onboardingCarouselDeserializer.Deserialize(fileOnboardingComponentContent);
 
-		    MainPage = new OnboardingCarouselPage(deserializedOnboardingComponent);
+		    MainPage = new OnboardingPage(deserializedOnboardingComponent, new View.MainPage());
 		    /*ParameterManager par = new ParameterManager();
 	        string showOnboarding = string.Empty;
 	        if (!par.Get("NeedShowOnboarding", out showOnboarding))

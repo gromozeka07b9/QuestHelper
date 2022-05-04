@@ -18,28 +18,28 @@
 		{
 			"font":"Roboto",
 			"content":"Поделитесь своими впечатлениями от путешествий",
-			"size":"15sp",
+			"fontSize":"15",
 			"color":"#00000000"
 		},
 		"headline":
 		{
 			"font":"Roboto",
 			"content":"Ваши впечатления",
-			"size":"24sp",
+			"fontSize":"24",
 			"color":"#ffffffff"
 		},
 		"subhead":
 		{
 			"font":"Roboto",
-			"content":"Расскажите о своем путешествии",
-			"size":"15sp",
+			"content":"Расскажите о своем путешествии, ура!",
+			"fontSize":"15",
 			"color":"#ffffffff"
 		},
 		"startCaption":
 		{
 			"font":"Roboto",
 			"content":"Начать",
-			"size":"20sp",
+			"fontSize":"20",
 			"color":"#00000000"
 		},
 		"image":
@@ -61,14 +61,14 @@
 			{
 				"font":"Roboto",
 				"content":"Больше чем фото",
-				"size":"24sp",
+				"fontSize":"40",
 				"color":"#ffffffff"
 			},
 			"subhead":
 			{
 				"font":"Roboto",
 				"content":"Превратите ваши путешествия в увлекательные рассказы!",
-				"size":"15sp",
+				"fontSize":"15",
 				"color":"#ffffffff"
 			}
 		},
@@ -83,14 +83,14 @@
 			{
 				"font":"Roboto",
 				"content":"Открывай новое",
-				"size":"24sp",
+				"fontSize":"40",
 				"color":"#ffffffff"
 			},
 			"subhead":
 			{
 				"font":"Roboto",
 				"content":"В маршрутах друзей вы можете найти интересные места, где еще не были.",
-				"size":"15sp",
+				"fontSize":"15",
 				"color":"#ffffffff"
 			}
 		},
@@ -105,14 +105,14 @@
 			{
 				"font":"Roboto",
 				"content":"Мобильность и доступность",
-				"size":"24sp",
+				"fontSize":"40",
 				"color":"#ffffffff"
 			},
 			"subhead":
 			{
 				"font":"Roboto",
 				"content":"Начните создание Вашего рассказа в приложении и опубликуйте его для просмотра через веб-браузер для всех.",
-				"size":"15sp",
+				"fontSize":"15",
 				"color":"#ffffffff"
 			}
 		}
