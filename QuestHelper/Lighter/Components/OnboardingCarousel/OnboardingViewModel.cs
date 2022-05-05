@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Lighter.Events;
 using Xamarin.Forms;
 
 namespace Lighter.Components.OnboardingCarousel
@@ -15,16 +16,15 @@ namespace Lighter.Components.OnboardingCarousel
         public event PropertyChangedEventHandler PropertyChanged;
         public INavigation Navigation { get; set; }
         public ICommand SkipCommand { get; private set; }
-        public Page ApplicationPage { get; set; }
 
         internal OnboardingViewModel()
         {
-            SkipCommand = new Command(SkipOnboarding);
+            SkipCommand = new Command(SkipOnboardingAsync);
         }
 
-        private void SkipOnboarding(object obj)
+        private async void SkipOnboardingAsync(object obj)
         {
-            Navigation.PushAsync(ApplicationPage);
+            MessagingCenter.Send(new StartApplicationEvent(), String.Empty);
         }
 
         internal Task UpdateCarouselCollection(Models.OnboardingCarousel onboardingCarouselModel)

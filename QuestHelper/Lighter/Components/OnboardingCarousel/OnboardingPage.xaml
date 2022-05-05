@@ -1,29 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:onboardingCarousel="clr-namespace:Lighter.Components.OnboardingCarousel;assembly=Lighter"
              x:Class="Lighter.Components.OnboardingCarousel.OnboardingPage" Appearing="OnboardingPage_OnAppearing" x:Name="ContentPageOnboarding">
     <ContentPage.BindingContext>
         <onboardingCarousel:OnboardingViewModel></onboardingCarousel:OnboardingViewModel>
     </ContentPage.BindingContext>
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical">
-            <CarouselView x:Name="CarouselViewControl" ItemsSource="{Binding OnBoardingModelCollection}" IndicatorView="IndicatorViewControl">
+        <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="8*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Row="0" Orientation="Vertical" BackgroundColor="#4c8bc9">
+                <Label Text="Пропустить" Margin="0,20,20,0" FontSize="Medium" TextColor="White" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="End" VerticalOptions="Center" VerticalTextAlignment="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SkipCommand}"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+            <CarouselView Grid.Row="1" x:Name="CarouselViewControl" ItemsSource="{Binding OnBoardingModelCollection}" IndicatorView="IndicatorViewControl">
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
                         <onboardingCarousel:OnboardingView BindingContext="{Binding .}"
-                            ImgSource="{Binding ImgSource}"
-                            HeadlineText="{Binding HeadlineText}"
-                            SubheadText="{Binding SubheadText}"
-                            HeadlineTextFontSize="{Binding HeadlineTextFontSize}"
-                            SubheadTextFontSize="{Binding SubheadTextFontSize}"
-                            >
+                                                           ImgSource="{Binding ImgSource}"
+                                                           HeadlineText="{Binding HeadlineText}"
+                                                           SubheadText="{Binding SubheadText}"
+                                                           HeadlineTextFontSize="{Binding HeadlineTextFontSize}"
+                                                           SubheadTextFontSize="{Binding SubheadTextFontSize}"
+                        >
                         </onboardingCarousel:OnboardingView>
                     </DataTemplate>
                 </CarouselView.ItemTemplate>
             </CarouselView>
-            <IndicatorView x:Name="IndicatorViewControl" Margin="10" SelectedIndicatorColor="Black" IndicatorSize="15" IndicatorColor="Cyan" HorizontalOptions="Center"></IndicatorView>
-        </StackLayout>
+            <StackLayout Grid.Row="2" Orientation="Vertical" Padding="0" Margin="0" BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <IndicatorView x:Name="IndicatorViewControl" Margin="10" SelectedIndicatorColor="Black" IndicatorSize="15" IndicatorColor="Cyan" HorizontalOptions="Center"></IndicatorView>
+            </StackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

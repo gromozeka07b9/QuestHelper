@@ -14,6 +14,7 @@ using Acr.UserDialogs;
 using Autofac;
 using Lighter.Components;
 using Lighter.Components.OnboardingCarousel;
+using Lighter.Events;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using QuestHelper.Managers;
@@ -61,7 +62,7 @@ namespace QuestHelper
 		    OnboardingCarouselDeserializer onboardingCarouselDeserializer = new OnboardingCarouselDeserializer();
 		    var deserializedOnboardingComponent = onboardingCarouselDeserializer.Deserialize(fileOnboardingComponentContent);
 
-		    MainPage = new OnboardingPage(deserializedOnboardingComponent, new View.MainPage());
+		    MainPage = new OnboardingPage(deserializedOnboardingComponent);
 		    /*ParameterManager par = new ParameterManager();
 	        string showOnboarding = string.Empty;
 	        if (!par.Get("NeedShowOnboarding", out showOnboarding))
@@ -96,10 +97,10 @@ namespace QuestHelper
         private void SubscribeMessages()
 	    {
 
-	        /*MessagingCenter.Subscribe<StartAppMessage>(this, string.Empty, (sender) =>
+	        MessagingCenter.Subscribe<Lighter.Events.StartApplicationEvent>(this, string.Empty, (sender) =>
 	        {
 	            MainPage = new View.MainPage();
-	        });*/
+	        });
 
 	        MessagingCenter.Subscribe<MapOpenPointMessage>(this, string.Empty, (sender) =>
 	        {

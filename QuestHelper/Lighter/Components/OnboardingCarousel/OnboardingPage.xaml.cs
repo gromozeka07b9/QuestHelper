@@ -16,10 +16,10 @@ namespace Lighter.Components.OnboardingCarousel
     {
         private OnboardingViewModel ViewModel;
         
-        public OnboardingPage(Models.OnboardingCarousel onboardingCarouselModel, Page applicationPage)
+        public OnboardingPage(Models.OnboardingCarousel onboardingCarouselModel)
         {
             InitializeComponent();
-            ViewModel = new OnboardingViewModel() { Navigation = this.Navigation, ApplicationPage = applicationPage};
+            ViewModel = new OnboardingViewModel() { Navigation = this.Navigation};
             ViewModel.UpdateCarouselCollection(onboardingCarouselModel);
             BindingContext = ViewModel;
         }
