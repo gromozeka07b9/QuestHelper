@@ -17,6 +17,8 @@ namespace Lighter.Components.OnboardingCarousel
         public static readonly BindableProperty HeadlineTextProperty = BindableProperty.Create(nameof(HeadlineText), typeof(string), typeof(OnboardingView));
         public static readonly BindableProperty SubheadTextProperty = BindableProperty.Create(nameof(SubheadText), typeof(string), typeof(OnboardingView));
         public static readonly BindableProperty ImgSourceProperty = BindableProperty.Create(nameof(ImgSource), typeof(string), typeof(OnboardingView));
+        public static readonly BindableProperty ScreenTopColorProperty = BindableProperty.Create(nameof(ScreenTopColor), typeof(Color), typeof(OnboardingView));
+        public static readonly BindableProperty ScreenBottomColorProperty = BindableProperty.Create(nameof(ScreenBottomColor), typeof(Color), typeof(OnboardingView));
 
         public OnboardingView()
         {
@@ -48,6 +50,16 @@ namespace Lighter.Components.OnboardingCarousel
         {
             get => (string)GetValue(ImgSourceProperty);
             set => SetValue(ImgSourceProperty, value);
+        }
+        public Color ScreenTopColor
+        {
+            get => (Color)GetValue(ScreenTopColorProperty);
+            set => SetValue(ScreenTopColorProperty, value);
+        }
+        public Color ScreenBottomColor
+        {
+            get => (Color)GetValue(ScreenBottomColorProperty);
+            set => SetValue(ScreenBottomColorProperty, value);
         }
     }
 }

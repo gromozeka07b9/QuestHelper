@@ -6,11 +6,19 @@
 		"version":"1.0",
 		"description":"Карусель для отображения приветственного экрана"
 	},
-	"canSkipEnabled":true,
+	"canSkipEnabled":false,
+	"skipText":
+	{
+		"font":"Roboto",
+		"content":"Пропустить",
+		"fontSize":"15",
+		"color":"ffffff"
+	},
+	
 	"application":
 	{
-		"name":"GoSh",
-		"iconFilename":"gosh.png"
+		"name":"GoSh!",
+		"iconFilename":"icon2.png"
 	},
 	"welcomeScreen":
 	{
@@ -51,7 +59,33 @@
 	"onboardingScreens":
 	[
 		{
+			"order":0,
+			"topColor": "#00ffff",
+			"bottomColor": "ffffff",
+			"image":
+			{
+				"filename":"lighterdefault.png",
+				"isOpacity":false
+			},
+			"headline":
+			{
+				"font":"Roboto",
+				"content":"Добро пожаловать в GoSh!",
+				"fontSize":"30",
+				"color":"#ffffffff"
+			},
+			"subhead":
+			{
+				"font":"Roboto",
+				"content":"Путешествия и общение с друзьями.",
+				"fontSize":"15",
+				"color":"#ffffffff"
+			}
+		},
+		{
 			"order":1,
+			"topColor": "00ffff",
+			"bottomColor": "ffffff",
 			"image":
 			{
 				"filename":"lighterdefault.png",
@@ -61,19 +95,21 @@
 			{
 				"font":"Roboto",
 				"content":"Больше чем фото",
-				"fontSize":"40",
+				"fontSize":"30",
 				"color":"#ffffffff"
 			},
 			"subhead":
 			{
 				"font":"Roboto",
-				"content":"Превратите ваши путешествия в увлекательные рассказы!",
+				"content":"Добавьте описание и превратите ваши путешествия в увлекательные рассказы!",
 				"fontSize":"15",
 				"color":"#ffffffff"
 			}
 		},
 		{
 			"order":2,
+			"topColor": "00ffff",
+			"bottomColor": "ffffff",
 			"image":
 			{
 				"filename":"lighterdefault.png",
@@ -83,7 +119,7 @@
 			{
 				"font":"Roboto",
 				"content":"Открывай новое",
-				"fontSize":"40",
+				"fontSize":"30",
 				"color":"#ffffffff"
 			},
 			"subhead":
@@ -96,6 +132,8 @@
 		},
 		{
 			"order":3,
+			"topColor": "00ffff",
+			"bottomColor": "ffffff",
 			"image":
 			{
 				"filename":"lighterdefault.png",
@@ -105,7 +143,7 @@
 			{
 				"font":"Roboto",
 				"content":"Мобильность и доступность",
-				"fontSize":"40",
+				"fontSize":"30",
 				"color":"#ffffffff"
 			},
 			"subhead":

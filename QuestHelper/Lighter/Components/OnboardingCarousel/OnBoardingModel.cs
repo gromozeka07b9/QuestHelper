@@ -1,3 +1,5 @@
+using Xamarin.Forms;
+
 namespace Lighter.Components.OnboardingCarousel
 {
     public class OnBoardingModel
@@ -7,5 +9,7 @@ namespace Lighter.Components.OnboardingCarousel
         public string SubheadText { get; set; }
         public double HeadlineTextFontSize { get; set; }
         public double SubheadTextFontSize { get; set; }
+        public Color ScreenTopColor { get; set; }
+        public Color ScreenBottomColor { get; set; }
     }
 }

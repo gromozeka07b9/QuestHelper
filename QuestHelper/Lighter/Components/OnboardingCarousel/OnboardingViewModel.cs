@@ -16,6 +16,10 @@ namespace Lighter.Components.OnboardingCarousel
         public event PropertyChangedEventHandler PropertyChanged;
         public INavigation Navigation { get; set; }
         public ICommand SkipCommand { get; private set; }
+        public string ApplicationName { get; private set; }
+        public string ApplicationIconName { get; private set; }
+        public bool CanSkipEnabled { get; private set; }
+        public string SkipText { get; private set; }
 
         internal OnboardingViewModel()
         {
@@ -29,13 +33,19 @@ namespace Lighter.Components.OnboardingCarousel
 
         internal Task UpdateCarouselCollection(Models.OnboardingCarousel onboardingCarouselModel)
         {
+            ApplicationName = onboardingCarouselModel.Application.Name;
+            ApplicationIconName = onboardingCarouselModel.Application.IconFilename;
+            CanSkipEnabled = onboardingCarouselModel.CanSkipEnabled;
+            SkipText = onboardingCarouselModel.SkipText.Content;
             var models = onboardingCarouselModel.OnboardingScreens.Select(i => new OnBoardingModel()
             {
                 ImgSource = i.Image.Filename,
                 HeadlineText = i.Headline.Content,
                 SubheadText = i.Subhead.Content,
                 HeadlineTextFontSize = Convert.ToDouble(i.Headline.FontSize),
-                SubheadTextFontSize = Convert.ToDouble(i.Subhead.FontSize)
+                SubheadTextFontSize = Convert.ToDouble(i.Subhead.FontSize),
+                ScreenTopColor = Color.FromHex(i.TopColor),
+                ScreenBottomColor = Color.FromHex(i.BottomColor)
             });
             OnBoardingModelCollection = new ObservableCollection<OnBoardingModel>(models);
             return Task.CompletedTask;

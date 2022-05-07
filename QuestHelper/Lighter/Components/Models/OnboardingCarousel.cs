@@ -8,6 +8,8 @@ namespace Lighter.Components.Models
         public ApplicationDescription Application { get; set; }
         public WelcomeScreen WelcomeScreen { get; set; }
         public List<OnboardingScreen> OnboardingScreens { get; set; }
+        public bool CanSkipEnabled { get; set; }
+        public Text SkipText { get; set; }
     }
 
     public class WelcomeScreen
@@ -24,6 +26,8 @@ namespace Lighter.Components.Models
         public Text Headline { get; set; }
         public Text Subhead { get; set; }
         public Image Image { get; set; }
+        public string TopColor { get; set; }
+        public string BottomColor { get; set; }
     }
 
 }

@@ -14,7 +14,7 @@ namespace Lighter.Components.OnboardingCarousel
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public sealed partial class OnboardingPage : ContentPage
     {
-        private OnboardingViewModel ViewModel;
+        private readonly OnboardingViewModel ViewModel;
         
         public OnboardingPage(Models.OnboardingCarousel onboardingCarouselModel)
         {

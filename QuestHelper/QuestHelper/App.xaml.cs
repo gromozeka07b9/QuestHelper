@@ -6,6 +6,7 @@ using QuestHelper.View;
 using Realms;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -35,6 +36,8 @@ namespace QuestHelper
         
         private const string _apiUrl = "https://igosh.pro";
 
+        private MainPage MainPageInstance = default;
+
 	    static App()
 	    {
 		    var builder = new ContainerBuilder();
@@ -47,22 +50,11 @@ namespace QuestHelper
 	    
         public App ()
 		{
-            Xamarin.Forms.Device.SetFlags(new string[] { "Shapes_Experimental" });
+            //Xamarin.Forms.Device.SetFlags(new string[] { "Shapes_Experimental" });
 			Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mjg1MjI2QDMxMzgyZTMyMmUzME1vTVg1blhvekhMcmR6ck02MWpicWhYd1ovWHVkTENhTjMxZ0JXMS9uczQ9");
 			
 			InitializeComponent();
-		    _log = App.Container.Resolve<ITextfileLogger>();
-		    _log.NewFile();
-		    Analytics.TrackEvent("Start app");
-            Application.Current.Properties.Remove("SyncStatus");
-		    Application.Current.Properties.Remove("WorkInRoaming");
-
-		    ResourceLoader resourceLoader = new ResourceLoader();
-		    var fileOnboardingComponentContent = resourceLoader.GetResourceTextFile("onboarding.json");
-		    OnboardingCarouselDeserializer onboardingCarouselDeserializer = new OnboardingCarouselDeserializer();
-		    var deserializedOnboardingComponent = onboardingCarouselDeserializer.Deserialize(fileOnboardingComponentContent);
-
-		    MainPage = new OnboardingPage(deserializedOnboardingComponent);
+		    //this.MainPageInstance = new View.MainPage();
 		    /*ParameterManager par = new ParameterManager();
 	        string showOnboarding = string.Empty;
 	        if (!par.Get("NeedShowOnboarding", out showOnboarding))
@@ -74,7 +66,7 @@ namespace QuestHelper
 			    MainPage = new View.MainPage();
 		    }*/
 		}
-
+        
         protected override void OnStart()
         {
 
@@ -88,6 +80,22 @@ namespace QuestHelper
             AppCenter.Start("android=85c4ccc3-f315-427c-adbd-b928e461bcc8;", typeof(Analytics), typeof(Crashes));
 #endif
 
+	        _log = App.Container.Resolve<ITextfileLogger>();
+	        _log.NewFile();
+	        Analytics.TrackEvent("Start app");
+	        Application.Current.Properties.Remove("SyncStatus");
+	        Application.Current.Properties.Remove("WorkInRoaming");
+
+	        ResourceLoader resourceLoader = new ResourceLoader();
+	        var fileOnboardingComponentContent = resourceLoader.GetResourceTextFile("onboarding.json");
+	        OnboardingCarouselDeserializer onboardingCarouselDeserializer = new OnboardingCarouselDeserializer();
+	        var deserializedOnboardingComponent = onboardingCarouselDeserializer.Deserialize(fileOnboardingComponentContent);
+
+	        Debug.WriteLine($"DebugApp: {DateTime.Now.ToString()} start Onboarding...");
+	        MainPage = new OnboardingPage(deserializedOnboardingComponent);
+	        Debug.WriteLine($"DebugApp: {DateTime.Now.ToString()} start creating MainPage...");
+	        this.MainPageInstance = new View.MainPage();
+	        Debug.WriteLine($"DebugApp: {DateTime.Now.ToString()} done creating MainPage");
 
             Setup();
 
@@ -99,7 +107,8 @@ namespace QuestHelper
 
 	        MessagingCenter.Subscribe<Lighter.Events.StartApplicationEvent>(this, string.Empty, (sender) =>
 	        {
-	            MainPage = new View.MainPage();
+	            Debug.WriteLine($"DebugApp: {DateTime.Now.ToString()} start MainPage...");
+	            MainPage = this.MainPageInstance;
 	        });
 
 	        MessagingCenter.Subscribe<MapOpenPointMessage>(this, string.Empty, (sender) =>
