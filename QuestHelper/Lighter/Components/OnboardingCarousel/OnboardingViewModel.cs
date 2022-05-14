@@ -44,6 +44,8 @@ namespace Lighter.Components.OnboardingCarousel
                 SubheadText = i.Subhead.Content,
                 HeadlineTextFontSize = Convert.ToDouble(i.Headline.FontSize),
                 SubheadTextFontSize = Convert.ToDouble(i.Subhead.FontSize),
+                HeadlineTextColor = Color.FromHex(i.Headline.Color),
+                SubheadTextColor = Color.FromHex(i.Subhead.Color),
                 ScreenTopColor = Color.FromHex(i.TopColor),
                 ScreenBottomColor = Color.FromHex(i.BottomColor)
             });

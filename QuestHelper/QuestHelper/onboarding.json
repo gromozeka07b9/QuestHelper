@@ -6,13 +6,13 @@
 		"version":"1.0",
 		"description":"Карусель для отображения приветственного экрана"
 	},
-	"canSkipEnabled":false,
+	"canSkipEnabled":true,
 	"skipText":
 	{
 		"font":"Roboto",
 		"content":"Пропустить",
 		"fontSize":"15",
-		"color":"ffffff"
+		"color":"#FFFFFFFF"
 	},
 	
 	"application":
@@ -60,8 +60,8 @@
 	[
 		{
 			"order":0,
-			"topColor": "#00ffff",
-			"bottomColor": "ffffff",
+			"topColor": "#FF00FFFF",
+			"bottomColor": "#FFFFFFFF",
 			"image":
 			{
 				"filename":"lighterdefault.png",
@@ -70,22 +70,22 @@
 			"headline":
 			{
 				"font":"Roboto",
-				"content":"Добро пожаловать в GoSh!",
+				"content":"Добро пожаловать в GoSh",
 				"fontSize":"30",
-				"color":"#ffffffff"
+				"color":"#FFFFFFFF"
 			},
 			"subhead":
 			{
 				"font":"Roboto",
 				"content":"Путешествия и общение с друзьями.",
-				"fontSize":"15",
-				"color":"#ffffffff"
+				"fontSize":"16",
+				"color":"#FFFFFFFF"
 			}
 		},
 		{
 			"order":1,
-			"topColor": "00ffff",
-			"bottomColor": "ffffff",
+			"topColor": "#FF00FFFF",
+			"bottomColor": "#FFFFFFFF",
 			"image":
 			{
 				"filename":"lighterdefault.png",
@@ -96,20 +96,20 @@
 				"font":"Roboto",
 				"content":"Больше чем фото",
 				"fontSize":"30",
-				"color":"#ffffffff"
+				"color":"#FFFFFFFF"
 			},
 			"subhead":
 			{
 				"font":"Roboto",
-				"content":"Добавьте описание и превратите ваши путешествия в увлекательные рассказы!",
-				"fontSize":"15",
-				"color":"#ffffffff"
+				"content":"Добавьте описание и превратите ваши путешествия в увлекательные рассказы.",
+				"fontSize":"16",
+				"color":"#FFFFFFFF"
 			}
 		},
 		{
 			"order":2,
-			"topColor": "00ffff",
-			"bottomColor": "ffffff",
+			"topColor": "#FF00FFFF",
+			"bottomColor": "#FFFFFFFF",
 			"image":
 			{
 				"filename":"lighterdefault.png",
@@ -120,20 +120,20 @@
 				"font":"Roboto",
 				"content":"Открывай новое",
 				"fontSize":"30",
-				"color":"#ffffffff"
+				"color":"#FFFFFFFF"
 			},
 			"subhead":
 			{
 				"font":"Roboto",
 				"content":"В маршрутах друзей вы можете найти интересные места, где еще не были.",
-				"fontSize":"15",
-				"color":"#ffffffff"
+				"fontSize":"16",
+				"color":"#FFFFFFFF"
 			}
 		},
 		{
 			"order":3,
-			"topColor": "00ffff",
-			"bottomColor": "ffffff",
+			"topColor": "#FF00FFFF",
+			"bottomColor": "#FFFFFFFF",
 			"image":
 			{
 				"filename":"lighterdefault.png",
@@ -144,14 +144,14 @@
 				"font":"Roboto",
 				"content":"Мобильность и доступность",
 				"fontSize":"30",
-				"color":"#ffffffff"
+				"color":"#FFFFFFFF"
 			},
 			"subhead":
 			{
 				"font":"Roboto",
 				"content":"Начните создание Вашего рассказа в приложении и опубликуйте его для просмотра через веб-браузер для всех.",
-				"fontSize":"15",
-				"color":"#ffffffff"
+				"fontSize":"16",
+				"color":"#FFFFFFFF"
 			}
 		}
 	]

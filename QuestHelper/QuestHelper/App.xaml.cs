@@ -85,18 +85,32 @@ namespace QuestHelper
 	        Analytics.TrackEvent("Start app");
 	        Application.Current.Properties.Remove("SyncStatus");
 	        Application.Current.Properties.Remove("WorkInRoaming");
-
-	        ResourceLoader resourceLoader = new ResourceLoader();
-	        var fileOnboardingComponentContent = resourceLoader.GetResourceTextFile("onboarding.json");
-	        OnboardingCarouselDeserializer onboardingCarouselDeserializer = new OnboardingCarouselDeserializer();
-	        var deserializedOnboardingComponent = onboardingCarouselDeserializer.Deserialize(fileOnboardingComponentContent);
-
-	        Debug.WriteLine($"DebugApp: {DateTime.Now.ToString()} start Onboarding...");
-	        MainPage = new OnboardingPage(deserializedOnboardingComponent);
+	        
 	        Debug.WriteLine($"DebugApp: {DateTime.Now.ToString()} start creating MainPage...");
 	        this.MainPageInstance = new View.MainPage();
 	        Debug.WriteLine($"DebugApp: {DateTime.Now.ToString()} done creating MainPage");
 
+
+	        ParameterManager par = new ParameterManager();
+	        string onboardingIsAlreadyShow = string.Empty;
+#if DEBUG
+	        par.Delete("OnboardingIsAlreadyShow");
+#endif
+	        if (par.Get("OnboardingIsAlreadyShow", out onboardingIsAlreadyShow))
+	        {
+		        MainPage = this.MainPageInstance;
+	        }
+	        else
+	        {
+		        ResourceLoader resourceLoader = new ResourceLoader();
+		        var fileOnboardingComponentContent = resourceLoader.GetResourceTextFile("onboarding.json");
+		        OnboardingCarouselDeserializer onboardingCarouselDeserializer = new OnboardingCarouselDeserializer();
+		        var deserializedOnboardingComponent = onboardingCarouselDeserializer.Deserialize(fileOnboardingComponentContent);
+
+		        Debug.WriteLine($"DebugApp: {DateTime.Now.ToString()} start Onboarding...");
+		        MainPage = new OnboardingPage(deserializedOnboardingComponent);
+	        }
+	        
             Setup();
 
             SubscribeMessages();
@@ -107,7 +121,9 @@ namespace QuestHelper
 
 	        MessagingCenter.Subscribe<Lighter.Events.StartApplicationEvent>(this, string.Empty, (sender) =>
 	        {
-	            Debug.WriteLine($"DebugApp: {DateTime.Now.ToString()} start MainPage...");
+		        ParameterManager par = new ParameterManager();
+		        par.Set("OnboardingIsAlreadyShow", "1");
+		        Debug.WriteLine($"DebugApp: {DateTime.Now.ToString()} start MainPage...");
 	            MainPage = this.MainPageInstance;
 	        });
 

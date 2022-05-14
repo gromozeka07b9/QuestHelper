@@ -11,5 +11,7 @@ namespace Lighter.Components.OnboardingCarousel
         public double SubheadTextFontSize { get; set; }
         public Color ScreenTopColor { get; set; }
         public Color ScreenBottomColor { get; set; }
+        public Color HeadlineTextColor { get; set; }
+        public Color SubheadTextColor { get; set; }
     }
 }

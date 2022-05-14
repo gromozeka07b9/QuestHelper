@@ -29,7 +29,7 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidSupportedAbis>x86;arm64-v8a;x86_64</AndroidSupportedAbis>
+    <AndroidSupportedAbis>arm64-v8a</AndroidSupportedAbis>
     <MandroidI18n />
     <AndroidDexTool>d8</AndroidDexTool>
     <AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>
@@ -38,6 +38,8 @@
     <AndroidLinkMode>None</AndroidLinkMode>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
+    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
+    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
